@@ -1,0 +1,195 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!--drop with no selection-->
+    <div class="ui-g-12 page-header">
+        <h3>Chooser (Autocomplete)</h3>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Basic</h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Users'">
+                    <aw-chooser name="users"
+                                field="name"
+                                [(ngModel)]="selection1"
+                                [dataSource]="ds1">
+                    </aw-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{selection1}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>with custom selection section </h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Users'">
+                    <aw-chooser #chooser name="users2" [multiselect]="true"
+                                [(ngModel)]="selection2"
+                                [dataSource]="ds2">
+                        <ng-template #selectionItem let-item>
+                            <span class="tag tag-circle">
+              		          {{item }}
+              		        <i class=" sap-icon icon-decline"
+                               (click)="chooser.removeValue(item)"></i>
+              	        </span>
+
+                        </ng-template>
+
+                    </aw-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{selection2}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>with custom menu items </h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Users'">
+                    <aw-chooser #chooser name="users2"
+                                [(ngModel)]="selection3"
+                                [dataSource]="ds2">
+
+                        <ng-template #menuItem let-item>
+                           <span>
+                                    <i class="sap-icon icon-line-chart"></i>
+                                {{item}}
+                            </span>
+                        </ng-template>
+
+                    </aw-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{selection3}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>with custom value transformer </h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Users'">
+                    <aw-chooser #chooser name="users2"
+                                [(ngModel)]="selection5"
+                                [dataSource]="ds4"
+                                [valueTransformer]="formatItem"
+                    >
+
+                    </aw-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{selection5}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Single Select </h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Users'">
+                    <aw-chooser #chooser name="users2"
+                                [(ngModel)]="selection4"
+                                [valueTransformer]="formatItem"
+                                [dataSource]="ds5">
+
+                        <ng-template #menuItem let-item>
+                           <span>
+                                    <i class="sap-icon icon-line-chart"></i>
+                                {{item}}
+                            </span>
+                        </ng-template>
+
+                    </aw-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{selection4}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Only destination class provided</h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Planes'">
+                    <aw-chooser #chooser name="plane"
+                                [(ngModel)]="selection6"
+                                [multiselect]="true"
+                                [destinationClass]="'Plane'"
+                                [valueTransformer]="formatItemObj">
+                    </aw-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Selection outside of Chooser</h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'PlanesOut'">
+                    <aw-chooser #chooser name="planesOut"
+                                [(ngModel)]="selection7"
+                                [selectionAppendTo]="selection"
+                                [dataSource]="ds7">
+
+                    </aw-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div #selection class="ui-g-4">
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+

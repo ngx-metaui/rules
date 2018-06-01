@@ -1,0 +1,69 @@
+<span [class.u-flr]="alignRight()">
+    <m-context *ngIf="renderAs === 'buttons'">
+        <ng-template ngFor [ngForOf]="actionCategories()" let-category>
+            <m-context [actionCategory]="category.name">
+                <ng-template ngFor [ngForOf]="actions(category)" let-action>
+                    <m-context [action]="action.name"
+                               (onContextChanged)="onContextChanged($event)"
+                               (afterContextSet)="onAfterContextSet($event)">
+                        <aw-button (action)="actionClicked(action.name)"
+                                   [style]="style(action.name)"
+                                   [disabled]="isActionDisabled(action.name)">
+
+                        {{ label(action.name) }}
+                        </aw-button>
+                    </m-context>
+                </ng-template>
+            </m-context>
+
+        </ng-template>
+    </m-context>
+
+    <m-context *ngIf="renderAs === 'links'">
+        <ng-template ngFor [ngForOf]="actionCategories()" let-category>
+            <m-context [actionCategory]="category.name">
+                <ng-template ngFor [ngForOf]="actions(category)" let-action>
+                    <m-context [action]="action.name"
+                               (onContextChanged)="onContextChanged($event)"
+                               (afterContextSet)="onAfterContextSet($event)">
+                        <aw-button (action)="actionClicked(action.name)"
+                                   [style]="'link'"
+                                   [disabled]="isActionDisabled(action.name)">
+
+                        {{ label(action.name) }}
+                        </aw-button>
+                    </m-context>
+                </ng-template>
+            </m-context>
+
+        </ng-template>
+    </m-context>
+
+    <m-context *ngIf="renderAs === 'menu'">
+        <ng-template ngFor [ngForOf]="actionCategories()" let-category>
+            <m-context [actionCategory]="category.name">
+
+                <ng-template ngFor [ngForOf]="actions(category)" let-action>
+                    <m-context [action]="action.name"
+                               (onContextChanged)="onContextChanged($event)"
+                               (afterContextSet)="onAfterContextSet($event)">
+                    </m-context>
+                </ng-template>
+            </m-context>
+        </ng-template>
+
+        <p-menu #menu popup="popup" [model]="menuModel"></p-menu>
+
+        <!-- todo: extend button to support icons -->
+        <aw-button (action)="menu.toggle($event)">
+
+            {{ 'Widgets.metaui.Actions' | translate }}
+        </aw-button>
+
+    </m-context>
+</span>
+
+
+
+
+

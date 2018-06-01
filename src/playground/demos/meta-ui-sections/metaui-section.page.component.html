@@ -1,0 +1,90 @@
+<a class="navbar-brand" routerLink="/play/">
+    <span class="brand-title">Back</span>
+</a>
+
+<div class="meta-sections-demo-page ui-g">
+
+    <div class="ui-g-12">
+        <m-context [object]="myRequest" operation="view" layout="InvoicePage"
+                   (onAction)="onActionHandler($event)">
+            <m-include-component></m-include-component>
+        </m-context>
+    </div>
+</div>
+
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+        <pre>
+            <code class="language-markup" pCode>
+       &lt;!-- renders domain object for operation "view" in
+                custom layout "InvoicePage" --&gt;
+       &lt;m-context [object]="myRequest" operation="view"
+                layout="InvoicePage"
+           (onAction)="onActionHandler($event)"&gt;
+            &lt;m-include-component&gt;&lt;/m-include-component&gt;
+        &lt;/m-context&gt;
+            </code>
+
+        </pre>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+        <pre>
+            <code class="language-javascript" pCode>
+/**
+    Layout represent a high level rule that aggregates defined layout.
+    In this specific case InvoicePage is decorated using trait to use
+    Sections component
+
+*/
+layout=InvoicePage#Sections &#123;
+    @layout=Header#Form &#123;
+        zonePath:Header;
+        title:"Label for header section";
+        description:$object.itemDescription;
+        opened:false;
+    &#125;
+
+    @layout=Participant &#123;
+        title:"Label for Participant section";
+        visible:true;
+        canEdit:true;
+        component:Section2Component;
+        /* bindings:&#123;
+            oper:$&#123;properties.get("editing")&#125;;
+        &#125; */
+
+        editing &#123;
+            bindings:&#123;
+                oper:'editx';
+            &#125;
+        &#125;
+        editing=false &#123;
+            bindings:&#123;
+                oper:'vieaaa';
+            &#125;
+        &#125;
+    &#125;
+
+     @layout=Lines &#123;
+        title:"Label for Line Item section";
+        visible:true;
+        canEdit:true;
+        editMode:"external";
+        actionIcon:"icon-positive";
+        component:Section3Component;
+        bindings:&#123;
+            oper:$&#123;properties.get("operation")&#125;
+        &#125;
+    &#125;
+
+     @layout=Footer#Form &#123;
+        title:"Label for footer section";
+        zonePath:Footer;
+    &#125;
+&#125;
+            </code>
+
+        </pre>
+
+    </div>
+</div>

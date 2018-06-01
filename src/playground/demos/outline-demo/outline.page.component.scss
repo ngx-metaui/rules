@@ -1,0 +1,55 @@
+
+.my-section {
+  display: flex;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+
+  .section-row {
+    border-bottom: 1px solid #d2d2d2;
+    padding: 20px 5px;
+  }
+
+  .outline {
+    @extend .section-row;
+    flex: 1 1 80vw;
+  }
+
+  .filters {
+    @extend .section-row;
+    flex: 0 0 20vw;
+  }
+}
+
+.as-paragraf {
+  color: blue;
+  text-align: justify;
+  padding-right: 100px;
+}
+
+.as-question {
+  color: orangered;
+  padding-right: 100px;
+}
+
+
+.tree-table {
+  width: 100%;
+  border: 1px solid #9b9b9b;
+  border-collapse: collapse;
+
+  margin-top: 20px;
+
+  th, td {
+    padding: 5px;
+    border-bottom: 1px solid #9b9b9b;
+    border-right: 1px solid #9b9b9b;
+  }
+
+  .item-name {
+    width: 80%;
+  }
+
+  .item-type {
+    width: 20%;
+  }
+}

@@ -1,0 +1,13 @@
+
+
+class=InvHeader {
+    layout {
+        trait:labelsOnTop;
+    }
+
+
+    zNone => *;
+    zLeft => value2;
+
+}
+

@@ -1,0 +1,29 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "target": "es5",
+    "types": [
+      "jasmine",
+      "node"
+    ],
+    "paths": {
+      "@aribaui/core": [
+        "./lib/core/index"
+      ],
+      "@aribaui/components": [
+        "./lib/components/index"
+      ],
+      "@aribaui/metaui": [
+        "./lib/metaui/index"
+      ]
+    },
+    "experimentalDecorators": true
+  },
+  "include": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

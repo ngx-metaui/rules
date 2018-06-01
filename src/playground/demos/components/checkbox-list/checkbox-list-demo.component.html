@@ -1,0 +1,61 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g cb-demo-page">
+
+    <div class="ui-g-12 ">
+        <h3>Checkbox list</h3>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Group of checkboxes initialized using [formGroup] </h4></div>
+
+        <div class="ui-g-7">
+            <aw-form-table [useFiveZone]="false" [labelsOnTop]="true">
+                <aw-form-row [label]="'Category as obj'" [name]="'categoryobj'">
+                    <aw-checkbox-list [name]="'categoryobj'"
+                                      [list]="categoriesObj"
+                                      [selections]="selectedCategoriesObj">
+
+                    </aw-checkbox-list>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-3">
+            {{env.currentForm.value.categoryobj | json}}<br/>
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Group of checkboxes initialized using [ngModel] </h4></div>
+
+        <div class="ui-g-7">
+            <aw-checkbox-list [name]="'categoryobj2'"
+                              [list]="categoriesObj"
+                              [(ngModel)]="selectedCategoriesObj2">
+
+            </aw-checkbox-list>
+        </div>
+
+        <div class="ui-g-3">
+            {{selectedCategoriesObj2 | json}}<br/>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+

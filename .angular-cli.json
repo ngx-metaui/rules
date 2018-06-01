@@ -1,0 +1,96 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "aribaui"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "playground/assets",
+        "favicon.ico",
+        {
+          "glob": "**/*",
+          "input": "./playground/assets/images/",
+          "output": "./playground/assets/images"
+        },
+        {
+          "glob": "**/*",
+          "input": "./playground/assets/data/",
+          "output": "./playground/assets/data"
+        },
+        {
+          "glob": "**/*",
+          "input": "./playground/assets/i18n/",
+          "output": "./playground/assets/i18n"
+        }
+      ],
+      "index": "index.html",
+      "main": "playground/main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "playground",
+      "styles": [
+        "playground/assets/themes/_normalize.scss",
+        "../node_modules/prismjs/themes/prism.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/quill/dist/quill.core.css",
+        "../node_modules/quill/dist/quill.snow.css",
+        "playground/assets/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+        "playground/assets/fonts/sap-icon-fonts/sap-icon-fonts.css",
+        "lib/resources/themes/ariba/theme.scss",
+        "lib/resources/styles/aribaui.scss",
+        "playground/styles.scss"
+      ],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/prismjs/prism.js",
+        "../node_modules/quill/dist/quill.js"
+      ],
+      "environmentSource": "./environments/environment.ts",
+      "environments": {
+        "dev": "./environments/environment.ts",
+        "prod": "./environments/environment.prod.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "src/tsconfig.spec.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "scss",
+    "class": {
+      "spec": false
+    },
+    "component": {
+    },
+    "build": {
+      "showCircularDependencies": false
+    }
+  }
+}

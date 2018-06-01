@@ -1,0 +1,14 @@
+<aw-form-row
+    [editable]="editable"
+    [customValidators]="validators"
+    [size]="size"
+    [hidden]="!properties('visible')"
+    [styleClass]="bindingStringProperty('styleClass')"
+    [name]="properties('field')"
+    [required]="isRequired()"
+    [label]="properties('label')"
+    [noLabelLayout]="bindingBoolProperty('useNoLabelLayout')">
+
+    <m-include-component></m-include-component>
+</aw-form-row>
+

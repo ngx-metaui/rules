@@ -1,0 +1,10 @@
+{
+  "Widgets": {
+    "gchooser": {
+      "noSelString": {
+        "VALUE": "Select a Item",
+        "COMMENT": "placeholder for the generic chooser when no value is selected"
+      }
+    }
+  }
+}

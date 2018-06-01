@@ -1,0 +1,60 @@
+{
+  "name": "@aribaui/metaui",
+  "description": "Metaui to for rule driven UI generations.",
+  "homepage": "https://github.wdf.sap.corp/core-ui-platform/AribaCoreUI.git",
+  "version": "0.23.7",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.wdf.sap.corp/i304804/AngularMetaUI.git"
+  },
+  "keywords": [
+    "angular",
+    "ariba",
+    "sap",
+    "http",
+    "interceptors",
+    "i18n",
+    "components",
+    "routing",
+    "domain",
+    "model",
+    "fieldpath",
+    "rules"
+  ],
+  "private": false,
+  "dependencies": {},
+  "peerDependencies": {
+    "@angular/animations": "5.1.0",
+    "@angular/common": "5.1.0",
+    "@angular/compiler": "5.1.0",
+    "@angular/core": "5.1.0",
+    "@angular/forms": "5.1.0",
+    "@angular/http": "5.1.0",
+    "@angular/platform-browser": "5.1.0",
+    "@angular/platform-browser-dynamic": "5.1.0",
+    "@angular/router": "5.1.0",
+    "@aribaui/core": "0.23.15",
+    "@aribaui/components": "0.23.15",
+    "@ngx-translate/core": "9.0.1",
+    "@ngx-translate/http-loader": "2.0.0",
+    "big-integer": "1.6.23",
+    "core-js": "2.5.1",
+    "font-awesome": "4.6.3",
+    "intl": "1.2.5",
+    "lodash": "4.17.4",
+    "object-hash": "1.2.0",
+    "primeng": "5.0.2",
+    "rxjs": "5.5.5",
+    "typescript-collections": "1.2.3",
+    "zone.js": "0.8.18"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 6.9.0",
+    "npm": ">= 3.0.0"
+  },
+  "angular-cli": {},
+  "module": "./index.js",
+  "typings": "./index.d.ts"
+}

@@ -1,0 +1,367 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!--drop with no selection-->
+    <div class="ui-g-12 page-header">
+        <h3>Datatable</h3>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Basic</h4></div>
+
+
+        <div class="ui-g-10">
+            <aw-datatable [list]="items" [lazy]="true">
+                <aw-dt-column label="item" field="item">
+                </aw-dt-column>
+                <aw-dt-column label="quantity" field="quantity"></aw-dt-column>
+                <aw-dt-column label="cost" field="cost"></aw-dt-column>
+                <aw-dt-column label="tax" field="tax"></aw-dt-column>
+                <aw-dt-column label="discount" field="discount"></aw-dt-column>
+                <aw-dt-column label="total" field="total"></aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>With Template in columns</h4></div>
+
+
+        <div class="ui-g-10">
+
+
+            <aw-datatable [list]="items">
+                <aw-dt-column label="Item" field="item"></aw-dt-column>
+                <aw-dt-column field="quantity" label="Quantity">
+
+                    <ng-template let-col let-item="rowData" pTemplate="body">
+                        <span [style.color]="'red'"
+                              [style.fontWeight]="'bold'">{{item[col.field]}}</span>
+                    </ng-template>
+
+                </aw-dt-column>
+                <aw-dt-column label="cost" field="cost"></aw-dt-column>
+                <aw-dt-column label="tax" field="tax"></aw-dt-column>
+
+                <aw-dt-column field="total">
+                    <ng-template pTemplate="header">
+                        <h3>Total</h3>
+                    </ng-template>
+                    <ng-template let-col let-item="rowData" pTemplate="body">
+                        $ {{item[col.field]}}
+                    </ng-template>
+                </aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4>Single Row select</h4>
+        </div>
+
+        <div class="ui-g-10">
+            <aw-datatable [list]="items" [multiselect]="false" dataKey="id">
+                <aw-dt-column label="item" field="item" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="quantity" field="quantity" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="cost" field="cost"></aw-dt-column>
+                <aw-dt-column label="tax" field="tax"></aw-dt-column>
+                <aw-dt-column label="discount" field="discount" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="total" field="total"></aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4> Multiple Row select</h4>
+        </div>
+
+        <div class="ui-g-10">
+            <aw-datatable [list]="items" [multiselect]="true" dataKey="id">
+                <aw-dt-column label="item" field="item" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="quantity" field="quantity" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="cost" field="cost"></aw-dt-column>
+                <aw-dt-column label="tax" field="tax"></aw-dt-column>
+                <aw-dt-column label="discount" field="discount" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="total" field="total"></aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4>Sorting</h4>
+            <br/>
+            <p-inputSwitch onLabel="Single" offLabel="Multiple"
+                           [(ngModel)]="bSingleSortMode" (onChange)="sortModeChanged($event)">
+
+            </p-inputSwitch>
+
+        </div>
+
+        <div class="ui-g-10">
+            <aw-datatable [list]="items" [sortMode]="sortMode">
+                <aw-dt-column label="item" field="item" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="quantity" field="quantity" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="cost" field="cost"></aw-dt-column>
+                <aw-dt-column label="tax" field="tax"></aw-dt-column>
+                <aw-dt-column label="discount" field="discount" [sortable]="true"></aw-dt-column>
+                <aw-dt-column label="total" field="total"></aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4>Frozen columns</h4>
+        </div>
+
+        <div class="ui-g-10">
+            <aw-datatable [list]="supplierItems" scrollable="true" scrollHeight="200px"
+                          frozenWidth="400px" unfrozenWidth="800px" [style]="{'margin-top':'30px'}">
+                <aw-dt-column label="Item" field="item" frozen="true"
+                              [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="Alphacrame Networks" field="supplier1"
+                              [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="Parableu Solutions" field="supplier2"
+                              [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="Rim Industries" field="supplier3"
+                              [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="SAP Ariba" field="supplier4" [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="Autonomous" field="supplier5" [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="Hewlett Packered" field="supplier6"
+                              [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="Apple" field="supplier7" [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="SteeleCase" field="supplier8" [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+                <aw-dt-column label="Leveno" field="supplier9" [styleClass]="'dt-column-data'"
+                              [style]="{'width':'250px'}"></aw-dt-column>
+
+            </aw-datatable>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4>Filtering</h4>
+        </div>
+
+        <div class="ui-g-10">
+
+            <aw-datatable [list]="cars" [rows]="5" [totalRecords]="cars.length"
+                          [paginator]="true" hasGlobalFilter="true" #dt1>
+
+                <aw-dt-header>List of Cars</aw-dt-header>
+                <aw-dt-column field="vin" header="Vin (startsWith)" [filter]="true"
+                              filterPlaceholder="Search"></aw-dt-column>
+                <aw-dt-column field="year" header="Year">
+                </aw-dt-column>
+                <aw-dt-column field="brand" header="Brand (Custom)" [filter]="true"
+                              filterMatchMode="equals">
+                    <ng-template pTemplate="filter" let-col>
+
+                        <aw-dropdown [list]="brands"
+                                     [noSelectionString]="'All Brands'"
+                                     (onSelection)="dt1.filter($event,col.field,col.filterMatchMode)"
+                                     styleClass="ui-column-filter">
+                            <ng-template #itemTemplate let-item>
+                                {{item.label}}
+                            </ng-template>
+                        </aw-dropdown>
+                    </ng-template>
+                </aw-dt-column>
+                <aw-dt-column field="color" header="Color (Custom)" [filter]="true"
+                              filterMatchMode="in">
+                    <ng-template pTemplate="filter" let-col>
+                        <aw-dropdown [list]="colors"
+                                     [noSelectionString]="'All Colors'"
+                                     (onSelection)="dt1.filter($event,col.field,col.filterMatchMode)"
+                                     styleClass="ui-column-filter">
+                            <ng-template #itemTemplate let-item>
+                                {{item.label}}
+                            </ng-template>
+                        </aw-dropdown>
+                    </ng-template>
+                </aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4>Editing</h4>
+            <br/>
+            <p-inputSwitch onLabel="Inline" offLabel="Whole Table"
+                           [(ngModel)]="bInlineEditMode" (onChange)="editModeChanged($event)">
+            </p-inputSwitch>
+        </div>
+
+        <div class="ui-g-10">
+            <aw-datatable [list]="carList" [editMode]="editMode" #dt2>
+                <aw-dt-header>List of Cars</aw-dt-header>
+                <aw-dt-column field="vin" header="Vin" [editable]="true">
+                    <ng-template pTemplate="editor" let-col let-car="rowData">
+                        <aw-input-field [type]="'string'"
+                                        [(ngModel)]="car[col.field]"></aw-input-field>
+                    </ng-template>
+                </aw-dt-column>
+                <aw-dt-column field="year" header="Year"></aw-dt-column>
+
+                <aw-dt-column field="brand" header="Brand" [editable]="true">
+
+                    <ng-template let-col let-car="rowData" pTemplate="editor">
+                        <aw-dropdown [(ngModel)]="car[col.field]" [noSelectionString]="'All Colors'"
+                                     [list]="brands">
+                        </aw-dropdown>
+                    </ng-template>
+
+                </aw-dt-column>
+
+                <aw-dt-column field="color" header="Color" [editable]="true">
+                    <ng-template pTemplate="editor" let-col let-car="rowData">
+                        <aw-dropdown [list]="colors" [(ngModel)]="car[col.field]"
+                                     [noSelectionString]="'All Colors'">
+                            <ng-template #itemTemplate let-item>
+                                {{item.label}}
+                            </ng-template>
+                        </aw-dropdown>
+                    </ng-template>
+                </aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Lazy Loading</h4></div>
+
+        <div class="ui-g-10">
+            <!-- Our datatable -->
+            <div class="data-table-container">
+                <aw-datatable [list]="items" [multiselect]="true" #crudDT
+                              (onRowSelected)="onRowSelect($event)"
+                              (onRowUnselected)="onRowUnselect($event)"
+                >
+                    <!--<aw-dt-headerColumnGroup>-->
+                    <!--<aw-dt-row>-->
+                    <!--<aw-dt-column [styleClass]="'dt-selection-column u-no-border-r'"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'300px'}"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'112px'}"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'112px'}"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'112px'}"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'112px'}"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'150px'}"></aw-dt-column>-->
+                    <!--</aw-dt-row>-->
+                    <!--<aw-dt-row>-->
+                    <!--<aw-dt-column [styleClass]="'dt-selection-column dt-column-header u-no-border-r'" selectionMode="multiple"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'300px'}" [styleClass]="'dt-column-header u-align-l u-no-border-l  u-border-r-white'" header="Items"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'50px'}" [styleClass]="'dt-column-header u-border-l-white'" header="Quantity"></aw-dt-column>-->
+                    <!--<aw-dt-column [style]="{'width':'50px'}" [styleClass]="'dt-column-header u-border-r-white'" header="Cost"></aw-dt-column>-->
+                    <!--<aw-dt-column [styleClass]="'dt-column-header u-border-l-white u-border-r-white'" header="Tax"></aw-dt-column>-->
+                    <!--<aw-dt-column [styleClass]="'dt-column-header u-border-l-white'" header="Discount"></aw-dt-column>-->
+                    <!--<aw-dt-column [styleClass]="'dt-column-header'" header="Total cost"></aw-dt-column>-->
+                    <!--</aw-dt-row>-->
+                    <!--</aw-dt-headerColumnGroup>-->
+
+                    <aw-dt-column [style]="{'width':'300px'}"
+                                  [styleClass]="'dt-column-data u-align-l u-no-border-l u-border-r-white'"
+                                  header="item" field="item"></aw-dt-column>
+                    <aw-dt-column header="quantity" field="quantity"></aw-dt-column>
+                    <aw-dt-column [styleClass]="'dt-column-data u-align-c u-border-r-white'"
+                                  header="cost" field="cost"></aw-dt-column>
+                    <aw-dt-column
+                        [styleClass]="'dt-column-data u-align-c u-border-r-white u-border-l-white'"
+                        header="tax" field="tax"></aw-dt-column>
+                    <aw-dt-column [styleClass]="'dt-column-data u-align-c u-border-l-white'"
+                                  header="discount" field="discount"></aw-dt-column>
+                    <aw-dt-column [styleClass]="'dt-column-data u-align-c'" header="total"
+                                  field="total"></aw-dt-column>
+
+                    <aw-dt-footer *ngIf="true">
+                        <div class="dt-footer">
+                            <span class="dt-footer-angle"><i
+                                class="ariba-icon icon-table-angle"></i></span>
+                            <aw-button [type]="'button'" [name]="'add'" [value]="add"
+                                       [style]="'primary'" (action)="add($event)">Add
+                            </aw-button>
+                            <aw-button [type]="'button'" [name]="'remove'" [value]="remove"
+                                       [style]="'primary'" (action)="remove($event)">Remove
+                            </aw-button>
+                        </div>
+                    </aw-dt-footer>
+                </aw-datatable>
+            </div>
+        </div>
+
+        <div class="ui-g-2">
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4>Lazy Loading</h4>
+        </div>
+
+        <div class="ui-g-10">
+
+            <aw-datatable [list]="cars" [rows]="5" [totalRecords]="cars.length"
+                          [lazy]="true"
+                          [paginator]="true">
+
+                <aw-dt-header>List of Cars</aw-dt-header>
+                <aw-dt-column field="vin" header="Vin (startsWith)"></aw-dt-column>
+                <aw-dt-column field="year" header="Year">
+                </aw-dt-column>
+                <aw-dt-column field="brand" header="Brand (Custom)">
+                </aw-dt-column>
+                <aw-dt-column field="color" header="Color (Custom)">
+                </aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2">
+            <h4>Using ngModel to initialize data</h4>
+        </div>
+
+        <div class="ui-g-10">
+
+            <aw-datatable name="lineItems" [(ngModel)]="items">
+
+                <aw-dt-column label="item" field="item"></aw-dt-column>
+                <aw-dt-column label="quantity" field="quantity"></aw-dt-column>
+                <aw-dt-column label="cost" field="cost"></aw-dt-column>
+                <aw-dt-column label="tax" field="tax"></aw-dt-column>
+                <aw-dt-column label="discount" field="discount"></aw-dt-column>
+                <aw-dt-column label="total" field="total"></aw-dt-column>
+            </aw-datatable>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+

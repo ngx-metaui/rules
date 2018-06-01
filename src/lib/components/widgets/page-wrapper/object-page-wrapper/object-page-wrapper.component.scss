@@ -1,0 +1,71 @@
+.page-wrapper {
+  background-color: #f2f2f2;
+}
+
+.arc-object-detail {
+  padding: 20px;
+}
+
+.page-title-text {
+  font-size: 22px;
+  color: #000000;
+  padding: 14px 0;
+}
+
+.page-title {
+  padding: 5px 0;
+  border-bottom: 1px solid #d7d7d7;
+}
+
+.page-actions {
+  padding: 15px 0 5px;
+}
+
+.page-actions-bottom {
+  padding: 0px 20px;
+}
+
+.page-state,
+.page-state-left,
+.page-state-right,
+.page-state-center {
+  padding: 0;
+}
+
+.content::after {
+  content: '\00a0';
+  font-size: 0px;
+}
+
+.page-title /deep/ .ui-button {
+  min-width: 100px;
+}
+
+.page-status {
+  text-align: right;
+  padding: 18px 0px;
+
+  .object-status-label {
+    color: #767676;
+  }
+
+  .object-status {
+    font-weight: bold;
+    color: #038719;
+  }
+}
+
+/**
+  These two styles works in conjunction to set the footer at bottom.
+**/
+.page-wrapper {
+  min-height: 100%;
+
+  /** footer height. */
+  margin-bottom: -100px;
+}
+
+.page-push {
+  height: 100px;
+}
+

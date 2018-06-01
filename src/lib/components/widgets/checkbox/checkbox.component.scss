@@ -1,0 +1,20 @@
+/* checkbox */
+/deep/ .ui-chkbox {
+  .ui-chkbox-box {
+    width: 22px;
+    height: 22px;
+  }
+
+  .fa {
+    font-family: "SAP icon fonts";
+    color: #199de0;
+    cursor: pointer;
+    font-size: 1.07em;
+    line-height: 1.42em;
+
+    &.fa-check:before {
+      content: '\e05b';
+    }
+  }
+
+}

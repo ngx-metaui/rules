@@ -1,0 +1,391 @@
+class {
+    displayKey:toString;
+
+    searchOperation:search;
+
+    trait=Searchable {
+        textSearchSupported:true;
+        searchOperation:keywordSearch;
+    }
+
+
+    operation=keywordSearch {
+        useTextIndex:true;
+
+        field { visible:false;}
+        @field=keywords#SearchableProperty{ visible:true!; type:java.lang.String; rank:0; after:zTop; bindings:{ size:30}}
+    }
+    
+    operation=textSearch {
+        field {
+            trait=SearchableProperty {
+                visible:true!;
+            }
+        }
+    }
+}
+
+field {
+    trait=toOneRelationship {
+        editable {
+            component:GenericChooser;
+            bindings:{
+                object:${object};
+                key:${field};
+                destinationClass:${type};
+                displayKey:${ariba.ui.meta.core.UIMeta.getInstance().displayKeyForClass(type)};
+            };
+        }
+        editable=false {
+            component:AWHyperlink;
+            bindings:{
+                action:${
+                    set("object", value);
+                    set("actionCategory", "General");
+                    set("action", "Inspect");
+                    ariba.ui.meta.core.UIMeta.getInstance().fireAction(this, requestContext)
+                };
+                awcontent:${value ? ariba.util.fieldvalue.FieldValue.getFieldValue(value, ariba.ui.meta.core.UIMeta.getInstance().displayKeyForClass(type)) : null};
+            }
+        }
+    }
+
+    trait=toManyChooser {
+        component:GenericChooser;
+    }
+
+    trait=toManyTable {
+        component:MetaDetailTable;
+    }
+
+    trait=toManyLink {
+        component:AWHyperlink;
+        bindings:{
+            action:${
+                set("object", value);
+                set("actionCategory", "General");
+                set("action", "Inspect");
+                ariba.ui.meta.core.UIMeta.getInstance().fireAction(this, requestContext)
+            };
+            omitTags:${!value || value.size() ==0};
+            awcontent:${value ? ("" + value.size() + " items") : "(none)"};
+        }
+    }
+    
+    trait=(toManyChooser,toManyTable) {
+        bindings:{
+            object:${object};
+            key:${field};
+            destinationClass:${elementType};
+            multiSelect:true;
+            displayKey:${ariba.ui.meta.core.UIMeta.getInstance().displayKeyForClass(elementType)};
+        }
+    }
+
+    trait=toManyRelationship {
+        editable {
+            trait:toManyChooser;
+        }
+        editable=false  { trait: toManyLink}
+        trait=ownedToMany { trait: toManyTable}
+    }
+
+    valueRedirector {
+        value:$values.valueRedirector.val;
+    }
+    operation=search ~valueRedirector  {
+        type=(java.util.Date,java.lang.Number) {
+            component:MetaRange;
+        }
+    }
+}
+
+
+@traitGroup=RelViewers {
+    @trait=toManyChooser;
+    @trait=toManyTable;
+    @trait=toManyLink;
+}
+
+action {
+    trait=newContext {
+        actionResults:${ariba.ui.meta.persistence.ObjectContext.bindNewContext();
+                    requestContext.pageWithName(properties.pageName)}
+    }
+    trait=nestedContext {
+        actionResults:${ariba.ui.meta.persistence.ObjectContext.bindNestedContext();
+                    requestContext.pageWithName(properties.pageName)}
+    }
+}
+
+action=Create {
+    visible:true;
+    trait:pageAction;
+    pageName:MetaContentPage;
+    pageBindings:{
+        /* Should bind a new session */
+        object:${ariba.ui.meta.persistence.ObjectContext.get().create(values().get("class"))};
+        operation:create;
+        layout:Inspect;
+        clientPanel:true;
+    }
+
+    displayGroup dataSourceType {
+        pageBindings:{
+            object:${displayGroup.insert()};
+        }
+    }
+
+    displayGroup dataSourceType="ariba.ui.meta.persistence.DetailDataSource" {
+        label:$[a001]"Add";
+        visible:${displayGroup.dataSource.parentObject != null}
+    }
+}
+
+@actionCategory=Manage {
+    after:zNav;
+}
+
+@actionCategory=Editing {
+    label:$[a003]Editing;
+    after:zMain;
+
+    layout=(SelectionButtonArea,TableRow) {
+        @action=Inspect {
+            trait:instance, pageAction;
+            visible:true;
+            component:TextButton;
+            bindings:{
+                awcontent:"Inspect";
+            }
+            pageName:MetaContentPage;
+            pageBindings:{
+                object:${ariba.ui.meta.persistence.ObjectContext.get().merge(object)};
+                layout:Inspect;
+                operation:edit;
+                clientPanel:true;
+            }
+        }
+
+        @action=Delete {
+            trait:instance;
+            actionResults:${
+                ctx = ariba.ui.meta.persistence.ObjectContext.get();
+                ctx.remove(object);
+                ctx.save();
+                ariba.ui.widgets.AribaPageContent.setMessage("Item Deleted", requestContext.session());
+                null};
+
+            displayGroup dataSourceType="ariba.ui.meta.persistence.DetailDataSource" {
+                label:$[a004]"Remove";
+                actionResults:${
+                    displayGroup.dataSource.delete(object);
+                    null};
+            }
+        }
+    }
+    layout=ButtonArea {
+        @action=Create {}
+    }
+}
+
+operation=list {
+    field=ActionCol {
+        after:zBottom;
+    }
+}
+
+module {
+    @trait=ModuleClassPage {
+        label:$${pushAndResolve([class:properties.moduleClassName], "label", true)};
+        layout:SearchPage;
+        homePage:MetaContentPage;
+        pageBindings:{
+            class:${properties.moduleClassName};
+            displayGroup:${new ariba.ui.table.AWTDisplayGroup()};
+            module:$module;
+            scopeKey:layout;
+        }
+    }
+
+    @trait=SearchDetail {
+        layout:SearchDetailPage;
+        homePage:MetaContentPage;
+        pageBindings:{
+            class:${properties.moduleClassName};
+            displayGroup:${new ariba.ui.table.AWTDisplayGroup()};
+            module:$module;
+            scopeKey:layout;
+        }
+    }
+
+    @trait=SearchInToc;
+}
+
+layout=SearchPage {
+    label:${pushAndResolve([module:"*"], "label")};
+    component:MetaDashboardLayout;
+    @layout=SearchTOC {
+       label:$[a005]"Actions";
+       component:MetaActionList;
+       bindings:{ filterActions:static; showGlobal:true}
+       after:zToc;
+       area:Global;
+    }
+    @layout=Search {
+       label:$[a006]"Search";
+       component:MetaSearch;
+       after:zTop;
+    }
+}
+
+layout=Search layout=Table {
+    class { bindings:{ showHeadingArea:true;}}
+    layout=HeadingArea {
+        component:MetaSearchForm;
+    }
+}
+
+module_trait=SearchDetail {
+    layout=SearchDetailPage {
+        component:MetaDashboardLayout;
+        visible:true;
+        bindings:{widthLeft:"450px"; widthRight:auto;}
+        label:${pushAndResolve([module:"*"], "label")};
+
+        @layout=Search {
+            label:$[a007]"Search";
+            component:MetaSearch;
+            after:zLeft;
+        }
+
+        layout=SearchForm {
+            wrapperComponent:AWGenericContainer;
+            wrapperBindings:{ tagName:div; style:"padding:0px 5px"}
+            class { bindings:{ omitLabelPadding:true;}}
+        }
+
+        @layout=Detail {
+            after:zRight;
+            component:MetaContext;
+            portletWrapper:AWTNullWrapper;
+            bindings:{
+                object:$displayGroup.selectedObject;
+                layout:InspectStack;
+                operation:${displayGroup.selectedObject ? "edit" : "view"};
+                awcontentElement:MetaIncludeComponent;
+            }
+            layout=Actions#ActionButtons{
+                elementStyle:"padding-top:10px";
+                bindings:{showGlobal:false};
+                @actionCategory=Data {
+                    @action=Save {
+                        actionResults:${ariba.ui.meta.persistence.PersistenceMeta.validateAndSave(this)};
+                        visible:${properties.editing}
+                    }
+                }
+            }
+        }
+    }
+
+    displayGroup dataSourceType="ariba.ui.meta.persistence.ObjectContextDataSource" {
+        action=Create {
+            label:$[a008]"New";
+            actionResults:${displayGroup.insert(); null}
+        }
+        action=Inspect {
+            visible:false;
+        }
+    }
+
+    component=MetaForm {
+        wrapperComponent:AWGenericContainer;
+        wrapperBindings:{ tagName:div; class:smallForm;}
+    }
+
+    field=ActionCol { after:zNone}
+}
+
+module_trait=SearchInToc {
+    layout {
+        @layout=SearchToc {
+            label:$[a009]"Search";
+            component:MetaSearchForm;
+            after:zToc;
+            layout=SearchForm#labelsOnTop{
+                class {
+                    trait:oneZone;
+                }
+            }
+        }
+        layout=Search {
+            label:$[a010]"Search Results";
+            layout=Table { class { bindings:{ showHeadingArea:false; title:null;}}}
+        }
+    }
+}
+
+
+/* Used for Dashboard modules rules */
+@module=Home  {
+    label:$[a001]Home;
+    @layout=Main {
+       after:zTop;
+       label:$[a003]"Welcome to AribaWeb!";
+       component:HomeContent;
+    }
+
+    @layout=Actions {
+       label:$[a004]Actions;
+       after:zToc;
+       component:Toc;
+    }
+}
+
+@module=Documentation {
+    label:$[a005]Documentation;
+    homePage:SearchSource;
+}
+
+@module=DataTables  {
+    label:$[a002]"Data Tables";
+    needsForm:true;
+    component:MetaTabs;
+    layout {
+        bindings:{ vertical:true;}
+        @layout=SimpleTable     { component:SimpleTable}
+        @layout=AdvancedTable   { component:AdvancedTable}
+        @layout=GroupingTable   { component:GroupingTable}
+        @layout=OutlineTable    { component:OutlineTable}
+        @layout=XMLTable        { component:XMLDataTable}
+        @layout=RemoteTable     { component:MetaContentTable}
+        @layout=ExplorerPage    { component:ExplorerPage}
+        @layout=PersonMasterDetail { component:PersonMasterDetail}
+    }
+}
+
+@module=PivotTables  {
+    label:$[a006]"Pivot Tables";
+    homePage:"PivotTabs";
+}
+
+@module="Forms"  {
+    label:$[a007]Forms;
+    homePage:MetaUIForms;
+
+}
+
+@module=MiniApp {
+    label:$[a008]"Mini App";
+    homePage:ERPage;
+
+    visible:${false};
+}
+
+/* Action Set up */
+@actionCategory=Favorites {
+    after:zNav; 
+    label:$[a009]Favorites;
+    @action=MiniApp#pageAction{ pageName:ERPage;}
+    @action=Documentation#pageAction{ pageName:SearchSource}
+}

@@ -1,0 +1,136 @@
+// GLOBAL Styles to override default PRIMENG
+
+// Change default behavior for chooser we can not have calc 100% - 2em
+/deep/ .ui-fluid {
+  .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-input,
+  .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-multiple-container {
+    width: 100%;
+  }
+}
+
+/deep/ .w-chooser {
+  .ui-autocomplete-multiple {
+    line-height: normal;
+  }
+
+  .ui-autocomplete-input {
+    width: 100%;
+  }
+
+  .ui-autocomplete-dropdown.ui-button {
+    right: 0;
+    position: absolute;
+    border: 0;
+    width: 30px;
+    background: transparent;
+
+    .fa {
+      font-family: "SAP icon fonts";
+      color: #767676;
+      cursor: pointer;
+      font-size: 1.4em;
+      margin-left: -0.85em;
+
+    }
+
+    .fa-caret-down:before {
+      content: '\e1ef';
+    }
+
+    input {
+      padding-right: 30px;
+    }
+  }
+
+  /*
+   * Primeng for some reason has above solution calc 100- 2em to layout autocomplete icon
+    next to the input field, which will wrap in any situation so we are changing to make absolute
+    positioning for the icon to make sure it works.
+  */
+  .ui-autocomplete-input-token {
+    padding: 0px;
+    margin: 0px;
+    vertical-align: baseline;
+    width: inherit;
+
+    .fa {
+      font-family: "SAP icon fonts";
+      color: #767676;
+      cursor: pointer;
+      font-size: 1.2em;
+    }
+
+    .fa-search:before {
+      content: '\e00d';
+    }
+
+    input {
+      width: inherit;
+      padding-right: 25px;
+    }
+
+    span {
+      position: absolute;
+      right: 5px;
+      top: 0;
+      padding-top: 0.6em;
+
+    }
+  }
+
+  .ui-autocomplete-dropdown {
+    height: 36px;
+  }
+
+  .ui-autocomplete-panel {
+    .ui-autocomplete-list-item {
+      padding: 0.65em 2em 0.65em 0.64em;
+      margin: 0;
+    }
+  }
+}
+
+/deep/ body .ui-autocomplete.ui-autocomplete-multiple .ui-autocomplete-multiple-container {
+  padding: 0.4em 0.5em 0.4em 1em;
+}
+
+// Move multiselection under the chooser input
+.w-chooser-selections {
+  margin-top: 2px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ui-autocomplete-multiple-container {
+    border: 0;
+
+    .ui-autocomplete-token {
+      font-size: 0.85em;
+      letter-spacing: 0.1px;
+      font-weight: normal;
+      padding: 0em;
+      background: #e0f2ff;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    .ui-autocomplete-token-label {
+      padding: 4px 21px 4px 5px;
+    }
+
+    .ui-autocomplete-token-icon {
+      font-size: 0.78em;
+      padding-right: 0.28em
+    }
+
+    .sap-icon {
+      line-height: inherit;
+    }
+  }
+
+  .more-selected {
+    display: inline-block;
+  }
+}

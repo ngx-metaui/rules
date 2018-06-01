@@ -1,0 +1,81 @@
+<p-panel header="Mockserver sample " [toggleable]="false">
+
+    <p-header>
+        <div class="ui-helper-clearfix" style="float: right">
+            <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+        </div>
+    </p-header>
+
+
+    <p class="card-text">
+        This page demonstrate our mock server.
+    </p>
+    <hr/>
+
+
+    <div class="forms-list">
+        <ul>
+            <li *ngFor="let form of list">
+                ({{form.uniqueName}}) - {{form.firstName}} {{form.lastName}}
+
+                <span class="actions">
+                    <aw-hyperlink [type]="'text/html'"
+                                  (action)="onView($event, form.uniqueName)"
+                                  [size]="'small'">View</aw-hyperlink> |
+
+                    <aw-hyperlink [type]="'text/html'"
+                                  (action)="onEdit($event, form.uniqueName)"
+                                  [size]="'small'">Edit</aw-hyperlink>
+
+                </span>
+
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="forms-detail" *ngIf="showDetails">
+
+        <aw-form-table [useFiveZone]="true" [formGroup]="formGroup"
+                       [labelsOnTop]="true"
+                       [editable]="editable">
+            <aw-top>
+                <aw-form-row [label]="'Id'" [name]="'uniqueName'" [size]="'small'">
+                    <aw-input-field [editable]="false" [type]="'string'" [name]="'uniqueName'">
+                    </aw-input-field>
+                </aw-form-row>
+            </aw-top>
+
+            <aw-left>
+                <aw-form-row [label]="'First Name'" [name]="'firstName'">
+                    <aw-input-field [type]="'string'" [name]="'firstName'">
+                    </aw-input-field>
+                </aw-form-row>
+
+                <aw-form-row [label]="'Last Name'" [name]="'lastName'">
+                    <aw-input-field [type]="'string'" [name]="'lastName'">
+                    </aw-input-field>
+                </aw-form-row>
+            </aw-left>
+
+            <aw-right>
+                <aw-form-row [label]="'Age'" [name]="'age'">
+                    <aw-input-field [type]="'number'"
+                                    [name]="'age'">
+                    </aw-input-field>
+                </aw-form-row>
+                <aw-form-row [label]="'Date of birth'" [name]="'dob'">
+                    <aw-date-time [name]="'dob'">
+                    </aw-date-time>
+                </aw-form-row>
+            </aw-right>
+        </aw-form-table>
+
+        <aw-button *ngIf="editable" [style]="'success'" (action)="save()">
+            Save
+        </aw-button>
+    </div>
+
+
+</p-panel>
+

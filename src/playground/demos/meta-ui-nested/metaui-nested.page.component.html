@@ -1,0 +1,59 @@
+<a class="navbar-brand" routerLink="/play/">
+    <span class="brand-title">Back</span>
+</a>
+
+<div class=" ui-g">
+    <div class="ui-g-12">
+        <m-context [object]="myRequest" operation="view" layout="Inspect" case="nested"
+                   (onAction)="onAction($event)">
+            <m-include-component></m-include-component>
+        </m-context>
+    </div>
+</div>
+
+
+
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+        <pre>
+            <code class="language-markup" pCode>
+    &lt;m-context [object]="myRequest" operation="view" layout="Inspect"
+                case="nested"
+             (onAction)="onAction($event)"&gt;
+            &lt;m-include-component&gt;&lt;/m-include-component&gt;
+    &lt;/m-context&gt;
+            </code>
+        </pre>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+        <pre>
+            <code class="language-javascript" pCode>
+/**
+    Rules can work also with nested object where you can
+    define how they should be rendered.
+
+    Here it says. When you render a footer field which is
+    type of XYZ class use my custom component for it
+    and place it at bottom zone
+
+                */
+
+case=nested class=Invoice &#123;
+    field=footer &#123;
+        component:NestedMetaComponent;
+        bindings:&#123;
+            header:$value;
+            useNoLabelLayout:true;
+        &#125;
+    &#125;
+    zNone => *;
+    zLeft => uniqueName => itemPrice => supplier => requestor;
+    zBottom => footer;
+
+&#125;
+            </code>
+
+        </pre>
+
+    </div>
+</div>

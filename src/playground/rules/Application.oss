@@ -1,0 +1,111 @@
+@module=Home {
+    label:"My Home";
+    pageTitle:"You are now on Homepage";
+
+    @layout=Today {
+       after:zTop;
+       label: "Sales Graph";
+       component:SalesGraphComponent;
+    }
+
+    @layout=Sport {
+       after:Today;
+       label: "Sport today!";
+       component:StringComponent;
+       bindings:{value:"The Texas Tech quarterback arrived at the EXOS training center in the
+                        <br/><br/><br/><br/><br/><br/>
+                        basement of the Omni hotel in Indianapolis just after 10 p.m., fresh,
+                        off a long day of measuring and team interviews and psychological testing " }
+    }
+
+
+     @layout=Tech {
+           after:Sport;
+           label: "Tech News";
+           component:StringComponent;
+           bindings:{value:"The most positive trend here is the addition of sensors to
+                        <br/><br/><br/><br/><br/>
+                        even low-end Android phones that unlock the device after
+                        detecting the user’s fingerprint. Why? Too many people
+                        don’t secure their phones well or at all " }
+     }
+
+     @layout=MessageBoard {
+            after:zBottom;
+            label: "Message Board";
+            component:StringComponent;
+            portletWidth:large
+            bindings:{value:"<b>Message from PR</b><br/>
+                        The most positive trend here is the addition of sensors to
+                        even low-end Android phones that unlock the device after
+                        detecting the user’s fingerprint. <br/> Why? Too many people
+                        don’t secure their phones well or at all " }
+         }
+
+}
+
+@module=Products {
+    label:"Products for Somethig";
+    pageTitle:"You are now on Products";
+    homePage:ProductContentComponent;
+}
+
+@module=Help {
+    pageTitle:"You are now on Help Page";
+}
+
+
+layout=InvoicePage#Sections {
+    @layout=Header#Form {
+        zonePath:Header;
+        title:"Label for header section";
+        description:$object.itemDescription;
+        opened:false;
+    }
+
+    @layout=Participant {
+        title:"Label for Participant section";
+        visible:true;
+        canEdit:true;
+        component:Section2Component;
+        /* bindings:{
+            oper:${properties.get("editing")};
+        } */
+
+        editing {
+            bindings:{
+                oper:'editx';
+            }
+        }
+        editing=false {
+            bindings:{
+                oper:'vieaaa';
+            }
+        }
+    }
+
+     @layout=Lines {
+        title:"Label for Line Item section";
+        visible:true;
+        canEdit:true;
+        editMode:"external";
+        actionIcon:"icon-positive";
+        component:Section3Component;
+        bindings:{
+            oper:${properties.get("operation")}
+        }
+    }
+
+     @layout=Footer#Form {
+        title:"Label for footer section";
+        zonePath:Footer;
+    }
+}
+
+
+
+
+
+
+
+

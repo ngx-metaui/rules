@@ -1,0 +1,13 @@
+class=CarRentalRequest {
+
+    zNone => *;
+    zLeft => firstName#required => lastName#required;
+}
+
+operation=create class=CarRentalRequest {
+
+    zNone => *;
+    zLeft => firstName#required => lastName#required => driverLicenseNumber#required => note#longtext;
+
+}
+

@@ -1,0 +1,70 @@
+<div class="w-chooser ">
+
+    <p-autoComplete #autoCompplete [(ngModel)]="internalChooserModel"
+                    [suggestions]="dataSource.state.matches"
+                    [multiple]="dataSource.state.multiselect"
+                    [dropdown]="!dataSource.state.multiselect"
+                    [minLength]="minLenForSearch"
+                    [placeholder]="placeHolder"
+                    [delay]="delay"
+                    [disabled]="disabled"
+                    (onDropdownClick)="onDropdownClick($event)"
+                    (completeMethod)="match($event.query)"
+                    (onSelect)="selectItem($event)"
+                    (onUnselect)="removeValue($event)">
+
+
+        <ng-template let-internalChooserModel pTemplate="item">
+            <ng-template [ngIf]="!hasMenuTemplate()">
+                {{ displayItem(internalChooserModel) }}
+            </ng-template>
+            <ng-template [embeddedItem]="menuTemplate" [item]="internalChooserModel"
+                         *ngIf="hasMenuTemplate()"></ng-template>
+        </ng-template>
+    </p-autoComplete>
+
+    <!--
+        Wrap whole selection with one extra element so we can move it around
+
+         see: selectionAppendTo
+    -->
+    <span #selectionView>
+        <div class="w-chooser-selections"
+             *ngIf="multiselect && dataSource.state.recentSelectedObjects.length > 0">
+
+        <ng-template [ngIf]="!hasSelectionTemplate()">
+
+            <!-- no selection template render it as it is from CORE-->
+            <ul class="ui-autocomplete-multiple-container ui-widget ui-state-default "
+                [ngClass]="{'ui-state-disabled':disabled,'ui-state-focus':autoCompleteComponent.focus}">
+
+                <li #token *ngFor="let item of dataSource.state.recentSelectedObjects"
+                    class="ui-autocomplete-token ui-state-highlight ui-corner-all" tabindex="0"
+                    (keyup.delete)="removeValue(item)"
+                    (keyup.backspace)="removeValue(item)">
+					<span class="ui-autocomplete-token-icon sap-icon icon-decline"
+                          (click)="removeValue(item)"></span>
+                    <span class="ui-autocomplete-token-label">{{ displayItem(item) }}</span>
+                </li>
+            </ul>
+        </ng-template>
+
+            <!--Yes there is selection template let's iterate and push each item to be rendered-->
+        <ng-template ngFor [ngForOf]="dataSource.state.recentSelectedObjects" let-item>
+            <ng-template [embeddedItem]="selectionTemplate" [item]="item"
+                         *ngIf="hasSelectionTemplate()"></ng-template>
+        </ng-template>
+
+        <ng-template [ngIf]="dataSource.showMoreSelected()">
+			<span class="more-selected">
+				<aw-hyperlink [size]="'small'" (action)="dataSource.state.toggleAllSelected()">
+					{{moreSelectString()}}
+				</aw-hyperlink>
+			</span>
+        </ng-template>
+    </div>
+    </span>
+
+
+</div>
+

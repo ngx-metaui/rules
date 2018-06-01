@@ -1,0 +1,48 @@
+<div class="ui-g-12 section-container"
+     [class.editing]="editable && editState && editMode === 'default'">
+
+    <p-accordion (onOpen)="onSectionOpen($event)" (onClose)="onSectionClose($event)"
+                 [styleClass]="aClass()">
+        <p-accordionTab #accordionTab [selected]="opened" [disabled]="disableClose">
+            <p-header>
+                <!-- title and description -->
+                <div class="section-header-container">
+                    <div class="section-title">{{title}}</div>
+                    <div *ngIf="hasDescription()" class="section-description">{{description}}</div>
+
+                    <!-- actions: Hide when in editing and editMode is default -->
+                    <div *ngIf="(editable && !editState && editMode === 'default') ||
+                        (editable && editMode === 'external')"
+                         class="section-actions">
+                        <aw-hyperlink (action)="onEditAction($event)">
+                            <i class="sap-icon section-edit-action" [ngClass]="actionIcon"></i>
+                        </aw-hyperlink>
+                    </div>
+                </div>
+            </p-header>
+
+            <ng-content></ng-content>
+        </p-accordionTab>
+    </p-accordion>
+    <!--
+        need to put it outside of p-accordion otherwise button will inherit different
+        color scheme
+    -->
+    <div class="section-footer-container" *ngIf="editable && editState &&
+            editMode === 'default'">
+        <div class="footer-actions">
+
+            <ng-template [ngIf]="!hasCustomActions()">
+                <aw-button [style]="'secondary'" size="small"
+                           (action)="onCancelAction.emit($event)">
+                    {{ 'Widgets.section.cancelAction' | translate }}
+                </aw-button>
+                <aw-button size="small" (action)="onSaveAction.emit($event)">
+                    {{ 'Widgets.section.saveAction' | translate }}
+                </aw-button>
+            </ng-template>
+
+            <ng-content select="aw-section-actions"></ng-content>
+        </div>
+    </div>
+</div>

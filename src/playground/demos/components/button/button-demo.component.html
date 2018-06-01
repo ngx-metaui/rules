@@ -1,0 +1,66 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- page header -->
+    <div class="ui-g-12 page-header">
+        <h3>Button</h3>
+    </div>
+
+    <!-- Field Type -->
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Primary Button</h4></div>
+
+        <div class="ui-g-10">
+            <aw-button (action)="submitForm()">Submit</aw-button>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Secondary Button</h4></div>
+
+        <div class="ui-g-10">
+            <aw-button [style]="'secondary'" (action)="submitForm()">Submit</aw-button>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Large Button</h4></div>
+
+        <div class="ui-g-10">
+            <aw-button [style]="'primary'" [size]="'large'" (action)="submitForm()">Submit
+            </aw-button>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Small Button</h4></div>
+
+        <div class="ui-g-10">
+            <aw-button [style]="'secondary'" [size]="'small'" (action)="submitForm()">Submit
+            </aw-button>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Disabled Button</h4></div>
+
+        <div class="ui-g-10">
+            <aw-button [disabled]="true" [style]="'secondary'" (action)="submitForm()">Submit
+            </aw-button>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+

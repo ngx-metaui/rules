@@ -1,0 +1,35 @@
+
+layout=Inspect2#Stack {
+    @layout=MenuTop#ActionButtons {
+    }
+
+    @layout=First#Form {
+    }
+    @layout=Second#Form { zonePath:Second; }
+}
+
+
+
+class=User {
+
+    @action=update  {
+         actionResults:${ object.firstName = "Mr." +  object.firstName };
+         visible: ${ properties.editing };
+    }
+
+
+    @action=Save  {
+         label: "My Save";
+         actionResults:${ object.firstName = "Ms." +  object.firstName };
+         visible: ${ properties.editing };
+         buttonStyle:info;
+    }
+
+
+    zNone => *;
+    zLeft => firstName => lastName => age => department;
+    Second.zLeft => email;
+
+}
+
+

@@ -1,0 +1,118 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- page header -->
+    <div class="ui-g-12 page-header">
+        <h3>List Component</h3>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Simple</h4></div>
+        <div class="ui-g-10">
+
+            <aw-list [list]="list"></aw-list>
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Multiselect with width and height</h4></div>
+        <div class="ui-g-10">
+
+            <aw-list #awlist [list]="list"
+                     height="150px"
+                     width="250px"
+                     [selectionMode]="'multi'">
+
+                <ng-template #right let-item>
+
+                    <span class="sap-icon"
+                          [ngClass]="{'icon-accept': awlist.pListBox.isSelected(item), '': !awlist.pListBox.isSelected(item)}">
+
+                    </span>
+                </ng-template>
+            </aw-list>
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Multiselect with checkboxes</h4></div>
+        <div class="ui-g-10">
+
+            <aw-list [list]="list"
+                     height="180px"
+                     width="200px"
+                     [selectionMode]="'multiWithCheckbox'">
+
+                <ng-template #middle let-item>
+                    ssss-{{item.value}}
+                </ng-template>
+            </aw-list>
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Multiselect with selection</h4></div>
+        <div class="ui-g-10">
+
+            <aw-list [list]="list"
+                     height="180px"
+                     width="200px"
+                     [selection]="selection"
+                     [selectionMode]="'multiWithCheckbox'">
+
+                <ng-template #middle let-item>
+                    ssss-{{item.value}}
+                </ng-template>
+            </aw-list>
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Multiselect with [(ngModel)]</h4></div>
+        <div class="ui-g-10">
+
+            <aw-list [list]="list"
+                     height="180px"
+                     width="200px"
+                     [(ngModel)]="selection"
+                     [selectionMode]="'multiWithCheckbox'">
+
+                <ng-template #middle let-item>
+                    ssss-{{item.value}}
+                </ng-template>
+            </aw-list>
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Borderless list component</h4></div>
+        <div class="ui-g-10">
+
+            <aw-list [list]="list"
+                     [borderless]="true"
+                     height="180px"
+                     width="200px"
+            >
+
+            </aw-list>
+
+        </div>
+    </div>
+
+
+</div>
+

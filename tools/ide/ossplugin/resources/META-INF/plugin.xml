@@ -1,0 +1,48 @@
+<idea-plugin version="2">
+    <id>com.ariba.metaui.plugins</id>
+    <name>Ariba OSS Plugin</name>
+    <version>1.0</version>
+    <vendor url="http://aribaweb.org/" email="">Ariba Meta UIDevelopement Framework</vendor>
+    <description><![CDATA[
+       Ariba OSS Editor
+
+    ]]></description>
+
+    <change-notes><![CDATA[
+
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="145"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.xml</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+
+        <fileTypeFactory implementation="ariba.ideplugin.idea.lang.OSSFileTypeFactory"/>
+        <lang.parserDefinition language="OSS" implementationClass="ariba.ideplugin.idea.lang.OSSParserDefinition"/>
+        <lang.syntaxHighlighterFactory key="OSS"
+                                       implementationClass="ariba.ideplugin.idea.lang.OSSSyntaxHighlighterFactory"/>
+        <lang.psiStructureViewFactory language="OSS"
+                                      implementationClass="ariba.ideplugin.idea.lang.structure.OSSStructureViewFactory"/>
+
+        <lang.foldingBuilder language="OSS" implementationClass="ariba.ideplugin.idea.lang.OSSFoldingBuilder"/>
+    </extensions>
+
+    <application-components>
+        <component>
+            <implementation-class>ariba.ideplugin.idea.AppComponent</implementation-class>
+        </component>
+    </application-components>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>

@@ -1,0 +1,144 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <div class="ui-g-12">
+        <div class="ui-g-12">
+            <pre>
+            There are three types of popup.
+               1.  a regular dialog box that has header, content and footer. It's the most customizable.
+               2.  a confirmation box is similar to a dialog box but has accept and reject action buttons.
+               3.  a overlay, which is a very basic popup.
+
+            There are two ways to use any popup component.
+               1.  Either directly by using component, aw-dialog, aw-confirmation or aw-overlay
+               2.  or the ModalService  service.dialog(),  service.confirmation(),  service.overlay().
+            </pre>
+        </div>
+    </div>
+
+    <!--drop with no selection-->
+
+    <div class="ui-g-12 page-header">
+        <h3>Dialog</h3>
+
+        <!-- place holder for the dynamically create dialogs. -->
+        <aw-modal></aw-modal>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-3"><span>Basic Dialog. Using Dialog component.</span></div>
+
+        <div class="ui-g-3">
+            <aw-dialog [(visible)]="display" [modal]="true" (onOpen)="openAction()"
+                       (onClose)="closeAction()">
+                <aw-dialog-header>Godfather I</aw-dialog-header>
+
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tortor magna,
+                faucibus id volutpat venenatis, convallis id ex. Donec eget lacinia purus, quis
+                auctor libero. Vestibulum mollis accumsan odio eu ullamcorper. Interdum et malesuada
+                fames ac ante ipsum primis in faucibus. Maecenas sed ex consequat, faucibus massa
+                non, pulvinar nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus
+                mus. Donec vel vestibulum erat, in imperdiet lorem. Aliquam lacinia ligula quis sem
+                aliquam, nec pharetra tortor lobortis...
+
+                <aw-dialog-footer>
+                    <aw-button [size]="'small'" [style]="'primary'" (click)="close()">OK</aw-button>
+                </aw-dialog-footer>
+            </aw-dialog>
+
+            <aw-button [size]="'small'" (click)="open()">Open Dialog</aw-button>
+        </div>
+
+        <div class="ui-g-2">Dialog Status: {{dialogAction}}</div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-3">Basic Dialog. Using modal service.</div>
+
+        <div class="ui-g-3">
+            <aw-button [size]="'small'" (click)="toggleDialogWithService()">toggle w/ ModalService
+            </aw-button>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12 page-header">
+        <h3>Confirmation</h3>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-3"><span>Confirmation. Using Confirmation component.</span></div>
+
+        <div class="ui-g-3">
+            <aw-confirmation [title]="'Confirmation'" [(visible)]="displayConfirmation"
+                             (onConfirm)="confirmAction()" (onCancel)="cancelAction()">
+                <i class="sap-icon icon-alert"></i>
+
+                Are you sure you want to delete your hard drive?
+            </aw-confirmation>
+
+            <aw-button [size]="'small'" (click)="openConfirmation()">Open Confirmation</aw-button>
+        </div>
+
+        <div class="ui-g-2">Confirmation Status: {{confirmationAction}}</div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-3">Confirmation. Using modal service.</div>
+
+        <div class="ui-g-3">
+            <aw-button [size]="'small'" (click)="toggleConfirmationWithService()">toggle w/
+                ModalService
+            </aw-button>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12 page-header">
+        <h3>Overlay</h3>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-3"><span>Overlay. Using Overlay component.</span></div>
+
+        <div class="ui-g-3">
+            <aw-overlay #overlay (onOpen)="overlayAction='open'" (onClose)="overlayAction='close'">
+                <img [style.width]="'300px'" src="assets/images/sales.png" alt="Sales Chart"/>
+            </aw-overlay>
+
+            <aw-button [size]="'small'" (click)="overlay.open($event)">Open Overlay</aw-button>
+        </div>
+
+        <div class="ui-g-2">Confirmation Status: {{overlayAction}}</div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-3">Confirmation. Using modal service.</div>
+
+        <div class="ui-g-3">
+            <aw-button [size]="'small'" (click)="toggleOverlayWithService($event)">toggle w/
+                ModalService
+            </aw-button>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+

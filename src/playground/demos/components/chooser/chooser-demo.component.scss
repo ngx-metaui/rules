@@ -1,0 +1,16 @@
+.tag {
+  background-color: #19bbff;
+  margin-top: 5px;
+  margin-right: 5px;
+  margin-bottom: 7px;
+  padding: 5px;
+  line-height: 36px;
+
+  &.tag-circle {
+    border-radius: 50%;
+  }
+
+  .icon-decline {
+    font-size: 10px;
+  }
+}

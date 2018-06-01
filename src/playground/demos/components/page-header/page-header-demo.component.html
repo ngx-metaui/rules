@@ -1,0 +1,77 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- page header -->
+    <div class="ui-g-12 page-header">
+        <h3>Page Header</h3>
+    </div>
+
+    <!-- Field Type -->
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Page Header Default</h4></div>
+
+        <div class="ui-g-10">
+            <aw-page-header userName="Chad Noll">
+                <div class="page-header-center">
+                    <a class="navbar-brand" tabindex="0" href="/gb/"><img class="navbar-logo"
+                                                                          src="{{assetFolder}}/images/SAP_Ariba_DB.png"
+                                                                          alt="Go to homepage"
+                                                                          data-pin-nopin="true"></a>
+                </div>
+            </aw-page-header>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Page Header with Menu</h4></div>
+
+        <div class="ui-g-10  extra-space">
+            <aw-page-header userName="Chad Noll" [menuItems]="menuItems">
+                <div class="page-header-center">
+                    <a class="navbar-brand" tabindex="0" href="/gb/"><img class="navbar-logo"
+                                                                          src="{{assetFolder}}/images/SAP_Ariba_DB.png"
+                                                                          alt="Go to homepage"
+                                                                          data-pin-nopin="true"></a>
+                </div>
+            </aw-page-header>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Page Header Menu and Notifications</h4></div>
+
+        <div class="ui-g-10 extra-space">
+            <aw-page-header userName="Chad Noll" [menuItems]="menuItems"
+                            [notifications]="userNotifications">
+                <div class="page-header-center">
+                    <a class="navbar-brand" tabindex="0" href="/gb/"><img class="navbar-logo"
+                                                                          src="{{assetFolder}}/images/SAP_Ariba_DB.png"
+                                                                          alt="Go to homepage"
+                                                                          data-pin-nopin="true"></a>
+                </div>
+            </aw-page-header>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Page Header with back link</h4></div>
+
+        <div class="ui-g-10 extra-space">
+            <aw-page-header [showBackAction]="true" userName="Chad Noll" [menuItems]="menuItems"
+                            [notifications]="userNotifications">
+                <div class="page-header-center">
+                    <a class="navbar-brand" tabindex="0" href="/gb/"><img class="navbar-logo"
+                                                                          src="{{assetFolder}}/images/SAP_Ariba_DB.png"
+                                                                          alt="Go to homepage"
+                                                                          data-pin-nopin="true"></a>
+                </div>
+            </aw-page-header>
+        </div>
+    </div>
+
+</div>

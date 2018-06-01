@@ -1,0 +1,93 @@
+<a class="navbar-brand" routerLink="/play/">
+    <span class="brand-title">Back</span>
+</a>
+
+
+<div class="w-outline-header ui-g">
+    <div class="ui-g-12 ui-g-nopad">
+        <span>
+             <aw-hyperlink (action)="ooo.state.expandAll()">
+                 Expand All
+             </aw-hyperlink>|
+             <aw-hyperlink (action)="ooo.state.collapseAll()">
+                 Collapse All
+             </aw-hyperlink>
+        </span>
+    </div>
+</div>
+
+<aw-outline-for #ooo [list]="list" [children]="children">
+    <ng-template #outline let-item>
+        <div class="my-section">
+            <div class="outline">
+                <aw-outline-control>
+                    <ng-container [ngSwitch]="item.type">
+                        <ng-template [ngSwitchCase]="'text'">
+                            <div class="as-paragraf">
+                                {{item?.content}}
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'question'">
+                            <div class="as-question">
+                                {{item?.content}}
+                            </div>
+                        </ng-template>
+                        <ng-template ngSwitchDefault>
+                            {{item?.content}}
+                        </ng-template>
+                    </ng-container>
+                </aw-outline-control>
+            </div>
+
+            <div class="filters" *ngIf="item.type === 'section'">
+
+                <aw-hover-card [linkTitle]="'Filter Items'" [forceClose]="false">
+                    <aw-list [list]="filterItems" [borderless]="true"></aw-list>
+                </aw-hover-card>
+            </div>
+        </div>
+    </ng-template>
+</aw-outline-for>
+
+<hr/>
+
+<h3>The same component used with it the table</h3>
+<div class="w-outline-header ui-g">
+    <div class="ui-g-12 ui-g-nopad">
+        <span>
+             <aw-hyperlink (action)="ooo2.state.expandAll()">
+                 Expand All
+             </aw-hyperlink>|
+             <aw-hyperlink (action)="ooo2.state.collapseAll()">
+                 Collapse All
+             </aw-hyperlink>
+        </span>
+    </div>
+</div>
+
+<table  class="tree-table" >
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody #ooo2 awOutlineFor [list]="list"
+           [children]="children" class="outline-table">
+    <ng-template #outline let-item>
+        <tr>
+            <td class="item-name outline-animation">
+                <div><aw-outline-control>
+                    {{item?.content}}
+                </aw-outline-control></div>
+            </td>
+            <td class="item-type outline-animation">
+                <div>{{item.type}}</div>
+            </td>
+        </tr>
+    </ng-template>
+    </tbody>
+</table>
+
+

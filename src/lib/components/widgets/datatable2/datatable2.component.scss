@@ -1,0 +1,157 @@
+/**
+    DT STYLES
+ */
+.w-datatable {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+
+  table {
+    // using collapse for now as I dont want to have double lines while styling cells
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+  }
+  tbody, td, th {
+    outline: 0;
+  }
+}
+
+/**
+  Default cell definition with active transparent border so when highlighting it doesn't jump
+ */
+.dt-cell-def {
+  border: 1px solid transparent;
+  padding: 17px 16px 17px;
+  box-sizing: border-box;
+}
+
+.dt-cell-def-selectable {
+  @extend .dt-cell-def;
+
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+th .dt-cell-def-selectable {
+  border-width: 4px 1px 1px;
+  padding: 14px 16px 17px;
+}
+
+td .dt-cell-def-selectable {
+  border-width: 0px 1px 0px 5px;
+  padding: 17px 16px 17px 13px;
+}
+
+.dt-data-cells tr.dt-is-hover,
+.dt-data-cells tr.dt-is-highlight {
+  border-color: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+/**
+  Not really RTL ready just move text to the right in case
+ */
+.w-datatable-rtl {
+  direction: rtl;
+}
+
+.w-datatable-rtl.w-datatable-rtl.w-datatable thead th {
+  text-align: right;
+}
+
+/**
+    Outline and pivotal specific styles.
+    For the root section we need to make the row smaller and highlight it with the different
+    background.
+ */
+
+.dt-root-section {
+  .dt-cell-def {
+    background-color: #F3F6F8;
+    padding: 10px 16px 10px;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+  }
+}
+
+/**
+  When pivotLayout=true is applied we show vertical lines. There will be more as we implement
+  real pivot behavior
+ */
+.dt-pivot-layout {
+  .dt-cell-def {
+
+  }
+
+}
+
+/**
+  When pivotLayout=true is applied we show vertical lines. There will be more as we implement
+  real pivot behavior
+ */
+.dt-plain-layout {
+  .dt-is-default {
+    border-right-color: transparent;
+  }
+}
+
+/**
+  Common styles
+
+  Ideally we should have this all global level that applies to all of the components
+
+  Ideally these bellow should be more global once we implement proper theming
+ */
+.dt-is-default {
+  border: 1px solid #d7d7d7;
+  background-color: #FFFFFF;
+  color: #363636;
+}
+
+.dt-row-selected td {
+  background-color: rgba(238, 255, 238, 0.71);
+}
+
+.dt-is-active {
+  @extend .dt-is-default;
+
+  border-color: #065d9c;
+  color: #199DE0
+
+}
+
+.dt-is-highlight {
+  @extend .dt-is-default;
+
+  background-color: rgba(65, 117, 5, 0.18);
+}
+
+.dt-is-hover {
+  @extend .dt-is-default;
+
+}
+
+.dt-is-hoverable-row {
+  @extend .dt-is-default;
+
+}
+
+.dt-is-hidden {
+  display: none;
+}
+
+// Utility classes
+.dt-u-unselectable-text {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.dt-u-sortable {
+  cursor: pointer;
+}

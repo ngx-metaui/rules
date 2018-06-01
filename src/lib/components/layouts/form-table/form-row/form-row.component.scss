@@ -1,0 +1,69 @@
+
+.required label:after {
+  content: "*";
+  color: red;
+}
+
+/deep/ .highlight-row {
+  background-color: #f7f8fa;
+}
+
+.w-form-row {
+
+  &.highlight-row {
+    background-color: #f7f8fa;
+  }
+
+  &.label-on-top {
+    padding-bottom: 13px;
+
+    .control-label, .control-value {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+
+    .control-label {
+      padding-bottom: 12px;
+    }
+
+    //.read-only {
+    //  padding-top: 1em;
+    //}
+
+  }
+
+  &.label-on-side {
+
+    .control-label, .control-value {
+      padding-top: 0;
+      padding-bottom: 0;
+
+      ::ng-deep .w-string-field {
+        line-height: 36px;
+      }
+
+      ::ng-deep .sap-icon {
+        line-height: 26px;
+      }
+
+      label {
+        line-height: 36px;
+      }
+
+      .fa {
+        line-height: 18px;
+      }
+    }
+
+  }
+
+}
+
+.control-label {
+  color: #636363;
+}
+
+.u-validation-error {
+  border-color: red;
+
+}

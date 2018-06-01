@@ -1,0 +1,34 @@
+.step-container {
+  position: relative;
+  width: 32px;
+}
+
+.outer-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 3px solid #58b957;
+  position: relative;
+}
+
+.inner-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid #58b957;
+  background-color: #58b957;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.step-title {
+  position: absolute;
+  width: 150px;
+  top: 40px;
+  left: -60px;
+  text-align: center;
+}

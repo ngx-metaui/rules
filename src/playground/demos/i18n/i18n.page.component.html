@@ -1,0 +1,133 @@
+<p-panel header="This is simple example showing how localization works">
+    <p-header>
+        <div class="ui-helper-clearfix" style="float: right">
+            <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+        </div>
+    </p-header>
+
+    <p class="card-text">
+        Localization Framework is based on '@ngx-translate/core', where we have custom loader that
+        supports among other
+        things pseudolocalization as well as having a comments so you know something more about
+        the localized
+        field.
+
+        Resource files are saved under <code>/assets/i18n/</code>
+
+
+    </p>
+    <div class="ui-g ">
+        <div class="ui-g-12 ui-md-8">
+
+        </div>
+
+        <div class="ui-g-12 ui-md-2">
+            <aw-checkbox (action)="onPseudoLocale($event)" [type]="'action'"
+                         [label]="'Pseudo localize'">
+            </aw-checkbox>
+        </div>
+        <div class="ui-g-12 ui-md-2">
+            <aw-dropdown [list]="i18nService.getLangs()" (onSelection)="langSelected($event)"
+                         [selection]="'en'">
+            </aw-dropdown>
+        </div>
+    </div>
+    <hr/>
+
+    <span>
+
+    </span>
+
+    <div class="ui-g ">
+        <div class="ui-g-12 ">
+            <b>
+                Simple <code>translate</code> using a PIPE. It searches inside
+                <code>assets/i18n/lang/resource.app.json</code>:
+            </b>
+            <br/>
+            <code>{{ 'DEMO.hello_word' | translate }}</code>
+        </div>
+        <div class="ui-g-12 ">
+            <b>
+                Translating text paragraph
+            </b>
+            <br/>
+            <code>{{ 'DEMO.info_paragraph' | translate }}</code>
+        </div>
+        <div class="ui-g-12 ">
+            <b>
+                Localized string can accepts also parameters:
+            </b>
+            <br/>
+            <code>{{ 'DEMO.hello_word_with_param' | translate:{value: myParam} }}</code>
+        </div>
+        <div class="ui-g-12 ">
+            <b>
+                Dates can be formatted based on the the locale. For more formatting patters please
+                see:
+                <code>assets/i18n/lang/resource.widgets.date.json</code>. In this example we are
+                using our custom
+                locale aware Pipe <code>formatTo</code>:
+
+            </b>
+            <br/>
+            <code>
+                {{
+                'DEMO.hello_word_with_param' | translate:{value: myDate| formatTo: 'shortDate' }
+                }}
+            </code>
+        </div>
+
+        <div class="ui-g  ">
+            <b>
+                Currency can be formatted based on the the Language Locale and Currency Code.
+
+            </b>
+            <br/>
+            <div class="ui-g-12 ui-md-6">
+                Formatting an currency: <br/>
+                <code>{{ 'DEMO.hello_word_with_param' | translate:{value: myCurrency| formatTo:
+                    'currency' } }}</code>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                Using currency widget: <br/>
+                <aw-currency [money]="myMoney" [name]="'currency'"></aw-currency>
+            </div>
+        </div>
+
+
+        <div class="ui-g  ">
+            <b>
+                The same applies if we use our custom <code>DateTimeComponent</code>
+
+
+            </b>
+            <br/>
+            <div class="ui-g-12">
+                <aw-form-table [useFiveZone]="false">
+                    <aw-form-row [label]="'Date'" [name]="'startDate'">
+                        <aw-date-time name="startDate" [value]="myDate"
+                                      [showTime]="true"></aw-date-time>
+                    </aw-form-row>
+                </aw-form-table>
+
+            </div>
+
+        </div>
+        <!--<div class="ui-g ui-fluid ">-->
+        <!--<p>-->
+        <!--Another major part for internationalization are images. Any image which is used-->
+        <!--in the app and refers to the asset directory can have its localized copy under-->
+        <!--<code>assets/i18n/lang/img</code>:-->
+
+
+        <!--</p>-->
+
+        <!--<img src="playground/assets/images/demo/sample.png" width="auto" height="100px">-->
+        <!--</div>-->
+    </div>
+</p-panel>
+
+
+
+

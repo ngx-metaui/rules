@@ -1,0 +1,8 @@
+{
+  "Common": {
+    "init": {
+      "VALUE": ".",
+      "COMMENT": "Just a empty value used to check while initializing i18 modules;"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+class=CarRentalRequest {
+
+    field=firstName {
+        label:$[a001]"First Name";
+    }
+
+    field=lastName {
+        label:$[a002]"Last Name";
+    }
+
+    field=driverLicenseNumber {
+        label:$[a003]"Driver Licence Number";
+    }
+
+    field=dropOffLocation {
+        trait:list,required;
+        choices:['Palo Alto', 'San Jose', 'San Francisco'];
+        chooserStyle:Radio;
+    }
+    field=pickupLocation {
+        trait:list,required;
+        choices:['Palo Alto', 'San Jose', 'San Francisco'];
+        chooserStyle:Radio;
+    }
+    field=carType {
+        trait:list;
+        choices:['Bmw X5', 'Subaru Outback', 'Honda Xe444'];
+        chooserStyle:Checkbox;
+    }
+    field=extras {
+        trait:list;
+        choices:['GPS', 'Booster', 'Child safety seat'];
+        chooserStyle:Checkbox;
+    }
+     field=drivingSkills {
+        trait:list,required;
+        choices:['Really Bad', 'Good', 'Excellent'];
+        chooserStyle:Dropdown;
+    }
+
+
+    zNone => *;
+    zLeft => firstName#required => lastName#required => driverLicenseNumber#required =>
+    drivingSkills=> pickupDate => dropOffDate => pickupLocation => dropOffLocation => price => carType => extras => note#longtext;
+
+}
+

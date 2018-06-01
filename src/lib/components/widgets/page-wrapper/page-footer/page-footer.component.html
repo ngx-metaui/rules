@@ -1,0 +1,42 @@
+<div class="page-footer">
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-8">
+
+            <ng-content select=".page-footer-logo"></ng-content>
+
+            <div class="user-info">
+                <ng-content select=".page-footer-user-info"></ng-content>
+            </div>
+
+            <ul class="footer-links">
+                <li role="presentation"><a href="http://www.ariba.com/legal/ariba_tou.cfm">Terms of
+                    Use</a></li>
+                <li role="presentation"><a
+                    href="http://www.ariba.com/legal/ariba_security_policy.cfm">Security
+                    Disclosure</a></li>
+                <li role="presentation"><a
+                    href="http://www.ariba.com/legal/ariba_privacy_statement.cfm">Privacy
+                    Statement</a></li>
+                <li role="presentation"><a
+                    href="http://www.ariba.com/legal/ariba-privacy-statement">Cookie Statement</a>
+                </li>
+                <li role="presentation"><a
+                    href="http://www.ariba.com/legal/ariba-privacy-statement">Participant
+                    Statement</a></li>
+            </ul>
+        </div>
+
+        <div class="ui-g-12 ui-md-4">
+            <div class="u-bottom-align"></div>
+            <div class="u-hright copyright">
+                <ng-content select=".page-footer-copyright"></ng-content>
+            </div>
+
+            <!-- Default Copyright -->
+            <div *ngIf="showDefaultCopyright" class="u-hright copyright">
+                <p>© 1996–2017 Ariba, Inc. All rights reserved</p>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+:host /deep/ .dt-selection-column {
+  width: 38px;
+}
+
+:host /deep/ .ui-datatable /deep/ th.dt-group-header,
+:host /deep/ .ui-datatable /deep/ td.dt-column-data,
+:host /deep/ .ui-datatable /deep/ th.dt-column-data,
+:host /deep/ .ui-datatable /deep/ th.dt-column-header {
+  padding: 1em .5em;
+  color: #363636;
+  border: 1px solid #d7d7d7;
+}
+
+:host /deep/ .ui-datatable /deep/ .dt-selection-column {
+  border: 1px solid #d7d7d7;
+}
+
+:host /deep/ .ui-datatable-thead /deep/ th.ui-unselectable-text,
+:host /deep/ .ui-datatable /deep/ th.dt-column-header,
+:host /deep/ .ui-datatable /deep/ .ui-datatable-footer {
+  background-color: #f4f4f4;
+}
+
+:host /deep/ .ui-datatable /deep/ .ui-datatable-footer {
+  border: 1px solid #d7d7d7;
+  border-top: none;
+  padding: .35em;
+}
+
+:host /deep/ .ui-datatable /deep/ .ui-widget-content /deep/ .ui-state-highlight {
+  background-color: #f2f2f2;
+}
+
+:host /deep/ .dt-footer {
+  padding: .125em 0em;
+  background-color: #f4f4f4;
+  text-align: left;
+}
+
+:host /deep/ .dt-footer /deep/ .ui-button {
+  height: 30px;
+  font-size: 13px;
+  padding: 5px;
+  margin-right: 15px;
+  font-weight: normal;
+  color: #363636;
+}
+
+:host /deep/ .dt-footer /deep/ .ui-button:focus, .dt-footer /deep/ .ui-button:enabled:hover {
+  background-color: #f2f2f2;
+}
+
+:host /deep/ .dt-footer-angle {
+  width: 13px;
+  height: 20px;
+  font-size: 16px;
+  text-align: center;
+  color: #9b9b9b;
+  padding: 0 1em 0 .5em;
+}
+
+.dt-global-header {
+  text-align: right;
+  position: relative;
+
+  .fa-search {
+    color: #00679e;
+    position: relative;
+    left: -25px;
+  }
+
+  .icon-table-customization,
+  .icon-action-settings {
+    color: #00679e;
+    font-size: 16px;
+    margin-right: 5px;
+  }
+}

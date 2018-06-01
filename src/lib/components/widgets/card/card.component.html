@@ -1,0 +1,62 @@
+<div class="w-card" [style.width]="width" [style.height]="height"
+     [class.u-is-hover]="hasHover"
+     (mouseenter)="onHover(true)"
+     (mouseleave)="onHover(false)"
+     [class.u-card-selected]="selected"
+     [class.u-card-unselected]="!selected"
+     [ngClass]="styleClass"
+>
+
+    <div class="card-body ui-g"  *ngIf="!showBodyTemplate()">
+        <!-- Hover element that is triggered by mouseenter, mouseleave events-->
+        <div #hoverDiv *ngIf="hasHover" class="u-card-hover" (click)="onHoverAction.emit($event)">
+            <span [style.width]="'100%'" class="sap-icon" [ngClass]="hoverIcon"></span>
+        </div>
+        <!-- HEADER HAVING TITLE AND ICONS/ACTIONS-->
+        <div class="ui-g-12 ui-g-nopad w-card-header">
+            <div class="w-card-ztitle ui-g-nopad" (click)="toggleSelect($event)"
+                 [class.u-card-pointer]="selectable"
+                 [ngClass]="{'ui-g-9': hasAction || selectable, 'ui-g-11': !hasAction && !selectable}">
+                <ng-content select="aw-card-title"></ng-content>
+            </div>
+
+            <div *ngIf="hasAction || selectable" class="w-card-zaction ui-g-nopad ui-g-3">
+
+                <span *ngIf="selected && selectable" class="sap-icon selection"
+                      [class.u-card-pointer]="selectable"
+                      [class.u-card-action-bg]="selected"
+                      (click)="toggleSelect($event)"
+                      [ngClass]="selectedIcon"></span>
+
+
+                <span *ngIf="hasAction && (!selected || !selectable) "
+                      class="sap-icon action"
+                      [class.u-card-pointer]="true"
+                      (click)="onActionClick($event)"
+                      [ngClass]="actionIcon"
+                ></span>
+            </div>
+        </div>
+
+        <!--TOP CARD SECTION-->
+        <div class="w-card-ztop ui-g-nopad ui-g-12 "
+             (click)="toggleSelect($event)"
+             [class.u-card-pointer]="selectable">
+            <ng-content select="aw-card-top"></ng-content>
+        </div>
+
+        <div class="ui-g-12 ui-g-nopad w-card-line-divider  " *ngIf="showBottomSection()"></div>
+        <!--BOTTOM CARD SECTION-->
+        <div *ngIf="showBottomSection()" class="ui-g-12 ui-g-nopad w-card-zbottom"
+             [class.u-card-pointer]="selectable"
+             (click)="toggleSelect($event)">
+            <ng-content select="aw-card-bottom"></ng-content>
+        </div>
+    </div>
+
+    <div *ngIf="showBodyTemplate()" class="w-card-user-cnt" >
+        <ng-container *ngTemplateOutlet="bodyTemplate">
+        </ng-container>
+    </div>
+
+</div>

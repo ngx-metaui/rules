@@ -1,0 +1,64 @@
+<span class="w-hc">
+    <span class="w-hc-title">
+        <aw-string [value]="linkTitle"></aw-string>
+        <span class="sap-icon icon-slim-arrow-down" (mouseover)="openCard($event)"></span>
+    </span>
+
+    <div class="w-hc-body">
+
+         <aw-overlay #overlay [showCloseIcon]="forceClose" [dismissable]="!forceClose"
+                     [styleClass]="arrowClass"
+                     [appendTo]="appendTo"
+                     (onOpen)="cardOpened($event)"
+                     (onClose)="cardClosed($event)">
+
+        <!-- this is workaround to create a _ngcontent-INDEX reference so we can
+        refer to this ng-content. Angular does not have any way right now to track this
+        -->
+        <span class="u-ngcontent">
+                <ng-content></ng-content>
+            </span>
+
+    </aw-overlay>
+
+    </div>
+</span>
+
+
+<!--<ng-template #contentToBody>-->
+    <!--<aw-overlay #overlay [showCloseIcon]="forceClose" [dismissable]="!forceClose"-->
+                <!--[styleClass]="arrowClass"-->
+                <!--[appendTo]="appendTo"-->
+                <!--(onOpen)="cardOpened($event)"-->
+                <!--(onClose)="cardClosed($event)">-->
+
+        <!--&lt;!&ndash; this is workaround to create a _ngcontent-INDEX reference so we can-->
+        <!--refer to this ng-content. Angular does not have any way right now to track this-->
+        <!--&ndash;&gt;-->
+        <!--<span class="u-ngcontent">-->
+                <!--<ng-content></ng-content>-->
+            <!--</span>-->
+
+    <!--</aw-overlay>-->
+
+<!--</ng-template>-->
+
+
+<!--<ng-template #contentToOverlay>-->
+
+    <!--<aw-overlay #overlay [showCloseIcon]="forceClose" [dismissable]="!forceClose"-->
+                <!--[styleClass]="arrowClass"-->
+                <!--(onOpen)="cardOpened($event)"-->
+                <!--(onClose)="cardClosed($event)">-->
+
+        <!--&lt;!&ndash; this is workaround to create a _ngcontent-INDEX reference so we can-->
+        <!--refer to this ng-content. Angular does not have any way right now to track this-->
+        <!--&ndash;&gt;-->
+        <!--<span class="u-ngcontent">-->
+                <!--<ng-content></ng-content>-->
+            <!--</span>-->
+
+    <!--</aw-overlay>-->
+<!--</ng-template>-->
+
+

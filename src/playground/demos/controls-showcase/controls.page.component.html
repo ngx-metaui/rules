@@ -1,0 +1,132 @@
+<p-panel header="Widgets in the 2 column Layout " [toggleable]="false">
+
+    <p-header>
+        <div class="ui-helper-clearfix" style="float: right">
+            <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+        </div>
+    </p-header>
+
+
+    <p class="card-text">
+        This page showcase different supported controls in the 2 columns layout to present how these
+        widgets are used
+        and initialized
+
+    </p>
+    <hr/>
+
+
+    <aw-form-table [useFiveZone]="useFiveZone">
+        <aw-left>
+            <aw-form-row [label]="'First Name'" [name]="'firstName'">
+                <aw-input-field [type]="'string'" [name]="'firstName'"
+                                [(ngModel)]="myFirstValue"></aw-input-field>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Color Single'" [name]="'colorsSingle'">
+                <aw-dropdown name="colorsSingle" [list]="colors"
+                             [noSelectionString]="'Select Color'">
+
+                </aw-dropdown>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Category'" [name]="'category'">
+                <aw-checkbox-list [name]="'category'" [list]="categories"
+                                  [selections]="selectedCategories">
+
+                </aw-checkbox-list>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Start Date'" [name]="'startDate'">
+                <aw-date-time name="startDate" [value]="dateValue"
+                              [showTime]="showTime"></aw-date-time>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Generic Chooser M'" [name]="'mutliGC'">
+                <aw-generic-chooser
+                    [list]="categories" [key]="'gcSelectionMulti'"
+                    [type]="'Chooser'" [multiselect]="true"
+                    [name]="'mutliGC'">
+                </aw-generic-chooser>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Generic Chooser S'" [name]="'singleGC'">
+                <aw-generic-chooser
+                    [list]="categories" [key]="'gcSelectionSingle'"
+                    [type]="'Chooser'" [multiselect]="false"
+                    [name]="'singleGC'">
+                </aw-generic-chooser>
+            </aw-form-row>
+
+        </aw-left>
+
+        <aw-right>
+            <aw-form-row [label]="'Users'" name="users">
+                <aw-chooser name="users"
+                            [(ngModel)]="initChooserValues"
+                            [dataSource]="ds1">
+                </aw-chooser>
+            </aw-form-row>
+
+
+            <aw-form-row [label]="'Color Single'" name="colorSingle">
+                <aw-chooser name="colorSingle" [multiselect]="false"
+                            [(ngModel)]="initChooserValuesSingle"
+                            [dataSource]="ds2">
+                </aw-chooser>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Due Date'" name="dueDate">
+                <aw-date-time name="dueDate" [value]="dateValue">
+
+                </aw-date-time>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Category as obj'" [name]="'categoryobj'">
+                <aw-checkbox-list [name]="'categoryobj'"
+                                  [list]="categoriesObj"
+                                  [selections]="selectedCategoriesObj">
+
+                </aw-checkbox-list>
+            </aw-form-row>
+            <aw-form-row [label]="'Radio List'" [name]="'radioList'">
+
+                <aw-radiobutton-list [name]="'radioListCheck'"
+                                     [list]="radioList"
+                                     [selection]="rbSelectedValue">
+
+                </aw-radiobutton-list>
+            </aw-form-row>
+        </aw-right>
+
+
+        <aw-bottom>
+            <aw-form-row [label]="'Start Date'" [name]="'startDate'" [size]="'small'"
+                         [highlightRow]="true">
+                <aw-date-time name="startDate" [value]="dateValue"
+                              formatName="dateTime"
+                              [showTime]="showTime"></aw-date-time>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Description'" [name]="'description'">
+                <aw-text-area [name]="'description'" rows="2" columns="50"
+                              [autoResize]="autoResize"></aw-text-area>
+            </aw-form-row>
+
+            <aw-form-row [label]="'Amount'" [name]="'amount'">
+                <aw-currency [money]="initMoney"
+                             [currencies]="currencies"
+                             [name]="'amount'">
+                </aw-currency>
+            </aw-form-row>
+
+
+        </aw-bottom>
+
+
+    </aw-form-table>
+
+
+    {{env.currentForm.value | json}}
+</p-panel>
+

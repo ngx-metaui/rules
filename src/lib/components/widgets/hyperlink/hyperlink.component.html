@@ -1,0 +1,10 @@
+<a [attr.type]="type"
+   [attr.href]="href"
+   [attr.rel]="rel"
+   [attr.target]="target"
+   [ngClass]="linkClass"
+   [class.disabled]="disabled"
+   (click)="clicked($event)">
+
+    <ng-content></ng-content>
+</a>

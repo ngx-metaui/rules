@@ -1,0 +1,122 @@
+<div class="meta-demo-page">
+
+    <aw-basic-navigator (onOKAction)="onEditAction($event)" [okActionLabel]="'Edit'"
+                        [showBottom]="false"
+                        [cancelActionLabel]="'View'" (onCancelAction)="onViewAction($event)">
+        <ng-template #brand>
+            <a class="navbar-brand" routerLink="/play/">
+                <span class="brand-title">Back</span>
+            </a>
+        </ng-template>
+
+        <ng-template #buttons>
+
+            <aw-button [style]="'success'" (action)="op ='create'">
+                Create
+            </aw-button>
+            <aw-button [style]="'secondary'" (action)="op='edit'">
+                Edit (Default)
+            </aw-button>
+            <aw-button (action)="op='view'">
+                View
+            </aw-button>
+
+        </ng-template>
+    </aw-basic-navigator>
+
+    <div class="my-form ui-g">
+        <div class="ui-g-12">
+
+            <m-context [object]="myRequest" [operation]="op" layout="Inspect">
+                <m-include-component></m-include-component>
+            </m-context>
+        </div>
+    </div>
+
+</div>
+
+<!---->
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+        <pre>
+            <code class="language-markup" pCode>
+
+            &lt;!-- Buttons to switch operation--&gt;
+            &lt;aw-button [style]="'success'" (action)="op ='create'"&gt;
+                Create
+            &lt;/aw-button&gt;
+            &lt;aw-button [style]="'secondary'" (action)="op='edit'"&gt;
+                Edit (Default)
+            &lt;/aw-button&gt;
+            &lt;aw-button (action)="op='view'"&gt;
+                View
+            &lt;/aw-button&gt;
+
+            &lt;!-- Renders "myRequest" domain object for
+                operation "op" and defined layout "Inspect" --&gt;
+            &lt;m-context [object]="myRequest" operation="op" layout="Inspect"&gt;
+                &lt;m-include-component&gt;&lt;/m-include-component&gt;
+            &lt;/m-context&gt;
+            </code>
+
+        </pre>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+        <pre>
+            <code class="language-javascript" pCode>
+       /**
+          just like css where we use selectors e.g: ".CarRentalRequest"
+          to apply some properties to current context. The same here.
+          It can be rewriten to inline for just like you know from CSS
+                class=CarRentalRequest field=firstName &#123; label:"Name"&#125;
+
+           For certain context we apply set of properties.
+           Rules are additive.
+       */
+
+       class=CarRentalRequest &#123;
+            field=firstName &#123;
+                label:"Name";
+            &#125;
+            zNone => *;
+            zLeft => firstName#required;
+        &#125;
+            </code>
+           <code class="language-javascript" pCode *ngIf="op === 'view'">
+
+         /**
+          For "view" operation tell that we want to see 2 fields
+
+       */
+
+          operation=view class=CarRentalRequest &#123;
+            field=firstName &#123;
+                label:"Name";
+            &#125;
+            field=requester#withHoverDetails &#123;
+                label:"Requester";
+            &#125;
+            zNone => *;
+            zLeft => firstName => requester;
+        &#125;
+            </code>
+           <code class="language-javascript" pCode *ngIf="op === 'create'">
+
+      /**
+          For "create" operation tell that we want to see 3 fields.
+
+          Since there is not specific rule for "edit" it uses
+               global one with 1 field.
+
+       */
+
+        operation=create class=CarRentalRequest &#123;
+            zNone => *;
+            zLeft => firstName#required => lastName#required => driverLicenseNumber#required;
+        &#125;
+            </code>
+
+        </pre>
+
+    </div>
+</div>

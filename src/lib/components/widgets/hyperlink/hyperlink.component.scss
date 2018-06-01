@@ -1,0 +1,31 @@
+.link {
+  color: #0275d8;
+  cursor: pointer;
+}
+
+.link.link-bh {
+  color: #0275d8;
+}
+
+.link.link-bh:hover {
+  text-decoration: underline;
+  cursor: pointer
+}
+
+.link-sm {
+  font-size: 0.875em;
+}
+
+.link-mid {
+  font-size: 1em;
+}
+
+.link-lg {
+  font-size: 1.25em;
+}
+
+.link.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: #dddddd;
+}

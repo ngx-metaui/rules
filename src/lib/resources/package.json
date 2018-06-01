@@ -1,0 +1,39 @@
+{
+  "name": "@aribaui/resources",
+  "description": "Global resouces for aribaui.",
+  "homepage": "https://github.wdf.sap.corp/core-ui-platform/AribaCoreUI.git",
+  "version": "0.23.7",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.wdf.sap.corp/i304804/AngularMetaUI.git"
+  },
+  "keywords": [
+    "angular",
+    "ariba",
+    "sap",
+    "http",
+    "interceptors",
+    "i18n",
+    "components",
+    "routing",
+    "domain",
+    "model",
+    "fieldpath",
+    "rules"
+  ],
+  "private": false,
+  "dependencies": {},
+  "peerDependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 6.9.0",
+    "npm": ">= 3.0.0"
+  },
+  "scripts": {
+    "postinstall": "cd ../.. && npm install fs-extra@1.0.0 readline-sync@1.4.7 colors@1.1.2 --save-dev"
+  },
+  "bin": {
+    "aribaui": "./tools/scripts/aribaui"
+  }
+}

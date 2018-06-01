@@ -1,0 +1,96 @@
+[
+  {
+    "id": "1",
+    "created": "2016-11-02T23:45:46.714Z",
+    "updated": "2016-11-02T23:45:46.714Z",
+    "version": 1,
+    "firstName": "Peter",
+    "lastName": "Pan",
+    "driverLicenseNumber": "A123-12323",
+    "pickupDate": "2016-11-02T23:45:46.714Z",
+    "dropOffDate": "2016-11-02T23:45:46.714Z",
+    "pickupLocation": "San Jose",
+    "dropOffLocation": "San Jose",
+    "carType": [
+      "Subaru Outback"
+    ],
+    "extras": [
+      "GPS"
+    ],
+    "approver": {
+      "id": "1",
+      "firstName": "Yu",
+      "lastName": "Han",
+      "age": 10
+    },
+    "note": "Cool note",
+    "price": {
+      "value": 100,
+      "locale": "en_US",
+      "currencyCode": "USD"
+    }
+  },
+  {
+    "id": "2",
+    "created": "2016-11-02T23:45:46.714Z",
+    "updated": "2016-11-02T23:45:46.714Z",
+    "version": 1,
+    "firstName": "Frank",
+    "lastName": "Kolar",
+    "driverLicenseNumber": "A123-12323",
+    "pickupDate": "2016-11-02T23:45:46.714Z",
+    "dropOffDate": "2016-11-02T23:45:46.714Z",
+    "pickupLocation": "San Jose",
+    "dropOffLocation": "San Jose",
+    "carType": [
+      "Subaru Outback"
+    ],
+    "extras": [
+      "GPS"
+    ],
+    "approver": {
+      "id": "10",
+      "firstName": "Lord",
+      "lastName": "Nibbler",
+      "age": 10
+    },
+    "note": "Cool note",
+    "price": {
+      "value": 200,
+      "locale": "en_US",
+      "currencyCode": "USD"
+    }
+  },
+  {
+    "id": "3",
+    "created": "2016-11-02T23:45:46.714Z",
+    "updated": "2016-11-02T23:45:46.714Z",
+    "version": 1,
+    "firstName": "Yu",
+    "lastName": "Han",
+    "driverLicenseNumber": "A123-12323",
+    "pickupDate": "2016-11-02T23:45:46.714Z",
+    "dropOffDate": "2016-11-02T23:45:46.714Z",
+    "pickupLocation": "San Francisco",
+    "dropOffLocation": "San Jose",
+    "carType": [
+      "Bmw X5"
+    ],
+    "extras": [
+      "GPS",
+      "Booster"
+    ],
+    "approver": {
+      "id": "4",
+      "firstName": "Fred",
+      "lastName": "Flintstone",
+      "age": 13
+    },
+    "note": "Cool note",
+    "price": {
+      "value": 400,
+      "locale": "en_US",
+      "currencyCode": "USD"
+    }
+  }
+]

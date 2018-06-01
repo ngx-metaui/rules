@@ -1,0 +1,74 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- page header -->
+    <div class="ui-g-12 page-header">
+        <h3>Page Header</h3>
+    </div>
+
+    <!-- Field Type -->
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Stepper Default</h4></div>
+        <div class="ui-g-1"></div>
+
+        <div class="ui-g-7">
+            <aw-stepper [steps]="steps1" [currentStep]="currentStep1">
+            </aw-stepper>
+        </div>
+
+        <div class="ui-g-2">
+            <button size="small" [style]="'secondary'" (click)="currentStep1 = currentStep1 - 1;">
+                prev
+            </button>
+            <button size="small" [style]="'secondary'" (click)="currentStep1 = currentStep1 + 1">
+                next
+            </button>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Stepper With overriden default colors</h4></div>
+        <div class="ui-g-1"></div>
+
+        <div class="ui-g-7">
+            <aw-stepper [steps]="steps2" [stepColorCurrent]="'#ff9900'"
+                        [stepColorRemaining]="'#CC0000'"
+                        [stepColorCompleted]="'#97a822'" [currentStep]="currentStep2">
+            </aw-stepper>
+        </div>
+
+        <div class="ui-g-2">
+            <button size="small" [style]="'secondary'" (click)="currentStep2 = currentStep2 - 1;">
+                prev
+            </button>
+            <button size="small" [style]="'secondary'" (click)="currentStep2 = currentStep2 + 1">
+                next
+            </button>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Stepper with passed in color array</h4></div>
+        <div class="ui-g-1"></div>
+
+        <div class="ui-g-7">
+            <aw-stepper [steps]="steps3" [colors]="colors3" [currentStep]="currentStep3">
+            </aw-stepper>
+        </div>
+
+        <div class="ui-g-2">
+            <button size="small" [style]="'secondary'" (click)="currentStep3 = currentStep3 - 1;">
+                prev
+            </button>
+            <button size="small" [style]="'secondary'" (click)="currentStep3 = currentStep3 + 1">
+                next
+            </button>
+        </div>
+    </div>
+
+</div>

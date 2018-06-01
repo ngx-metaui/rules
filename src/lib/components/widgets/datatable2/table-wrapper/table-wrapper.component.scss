@@ -1,0 +1,150 @@
+.dt-header, .dt-footer {
+  text-align: center;
+  padding: .5em .75em;
+  box-sizing: border-box;
+}
+
+.dt-header {
+  border-bottom: 0 none;
+}
+
+.dt-footer {
+  border-top: 0 none;
+}
+
+.dt-thead {
+  tr {
+    border-width: 0;
+  }
+}
+
+.dt-body-wrapper-view {
+  position: relative;
+}
+
+.dt-body-wrapper {
+  overflow: hidden;
+  border: 1px solid #d7d7d7;
+
+  &.dt-body-frozen {
+    //border-right-color: transparent;
+  }
+
+  &.dt-body-unfrozen {
+    border-left-color: transparent;
+    position: absolute;
+    top: 0;
+    overflow-x: auto;
+  }
+}
+
+.dt-loading-overlay {
+  position: absolute;
+  background-color: #9b9b9b;
+  width: 100%;
+  height: 100%;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.dt-loading-content {
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  z-index: 2;
+}
+
+.dt-header {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  color: #363636;
+  border-bottom: 1px solid #F1F1F1;
+  margin-bottom: 30px;
+
+  .dt-global-filter {
+    flex: 0 0;
+    align-items: flex-start;
+    font-size: 18px
+  }
+  .dt-global-actions {
+    flex: 0 0;
+    align-items: flex-end;
+  }
+
+  .dt-action-combo {
+    display: flex;
+    flex-flow: row nowrap;
+    color: #7D7D7D;
+
+    .ariba-icon, .sap-icon {
+      margin-left: 15px;
+      font-size: 20px;
+      align-self: center;
+      cursor: pointer;
+    }
+
+    .dt-table-search {
+      border-top-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+
+    .icon-resize {
+      color: #4A4A4A;
+      font-size: 16px;
+      line-height: 18px;
+      margin-right: 15px;
+
+    }
+  }
+}
+
+.u-dt-spin-icon {
+  display: inline-block;
+  animation: doSpin 2s infinite linear;
+}
+
+@keyframes doSpin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Full screen setup
+
+.dt-full-screen-overlay {
+  position: fixed;
+  z-index: 100;
+  transform-origin: 50% 50%;
+  transition: all 400ms ease-in-out;
+}
+
+.dt-full-screen {
+  width: 98vw;
+  z-index: 120;
+  position: absolute;
+  top: 15px;
+  pointer-events: all;
+  transition: opacity 500ms ease-in-out;
+}
+
+.dt-full-screen-mode {
+
+}
+
+.u-full-screen-element {
+
+}
+
+.u-fs-element-out {
+  display: none;
+}
+
+
+

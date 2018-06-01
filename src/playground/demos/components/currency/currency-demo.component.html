@@ -1,0 +1,65 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!--drop with no selection-->
+    <div class="ui-g-12 page-header">
+        <h3>Currency - The Money</h3>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Basic (precision is 3)</h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Amount'">
+                    <aw-currency [precision]="3" [money]="price1"
+                                 [name]="'amount'">
+                    </aw-currency>
+
+
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{price1.toString()}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>with custom currencies (precision is 4)</h4></div>
+
+        <div class="ui-g-6">
+            <aw-form-table [labelsOnTop]="false">
+                <aw-form-row [label]="'Amount'">
+                    <aw-currency [money]="price2"
+                                 [precision]="4"
+                                 [currencies]="currencies"
+                                 [name]="'amount'">
+                    </aw-currency>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{price2.toString()}}</b>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+

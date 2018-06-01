@@ -1,0 +1,27 @@
+
+class=Invoice {
+    layout {
+        trait:labelsOnTop;
+    }
+
+
+    Header.zLeft => uniqueName => itemPrice;
+    Header.zRight => supplier => requestor;
+    Footer.zBottom => itemDescription;
+}
+
+case=nested class=Invoice {
+    field=header {
+        label:"My Nested object label";
+        component:NestedMetaComponent;
+        bindings:{
+            header:$value;
+        }
+    }
+
+    zNone => *;
+    zLeft => uniqueName => itemPrice => supplier => requestor;
+    zBottom => header;
+
+}
+
