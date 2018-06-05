@@ -1,43 +1,44 @@
-## Parser
+# OSS Parser
 
-Now you can directly edit oss files and it will generate typescript file for you. the only thing you need to do is:
+In order to start hacking rules files that sits under `src/playground/rules/*.oss `and to see how your UI changes you need to use
+this` executable jar `file. It contains OSS parser that produces internal format consumed by javascript loader.  
 
-1. Install java 1.8
-2. java command needs to be in your path. 
+We do work on native javascript/typescript parser which could work in both JIT mode as well as offline mode. 
+
+This parses OSS file and produces map-like structure that is read by javascript. You can checkout
+generated files under `src/playground/rules/ts/*.ts`
 
 
-###Usage
+### Prerequisites 
+
+* Java run-time (1.8)
 
 
-Assuming that you run ng serve in one terminal which and this is with live reload, then in another terminal in the 
-project directory you run 
+
+### Usage
+
+
+Assuming that you run `ng serve` in one terminal and you are able to access [http://localhost:4200/play][1] or better 
+[http://localhost:4200/play/metaui][2] and then:
+
+*  Open the `src/playground/rules/CarRentalRequest.oss`
+*  Copy content e.g. from `src/playground/rules/demo/2.1CarRentalRequest-MoreField-1Col.oss` into `src/playground/rules/CarRentalRequest.oss`  
+*  Now you need to regenerate rules. In second terminal inside this project run 
 
 ```
     npm run oss-user
-
 ```
-
-this will regenerate all the available rules files. Wait for the angular-cli to re-bundle all again and then just
-refresh your page.
-
-
-## Todo
-
-Currently its pretty big fat JAR file which is result of one of my other serverside project running in spring boot. 
-But in the future we want to either:
-
-1. write simple java command with spring dependencies
-2. even better write AST parser ourself based on the parser.jj that exists in java. 
+ 
+* Go back to your browser and you should see updated UI 
+ 
+ You did it! You are generating UI on the fly using rules decoratively. 
 
 
-### Note for system rules
+### OSS Grammar
 
-If you also need to regenerate system rules because you created some widgets and you want to plug it in then go to the 
-``` shared/metaui/core/oss/WidgetsRules.oss ``` do your changes and run 
-
-```
-    npm run oss-sys
-```
+In progress ...
 
 
-
+ [1]: http://localhost:4200/play
+ [2]: http://localhost:4200/play/metaui
+ 

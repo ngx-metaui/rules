@@ -163,6 +163,10 @@ Run development web server:
 Now access [http://localhost:4200/play][1]
 
 
+##### MetaUI Hacking
+
+To start playing with the `oss rules` please checkout the [lib/meta-ui-parser.md][3] to know how.
+
 
 ## Limitations
 
@@ -200,5 +204,6 @@ This file is licensed under the Apache Software License, v. 2 except as noted ot
    
  [1]: http://localhost:4200/play
  [2]: https://github.com/SAP/angular-metaui/blob/master/LICENSE
+ [3]: https://github.com/SAP/angular-metaui/blob/master/lib/meta-ui-parser.md
  
  
