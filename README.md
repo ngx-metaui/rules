@@ -150,6 +150,8 @@ Build for first time:
 ```
     npm run build
 ```
+* This command assembles and copies necessary assets to the app directory. Once you run it then you can use regular `ng build`
+
 
 
 Run development web server:
@@ -172,7 +174,8 @@ Current version is based on the:
 * Angular 5.1.0
 * PrimeNG 5.0.2
 
-Upgrade to to Angular 6  will start soon.
+Upgrade to Angular 6  will start soon as well as to newest the Angular ClI with its 
+support for libraries.
 ```
 
 
