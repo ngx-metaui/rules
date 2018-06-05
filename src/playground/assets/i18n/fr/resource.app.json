@@ -1,0 +1,16 @@
+{
+  "DEMO": {
+    "hello_word": {
+      "VALUE": "Bonzur World",
+      "COMMENT": "This is simple example showing also simple comment"
+    },
+    "hello_word_with_param": {
+      "VALUE": "Bonzur World with param {{ value }}",
+      "COMMENT": "This is simple example showing also simple comment"
+    },
+    "info_paragraph": {
+      "VALUE": "Les trois hommes adoptent une approche intransigeante de la sécurité nationale et diffèrent nettement de la doctrine de l'administration Obama. Le trio indique que Trump a l'intention de se tenir à certains de ses positions plus controversées de sécurité nationale de sa campagne, plutôt que de nommer des candidats plus modérés.",
+      "COMMENT": "this show how we can insert whole paragraph"
+    }
+  }
+}
