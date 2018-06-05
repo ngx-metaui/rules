@@ -1,5 +1,21 @@
 # MetaUI for Angular - the declarative UI
 
+
+## Table of Contents
+
+* [Description](#description)
+* [Requirements](#requirements)
+* [Installation](#Installation)
+* [Limitations](#Limitations)
+* [How to obtain support](#howto-obtain-support)
+* [License](#license)
+
+
+
+
+
+## Description
+
 Based on our Ariba's past effort and its framework called _AribaWeb_ we are bringing over one of 
 its core library called **MetaUI** into Angular world based fully on typescripts along with some necessary UI components to 
 make declarative UI possible. 
@@ -117,9 +133,13 @@ creates a context for us
 
 
 
-## To Get started
+## Requirements
 
-Install npm packages:
+Project have dependencies that require  Node 8.9 or higher, together with NPM 5.5.1 or higher.
+
+## Installation
+
+Install `npm` packages:
 
 ```
     npm install --no-audit
@@ -132,7 +152,7 @@ Build for first time:
 ```
 
 
-Build for first time:
+Run development web server:
 
 ```
     ng serve
@@ -142,8 +162,9 @@ Now access [http://localhost:4200/play][1]
 
 
 
+## Limitations
 
-**Note:** 
+Current implementation is based on PrimeNG widget library and we are working to make `MetaUI` widget library independent.
 
 ```
 Current version is based on the:
@@ -153,6 +174,28 @@ Current version is based on the:
 
 Upgrade to to Angular 6  will start soon.
 ```
+
+
+## How to obtain support
+
+Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and 
+feature requests. You've got much better chances of getting your question answered on StackOverflow where the questions 
+should be tagged with tag `sap-ariba` in the description you should mention metaui.
+
+On the other side if you find some problem or have suggestion please do not hesitate to open up new issue and properly marking if this is a bug or 
+feature suggestion.
+
+
+
+
+## License
+
+Copyright (c) 2017-2018 SAP Ariba or an SAP affiliate company. All rights reserved.
+This file is licensed under the Apache Software License, v. 2 except as noted otherwise in the [LICENSE file][2].
+
+
    
  [1]: http://localhost:4200/play
+ [2]: https://github.com/SAP/angular-metaui/blob/master/LICENSE
+ 
  
