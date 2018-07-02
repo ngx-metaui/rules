@@ -45,8 +45,7 @@ import {Rule, Selector} from './rule';
  * ObjectMeta is resposible for setting up everything related to class, field, actions
  *
  */
-export class ObjectMeta extends Meta
-{
+export class ObjectMeta extends Meta {
     static KeyClass = 'class';
     static KeyField = 'field';
     static KeyAction = 'action';
@@ -77,8 +76,7 @@ export class ObjectMeta extends Meta
     protected _injector: Injector;
 
 
-    static validationError(context: Context): string
-    {
+    static validationError(context: Context): string {
         let error = context.propertyForKey(ObjectMeta.KeyValid);
         if (isBlank(error)) {
             return null;
@@ -92,8 +90,7 @@ export class ObjectMeta extends Meta
 
     // todo: implement new decorators in typescript if we want ot annotate _annotationProcessors
 
-    constructor()
-    {
+    constructor() {
         super();
 
         this.registerKeyInitObserver(ObjectMeta.KeyClass, new IntrospectionMetaProvider());
@@ -132,21 +129,17 @@ export class ObjectMeta extends Meta
     /*
      *  Provide subclass context with conveniences for getting object field values
      */
-    newContext(): Context
-    {
-        this._currentContext = new ObjectMetaContext(this);
-        return this._currentContext;
+    newContext(): Context {
+        return new ObjectMetaContext(this, false);
     }
 
 
     // Use a special map subsclass for our Properties
-    newPropertiesMap(): PropertyMap
-    {
+    newPropertiesMap(): PropertyMap {
         return new ObjectMetaPropertyMap();
     }
 
-    itemNames(context: Context, key: string): Array<string>
-    {
+    itemNames(context: Context, key: string): Array<string> {
         context.push();
         context.set(ObjectMeta.KeyDeclare, key);
         let itemsNames = context.listPropertyForKey(key);
@@ -156,15 +149,13 @@ export class ObjectMeta extends Meta
     }
 
 
-    itemProperties(context: Context, key: string, filterHidden: boolean): Array<ItemProperties>
-    {
+    itemProperties(context: Context, key: string, filterHidden: boolean): Array<ItemProperties> {
         return this.itemPropertiesForNames(context, key, this.itemNames(context, key),
             filterHidden);
     }
 
     itemPropertiesForNames(context: Context, key: string, itemNames: string[],
-                           filterHidden: boolean): Array<ItemProperties>
-    {
+                           filterHidden: boolean): Array<ItemProperties> {
         let result: Array<ItemProperties> = [];
         for (let itemName of itemNames) {
             context.push();
@@ -184,8 +175,7 @@ export class ObjectMeta extends Meta
     }
 
 
-    groupForTrait(trait: string): string
-    {
+    groupForTrait(trait: string): string {
         if (this._traitToGroup == null || this._traitToGroupGeneration < this.ruleSetGeneration) {
             this._traitToGroupGeneration = this.ruleSetGeneration;
             this._traitToGroup = new Map<string, string>();
@@ -204,24 +194,20 @@ export class ObjectMeta extends Meta
         return this._traitToGroup.get(trait);
     }
 
-    set injector(value: Injector)
-    {
+    set injector(value: Injector) {
         this._injector = value;
     }
 
 
-    get injector(): Injector
-    {
+    get injector(): Injector {
         return this._injector;
     }
 
-    get componentRegistry(): ComponentRegistry
-    {
+    get componentRegistry(): ComponentRegistry {
         return this._componentRegistry;
     }
 
-    set componentRegistry(value: ComponentRegistry)
-    {
+    set componentRegistry(value: ComponentRegistry) {
         this._componentRegistry = value;
     }
 }
@@ -235,25 +221,23 @@ export class ObjectMeta extends Meta
  * Ideally we want to use decorators when dealing with client side typescript class. but for cases
  * where Rules will be loaded using Rest API along with the object instance its impossible.
  */
-export class IntrospectionMetaProvider implements ValueQueriedObserver
-{
+export class IntrospectionMetaProvider implements ValueQueriedObserver {
     private _meta: Meta;
 
-    notify(meta: Meta, key: string, value: any): void
-    {
+    notify(meta: Meta, key: string, value: any): void {
         this._meta = meta;
         let myObject;
 
-        if (isBlank(meta.currentContext)) {
-            return;
-        }
-
-        myObject = meta.currentContext.values.get(ObjectMeta.KeyObject);
         let componentRegistry: ComponentRegistry = (<ObjectMeta>this._meta).componentRegistry;
+        assert(isPresent(componentRegistry),
+            'Component registry is not initialized');
 
-        if (isBlank(myObject) && isString(value) && isPresent(componentRegistry)) {
-            let clazz: Type<any> = componentRegistry.nameToType.get(value);
+        let clazz: Type<any> = null;
+        if (isString(value) && (clazz = componentRegistry.nameToType.get(value))
+            && isPresent(clazz)) {
             myObject = new clazz();
+        } else if (isBlank(clazz)) {
+            return;
         }
 
         assert(Meta.className(myObject) === value,
@@ -262,8 +246,7 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver
 
     }
 
-    private registerRulesForClass(object: any, className: string): void
-    {
+    private registerRulesForClass(object: any, className: string): void {
         this._meta.keyData(ObjectMeta.KeyClass).setParent(className, 'Object');
 
         this._meta.beginRuleSet(className);
@@ -284,8 +267,7 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver
     }
 
 
-    private registerRulesForFields(object: any, className: string): void
-    {
+    private registerRulesForFields(object: any, className: string): void {
         // todo: Can we somehow utilize decorators? Maybe for local typescript defined object, but
         // not objects loaded as json from rest API
         assert(isPresent(object['$proto']),
@@ -330,24 +312,20 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver
 /**
  * Registers specials types that we are read during introspections
  */
-export class FieldTypeIntrospectionMetaProvider implements ValueQueriedObserver
-{
+export class FieldTypeIntrospectionMetaProvider implements ValueQueriedObserver {
 
-    notify(meta: Meta, key: string, value: any): void
-    {
+    notify(meta: Meta, key: string, value: any): void {
         // print('FieldTypeIntrospectionMetaProvider notified of first use of field:  ' , value);
     }
 
 }
 
 
-export class ObjectMetaPropertyMap extends PropertyMap
-{
+export class ObjectMetaPropertyMap extends PropertyMap {
     private _fieldPath: FieldPath;
 
 
-    get fieldPath(): FieldPath
-    {
+    get fieldPath(): FieldPath {
         if (isBlank(this._fieldPath)) {
             let value = this.get(ObjectMeta.KeyValue);
             let fieldName = this.get(ObjectMeta.KeyField);
@@ -360,29 +338,25 @@ export class ObjectMetaPropertyMap extends PropertyMap
         return isNullPath ? null : this._fieldPath;
     }
 
-    isFieldNullMarker(value: FieldPath): boolean
-    {
+    isFieldNullMarker(value: FieldPath): boolean {
         return isPresent(value) && value.path === 'null';
     }
 }
 
 
-export class OMPropertyMerger_Valid implements PropertyMerger, PropertyMergerIsChaining
-{
+export class OMPropertyMerger_Valid implements PropertyMerger, PropertyMergerIsChaining {
     _meta: Meta;
     isPropMergerIsChainingMark: boolean = true;
 
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         // if first is error (error message or false, it wins), otherwise second
-        return (isString(override) || ( isBoolean(override) && BooleanWrapper.isFalse(
-            override) )) ? override : orig;
+        return (isString(override) || (isBoolean(override) && BooleanWrapper.isFalse(
+            override))) ? override : orig;
     }
 
 
-    toString()
-    {
+    toString() {
         return 'VALIDATE';
     }
 }

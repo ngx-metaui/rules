@@ -11,11 +11,14 @@
       "check-space"
     ],
     "curly": true,
+    "deprecation": {
+      "severity": "warn"
+    },
     "eofline": true,
     "forin": false,
     "import-blacklist": [
       true,
-      "rxjs"
+      "rxjs/Rx"
     ],
     "import-spacing": true,
     "indent": [
@@ -106,7 +109,6 @@
         "variable-declaration": "nospace"
       }
     ],
-    "typeof-compare": true,
     "unified-signatures": true,
     "variable-name": false,
     "whitespace": [
@@ -116,18 +118,6 @@
       "check-operator",
       "check-separator",
       "check-type"
-    ],
-    "directive-selector": [
-      false,
-      "attribute",
-      "app",
-      "camelCase"
-    ],
-    "component-selector": [
-      false,
-      "element",
-      "app",
-      "kebab-case"
     ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,

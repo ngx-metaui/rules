@@ -26,16 +26,12 @@ import {ComponentRegistry} from '@aribaui/components';
 import {Entity, Environment} from '@aribaui/core';
 
 
-describe('Meta Context behaivor ', () =>
-{
+describe('Meta Context behaivor ', () => {
 
-    describe('how Context Nested map work ', () =>
-    {
-        beforeEach(() =>
-        {
+    describe('how Context Nested map work ', () => {
+        beforeEach(() => {
             let metaUI = UIMeta.getInstance();
-            metaUI._rules.forEach((v) =>
-            {
+            metaUI._rules.forEach((v) => {
                 v.disable();
             });
 
@@ -48,11 +44,10 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' it should instantiate and retrieve entries with out any runtime error and in the ' +
-            'correct order ', () =>
-            {
+            'correct order ', () => {
 
 
-                let xx = new Map <string, any>();
+                let xx = new Map<string, any>();
                 xx.set('a', ' this is value a');
                 xx.set('b', ' this is value b');
                 xx.set('c', ' this is value c');
@@ -61,8 +56,7 @@ describe('Meta Context behaivor ', () =>
                 let nestedMap = new NestedMap<string, any>(xx);
 
                 let expectedOrder = ['a', 'b', 'c'];
-                nestedMap.forEach((v, k) =>
-                {
+                nestedMap.forEach((v, k) => {
                     let key = expectedOrder.shift();
                     expect(k).toEqual(key);
 
@@ -73,16 +67,15 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' it should instantiate and retrieve nested and parent entries in specified order ',
-            () =>
-            {
+            () => {
 
-                let xx = new Map <string, any>();
+                let xx = new Map<string, any>();
                 xx.set('a', ' this is value a');
                 xx.set('b', ' this is value b');
                 xx.set('c', ' this is value c');
 
 
-                let child = new Map <string, any>();
+                let child = new Map<string, any>();
                 child.set('a1', ' this is value a');
                 child.set('b1', ' this is value b');
                 child.set('c1', ' this is value c');
@@ -91,8 +84,7 @@ describe('Meta Context behaivor ', () =>
                 let nestedMap = new NestedMap<string, any>(xx, child);
 
                 let expectedOrder = ['a1', 'b1', 'c1', 'a', 'b', 'c'];
-                nestedMap.forEach((v, k) =>
-                {
+                nestedMap.forEach((v, k) => {
                     let key = expectedOrder.shift();
                     expect(k).toEqual(key);
 
@@ -104,14 +96,11 @@ describe('Meta Context behaivor ', () =>
 
     });
 
-    describe('Context Layout representing context assignments  ', () =>
-    {
+    describe('Context Layout representing context assignments  ', () => {
 
-        beforeEach(() =>
-        {
+        beforeEach(() => {
             let metaUI = UIMeta.getInstance();
-            metaUI._rules.forEach((v) =>
-            {
+            metaUI._rules.forEach((v) => {
                 v.disable();
             });
             metaUI._testRules.clear();
@@ -120,11 +109,13 @@ describe('Meta Context behaivor ', () =>
 
         });
 
-        it(' It should retrieve Default Empty context with preset letiables ', () =>
-            {
+        it(' It should retrieve Default Empty context with preset letiables ', () => {
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -156,12 +147,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
-            'record size of 1 and ' + 'after we pop zero ', () =>
-            {
+            'record size of 1 and ' + 'after we pop zero ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -179,12 +171,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should keep consistent push/pop frames so when we push for N-times time we ' +
-            'expect correct framestarts records size as well as internal numbers ', () =>
-            {
+            'expect correct framestarts records size as well as internal numbers ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -233,12 +226,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should retrive default exaclty for basic when no user rules are loaded  and no ' +
-            'class is specified after we push layout=Inspect', () =>
-            {
+            'class is specified after we push layout=Inspect', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -262,12 +256,13 @@ describe('Meta Context behaivor ', () =>
         );
 
         it(' It should retrieve  property map when user rules are not loaded, after we push ' +
-            'layout=Inspect and operation. It must retrive editing = true mode', () =>
-            {
+            'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -295,12 +290,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should retrieve  property, after we push layout=Inspect and operation=view. ' +
-            'we expect editing false in properties', () =>
-            {
+            'we expect editing false in properties', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -328,15 +324,12 @@ describe('Meta Context behaivor ', () =>
 
 
     describe('basic context functinality regarding consistency of pushed stack and simple layout' +
-        ' evaluation', () =>
-    {
+        ' evaluation', () => {
 
 
-        beforeEach(() =>
-        {
+        beforeEach(() => {
             let metaUI = UIMeta.getInstance();
-            metaUI._rules.forEach((v) =>
-            {
+            metaUI._rules.forEach((v) => {
                 v.disable();
             });
             metaUI._testRules.clear();
@@ -345,11 +338,12 @@ describe('Meta Context behaivor ', () =>
 
         });
 
-        it(' It should retrieve Default Empty context with preset letiables ', () =>
-            {
+        it(' It should retrieve Default Empty context with preset letiables ', () => {
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -381,12 +375,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
-            'record size of 1 and after we pop zero ', () =>
-            {
+            'record size of 1 and after we pop zero ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -404,12 +399,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should keep consistent push/pop frames so when we push for N-times time we ' +
-            'expect correct framestarts records size as well as internal numbers ', () =>
-            {
+            'expect correct framestarts records size as well as internal numbers ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -458,12 +454,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should retrive default exaclty for basic when no user rules are loaded  and no ' +
-            'class is specified after we push layout=Inspect', () =>
-            {
+            'class is specified after we push layout=Inspect', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -486,12 +483,13 @@ describe('Meta Context behaivor ', () =>
         );
 
         it(' It should retrieve  property map when user rules are not loaded, after we push ' +
-            'layout=Inspect and operation. It must retrive editing = true mode', () =>
-            {
+            'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -519,12 +517,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' It should retrieve  property map after we push layout=Inspect ' +
-            'and operation=view. we expect editing false in properties', () =>
-            {
+            'and operation=view. we expect editing false in properties', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 let context = metaUI.newContext();
 
@@ -552,15 +551,12 @@ describe('Meta Context behaivor ', () =>
     });
 
 
-    describe('push/pop Meta Context behavior when Object is present and set', () =>
-    {
+    describe('push/pop Meta Context behavior when Object is present and set', () => {
 
 
-        beforeEach(() =>
-        {
+        beforeEach(() => {
             let metaUI = UIMeta.getInstance();
-            metaUI._rules.forEach((v) =>
-            {
+            metaUI._rules.forEach((v) => {
                 v.disable();
             });
             metaUI._testRules.clear();
@@ -570,11 +566,12 @@ describe('Meta Context behaivor ', () =>
 
 
         it('It should retrieve correct Form Component  a MetaForm with fiveZones trait to render ' +
-            'all the fields ', () =>
-            {
+            'all the fields ', () => {
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -597,11 +594,12 @@ describe('Meta Context behaivor ', () =>
         );
 
         it(' It should switch into different layout component (MetaElementList) in case we push ' +
-            'Stack trait ', () =>
-            {
+            'Stack trait ', () => {
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -631,11 +629,12 @@ describe('Meta Context behaivor ', () =>
         );
 
         it('It should change layout to tableZone trait in case I push operation list so that it ' +
-            'will have  6 zone layout ', () =>
-            {
+            'will have  6 zone layout ', () => {
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -664,12 +663,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('field: It should retrieve correct component type => TextField for firstName when in ' +
-            'editing mode', () =>
-            {
+            'editing mode', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -699,12 +699,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('field: It should have correct class trait, editability to false as well as change ' +
-            'component to String if we change operation from Edit to list ', () =>
-            {
+            'component to String if we change operation from Edit to list ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -735,12 +736,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('It should change component name from TextField to StringComponent when in View mode',
-            () =>
-            {
+            () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -770,12 +772,13 @@ describe('Meta Context behaivor ', () =>
         );
 
 
-        it('It should retrieve a label My First Name specified in the rules', () =>
-            {
+        it('It should retrieve a label My First Name specified in the rules', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -800,12 +803,13 @@ describe('Meta Context behaivor ', () =>
             }
         );
 
-        it(' firstName should be required as specified in the rule', () =>
-            {
+        it(' firstName should be required as specified in the rule', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -814,8 +818,9 @@ describe('Meta Context behaivor ', () =>
 
                 context.set('layout', 'Inspect');
                 context.set('operation', 'view');
+
                 context.set('object', new MyUserTestClass('Frank', 'Kolar', 16,
-                    'From Czech Republic'));
+                    'From Czech Republicc'));
                 context.setScopeKey('class');
 
 
@@ -836,12 +841,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' it should layout fields in their rank order so that firstName => lastName ' +
-            '=> age => bio ', () =>
-            {
+            '=> age => bio ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -882,12 +888,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('it should retrive correct component for field Age whcih is a number and it will be ' +
-            'rendered as a numer', () =>
-            {
+            'rendered as a numer', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -918,12 +925,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('it should render field age which is a number in view only mode as a StringComponent',
-            () =>
-            {
+            () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -947,12 +955,13 @@ describe('Meta Context behaivor ', () =>
         );
 
 
-        it('it should render a label for field age as a My age', () =>
-            {
+        it('it should render a label for field age as a My age', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -976,12 +985,13 @@ describe('Meta Context behaivor ', () =>
         );
 
 
-        it('age field should have a validity condition ', () =>
-            {
+        it('age field should have a validity condition ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1008,12 +1018,13 @@ describe('Meta Context behaivor ', () =>
         );
 
 
-        it('age bio should have a visibility condition ', () =>
-            {
+        it('age bio should have a visibility condition ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1042,11 +1053,12 @@ describe('Meta Context behaivor ', () =>
 
 
         // Safari issue
-        it('it should render correct value when switching operation from edit to view', () =>
-            {
+        it('it should render correct value when switching operation from edit to view', () => {
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1102,15 +1114,12 @@ describe('Meta Context behaivor ', () =>
         'how the ' +
         'structure and content can be changed so that we can e.g. hide show certain fields per ' +
         'operation or overide ' +
-        'existing properties for for different situations.  ', () =>
-        {
+        'existing properties for for different situations.  ', () => {
 
 
-            beforeEach(() =>
-            {
+            beforeEach(() => {
                 let metaUI = UIMeta.getInstance();
-                metaUI._rules.forEach((v) =>
-                {
+                metaUI._rules.forEach((v) => {
                     v.disable();
                 });
                 metaUI._testRules.clear();
@@ -1119,12 +1128,13 @@ describe('Meta Context behaivor ', () =>
             });
 
             it('it should change the label of the age field when switching from editable mode to ' +
-                'ready only mode', () =>
-                {
+                'ready only mode', () => {
 
                     let metaUI = UIMeta.getInstance();
                     metaUI.registerLoader(new RuleLoaderService());
                     metaUI.loadDefaultRuleFiles();
+                    let env: Environment = new Environment();
+                    metaUI.componentRegistry = new ComponentRegistry(env);
 
                     metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
                     let context = metaUI.newContext();
@@ -1156,12 +1166,13 @@ describe('Meta Context behaivor ', () =>
 
 
             it('it should change the label of the firstName field when switching from editable ' +
-                'mode to create  mode', () =>
-                {
+                'mode to create  mode', () => {
 
                     let metaUI = UIMeta.getInstance();
                     metaUI.registerLoader(new RuleLoaderService());
                     metaUI.loadDefaultRuleFiles();
+                    let env: Environment = new Environment();
+                    metaUI.componentRegistry = new ComponentRegistry(env);
 
                     metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
                     let context = metaUI.newContext();
@@ -1252,12 +1263,13 @@ describe('Meta Context behaivor ', () =>
              */
             it(' it should resolve for edit operation 5 fields in zNone and 5 fields in zLeft so ' +
                 'that it matches above ' +
-                'rule, but once we push it role=admin we should see all the fields', () =>
-                {
+                'rule, but once we push it role=admin we should see all the fields', () => {
 
                     let metaUI = UIMeta.getInstance();
                     metaUI.registerLoader(new RuleLoaderService());
                     metaUI.loadDefaultRuleFiles();
+                    let env: Environment = new Environment();
+                    metaUI.componentRegistry = new ComponentRegistry(env);
                     metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
                     let context = metaUI.newContext();
@@ -1393,12 +1405,13 @@ describe('Meta Context behaivor ', () =>
              */
             it('it should not match top level selectors extending a class=xxx for class=xxx ' +
                 'role=admin no earlier ' +
-                'then after settings a objects', () =>
-                {
+                'then after settings a objects', () => {
 
                     let metaUI = UIMeta.getInstance();
                     metaUI.registerLoader(new RuleLoaderService());
                     metaUI.loadDefaultRuleFiles();
+                    let env: Environment = new Environment();
+                    metaUI.componentRegistry = new ComponentRegistry(env);
                     metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
                     let context = metaUI.newContext();
@@ -1447,12 +1460,13 @@ describe('Meta Context behaivor ', () =>
             }
              */
             it('it should match top level selectors extending a class=xxx for class=xxx ' +
-                'role=admin ' + 'no earlier then after settings a objects', () =>
-                {
+                'role=admin ' + 'no earlier then after settings a objects', () => {
 
                     let metaUI = UIMeta.getInstance();
                     metaUI.registerLoader(new RuleLoaderService());
                     metaUI.loadDefaultRuleFiles();
+                    let env: Environment = new Environment();
+                    metaUI.componentRegistry = new ComponentRegistry(env);
                     metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
                     let context = metaUI.newContext();
@@ -1493,15 +1507,12 @@ describe('Meta Context behaivor ', () =>
 
     describe('basic expression resolution and the way how we can handle dynamic fields which are ' +
         'resolve just before we render the field. as well as how we can distribute fields ' +
-        'into different zones', () =>
-    {
+        'into different zones', () => {
 
 
-        beforeEach(() =>
-        {
+        beforeEach(() => {
             let metaUI = UIMeta.getInstance();
-            metaUI._rules.forEach((v) =>
-            {
+            metaUI._rules.forEach((v) => {
                 v.disable();
             });
             metaUI._testRules.clear();
@@ -1510,12 +1521,13 @@ describe('Meta Context behaivor ', () =>
         });
 
         it('It should resolve dynamic validity condition ${ value > 19}  so that it can give ' +
-            'info back if the field is valid', () =>
-            {
+            'info back if the field is valid', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1547,12 +1559,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('It should resolve visiblity condition that depends on the value of other fields so ' +
-            'that it check the field AGE ${object.age > 18}', () =>
-            {
+            'that it check the field AGE ${object.age > 18}', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1584,12 +1597,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it(' it should be able to translate a className to the page title so it resolve our ' +
-            'page title ', () =>
-            {
+            'page title ', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1622,12 +1636,13 @@ describe('Meta Context behaivor ', () =>
          */
         it('It should resolve a context field paths that is attached to custom derived field ' +
             'concatenates result form 2 other fields. value:' +
-            ' ${object.bio.substring(0, 10) + ... };', () =>
-            {
+            ' ${object.bio.substring(0, 10) + ... };', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
                 let context = metaUI.newContext();
@@ -1665,12 +1680,13 @@ describe('Meta Context behaivor ', () =>
          *    }
          */
         it(' a bioView should be visible only if bio field len is more then 15 and only in ' +
-            'view mode', () =>
-            {
+            'view mode', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
                 let context: UIContext = <UIContext> metaUI.newContext();
@@ -1702,12 +1718,13 @@ describe('Meta Context behaivor ', () =>
         );
 
         it('It should resolve all the field that belongs to current class MyUserTestClass for ' +
-            'operation EDIT', () =>
-            {
+            'operation EDIT', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
                 let context = metaUI.newContext();
@@ -1735,12 +1752,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('It should resolve all the field that belongs to current class MyUserTestClass VIEW ' +
-            'so that we will get 5 fields as 1 is derived', () =>
-            {
+            'so that we will get 5 fields as 1 is derived', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
                 let context = metaUI.newContext();
@@ -1770,12 +1788,13 @@ describe('Meta Context behaivor ', () =>
 
 
         it('It should resolve all the VISIBILE fields that belongs to current class for view ' +
-            'operations VIEW', () =>
-            {
+            'operations VIEW', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
                 let context = metaUI.newContext();
@@ -1826,13 +1845,14 @@ describe('Meta Context behaivor ', () =>
          *
          */
         it('It should resolve our fields into 3 different zones zTop = firstName, ' +
-            'zLeft=lastName,age, bio, zBottom=bioView ignoring their visibility properties', () =>
-            {
+            'zLeft=lastName,age, bio, zBottom=bioView ignoring their visibility properties', () => {
 
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClasForZonesRule);
                 let context = metaUI.newContext();
@@ -1875,12 +1895,13 @@ describe('Meta Context behaivor ', () =>
         );
 
         it('It should resolve our fields in the real UserProfile object where we will see zLeft ' +
-            'fields', () =>
-            {
+            'fields', () => {
 
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
                 metaUI.loadDefaultRuleFiles();
                 metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
@@ -1908,12 +1929,13 @@ describe('Meta Context behaivor ', () =>
 
         it('It should read bindings and resolve their dynamic values wher when we ask for ' +
             'userId we expect 123',
-            () =>
-            {
+            () => {
 
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
                 metaUI.loadDefaultRuleFiles();
                 metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
@@ -1946,11 +1968,12 @@ describe('Meta Context behaivor ', () =>
         );
 
         it('it should automatically resolve a field label if not specified. All this by ' +
-            'decamelizing its Field', () =>
-            {
+            'decamelizing its Field', () => {
 
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
+                let env: Environment = new Environment();
+                metaUI.componentRegistry = new ComponentRegistry(env);
                 metaUI.loadDefaultRuleFiles();
 
                 metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
@@ -1980,8 +2003,7 @@ describe('Meta Context behaivor ', () =>
     });
 
 
-    describe('how components are rendered using dynamic values', () =>
-    {
+    describe('how components are rendered using dynamic values', () => {
         let compWrapper: TestContainerComponent;
         let compChild: SFComponent;
 
@@ -1990,8 +2012,7 @@ describe('Meta Context behaivor ', () =>
         let compNativeElement: DebugElement;
 
 
-        beforeEach(() =>
-        {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 declarations: [
                     TestContainerComponent, SFComponent
@@ -2005,13 +2026,11 @@ describe('Meta Context behaivor ', () =>
 
             Object.defineProperty(SFComponent.prototype, 'title', {
 
-                get: () =>
-                {
+                get: () => {
                     return this.title + '-patched';
                 },
 
-                set: (value) =>
-                {
+                set: (value) => {
                     this.title = value;
                 },
                 enumerable: true,
@@ -2032,8 +2051,7 @@ describe('Meta Context behaivor ', () =>
         });
 
 
-        it('It should display a simple text San Franscisco', () =>
-        {
+        it('It should display a simple text San Franscisco', () => {
             fixtureWrapper.detectChanges();
             expect(compNativeElement.nativeElement.textContent).toContain('San Francisco');
         });
@@ -2041,8 +2059,7 @@ describe('Meta Context behaivor ', () =>
 
         it('It should change a behavior of the @Input() field so that it uses some patched on ' +
             'the fly created getter' +
-            ' and setter to retrive a computed value', () =>
-        {
+            ' and setter to retrive a computed value', () => {
 
             fixtureWrapper.detectChanges();
             expect(compNativeElement.nativeElement.textContent).toContain('San Francisco-patched');
@@ -2051,17 +2068,29 @@ describe('Meta Context behaivor ', () =>
     });
 
 
-    describe('=> Concurency of MetaUI ', () =>
-    {
+    describe('=> Concurency of MetaUI ', () => {
 
 
-        it('should process more then 800 000 rule index entries in less than 2 sec', () =>
-        {
+        beforeEach(() => {
+            let metaUI = UIMeta.getInstance();
+            metaUI._rules.forEach((v) => {
+                v.disable();
+            });
 
-            let env: Environment = new Environment();
+            metaUI._testRules.clear();
+            UIMeta['_instance'] = undefined;
+
+            metaUI = UIMeta.getInstance();
+        });
+
+        it('should process more then 800 000 rule index entries in less than 2 sec', () => {
+
+
             let metaPefr = UIMeta.getInstance();
             metaPefr.registerLoader(new RuleLoaderService());
+
             metaPefr.loadDefaultRuleFiles();
+            let env: Environment = new Environment();
             metaPefr.componentRegistry = new ComponentRegistry(env);
 
             metaPefr.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
@@ -2069,9 +2098,12 @@ describe('Meta Context behaivor ', () =>
             metaPefr.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
 
             let start = Date.now();
+
             for (let i = 0; i < 1000; i++) {
                 let context = metaPefr.newContext();
                 context.push();
+
+                // console.log('#### ################ activation #', i)
                 context.set('layout', 'Inspect');
                 context.set('operation', 'edit');
                 context.set('class', 'MyUserTestClass');
@@ -2113,14 +2145,11 @@ describe('Meta Context behaivor ', () =>
      *        }
      */
 
-    describe('how class can get object details ', () =>
-    {
+    describe('how class can get object details ', () => {
 
-        beforeEach(() =>
-        {
+        beforeEach(() => {
             let metaUI = UIMeta.getInstance();
-            metaUI._rules.forEach((v) =>
-            {
+            metaUI._rules.forEach((v) => {
                 v.disable();
             });
 
@@ -2132,11 +2161,13 @@ describe('Meta Context behaivor ', () =>
         });
 
         it('should retrieve correct component to render when trait withObjectDetail is used and' +
-            ' overriden by user rules', () =>
-        {
+            ' overriden by user rules', () => {
 
             let metaUI = UIMeta.getInstance();
             metaUI.registerLoader(new RuleLoaderService());
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
+
             metaUI.loadDefaultRuleFiles();
 
             metaUI.addTestUserRule('UserWithDetailRule', UserWithDetailRule);
@@ -2224,8 +2255,6 @@ describe('Meta Context behaivor ', () =>
  */
 
 
-
-
 // @formatter:off
 /**
  *
@@ -2290,12 +2319,14 @@ export const MyUserTestClassRule = {
         },
         {
             '_properties': {
-                'valid': {'t': 'Expr', 'v': 'value > 19'}, 'trait': 'required', 'label': 'My Age'
+                'valid': {'t': 'Expr', 'v': 'value > 19'},
+                'trait': 'required',
+                'label': 'My Age'
             },
             '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
-            {'_isDecl': false, '_value': 'age', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
+                {'_isDecl': false, '_value': 'age', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2303,12 +2334,13 @@ export const MyUserTestClassRule = {
         },
         {
             '_properties': {
-                'visible': {'t': 'Expr', 'v': 'object.age > 18'}, 'label': 'This is my biography'
+                'visible': {'t': 'Expr', 'v': 'object.age > 18'},
+                'label': 'This is my biography'
             },
             '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
-            {'_isDecl': false, '_value': 'bio', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
+                {'_isDecl': false, '_value': 'bio', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2316,9 +2348,9 @@ export const MyUserTestClassRule = {
         },
         {
             '_properties': {'after': 'zNone'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
-            {'_isDecl': false, '_value': '*', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
+                {'_isDecl': false, '_value': '*', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2326,27 +2358,27 @@ export const MyUserTestClassRule = {
         },
         {
             '_properties': {'after': 'zLeft'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
-            {'_isDecl': false, '_value': 'firstName', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
+                {'_isDecl': false, '_value': 'firstName', '_key': 'field'}
+            ]
         },
         {
             '_properties': {'after': 'firstName'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
-            {'_isDecl': false, '_value': 'lastName', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
+                {'_isDecl': false, '_value': 'lastName', '_key': 'field'}
+            ]
         },
         {
             '_properties': {'after': 'lastName'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
-            {'_isDecl': false, '_value': 'age', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
+                {'_isDecl': false, '_value': 'age', '_key': 'field'}
+            ]
         },
         {
             '_properties': {'after': 'age'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
-            {'_isDecl': false, '_value': 'bio', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
+                {'_isDecl': false, '_value': 'bio', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2447,7 +2479,9 @@ export const MyUserTestClas2sRule = {
             '_selectors': [{'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'}]
         }, {
             '_properties': {
-                'valid': {'t': 'Expr', 'v': 'value > 19'}, 'trait': 'required', 'label': 'My Age'
+                'valid': {'t': 'Expr', 'v': 'value > 19'},
+                'trait': 'required',
+                'label': 'My Age'
             },
             '_rank': 0, '_selectors': [
                 {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
@@ -2469,7 +2503,8 @@ export const MyUserTestClas2sRule = {
             '_selectors': [{'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'}]
         }, {
             '_properties': {
-                'visible': {'t': 'Expr', 'v': 'object.age > 18'}, 'label': 'This is my biography'
+                'visible': {'t': 'Expr', 'v': 'object.age > 18'},
+                'label': 'This is my biography'
             },
             '_rank': 0, '_selectors': [
                 {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
@@ -2598,7 +2633,9 @@ export const MyUserTestClasForZonesRule = {
             '_selectors': [{'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'}]
         }, {
             '_properties': {
-                'valid': {'t': 'Expr', 'v': 'value > 19'}, 'trait': 'required', 'label': 'My Age'
+                'valid': {'t': 'Expr', 'v': 'value > 19'},
+                'trait': 'required',
+                'label': 'My Age'
             },
             '_rank': 0, '_selectors': [
                 {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
@@ -2620,7 +2657,8 @@ export const MyUserTestClasForZonesRule = {
             '_selectors': [{'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'}]
         }, {
             '_properties': {
-                'visible': {'t': 'Expr', 'v': 'object.age > 18'}, 'label': 'This is my biography'
+                'visible': {'t': 'Expr', 'v': 'object.age > 18'},
+                'label': 'This is my biography'
             },
             '_rank': 0, '_selectors': [
                 {'_isDecl': false, '_value': 'MyUserTestClass', '_key': 'class'},
@@ -2721,9 +2759,9 @@ export const UserProfileTestRule = {
         },
         {
             '_properties': {'label': 'User Id'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': false, '_value': 'userId', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': false, '_value': 'userId', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2753,9 +2791,9 @@ export const UserProfileTestRule = {
         },
         {
             '_properties': {'label': 'Age'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': false, '_value': 'age', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': false, '_value': 'age', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2763,9 +2801,9 @@ export const UserProfileTestRule = {
         },
         {
             '_properties': {'label': 'Info About User'}, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': false, '_value': 'note', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': false, '_value': 'note', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2776,9 +2814,9 @@ export const UserProfileTestRule = {
                 'trait': 'derived', 'label': 'Full Name', 'type': 'String',
                 'value': {'t': 'Expr', 'v': 'object.firstName + " "+ object.lastName'}
             }, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': true, '_value': 'fullName', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': true, '_value': 'fullName', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2790,9 +2828,9 @@ export const UserProfileTestRule = {
                 'label': 'Warning',
                 'type': 'String', 'value': 'This user is too young !!'
             }, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': true, '_value': 'extraInfo', '_key': 'field'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': true, '_value': 'extraInfo', '_key': 'field'}
+            ]
         },
         {
             '_rank': 0,
@@ -2800,9 +2838,9 @@ export const UserProfileTestRule = {
         },
         {
             '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': false, '_value': 'edit', '_key': 'operation'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': false, '_value': 'edit', '_key': 'operation'}
+            ]
         }, {
             '_properties': {'after': 'zNone'}, '_rank': 0, '_selectors': [
                 {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
@@ -2820,7 +2858,8 @@ export const UserProfileTestRule = {
                 {'_isDecl': false, '_value': 'edit', '_key': 'operation'},
                 {
                     '_isDecl': false,
-                    '_value': ['firstName', 'lastName', 'age', 'note', 'fullName'], '_key': 'field'
+                    '_value': ['firstName', 'lastName', 'age', 'note', 'fullName'],
+                    '_key': 'field'
                 }
             ]
         }, {
@@ -2835,9 +2874,9 @@ export const UserProfileTestRule = {
         },
         {
             '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': false, '_value': 'view', '_key': 'operation'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': false, '_value': 'view', '_key': 'operation'}
+            ]
         }, {
             '_properties': {'after': 'zNone'}, '_rank': 0, '_selectors': [
                 {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
@@ -2872,9 +2911,9 @@ export const UserProfileTestRule = {
         },
         {
             '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
-            {'_isDecl': false, '_value': 'admin', '_key': 'role'}
-        ]
+                {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
+                {'_isDecl': false, '_value': 'admin', '_key': 'role'}
+            ]
         }, {
             '_rank': 0, '_selectors': [
                 {'_isDecl': false, '_value': 'UserProfileTe', '_key': 'class'},
@@ -3007,40 +3046,34 @@ export const UserWithDetailRule = {
 /* tslint:enable */
 
 
-class MyUserTestClass implements Entity
-{
+class MyUserTestClass implements Entity {
     firstName: string;
     lastName: string;
     age: number;
     bio: string;
 
 
-    constructor(firstName: string, lastName: string, age: number, bio: string)
-    {
+    constructor(firstName: string, lastName: string, age: number, bio: string) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.bio = bio;
     }
 
-    $proto(): MyUserTestClass
-    {
+    $proto(): MyUserTestClass {
         return new MyUserTestClass('a', 'b', 1, 'c');
     }
 
 
-    identity(): string
-    {
+    identity(): string {
         return this.lastName;
     }
 
-    className(): string
-    {
+    className(): string {
         return 'MyUserTestClass';
     }
 
-    getTypes(): any
-    {
+    getTypes(): any {
         return null;
     }
 }
@@ -3050,8 +3083,7 @@ class MyUserTestClass implements Entity
     selector: 'wrapper-comp',
     template: '<test-comp [title]="text"></test-comp>'
 })
-class TestContainerComponent
-{
+class TestContainerComponent {
     text = 'San Francisco';
 }
 
@@ -3060,73 +3092,60 @@ class TestContainerComponent
     selector: 'test-comp',
     template: '<span>{{title}}</span>'
 })
-class SFComponent
-{
+class SFComponent {
     @Input()
     title: string = 'Prague';
 
 }
 
 
-export class UserProfileTe implements Entity
-{
+export class UserProfileTe implements Entity {
 
     constructor(public userId: string, public  firstName: string, public  lastName: string,
                 public  age: number,
                 public note: string, public password: string = '', public locale: string = '',
-                public lastAccessTime = '')
-    {
+                public lastAccessTime = '') {
 
     }
 
-    $proto(): UserProfileTe
-    {
+    $proto(): UserProfileTe {
         return new UserProfileTe('1', 'a', 'l', 1, 'n', 'p', 'en', 'Yesterday');
     }
 
 
-    identity(): string
-    {
+    identity(): string {
         return this.userId;
     }
 
-    className(): string
-    {
+    className(): string {
         return 'UserProfileTe';
     }
 
-    getTypes(): any
-    {
+    getTypes(): any {
         return null;
     }
 }
 
 
-class UserWithDetail implements Entity
-{
+class UserWithDetail implements Entity {
 
-    constructor(name: string)
-    {
+    constructor(name: string) {
     }
 
-    $proto(): UserWithDetail
-    {
+    $proto(): UserWithDetail {
         return new UserWithDetail('a');
     }
 
 
-    identity(): string
-    {
+    identity(): string {
         return null;
     }
 
-    className(): string
-    {
+    className(): string {
         return 'UserWithDetail';
     }
 
-    getTypes(): any
-    {
+    getTypes(): any {
         return null;
     }
 }

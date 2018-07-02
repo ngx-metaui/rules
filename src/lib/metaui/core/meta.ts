@@ -34,7 +34,7 @@ import {
     isStringMap,
     isValue,
     ListWrapper,
-    MapWrapper,
+    MapWrapper, objectToName,
     print,
     shiftLeft,
     shiftRight,
@@ -60,8 +60,7 @@ import {Rule, Selector} from './rule';
  *
  *
  */
-export class Meta
-{
+export class Meta {
     static readonly KeyAny: string = '*';
     static readonly KeyDeclare: string = 'declare';
     static readonly KeyTrait: string = 'trait';
@@ -117,24 +116,20 @@ export class Meta
     private _declareKeyMask: number = 0;
 
     protected _ruleLoader: RuleLoader;
-    protected _currentContext: Context;
 
 
     /*
      A few handy utilities (for which we probably already have superior versions elsewhere)
      */
-    static booleanValue(value: any): boolean
-    {
+    static booleanValue(value: any): boolean {
         return BooleanWrapper.boleanValue(value);
     }
 
-    static toList(value: any): Array<any>
-    {
+    static toList(value: any): Array<any> {
         return (isArray(value)) ? value : [value];
     }
 
-    static objectEquals(one: any, two: any)
-    {
+    static objectEquals(one: any, two: any) {
         if (isBlank(one) && isBlank(two)) {
             return true;
         }
@@ -144,13 +139,11 @@ export class Meta
         return equals(one, two);
     }
 
-    static overrideKeyForKey(key: string): string
-    {
+    static overrideKeyForKey(key: string): string {
         return key + '_o';
     }
 
-    static addTraits(traits: string[], map: Map<string, any>): void
-    {
+    static addTraits(traits: string[], map: Map<string, any>): void {
         let current: string[] = map.get(Meta.KeyTrait);
         if (isBlank(current)) {
             map.set(Meta.KeyTrait, traits);
@@ -161,8 +154,7 @@ export class Meta
         }
     }
 
-    static addTrait(trait: string, map: Map<string, any>): void
-    {
+    static addTrait(trait: string, map: Map<string, any>): void {
         let current: string[] = map.get(Meta.KeyTrait);
         if (isBlank(current)) {
             map.set(Meta.KeyTrait, Meta.toList(trait));
@@ -173,10 +165,12 @@ export class Meta
     }
 
 
-    static className(object: any): string
-    {
+    static className(object: any): string {
         if (isStringMap(object) && (isEntity(object) || isValue(object))) {
             return (<CompositeType>object).className();
+
+        } else if (isStringMap(object)) {
+            return objectToName(object);
 
         } else if (isFunction(object)) {
             return object.name;
@@ -184,8 +178,7 @@ export class Meta
         return object;
     }
 
-    constructor()
-    {
+    constructor() {
         Meta.PropertyMerger_DeclareList = new PropertyMergerDeclareList();
         Meta.PropertyMerger_Traits = new PropertyMergerDeclareListForTrait();
         Meta.PropertyMerger_List = new PropertyMerger_List();
@@ -202,13 +195,11 @@ export class Meta
         this._ruleCount = 1;
     }
 
-    registerLoader(loader: RuleLoader): void
-    {
+    registerLoader(loader: RuleLoader): void {
         this._ruleLoader = loader;
     }
 
-    addRule(rule: Rule): void
-    {
+    addRule(rule: Rule): void {
 
         let selectors: Array<Selector> = rule.selectors;
 
@@ -226,15 +217,13 @@ export class Meta
 
     }
 
-    _addToRules(rule: Rule, pos: number): void
-    {
+    _addToRules(rule: Rule, pos: number): void {
         this._rules[pos] = rule;
     }
 
 
     // todo: TEST unit test this
-    _addRule(rule: Rule, checkPropScope: boolean): void
-    {
+    _addRule(rule: Rule, checkPropScope: boolean): void {
         assert(isPresent(this._currentRuleSet), 'Attempt to add rule without current RuleSet');
         let selectors: Array<Selector> = rule._selectors;
 
@@ -337,8 +326,7 @@ export class Meta
         rule.keyAntiMask = antiMask;
     }
 
-    bestSelectorToIndex(selectors: Array<Selector>): Selector
-    {
+    bestSelectorToIndex(selectors: Array<Selector>): Selector {
         let best: Selector;
         let bestRank = Number.MIN_VALUE;
         let pos = 0;
@@ -352,8 +340,7 @@ export class Meta
         return best;
     }
 
-    selectivityRank(selector: Selector): number
-    {
+    selectivityRank(selector: Selector): number {
         // Score selectors: good if property scope, key !== '*' or bool
         // '*' is particularly bad, since these are inherited by all others
         let score = 1;
@@ -376,14 +363,12 @@ export class Meta
      * if addition of this rule results in addition of extra rules, those are returned
      * (null otherwise)
      */
-    _editingRuleEnd(): number
-    {
+    _editingRuleEnd(): number {
         return Math.max(this._currentRuleSet.end, this._ruleCount);
     }
 
 
-    _addRuleAndReturnExtras(rule: Rule): Array<Rule>
-    {
+    _addRuleAndReturnExtras(rule: Rule): Array<Rule> {
         let start = this._editingRuleEnd();
         let extras: Array<Rule>;
 
@@ -403,8 +388,7 @@ export class Meta
     }
 
     // Icky method to replace an exited rule in place
-    _updateEditedRule(rule: Rule, extras: Array<Rule>): Array<Rule>
-    {
+    _updateEditedRule(rule: Rule, extras: Array<Rule>): Array<Rule> {
         // in place replace existing rule with NoOp
         let nooprule: Rule = new Rule(null, null, 0, 0);
         nooprule.disable();
@@ -433,8 +417,7 @@ export class Meta
     }
 
 
-    scopeKeyForSelector(preds: Array<Selector>): string
-    {
+    scopeKeyForSelector(preds: Array<Selector>): string {
         for (let i = preds.length - 1; i >= 0; i--) {
             let pred = preds[i];
             let data = this.keyData(pred.key);
@@ -446,14 +429,12 @@ export class Meta
     }
 
 
-    addRuleFromSelectorMap(selectorMap: Map<string, any>, propertyMap: Map<string, any>): void
-    {
+    addRuleFromSelectorMap(selectorMap: Map<string, any>, propertyMap: Map<string, any>): void {
         this.addRuleFromSelectorMapWithRank(selectorMap, propertyMap, 0);
     }
 
     addRuleFromSelectorMapWithRank(selectorMap: Map<string, any>, propertyMap: Map<string, any>,
-                                   rank: number): void
-    {
+                                   rank: number): void {
         let rule = new Rule(Selector.fromMap(selectorMap), propertyMap, 0, -1);
         if (rank !== 0) {
             rule.rank = rank;
@@ -462,8 +443,7 @@ export class Meta
     }
 
 
-    addRules(ruleSet: Map<string, any>, selectors: Array<Selector>)
-    {
+    addRules(ruleSet: Map<string, any>, selectors: Array<Selector>) {
         // Special keys:  'props, 'rules'.  Everthing else is a selector
         let props: Map<string, any>;
         let rules: Array<Map<string, any>>;
@@ -491,8 +471,7 @@ export class Meta
 
     // this one expect that we already opened the ruleset
     _loadRules(ruleText?: any, module: string = 'system',
-               editable: boolean = true): void
-    {
+               editable: boolean = true): void {
         try {
 
             if (isPresent(this._ruleLoader)) {
@@ -505,15 +484,13 @@ export class Meta
     }
 
 
-    loadRules(ruleText?: any): void
-    {
+    loadRules(ruleText?: any): void {
         this._loadRulesWithRuleSet('StringLiteral', ruleText, 0);
         this.endRuleSet();
     }
 
 
-    _loadRulesWithRuleSet(filename: string, ruleText: any, rank: number): void
-    {
+    _loadRulesWithRuleSet(filename: string, ruleText: any, rank: number): void {
         this.beginRuleSetWithRank(rank, filename);
         try {
             this._loadRules(ruleText);
@@ -525,28 +502,24 @@ export class Meta
     }
 
 
-    loadUserRule(source: any, userClass: string): boolean
-    {
+    loadUserRule(source: any, userClass: string): boolean {
         return unimplemented();
     }
 
-    parsePropertyAssignment(propString: string, propertyMap: Map<string, any>): string
-    {
+    parsePropertyAssignment(propString: string, propertyMap: Map<string, any>): string {
         // todo: implement this
         return unimplemented();
     }
 
 
-    clearCaches(): void
-    {
+    clearCaches(): void {
         this._MatchToPropsCache = new Collections.Dictionary<Match, PropertyMap>();
         this._PropertyMapUniquer = new Collections.Dictionary<PropertyMap, PropertyMap>();
         this._identityCache = new Collections.Dictionary<any, any>();
     }
 
 
-    isTraitExportRule(rule: Rule): boolean
-    {
+    isTraitExportRule(rule: Rule): boolean {
         if (isBlank(rule.properties) || rule || rule.properties.size === 1) {
 
             let key: string = Array.from(rule.properties.keys())[0];
@@ -555,14 +528,12 @@ export class Meta
         return false;
     }
 
-    beginRuleSet(identificator: string): void
-    {
+    beginRuleSet(identificator: string): void {
         this.beginRuleSetWithRank(this._ruleCount, identificator);
     }
 
 
-    beginRuleSetWithRank(rank: number, filePath: string): void
-    {
+    beginRuleSetWithRank(rank: number, filePath: string): void {
         try {
             assert(isBlank(this._currentRuleSet),
                 'Can t start new rule set while one in progress');
@@ -578,16 +549,14 @@ export class Meta
         }
     }
 
-    beginReplacementRuleSet(orig: RuleSet): void
-    {
+    beginReplacementRuleSet(orig: RuleSet): void {
         let origRank = orig.startRank();
         this.beginRuleSetWithRank(this._ruleCount, orig._filePath);
         this._currentRuleSet._rank = origRank;
     }
 
 
-    endRuleSet(): RuleSet
-    {
+    endRuleSet(): RuleSet {
         assert(isPresent(this._currentRuleSet), 'No rule set progress');
         let result: RuleSet = this._currentRuleSet;
         if (this._ruleCount < result._end) {
@@ -600,38 +569,27 @@ export class Meta
     }
 
 
-    get ruleSetGeneration(): number
-    {
+    get ruleSetGeneration(): number {
         return this._ruleSetGeneration;
     }
 
-    invalidateRules(): void
-    {
+    invalidateRules(): void {
         this._ruleSetGeneration++;
         this.clearCaches();
     }
 
 
-    get currentContext(): Context
-    {
-        return this._currentContext;
+    newContext(): Context {
+        return new Context(this);
     }
 
-    newContext(): Context
-    {
-        this._currentContext = new Context(this);
-        return this._currentContext;
-    }
-
-    get declareKeyMask(): number
-    {
+    get declareKeyMask(): number {
         return this._declareKeyMask;
     }
 
 
     // Touch a key/value to force pre-loading/registration of associated rule files
-    touch(key: string, value: any): void
-    {
+    touch(key: string, value: any): void {
         let context = this.newContext();
         context.push();
         context.set(key, value);
@@ -640,8 +598,7 @@ export class Meta
     }
 
 
-    transformValue(key: string, value: any): any
-    {
+    transformValue(key: string, value: any): any {
         let keyData = this._keyData.get(key);
         if (isPresent(keyData) && isPresent(keyData._transformer)) {
             value = keyData._transformer.tranformForMatch(value);
@@ -649,8 +606,7 @@ export class Meta
         return value;
     }
 
-    match(key: string, value: any, intermediateResult: MatchResult): MatchResult
-    {
+    match(key: string, value: any, intermediateResult: MatchResult): MatchResult {
         let keyData = this._keyData.get(key);
         if (isBlank(keyData)) {
             return intermediateResult;
@@ -666,8 +622,7 @@ export class Meta
 
 
     unionOverrideMatch(key: string, value: any,
-                       intermediateResult: UnionMatchResult): UnionMatchResult
-    {
+                       intermediateResult: UnionMatchResult): UnionMatchResult {
         let keyData: KeyData = this._keyData.get(Meta.overrideKeyForKey(key));
         if (isBlank(keyData)) {
             return intermediateResult;
@@ -675,13 +630,11 @@ export class Meta
         return new UnionMatchResult(this, keyData, value, intermediateResult);
     }
 
-    newPropertiesMap(): PropertyMap
-    {
+    newPropertiesMap(): PropertyMap {
         return new PropertyMap();
     }
 
-    propertiesForMatch(matchResult: MatchResult): PropertyMap
-    {
+    propertiesForMatch(matchResult: MatchResult): PropertyMap {
         let properties: PropertyMap = this._MatchToPropsCache.getValue(matchResult);
         if (isPresent(properties)) {
             return properties;
@@ -719,8 +672,7 @@ export class Meta
     }
 
 
-    keyData(key: string): KeyData
-    {
+    keyData(key: string): KeyData {
         let data: KeyData = this._keyData.get(key);
 
         if (isBlank(data)) {
@@ -739,8 +691,7 @@ export class Meta
     }
 
 
-    _keysInMask(mask: number): string[]
-    {
+    _keysInMask(mask: number): string[] {
         let matches: string[] = [];
         let pos = 0;
         while (mask !== 0) {
@@ -753,30 +704,25 @@ export class Meta
         return matches;
     }
 
-    registerKeyInitObserver(key: string, o: ValueQueriedObserver): void
-    {
+    registerKeyInitObserver(key: string, o: ValueQueriedObserver): void {
         this.keyData(key).addObserver(o);
     }
 
-    registerValueTransformerForKey(key: string, transformer: KeyValueTransformer): void
-    {
+    registerValueTransformerForKey(key: string, transformer: KeyValueTransformer): void {
         this.keyData(key)._transformer = transformer;
     }
 
 
-    get identityCache(): Collections.Dictionary<any, any>
-    {
+    get identityCache(): Collections.Dictionary<any, any> {
         return this._identityCache;
     }
 
 
-    newMatchArray(): MatchValue[]
-    {
+    newMatchArray(): MatchValue[] {
         return [];
     }
 
-    matchArrayAssign(array: MatchValue[], keyData: KeyData, matchValue: MatchValue): void
-    {
+    matchArrayAssign(array: MatchValue[], keyData: KeyData, matchValue: MatchValue): void {
         let idx = keyData._id;
         let curr = array[idx];
         if (isPresent(curr)) {
@@ -786,8 +732,7 @@ export class Meta
     }
 
 
-    propertyWillDoMerge(propertyName: string, origValue: any): boolean
-    {
+    propertyWillDoMerge(propertyName: string, origValue: any): boolean {
         let merger: PropertyMerger = this.mergerForProperty(propertyName);
 
         return this.isPropertyMergerIsChaining(merger) || (isPresent(
@@ -795,8 +740,7 @@ export class Meta
     }
 
 
-    managerForProperty(name: string): PropertyManager
-    {
+    managerForProperty(name: string): PropertyManager {
         let manager: PropertyManager = this._managerForProperty.get(name);
         if (isBlank(manager)) {
             manager = new PropertyManager(name);
@@ -806,16 +750,14 @@ export class Meta
     }
 
 
-    mirrorPropertyToContext(propertyName: string, contextKey: string): void
-    {
+    mirrorPropertyToContext(propertyName: string, contextKey: string): void {
         let keyData = this.keyData(contextKey);
         let manager = this.managerForProperty(propertyName);
         manager._keyDataToSet = keyData;
     }
 
 
-    defineKeyAsPropertyScope(contextKey: string): void
-    {
+    defineKeyAsPropertyScope(contextKey: string): void {
         let keyData: KeyData = this.keyData(contextKey);
         keyData.isPropertyScope = true;
 
@@ -824,13 +766,11 @@ export class Meta
         this.registerPropertyMerger(traitKey, Meta.PropertyMerger_DeclareList);
     }
 
-    isPropertyScopeKey(key: string): boolean
-    {
+    isPropertyScopeKey(key: string): boolean {
         return Meta.ScopeKey === key;
     }
 
-    registerPropertyMerger(propertyName: string, merger: PropertyMerger): void
-    {
+    registerPropertyMerger(propertyName: string, merger: PropertyMerger): void {
         if (isBlank(merger._meta)) {
             merger._meta = this;
         }
@@ -838,25 +778,21 @@ export class Meta
         manager._merger = merger;
     }
 
-    mergerForProperty(propertyName: string): PropertyMerger
-    {
+    mergerForProperty(propertyName: string): PropertyMerger {
         let manager: PropertyManager = this.managerForProperty(propertyName);
         return manager._merger;
     }
 
-    private isPropertyMergerIsChaining(val: any): val is PropertyMergerIsChaining
-    {
+    private isPropertyMergerIsChaining(val: any): val is PropertyMergerIsChaining {
         return isPresent(val.isPropMergerIsChainingMark) && val.isPropMergerIsChainingMark;
     }
 
 
-    groupForTrait(trait: string): string
-    {
+    groupForTrait(trait: string): string {
         return 'default';
     }
 
-    _logRuleStats(): void
-    {
+    _logRuleStats(): void {
         let total = 0;
 
         let values = this._keyData.keys();
@@ -894,20 +830,17 @@ export class Meta
         print(buf.toString());
     }
 
-    toString(): string
-    {
+    toString(): string {
         return 'Meta';
     }
 
 
-    isNullMarker(value: any): boolean
-    {
+    isNullMarker(value: any): boolean {
         return isPresent(value) && value['markernull'];
     }
 
 
-    addTestUserRule(testRuleName: string, source: any)
-    {
+    addTestUserRule(testRuleName: string, source: any) {
         this._testRules.set(testRuleName, source);
     }
 
@@ -915,11 +848,9 @@ export class Meta
 }
 
 
-export class KeyValueCount
-{
+export class KeyValueCount {
 
-    constructor(public key: string, public value: any, public count: number)
-    {
+    constructor(public key: string, public value: any, public count: number) {
     }
 }
 
@@ -929,19 +860,16 @@ export class KeyValueCount
  * (See Meta.registerPropertyMerger).  E.g. 'visible', 'trait', and 'valid' all have unique
  * merge policies.
  */
-export class PropertyManager
-{
+export class PropertyManager {
     _merger: PropertyMerger;
     _keyDataToSet: KeyData;
 
 
-    constructor(public _name: string)
-    {
+    constructor(public _name: string) {
     }
 
 
-    mergeProperty(propertyName: string, orig: any, newValue: any, isDeclare: boolean): any
-    {
+    mergeProperty(propertyName: string, orig: any, newValue: any, isDeclare: boolean): any {
         if (isBlank(orig)) {
             return newValue;
         }
@@ -979,19 +907,15 @@ export class PropertyManager
  * property.  This can be used to override default property value merge policy, for instance
  * allowing the 'visible' property to be forced from false to true.
  */
-export class OverrideValue
-{
-    constructor(private _value: any)
-    {
+export class OverrideValue {
+    constructor(private _value: any) {
     }
 
-    value(): any
-    {
+    value(): any {
         return this._value === 'null' ? null : this._value;
     }
 
-    toString(): string
-    {
+    toString(): string {
         return isPresent(this._value) ? this._value.toString() + '!' : 'null' + '!';
     }
 }
@@ -1006,8 +930,7 @@ export class OverrideValue
  * (long) masks for certain rule matching operations.
  */
 
-export class KeyData
-{
+export class KeyData {
     private _ruleVecs: Collections.Dictionary<any, ValueMatches>;
     private _observers: Array<ValueQueriedObserver>;
 
@@ -1017,20 +940,17 @@ export class KeyData
     private _isPropertyScope: boolean = false;
 
 
-    constructor(public _key: string, public _id: number)
-    {
+    constructor(public _key: string, public _id: number) {
         this._ruleVecs = new Collections.Dictionary<any, ValueMatches>();
         this._any = this.get(Meta.KeyAny);
 
     }
 
-    maskValue(): number
-    {
+    maskValue(): number {
         return shiftLeft(1, this._id);
     }
 
-    private get(value: any): ValueMatches
-    {
+    private get(value: any): ValueMatches {
         if (isBlank(value)) {
             value = Meta.NullMarker;
 
@@ -1050,8 +970,7 @@ export class KeyData
         return matches;
     }
 
-    matchValue(value: any): MatchValue
-    {
+    matchValue(value: any): MatchValue {
         if (isArray(value)) {
             let list = value;
             if (list.length === 1) {
@@ -1069,8 +988,7 @@ export class KeyData
     }
 
 
-    addEntry(value: any, id: number): void
-    {
+    addEntry(value: any, id: number): void {
         let matches: ValueMatches = this.get(value);
         let before: number[] = matches._arr;
         let after: number[] = Match.addInt(before, id);
@@ -1080,8 +998,7 @@ export class KeyData
     }
 
 
-    lookup(owner: Meta, value: any): number[]
-    {
+    lookup(owner: Meta, value: any): number[] {
         let matches: ValueMatches = this.get(value);
         if (!matches._read && isPresent(this._observers)) {
 
@@ -1105,23 +1022,20 @@ export class KeyData
     }
 
 
-    setParent(value: any, parentValue: any): void
-    {
+    setParent(value: any, parentValue: any): void {
         let parent: ValueMatches = this.get(parentValue);
         let child: ValueMatches = this.get(value);
         child._parent = parent;
     }
 
 
-    parent(value: any): any
-    {
+    parent(value: any): any {
         let child: ValueMatches = this.get(value);
         return child._parent._value;
     }
 
 
-    addObserver(o: ValueQueriedObserver): void
-    {
+    addObserver(o: ValueQueriedObserver): void {
         if (isBlank(this._observers)) {
             this._observers = new Array<ValueQueriedObserver>();
         }
@@ -1132,35 +1046,29 @@ export class KeyData
     // If this key defines a scope for properties (e.g. field, class, action)
     // this this returns the name of the selector key for those properties
     // (e.g. field_p, class_p)
-    get isPropertyScope(): boolean
-    {
+    get isPropertyScope(): boolean {
         return this._isPropertyScope;
     }
 
-    set isPropertyScope(yn: boolean)
-    {
+    set isPropertyScope(yn: boolean) {
         this._isPropertyScope = yn;
     }
 
 
-    get ruleVecs(): Collections.Dictionary<any, ValueMatches>
-    {
+    get ruleVecs(): Collections.Dictionary<any, ValueMatches> {
         return this._ruleVecs;
     }
 
-    get key(): string
-    {
+    get key(): string {
         return this._key;
     }
 
-    get id(): number
-    {
+    get id(): number {
         return this._id;
     }
 
 
-    get observers(): Array<ValueQueriedObserver>
-    {
+    get observers(): Array<ValueQueriedObserver> {
         return this._observers;
     }
 }
@@ -1172,8 +1080,7 @@ export class KeyData
  * (See Meta.registerPropertyMerger).  E.g. 'visible', 'trait', and 'valid' all have unique
  * merge policies.
  */
-export class PropertyMap implements Map<string, any>
-{
+export class PropertyMap implements Map<string, any> {
 
     private _contextPropertiesUpdated: Array<PropertyManager>;
     protected _map: Map<string, any>;
@@ -1181,8 +1088,7 @@ export class PropertyMap implements Map<string, any>
     [Symbol.toStringTag]: 'Map';
 
 
-    constructor(entries?: Map<string, any>)
-    {
+    constructor(entries?: Map<string, any>) {
         if (isPresent(entries)) {
             this._map = new Map<string, any>(entries);
         } else {
@@ -1191,73 +1097,61 @@ export class PropertyMap implements Map<string, any>
     }
 
 
-    get(key: string): any
-    {
+    get(key: string): any {
         return this._map.get(key);
     }
 
 
-    keys(): IterableIterator<string>
-    {
+    keys(): IterableIterator<string> {
         return this._map.keys();
     }
 
 
-    values(): IterableIterator<any>
-    {
+    values(): IterableIterator<any> {
         return this._map.values();
     }
 
-    clear(): void
-    {
+    clear(): void {
         this._map.clear();
     }
 
-    set(key: string, value?: any): any
-    {
+    set(key: string, value?: any): any {
         return this._map.set(key, value);
     }
 
 
-    delete(key: string): boolean
-    {
+    delete(key: string): boolean {
 
         return this._map.delete(key);
     }
 
     forEach(callbackfn: (value: any, index: string, map: Map<string, any>) => void,
-            thisArg?: any): void
-    {
+            thisArg?: any): void {
         this._map.forEach(callbackfn);
     }
 
 
-    has(key: string): boolean
-    {
+    has(key: string): boolean {
         return this._map.has(key);
     }
 
 
-    [Symbol.iterator](): IterableIterator<any>
-    {
+    [Symbol.iterator](): IterableIterator<any> {
         return this._map[Symbol.iterator]();
     }
 
 
-    entries(): IterableIterator<any>
-    {
+    entries(): IterableIterator<any> {
         return this._map.entries();
     }
 
 
-    get size(): number
-    {
+    get size(): number {
         return this._map.size;
     }
 
 
-    awakeProperties(): void
-    {
+    awakeProperties(): void {
         MapWrapper.iterable(this).forEach((value, key) => {
             if (isPropertyMapAwaking(value)) {
                 let newValue = value.awakeForPropertyMap(this);
@@ -1268,8 +1162,7 @@ export class PropertyMap implements Map<string, any>
         });
     }
 
-    addContextKey(key: PropertyManager): void
-    {
+    addContextKey(key: PropertyManager): void {
         if (isBlank(this._contextPropertiesUpdated)) {
             this._contextPropertiesUpdated = new Array<PropertyManager>();
         }
@@ -1277,13 +1170,11 @@ export class PropertyMap implements Map<string, any>
     }
 
 
-    get contextKeysUpdated(): Array<PropertyManager>
-    {
+    get contextKeysUpdated(): Array<PropertyManager> {
         return this._contextPropertiesUpdated;
     }
 
-    toString()
-    {
+    toString() {
         // todo: find better way for the string. thsi is also used as key for the dictionary
         // not really efficient
         let sj = new StringJoiner(['PropertyMap:']);
@@ -1303,8 +1194,7 @@ export class PropertyMap implements Map<string, any>
 
 
 // Marker interface
-export interface PropertyMergerIsChaining
-{
+export interface PropertyMergerIsChaining {
     isPropMergerIsChainingMark: boolean;
 
 }
@@ -1313,8 +1203,7 @@ export interface PropertyMergerIsChaining
  * Define policy for merging a property value assigned by one rule
  * to a subsequent value from a higher ranked rule.
  */
-export interface PropertyMerger
-{
+export interface PropertyMerger {
 
     _meta: Meta;
 
@@ -1332,33 +1221,27 @@ export interface PropertyMerger
 }
 
 // marker interface for PropertyMerges that can handle dynamic values
-export abstract class PropertyMergerDynamic implements PropertyMerger
-{
+export abstract class PropertyMergerDynamic implements PropertyMerger {
     _meta: Meta;
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         return unimplemented();
     }
 
-    toString(): string
-    {
+    toString(): string {
         return 'PropertyMergerDynamic';
     }
 }
 
 
-export class PropertyMerger_Overwrite implements PropertyMerger
-{
+export class PropertyMerger_Overwrite implements PropertyMerger {
     _meta: Meta;
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         return override;
     }
 
-    toString(): string
-    {
+    toString(): string {
         return 'OVERWRITE';
     }
 }
@@ -1366,12 +1249,10 @@ export class PropertyMerger_Overwrite implements PropertyMerger
 /**
  PropertyMerger for properties the should be unioned as lists
  */
-export class PropertyMerger_List implements PropertyMerger
-{
+export class PropertyMerger_List implements PropertyMerger {
     _meta: Meta;
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         if (!(isArray(orig)) && !(isArray(override)) && Meta.objectEquals(orig, override)) {
             return orig;
         }
@@ -1390,16 +1271,13 @@ export class PropertyMerger_List implements PropertyMerger
  * PropertyMerger for properties the should override normally, but return lists when
  * in declare mode (e.g. 'class', 'field', 'layout', ...)
  */
-export class PropertyMergerDeclareList extends PropertyMergerDynamic
-{
+export class PropertyMergerDeclareList extends PropertyMergerDynamic {
 
-    constructor()
-    {
+    constructor() {
         super();
     }
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         if (!isDeclare) {
             return override;
         }
@@ -1415,8 +1293,7 @@ export class PropertyMergerDeclareList extends PropertyMergerDynamic
         return result;
     }
 
-    toString(): string
-    {
+    toString(): string {
         return 'PropertyMergerDeclareList';
     }
 }
@@ -1426,19 +1303,16 @@ export class PropertyMergerDeclareList extends PropertyMergerDynamic
  * from the same 'traitGroup', which override (i.e. only one trait from each traitGroup should
  * survive).
  */
-export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList
-{
+export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList {
 
     _meta: Meta;
 
 
-    constructor()
-    {
+    constructor() {
         super();
     }
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         if (isDeclare) {
             return super.merge(orig, override, isDeclare);
         }
@@ -1481,8 +1355,7 @@ export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList
     }
 
 
-    toString(): string
-    {
+    toString(): string {
         return 'PropertyMergerDeclareListForTrait';
     }
 }
@@ -1492,13 +1365,11 @@ export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList
  * PropertyMerger implementing AND semantics -- i.e. false trumps true.
  * (Used, for instance, for the properties 'visible' and 'editable')
  */
-export class PropertyMerger_And extends PropertyMergerDynamic implements PropertyMergerIsChaining
-{
+export class PropertyMerger_And extends PropertyMergerDynamic implements PropertyMergerIsChaining {
     isPropMergerIsChainingMark: boolean = true;
 
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         // null will reset (so that it can be overridden to true subsequently
         if (isBlank(override)) {
             return null;
@@ -1532,21 +1403,18 @@ export class PropertyMerger_And extends PropertyMergerDynamic implements Propert
         return BooleanWrapper.boleanValue(orig) && BooleanWrapper.boleanValue(override);
     }
 
-    toString(): string
-    {
+    toString(): string {
         return 'AND';
     }
 }
 
 
 export class PropertyMerger_Valid implements PropertyMerger,
-    PropertyMergerIsChaining
-{
+    PropertyMergerIsChaining {
     _meta: Meta;
     isPropMergerIsChainingMark: boolean = true;
 
-    merge(orig: any, override: any, isDeclare: boolean): any
-    {
+    merge(orig: any, override: any, isDeclare: boolean): any {
         /**
          *
          *
@@ -1559,8 +1427,7 @@ export class PropertyMerger_Valid implements PropertyMerger,
             ? override : orig;
     }
 
-    toString(): string
-    {
+    toString(): string {
         return 'VALIDATE';
     }
 }
@@ -1570,8 +1437,7 @@ export class PropertyMerger_Valid implements PropertyMerger,
  * A group of rules originating from a common source.
  * All rules must be added to the rule base as part of a RuleSet.
  */
-export class RuleSet
-{
+export class RuleSet {
 
     _filePath: string;
     _start: number = 0;
@@ -1581,12 +1447,10 @@ export class RuleSet
     _rank: number = 0;
 
 
-    constructor(private _meta: Meta)
-    {
+    constructor(private _meta: Meta) {
     }
 
-    disableRules(): void
-    {
+    disableRules(): void {
         for (let i = this._start; i < this._end; i++) {
             this._meta._rules[i].disable();
         }
@@ -1595,13 +1459,11 @@ export class RuleSet
     }
 
 
-    get filePath(): string
-    {
+    get filePath(): string {
         return this._filePath;
     }
 
-    rules(editableOnly: any): Array<Rule>
-    {
+    rules(editableOnly: any): Array<Rule> {
         let result: Array<Rule> = [];
         let i = (editableOnly) ? (this._editableStart === -1 ? this._end : this._editableStart)
             : this._start;
@@ -1615,30 +1477,25 @@ export class RuleSet
 
     }
 
-    startRank(): number
-    {
+    startRank(): number {
         return (this._start < this._meta._ruleCount)
             ? this._meta._rules[this._start].rank
             : this._rank - (this._end - this._start);
     }
 
-    allocateNextRuleEntry(): number
-    {
+    allocateNextRuleEntry(): number {
         return (this._meta._ruleCount > this._end) ? this._meta._ruleCount++ : this._end++;
     }
 
-    get start(): number
-    {
+    get start(): number {
         return this._start;
     }
 
-    get end(): number
-    {
+    get end(): number {
         return this._end;
     }
 
-    get editableStart(): number
-    {
+    get editableStart(): number {
         return this._editableStart;
     }
 }
@@ -1651,8 +1508,7 @@ export class RuleSet
  * to enable efficient matching entirely through identity comparison.
  */
 
-export interface MatchValue
-{
+export interface MatchValue {
     matches (other: MatchValue): boolean;
 
     updateByAdding (other: MatchValue): MatchValue;
@@ -1676,8 +1532,7 @@ export interface MatchValue
  * 'search' -> {'keywordSearch', 'textSearch'})
  */
 
-export class ValueMatches implements MatchValue
-{
+export class ValueMatches implements MatchValue {
 
     _value: any;
     _read: boolean = false;
@@ -1687,13 +1542,11 @@ export class ValueMatches implements MatchValue
     _parentSize: number = 0;
 
 
-    constructor(value: any)
-    {
+    constructor(value: any) {
         this._value = value;
     }
 
-    checkParent()
-    {
+    checkParent() {
         // todo: performance: keep a rule set version # and only do this when the rule set has
         // reloaded
 
@@ -1710,8 +1563,7 @@ export class ValueMatches implements MatchValue
         }
     }
 
-    matches(other: MatchValue): boolean
-    {
+    matches(other: MatchValue): boolean {
         if (!(other instanceof ValueMatches)) {
             return other.matches(this);
         }
@@ -1720,8 +1572,7 @@ export class ValueMatches implements MatchValue
         return (other === this) || (isPresent(this._parent) && this._parent.matches(other));
     }
 
-    updateByAdding(other: MatchValue): MatchValue
-    {
+    updateByAdding(other: MatchValue): MatchValue {
         let multi: MultiMatchValue = new MultiMatchValue();
         multi.data.push(this);
         return multi.updateByAdding(other);
@@ -1731,14 +1582,12 @@ export class ValueMatches implements MatchValue
 
 // https://github.com/Microsoft/TypeScript/wiki/FAQ#why-doesnt-extending-built-ins-like-error-
 //  array-and-map-work
-export class MultiMatchValue implements MatchValue
-{
+export class MultiMatchValue implements MatchValue {
 
     data: Array<MatchValue> = [];
 
 
-    matches(other: MatchValue): boolean
-    {
+    matches(other: MatchValue): boolean {
         if (other instanceof MultiMatchValue) {
             // list / list comparison: any combo can match
             for (let i = 0; i < this.data.length; i++) {
@@ -1757,8 +1606,7 @@ export class MultiMatchValue implements MatchValue
         return false;
     }
 
-    updateByAdding(other: MatchValue): MatchValue
-    {
+    updateByAdding(other: MatchValue): MatchValue {
         if (other instanceof MultiMatchValue) {
             let matchValue: MultiMatchValue = <MultiMatchValue> other;
             ListWrapper.addAll(this.data, matchValue.data);
@@ -1770,8 +1618,7 @@ export class MultiMatchValue implements MatchValue
 }
 
 
-export interface ValueQueriedObserver
-{
+export interface ValueQueriedObserver {
 
     notify (meta: Meta, key: string, value: any): void;
 
@@ -1782,18 +1629,15 @@ export interface ValueQueriedObserver
  * Used to transform values into the (static) version they should be indexed / searched under
  * For instance, 'object' may be indexed as true/false (present or not)
  */
-export interface KeyValueTransformer
-{
+export interface KeyValueTransformer {
     tranformForMatch (o: any): any;
 }
 
 
-export class KeyValueTransformer_KeyPresent implements KeyValueTransformer
-{
+export class KeyValueTransformer_KeyPresent implements KeyValueTransformer {
 
 
-    tranformForMatch(o: any): any
-    {
+    tranformForMatch(o: any): any {
         return (isPresent(o) && !(BooleanWrapper.isFalse(o))) ? true : false;
     }
 
@@ -1806,15 +1650,13 @@ export class KeyValueTransformer_KeyPresent implements KeyValueTransformer
  * to evaluate/copy themselves for inclusion in a new map (to ensure that a value that
  * derived its value based on a different context doesn't get reused in another)
  */
-export interface PropertyMapAwaking
-{
+export interface PropertyMapAwaking {
     propertyAwaking: boolean;
 
     awakeForPropertyMap (map: PropertyMap): any;
 }
 
 
-export function isPropertyMapAwaking(arg: any): arg is PropertyMapAwaking
-{
+export function isPropertyMapAwaking(arg: any): arg is PropertyMapAwaking {
     return isPresent(arg) && isPresent(arg.propertyAwaking);
 }

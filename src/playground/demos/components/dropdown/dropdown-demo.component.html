@@ -98,6 +98,28 @@
     </div>
 
 
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Inside relative container</h4></div>
+
+        <div class="ui-g-6">
+            <div class="dd-relative-cc">
+                <aw-form-table [labelsOnTop]="true">
+                    <aw-form-row [label]="'Colors'">
+                        <aw-dropdown name="colorsSingle"
+                                     (onSelection)="selection1 = $event"
+                                     [list]="list" [noSelectionString]="'Select Color'">
+                        </aw-dropdown>
+                    </aw-form-row>
+                </aw-form-table>
+            </div>
+        </div>
+
+        <div class="ui-g-2">
+            <b>{{selection1}}</b>
+        </div>
+    </div>
+
+
 </div>
 
 

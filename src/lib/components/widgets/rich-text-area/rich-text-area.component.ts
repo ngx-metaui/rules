@@ -23,6 +23,7 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Environment} from '@aribaui/core';
 import {BaseFormComponent} from '../../core/base-form.component';
 import {FormRowComponent} from '../../layouts/form-table/form-row/form-row.component';
+import {distinctUntilChanged} from 'rxjs/operators';
 
 /**
  * RichTextArea component represents a text editor which allows users to format text input.
@@ -65,7 +66,7 @@ import {FormRowComponent} from '../../layouts/form-table/form-row/form-row.compo
  */
 export enum EditorType {
     Default,    // Default Editor supports Minimal set of functionality
-        // [ bold | italic | underline | ordered | bullet | alignment]
+    // [ bold | italic | underline | ordered | bullet | alignment]
     Full,       // The full list of functionality,
     TextFormat, // Functionalities that affects text formatting.
     Custom     // Custom toolbar.
@@ -89,8 +90,7 @@ export const EDITOR_CONTROL_VALUE_ACCESSOR: any = {
     ]
 
 })
-export class RichTextAreaComponent extends BaseFormComponent
-{
+export class RichTextAreaComponent extends BaseFormComponent {
     /**
      * The type of the editor.  See EditorType for description.
      */
@@ -112,8 +112,7 @@ export class RichTextAreaComponent extends BaseFormComponent
 
     constructor(public env: Environment,
                 @SkipSelf() @Optional() @Inject(forwardRef(() => FormRowComponent))
-                protected parentContainer: BaseFormComponent)
-    {
+                protected parentContainer: BaseFormComponent) {
         super(env, parentContainer);
 
         this.type = EditorType.Default;
@@ -121,13 +120,13 @@ export class RichTextAreaComponent extends BaseFormComponent
     }
 
 
-    ngOnInit()
-    {
+    ngOnInit() {
         super.ngOnInit();
         super.registerFormControl(this.value);
 
-        this.formControl.valueChanges.distinctUntilChanged() .subscribe(val =>
-        {
+        this.formControl.valueChanges.pipe(
+            distinctUntilChanged()
+        ).subscribe(val => {
             this.value = val;
             this.onModelChanged(this.value);
         });
@@ -136,8 +135,7 @@ export class RichTextAreaComponent extends BaseFormComponent
     /**
      * Internal. Please see ControlValueAccessor
      */
-    writeValue(value: any)
-    {
+    writeValue(value: any) {
         if (value !== this.value) {
             this.value = value;
             this.formControl.setValue(value);

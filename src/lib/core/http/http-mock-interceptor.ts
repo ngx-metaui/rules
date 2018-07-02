@@ -27,8 +27,8 @@ import {
     HttpResponse
 } from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
+import {throwError as observableThrowError, of as observableOf, Observable} from 'rxjs';
+
 import {AppConfig} from '../config/app-config';
 import {isBlank, isPresent, isString} from '../utils/lang';
 import {Response} from '../domain/resource.service';
@@ -90,7 +90,7 @@ export class HttpMockInterceptor implements HttpInterceptor
         if (isPresent(mockedResp)) {
 
             if (mockedResp.status >= 200 && mockedResp.status < 300) {
-                return Observable.of(<HttpResponse<any>>mockedResp);
+                return observableOf(<HttpResponse<any>>mockedResp);
             } else {
                 let errror = new HttpErrorResponse({
                     error: mockedResp.body,
@@ -98,7 +98,7 @@ export class HttpMockInterceptor implements HttpInterceptor
                     statusText: mockedResp.statusText,
                     url: req.urlWithParams
                 });
-                Observable.throw(errror);
+                observableThrowError(errror);
             }
 
 

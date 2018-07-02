@@ -18,11 +18,13 @@
  *
  *
  */
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/observable/of';
+import {forkJoin as observableForkJoin, of as observableOf, Observable} from 'rxjs';
+
+import {map} from 'rxjs/operators';
+
+
+
+
 import {TranslateLoader} from '@ngx-translate/core';
 import {HttpClient} from '@angular/common/http';
 import {isBlank, isString, isStringMap} from '../utils/lang';
@@ -84,28 +86,28 @@ export class DefaultTranslateLoader implements TranslateLoader
     getTranslation(lang: string): Observable<any>
     {
         if (this.env.inTest) {
-            return Observable.of({
+            return observableOf({
                 'Common': {
                     'init': '.'
                 }
             });
         }
         // todo: merge all this into one file so we dont have to do several http gets
-        return Observable.forkJoin(
-            this.http.get(`${this.path}/${lang}/resource.app${this.suffix}`)
-                .map((translation: any) =>
+        return observableForkJoin(
+            this.http.get(`${this.path}/${lang}/resource.app${this.suffix}`).pipe(
+                map((translation: any) =>
                 {
                     this.checkAndUpdateValue(translation);
                     return translation;
-                })
+                }))
             ,
-            this.http.get(`${this.path}/${lang}/i18n.resource${this.suffix}`)
-                .map((translation: any) =>
+            this.http.get(`${this.path}/${lang}/i18n.resource${this.suffix}`).pipe(
+                map((translation: any) =>
                 {
                     this.checkAndUpdateValue(translation);
                     return translation;
-                }),
-        ).map(data =>
+                })),
+        ).pipe(map(data =>
             {
                 let app = data[0];
                 let lib = data[1];
@@ -116,7 +118,7 @@ export class DefaultTranslateLoader implements TranslateLoader
                 };
                 return Object.assign(app, widgetRes);
             }
-        );
+        ));
     }
 
     /**

@@ -18,7 +18,7 @@
  */
 import {DataProviders} from './data-providers';
 import {DataFinders} from './data-finders';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {InjectionToken} from '@angular/core';
 import {unimplemented} from '@aribaui/core';
 import {DataFinder, QueryType} from '../../core/data/data-finders';

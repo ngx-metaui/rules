@@ -234,9 +234,7 @@ export class UIMeta extends ObjectMeta
 
     newContext(isNested: boolean = false): Context
     {
-        this._currentContext = new UIContext(this);
-        this._currentContext.isNested = isNested;
-        return this._currentContext;
+        return new UIContext(this, isNested);
     }
 
     // Load system rules
@@ -422,7 +420,7 @@ export class UIMeta extends ObjectMeta
     {
         let fieldInfos: Array<ItemProperties> = this.itemProperties(context, key, false);
         let predecessors: Map<string, Array<ItemProperties>> = MapWrapper.groupBy<ItemProperties>(
-            fieldInfos, (item) =>
+            fieldInfos, (item: ItemProperties) =>
             {
                 let pred = item.properties.get(UIMeta.KeyAfter);
                 return isPresent(pred) ? pred : defaultPredecessor;

@@ -28,8 +28,7 @@ import {
     isString,
     unimplemented
 } from '@aribaui/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import {of as observableOf, Observable} from 'rxjs';
 import {ArrayDataProvider} from './array-data-provider';
 
 
@@ -242,11 +241,11 @@ export class FullTextArrayDataFinder extends DataFinder
 
     match<T> (query: any, max: number): Observable<T[]>
     {
-        return Observable.of(this.instantMatch(query, max));
+        return observableOf(this.instantMatch(query, max));
     }
 
     matchWithSelections<T> (selections: any[], query: any, max: number): Observable<T[]>
     {
-        return Observable.of(this.instantMatchWithSelections(selections, query, max));
+        return observableOf(this.instantMatchWithSelections(selections, query, max));
     }
 }

@@ -47,7 +47,7 @@ import {DataProviders} from '../../core/data/data-providers';
 import {DataFinders, QueryType} from '../../core/data/data-finders';
 import {DatatableState, DTDataSource} from './datatable-data-source';
 import {BaseFormComponent} from '../../core/base-form.component';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 
 /**

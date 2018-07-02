@@ -20,12 +20,12 @@
  */
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {Component, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {AribaCoreModule, Environment} from '@aribaui/core';
-import {CheckboxComponent} from '../checkbox.component';
 import {FormControl, FormGroup} from '@angular/forms';
+import {AribaCoreModule, AribaCoreI18nModule, Environment} from '@aribaui/core';
+import {CheckboxComponent} from '../checkbox.component';
 import {AWCheckBoxModule} from '../check-box.module';
 import {AribaComponentsTestProviderModule} from '../../../ariba.component.provider.module';
-import {AribaCoreI18nModule} from '../../../../core';
+
 
 
 describe('Component: Checkbox', () =>
@@ -244,7 +244,7 @@ class TestCBBasicWithNgModelComponent
 @Component({
     selector: 'wrapper-comp',
     template: `
-<div [formGroup]="env.formGroup">
+<div [formGroup]="env.currentForm">
         <aw-checkbox [name]="'colorx'" [value]="'red'" [label]="'Red'" >
          </aw-checkbox>
          <aw-checkbox [name]="'colorx'" [value]="'blue'" [label]="'Blue'">

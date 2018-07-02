@@ -34,6 +34,8 @@ import {
     StaticDynamicWrapper,
     UIMeta
 } from '../../core';
+import {ComponentRegistry} from '@aribaui/components';
+import {Environment} from '@aribaui/core';
 
 
 type DynamicValueType = 'Expr' | 'SDW' | 'CFP' | 'OV' | 'i18n';
@@ -350,6 +352,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         {
 
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
 
             let classSel: Selector = new Selector('class', '*');
             let operSel: Selector = new Selector('operation', 'view');
@@ -375,6 +379,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         'field, action,' + ' action category, class, layout', () =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
 
             let keyData = metaUI.keyData('field');
             expect(keyData.isPropertyScope).toBeTruthy();
@@ -399,6 +405,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         ' action category, class, layout', () =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
 
             let keyData = metaUI.keyData('operation');
             expect(keyData.isPropertyScope).toBeFalsy();
@@ -417,6 +425,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         {
 
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
@@ -441,6 +451,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         {
 
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
@@ -472,6 +484,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         {
 
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
@@ -504,6 +518,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         {
 
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
@@ -535,13 +551,13 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         {
 
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
-
             let prevMatch: MatchResult = metaUI.match('class', '*', null);
             prevMatch = metaUI.match('layout', 'Inspect', prevMatch);
-
 
             let found = false;
             for (let i = prevMatch.matches()[0]; i > 0; i--) {
@@ -563,6 +579,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
     it('It can match class with trait  form and retrieve MetaForm', () =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
@@ -592,6 +610,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
     it('It can match class with trait Stack and retrieve MetaElementList', () =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
@@ -622,6 +642,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         () =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 
@@ -673,6 +695,8 @@ describe('Rule matching functionality on preloaded ruleset', () =>
         () =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.registerLoader(new RuleLoaderService());
             metaUI.loadDefaultRuleFiles();
 

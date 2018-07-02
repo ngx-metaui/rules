@@ -27,7 +27,7 @@ export {
     IncludeComponentDirective, ComponentRegistry, AWCoreComponentModule,
     BaseFormComponent, DataTypeProviderRegistry, DataProvider, DataProviders, DataFinders,
     DataFinder, QueryType, FullTextArrayDataFinder, DATA_SOURCE, ArrayDataProvider,
-    NgForSetDirective
+    NgForSetDirective, AwNameDirective, AwNameStore
 } from './core/index';
 
 export {

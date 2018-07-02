@@ -20,8 +20,7 @@
  */
 import {Injectable, Type} from '@angular/core';
 import {isBlank, isPresent, isStringMap, isType, objectToName} from '@aribaui/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 
 /**

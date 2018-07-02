@@ -92,7 +92,7 @@ export abstract class BaseComponent implements OnInit, OnChanges, DoCheck, OnDes
     constructor(public env?: Environment)
     {
         this.extBindings = new Map<string, any>();
-
+        this.omitPadding = false;
     }
 
 

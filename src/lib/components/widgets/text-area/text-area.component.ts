@@ -23,6 +23,7 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Environment} from '@aribaui/core';
 import {BaseFormComponent} from '../../core/base-form.component';
 import {FormRowComponent} from '../../layouts/form-table/form-row/form-row.component';
+import {distinctUntilChanged} from 'rxjs/operators';
 
 
 /**
@@ -109,7 +110,9 @@ export class TextAreaComponent extends BaseFormComponent
         super.ngOnInit();
         super.registerFormControl(this.value);
 
-        this.formControl.valueChanges .distinctUntilChanged() .subscribe(val =>
+        this.formControl.valueChanges.pipe(
+            distinctUntilChanged()
+        ).subscribe(val =>
         {
             this.value = val;
             this.onModelChanged(this.value);

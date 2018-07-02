@@ -20,6 +20,8 @@
  */
 
 
+import {map} from 'rxjs/operators';
+
 import {Injectable, Type} from '@angular/core';
 import {
     HttpClient,
@@ -41,11 +43,10 @@ import {
     RestAction,
     RestSegmentType
 } from './url/segment';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription, Observable} from 'rxjs';
 import {DefaultRestBuilder} from './url/builder';
 import {RestUrlGroup} from './url/url-group';
 import {assert, isArray, isBlank, isDate, isPresent} from '../utils/lang';
-import {Observable} from 'rxjs/Observable';
 
 
 /**
@@ -354,8 +355,8 @@ export class Resource {
         }
 
 
-        return observable.map<Response<T | T[]>, T | T[]>(res => this.convertToComposite(res,
-            true, false)).subscribe(subscriber);
+        return observable.pipe(map<Response<T | T[]>, T | T[]>(res => this.convertToComposite(res,
+            true, false))).subscribe(subscriber);
     }
 
 
@@ -402,8 +403,8 @@ export class Resource {
         }
 
         const hasProgress = options.reportProgress || false;
-        return observable
-            .map(res => this.convertToComposite(res, false, hasProgress))
+        return observable.pipe(
+            map(res => this.convertToComposite(res, false, hasProgress)))
             .subscribe(subscriber, error);
     }
 

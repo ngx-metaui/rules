@@ -19,8 +19,8 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from './user';
 import {Environment} from '@aribaui/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
+import {timer as observableTimer} from 'rxjs';
+
 
 @Component({
     selector: 'app-user-manager',
@@ -41,7 +41,7 @@ export class UserManagerPageComponent implements OnInit
 
     ngOnInit()
     {
-        let timer = Observable.timer(2000);
+        let timer = observableTimer(2000);
 
         // this.timerCall = timer.subscribe(t => {
         //     this.userObject = new User('Peter', 'Pan', 8, 'BEST', 'peter@neverland.com');

@@ -95,8 +95,7 @@ export class ChooserDemoComponent
             obj: this.list,
             queryType: QueryType.FullText,
             state: null,
-            multiselect: false,
-            lookupKey: 'name'
+            multiselect: false
         });
 
 

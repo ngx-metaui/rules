@@ -1,13 +1,17 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "target": "es5",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -15,25 +19,23 @@
       "es2017",
       "dom"
     ],
-    "noEmitOnError": true,
-    "noImplicitAny": true,
     "types": [
       "jasmine",
       "lodash"
     ],
     "paths": {
       "@aribaui/core": [
-        "./lib/core/index"
+        "./src/lib/core/index"
       ],
       "@aribaui/components": [
-        "./lib/components/index"
+        "./src/lib/components/index"
       ],
       "@aribaui/metaui": [
-        "./lib/metaui/index"
-      ],
-
-
-      "@angular/*": ["../node_modules/@angular/*"]
+        "./src/lib/metaui/index"
+      ]
     }
+  },
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
   }
 }

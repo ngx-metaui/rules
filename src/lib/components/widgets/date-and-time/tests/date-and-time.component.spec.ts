@@ -75,7 +75,7 @@ describe('Component: DateAndTime', () =>
         let fixtureWrapper = TestBed.createComponent(TestDateTimeBasicBehaviorComponent);
         fixtureWrapper.detectChanges();
 
-        let items = fixtureWrapper.nativeElement.querySelector('.fa-calendar');
+        let items = fixtureWrapper.nativeElement.querySelector('.pi-calendar');
         items.click();
 
         tick();
@@ -94,7 +94,7 @@ describe('Component: DateAndTime', () =>
 
 
         let currentDay = fixtureWrapper.componentInstance.dateTime.value.getDate();
-        let item = fixtureWrapper.nativeElement.querySelector('.fa-calendar');
+        let item = fixtureWrapper.nativeElement.querySelector('.pi-calendar');
         item.click();
 
         tick();

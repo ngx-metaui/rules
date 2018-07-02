@@ -22,7 +22,7 @@
     display: flex;
 
     .ui-accordion-toggle-icon {
-      flex: 0 0 20px;
+      flex: 0 0 30px;
       padding-top: 2px
     }
     p-header {
@@ -86,7 +86,7 @@
   color: #363636;
   border: none;
   background: #ffffff !important;
-  padding: 0 2em;
+  padding: 0 1em;
 }
 
 .section-container /deep/ .ui-accordion-content {
@@ -121,8 +121,8 @@
 }
 
 /** accordion open and close icon **/
-:host /deep/ .ui-accordion-header /deep/ .fa.fa-caret-right,
-:host /deep/ .ui-accordion-header /deep/ .fa.fa-caret-down {
+:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-right,
+:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-down {
   font-family: "SAP icon fonts";
   font-size: 1.1em;
   top: .8em;
@@ -131,14 +131,15 @@
   margin-top: 0px;
 }
 
-:host /deep/ .ui-accordion-header.ui-state-disabled /deep/ .fa {
+:host /deep/ .ui-accordion-header.ui-state-disabled /deep/ .fa,
+:host /deep/ .ui-accordion-header.ui-state-disabled /deep/ .pi{
   display: none;
 }
 
-:host /deep/ .ui-accordion-header /deep/ .fa.fa-caret-right:before {
+:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-right:before {
   content: "\e1ed";
 }
 
-:host /deep/ .ui-accordion-header /deep/ .fa.fa-caret-down:before {
+:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-down:before {
   content: "\e1ef";
 }

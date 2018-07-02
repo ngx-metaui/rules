@@ -143,6 +143,7 @@ export class FormRowComponent extends BaseFormComponent
         this.omitPadding = this.parentContainer.omitPadding;
         this.classList += isPresent(this.parentContainer) ? ' ui-g-12 ' : '';
         this.classList = this.highlightRow ? this.classList + ' highlight-row ' : this.classList;
+
         this.classList = this.omitPadding ? this.classList + ' ui-g-nopad ' : this.classList;
     }
 

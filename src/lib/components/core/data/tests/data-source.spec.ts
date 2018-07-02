@@ -23,7 +23,7 @@ import {fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {AribaCoreModule, isPresent, isString} from '@aribaui/core';
 import {AWCoreComponentModule} from '../../core.module';
 import {DATA_SOURCE, DataSource} from '../data-source';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {DataProviders} from '../data-providers';
 import {DataFinder, DataFinders, FullTextArrayDataFinder, QueryType} from '../data-finders';
 import {DataProvider, DataTypeProviderRegistry} from '../datatype-registry.service';

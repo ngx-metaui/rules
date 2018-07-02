@@ -20,17 +20,16 @@ import {Component, Injector} from '@angular/core';
 import {fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
-import {AribaCoreModule, Environment} from '@aribaui/core';
+import {AribaCoreModule, Environment, AribaCoreI18nModule} from '@aribaui/core';
 import {UIMeta} from '../../../core/uimeta';
 import {Expr} from '../../../core/property-value';
 import {Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AribaMetaUIModule} from '../../../ariba.metaui.module';
-import {BaseComponent} from '@aribaui/components';
 import {
-    AribaComponentsTestProviderModule
-} from '../../../../components/ariba.component.provider.module';
-import {AribaCoreI18nModule} from '../../../../core';
+    ComponentRegistry, BaseComponent, AribaComponentsTestProviderModule
+} from '@aribaui/components';
+
 
 
 const routes: Routes = [
@@ -104,6 +103,8 @@ describe('Meta Context Component', () =>
         let fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
 
         let metaUI = UIMeta.getInstance();
+        let env: Environment = new Environment();
+        metaUI.componentRegistry = new ComponentRegistry(env);
         metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
 
@@ -127,6 +128,8 @@ describe('Meta Context Component', () =>
         fakeAsync(() =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
             let fixtureWrapper = TestBed.createComponent(TestContainerViewComponent);
@@ -148,12 +151,17 @@ describe('Meta Context Component', () =>
         fakeAsync(() =>
         {
             let metaUI = UIMeta.getInstance();
+            let env: Environment = new Environment();
+            metaUI.componentRegistry = new ComponentRegistry(env);
             metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
             let fixtureWrapper = TestBed.createComponent(TestContainerViewDefferedComponent);
             fixtureWrapper.detectChanges();
 
             tick(50);
+            fixtureWrapper.detectChanges();
+
+            tick();
             fixtureWrapper.detectChanges();
 
             tick();
@@ -241,7 +249,7 @@ class TestContainerViewDefferedComponent extends BaseComponent
         {
             this.user = new UserTestDynClass('Frank', 'Kolar', 1000, 'Some note about me.');
 
-        }, 50);
+        }, 0);
 
     }
 

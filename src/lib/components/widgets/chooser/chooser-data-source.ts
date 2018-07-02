@@ -19,7 +19,7 @@
 import {DataSource, DSInitParams} from '../../core/data/data-source';
 import {DataFinder, DataFinders} from '../../core/data/data-finders';
 import {DataProviders} from '../../core/data/data-providers';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {DataProvider} from '../../core/data/datatype-registry.service';
 import {ChooserState} from './chooser-state';
 import {assert, isArray, isBlank, isPresent, ListWrapper} from '@aribaui/core';

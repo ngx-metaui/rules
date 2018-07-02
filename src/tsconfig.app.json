@@ -1,16 +1,16 @@
 {
   "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "module": "es2015",
+    "types": [],
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false
+  },
   "angularCompilerOptions": {
     "strictMetadataEmit": true,
     "annotateForClosureCompiler": true,
     "annotationsAs": "static fields"
-  },
-  "compilerOptions": {
-    "outDir": "../out-tsc/app",
-    "module": "es2015",
-    "baseUrl": "./",
-    "types": [],
-    "experimentalDecorators": true
   },
   "exclude": [
     "test.ts",

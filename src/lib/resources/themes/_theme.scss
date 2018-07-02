@@ -201,7 +201,7 @@
 }
 
 .ui-button-icon-only {
-  .fa {
+  .pi, .fa, .fa-clock-o {
     margin-left: -2em;
   }
 }
@@ -653,10 +653,10 @@ p-togglebutton.ng-dirty.ng-invalid .ui-button {
 }
 
 /* Icons */
-.fa:not(.ui-radiobutton-icon) {
+.fa:not(.ui-radiobutton-icon), .pi:not(.ui-radiobutton-icon) {
   font-family: "SAP icon fonts";
 
-  &.fa-close {
+  &.pi-times {
     font-size: .8em;
     top: .8em;
     left: .1em;

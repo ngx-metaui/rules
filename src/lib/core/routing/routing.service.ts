@@ -28,7 +28,7 @@ import {
     Route,
     Router
 } from '@angular/router';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {isBlank, isPresent} from '../utils/lang';
 import {ListWrapper} from '../utils/collection';
 

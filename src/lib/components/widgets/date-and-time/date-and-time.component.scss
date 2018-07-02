@@ -17,14 +17,15 @@
   }
 }
 
-/* change font family for Font-awsome icons*/
-/deep/ .ui-calendar .fa {
+
+/* change font family for primeng icons and awsome icons*/
+/deep/ .ui-calendar .ui-calendar-button .ui-button-icon-left {
   font-family: "SAP icon fonts";
   color: #199de0;
   cursor: pointer;
   font-size: 1.4em;
 
-  &.fa-calendar:before {
+  &.pi-calendar:before {
     content: '\e0e0';
   }
   &.fa-clock-o:before {

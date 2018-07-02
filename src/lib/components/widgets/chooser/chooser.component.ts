@@ -37,7 +37,7 @@ import {
 import {FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AutoComplete} from 'primeng/primeng';
 import {TranslateService} from '@ngx-translate/core';
-import 'rxjs/add/observable/fromEvent';
+
 import {assert, Environment, isBlank, isPresent} from '@aribaui/core';
 import {BaseFormComponent} from '../../core/base-form.component';
 import {DATA_SOURCE} from '../../core/data/data-source';

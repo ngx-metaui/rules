@@ -20,54 +20,55 @@ import {
 } from '../../../core';
 
 @Component({
-    template: `<div class="parent-container" id="master">
-        <div id="summary">
-            <dl>
-                <dt>Category:</dt>
-                <dd awName ext="retail">Retail</dd>
-            </dl>
-        </div>
-        <div>
-            <form id="applicant">
-                <input type="text" name="firstName" awName>
-                <input type="text" name="lastName" awName>
-                <input type="text" name="age" awName>
-                <button name="update" (click)="updateApplicant()" awName>Submit</button>
-            </form>
-            <form id="spouse">
-                <input type="text" name="firstName" awName>
-                <input type="text" name="lastName" awName>
-                <input type="text" name="age" awName>
-                <button name="update" (click)="updateSpouse()" awName>Submit</button>
-            </form>
-            <form>
-                <input type="text" name="firstName" awName class="masterFirstName">
-                <input type="text" name="lastName" awName class="masterLastName">
-                <input type="text" name="age" awName class="masterAge">
-                <select name="province" id="us_state" awName>
-                    <option value="AL" awName class="test">Alabama</option>
-                    <option value="AK" awName>Alaska</option>
-                    <option value="AZ" awName>Arizona</option>
-                </select>
-                <select name="city" awName>
-                    <option value="Alamo" awName>Alamo</option>
-                    <option value="Baltimore" awName>Baltimore</option>
-                    <option value="Carson" awName>Carson</option>
-                    <option value="Dover" awName>Dover</option>
-                    <option value="Los Angeles" awName>Los Angeles</option>
-                </select>
-                <button name="update" (click)="updateSpouse()" awName>Submit</button>
-            </form>
-        </div>
-        <div id="offspring">
-            <div *ngFor="let child of children; let i = index"
-                (click)="editChild(child.id)" class="child" awName ext="child{{i}}">
-                <div awName ext="childName{{i}}" class="name">{{child.name}}</div>
-                <div awName ext="childAge{{i}}" class="age">{{child.age}}</div>
-                <div awName ext="childFood{{i}}" class="food">{{child.favoriteFood}}</div>
+    template: `
+        <div class="parent-container" id="master">
+            <div id="summary">
+                <dl>
+                    <dt>Category:</dt>
+                    <dd awName ext="retail">Retail</dd>
+                </dl>
             </div>
-        </div>
-    </div>`
+            <div>
+                <form id="applicant">
+                    <input type="text" name="firstName" awName>
+                    <input type="text" name="lastName" awName>
+                    <input type="text" name="age" awName>
+                    <button name="update" (click)="updateApplicant()" awName>Submit</button>
+                </form>
+                <form id="spouse">
+                    <input type="text" name="firstName" awName>
+                    <input type="text" name="lastName" awName>
+                    <input type="text" name="age" awName>
+                    <button name="update" (click)="updateSpouse()" awName>Submit</button>
+                </form>
+                <form>
+                    <input type="text" name="firstName" awName class="masterFirstName">
+                    <input type="text" name="lastName" awName class="masterLastName">
+                    <input type="text" name="age" awName class="masterAge">
+                    <select name="province" id="us_state" awName>
+                        <option value="AL" awName class="test">Alabama</option>
+                        <option value="AK" awName>Alaska</option>
+                        <option value="AZ" awName>Arizona</option>
+                    </select>
+                    <select name="city" awName>
+                        <option value="Alamo" awName>Alamo</option>
+                        <option value="Baltimore" awName>Baltimore</option>
+                        <option value="Carson" awName>Carson</option>
+                        <option value="Dover" awName>Dover</option>
+                        <option value="Los Angeles" awName>Los Angeles</option>
+                    </select>
+                    <button name="update" (click)="updateSpouse()" awName>Submit</button>
+                </form>
+            </div>
+            <div id="offspring">
+                <div *ngFor="let child of children; let i = index"
+                     (click)="editChild(child.id)" class="child" awName ext="child{{i}}">
+                    <div awName ext="childName{{i}}" class="name">{{child.name}}</div>
+                    <div awName ext="childAge{{i}}" class="age">{{child.age}}</div>
+                    <div awName ext="childFood{{i}}" class="food">{{child.favoriteFood}}</div>
+                </div>
+            </div>
+        </div>`
 })
 class AwNameTestingComponent {
     children: any[] = [{
@@ -87,9 +88,14 @@ class AwNameTestingComponent {
         favoriteFood: 'salad'
     }];
 
-    updateApplicant() {}
-    updateSpouse() {}
-    editChild(id: string) {}
+    updateApplicant() {
+    }
+
+    updateSpouse() {
+    }
+
+    editChild(id: string) {
+    }
 
 }
 
@@ -104,22 +110,24 @@ const queryByAwName = (de: any, awname: string) => {
 describe('AwNameDirective', () => {
 
     let component: AwNameTestingComponent;
-    let fixture: ComponentFixture <AwNameTestingComponent>;
+    let fixture: ComponentFixture<AwNameTestingComponent>;
     let de: any;
 
-    beforeEach(async (() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
-                providers: [
-                    AwNameStore,
-                    { provide: AppConfig, useValue: {
+            providers: [
+                AwNameStore,
+                {
+                    provide: AppConfig, useValue: {
                         isProductionMode: () => false
-                    } }
-                ],
-                declarations: [
-                    AwNameDirective,
-                    AwNameTestingComponent
-                ]
-            })
+                    }
+                }
+            ],
+            declarations: [
+                AwNameDirective,
+                AwNameTestingComponent
+            ]
+        })
             .compileComponents();
     }));
     beforeEach(() => {
@@ -212,23 +220,25 @@ describe('AwNameDirective', () => {
 describe('AwNameDirective in Production Mode', () => {
 
     let component: AwNameTestingComponent;
-    let fixture: ComponentFixture <AwNameTestingComponent>;
+    let fixture: ComponentFixture<AwNameTestingComponent>;
     let de: any;
 
-    beforeEach(async (() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
             providers: [
                 AwNameStore,
-                { provide: AppConfig, useValue: {
-                    isProductionMode: () => true
-                } }
+                {
+                    provide: AppConfig, useValue: {
+                        isProductionMode: () => true
+                    }
+                }
             ],
             declarations: [
                 AwNameDirective,
                 AwNameTestingComponent
             ]
         })
-        .compileComponents();
+            .compileComponents();
     }));
     beforeEach(() => {
         fixture = TestBed.createComponent(AwNameTestingComponent);

@@ -19,8 +19,8 @@
  *
  */
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {Subscription} from 'rxjs/Subscription';
+import {Subject, Subscription} from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 /**
  * Notifications service is a implementation of the publish/subscribe event bus for publishing
@@ -105,9 +105,12 @@ export class Notifications
     subscribe(topic: string, subscriber: (value: any) => void): Subscription
     {
         const toAll = Notifications.AllTopics;
-        return this.events.filter(msg => msg.topic === topic || topic === toAll)
-            .map((msg: Message) => msg.content)
-            .subscribe(subscriber);
+
+        return this.events.pipe(
+            filter(msg => msg.topic === topic || topic === toAll),
+            map((msg: Message) => msg.content)
+
+        ).subscribe(subscriber);
     }
 
     /**

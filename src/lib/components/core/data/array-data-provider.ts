@@ -20,7 +20,8 @@
  */
 import {DataProvider} from './datatype-registry.service';
 import {FieldPath, isBlank, isPresent} from '@aribaui/core';
-import {Observable} from 'rxjs/Observable';
+import {of as observableOf, Observable} from 'rxjs';
+
 
 /**
  * Default implementation for Arrays.
@@ -68,7 +69,7 @@ export class ArrayDataProvider<T> extends DataProvider<T>
 
     fetch (params: Map<string, any>): Observable<T[]>
     {
-        return Observable.of(this.dataForParams(params));
+        return observableOf(this.dataForParams(params));
     }
 
 

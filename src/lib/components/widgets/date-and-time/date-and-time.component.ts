@@ -28,12 +28,13 @@ import {
     Output,
     SkipSelf
 } from '@angular/core';
+import {distinctUntilChanged} from 'rxjs/operators';
 import {Environment, isBlank, isDate, isPresent} from '@aribaui/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DateFormatter, FormattersService} from '../../core/formatters-service';
 import {BaseFormComponent} from '../../core/base-form.component';
 import {FormRowComponent} from '../../layouts/form-table/form-row/form-row.component';
-import 'rxjs/add/operator/distinctUntilChanged';
+
 
 /**
  * Lightweight and configurable Date and Time component based on the primeng. This
@@ -245,7 +246,7 @@ export class DateAndTimeComponent extends BaseFormComponent
             this.hourFormat = '24';
         }
 
-        this.formControl.valueChanges.distinctUntilChanged().subscribe((val: Date) => {
+        this.formControl.valueChanges.pipe(distinctUntilChanged()).subscribe((val: Date) => {
             this.value = val;
             this.onModelChanged(this.value);
         });

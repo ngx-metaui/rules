@@ -19,7 +19,7 @@
  *
  */
 import {assert, equals, isBlank, isPresent, isString} from '@aribaui/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {DataSource, DSInitParams} from '../../core/data/data-source';
 import {DataProvider} from '../../core/data/datatype-registry.service';
 import {DataFinder, DataFinders, QueryType} from '../../core/data/data-finders';

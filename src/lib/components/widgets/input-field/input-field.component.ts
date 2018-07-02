@@ -1,9 +1,10 @@
+import {distinctUntilChanged} from 'rxjs/operators';
 import {Component, forwardRef, Inject, Input, Optional, SkipSelf} from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Environment, equals, isBlank, isPresent, Value} from '@aribaui/core';
+import {Environment, equals, isPresent, Value} from '@aribaui/core';
 import {BaseFormComponent} from '../../core/base-form.component';
 import {FormRowComponent} from '../../layouts/form-table/form-row/form-row.component';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {DecimalPipe} from '@angular/common';
 
 
@@ -138,11 +139,13 @@ export class InputFieldComponent extends BaseFormComponent {
         super.ngOnInit();
         super.registerFormControl(this.bigDecimal);
 
-        this.vchSubscriber = this.formControl.valueChanges.distinctUntilChanged().subscribe(val => {
-            setTimeout(() => this.value = val);
-            // this.value = val;
-            this.onModelChanged(this.value);
-        });
+        this.vchSubscriber = this.formControl.valueChanges
+            .pipe(distinctUntilChanged())
+            .subscribe(val => {
+                setTimeout(() => this.value = val);
+                // this.value = val;
+                this.onModelChanged(this.value);
+            });
     }
 
 

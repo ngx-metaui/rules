@@ -119,6 +119,7 @@
             <aw-form-table [labelsOnTop]="true">
                 <aw-form-row [label]="'Users'">
                     <aw-chooser #chooser name="users2"
+                                [multiselect]="false"
                                 [(ngModel)]="selection4"
                                 [valueTransformer]="formatItem"
                                 [dataSource]="ds5">

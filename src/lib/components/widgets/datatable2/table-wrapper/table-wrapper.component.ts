@@ -36,10 +36,8 @@ import {
 import {assert, Environment, isPresent} from '@aribaui/core';
 import {Datatable2Component} from '../datatable2.component';
 import {BaseComponent} from '../../../core/base.component';
-import {Subject} from 'rxjs/Subject';
+import {Subject, Observable, Subscription, of} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from 'rxjs/Subscription';
 import {isPlatformBrowser} from '@angular/common';
 import {InfiniteScrollComponent} from '../../../core/infite-scroll/infite-scroll.component';
 import {DomUtilsService} from '../../../core/dom-utils.service';
@@ -191,7 +189,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
             // ignore new term if same as previous term
             distinctUntilChanged(),
 
-            switchMap((term: string) => Observable.of(term))
+            switchMap((term: string) => of(term))
         ).subscribe((term: any) =>
         {
             if (term) {

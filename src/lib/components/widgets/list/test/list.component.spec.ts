@@ -186,7 +186,7 @@ describe('Component: List', () =>
                 .querySelectorAll('.w-li-wrapper .ui-chkbox-icon');
             expect(items.length).toBe(3);
             expect(fixtureWrapper.componentInstance.list.selection[0]).toBe('Monday');
-            expect(items[0].classList).toContain('fa-check');
+            expect(items[0].classList).toContain('pi-check');
 
         }));
 
