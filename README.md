@@ -172,15 +172,6 @@ To start playing with the `oss rules` please checkout the [lib/meta-ui-parser.md
 
 Current implementation is based on PrimeNG widget library and we are working to make `MetaUI` widget library independent.
 
-```
-Current version is based on the:
-
-* Angular 5.1.0
-* PrimeNG 5.0.2
-
-Upgrade to Angular 6  will start soon as well as to newest the Angular ClI with its 
-support for libraries.
-```
 
 
 ## How to obtain support
