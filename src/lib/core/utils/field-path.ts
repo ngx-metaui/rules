@@ -18,7 +18,7 @@
  *
  *
  */
-import * as _ from 'lodash';
+import * as objectPath from 'object-path';
 import {isBlank, isString, isStringMap} from './lang';
 
 
@@ -27,12 +27,11 @@ import {isBlank, isString, isStringMap} from './lang';
  *
  * A String such as "foo.bar.baz" can be used to access a value on a target object.
  *
- * I am using lodash to help me with this. We should probably replace this with out own
- * implementation as lodash is pretty big to include into the production code.
  */
 export class FieldPath
 {
     _fieldPaths: string[];
+    private objectPathInstance: any;
 
     /**
      *
@@ -62,7 +61,8 @@ export class FieldPath
 
     constructor(private _path: string)
     {
-        this._fieldPaths = _.toPath(_path);
+        this._fieldPaths = _path.split('.');
+        this.objectPathInstance = (<any>objectPath)['create']({includeInheritedProps: true});
     }
 
     /**
@@ -92,11 +92,11 @@ export class FieldPath
         if (this._fieldPaths.length > 1 && !(target instanceof Map)) {
 
             let path = this._fieldPaths.slice(0, this._fieldPaths.length - 1).join('.');
-            let objectToBeUpdated = _.get(target, path);
+            let objectToBeUpdated = this.objectPathInstance.get(target, path);
             if (objectToBeUpdated instanceof Map) {
                 objectToBeUpdated.set(this._fieldPaths[this._fieldPaths.length - 1], value);
             } else {
-                _.set(target, this._path, value);
+                this.objectPathInstance.set(target, this._path, value);
             }
         }
 
@@ -116,7 +116,7 @@ export class FieldPath
                 target.set(this._fieldPaths[0], value);
             }
         } else {
-            _.set(target, this._path, value);
+            this.objectPathInstance.set(target, this._path, value);
         }
     }
 
@@ -131,7 +131,7 @@ export class FieldPath
         let value: any;
         for (let i = 0; i < this._fieldPaths.length; i++) {
             if ((isStringMap(target) || isString(target)) && !(target instanceof Map)) {
-                value = _.get(target, this._fieldPaths[i]);
+                value = this.objectPathInstance.get(target, this._fieldPaths[i]);
                 target = value;
             } else if (target instanceof Map) {
                 let targetMap: Map<string, any> = target;
