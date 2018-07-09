@@ -1,0 +1,4 @@
+<m-context #cnx scopeKey="class">
+    <!-- Dont try to render if the object is not set yet -->
+    <m-form-table *ngIf="cnx.hasObject"></m-form-table>
+</m-context>

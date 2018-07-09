@@ -111,23 +111,24 @@ describe('Component: Radiobutton', () => {
     }));
 
 
-    it('renders 2 radio buttons using [formGroup] so that "blue" value is checked', fakeAsync(() => {
+    it('renders 2 radio buttons using [formGroup] so that "blue" value is checked',
+        fakeAsync(() => {
 
-        let fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
-        fixtureWrapper.detectChanges();
-        tick();
-        fixtureWrapper.detectChanges();
+            let fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
+            fixtureWrapper.detectChanges();
+            tick();
+            fixtureWrapper.detectChanges();
 
-        let rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
-        expect(rbs.length).toEqual(2);
+            let rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
+            expect(rbs.length).toEqual(2);
 
-        fixtureWrapper.detectChanges();
-        tick();
-        fixtureWrapper.detectChanges();
+            fixtureWrapper.detectChanges();
+            tick();
+            fixtureWrapper.detectChanges();
 
-        expect(rbs[0].checked).toBeFalsy();
-        expect(rbs[1].checked).toBeTruthy();
-    }));
+            expect(rbs[0].checked).toBeFalsy();
+            expect(rbs[1].checked).toBeTruthy();
+        }));
 
 
     it('renders 2 radio buttons using [formGroup] where "blue" value is checked and it' +

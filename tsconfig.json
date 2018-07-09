@@ -41,6 +41,12 @@
       ],
       "resources/*": [
         "dist/resources/*"
+      ],
+      "metaui": [
+        "dist/metaui"
+      ],
+      "metaui/*": [
+        "dist/metaui/*"
       ]
     }
   },

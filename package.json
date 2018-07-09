@@ -1,8 +1,8 @@
 {
-  "name": "@aribaui",
+  "name": "aribaui",
   "description": "Ariba UI core module providing basic set of API and components.",
   "homepage": "https://github.com/SAP/angular-metaui.git",
-  "version": "6.0.1",
+  "version": "6.0.0",
   "license": "Apache-2.0",
   "keywords": [
     "angular",
@@ -29,7 +29,9 @@
     "build.resources": "rm -Rf ./dist/@aribaui/resources && cp -R packages/resources/src/ ./dist/@aribaui/resources && ./node_modules/.bin/scss-bundle -e  dist/@aribaui/resources/styles/aribaui.scss -d dist/@aribaui/resources/styles/aribaui.css && cp -rf  packages/resources/package.json ./dist/@aribaui/resources/.",
     "build.packages": "ng build core && ng build components && npm run build.resources",
     "build.packages.prod": "ng build core --prod && ng build components --prod && npm run build.resources",
-    "release": "release-it"
+    "test.packages": "echo Testing core && ng test core  --watch=false && echo Testing components && ng test components --watch=false && echo Testing metaui && ng test metaui --watch=false",
+    "lint.packages": "echo Linting core && ng lint core  && echo Linting components && ng lint components && echo Linting metaui && ng lint metaui ",
+    "changeLog": "./tools/gulp/release/changelog.js"
   },
   "private": true,
   "dependencies": {
@@ -61,10 +63,14 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.6.8",
-    "@angular-devkit/build-ng-packagr": "~0.6.8",
-    "@angular/cli": "6.0.8",
     "@angular/compiler-cli": "6.0.7",
+    "@angular-devkit/build-ng-packagr": "~0.6.8",
+    "@angular-devkit/build-angular": "~0.6.8",
+    "ng-packagr": "^3.0.0-rc.2",
+    "tsickle": ">=0.25.5",
+    "tslib": "^1.7.1",
+    "typescript": "^2.7.2",
+    "@angular/cli": "6.0.8",
     "@angular/language-service": "6.0.7",
     "@types/glob": "5.0.35",
     "@types/gulp": "4.0.5",
@@ -132,7 +138,6 @@
     "madge": "3.2.0",
     "merge2": "~1.2.2",
     "minimist": "1.2.0",
-    "ng-packagr": "^3.0.0-rc.2",
     "npm": "~6.1.0",
     "postcss-loader": "^2.1.5",
     "postcss-url": "^7.3.2",
@@ -156,10 +161,7 @@
     "systemjs": "0.21.4",
     "traceur": "0.0.111",
     "ts-node": "~5.0.1",
-    "tsickle": ">=0.25.5",
-    "tslib": "^1.7.1",
     "tslint": "~5.9.1",
-    "typescript": "^2.7.2",
     "url-loader": "^0.5.7",
     "which": "1.3.1"
   },

@@ -262,6 +262,52 @@
           }
         }
       }
+    },
+    "metaui": {
+      "root": "packages/metaui",
+      "sourceRoot": "packages/metaui/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "packages/metaui/tsconfig.lib.json",
+            "project": "packages/metaui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "packages/metaui/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "packages/metaui/test.ts",
+            "tsConfig": "packages/metaui/tsconfig.spec.json",
+            "karmaConfig": "packages/metaui/karma.conf.js",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "packages/components/test/assets",
+                "output": "/assets"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/metaui/tsconfig.lib.json",
+              "packages/metaui/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "aribaui",
