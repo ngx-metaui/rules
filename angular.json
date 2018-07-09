@@ -29,11 +29,6 @@
                 "glob": "**/*",
                 "input": "src/playground/assets/data",
                 "output": "/playground/assets/data"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/playground/assets/i18n",
-                "output": "/playground/assets/i18n"
               }
             ],
             "styles": [
@@ -129,11 +124,6 @@
                 "glob": "**/*",
                 "input": "src/playground/assets/data",
                 "output": "/playground/assets/data"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/playground/assets/i18n",
-                "output": "/playground/assets/i18n"
               }
             ]
           }
@@ -169,6 +159,102 @@
           "options": {
             "tsConfig": [
               "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "core": {
+      "root": "packages/core",
+      "sourceRoot": "packages/core/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "packages/core/tsconfig.lib.json",
+            "project": "packages/core/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "packages/core/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "packages/core/test.ts",
+            "tsConfig": "packages/core/tsconfig.spec.json",
+            "karmaConfig": "packages/core/karma.conf.js",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "packages/core/test/assets",
+                "output": "/assets"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/core/tsconfig.lib.json",
+              "packages/core/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "components": {
+      "root": "packages/components",
+      "sourceRoot": "packages/components/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "packages/components/tsconfig.lib.json",
+            "project": "packages/components/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "packages/components/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "packages/components/test.ts",
+            "tsConfig": "packages/components/tsconfig.spec.json",
+            "karmaConfig": "packages/components/karma.conf.js",
+            "scripts": [
+              "node_modules/prismjs/prism.js",
+              "node_modules/quill/dist/quill.js"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "packages/components/test/assets",
+                "output": "/assets"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/components/tsconfig.lib.json",
+              "packages/components/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

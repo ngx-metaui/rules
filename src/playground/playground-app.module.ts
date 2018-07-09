@@ -17,7 +17,7 @@
  *
  */
 import {NgModule} from '@angular/core';
-import {AribaCoreModule, AribaCoreI18nModule, AppConfig, isBlank} from '@aribaui/core';
+import {AribaCoreModule, AppConfig, isBlank} from '@aribaui/core';
 import {AribaComponentsModule} from '@aribaui/components';
 import {AppRoutingModule} from './playground-app-routing.module';
 import {PlaygroundAppComponent} from './playground-app.component';
@@ -33,7 +33,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     imports: [
         BrowserAnimationsModule,
         BrowserModule,
-        AribaCoreI18nModule,
         AribaCoreModule.forRoot({
             /**
              * Bootstrap init properties

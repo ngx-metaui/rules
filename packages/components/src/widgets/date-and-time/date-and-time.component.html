@@ -1,0 +1,37 @@
+<ng-template [ngIf]="editable">
+
+    <div class="w-datetime " [class.has-time]="showTime" [formGroup]="formGroup">
+
+        <p-calendar formControlName="{{name}}"
+                    [defaultDate]="defaultDate"
+                    [showIcon]="showIcon"
+                    dateFormat="{{showTime ? formatNameWithTime : formatPattern}}"
+                    [yearNavigator]="showNavigation"
+                    [monthNavigator]="showNavigation"
+                    [yearRange]="yearRange"
+                    placeholder="{{showTime ? formatNameWithTime.toUpperCase() : formatPattern.toUpperCase()}}"
+                    (onSelect)="onDateChange($event)"
+                    [timeOnly]="!showDate"
+                    [readonlyInput]="true"
+                    [locale]="i18n">
+        </p-calendar>
+
+        <p-calendar *ngIf="showTime"
+                    icon="icon-history"
+                    formControlName="{{name}}"
+                    [hourFormat]="hourFormat"
+                    [defaultDate]="defaultDate"
+                    [showIcon]="showIcon"
+                    [timeOnly]="showTime"
+                    [showTime]="showTime"
+                    [placeholder]="timePlaceHolder"
+                    (onSelect)="onDateChange($event)"
+                    [locale]="i18n">
+        </p-calendar>
+
+    </div>
+</ng-template>
+
+<ng-template [ngIf]="!editable">
+    <aw-string value="{{value | date: formatPatternNG}}"></aw-string>
+</ng-template>

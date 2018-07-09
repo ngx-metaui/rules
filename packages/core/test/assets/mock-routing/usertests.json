@@ -1,0 +1,77 @@
+{
+  "resource": "usertests",
+  "routes": [
+    {
+      "path": "/usertests",
+      "method": "GET",
+      "responseCode": 200,
+      "data": [
+        {
+          "uniqueName": "1",
+          "name": "Peter"
+        },
+        {
+          "uniqueName": "2",
+          "name": "John"
+        }
+      ]
+    },
+    {
+      "path": "/usertests/1",
+      "method": "GET",
+      "responseCode": 200,
+      "data": {
+        "uniqueName": "1",
+        "name": "Peter"
+      }
+    },
+    {
+      "path": "/usertests/2",
+      "method": "GET",
+      "responseCode": 200,
+      "data": {
+        "uniqueName": "2",
+        "name": "John"
+      }
+    },
+    {
+      "path": "/usertests/q?term=John",
+      "method": "GET",
+      "responseCode": 200,
+      "data": [
+        {
+          "uniqueName": "2",
+          "name": "John"
+        }
+      ]
+    },
+    {
+      "path": "/usertests",
+      "method": "POST",
+      "responseCode": 201,
+      "data": {
+        "uniqueName": "F1",
+        "name": "Frank1"
+      }
+    },
+    {
+      "path": "/usertests/F1",
+      "method": "PUT",
+      "responseCode": 200,
+      "data": {
+        "uniqueName": "F1",
+        "name": "Frank1-2"
+      }
+    },
+    {
+      "path": "/usertests/F2",
+      "method": "GET",
+      "responseText": "NOT FOUND",
+      "responseCode": 404,
+      "data": {
+        "uniqueName": "F2",
+        "msg": "Record not found"
+      }
+    }
+  ]
+}

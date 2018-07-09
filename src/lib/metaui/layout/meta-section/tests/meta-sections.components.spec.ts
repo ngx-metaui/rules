@@ -20,7 +20,7 @@ import {Component} from '@angular/core';
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
-import {AribaCoreModule, Entity, Environment, AribaCoreI18nModule} from '@aribaui/core';
+import {AribaCoreModule, Entity, Environment} from '@aribaui/core';
 import {UIMeta} from '../../../core/uimeta';
 import {AribaMetaUIModule} from '../../../ariba.metaui.module';
 import {MetaUIActionEvent} from '../../../core/meta-context/meta-context.component';
@@ -228,7 +228,6 @@ describe('Meta Sections', () =>
                 TestMetaSectionComponent
             ],
             imports: [
-                AribaCoreI18nModule,
                 AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                 AribaComponentsTestProviderModule.forRoot(),
                 AribaMetaUIModule,
@@ -263,7 +262,6 @@ describe('Meta Sections', () =>
                 TestMetaSectionComponent
             ],
             imports: [
-                AribaCoreI18nModule,
                 AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                 AribaComponentsTestProviderModule.forRoot(),
                 AribaMetaUIModule,
@@ -295,7 +293,6 @@ describe('Meta Sections', () =>
                 TestMetaSectionComponent
             ],
             imports: [
-                AribaCoreI18nModule,
                 AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                 AribaComponentsTestProviderModule.forRoot(),
                 AribaMetaUIModule,
@@ -327,7 +324,6 @@ describe('Meta Sections', () =>
                 TestMetaSectionComponent
             ],
             imports: [
-                AribaCoreI18nModule,
                 AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                 AribaComponentsTestProviderModule.forRoot(),
                 AribaMetaUIModule,
@@ -359,7 +355,6 @@ describe('Meta Sections', () =>
                     TestMetaSectionComponent
                 ],
                 imports: [
-                    AribaCoreI18nModule,
                     AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                     AribaComponentsTestProviderModule.forRoot(),
                     AribaMetaUIModule,
@@ -391,7 +386,6 @@ describe('Meta Sections', () =>
                     TestMetaSectionComponent
                 ],
                 imports: [
-                    AribaCoreI18nModule,
                     AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                     AribaComponentsTestProviderModule.forRoot(),
                     AribaMetaUIModule,
@@ -429,7 +423,6 @@ describe('Meta Sections', () =>
                     TestMetaSectionComponent
                 ],
                 imports: [
-                    AribaCoreI18nModule,
                     AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                     AribaComponentsTestProviderModule.forRoot(),
                     AribaMetaUIModule,
@@ -468,7 +461,6 @@ describe('Meta Sections', () =>
                     TestMetaSectionComponent
                 ],
                 imports: [
-                    AribaCoreI18nModule,
                     AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                     AribaComponentsTestProviderModule.forRoot(),
                     AribaMetaUIModule,
@@ -514,7 +506,6 @@ describe('Meta Sections', () =>
                     TestMetaSectionDeferredComponent
                 ],
                 imports: [
-                    AribaCoreI18nModule,
                     AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                     AribaComponentsTestProviderModule.forRoot(),
                     AribaMetaUIModule,

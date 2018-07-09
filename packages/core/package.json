@@ -1,0 +1,30 @@
+{
+  "name": "@aribaui/core",
+  "version": "6.0.0",
+  "description": "Ariba UI core module providing basic set of API and services.",
+  "homepage": "https://github.com/SAP/angular-metaui.git",
+  "license": "Apache-2.0",
+  "keywords": [
+    "angular",
+    "ariba",
+    "sap",
+    "http",
+    "interceptors",
+    "domain",
+    "model",
+    "fieldpath",
+    "notification",
+    "errors",
+    "rules"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "@ngx-translate/core": "10.0.2",
+    "@ngx-translate/http-loader": "3.0.1",
+    "big-integer": "1.6.32",
+    "object-hash": "1.3.0",
+    "object-path": "^0.11.4",
+    "typescript-collections": "1.3.2"
+  }
+}

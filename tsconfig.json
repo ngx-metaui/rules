@@ -25,13 +25,22 @@
     ],
     "paths": {
       "@aribaui/core": [
-        "./src/lib/core/index"
+        "dist/@aribaui/core"
+      ],
+      "@aribaui/core/*": [
+        "dist/@aribaui/core/*"
       ],
       "@aribaui/components": [
-        "./src/lib/components/index"
+        "dist/@aribaui/components"
       ],
-      "@aribaui/metaui": [
-        "./src/lib/metaui/index"
+      "@aribaui/components/*": [
+        "dist/@aribaui/components/*"
+      ],
+      "resources": [
+        "dist/resources"
+      ],
+      "resources/*": [
+        "dist/resources/*"
       ]
     }
   },

@@ -42,7 +42,6 @@ export {
 } from './layout/index';
 export {MetaContextComponent} from './core/meta-context/meta-context.component';
 export {AribaMetaUIModule, initMetaUI} from './ariba.metaui.module';
-export {I18nMetaResolve} from './i18-resolve';
 export {AribaMetaUIRoutingModule} from './ariba-metaui-routing.module';
 
 

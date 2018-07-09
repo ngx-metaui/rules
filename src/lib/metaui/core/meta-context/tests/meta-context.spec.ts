@@ -20,7 +20,6 @@ import {Component, Injector} from '@angular/core';
 import {fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
-import {AribaCoreModule, Environment, AribaCoreI18nModule} from '@aribaui/core';
 import {UIMeta} from '../../../core/uimeta';
 import {Expr} from '../../../core/property-value';
 import {Router, Routes} from '@angular/router';
@@ -29,6 +28,7 @@ import {AribaMetaUIModule} from '../../../ariba.metaui.module';
 import {
     ComponentRegistry, BaseComponent, AribaComponentsTestProviderModule
 } from '@aribaui/components';
+import {AribaCoreModule, Environment} from '@aribaui/core';
 
 
 
@@ -72,7 +72,6 @@ describe('Meta Context Component', () =>
             ],
             imports: [
                 RouterTestingModule.withRoutes(routes),
-                AribaCoreI18nModule,
                 AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                 AribaComponentsTestProviderModule.forRoot(),
                 AribaMetaUIModule

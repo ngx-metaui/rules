@@ -1,0 +1,209 @@
+<!--
+    To make it more readable Each Column type has its own rendering template instead of putting
+    all this into datatable as this is more responsibility of the column. And the main goal
+    was try to be modular as possible. When There will be different types of columns
+
+    - Regular DTColumn (current implementation),
+    - SelectionColumn (Single/Multi select) - todo,
+    - DetailRow column, then pivotal collumn to render row/column/detail attributes - todo.
+
+    When implementing new column type you just inherit this DTColumnComponent and provide your
+    own rendering template and DT take care of the rest.
+
+    todo: We have SingleSelect, Multiselect rendering template that is Added programatically
+    todo: We have pivotal rendering template
+
+
+-->
+<ng-template #renderingTemplate let-isHeader let-isSubHeader="isSubHeader" let-column="column"
+             let-dataToRender="data"
+             let-columnIndex="columnIndex"
+             let-rowIndex="rowIndex">
+
+    <ng-template *ngIf="isHeader" [ngTemplateOutlet]="colHeader"
+                 [ngTemplateOutletContext]="{$implicit: isSubHeader, columnIndex:columnIndex, data: dataToRender,
+                 rowIndex:rowIndex}">
+    </ng-template>
+
+    <ng-template *ngIf="!isHeader" [ngTemplateOutlet]="colBody"
+                 [ngTemplateOutletContext]="{$implicit: column, data:dataToRender,rowIndex:rowIndex}">
+    </ng-template>
+</ng-template>
+
+
+<!--
+    Templates for header columns. Here we are rendering two types. Header and Subheader that we
+    usually use here as some kind of summary columns. Not really having summary at the bottom like other
+    DT.
+
+    TH column and their text are usually unselectable and most of these were inherited from
+    original PrimeNg DT even not many things got left after we refactor this but the idea is the
+    same.
+
+    Each cell has its dt-cell-def class that sets default styling like font, background, alignment
+    padding, etcs..
+
+
+-->
+<ng-template #colHeader let-isSubHeader let-columnIndex="columnIndex" let-data="data" let-rowIndex="rowIndex">
+
+    <th #headerCell1 [class]="headerStyleClass||styleClass" *ngIf="!isSubHeader"
+        (click)="handleHeaderClick($event, headerCell1)"
+        [ngClass]="{'dt-is-default dt-u-unselectable-text' :true,
+                    'dt-cell-def': dt.selectionMode !== 'cell' || (!dt.isOutline() || !dt.pivotalLayout),
+                    'dt-u-sortable': sortable,
+                    'dt-is-active': isSorted(),
+                    'dt-is-hidden': !isVisible}"
+        [attr.width]="width"
+        [attr.align]="align"
+        [attr.tabindex]="sortable ? 1 : null"
+        [maxWidth]="maxWidthPx"
+    >
+
+        <ng-template [ngIf]="dt.headerFilterTemplate && columnIndex === 0 ">
+            <ng-container *ngTemplateOutlet="dt.headerFilterTemplate">
+            </ng-container>
+        </ng-template>
+        <!--
+            when cell are selectable we need two version where one wrap the cell content in div
+        -->
+        <ng-template [ngIf]="isHeaderSelectable()">
+            <ng-container *ngTemplateOutlet="selectableHeaderCell; context: {$implicit: this}">
+            </ng-container>
+        </ng-template>
+
+
+        <ng-template [ngIf]="!isHeaderSelectable()">
+            <ng-container *ngTemplateOutlet="nonSelectableHeaderCell; context: {$implicit: this}">
+            </ng-container>
+        </ng-template>
+    </th>
+
+    <th #headerCell2 [class]="headerStyleClass||styleClass" *ngIf="isSubHeader"
+        [attr.width]="width"
+        [attr.align]="align"
+        [ngClass]="{'dt-is-default dt-cell-def dt-sub-header dt-u-unselectable-text':true}"
+        [maxWidth]="maxWidthPx">
+
+        <span class="dt-col-title" *ngIf="dt.showSubHeader && subHeaderTemplate">
+            <ng-container *ngTemplateOutlet="subHeaderTemplate;
+                    context: {$implicit: this, rowData: data, rowIndex: rowIndex}">
+            </ng-container>
+        </span>
+    </th>
+</ng-template>
+
+
+<!--
+    Template for the body = the TD. For the body and we might want to do the same for header we
+    allow to have calculated body class that comes from the application. So based on the data types
+    you might want to apply different class in order to apply custom styling.
+-->
+<ng-template #colBody let-data="data" let-rowIndex="rowIndex">
+
+    <td #cell [class]="dynamicBodyClass(data)"
+        (click)="dt.onCellSelectionChange(cell, this, data)"
+        [attr.width]="width"
+        [attr.align]="align"
+        [ngClass]="{ 'dt-is-default': true,
+        'dt-cell-def': !isCellSelectable(data),
+        'dt-is-hidden': !isVisible}"
+        [maxWidth]="maxWidthPx">
+
+        <!--
+            Since we need to support cell selection when we need to draw border around it
+            We are wrapping such sells with div which gives us better flexibility
+        -->
+        <ng-template [ngIf]="isCellSelectable(data)">
+            <ng-container *ngTemplateOutlet="selectableBodyCell;
+                        context: {$implicit: this, data: data, rowIndex: rowIndex }">
+            </ng-container>
+
+        </ng-template>
+
+
+        <ng-template [ngIf]="!isCellSelectable(data)">
+            <ng-container *ngTemplateOutlet="nonSelectableBodyCell;
+                        context: {$implicit: this, data: data, rowIndex: rowIndex}">
+            </ng-container>
+        </ng-template>
+
+    </td>
+</ng-template>
+
+<!--
+    Todo: create better solution instead of using different template create directive that wraps
+    it with the div conditionally
+-->
+<ng-template #selectableHeaderCell let-data="data" let-rowIndex="rowIndex">
+
+    <div class="dt-cell-def-selectable"
+         [ngClass]="{'dt-cell-selected': dt.isHeaderSelected(this)}">
+        <ng-container *ngTemplateOutlet="headerCellContent;
+                        context: {$implicit: this, data: data, rowIndex: rowIndex}">
+        </ng-container>
+    </div>
+</ng-template>
+
+
+<ng-template #nonSelectableHeaderCell let-data="data" let-rowIndex="rowIndex">
+    <ng-container *ngTemplateOutlet="headerCellContent;
+                        context: {$implicit: this, data: data, rowIndex: rowIndex}">
+    </ng-container>
+</ng-template>
+
+
+<ng-template #headerCellContent let-data="data" let-rowIndex="rowIndex">
+    <span class="dt-col-title" *ngIf="showColumnLabel && !headerTemplate">
+                {{label}}
+    </span>
+
+    <span class="dt-col-title" *ngIf="showColumnLabel && headerTemplate">
+                    <ng-container *ngTemplateOutlet="headerTemplate;
+                        context: {$implicit: this, rowData: data, rowIndex: rowIndex }">
+                    </ng-container>
+    </span>
+
+    <span class="dt-col-sortable-icon sap-icon icon-sort" *ngIf="sortable"
+          [ngClass]="{'icon-sort-descending': (getSortOrder() == -1),
+                           'icon-sort-ascending': (getSortOrder() == 1)}">
+    </span>
+</ng-template>
+
+
+<ng-template #selectableBodyCell let-data="data" let-rowIndex="rowIndex">
+    <div class="dt-cell-def-selectable"
+         [ngClass]="{'dt-cell-selected': dt.isBodyCellSelected(this, data)}">
+        <ng-container *ngTemplateOutlet="bodyCellContent;
+                        context: {$implicit: this, data: data, rowIndex: rowIndex}">
+        </ng-container>
+    </div>
+</ng-template>
+
+
+<ng-template #nonSelectableBodyCell let-data="data" let-rowIndex="rowIndex">
+    <ng-container *ngTemplateOutlet="bodyCellContent;
+                        context: {$implicit: this, data: data, rowIndex: rowIndex}">
+    </ng-container>
+</ng-template>
+
+
+<ng-template #bodyCellContent let-data="data" let-rowIndex="rowIndex">
+    <!--
+           when no template is used use our FieldPath to access the object value based on the
+           key binding
+        -->
+    <span class="dt-col-cell-data" *ngIf="!bodyTemplate">
+            {{dt.getValue(data, key)}}
+        </span>
+
+
+    <!--
+        In case application wants to provide their own cell component they use
+        #body ng-template to do so.
+    -->
+    <span class="dt-col-cell-data" *ngIf="bodyTemplate">
+            <ng-container *ngTemplateOutlet="bodyTemplate;
+            context: {$implicit: this, rowData: data, rowIndex: rowIndex}"></ng-container>
+        </span>
+</ng-template>

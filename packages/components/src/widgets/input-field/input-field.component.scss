@@ -1,0 +1,12 @@
+.w-input-wrapper {
+  position: relative;
+}
+
+.w-input-field {
+
+  ~span {
+    top: 13px;
+    position: absolute;
+    right: 15px;
+  }
+}

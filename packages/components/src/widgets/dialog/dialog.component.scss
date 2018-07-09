@@ -1,0 +1,45 @@
+::ng-deep .ui-dialog .ui-dialog-titlebar {
+  background-color: #f2f2f2;
+  padding: 15px 20px;
+
+  .ui-dialog-titlebar-icon {
+    &:hover {
+      border-color: transparent;
+    }
+  }
+
+}
+
+::ng-deep .ui-widget-header {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+::ng-deep .ui-dialog {
+
+  .ui-dialog-content {
+    padding: 15px 20px;
+    line-height: 1.3em;
+  }
+
+  .ui-widget-content {
+    border: none;
+  }
+
+  &.ui-widget-content {
+    border: none;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .dialog-footer-separator {
+    border-top: 1px solid #D7D7D7;
+    height: 14px;
+  }
+
+  .ui-dialog-footer {
+    padding: 0px 20px 15px 20px;
+  }
+}
+
+
+

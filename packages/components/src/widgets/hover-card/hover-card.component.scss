@@ -1,0 +1,114 @@
+.w-hc-title {
+  padding-right: 1.4em;
+  position: relative;
+  white-space: nowrap;
+
+  .sap-icon {
+    font-size: 1em;
+    color: #00679e;
+    position: absolute;
+    padding-top: 0.2em;
+    right: 0;
+
+  }
+}
+
+/* Common styles for the card Arrow */
+::ng-deep .w-hc-panel-arrow {
+
+  // add shadow for panel at the bottom
+  &.u-hc-shadow-b {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  // add shadow for panel at the top
+  &.u-hc-shadow-t {
+    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  &:before, &:after {
+    left: 25%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &:after {
+    border-color: rgba(136, 183, 213, 0);
+    border-width: 0.7em;
+    margin-left: -0.7em;
+  }
+  &:before {
+    border-color: rgba(255, 136, 56, 0);
+    border-width: 0.8em;
+    margin-left: -0.8em;
+  }
+
+}
+
+/*
+  Utility class in order to position css arrow in correct direction. Pseudo class is not possible
+  to adjust in the JS so we have several variants here.
+*/
+
+/* Large left = show arrow 25% from left */
+::ng-deep .u-hc-arrow-ll {
+  &:before, &:after {
+    left: 25%;
+  }
+}
+
+/* Large right = show arrow 25% from right */
+::ng-deep .u-hc-arrow-lr {
+  &:before, &:after {
+    left: 75%;
+  }
+}
+
+/* Small left = show arrow 10% from left */
+::ng-deep .u-hc-arrow-sl {
+  &:before, &:after {
+    left: 10%;
+  }
+}
+
+/* Small right = show arrow 10% from right */
+::ng-deep .u-hc-arrow-sr {
+  &:before, &:after {
+    left: 90%;
+  }
+}
+
+/* position arrow at the top of the container */
+::ng-deep .u-hc-arrow-t {
+
+  &:before, &:after {
+    bottom: 100%;
+  }
+  &:after {
+    border-bottom-color: #ffffff;
+  }
+  &:before {
+    border-bottom-color: #d7d7d7;
+  }
+}
+
+/* position arrow at the top of the bottom */
+::ng-deep .u-hc-arrow-b {
+
+  &:before, &:after {
+    top: 100%;
+  }
+  &:after {
+    border-top-color: #ffffff;
+  }
+  &:before {
+    border-top-color: #d7d7d7;
+  }
+}
+
+
+

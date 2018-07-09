@@ -551,20 +551,19 @@ export class Datatable2Component extends BaseComponent implements AfterViewCheck
 
 
     /**
-     * In case we have detail row remmber its expansion state
+     * See AWDataTable
      */
     detailRowExpansionState: DetailRowExpansionState;
 
 
     /**
-     * Used for spaning calculation or for the detail row to identify correct number of columns
-     * to span, when they are some non-data column (expansion control, single/multi selection)
+     * See AWDataTable
      */
     numberOfColsBeforeData: number = 0;
 
 
     /**
-     *  what is the index of first data columns
+     * See AWDataTable
      */
     startOfFirstDataColumn: number = 0;
 
@@ -746,7 +745,7 @@ export class Datatable2Component extends BaseComponent implements AfterViewCheck
             .filter((col1: DTColumn2Component) => !col1.frozen)
             .forEach((col: DTColumn2Component) =>
             {
-                col.initialize();
+                col.initialize(this);
                 this.columns.push(col);
             });
 
@@ -768,7 +767,7 @@ export class Datatable2Component extends BaseComponent implements AfterViewCheck
             .filter((col1: DTColumn2Component) => col1.frozen)
             .forEach((col: DTColumn2Component) =>
             {
-                col.initialize();
+                col.initialize(this);
                 this.frozenColumns.push(col);
 
             });
@@ -802,7 +801,7 @@ export class Datatable2Component extends BaseComponent implements AfterViewCheck
     }
 
     /**
-     * Check if current column is programatically created
+     * Check if current column is programmatically created
      *
      */
     isInternalColumn (col: DTColumn2Component): boolean

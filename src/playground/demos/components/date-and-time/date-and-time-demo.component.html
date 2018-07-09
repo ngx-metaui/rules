@@ -16,7 +16,7 @@
     <div class="ui-g-12">
         <div class="ui-g-2 event-title"><h4>Basic: inside 2 column</h4></div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table [useFiveZone]="true">
                 <aw-left>
                     <aw-form-row [label]="'Start date'">
@@ -33,6 +33,12 @@
 
             </aw-form-table>
         </div>
+
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="endDate" [value]="endDate" [showTime]="false" [editable]="false">
+            </aw-date-time>
+        </div>
     </div>
 
 
@@ -40,7 +46,7 @@
     <div class="ui-g-12">
         <div class="ui-g-2 event-title"><h4>Basic: inside 1 column</h4></div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'Start date'">
                     <aw-date-time name="startDate" [value]="startDate" [showTime]="false">
@@ -49,13 +55,18 @@
 
             </aw-form-table>
         </div>
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="startDate" [value]="startDate" [showTime]="false" [editable]="false">
+            </aw-date-time>
+        </div>
     </div>
 
 
     <div class="ui-g-12">
         <div class="ui-g-2 event-title"><h4>Basic: with placeholder onlyl</h4></div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'No date'">
                     <aw-date-time name="noDate" [value]="noDate">
@@ -63,6 +74,11 @@
                 </aw-form-row>
 
             </aw-form-table>
+        </div>
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="noDate" [value]="noDate" [showTime]="false" [editable]="false">
+            </aw-date-time>
         </div>
     </div>
 
@@ -75,7 +91,7 @@
             </h4>
         </div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'Start date'" [size]="'small'">
                     <aw-date-time name="startDate" [value]="startDate" [showTime]="false">
@@ -83,6 +99,11 @@
                 </aw-form-row>
 
             </aw-form-table>
+        </div>
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="noDate" [value]="startDate" [showTime]="false" [editable]="false">
+            </aw-date-time>
         </div>
     </div>
 
@@ -96,7 +117,7 @@
             </h4>
         </div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'Start date'" [size]="'small'">
                     <aw-date-time name="startDate" [value]="startDate"
@@ -106,6 +127,11 @@
                 </aw-form-row>
 
             </aw-form-table>
+        </div>
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="startDate" [value]="startDate" [showTime]="false" [editable]="false">
+            </aw-date-time>
         </div>
     </div>
 
@@ -118,7 +144,7 @@
             </h4>
         </div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'Start date'" [size]="'small'">
                     <aw-date-time name="startDate" [value]="startDate"
@@ -130,27 +156,10 @@
 
             </aw-form-table>
         </div>
-    </div>
-
-
-    <!-- with Time -->
-    <div class="ui-g-12">
-        <div
-            class="ui-g-2 event-title">
-            <h4>
-                With Time: using DateTime formatName
-            </h4>
-        </div>
-
-        <div class="ui-g-10 ">
-            <aw-form-table>
-                <aw-form-row [label]="'Start date'">
-                    <aw-date-time name="startDate" [value]="startDate"
-                                  formatName="dateTime">
-                    </aw-date-time>
-                </aw-form-row>
-
-            </aw-form-table>
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="startDate" [value]="startDate" [showTime]="false" [editable]="false">
+            </aw-date-time>
         </div>
     </div>
 
@@ -164,7 +173,7 @@
             </h4>
         </div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'Start date'">
                     <aw-date-time name="startDate" [value]="startDate"
@@ -173,6 +182,12 @@
                 </aw-form-row>
 
             </aw-form-table>
+        </div>
+
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="startDate" [value]="startDate" [showTime]="true" [editable]="false">
+            </aw-date-time>
         </div>
     </div>
 
@@ -186,7 +201,7 @@
             </h4>
         </div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'Start date'" [size]="'small'">
                     <aw-date-time name="startDate" [value]="startDate"
@@ -195,6 +210,12 @@
                 </aw-form-row>
 
             </aw-form-table>
+        </div>
+
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="startDate" [value]="startDate" [showDate]="false" [editable]="false">
+            </aw-date-time>
         </div>
     </div>
 
@@ -208,7 +229,7 @@
             </h4>
         </div>
 
-        <div class="ui-g-10 ">
+        <div class="ui-g-8 ">
             <aw-form-table>
                 <aw-form-row [label]="'Start date'" [size]="'small'">
                     <aw-date-time name="startDate" [(ngModel)]="startDate">
@@ -216,6 +237,11 @@
                 </aw-form-row>
 
             </aw-form-table>
+        </div>
+        <div class="ui-g-2 ">
+            Read-only:
+            <aw-date-time name="startDate" [value]="startDate" [showTime]="false" [editable]="false">
+            </aw-date-time>
         </div>
     </div>
 

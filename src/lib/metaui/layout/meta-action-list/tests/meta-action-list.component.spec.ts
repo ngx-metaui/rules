@@ -26,7 +26,6 @@ import {AribaMetaUIModule} from '../../../ariba.metaui.module';
 import {
     AribaComponentsTestProviderModule
 } from '../../../../components/ariba.component.provider.module';
-import {AribaCoreI18nModule} from '../../../../core';
 
 /**
  *
@@ -352,7 +351,6 @@ describe('3 different layouts formed into Stack', () =>
                 TestContainerEditPopupComponent
             ],
             imports: [
-                AribaCoreI18nModule,
                 AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                 AribaComponentsTestProviderModule.forRoot(),
                 AribaMetaUIModule
