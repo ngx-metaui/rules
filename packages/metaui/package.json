@@ -4,10 +4,20 @@
   "description": "Metaui to for rule driven UI generations.",
   "homepage": "https://github.com/SAP/angular-metaui.git",
   "license": "Apache-2.0",
+  "scripts": {
+    "release": "standard-version"
+  },
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "@aribaui/core":"6.0.0",
-    "@aribaui/components":"6.0.0"
+    "@aribaui/core": "6.0.0",
+    "@aribaui/components": "6.0.0"
+  },
+  "standard-version": {
+    "skip": {
+      "changelog": true,
+      "commit": true,
+      "tag": true
+    }
   }
 }

@@ -14,11 +14,21 @@
     "components",
     "testing"
   ],
+  "scripts": {
+    "release": "standard-version"
+  },
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "@aribaui/core":"6.0.0",
+    "@aribaui/core": "6.0.0",
     "primeicons": "^1.0.0-beta.9",
     "primeng": "6.0.0"
+  },
+  "standard-version": {
+    "skip": {
+      "changelog": true,
+      "commit": true,
+      "tag": true
+    }
   }
 }

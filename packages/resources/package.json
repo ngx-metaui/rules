@@ -10,5 +10,15 @@
     "fonts",
     "styles",
     "tools"
-  ]
+  ],
+  "scripts": {
+    "release": "standard-version"
+  },
+  "standard-version": {
+    "skip": {
+      "changelog": true,
+      "commit": true,
+      "tag": true
+    }
+  }
 }
