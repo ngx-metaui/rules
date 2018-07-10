@@ -12,7 +12,9 @@
     "tools"
   ],
   "scripts": {
-    "release": "standard-version"
+    "release.pa": "standard-version --release-as patch",
+    "release.mi": "standard-version --release-as minor",
+    "release.ma": "standard-version --release-as major"
   },
   "standard-version": {
     "skip": {

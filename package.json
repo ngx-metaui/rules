@@ -27,12 +27,13 @@
     "oss-sys": "java -jar lib/meta-ui-parser.jar --gen --sys ./src/lib/metaui/core",
     "oss-user": "java -jar lib/meta-ui-parser.jar --gen --user ./src/lib/metaui/core ./src/playground/rules",
     "build.resources": "rm -Rf ./dist/@aribaui/resources && cp -R packages/resources/src/ ./dist/@aribaui/resources && ./node_modules/.bin/scss-bundle -e  dist/@aribaui/resources/styles/aribaui.scss -d dist/@aribaui/resources/styles/aribaui.css && cp -rf  packages/resources/package.json ./dist/@aribaui/resources/.",
-    "build.packages": "ng build core && ng build components && npm run build.resources",
-    "build.packages.prod": "ng build core --prod && ng build components --prod && npm run build.resources",
+    "build.packages": "ng build core && ng build components && npm run build.resources && build metaui --prod",
+    "build.packages.prod": "ng build core --prod && ng build components --prod && npm run build.resources && build metaui --prod",
     "test.packages": "echo Testing core && ng test core  --watch=false && echo Testing components && ng test components --watch=false && echo Testing metaui && ng test metaui --watch=false",
     "lint.packages": "echo Linting core && ng lint core  && echo Linting components && ng lint components && echo Linting metaui && ng lint metaui ",
-    "changeLog": "./tools/gulp/release/changelog.js",
-    "release": "standard-version"
+    "release.pa": "standard-version --release-as patch",
+    "release.mi": "standard-version --release-as minor",
+    "release.ma": "standard-version --release-as major"
   },
   "private": true,
   "dependencies": {

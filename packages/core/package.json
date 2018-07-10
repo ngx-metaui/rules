@@ -18,7 +18,9 @@
     "rules"
   ],
   "scripts": {
-    "release": "standard-version"
+    "release.pa": "standard-version --release-as patch",
+    "release.mi": "standard-version --release-as minor",
+    "release.ma": "standard-version --release-as major"
   },
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
