@@ -12,9 +12,9 @@
     "tools"
   ],
   "scripts": {
-    "release.pa": "standard-version --release-as patch",
-    "release.mi": "standard-version --release-as minor",
-    "release.ma": "standard-version --release-as major"
+    "release.pa": "../../node_modules/.bin/standard-version --release-as patch",
+    "release.mi": "../../node_modules/.bin/standard-version --release-as minor",
+    "release.ma": "../../node_modules/.bin/standard-version--release-as major"
   },
   "standard-version": {
     "skip": {
