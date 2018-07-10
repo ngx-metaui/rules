@@ -710,18 +710,18 @@ export function equals(o1: any, o2: any): boolean {
             // using Object.keys as iterating thru object stop working in NG6, TS2.7
             let keys = Object.keys(o2);
             for (key in keys) {
-                if (key.charAt(0) === '$' || isFunction(o1[key])) {
+                if (keys[key].charAt(0) === '$' || isFunction(o1[keys[key]])) {
                     continue;
                 }
-                if (!equals(o1[key], o2[key])) {
+                if (!equals(o1[keys[key]], o2[keys[key]])) {
                     return false;
                 }
-                keySet.set(key, true);
+                keySet.set(keys[key], true);
             }
 
             keys = Object.keys(o2);
             for (key of keys) {
-                if (!(key in keySet) && key.charAt(0) !== '$'
+                if (!(keySet.has(key)) && key.charAt(0) !== '$'
                     && isPresent(o2[key]) && !isFunction(o2[key])) {
                     return false;
                 }

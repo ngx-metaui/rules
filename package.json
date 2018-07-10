@@ -67,18 +67,19 @@
   "peerDependencies": {},
   "devDependencies": {
     "@angular/compiler-cli": "6.0.7",
-    "@angular-devkit/build-ng-packagr": "~0.6.8",
     "@angular-devkit/build-angular": "~0.6.8",
+    "typescript": "^2.7.2",
+    "@angular-devkit/build-ng-packagr": "~0.6.8",
     "ng-packagr": "^3.0.0-rc.2",
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
-    "typescript": "^2.7.2",
     "@angular/cli": "6.0.8",
     "@angular/language-service": "6.0.7",
     "@types/jasmine": "2.8.6",
     "@types/jasminewd2": "2.0.3",
     "@types/node": "10.5.0",
     "@types/object-path": "^0.9.29",
+    "codelyzer": "~4.2.1",
     "angular-cli-ghpages": "0.5.2",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
@@ -98,7 +99,8 @@
   },
   "standard-version": {
     "skip": {
-      "commit": true
+      "commit": true,
+      "tag": true
     }
   },
   "engines": {

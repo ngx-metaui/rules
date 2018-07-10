@@ -1,17 +1,18 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../out-tsc/spec",
-    "types": [
-      "jasmine",
-      "node"
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      false,
+      "attribute",
+      "dt",
+      "camelCase"
+    ],
+    "component-selector": [
+      false,
+      "element",
+      "wrapper",
+      "aw",
+      "kebab-case"
     ]
-  },
-  "files": [
-    "src/test.ts"
-  ],
-  "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
-  ]
+  }
 }

@@ -1,49 +1,41 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "packages",
+  "newProjectRoot": "modules",
   "projects": {
-    "aribaui": {
-      "root": "",
-      "sourceRoot": "src",
+    "playground": {
+      "root": "modules/playground/",
+      "sourceRoot": "modules/playground/src",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist",
-            "index": "src/index.html",
-            "main": "src/playground/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "showCircularDependencies": false,
-            "polyfills": "src/polyfills.ts",
+            "outputPath": "dist/playground",
+            "index": "modules/playground/src/index.html",
+            "main": "modules/playground/src/main.ts",
+            "polyfills": "modules/playground/src/polyfills.ts",
+            "tsConfig": "modules/playground/tsconfig.app.json",
             "assets": [
-              "src/playground/assets",
-              "src/favicon.ico",
-              {
-                "glob": "**/*",
-                "input": "src/playground/assets/images",
-                "output": "/playground/assets/images"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/playground/assets/data",
-                "output": "/playground/assets/data"
-              }
+              "modules/playground/src/favicon.ico",
+              "modules/playground/src/assets"
             ],
             "styles": [
-              "src/playground/assets/themes/_normalize.scss",
+              "dist/@aribaui/resources/themes/_normalize.scss",
               "node_modules/prismjs/themes/prism.css",
-              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/playground/assets/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
-              "src/playground/assets/fonts/sap-icon-fonts/sap-icon-fonts.css",
-              "src/lib/resources/themes/ariba/theme.scss",
-              "src/lib/resources/styles/aribaui.scss",
-              "src/playground/styles.scss"
+              "dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+              "dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
+              "node_modules/primeicons/primeicons.css",
+              "dist/@aribaui/resources/themes/ariba/theme.scss",
+              "dist/@aribaui/resources/styles/aribaui.scss",
+
+              "modules/playground/src/styles.scss"
             ],
             "scripts": [
               "node_modules/prismjs/prism.js",
@@ -52,6 +44,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "modules/playground/src/environments/environment.ts",
+                  "with": "modules/playground/src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -60,71 +58,41 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/./environments/environment.ts",
-                  "with": "src/./environments/environment.prod.ts"
-                }
-              ]
+              "buildOptimizer": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "aribaui:build"
+            "browserTarget": "playground:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "aribaui:build:production"
+              "browserTarget": "playground:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "aribaui:build"
+            "browserTarget": "playground:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "src/karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/prismjs/prism.js",
-              "node_modules/quill/dist/quill.js"
-            ],
+            "main": "modules/playground/src/test.ts",
+            "polyfills": "modules/playground/src/polyfills.ts",
+            "tsConfig": "modules/playground/tsconfig.spec.json",
+            "karmaConfig": "modules/playground/karma.conf.js",
             "styles": [
-              "src/playground/assets/themes/_normalize.scss",
-              "node_modules/prismjs/themes/prism.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/quill/dist/quill.core.css",
-              "node_modules/quill/dist/quill.snow.css",
-              "src/playground/assets/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
-              "src/playground/assets/fonts/sap-icon-fonts/sap-icon-fonts.css",
-              "src/lib/resources/themes/ariba/theme.scss",
-              "src/lib/resources/styles/aribaui.scss",
-              "src/playground/styles.scss"
+              "modules/playground/src/styles.css"
             ],
+            "scripts": [],
             "assets": [
-              "src/playground/assets",
-              "src/favicon.ico",
-              {
-                "glob": "**/*",
-                "input": "src/playground/assets/images",
-                "output": "/playground/assets/images"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/playground/assets/data",
-                "output": "/playground/assets/data"
-              }
+              "modules/playground/src/favicon.ico",
+              "modules/playground/src/assets"
             ]
           }
         },
@@ -132,8 +100,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "modules/playground/tsconfig.app.json",
+              "modules/playground/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -142,24 +110,26 @@
         }
       }
     },
-    "aribaui-e2e": {
-      "root": "",
-      "sourceRoot": "e2e",
+    "playground-e2e": {
+      "root": "modules/playground-e2e/",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "aribaui:serve"
+            "protractorConfig": "modules/playground-e2e/protractor.conf.js",
+            "devServerTarget": "playground:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "playground:serve:production"
+            }
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
+            "tsConfig": "modules/playground-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
@@ -310,7 +280,7 @@
       }
     }
   },
-  "defaultProject": "aribaui",
+  "defaultProject": "playground",
   "schematics": {
     "@schematics/angular:class": {
       "spec": false

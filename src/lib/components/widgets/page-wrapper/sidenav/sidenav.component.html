@@ -1,8 +1,0 @@
-<div [ngClass]="getSidenavClass()">
-    <div class="sidenav-content">
-        <a *ngFor="let item of items" [routerLink]="item.link">
-            <span class="sidenav-icon"><i [ngClass]="'sap-icon ' + item.icon"></i></span>
-            {{item.label}}
-        </a>
-    </div>
-</div>

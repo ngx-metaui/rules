@@ -66,8 +66,7 @@ export {
     DTDetailRowComponent, DetailRowExpansionState, Datatable2State, DTDSInitParams, EntityDef2,
     isDTInitParams, DT2DataSource, DTMultiSelectColumnComponent, AWDatatable2Module
 
-
-} from './widgets';
+} from './widgets/index';
 
 
 export {AribaComponentsModule} from './ariba.component.module';

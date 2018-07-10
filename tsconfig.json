@@ -36,18 +36,12 @@
       "@aribaui/components/*": [
         "dist/@aribaui/components/*"
       ],
-      "resources": [
-        "dist/resources"
+      "@aribaui/metaui": [
+        "dist/@aribaui/metaui"
       ],
-      "resources/*": [
-        "dist/resources/*"
+      "@aribaui/metaui/*": [
+        "dist/@aribaui/metaui/*"
       ],
-      "metaui": [
-        "dist/metaui"
-      ],
-      "metaui/*": [
-        "dist/metaui/*"
-      ]
     }
   },
   "angularCompilerOptions": {
