@@ -2123,7 +2123,7 @@ describe('Meta Context behaivor ', () => {
 
             let processedIn = Date.now() - start;
 
-            expect(processedIn).toBeLessThan(3000);
+            expect(processedIn).toBeLessThan(5000);
             expect(Match._Debug_ElementProcessCount).toBeGreaterThan(800000);
 
             // console.log('Rule index entries processed:', Match._Debug_ElementProcessCount)

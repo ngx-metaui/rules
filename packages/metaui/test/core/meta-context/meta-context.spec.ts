@@ -16,17 +16,19 @@
  *
  *
  */
-import {Component, Injector} from '@angular/core';
-import {fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {Component} from '@angular/core';
+import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
 import {UIMeta} from '../../../src/core/uimeta';
 import {Expr} from '../../../src/core/property-value';
-import {Router, Routes} from '@angular/router';
+import {Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AribaMetaUIModule} from '../../../src/ariba.metaui.module';
 import {
-    ComponentRegistry, BaseComponent, AribaComponentsTestProviderModule
+    AribaComponentsTestProviderModule,
+    BaseComponent,
+    ComponentRegistry
 } from '@aribaui/components';
 import {AribaCoreModule, Environment} from '@aribaui/core';
 
@@ -64,7 +66,7 @@ describe('Meta Context Component', () => {
             declarations: [
                 TestContainerEditComponent,
                 TestContainerViewComponent,
-                TestContainerViewDefferedComponent
+                TestContainerViewDefferedComponent,
             ],
             imports: [
                 RouterTestingModule.withRoutes(routes),
@@ -80,14 +82,6 @@ describe('Meta Context Component', () => {
         // console.log('Time :', (Date.now() - start));
 
     });
-
-    it('Check Router Injector ', inject([Injector], (injector: Injector) => {
-
-        // expect(router).toBeDefined();
-
-        expect(injector.get(Router)).toBeDefined();
-
-    }));
 
 
     it('It should render 4 input fields with pre-loaded values: Frank, Kolar, 1000, Some note' +

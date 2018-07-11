@@ -8,6 +8,7 @@ module.exports = function (config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
@@ -25,7 +26,29 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadlessLocal', 'ChromeHeadlessCI', 'FirefoxHeadless'],
+
+    customLaunchers: {
+      "ChromeHeadlessLocal": {
+        "base": "ChromeHeadless",
+        "flags": [
+          "--window-size=1024,768"
+        ]
+      },
+      "ChromeHeadlessCI": {
+        "base": "ChromeHeadless",
+        "flags": [
+          "--window-size=1024,768",
+          "--no-sandbox"
+        ]
+      },
+      "FirefoxHeadless": {
+        "base": "Firefox",
+        "flags": [
+          "-headless"
+        ]
+      }
+    },
     singleRun: false,
 
     captureTimeout: 180000,

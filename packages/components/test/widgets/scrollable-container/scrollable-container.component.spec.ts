@@ -250,8 +250,10 @@ function checkDirectionNone(fixtureWrapper: any, alignClass: string) {
 
     expect(container.classList).toContain('u-scrollable-fn');
     expect(container.classList).toContain(alignClass);
-
-    expect(getComputedStyle(container).flexFlow).toEqual('row wrap');
+    let computedStyle = getComputedStyle(container);
+    let style = computedStyle.flexFlow !== '' ? computedStyle.flexFlow
+        : computedStyle.flexDirection + ' ' + computedStyle.flexWrap;
+    expect(style).toEqual('row wrap');
 
 }
 

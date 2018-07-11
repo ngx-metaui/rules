@@ -183,9 +183,12 @@ describe('Component: List', () => {
             fixtureWrapper.detectChanges();
 
             let listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
-            let computedStyle = getComputedStyle(listbox);
 
-            expect(computedStyle.height).toBe('100px');
+            // computed styles does not work on Travis so I just need to check if the style
+            // was properly set onto the element
+
+            expect(listbox.attributes.style.textContent.indexOf('height: 100px;') !== -1)
+                .toBeTruthy();
 
         });
 
@@ -196,7 +199,8 @@ describe('Component: List', () => {
             let listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
             let computedStyle = getComputedStyle(listbox);
 
-            expect(computedStyle.width).toBe('150px');
+            expect(listbox.attributes.style.textContent.indexOf('width: 150px;') !== -1)
+                .toBeTruthy();
         });
 
         it('should change overflow-y to auto when height is used ', () => {
@@ -218,9 +222,8 @@ describe('Component: List', () => {
             fixtureWrapper.detectChanges();
 
             let listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
-            let computedStyle = getComputedStyle(listbox);
 
-            expect(computedStyle.borderColor).toBe('rgb(0, 0, 0)');
+            expect(borderColor(listbox)).toBe('rgb(0, 0, 0)');
         });
 
 
@@ -386,6 +389,24 @@ describe('Component: List', () => {
 
 });
 
+function dumpComputedStyles(cs: any) {
+    let len = cs.length;
+    for (let i = 0; i < len; i++) {
+
+        let style = cs[i];
+        console.log(style + ' : ' + cs.getPropertyValue(style));
+    }
+
+}
+
+function borderColor(element: any) {
+    let computedStyle = getComputedStyle(element);
+
+    return computedStyle.borderColor !== '' ? computedStyle.borderColor :
+        computedStyle.borderBottomColor;
+
+
+}
 
 @Component({
     selector: 'wrapper-comp',

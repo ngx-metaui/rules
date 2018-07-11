@@ -75,9 +75,9 @@ describe('Stepper component', () => {
             let colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
             expect(colors.length).toEqual(3);
 
-            expect(getComputedStyle(colors[0]).borderColor).toEqual(colorCompleted);
-            expect(getComputedStyle(colors[1]).borderColor).toEqual(colorCompleted);
-            expect(getComputedStyle(colors[2]).borderColor).toEqual(colorCurrent);
+            expect(borderColor(colors[0])).toEqual(colorCompleted);
+            expect(borderColor(colors[1])).toEqual(colorCompleted);
+            expect(borderColor(colors[2])).toEqual(colorCurrent);
 
 
             // go back two steps.
@@ -94,9 +94,9 @@ describe('Stepper component', () => {
             colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
             expect(colors.length).toEqual(3);
 
-            expect(getComputedStyle(colors[0]).borderColor).toEqual(colorCurrent);
-            expect(getComputedStyle(colors[1]).borderColor).toEqual(colorRemaining);
-            expect(getComputedStyle(colors[2]).borderColor).toEqual(colorRemaining);
+            expect(borderColor(colors[0])).toEqual(colorCurrent);
+            expect(borderColor(colors[1])).toEqual(colorRemaining);
+            expect(borderColor(colors[2])).toEqual(colorRemaining);
 
         }));
 
@@ -115,8 +115,12 @@ describe('Stepper component', () => {
             let button = fixtureWrapper.nativeElement.querySelector('#next');
             button.dispatchEvent(new Event('click'));
 
-            tick();
+
             fixtureWrapper.detectChanges();
+            tick();
+
+            fixtureWrapper.detectChanges();
+            tick();
 
             // Verify that the stepper has advanced
             expect(fixtureWrapper.componentInstance.stepper.currentStep).toBe(3);
@@ -125,19 +129,30 @@ describe('Stepper component', () => {
             let colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
             expect(colors.length).toEqual(5);
 
-            expect(getComputedStyle(colors[0]).borderColor).toEqual(colorCompleted);
-            expect(getComputedStyle(colors[1]).borderColor).toEqual(colorCompleted);
-            expect(getComputedStyle(colors[2]).borderColor).toEqual(colorCompleted);
-            expect(getComputedStyle(colors[3]).borderColor).toEqual(colorCurrent);
-            expect(getComputedStyle(colors[4]).borderColor).toEqual(colorRemaining);
+
+            expect(borderColor(colors[0])).toEqual(colorCompleted);
+            expect(borderColor(colors[1])).toEqual(colorCompleted);
+            expect(borderColor(colors[2])).toEqual(colorCompleted);
+            expect(borderColor(colors[3])).toEqual(colorCurrent);
+            expect(borderColor(colors[4])).toEqual(colorRemaining);
 
             // go back two steps.
             button = fixtureWrapper.nativeElement.querySelector('#prev');
             button.dispatchEvent(new Event('click'));
-            tick();
-            button.dispatchEvent(new Event('click'));
-            tick();
+
             fixtureWrapper.detectChanges();
+            tick();
+
+            fixtureWrapper.detectChanges();
+            tick();
+
+            button.dispatchEvent(new Event('click'));
+
+            fixtureWrapper.detectChanges();
+            tick();
+
+            fixtureWrapper.detectChanges();
+            tick();
 
             // Verify that the stepper has advanced
             expect(fixtureWrapper.componentInstance.stepper.currentStep).toBe(1);
@@ -146,11 +161,12 @@ describe('Stepper component', () => {
             colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
             expect(colors.length).toEqual(5);
 
-            expect(getComputedStyle(colors[0]).borderColor).toEqual(colorCompleted);
-            expect(getComputedStyle(colors[1]).borderColor).toEqual(colorCurrent);
-            expect(getComputedStyle(colors[2]).borderColor).toEqual(colorRemaining);
-            expect(getComputedStyle(colors[3]).borderColor).toEqual(colorRemaining);
-            expect(getComputedStyle(colors[4]).borderColor).toEqual(colorRemaining);
+
+            expect(borderColor(colors[0])).toEqual(colorCompleted);
+            expect(borderColor(colors[1])).toEqual(colorCurrent);
+            expect(borderColor(colors[2])).toEqual(colorRemaining);
+            expect(borderColor(colors[3])).toEqual(colorRemaining);
+            expect(borderColor(colors[4])).toEqual(colorRemaining);
 
         }));
     });
@@ -177,9 +193,9 @@ describe('Stepper component', () => {
             let colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
             expect(colors.length).toEqual(3);
 
-            expect(getComputedStyle(colors[0]).borderColor).toEqual('rgb(88, 185, 87)');
-            expect(getComputedStyle(colors[1]).borderColor).toEqual('rgb(0, 118, 203)');
-            expect(getComputedStyle(colors[2]).borderColor).toEqual('rgb(215, 215, 215)');
+            expect(borderColor(colors[0])).toEqual('rgb(88, 185, 87)');
+            expect(borderColor(colors[1])).toEqual('rgb(0, 118, 203)');
+            expect(borderColor(colors[2])).toEqual('rgb(215, 215, 215)');
 
             let steps = fixtureWrapper.nativeElement.querySelectorAll('.step-container');
 
@@ -209,15 +225,15 @@ describe('Stepper component', () => {
             expect(colors.length).toEqual(5);
 
             // Current step is 2, so the first two have completed colors.
-            expect(getComputedStyle(colors[0]).borderColor).toEqual('rgb(151, 168, 34)');
-            expect(getComputedStyle(colors[1]).borderColor).toEqual('rgb(151, 168, 34)');
+            expect(borderColor(colors[0])).toEqual('rgb(151, 168, 34)');
+            expect(borderColor(colors[1])).toEqual('rgb(151, 168, 34)');
 
             // Current step color
-            expect(getComputedStyle(colors[2]).borderColor).toEqual('rgb(255, 153, 0)');
+            expect(borderColor(colors[2])).toEqual('rgb(255, 153, 0)');
 
             // remaining step colors
-            expect(getComputedStyle(colors[3]).borderColor).toEqual('rgb(204, 0, 0)');
-            expect(getComputedStyle(colors[4]).borderColor).toEqual('rgb(204, 0, 0)');
+            expect(borderColor(colors[3])).toEqual('rgb(204, 0, 0)');
+            expect(borderColor(colors[4])).toEqual('rgb(204, 0, 0)');
 
         });
 
@@ -239,16 +255,25 @@ describe('Stepper component', () => {
             let colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
             expect(colors.length).toEqual(6);
 
-            expect(getComputedStyle(colors[0]).borderColor).toEqual('rgb(0, 153, 153)');
-            expect(getComputedStyle(colors[1]).borderColor).toEqual('rgb(84, 117, 122)');
-            expect(getComputedStyle(colors[2]).borderColor).toEqual('rgb(255, 255, 0)');
-            expect(getComputedStyle(colors[3]).borderColor).toEqual('rgb(151, 168, 34)');
-            expect(getComputedStyle(colors[4]).borderColor).toEqual('rgb(204, 0, 0)');
-            expect(getComputedStyle(colors[5]).borderColor).toEqual('rgb(237, 141, 27)');
+            expect(borderColor(colors[0])).toEqual('rgb(0, 153, 153)');
+            expect(borderColor(colors[1])).toEqual('rgb(84, 117, 122)');
+            expect(borderColor(colors[2])).toEqual('rgb(255, 255, 0)');
+            expect(borderColor(colors[3])).toEqual('rgb(151, 168, 34)');
+            expect(borderColor(colors[4])).toEqual('rgb(204, 0, 0)');
+            expect(borderColor(colors[5])).toEqual('rgb(237, 141, 27)');
         }));
     });
 });
 
+
+function borderColor(element: any) {
+    let computedStyle = getComputedStyle(element);
+
+    return computedStyle.borderColor !== '' ? computedStyle.borderColor :
+        computedStyle.borderBottomColor;
+
+
+}
 
 @Component({
     selector: 'wrapper-comp',
