@@ -108,7 +108,7 @@ describe('Component: Scrollable Container', () => {
 
         // disabling this test as for some reason it does not work in selenium grid. the height
         // is 85px instead of 100px
-        xit('should render horizontal container wrapped by parent div that set ' +
+        fit('should render horizontal container wrapped by parent div that set ' +
             '300px x 100px and' +
             ' container should fit into this parent div.', () => {
             let fixtureWrapper = TestBed.createComponent(TestScrollableWithWrapperDivComponent);
@@ -116,9 +116,11 @@ describe('Component: Scrollable Container', () => {
 
 
             let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
-
-
             let computedStyle = getComputedStyle(container);
+            
+            console.log(container.offsetHeight);
+            console.log(container.offsetWidth);
+
 
 
             expect(container.classList).toContain('u-scrollable-fh');
@@ -243,6 +245,15 @@ describe('Component: Scrollable Container', () => {
 
 });
 
+function dumpComputedStyles(cs: any) {
+    let len = cs.length;
+    for (let i = 0; i < len; i++) {
+
+        let style = cs[i];
+        console.log(style + ' : ' + cs.getPropertyValue(style));
+    }
+
+}
 
 function checkDirectionNone(fixtureWrapper: any, alignClass: string) {
 
