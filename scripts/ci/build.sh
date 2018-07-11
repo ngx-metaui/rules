@@ -8,6 +8,8 @@ if [[ ${TRAVIS_TEST_RESULT=0} == 1 ]]; then
   exit 1;
 fi
 
+rm -Rf ./dist/@aribaui
+
 if [ ${args[0]} == "prod" ]; then
    echo "################ Building core module ################"
    ng build core --prod

@@ -7,9 +7,6 @@ node_js:
 addons:
   chrome: stable
 
-branches:
-  only:
-    - tune-travis
 
 cache:
   directories:
