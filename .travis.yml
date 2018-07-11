@@ -17,7 +17,7 @@ before_script:
    - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
 
 script:
-  - ./scripts/ci/build.sh
+  - ./scripts/ci/build.sh ci
   - ng test components --watch=false
 
 
