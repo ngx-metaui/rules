@@ -102,7 +102,7 @@ describe('Component: Scrollable Container', () => {
             fixtureWrapper.detectChanges();
 
             let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
-            expect(container.style.width).toEqual('300px');
+            expect(container.style.width).toEqual(300);
         });
 
 
@@ -119,8 +119,8 @@ describe('Component: Scrollable Container', () => {
             expect(container.classList).toContain('u-scrollable-fh');
 
             // reading dimensions directly as getComputedStyle fails in travis
-            expect(container.offsetWidth).toEqual('300px');
-            expect(container.offsetHeight).toEqual('100px');
+            expect(container.offsetWidth).toEqual(300);
+            expect(container.offsetHeight).toEqual(100);
         });
 
     });
