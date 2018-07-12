@@ -2,7 +2,7 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.org/SAP/angular-metaui.svg?branch=master)](https://travis-ci.org/SAP/angular-metaui)
-
+[![Dependencies](https://david-dm.org/SAP/angular-metaui.svg)](https://david-dm.org/SAP/angular-metaui.svg)
 
 
 
