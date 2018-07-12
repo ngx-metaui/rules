@@ -1,0 +1,26 @@
+{
+  "name": "@aribaui/resources",
+  "description": "Global resouces for aribaui.",
+  "version": "6.0.0",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/SAP/angular-metaui.git",
+  "keywords": [
+    "assets",
+    "resources",
+    "fonts",
+    "styles",
+    "tools"
+  ],
+  "scripts": {
+    "release.pa": "../../node_modules/.bin/standard-version --release-as patch",
+    "release.mi": "../../node_modules/.bin/standard-version --release-as minor",
+    "release.ma": "../../node_modules/.bin/standard-version--release-as major"
+  },
+  "standard-version": {
+    "skip": {
+      "changelog": true,
+      "commit": true,
+      "tag": true
+    }
+  }
+}

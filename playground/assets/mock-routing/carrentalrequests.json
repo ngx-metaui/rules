@@ -1,0 +1,42 @@
+{
+  "resource": "carrentalrequests",
+  "routes": [
+    {
+      "path": "/carrentalrequests/1",
+      "method": "GET",
+      "responseCode": 200,
+      "data": {
+        "uniqueName": "1",
+        "firstName": "Peter",
+        "lastName": "Pan",
+        "driverLicenseNumber": "ABC-123",
+        "pickupDate": "1980-11-02T23:45:46.714Z",
+        "dropOffDate": "1980-11-02T23:45:46.714Z",
+        "pickupLocation": "San Jose",
+        "carType": [],
+        "extras": [],
+        "approvers": [],
+        "note": "ssss",
+        "requester": {
+          "uniqueName": "3",
+          "firstName": "Frank",
+          "lastName": "Kolar",
+          "driverLicenseNumber": "Asss-3",
+          "pickupDate": "1980-11-02T23:45:46.714Z",
+          "dropOffDate": "1980-11-02T23:45:46.714Z",
+          "pickupLocation": "San Jose",
+          "carType": [],
+          "extras": [],
+          "approvers": [],
+          "note": "aaa",
+          "price": {
+            "value": 123
+          }
+        },
+        "price": {
+          "value": 123
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,563 @@
+#!/usr/bin/env node
+'use strict';
+
+/**
+ *
+ * @license
+ * Copyright 2017 SAP Ariba
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+/**
+ *
+ * This is temporary CLI until angular CLI will not add support for add-ons
+ *
+ */
+const colors = require('colors');
+const path = require('path');
+const fsExtra = require('fs-extra');
+const fs = require('fs');
+const exec = require('child_process').exec;
+var readlineSync = require('readline-sync');
+
+
+const OSS_COMMAND = 'java -jar lib/meta-ui-parser.jar --gen --user ./node_modules/@aribaui/metaui/core ./src/rules';
+
+const NPMRC = '' +
+    'registry=http://registry.mo.sap.corp/api/npm/npmjs \n' +
+    'strict-ssl=false \n' +
+    'https-proxy=http://proxy.ariba.com:8080/ \n' +
+    'progress=true  \n' +
+    'proxy=http://proxy.ariba.com:8080/ \n' +
+    'no_proxy=10.9.40.69,localhost,sap.corp,mo.sap.corp,cc.mo.sap.corp,sap.biz,cloud.sap,sap,cc.ondemand.com,moo-repo,moo-repo.wdf.sap.corp,repo,repo.wdf.sap.corp,169.254.169.254,mo-3449ad0a1,127.0.0.1 \n' +
+    'always-auth = false' +
+    '\n';
+
+const REQUIRED_DEPS = [
+    '@angular/animations:5.1.0',
+    '@angular/common:5.1.0',
+    '@angular/compiler:5.1.0',
+    '@angular/core:5.1.0',
+    '@angular/forms:5.1.0',
+    '@angular/http:5.1.0',
+    '@angular/platform-browser:5.1.0',
+    '@angular/platform-browser-dynamic:5.1.0',
+    '@angular/router:5.1.0',
+    '@types/lodash:4.14.74',
+    'big-integer:1.6.23',
+    'classlist.js:1.1.20150312',
+    '@ngx-translate/core:9.0.1',
+    '@ngx-translate/http-loader:2.0.0',
+    'core-js:2.5.1',
+    'font-awesome:4.6.3',
+    'intl:1.2.5',
+    'jquery:3.1.1',
+    'lodash:4.17.4',
+    'object-hash:1.2.0',
+    'primeng:5.0.2',
+    "quill:1.2.6",
+    "rxjs:5.5.5",
+    'typescript-collections:1.2.3',
+    'web-animations-js:2.3.1',
+    "zone.js:0.8.18"
+];
+
+
+const REQUIRED_DEPS_DEV = [
+    '@angular/cli:1.6.0',
+    '@angular/compiler-cli:5.1.0',
+    '@angular/language-service:5.1.0',
+    'typescript:2.5.2',
+    'codelyzer:4.0.1'
+];
+
+const ASSETS = [
+    "assets",
+    "favicon.ico",
+    {
+        "glob": "**/*",
+        "input": "../node_modules/@aribaui/resources/images",
+        "output": "./assets/images"
+    },
+    {
+        "glob": "**/*",
+        "input": "../node_modules/@aribaui/resources/i18n",
+        "output": "./assets/i18n"
+    }
+
+];
+
+const CLI_STYLES = [
+    "../node_modules/@aribaui/resources/themes/_normalize.scss",
+    "../node_modules/primeng/resources/primeng.min.css",
+    "../node_modules/font-awesome/scss/font-awesome.scss",
+    "../node_modules/@aribaui/resources/styles/aribaui.css",
+    "../node_modules/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+    "../node_modules/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
+    "../node_modules/@aribaui/resources/themes/ariba/theme.scss",
+    "styles.scss"
+
+];
+
+
+const TEMPL_NAMES = [
+    'default'
+];
+
+
+var args = process.argv.slice(2);
+const PROJECT_ROOT = readProjectRoot();
+const ARIBA_UI_ROOT = path.join(PROJECT_ROOT, 'node_modules', '@aribaui');
+const ARIBA_UI_ROOT_RES = path.join(ARIBA_UI_ROOT, 'resources');
+const ARIBA_UI_TOOLS_SROOT = path.join(ARIBA_UI_ROOT_RES, 'tools');
+const OSS_TOOLS = path.join(ARIBA_UI_TOOLS_SROOT, 'oss');
+const TEMPLATES_ROOT = path.join(ARIBA_UI_ROOT_RES, 'templates');
+const COMMON_TEMPLATES = path.join(TEMPLATES_ROOT, 'common');
+
+
+var usage = [
+    ''
+    , '  Usage: aribaui [options]'
+    , ''
+    , '  Options:'
+    , ''
+    , '    -i, --init                           Initialize new angular-cli project with aribaui settings'
+    , '    -oss, --copy-oss                     Copy oss parser'
+    , '    -t, --template  <templateName>       Name of the template to apply to existing generated code [default]'
+    , '        ex.: aribaui -i -t default'
+    , ''
+].join('\n');
+
+
+var hasInitProject = false;
+var skipNpmInstall = false;
+var initOss = false;
+var templateName;
+
+if (args.length === 0) {
+    console.error(usage);
+}
+
+var arg;
+while (args.length) {
+    arg = args.shift();
+    switch (arg) {
+        case '--init':
+        case '-i':
+            hasInitProject = true;
+            break;
+        case '--skipInstall':
+        case '-s':
+            skipNpmInstall = true;
+            break;
+
+        case '--init-oss':
+        case '-ioss':
+            initOss = true;
+            break;
+        case '--template':
+        case '-t':
+            templateName = args.shift();
+            if (TEMPL_NAMES.indexOf(templateName) === -1) {
+                console.error(usage);
+                process.exit(-1);
+            }
+            break;
+
+        default:
+            console.error(usage);
+            process.exit(-1);
+    }
+}
+
+
+if (hasInitProject) {
+    initProject();
+    hasInitProject = false;
+} else if (initOss) {
+    initMetaUI();
+}
+
+
+function readProjectRoot() {
+    var currentPath = path.resolve(__dirname, '.');
+
+    while (true) {
+        var mainConfFile = path.join(currentPath, '.angular-cli.json');
+        if (fs.existsSync(mainConfFile)) {
+            return currentPath;
+        } else {
+            currentPath = path.join(currentPath, '..');
+        }
+    }
+
+    console.error('Unable to locale .angular-cli.json');
+    process.exit(-1);
+}
+
+
+function initProject() {
+    createNpmRc();
+    updatePackageJSON();
+    initMetaUI();
+
+    updateAngularCliJson();
+
+    if (templateName) {
+        applyTemplate();
+    }
+
+    console.log('## - Creating i18n application file'.bold.blue);
+    console.log('\t  Searching for assets folder....');
+    var pathAcli = path.join(PROJECT_ROOT, '.angular-cli.json');
+    const aCLIJson = fsExtra.readJsonSync(pathAcli, {throws: true});
+
+    var i18nDone = false;
+    var i18nLoc = path.join(PROJECT_ROOT, 'src');
+    for (var index in aCLIJson.apps[0].assets) {
+        var assets = path.join(i18nLoc, aCLIJson.apps[0].assets[index]);
+        if (assets.indexOf('assets') !== -1) {
+            var q = 'Found following assets folder ( ' + assets.red + ')';
+            if (question(q) === 'y') {
+                i18nLoc = assets
+                i18nDone = true;
+
+                var msgWi18n = '### Writing ' + 'resource.app.json'.red + ' under ' + i18nLoc.red;
+                console.log(msgWi18n.bold)
+                var i18nPath = path.join(i18nLoc, 'i18n', 'en');
+                fsExtra.ensureDirSync(i18nPath)
+                fsExtra.writeJsonSync(path.join(i18nPath, 'resource.app.json'), {});
+
+                break;
+            } else {
+                console.log('Create a i18n file under your assets folder: '.bold);
+                console.log(' asset/ ');
+                console.log('    i18n/   ');
+                console.log('        en/   ');
+                console.log('            resource.app.json  '.green);
+                console.log('with default empty content "{ }" '.bold);
+                console.log('\n');
+                break;
+            }
+        }
+    }
+
+
+    console.log('## - Run'.blue.bold + ' npm install '.green +
+        'until all peer dependencies are resolved'.blue.bold);
+}
+
+
+function applyTemplate() {
+    console.log('## - Apply custom application template'.blue.bold);
+
+    var src = path.join(PROJECT_ROOT, 'src');
+    const appTemplate = path.join(TemplatesRoot, '/' + templateName);
+
+    console.log(appTemplate + ' = ' + src);
+    console.log('###  Apply custom application template'.bold + appTemplate.bold + '... Done\n'.bold);
+
+    try {
+        fsExtra.copySync(appTemplate, src);
+        renameFilesRecursive(src, /\.ts\.tmpl/, '.ts');
+        renameFilesRecursive(src, /\.html\.tmpl/, '.html');
+        renameFilesRecursive(src, /\.scss\.tmpl/, '.scss');
+
+    } catch (e) {
+        console.error(e)
+    }
+
+    console.log('###  Apply custom application template... Done\n'.bold);
+
+}
+
+
+function addDependencies(packageJSON) {
+    console.log('### Updating dependencies section...'.bold);
+
+    REQUIRED_DEPS.forEach(function (item) {
+        var index = item.indexOf(':');
+        if (index != -1) {
+            var key = item.substring(0, index);
+            var value = item.substring(index + 1, item.length);
+            var origValue = packageJSON.dependencies[key];
+
+            if (!origValue) {
+                console.log('\t  add ' + key.green + ':' + value.green);
+                packageJSON.dependencies[key] = value;
+            } else if (confirmContentOverride(key, origValue, value) === 'y') {
+                packageJSON.dependencies[key] = value;
+                console.log('\t  changed to ' + value.green);
+            } else {
+                console.log('\t  skip ' + key);
+            }
+        }
+    });
+    packageJSON.dependencies = sortDependencies(packageJSON.dependencies);
+}
+
+
+function addDevDependencies(packageJSON) {
+
+    REQUIRED_DEPS_DEV.forEach(function (item) {
+        var index = item.indexOf(':');
+        if (index != -1) {
+            var key = item.substring(0, index);
+            var value = item.substring(index + 1, item.length);
+            var origValue = packageJSON.devDependencies[key];
+
+            if (!origValue) {
+                console.log('\t  add ' + key.green + ':' + value.green);
+                packageJSON.devDependencies[key] = value;
+            } else if (confirmContentOverride(key, origValue, value) === 'y') {
+                packageJSON.devDependencies[key] = value;
+                console.log('\t  changed to ' + value.green);
+            } else {
+                console.log('\t  skip ' + key);
+            }
+
+        }
+    });
+    packageJSON.dependencies = sortDependencies(packageJSON.dependencies);
+}
+
+
+function sortDependencies(obj) {
+    var out = Object.create(null)
+
+    Object.keys(obj).sort(function (a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase())
+    }).forEach(function (key) {
+        out[key] = obj[key]
+    });
+
+    return out
+}
+
+
+function createNpmRc() {
+    console.log('## - Creating NPMRC\n'.bold.blue);
+
+    var npmrc = path.join(PROJECT_ROOT, '.npmrc');
+    if (!fs.existsSync(npmrc) || (fs.existsSync(npmrc) && confirmFileOverride(npmrc) === 'y')) {
+        fs.writeFileSync(npmrc, NPMRC);
+        console.log('\t   .npmrc was created\n');
+    } else {
+        console.log('\t   .npmrc was skipped\n');
+    }
+
+    console.log('### Creating .npmrc... Done\n'.bold);
+
+}
+
+
+function updatePackageJSON() {
+    var rootPckJson = path.join(PROJECT_ROOT, 'package.json');
+
+    console.log('## - Processing package.json'.blue.bold);
+    const packageJSON = fsExtra.readJsonSync(rootPckJson, {throws: true});
+
+    console.log('### Updating scripts section...Done'.bold);
+    packageJSON.scripts['oss-user'] = OSS_COMMAND;
+    packageJSON.scripts['aribaui'] = 'aribaui';
+
+    addDependencies(packageJSON);
+
+    console.log('### Updating dependencies section...Done\n'.bold);
+    console.log('### Updating Dev dependencies section...\n'.bold);
+    addDevDependencies(packageJSON);
+
+    console.log('### Updating Dev dependencies section...Done\n'.bold);
+
+    fsExtra.writeJsonSync(rootPckJson, packageJSON);
+}
+
+
+function updateAngularCliJson() {
+
+    var pathAcli = path.join(PROJECT_ROOT, '.angular-cli.json');
+    console.log('## - Updating .angular-cli.json '.bold.blue);
+
+    const aCLIJson = fsExtra.readJsonSync(pathAcli, {throws: true});
+
+    var origValue = aCLIJson.apps[0].styles;
+    console.log('### Updating styles ...\n'.bold);
+    if (confirmContentOverride('styles', origValue, CLI_STYLES) === 'y') {
+
+        aCLIJson.apps[0].styles = [];
+        CLI_STYLES.forEach(function (item) {
+            aCLIJson.apps[0].styles.push(item)
+        });
+
+        console.log('\t  styles updated ');
+    } else {
+        console.log('\t  styles skipped');
+    }
+    console.log('### Updating styles ... Done\n'.bold);
+
+
+    origValue = aCLIJson.apps[0].assets;
+    console.log('### Updating assets ...\n'.bold);
+    if (confirmContentOverride('assets', origValue, ASSETS) === 'y') {
+
+        aCLIJson.apps[0].assets = ASSETS;
+        console.log('\t  assets updated ');
+    } else {
+        console.log('\t  assets skipped');
+    }
+
+    console.log('### Updating assets ... Done\n'.bold);
+
+
+    aCLIJson.apps[0].assets = ASSETS;
+    fsExtra.writeJsonSync(pathAcli, aCLIJson);
+}
+
+// Here we want to completly bootstrap the project and setup all the needed files
+// not only copy oss compiler.
+function initMetaUI() {
+    if (!initOss) {
+        return;
+    }
+    var msg = '##Copying OSS parser to ' + PROJECT_ROOT + '/lib';
+    console.log(msg.bold.blue);
+    fsExtra.copySync(OSS_TOOLS, PROJECT_ROOT + '/lib');
+    console.log('### Copying OSS parser... Done\n'.bold);
+
+}
+
+
+function renameFilesRecursive(dir, from, to) {
+
+    fs.readdirSync(dir).forEach(function (it) {
+        const itsPath = path.resolve(dir, it);
+        const itsStat = fs.statSync(itsPath);
+
+        if (itsStat.isDirectory()) {
+            renameFilesRecursive(itsPath, from, to)
+        } else {
+
+            if (itsPath.search(from) != -1) {
+                fs.renameSync(itsPath, itsPath.replace(from, to))
+            }
+        }
+    });
+}
+
+
+function confirmFileOverride(fileName) {
+    var fileNamec = fileName.green;
+    var defA = 'Y'.green;
+    var msg = 'Filename "' + fileNamec + '" already exists! Do you want to override (' + defA + ')? [Y/N]: '
+
+    return readAnswer(msg, ['y', 'n'], 'y');
+}
+
+
+function confirmContentOverride(key, origContent, newContent) {
+    var msg = 'About to: change existing "';
+    var defA = 'N'.green;
+    var keyc = key.green;
+
+    if (Array.isArray(newContent)) {
+
+        msg += keyc + '" value:  from: \n' + outArray(origContent, 'green') + '\n to: \n' +
+            outArray(newContent, 'red') + 'Do you want to change (' + defA + ')? [Y/N]: ';
+
+    } else {
+        var cnt1 = origContent.green;
+        var cnt2 = newContent.red;
+
+        msg += keyc + '" value:  from "' + cnt1 + '" to "' +
+            cnt2 + '".  Do you want to change (' + defA + ')? [Y/N]: ';
+    }
+
+    return readAnswer(msg, ['y', 'n'], 'n');
+
+}
+
+function question(qMsg) {
+    var defA = 'Y'.green;
+    var msg = qMsg + '. Do you want to continue (' + defA + ')? [Y/N]: '
+
+    return readAnswer(msg, ['y', 'n'], 'y');
+}
+
+
+function readAnswer(msg, expected, defaultAnswer) {
+    var numOfFailers = 0;
+    while (true) {
+        var answer = readlineSync.question(msg).toLowerCase();
+        if (!answer || answer.length === 0) {
+            return defaultAnswer
+        } else if (validateAnswer(expected, answer)) {
+            return answer;
+        } else {
+            numOfFailers++;
+        }
+        if (numOfFailers === 3) {
+            console.log('Existing. 3 incorrect asnwers!');
+            process.exit(-1);
+        }
+    }
+}
+
+function outArray(values, color) {
+    var arr = ''
+    arr += colors[color]('[');
+    arr += '\n';
+
+    for (var i = 0; i < values.length; i++) {
+
+        var val = isJsObject(values[i]) ? JSON.stringify(values[i]) : values[i];
+        var comma = ((i + 1) < values.length) ? ', ' : '';
+        arr += ' ' + colors[color](val);
+        arr += comma;
+        arr += '\n';
+    }
+    arr += colors[color](']');
+    arr += '\n';
+
+    return arr;
+}
+
+function validateAnswer(expected, received) {
+    if (received && expected.indexOf(received) === -1) {
+        console.log('Invalid answer! Expected: ', expected);
+        return false;
+    }
+
+    return true;
+}
+
+
+function isJsObject(obj) {
+    return obj !== null && (typeof obj === 'function' || typeof obj === 'object');
+}
+
+
+function execCmd(cmd) {
+    exec(cmd, function (e, stout, sterr) {
+        if (sterr !== null) {
+            console.log(sterr.red);
+        }
+        if (stout !== null) {
+            console.log(stout);
+        }
+        if (e !== null) {
+            console.log(e.red);
+        }
+    });
+};
