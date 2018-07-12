@@ -41,7 +41,7 @@
       ],
       "@aribaui/metaui/*": [
         "dist/@aribaui/metaui/*"
-      ],
+      ]
     }
   },
   "angularCompilerOptions": {
