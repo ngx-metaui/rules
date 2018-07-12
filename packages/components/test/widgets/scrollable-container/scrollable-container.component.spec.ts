@@ -108,26 +108,19 @@ describe('Component: Scrollable Container', () => {
 
         // disabling this test as for some reason it does not work in selenium grid. the height
         // is 85px instead of 100px
-        fit('should render horizontal container wrapped by parent div that set ' +
+        it('should render horizontal container wrapped by parent div that set ' +
             '300px x 100px and' +
             ' container should fit into this parent div.', () => {
             let fixtureWrapper = TestBed.createComponent(TestScrollableWithWrapperDivComponent);
             fixtureWrapper.detectChanges();
 
-
             let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
-            let computedStyle = getComputedStyle(container);
-            
-            console.log(container.offsetHeight);
-            console.log(container.offsetWidth);
-
-
 
             expect(container.classList).toContain('u-scrollable-fh');
-            expect(getComputedStyle(container).width).toEqual('300px');
 
-
-            expect(getComputedStyle(container).height).toEqual('100px');
+            // reading dimensions directly as getComputedStyle fails in travis
+            expect(container.offsetWidth).toEqual('300px');
+            expect(container.offsetHeight).toEqual('100px');
         });
 
     });
