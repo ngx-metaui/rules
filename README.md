@@ -2,12 +2,15 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.org/SAP/angular-metaui.svg?branch=master)](https://travis-ci.org/SAP/angular-metaui)
-[![Dependencies](https://david-dm.org/SAP/angular-metaui.svg)](https://david-dm.org/SAP/angular-metaui.svg)
+
+[![Dependency Status](https://david-dm.org/SAP/angular-metaui.svg)](https://david-dm.org/SAP/angular-metaui) [![devDependency Status](https://david-dm.org/SAP/angular-metaui.svg)](https://david-dm.org/SAP/angular-meta?type=dev)
+
+
 
 
 
 ## Table of Contents
-
+[![Dependency Status](https://david-dm.org/angular/angular-cli.svg)](https://david-dm.org/angular/angular-cli) [![devDependency Status](https://david-dm.org/angular/angular-cli/dev-status.svg)](https://david-dm.org/angular/angular-cli?type=dev)
 * [Description](#description)
 * [Requirements](#requirements)
 * [Installation](#Installation)
