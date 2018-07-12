@@ -9,7 +9,3 @@ if [[ ${TRAVIS_TEST_RESULT=0} == 1 ]]; then
 fi
 
 npm run lint.packages
-
-
-
-

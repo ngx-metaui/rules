@@ -9,13 +9,13 @@ if [[ ${TRAVIS_TEST_RESULT=0} == 1 ]]; then
 fi
 
 echo "################ Testing core ################ "
-ng test core  --browsers=ChromeHeadlessCI,FirefoxHeadless --source-map=false --watch=false
+ng test core  --browsers=ChromeHeadlessCI,FirefoxHeadless --source-map=false --watch=false --progress=false
 
 echo "################ Testing components ################ "
-ng test components --browsers=ChromeHeadlessCI,FirefoxHeadless --source-map=false --watch=false
+ng test components --browsers=ChromeHeadlessCI,FirefoxHeadless --source-map=false --watch=false --progress=false
 
 echo "################  Testing metaui ################ "
-ng test metaui --browsers=ChromeHeadlessCI,FirefoxHeadless --source-map=false --watch=false
+ng test metaui --browsers=ChromeHeadlessCI,FirefoxHeadless --source-map=false --watch=false --progress=false
 
 
 

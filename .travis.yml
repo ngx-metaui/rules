@@ -17,8 +17,10 @@ before_script:
    - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
 
 script:
+  - ./scripts/ci/build.sh prod
   - ./scripts/ci/build.sh ci
-  - ng test components --browsers=ChromeHeadlessCI --watch=false
+  - ./scripts/ci/lint.sh ci
+  - ./scripts/ci/test.sh ci
 
 
 

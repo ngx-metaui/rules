@@ -102,7 +102,7 @@ describe('Component: Scrollable Container', () => {
             fixtureWrapper.detectChanges();
 
             let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
-            expect(container.style.width).toEqual(300);
+            expect(container.style.width).toEqual('300px');
         });
 
 

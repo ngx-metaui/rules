@@ -24,7 +24,17 @@ if [ ${args[0]} == "prod" ]; then
    ng build metaui --prod
 
 else
-   npm run build.packages
+   echo "################ Building core module ################"
+   ng build core
+
+   echo "################ Building components module ################"
+   ng build components
+
+   echo "################ Building resources module ################"
+   npm run build.resources
+
+   echo "################  Building metaui module ################"
+   ng build metaui
 fi
 
 
