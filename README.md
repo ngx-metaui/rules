@@ -1,5 +1,8 @@
 # MetaUI for Angular - the declarative UI
 
+[![Build Status](https://travis-ci.org/SAP/angular-metaui.svg?branch=master)](https://travis-ci.org/SAP/angular-metaui)
+
+
 
 ## Table of Contents
 
