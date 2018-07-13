@@ -10,7 +10,7 @@
 
 
 ## Table of Contents
-[![Dependency Status](https://david-dm.org/angular/angular-cli.svg)](https://david-dm.org/angular/angular-cli) [![devDependency Status](https://david-dm.org/angular/angular-cli/dev-status.svg)](https://david-dm.org/angular/angular-cli?type=dev)
+
 * [Description](#description)
 * [Requirements](#requirements)
 * [Installation](#Installation)
