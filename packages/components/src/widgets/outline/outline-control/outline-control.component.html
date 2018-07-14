@@ -30,10 +30,10 @@
 -->
 
 <ng-template #withSelection>
-     <span class="outline-content outline-content-selected" *ngIf="isSelected()">
+     <span class="outline-content outline-content-selected" *ngIf="!allowEdit && isSelected()">
         <ng-container *ngTemplateOutlet="ngContent"></ng-container>
     </span>
-    <span class="outline-content" *ngIf="!isSelected()" (click)="select()">
+    <span class="outline-content" *ngIf="!allowEdit && !isSelected()" (click)="select()">
         <ng-container *ngTemplateOutlet="ngContent"></ng-container>
     </span>
 
@@ -41,7 +41,10 @@
 
 
 <ng-template #withoutSelection>
-    <span class="outline-content" (click)="toggleExpansion($event)">
+    <span *ngIf="!allowEdit" class="outline-content" (click)="toggleExpansion($event)">
+        <ng-container *ngTemplateOutlet="ngContent"></ng-container>
+    </span>
+    <span *ngIf="allowEdit" class="outline-content">
         <ng-container *ngTemplateOutlet="ngContent"></ng-container>
     </span>
 </ng-template>

@@ -17,8 +17,8 @@
  *
  */
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {Environment, isPresent, ListWrapper} from '@aribaui/core';
-import {OutlineForComponent} from '@aribaui/components';
+import {Environment, isPresent, Entity, Value} from '@aribaui/core';
+import {OutlineNode} from '@aribaui/components';
 
 
 @Component({
@@ -29,6 +29,7 @@ export class OutlinePageComponent implements OnInit,
     AfterViewInit
 {
     list: any[];
+    listTree: any[];
 
     currentItem: any;
 
@@ -40,7 +41,8 @@ export class OutlinePageComponent implements OnInit,
 
     ngOnInit()
     {
-        setTimeout(() => {
+        setTimeout(() =>
+            {
                 this.list = [
                     {
                         content: '1.0 Introduction Terms and Conditions',
@@ -110,6 +112,7 @@ export class OutlinePageComponent implements OnInit,
         );
 
 
+        this.populateTree();
     }
 
 
@@ -122,5 +125,79 @@ export class OutlinePageComponent implements OnInit,
     {
     }
 
+
+    populateTree(): void
+    {
+
+        let parent1 = new MyDomainObject('1.0', 'Section 1.0');
+        let parent2 = new MyDomainObject('2.0', 'Section 2.0');
+        let parent3 = new MyDomainObject('3.0', 'Section 3.0');
+
+
+        parent1.addChild(new MyDomainObject('1.1', 'Section 1.1'));
+        parent1.addChild(new MyDomainObject('1.2', 'Section 1.2'));
+
+        parent2.addChild(new MyDomainObject('2.1', 'Section 2.1'));
+        parent2.addChild(new MyDomainObject('2.2', 'Section 2.2'));
+
+        parent2.children[0].addChild(new MyDomainObject('2.1.1', 'Section 2.1.1'));
+        parent2.children[0].addChild(new MyDomainObject('2.1.2', 'Section 2.1.2'));
+
+        parent2.children[0].children[0].addChild(new MyDomainObject('2.1.1.1',
+            'Section 2.1.1.1'));
+        parent2.children[0].children[0].addChild(new MyDomainObject('2.1.1.1',
+            'Section 2.1.1.1'));
+
+
+        parent3.addChild(new MyDomainObject('3.1', 'Section 3.1'));
+        parent3.addChild(new MyDomainObject('3.2', 'Section 3.2'));
+
+
+        this.listTree = [parent1, parent2, parent3];
+    }
+
 }
+
+export class MyDomainObject implements Entity, OutlineNode
+{
+
+    // OutlineNode needed fields
+    parent: MyDomainObject;
+    children: MyDomainObject[] = [];
+    isSelected: boolean = false;
+    isExpanded: boolean = false;
+
+    constructor(public id: string, public title: string)
+    {
+
+    }
+
+
+    addChild(item: MyDomainObject): void
+    {
+        this.children.push(item);
+        item.parent = this;
+    }
+
+    identity(): string
+    {
+        return this.id;
+    }
+
+    getTypes(): any
+    {
+        return {
+            id: String,
+            title: String
+        };
+    }
+
+    className(): string
+    {
+        return 'MyDomainObject';
+    }
+}
+
+
+
 

@@ -36,7 +36,7 @@ import {
 import {assert, Environment, isPresent} from '@aribaui/core';
 import {Datatable2Component} from '../datatable2.component';
 import {BaseComponent} from '../../../core/base.component';
-import {Subject, Observable, Subscription, of} from 'rxjs';
+import {of, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {isPlatformBrowser} from '@angular/common';
 import {InfiniteScrollComponent} from '../../../core/infite-scroll/infite-scroll.component';
@@ -149,36 +149,31 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      *
      */
     supportFullScreen: boolean = true;
-
-
+    querySubscription: Subscription;
+    loadingSub: Subscription;
     /**
      *  Saves original bounding rect coordinates before we expand the DT to full screen
      *
      */
     private dtBoundingClientRect: any;
-
     /**
      * Remembers original scroll position before we switch to full screen mode
      */
     private originalScrollPosition: number;
 
-    querySubscription: Subscription;
-    loadingSub: Subscription;
-
-
-    constructor (public env: Environment,
-                 private render: Renderer2,
-                 private thisElement: ElementRef,
-                 private domUtils: DomUtilsService,
-                 @Inject(PLATFORM_ID) private platformId: Object,
-                 @Inject(forwardRef(() => Datatable2Component))
-                 public dt: Datatable2Component)
+    constructor(public env: Environment,
+                private render: Renderer2,
+                private thisElement: ElementRef,
+                private domUtils: DomUtilsService,
+                @Inject(PLATFORM_ID) private platformId: Object,
+                @Inject(forwardRef(() => Datatable2Component))
+                public dt: Datatable2Component)
     {
         super(env);
     }
 
 
-    ngOnInit (): void
+    ngOnInit(): void
     {
         super.ngOnInit();
 
@@ -192,7 +187,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
             switchMap((term: string) => of(term))
         ).subscribe((term: any) =>
         {
-            if (term) {
+            if (isPresent(term)) {
                 this.dt.dataSource.find(term);
             }
         });
@@ -207,7 +202,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      * parent div
      *
      */
-    calculateFrozenWidth (): number
+    calculateFrozenWidth(): number
     {
         if (!this.dt.hasFrozenColumns()) {
             return null;
@@ -235,7 +230,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      *
      *
      */
-    alignTablesHeights (frozenView: any, unFrozenView: any): void
+    alignTablesHeights(frozenView: any, unFrozenView: any): void
     {
         assert(isPresent(frozenView) && isPresent(frozenView),
             'Cant align table views as one of the view is undefined');
@@ -254,19 +249,21 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
         });
     }
 
-    ngAfterViewInit (): void
+    ngAfterViewInit(): void
     {
         this.initFullScreen();
     }
 
 
-    ngAfterViewChecked (): void
+    ngAfterViewChecked(): void
     {
+
         if (this.dt.hasFrozenColumns()) {
             let frozenView = this.thisElement.nativeElement.querySelector('.dt-body-frozen');
             let unFrozenView = this.thisElement.nativeElement.querySelector('.dt-body-unfrozen');
 
             let frozenWidth = this.calculateFrozenWidth();
+
             frozenView.style.width = frozenWidth + 'px';
             if (isPresent(unFrozenView)) {
                 // include border and create indent effect by having 1px white space
@@ -279,7 +276,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
         }
     }
 
-    ngOnDestroy (): void
+    ngOnDestroy(): void
     {
         super.ngOnDestroy();
 
@@ -303,7 +300,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      * mode
      *
      */
-    toggleFullScreen (event: any): void
+    toggleFullScreen(event: any): void
     {
         if (this.isFullScreenMode) {
             this.closeFullScreen(event);
@@ -327,7 +324,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      *
      *
      */
-    openFullScreen (event: any): void
+    openFullScreen(event: any): void
     {
         this.isFullScreenMode = true;
 
@@ -357,7 +354,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      * The same like above method (openFullScreen) but in reverse order.
      *
      */
-    closeFullScreen (event: any): void
+    closeFullScreen(event: any): void
     {
         this.isFullScreenMode = false;
 
@@ -375,6 +372,45 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
         }, 300);
     }
 
+    /**
+     * Applies set of set of css properties to make the DT main component on the page expand to
+     * full page mode and back
+     *
+     * We want to make it with little delay to let other animation finish
+     */
+    toggleFullScreenOnDT(fullScreen: boolean): void
+    {
+        this.dt.el.nativeElement.style.opacity = 0;
+        setTimeout(() =>
+        {
+            if (fullScreen) {
+                this.dt.classList += 'dt-full-screen';
+                this.dt.el.nativeElement.style.opacity = 1;
+
+            } else {
+                this.dt.classList = this.dt.classList.replace('dt-full-screen',
+                    '');
+                this.dt.el.nativeElement.style.opacity = 1;
+            }
+        }, 200);
+
+    }
+
+    /**
+     * Listen for infinite scroll event and request new data from data source
+     *
+     */
+    onLazyLoad(event: any): void
+    {
+        if (event.isLoad) {
+            this.dt.state.offset = event.offset;
+            this.dt.dataSource.fetch(this.dt.state);
+        } else {
+            let dataProvider = this.dt.dataSource.dataProvider;
+            let data = dataProvider.dataChanges.getValue();
+            dataProvider.dataChanges.next(data.slice(0, event.offset));
+        }
+    }
 
     /**
      * Creates animation effect to make it feel like the element (in this case DT) is expanding
@@ -382,7 +418,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      *
      * We take the dimension of the table then it is scaled slowly to the full page
      */
-    private runExpandEffect ()
+    private runExpandEffect()
     {
         this.dtBoundingClientRect = this.thisElement.nativeElement.getBoundingClientRect();
 
@@ -397,12 +433,11 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
         }, 300);
     }
 
-
     /**
      * Applies the transformation and scale the helper div (overlay) down to make it look like
      * it collapses
      */
-    private runCollapseEffect ()
+    private runCollapseEffect()
     {
         this.updateElement();
         this.applyTransformation(false);
@@ -426,7 +461,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      * DFS  - to go thru all the element under BODY and remove them from the page.
      *
      */
-    private hideNonFullScreenElement (parentElement: any): void
+    private hideNonFullScreenElement(parentElement: any): void
     {
         if (this.thisElement.nativeElement.parentNode === parentElement) {
             return;
@@ -446,7 +481,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
     /**
      * Put all the element that were previously removed by hideNonFullScreenElement() back
      */
-    private showNonFullScreenElement (): void
+    private showNonFullScreenElement(): void
     {
         Array.from(document.querySelectorAll('.u-fs-element-out'))
             .forEach((elem: any) => elem.classList.remove('u-fs-element-out'));
@@ -456,7 +491,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      * @Internal
      *
      */
-    private needTraverseDown (element: any): boolean
+    private needTraverseDown(element: any): boolean
     {
         return isPresent(element) && element.tagName !== 'SCRIPT' &&
             element.classList.contains('u-full-screen-element') &&
@@ -464,12 +499,11 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
 
     }
 
-
     /**
      * When we enter full screen /page mode when need to calculate how many rows to load initially
      *
      */
-    private calculateLimit (): number
+    private calculateLimit(): number
     {
         let browserH = this.domUtils.browserDimentions().height;
         let rowH = this.dt.el.nativeElement.querySelector('tbody tr:first-child').offsetHeight;
@@ -477,15 +511,14 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
         return (isPresent(rowH) && rowH > 0) ? (browserH / rowH) + 20 : 50;
     }
 
-
     /**
      * @Internal
      *
      */
-    private updateElement (l: number = this.dtBoundingClientRect.left,
-                           t: number = this.dtBoundingClientRect.top,
-                           w: number = this.dtBoundingClientRect.width,
-                           h: number = this.dtBoundingClientRect.height): void
+    private updateElement(l: number = this.dtBoundingClientRect.left,
+                          t: number = this.dtBoundingClientRect.top,
+                          w: number = this.dtBoundingClientRect.width,
+                          h: number = this.dtBoundingClientRect.height): void
     {
         this.dtFullScreenOverlay.nativeElement.style.left = l + 'px';
         this.dtFullScreenOverlay.nativeElement.style.top = t + 'px';
@@ -497,7 +530,7 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
      * @Internal
      *
      */
-    private applyTransformation (expand: boolean): void
+    private applyTransformation(expand: boolean): void
     {
         let x, y, tx, ty;
         if (expand) {
@@ -519,7 +552,12 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
             'scaleX(' + x + ') scaleY(' + y + ') translate3d(' + (tx) + 'px, ' + (ty) + 'px, 0px)';
     }
 
-    private initFullScreen (): void
+
+    /**
+     * INFINITE SCROLLING METHODS
+     */
+
+    private initFullScreen(): void
     {
         if (!isPlatformBrowser(this.platformId)) {
             this.supportFullScreen = false;
@@ -530,56 +568,10 @@ export class DTWrapper extends BaseComponent implements AfterViewInit, AfterView
     }
 
     /**
-     * Applies set of set of css properties to make the DT main component on the page expand to
-     * full page mode and back
-     *
-     * We want to make it with little delay to let other animation finish
-     */
-    toggleFullScreenOnDT (fullScreen: boolean): void
-    {
-        this.dt.el.nativeElement.style.opacity = 0;
-        setTimeout(() =>
-        {
-            if (fullScreen) {
-                this.dt.classList += 'dt-full-screen';
-                this.dt.el.nativeElement.style.opacity = 1;
-
-            } else {
-                this.dt.classList = this.dt.classList.replace('dt-full-screen',
-                    '');
-                this.dt.el.nativeElement.style.opacity = 1;
-            }
-        }, 200);
-
-    }
-
-
-    /**
-     * INFINITE SCROLLING METHODS
-     */
-
-    /**
-     * Listen for infinite scroll event and request new data from data source
-     *
-     */
-    onLazyLoad (event: any): void
-    {
-        if (event.isLoad) {
-            this.dt.state.offset = event.offset;
-            this.dt.dataSource.fetch(this.dt.state);
-        } else {
-            let dataProvider = this.dt.dataSource.dataProvider;
-            let data = dataProvider.dataChanges.getValue();
-            dataProvider.dataChanges.next(data.slice(0, event.offset));
-        }
-    }
-
-
-    /**
      * When loading is finished mark loading icon is done so we can hide it. I am using little
      * delay to make the animation visible
      */
-    private loadingFinished (): void
+    private loadingFinished(): void
     {
         if (isPresent(this.infiniteScroll)) {
             setTimeout(() => this.infiniteScroll.complete(), 200);

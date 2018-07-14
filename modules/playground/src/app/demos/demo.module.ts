@@ -87,8 +87,13 @@ import {HoverCardDemoComponent} from './components/hover-card/hovercard-demo.com
 import {ListDemoComponent} from './components/list/list-demo.component';
 import {HttpClientModule} from '@angular/common/http';
 import {DatatablePageComponent} from './datatable/datatable.page.component';
-
-
+import {
+    WizardProgressDemoComponent
+} from './components/wizard-progress/wizard-progress-demo.component';
+import {
+    ToggleSwitchDemoComponent
+} from './components/toggle-switch/toggle-switch-demo.component';
+import {HighlightPipe} from './datatable/highlight-text.pipe';
 /**
  * This module contains set of examples how to use some of the key components and also provides
  * developer some playground to start with
@@ -137,7 +142,10 @@ import {DatatablePageComponent} from './datatable/datatable.page.component';
         ScrollableDemoComponent,
         HoverCardDemoComponent,
         ListDemoComponent,
-        DatatablePageComponent
+        DatatablePageComponent,
+        WizardProgressDemoComponent,
+        ToggleSwitchDemoComponent,
+        HighlightPipe
     ],
     imports: [
         CommonModule,

@@ -1,6 +1,6 @@
-import {Entity, isBlank, isEntity, ListWrapper} from '@aribaui/core';
+import {Entity, isBlank, isEntity, isPresent, ListWrapper} from '@aribaui/core';
 import {Injectable} from '@angular/core';
-import {OutlineForComponent} from './outline-for.component';
+import {OutlineForComponent, OutlineNode} from './outline-for.component';
 
 /**
  * OutlineState is the key gluing part for the OutlineFor and OutlineController components. It
@@ -48,7 +48,7 @@ export class OutlineState
      * expansionStates. This way we can pretty easily execute CollapseAll, ExpandAll
      *
      */
-    globalState: boolean = false; // collapsed
+    isExpandedAll: boolean = false; // collapsed
 
     /**
      *
@@ -82,14 +82,36 @@ export class OutlineState
      */
     collapseAll (): void
     {
-        this.expansionStates.clear();
-        this.globalState = false;
+        if (isPresent(this.outlineFor) &&
+            this.outlineFor.isTreeModelFormat()) {
+
+            // for this case we collapse all but root nodes
+            if (this.outlineFor.pushRootSectionOnNewLine) {
+
+                this.outlineFor.list.forEach((item: OutlineNode) =>
+                {
+                    this.updateNodes(item.children || [], false);
+                });
+            } else {
+                this.updateNodes(this.outlineFor.list || [], false);
+            }
+
+        } else {
+            this.expansionStates.clear();
+        }
+        this.isExpandedAll = false;
     }
 
     expandAll (): void
     {
-        this.expansionStates.clear();
-        this.globalState = true;
+        if (isPresent(this.outlineFor) &&
+            this.outlineFor.isTreeModelFormat()) {
+            this.updateNodes(this.outlineFor.list, true);
+
+        } else {
+            this.expansionStates.clear();
+        }
+        this.isExpandedAll = true;
     }
 
 
@@ -116,35 +138,51 @@ export class OutlineState
     }
 
 
-    toggleExpansion (currentPath: any[], chidren?: any[]): void
+    toggleExpansion (currentPath: any[], children?: any[]): void
     {
 
         if (isBlank(currentPath)) {
             return;
         }
         let item = ListWrapper.last(currentPath);
-        let itemChildren = chidren || [];
+        let itemChildren = children || [];
         let newState = !this.isExpanded(item);
         this.setExpansionState(item, newState);
 
         if (!newState) {
             ListWrapper.removeLast(currentPath);
-            itemChildren.forEach((child: any) =>
-            {
-                this.setExpansionState(child, newState);
-            });
+            this.updateNodes(itemChildren, newState);
         }
 
         this.setExpansionPath(currentPath);
     }
 
+    updateNodes (nodes: any[], newState: boolean): void
+    {
+        nodes.forEach((child: any) =>
+        {
+            let items = this.outlineFor.childrenForItem(child);
+            if (isPresent(items) && items.length > 0) {
+                this.updateNodes(items, newState);
+            }
+            this.setExpansionState(child, newState);
+        });
+    }
+
     setExpansionState (item: any, isExpanded: boolean): void
     {
-        let key = this.itemToKey(item);
-        if (isExpanded === this.globalState) {
-            this.expansionStates.delete(key);
+        // Even for tree mode format save the state so we can use it later on in case object
+        // references gets meesed up
+        if (this.outlineFor &&
+            this.outlineFor.isTreeModelFormat()) {
+            (<OutlineNode>item).isExpanded = isExpanded;
         } else {
-            this.expansionStates.set(key, (isExpanded) ? true : false);
+            let key = this.itemToKey(item);
+            if (isExpanded === this.isExpandedAll) {
+                this.expansionStates.delete(key);
+            } else {
+                this.expansionStates.set(key, (isExpanded) ? true : false);
+            }
         }
     }
 
@@ -160,11 +198,11 @@ export class OutlineState
     }
 
 
-    setExpansionPath (item: any[]): void
+    setExpansionPath (items: any[]): void
     {
-        this.expansionPath = item;
+        this.expansionPath = items;
 
-        item.forEach((node: any) =>
+        items.forEach((node: any) =>
         {
             this.setExpansionState(node, true);
         });
@@ -172,11 +210,16 @@ export class OutlineState
 
     isExpanded (item: any): boolean
     {
-        let key = this.itemToKey(item);
-        if (!this.expansionStates.has(key)) {
-            return this.globalState;
+        if (isPresent(this.outlineFor) &&
+            this.outlineFor.isTreeModelFormat()) {
+            return (<OutlineNode>item).isExpanded;
+        } else {
+            let key = this.itemToKey(item);
+            if (!this.expansionStates.has(key)) {
+                return this.isExpandedAll;
+            }
+            return this.expansionStates.get(key);
         }
-        return this.expansionStates.get(key);
     }
 
 }

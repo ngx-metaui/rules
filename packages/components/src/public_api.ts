@@ -64,7 +64,9 @@ export {
     isDSChooserInitParams, HoverCardComponent, ListComponent, AWListModule, CardComponent,
     OutlineState, Datatable2Component, DTColumn2Component, DTHeaderComponent2,
     DTDetailRowComponent, DetailRowExpansionState, Datatable2State, DTDSInitParams, EntityDef2,
-    isDTInitParams, DT2DataSource, DTMultiSelectColumnComponent, AWDatatable2Module
+    isDTInitParams, DT2DataSource, DTMultiSelectColumnComponent, AWDatatable2Module,
+    WizardProgressComponent, Step, OutlineNode, isOutlineNode, DTHAlignment, SelectionMode,
+    AWOutlineForModule, ToggleSwitchComponent, WizardProgressModule, ToggleSwitchModule
 
 } from './widgets/index';
 

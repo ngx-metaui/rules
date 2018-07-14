@@ -32,9 +32,63 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {animate, AnimationBuilder, state, style, transition, trigger} from '@angular/animations';
-import {assert, Environment, isBlank, isPresent, ListWrapper} from '@aribaui/core';
+import {assert, Environment, Identity, isBlank, isPresent, ListWrapper} from '@aribaui/core';
 import {BaseComponent} from '../../core/base.component';
 import {OutlineState} from './outline-state';
+
+
+/**
+ * This interface represent concrete tree structure for the outline tree mode
+ */
+export interface OutlineNode extends Identity
+{
+    /**
+     * Reference to parent node.
+     */
+    parent: OutlineNode;
+
+    /**
+     * Node's children. Even its a field it can be implemented lazily using getter where a target
+     * object does not implement this as a public field but a getter with control over the
+     * retrieved list
+     */
+    children: OutlineNode[];
+
+    /**
+     * Different states for outline Node
+     *
+     * isExpanded: boolean;= moving out as this is managed by expansionstate.
+     */
+    isExpanded: boolean;
+    isSelected: boolean;
+    isMatch?: boolean;
+    readonly?: boolean;
+    type?: string;
+    draggable?: boolean;
+    droppable?: boolean;
+    visible?: boolean;
+
+}
+
+
+/**
+ *
+ * Checks type for OutlineNode
+ *
+ */
+export function isOutlineNode(node: any): node is OutlineNode
+{
+    return isPresent(node) && isPresent((<OutlineNode>node))
+        && isPresent((<OutlineNode>node).parent)
+        && isPresent((<OutlineNode>node).children);
+}
+
+
+/**
+ * Currently outline supports only two modes free, where application is responsible to retrieve
+ * children for each node and tree with above OutlineNode structure
+ */
+export type ModelFormat = 'free' | 'tree';
 
 
 /**
@@ -241,6 +295,25 @@ export class OutlineForComponent extends BaseComponent
 
     /**
      *
+     * Identifies current model mode.
+     *
+     * We recognize two modes:
+     *
+     * Free - Application needs to implement a children method to retrieve a list of children for
+     * each node and format is pretty much upt to the application
+     *
+     * Tree - this is more restrictive where we have concrete data structure
+     * interface that needs to be folled
+     *
+     * todo: instead of passing format binding try to look into the list to see what type so
+     * we dont make it mandatory
+     *
+     */
+    @Input()
+    format: ModelFormat = 'free';
+
+    /**
+     *
      * Used when in selection mode to push current selected Item to the application
      *
      */
@@ -292,16 +365,16 @@ export class OutlineForComponent extends BaseComponent
     viewInitialized: boolean = false;
 
 
-    constructor (public env: Environment,
-                 private _viewContainer: ViewContainerRef,
-                 private builder: AnimationBuilder,
-                 private element: ElementRef)
+    constructor(public env: Environment,
+                private _viewContainer: ViewContainerRef,
+                private builder: AnimationBuilder,
+                private element: ElementRef)
     {
         super(env);
 
     }
 
-    ngOnInit ()
+    ngOnInit()
     {
         super.ngOnInit();
 
@@ -316,7 +389,7 @@ export class OutlineForComponent extends BaseComponent
             this.showExpansionControl = false;
         }
 
-        this.state.globalState = this.expandAll;
+        this.state.isExpandedAll = this.expandAll;
 
         // in case we want to render content of tree outside of outlineFor
         if (isPresent(this.externalTemplate)) {
@@ -329,29 +402,33 @@ export class OutlineForComponent extends BaseComponent
             this.context = this;
         }
 
-        // // when root section needs to be on new line, then automatically expand second level
-        // if (this.pushRootSectionOnNewLine) {
-        //     this.list.forEach((item: any) => {
-        //         let currentItem = ListWrapper.last(this.state.currentPath);
-        //         this.state.toggleExpansion(item);
-        //     })
-        // }
     }
 
 
-    ngDoCheck (): void
+    ngDoCheck(): void
     {
         super.ngDoCheck();
+    }
+
+    isTreeModelFormat(): boolean
+    {
+        return this.format === 'tree';
     }
 
     /**
      * Used by template and OutlineControl to identify which item is expanded and collapsed
      *
      */
-    isExpanded (item: any, currentLevel: number = -1): boolean
+    isExpanded(item: any, currentLevel: number = -1): boolean
     {
-        return (currentLevel === 0 && this.pushRootSectionOnNewLine)
-            ? true : this.state.isExpanded(item);
+        if (currentLevel === 0 && this.pushRootSectionOnNewLine) {
+            // always override/reset for root nodes
+            if (this.isTreeModelFormat()) {
+                (<OutlineNode>item).isExpanded = true;
+            }
+            return true;
+        }
+        return this.state.isExpanded(item);
     }
 
     /**
@@ -361,9 +438,13 @@ export class OutlineForComponent extends BaseComponent
      * we expect current object to have `children` field
      *
      */
-    childrenForItem (item: any): any[]
+    childrenForItem(item: any): any[]
     {
-        return this.hasChildren(item) ? this.doGetChildren(item) : [];
+        if (this.isTreeModelFormat()) {
+            return (<OutlineNode>item).children || [];
+        } else {
+            return this.hasChildren(item) ? this.doGetChildren(item) : [];
+        }
     }
 
 
@@ -372,9 +453,13 @@ export class OutlineForComponent extends BaseComponent
      * Check if the current item has a children and needs to be rendered
      *
      */
-    hasChildren (item: any): boolean
+    hasChildren(item: any): boolean
     {
-        if (isBlank(this.children) && isBlank(item.children)) {
+        if (this.isTreeModelFormat()) {
+            let children = (<OutlineNode>item).children;
+            return isPresent(children) && children.length > 0;
+
+        } else if (isBlank(this.children) && isBlank(item.children)) {
             assert(false, 'Missing [children] method binding');
         }
 
@@ -382,7 +467,7 @@ export class OutlineForComponent extends BaseComponent
 
     }
 
-    doGetChildren (item: any): any[]
+    doGetChildren(item: any): any[]
     {
         return this.children.apply(this.context, [item]);
     }
@@ -396,7 +481,7 @@ export class OutlineForComponent extends BaseComponent
      *
      *
      */
-    toggleExpansion (): void
+    toggleExpansion(): void
     {
         if (this.animationInProgress) {
             // backup procedure in case onAnimationDone fails
@@ -427,7 +512,7 @@ export class OutlineForComponent extends BaseComponent
      * when one is in progress.
      *
      */
-    onAnimationDone (event: Event)
+    onAnimationDone(event: Event)
     {
         this.animationInProgress = false;
     }
@@ -438,7 +523,7 @@ export class OutlineForComponent extends BaseComponent
      *
      *
      */
-    indentation (currentLevel: number): number
+    indentation(currentLevel: number): number
     {
         if (this.pushRootSectionOnNewLine && currentLevel > 0) {
             currentLevel -= 1;
@@ -452,7 +537,7 @@ export class OutlineForComponent extends BaseComponent
      * Not all rows are visible by default, there can be a case where you dont want to render items
      * using outline. e.g. Datatable with detail row.
      */
-    isVisible (item: any): boolean
+    isVisible(item: any): boolean
     {
         if (isPresent(this.filterOut)) {
             return !this.filterOut(item);
@@ -485,12 +570,12 @@ export class InitNestingDirective implements OnInit
     setParentItem: any;
 
 
-    constructor (private outline: OutlineForComponent)
+    constructor(private outline: OutlineForComponent)
     {
     }
 
 
-    ngOnInit (): void
+    ngOnInit(): void
     {
         if (isPresent(this.setLevel)) {
             this.outline.state.currentLevel = this.setLevel;
@@ -499,9 +584,14 @@ export class InitNestingDirective implements OnInit
 
         if (isPresent(this.setCurrrentItem)) {
             this.outline.currentItem = this.setCurrrentItem;
+
+            if (this.outline.isTreeModelFormat()) {
+                this.outline.currentItem['$$parentItem']
+                    = (<OutlineNode>this.setCurrrentItem).parent;
+            }
         }
 
-        if (isPresent(this.setParentItem)) {
+        if (!this.outline.isTreeModelFormat() && isPresent(this.setParentItem)) {
             this.outline.currentItem['$$parentItem'] = this.setParentItem;
         }
     }

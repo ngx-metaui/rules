@@ -42,7 +42,7 @@ export class DataTypeProviderRegistry
     private registryNameToClass: Map<string, any>;
 
 
-    constructor ()
+    constructor()
     {
         this.registryByProvider = new Map<string, DataProvider<any>>();
         this.registryNameToClass = new Map<string, any>();
@@ -54,7 +54,7 @@ export class DataTypeProviderRegistry
      * a parent class if needed
      *
      */
-    registerProvider<T> (target: any, provider: DataProvider<T>): void
+    registerProvider<T>(target: any, provider: DataProvider<T>): void
     {
         if (isBlank(target) || (!isStringMap(target) && !isType(target))) {
             throw new Error(' Cannot register non-object');
@@ -73,7 +73,7 @@ export class DataTypeProviderRegistry
      * parent and see if there is a provider registered on this level
      *
      */
-    bestMatchForClass<T> (className: string): DataProvider<T>
+    bestMatchForClass<T>(className: string): DataProvider<T>
     {
         let registeredClassName = className;
         let classProto = this.registryNameToClass.get(className);
@@ -107,7 +107,7 @@ export class DataTypeProviderRegistry
      *
      *
      */
-    bestMatchForType<T> (type: Type<T>): DataProvider<T>
+    bestMatchForType<T>(type: Type<T>): DataProvider<T>
     {
         let name: string = objectToName(type);
 
@@ -136,11 +136,21 @@ export abstract class DataProvider<T>
      */
     dataChanges: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
 
+
+    /**
+     * Internal data source populated by fetch or search. JS application can hold large amount of
+     * records without going back to the REST server. This can be used to cache search result on
+     * the client site.
+     *
+     */
+    offScreenData: any[];
+
+
     /**
      *  Return size of the source
      *
      */
-    expectedCount (params?: Map<string, any>): number
+    expectedCount(params?: Map<string, any>): number
     {
         return -1;
     }
@@ -154,7 +164,7 @@ export abstract class DataProvider<T>
      *
      * @deprecated by fetch
      */
-    abstract dataForParams (params: Map<string, any>): Array<T>;
+    abstract dataForParams(params: Map<string, any>): Array<T>;
 
 
     /**
@@ -164,13 +174,13 @@ export abstract class DataProvider<T>
      * Replacement for dataforParams
      *
      */
-    abstract fetch (params: Map<string, any>): Observable<T[]>;
+    abstract fetch(params: Map<string, any>): Observable<T[]>;
 
     /**
      *
      * Returns non-async current state of data
      */
-    data (): Array<T>
+    data(): Array<T>
     {
         return this.dataChanges.getValue();
     }
@@ -180,7 +190,7 @@ export abstract class DataProvider<T>
      * Tells if this DataProvider supports INSERT, REMOVE
      *
      */
-    canCRUD (): boolean
+    canCRUD(): boolean
     {
         return false;
     }
@@ -190,7 +200,7 @@ export abstract class DataProvider<T>
      * Tells if this DataProvider supports query capability
      *
      */
-    canQuery (): boolean
+    canQuery(): boolean
     {
         return false;
     }
@@ -200,7 +210,7 @@ export abstract class DataProvider<T>
      * inform all subscribers
      *
      */
-    insert (obj: any): void
+    insert(obj: any): void
     {
     }
 
@@ -210,7 +220,7 @@ export abstract class DataProvider<T>
      * inform all subscribers.
      *
      */
-    remove (obj: any): void
+    remove(obj: any): void
     {
 
     }
@@ -219,7 +229,7 @@ export abstract class DataProvider<T>
      * Implement to provide access to low level searcg API.
      *
      */
-    query (params: Map<string, string>): void
+    query(params: Map<string, string>): void
     {
     }
 }

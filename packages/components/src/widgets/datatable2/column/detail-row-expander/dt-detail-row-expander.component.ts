@@ -18,8 +18,7 @@
  *
  *
  */
-import {Component, forwardRef, Inject, ViewEncapsulation} from '@angular/core';
-import {Datatable2Component} from '../../datatable2.component';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {Environment} from '@aribaui/core';
 import {DomHandler} from 'primeng/primeng';
 import {DTColumn2Component} from '../dt-column.component';
@@ -39,9 +38,11 @@ import {DTColumn2Component} from '../dt-column.component';
     providers: [DomHandler]
 
 })
-export class DTDetailRowExpanderComponent extends DTColumn2Component {
+export class DTDetailRowExpanderComponent extends DTColumn2Component
+{
 
-    constructor(public env: Environment, public domHandler: DomHandler) {
+    constructor(public env: Environment, public domHandler: DomHandler)
+    {
         super(env, domHandler);
 
         // we dont want to show the row/column unless application says so
@@ -52,19 +53,22 @@ export class DTDetailRowExpanderComponent extends DTColumn2Component {
     }
 
 
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
         // just to get around the check in parent class
         this.key = '';
 
         super.ngOnInit();
     }
 
-    toggleExpansion(event: any, item: any): void {
+    toggleExpansion(event: any, item: any): void
+    {
         this.dt.detailRowExpansionState.toggle(item);
         event.stopPropagation();
     }
 
-    calculateStyleClass(item: any): string {
+    calculateStyleClass(item: any): string
+    {
         return this.dt.detailRowExpansionState.isExpanded(item) ?
             'icon-slim-arrow-down' : 'icon-slim-arrow-right';
     }

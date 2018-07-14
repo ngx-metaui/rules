@@ -21,11 +21,11 @@
 import {
     assert,
     Entity,
-    equals,
     isBlank,
     isEntity,
     isPresent,
     isString,
+    ListWrapper,
     MapWrapper
 } from '@aribaui/core';
 import {Observable} from 'rxjs';
@@ -47,7 +47,8 @@ import {AWDataTable, DropPosition} from './aw-datatable';
  *
  *
  */
-export class DT2DataSource extends DataSource {
+export class DT2DataSource extends DataSource
+{
     static readonly MaxLimit = 100;
 
     /**
@@ -60,18 +61,15 @@ export class DT2DataSource extends DataSource {
      * Keep track of current datatable state
      */
     state: Datatable2State;
-
+    initialized = false;
+    debugTime: number;
     /**
      * Defines object being rendered
      */
     private entity: EntityDef2;
 
-
-    initialized = false;
-
-    debugTime: number;
-
-    constructor(public dataProviders?: DataProviders, public finders?: DataFinders) {
+    constructor(public dataProviders?: DataProviders, public finders?: DataFinders)
+    {
         super(dataProviders, finders);
 
         this.state = Datatable2State.create();
@@ -80,7 +78,8 @@ export class DT2DataSource extends DataSource {
     }
 
 
-    init(...args: any[]): void {
+    init(...args: any[]): void
+    {
         if (isBlank(args) || args.length !== 1 && !isDTInitParams(args[0])) {
             throw new Error('You need to initialize DS with (DSChooserInitParams)');
         }
@@ -112,7 +111,8 @@ export class DT2DataSource extends DataSource {
      * Triggers async fetch data request and result is given back using dataProvider.dataChanges
      *
      */
-    fetch(withParams?: Datatable2State): void {
+    fetch(withParams?: Datatable2State): void
+    {
         let params = null;
         if (isPresent(withParams)) {
             params = new Map().set('offset', withParams.offset)
@@ -121,7 +121,8 @@ export class DT2DataSource extends DataSource {
                 .set('selector', withParams.sortOrder);
         }
 
-        this.dataProvider.fetch(params).subscribe((result: any[]) => {
+        this.dataProvider.fetch(params).subscribe((result: any[]) =>
+        {
             if (withParams.offset > 0) {
                 let incrData = [...this.dataProvider.dataChanges.getValue(), ...result];
                 this.dataProvider.dataChanges.next(incrData);
@@ -138,11 +139,13 @@ export class DT2DataSource extends DataSource {
      *
      * Dont forget to unsubscribe when component is destroyed.
      */
-    open<T>(): Observable<T[]> {
+    open<T>(): Observable<T[]>
+    {
         return this.dataProvider.dataChanges.asObservable();
     }
 
-    close(): void {
+    close(): void
+    {
         this.dataProvider = null;
         this.dataFinder = null;
     }
@@ -154,15 +157,14 @@ export class DT2DataSource extends DataSource {
      * which works with local array
      *
      */
-    insert(object: any): void {
+    insert(object: any): void
+    {
         if (this.dataProvider.canCRUD()) {
             this.dataProvider.insert(object);
 
         } else {
-            let copy = this.dataProvider.data().slice();
-            copy.push(object);
-
-            this.dataProvider.dataChanges.next(copy);
+            this.dataProvider.offScreenData.push(object);
+            this.dataProvider.dataChanges.next(this.dataProvider.offScreenData);
         }
     }
 
@@ -171,15 +173,14 @@ export class DT2DataSource extends DataSource {
      * Please see {@link insert} method
      *
      */
-    remove(object: any): void {
+    remove(object: any): void
+    {
         if (this.dataProvider.canCRUD()) {
             this.dataProvider.remove(object);
 
         } else {
-            let copy = this.dataProvider.data().slice();
-            let afterDelete = copy.filter((elem: any) => !equals(elem, object));
-
-            this.dataProvider.dataChanges.next(afterDelete);
+            ListWrapper.removeIfExist(this.dataProvider.offScreenData, object);
+            this.dataProvider.dataChanges.next(this.dataProvider.offScreenData);
         }
     }
 
@@ -193,7 +194,8 @@ export class DT2DataSource extends DataSource {
      *
      *
      */
-    find(pattern?: any): void {
+    find(pattern?: any): void
+    {
         if (isBlank(pattern) || pattern.length === 0) {
             // if we received empty string return orginal list
             this.fetch(this.state);
@@ -215,7 +217,8 @@ export class DT2DataSource extends DataSource {
             assert(isString(pattern), 'Cannot pass non-string value to FullText Finder');
         }
 
-        this.dataFinder.match<any>(searchParam).subscribe((result: any[]) => {
+        this.dataFinder.match<any>(searchParam).subscribe((result: any[]) =>
+        {
             this.dataProvider.dataChanges.next(result);
         });
     }
@@ -229,7 +232,8 @@ export class DT2DataSource extends DataSource {
      * Todo: Extend to sort by multiple columns
      *
      */
-    sort(key: string, sortOrder: number): void {
+    sort(key: string, sortOrder: number): void
+    {
         if (isBlank(this.dataProvider.data()) || this.dataProvider.data().length === 0) {
             return;
         }
@@ -243,7 +247,8 @@ export class DT2DataSource extends DataSource {
      * Persist db state
      *
      */
-    updateState(offset: number, sortField: string, sOrder: number): void {
+    updateState(offset: number, sortField: string, sOrder: number): void
+    {
         this.state.offset = offset;
         this.state.sortKey = sortField;
         this.state.sortOrder = sOrder;
@@ -289,7 +294,8 @@ export class DT2DataSource extends DataSource {
      *
      *
      */
-    reorderRows(origPos: number, newPos: number, dropPos: DropPosition): void {
+    reorderRows(origPos: number, newPos: number, dropPos: DropPosition): void
+    {
         let array = this.dataProvider.data().slice();
 
         // take something from top and drag&drop under
@@ -310,7 +316,8 @@ export class DT2DataSource extends DataSource {
 /**
  * Entity definition to be used to initialize programmatically columns
  */
-export interface EntityDef2 {
+export interface EntityDef2
+{
     propertyKeys: string[];
 
     defaultFormatter: (key: any) => string;
@@ -328,7 +335,8 @@ export interface EntityDef2 {
  *
  * todo: Create methods to convert this state from and to JSON for easier serialization
  */
-export class Datatable2State {
+export class Datatable2State
+{
     public static readonly Ascending = 1;
     public static readonly Descending = -1;
 
@@ -397,7 +405,8 @@ export class Datatable2State {
     detailRowExpandState?: Map<any, boolean>;
 
 
-    constructor() {
+    constructor()
+    {
         this.outlineState = new Map<any, boolean>();
         this.detailRowExpandState = new Map<any, boolean>();
     }
@@ -405,7 +414,8 @@ export class Datatable2State {
     static create(offset: number = 0, limit: number = 15, displayLimit: number = 5,
                   sortField: string = '', sOrder: number = 0, searchQuery?: string, filter?: any,
                   outlineState: Map<any, boolean> = new Map<any, boolean>(),
-                  detailRowState: Map<any, boolean> = new Map<any, boolean>()): Datatable2State {
+                  detailRowState: Map<any, boolean> = new Map<any, boolean>()): Datatable2State
+    {
         let s = new Datatable2State();
         s.offset = offset;
         s.limit = limit;
@@ -420,7 +430,8 @@ export class Datatable2State {
         return s;
     }
 
-    static fromJSON(data: string): Datatable2State {
+    static fromJSON(data: string): Datatable2State
+    {
         let state: DTStateSerializableHelper = JSON.parse(data);
         let ds = new Datatable2State();
         ds.offset = state.offset;
@@ -436,7 +447,8 @@ export class Datatable2State {
     }
 
 
-    static toJSON(data: Datatable2State): string {
+    static toJSON(data: Datatable2State): string
+    {
         let toConvert: DTStateSerializableHelper = {
             offset: data.offset,
             limit: data.limit,
@@ -461,23 +473,23 @@ export class Datatable2State {
  *
  * Todo: move this out to DS
  */
-export class DetailRowExpansionState {
+export class DetailRowExpansionState
+{
 
     expansionStates: Map<any, boolean>;
 
 
-    constructor(private dt: AWDataTable) {
+    constructor(private dt: AWDataTable)
+    {
     }
 
-    private itemToKey(item: any): string {
-        return isEntity(item) ? (<Entity>item).identity() : item;
-    }
-
-    get detailExpansionEnabled(): boolean {
+    get detailExpansionEnabled(): boolean
+    {
         return isPresent(this.expansionStates);
     }
 
-    set detailExpansionEnabled(value: boolean) {
+    set detailExpansionEnabled(value: boolean)
+    {
 
         if (value) {
             this.expansionStates = new Map<any, boolean>();
@@ -486,7 +498,8 @@ export class DetailRowExpansionState {
         }
     }
 
-    toggle(item: any): void {
+    toggle(item: any): void
+    {
         let key = this.itemToKey(item);
         if (!this.isExpanded(item)) {
             this.expansionStates.set(key, true);
@@ -497,7 +510,8 @@ export class DetailRowExpansionState {
         this.dt.dataSource.state.detailRowExpandState = this.expansionStates;
     }
 
-    isExpanded(item: any): boolean {
+    isExpanded(item: any): boolean
+    {
         let key = this.itemToKey(item);
         // handle special case where we collapse parent of parent while detail row is expanded
         if (this.dt.isOutline() && !this.dt.outlineState.isExpanded(key)) {
@@ -508,9 +522,15 @@ export class DetailRowExpansionState {
         let isOutlineExpanded = this.dt.isOutline() ? this.dt.outlineState.isExpanded(key) : true;
         return isPresent(key) && this.expansionStates.has(key);
     }
+
+    private itemToKey(item: any): string
+    {
+        return isEntity(item) ? (<Entity>item).identity() : item;
+    }
 }
 
-export interface DTStateSerializableHelper {
+export interface DTStateSerializableHelper
+{
     offset: number;
     limit: number;
     displayLimit: number;
@@ -523,14 +543,16 @@ export interface DTStateSerializableHelper {
 
 }
 
-export function isDTInitParams(init: DTDSInitParams): init is DTDSInitParams {
+export function isDTInitParams(init: DTDSInitParams): init is DTDSInitParams
+{
     return isPresent(init.obj) || isPresent(init.queryType) || isPresent(init.entity);
 }
 
 /**
  * To make initialization easier we have this common format.
  */
-export interface DTDSInitParams extends DSInitParams {
+export interface DTDSInitParams extends DSInitParams
+{
 
     /**
      * Object definition for the data

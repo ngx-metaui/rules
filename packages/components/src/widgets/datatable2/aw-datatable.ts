@@ -53,7 +53,8 @@ export enum DropPosition
  * Abstract type that is sharable among dependant DT object such as Columns, DataSources,
  * Directives to be able to communicate back to the datatable mainly to avoid circular dependency
  */
-export interface AWDataTable {
+export interface AWDataTable
+{
 
     /**
      * Allows you to pass your own datasource to override default one. Also when dataSource is

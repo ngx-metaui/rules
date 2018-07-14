@@ -48,7 +48,7 @@ export {
     BooleanWrapper, getSymbolIterator, evalExpression, evalExpressionWithCntx,
     isPrimitive, hasConstructor, escape, escapeRegExp, hashCode, objectToName, equals,
     shiftLeft, shiftRight, Extensible, readGlobalParam, decamelize, nonPrivatePrefix,
-    hasGetter, uuid
+    hasGetter, uuid, objectValues
 } from './utils/lang';
 
 

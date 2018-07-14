@@ -42,7 +42,8 @@ import {
     RadioButtonModule,
     SharedModule,
     TabMenuModule,
-    ToolbarModule
+    ToolbarModule,
+    TreeModule
 } from 'primeng/primeng';
 import {AribaCoreModule} from '@aribaui/core';
 import {SpyLifeCycleHooksDirective} from './spy-lifecycle.directive';
@@ -89,6 +90,8 @@ import {DataFinders} from './core/data/data-finders';
 import {ErrorManagerService} from './core/error-manager.service';
 import {AwNameStore} from './core/aw-name/aw-name.store';
 import {DataTypeProviderRegistry} from './core/data/datatype-registry.service';
+import {WizardProgressModule} from './widgets/wizard-progress/wizard-progress.module';
+import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
 
 /**
  * Component module is core module for the common layouts and widgets libraries.
@@ -136,6 +139,8 @@ import {DataTypeProviderRegistry} from './core/data/datatype-registry.service';
         AWHoverCardModule,
         AWListModule,
         AWDatatable2Module,
+        WizardProgressModule,
+        ToggleSwitchModule,
 
         // PrimeNG remove when all AW are imported
         PanelModule,
@@ -156,7 +161,8 @@ import {DataTypeProviderRegistry} from './core/data/datatype-registry.service';
         EditorModule,
         DataTableModule,
         PaginatorModule,
-        OverlayPanelModule
+        OverlayPanelModule,
+        TreeModule
 
     ],
     declarations: [
@@ -206,6 +212,8 @@ import {DataTypeProviderRegistry} from './core/data/datatype-registry.service';
         AWHoverCardModule,
         AWListModule,
         AWDatatable2Module,
+        WizardProgressModule,
+        ToggleSwitchModule,
 
         // PrimeNG
         SharedModule,
@@ -232,7 +240,7 @@ export class AribaComponentsModule
 {
 
 
-    static forRoot (): ModuleWithProviders
+    static forRoot(): ModuleWithProviders
     {
         return {
             ngModule: AribaComponentsModule,
@@ -256,7 +264,7 @@ export class AribaComponentsModule
     }
 }
 
-export function registerComponents (compRegistry: ComponentRegistry): Function
+export function registerComponents(compRegistry: ComponentRegistry): Function
 {
     return compRegistry.initialize.bind(compRegistry, components);
 }

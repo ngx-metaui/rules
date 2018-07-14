@@ -48,6 +48,9 @@ export {
 } from './scrollable-container/scrollable-container.module';
 export {AWListModule} from './list/list.module';
 
+export {WizardProgressModule} from './wizard-progress/wizard-progress.module';
+export {ToggleSwitchModule} from './toggle-switch/toggle-switch.module';
+
 export {BasicNavigatorComponent} from './basic-navigator/basic-navigator.component';
 export {ButtonComponent, ButtonStyle} from './button/button.component';
 export {CheckBoxListComponent} from './check-box-list/check-box-list.component';
@@ -94,7 +97,7 @@ export {
 } from './card/index';
 
 export {
-    OutlineForComponent, OutlineControlComponent, OutlineState
+    OutlineForComponent, OutlineControlComponent, OutlineState, OutlineNode, isOutlineNode
 } from './outline/index';
 
 export {PageContentComponent} from './page-wrapper/page-content/page-content.component';
@@ -141,3 +144,8 @@ export {
 export {
     DTMultiSelectColumnComponent
 } from './datatable2/column/multi-select/dt-multi-select-column.component';
+export {
+    WizardProgressComponent,
+    Step
+} from './wizard-progress/wizard-progress.component';
+export {ToggleSwitchComponent} from './toggle-switch/toggle-switch.component';

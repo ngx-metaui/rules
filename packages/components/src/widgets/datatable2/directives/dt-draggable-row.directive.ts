@@ -56,7 +56,8 @@ import {DragDirection, DragEvents, DropPosition} from '../aw-datatable';
 @Directive({
     selector: '[dtDraggableRow]'
 })
-export class DTDraggableRowDirective implements OnInit, OnDestroy {
+export class DTDraggableRowDirective implements OnInit, OnDestroy
+{
 
     /**
      *
@@ -104,18 +105,21 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
                 @Inject(forwardRef(() => Datatable2Component))
                 private dt: Datatable2Component,
                 private domUtils: DomUtilsService,
-                private ngZone: NgZone) {
+                private ngZone: NgZone)
+    {
     }
 
 
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
         if (this.dt.dndRowEnabled) {
             this.setupEventListeners();
         }
     }
 
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void
+    {
         if (this.dt.dndRowEnabled) {
             this.releaseEventListeners();
         }
@@ -124,8 +128,10 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
     /**
      * Setups listeners and returns handle to them so we can later on unsubscribe.
      */
-    private setupEventListeners(): void {
-        this.ngZone.runOutsideAngular(() => {
+    private setupEventListeners(): void
+    {
+        this.ngZone.runOutsideAngular(() =>
+        {
             this.eventHandlers = {};
             this.eventHandlers['mousedown'] = this.onMouseDownEvent.bind(this);
             this.element.nativeElement.addEventListener('mousedown',
@@ -156,8 +162,10 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
     /**
      * Removes all the created listeners inside destroy() callback
      */
-    private releaseEventListeners(): void {
-        DragEvents.forEach((name: string) => {
+    private releaseEventListeners(): void
+    {
+        DragEvents.forEach((name: string) =>
+        {
             document.removeEventListener('name', this.eventHandlers[name]);
         });
     }
@@ -174,7 +182,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      *
      * event.target usually contains reference to TD element
      */
-    private onMouseDownEvent(event: any): void {
+    private onMouseDownEvent(event: any): void
+    {
         if (event.altKey && this.domUtils.hasParent(event.target, '.dt-row-draggable')) {
             this.element.nativeElement.draggable = true;
             let elToBeDragged = this.domUtils.elementDimensions(event.target);
@@ -195,8 +204,10 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      * Now we grab a row with active state and after a 200ms delay we disable the original row.
      *
      */
-    private onDragStartEvent(event: any): void {
-        setTimeout(() => {
+    private onDragStartEvent(event: any): void
+    {
+        setTimeout(() =>
+        {
             if (isPresent(event.target.classList)) {
                 event.target.classList.add('dt-row-dragging');
             }
@@ -218,7 +229,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      * Once we know the direction and the drop target is valid we mark the row with correct class
      * that does the trick
      */
-    private onDragOverEvent(event: any): void {
+    private onDragOverEvent(event: any): void
+    {
         event.dataTransfer.dropEffect = 'move';
         if (this.dragY < event.pageY) {
             this.dragDir = DragDirection.Down;
@@ -243,7 +255,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      *
      *
      */
-    private onDropEvent(event: any): void {
+    private onDropEvent(event: any): void
+    {
         this.clearClasses(event.target.parentElement);
         // event.preventDefault();
 
@@ -263,7 +276,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      *
      *
      */
-    private onDragLeaveEvent(event: any): void {
+    private onDragLeaveEvent(event: any): void
+    {
         let tr = this.domUtils.closest(event.target, 'tr');
         this.clearClasses(tr);
 
@@ -276,7 +290,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      * been clean up already inside onDropEvent.
      *
      */
-    private onDragEndEvent(event: any): void {
+    private onDragEndEvent(event: any): void
+    {
         if (isPresent(event.target.classList)) {
             event.target.classList.remove('dt-row-dragging');
         }
@@ -312,7 +327,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      *
      *
      */
-    private markRowWithClass(event: any, activeRow: any): void {
+    private markRowWithClass(event: any, activeRow: any): void
+    {
 
         this.clearClasses(activeRow);
 
@@ -338,7 +354,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      * dragging and it does not make sense to allow to drop to the same position we started from
      *
      */
-    private isValidDropTarget(event: any): boolean {
+    private isValidDropTarget(event: any): boolean
+    {
         let origInx = this.dt.env.getValue('dndId');
         let siblingRow = this.dndRowIndex - origInx;
 
@@ -352,7 +369,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      *  private
      *
      */
-    private clearClasses(tr: any): void {
+    private clearClasses(tr: any): void
+    {
         tr.classList.remove('dt-drag-row-top');
         tr.classList.remove('dt-drag-row-bottom');
         tr.classList.remove('dt-drag-row-both');
@@ -362,7 +380,8 @@ export class DTDraggableRowDirective implements OnInit, OnDestroy {
      *  private
      *
      */
-    private dragDirToString(): string {
+    private dragDirToString(): string
+    {
         switch (this.dragDir) {
             case DragDirection.Up:
                 return 'Up';

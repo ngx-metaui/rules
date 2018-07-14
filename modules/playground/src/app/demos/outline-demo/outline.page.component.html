@@ -1,7 +1,4 @@
-<a class="navbar-brand" routerLink="/play/">
-    <span class="brand-title">Back</span>
-</a>
-
+<h1>Free format mode</h1>
 
 <div class="w-outline-header ui-g">
     <div class="ui-g-12 ui-g-nopad">
@@ -52,7 +49,6 @@
 
 <hr/>
 
-<h3>The same component used inside table</h3>
 <div class="w-outline-header ui-g">
     <div class="ui-g-12 ui-g-nopad">
         <span>
@@ -91,3 +87,75 @@
 </table>
 
 
+<h1>Tree data format</h1>
+
+<div class="w-outline-header ui-g">
+    <div class="ui-g-12 ui-g-nopad">
+        <span>
+             <aw-hyperlink (action)="outtree.state.expandAll()">
+                 Expand All
+             </aw-hyperlink>|
+             <aw-hyperlink (action)="outtree.state.collapseAll()">
+                 Collapse All
+             </aw-hyperlink>
+        </span>
+    </div>
+</div>
+
+<aw-outline-for #outtree [list]="listTree" [format]="'tree'">
+
+    <ng-template #outline let-item>
+        <div class="my-section">
+            <div class="outline">
+                <aw-outline-control>
+                    {{item.title}}
+                </aw-outline-control>
+            </div>
+
+        </div>
+    </ng-template>
+</aw-outline-for>
+
+
+<hr/>
+
+<div class="w-outline-header ui-g">
+    <div class="ui-g-12 ui-g-nopad">
+        <span>
+             <aw-hyperlink (action)="tree2.state.expandAll()">
+                 Expand All
+             </aw-hyperlink>|
+             <aw-hyperlink (action)="tree2.state.collapseAll()">
+                 Collapse All
+             </aw-hyperlink>
+        </span>
+    </div>
+</div>
+
+<table class="tree-table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>title</th>
+    </tr>
+    </thead>
+    <tbody #tree2 awOutlineFor [list]="listTree"
+           [format]="'tree'"
+            class="outline-table"
+    >
+    <ng-template #outline let-item>
+        <tr>
+            <td class="item-name outline-animation">
+                <div>
+                    <aw-outline-control>
+                        {{item?.id}}
+                    </aw-outline-control>
+                </div>
+            </td>
+            <td class="item-type outline-animation">
+                <div>{{item.title}}</div>
+            </td>
+        </tr>
+    </ng-template>
+    </tbody>
+</table>

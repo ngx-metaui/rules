@@ -32,12 +32,17 @@
 }
 
 
+.w-outline-header {
+  margin-top: 25px;
+}
+
 .tree-table {
   width: 100%;
   border: 1px solid #9b9b9b;
   border-collapse: collapse;
 
   margin-top: 20px;
+  margin-bottom: 20px;
 
   th, td {
     padding: 5px;

@@ -56,7 +56,10 @@
     </div>
 </ng-template>
 
-
+<!--
+    Each section frozen/non-frozen is calculated inside table-wrapper in the ngAfterViewChecked, where we set
+    proper width for each frame as well as left coordinates for the right one
+-->
 <ng-template #dtBodyNoFrozenColumns>
     <!--
         For non-frozen case we also need to set TRUE as the view is actually frozen and does not
@@ -96,8 +99,8 @@
 
             <!-- Render TH header rows-->
             <thead class="dt-thead">
-                <ng-container *ngTemplateOutlet="headerRows; context:{$implicit: columns,frozenColumns:frozenColumns }">
-                </ng-container>
+            <ng-container *ngTemplateOutlet="headerRows; context:{$implicit: columns,frozenColumns:frozenColumns }">
+            </ng-container>
             </thead>
 
             <!--

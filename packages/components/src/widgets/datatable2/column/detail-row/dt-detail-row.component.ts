@@ -18,11 +18,11 @@
  *
  *
  */
-import {Component, forwardRef, Inject, Input, ViewEncapsulation} from '@angular/core';
-import {Datatable2Component} from '../../datatable2.component';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {Environment, isPresent} from '@aribaui/core';
 import {DomHandler} from 'primeng/primeng';
 import {DTColumn2Component} from '../dt-column.component';
+import {AWDataTable} from '../../aw-datatable';
 
 
 /**
@@ -39,7 +39,8 @@ import {DTColumn2Component} from '../dt-column.component';
     providers: [DomHandler]
 
 })
-export class DTDetailRowComponent extends DTColumn2Component {
+export class DTDetailRowComponent extends DTColumn2Component
+{
 
     /**
      * Defines current visibility for current data row using method reference
@@ -58,16 +59,16 @@ export class DTDetailRowComponent extends DTColumn2Component {
     showRowLine: boolean = true;
 
 
-    constructor(public env: Environment, public domHandler: DomHandler) {
+    constructor(public env: Environment, public domHandler: DomHandler)
+    {
         super(env, domHandler);
     }
 
 
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
         // just to get around the check in parent class
         this.key = '';
-
-        this.isVisible = !this.dt.isOutline() || !this.dt.pivotalLayout;
         super.ngOnInit();
     }
 
@@ -76,7 +77,8 @@ export class DTDetailRowComponent extends DTColumn2Component {
      * Check if we need to keep some leading TDs
      *
      */
-    visibleLeadingCols(): number {
+    visibleLeadingCols(): number
+    {
         return this.dt.numberOfColsBeforeData - (this.dt.hasInvisibleSelectionColumn() ? 1 : 0);
     }
 
@@ -90,7 +92,8 @@ export class DTDetailRowComponent extends DTColumn2Component {
      * Or we can use isVisible=true to tell all row have detail row
      *
      */
-    showDetailRow(item: any): boolean {
+    showDetailRow(item: any): boolean
+    {
         let isVisible = this.isVisible;
         if (isPresent(this.isVisibleFn)) {
             isVisible = this.isVisibleFn.apply(this.dt.context, [this, item]);
@@ -98,5 +101,12 @@ export class DTDetailRowComponent extends DTColumn2Component {
         return isVisible;
     }
 
+
+    initialize(table: AWDataTable): void
+    {
+        super.initialize(table);
+
+        this.isVisible = !this.dt.isOutline() || !this.dt.pivotalLayout;
+    }
 }
 

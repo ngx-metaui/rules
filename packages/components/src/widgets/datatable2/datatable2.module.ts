@@ -54,8 +54,8 @@ import {DTDraggableRowDirective} from './directives/dt-draggable-row.directive';
         DTDetailRowExpanderComponent,
         DTMultiSelectColumnComponent,
         DTSingleSelectColumnComponent,
-        SetCellMaxWidthDirective,
-        DTDraggableRowDirective
+        DTDraggableRowDirective,
+        SetCellMaxWidthDirective
     ],
     imports: [
         CommonModule,

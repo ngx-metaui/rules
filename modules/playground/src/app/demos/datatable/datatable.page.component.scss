@@ -95,3 +95,12 @@
   flex-flow: row nowrap;
   justify-content: space-between;
 }
+
+
+::ng-deep .u-text-highlight {
+  color: black;
+  background: #e2ee41;
+  border: 1px solid red;
+  border-radius: 2px;
+  margin: -1px;
+}

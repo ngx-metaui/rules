@@ -90,6 +90,7 @@
 
 <ng-template #bodyOutline let-colsToRender>
     <tbody #outlineFor awOutlineFor [list]="dataToRender"
+           [format]="outlineFormat"
            [context]="context"
            [indentationPerLevel]="indentationPerLevel"
            [pushRootSectionOnNewLine]="pushRootSectionOnNewLine"

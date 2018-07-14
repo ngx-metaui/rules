@@ -59,7 +59,12 @@ import {HoverCardDemoComponent} from './components/hover-card/hovercard-demo.com
 import {ListDemoComponent} from './components/list/list-demo.component';
 import {CardDemoComponent} from './components/card/card-demo.component';
 import {DatatablePageComponent} from './datatable/datatable.page.component';
-
+import {
+    WizardProgressDemoComponent
+} from './components/wizard-progress/wizard-progress-demo.component';
+import {
+    ToggleSwitchDemoComponent
+} from './components/toggle-switch/toggle-switch-demo.component';
 
 const routesDemo: Routes = [
     {
@@ -195,6 +200,14 @@ const routesDemo: Routes = [
             {
                 path: 'list',
                 component: ListDemoComponent
+            },
+            {
+                path: 'wizardprogress',
+                component: WizardProgressDemoComponent
+            },
+            {
+                path: 'toggleswitch',
+                component: ToggleSwitchDemoComponent
             }
         ]
     }

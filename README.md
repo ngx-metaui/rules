@@ -33,9 +33,7 @@ make declarative UI possible.
 
 Components are organized into 3 main areas:
  
- * **Core UI framework** providing reusable API which gives you additional layer on top of angular:
-    * i18n support
-        * hopefully this can be replaced by native Angular i18n support.    
+ * **Core UI framework** providing reusable API which gives you additional layer on top of angular:        
     * App Configuration & bootstraping
     * Wrappers and services to work with restful API    
     * Convenient utility API for collections, language based operations

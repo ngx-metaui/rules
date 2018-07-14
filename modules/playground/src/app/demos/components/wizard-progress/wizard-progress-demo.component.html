@@ -1,0 +1,69 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- page header -->
+    <div class="ui-g-12 page-header">
+        <h3>Wizard Progress</h3>
+    </div>
+
+    <div class="ui-g-12">
+        <h4>Toggle without label</h4>
+        <aw-wizard-progress
+            [steps]="steps"
+            [currentStep]="currentStep"
+            (stepChanged)="onStepChanged($event)">
+        </aw-wizard-progress>
+    </div>
+
+    <div class="ui-g-12 step" *ngIf="currentStep === 0">
+        <h4>Step 1</h4>
+        <div>
+            This is Step 1 of 3
+            <p>
+                Complete: {{steps[0].complete}}
+            </p>
+            <button class="btn next" (click)="goto(1)">
+                next >>
+            </button>
+        </div>
+    </div>
+    <div class="ui-g-12 step" *ngIf="currentStep === 1">
+        <h4>Step 2</h4>
+        <div>
+            This is Step 2 of 3
+            <p>
+                Complete: {{steps[1].complete}}
+            </p>
+            <button class="btn previous" (click)="goto(0)">
+                << previous
+            </button>
+            <button class="btn next" (click)="goto(2)">
+                next >>
+            </button>
+        </div>
+    </div>
+    <div class="ui-g-12 step" *ngIf="currentStep === 2">
+        <h4>Step 3</h4>
+        <div>
+            This is Step 3 of 3
+            <p>
+                Complete: {{steps[2].complete}}
+            </p>
+            <button class="btn previous" (click)="goto(1)">
+                << previous
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

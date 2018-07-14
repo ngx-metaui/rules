@@ -20,7 +20,7 @@
  */
 import {DataProvider} from './datatype-registry.service';
 import {FieldPath, isBlank, isPresent} from '@aribaui/core';
-import {of as observableOf, Observable} from 'rxjs';
+import {Observable, of as observableOf} from 'rxjs';
 
 
 /**
@@ -29,25 +29,26 @@ import {of as observableOf, Observable} from 'rxjs';
 export class ArrayDataProvider<T> extends DataProvider<T>
 {
 
-    constructor (protected  values: Array<T>)
+    constructor(protected  values: Array<T>)
     {
         super();
         this.type = Array;
 
+        this.offScreenData = this.values;
         this.dataChanges.next(this.values);
     }
 
-    expectedCount (params?: Map<string, any>): number
+    expectedCount(params?: Map<string, any>): number
     {
-        return this.values.length;
+        return this.offScreenData.length;
     }
 
-    dataForParams (params?: Map<string, any>): Array<T>
+    dataForParams(params?: Map<string, any>): Array<T>
     {
         if (isBlank(params)) {
-            return this.values;
+            return this.offScreenData;
         }
-        let data = this.values;
+        let data = this.offScreenData;
 
         if (isPresent(params) && params.has('offset') && params.has('limit')) {
             let offset = params.get('offset');
@@ -67,7 +68,7 @@ export class ArrayDataProvider<T> extends DataProvider<T>
     }
 
 
-    fetch (params: Map<string, any>): Observable<T[]>
+    fetch(params: Map<string, any>): Observable<T[]>
     {
         return observableOf(this.dataForParams(params));
     }
@@ -81,7 +82,7 @@ export class ArrayDataProvider<T> extends DataProvider<T>
      *      1  = ascending
      *      -1 = descending
      */
-    private sort (arrayToSort: any[], key: string, sortOrder: number): void
+    private sort(arrayToSort: any[], key: string, sortOrder: number): void
     {
         arrayToSort.sort((data1: any, data2: any) =>
         {

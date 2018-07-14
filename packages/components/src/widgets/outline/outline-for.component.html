@@ -13,7 +13,7 @@
 <ng-template #outlineItems let-children let-nestingLevel="nestingLevel"
              let-parent="parentItem" let-expanded="expanded">
 
-    <ng-template ngFor let-item [ngForOf]="children"  let-rowIndex="index">
+    <ng-template ngFor let-item [ngForOf]="children" let-rowIndex="index">
 
         <ng-container *ngTemplateOutlet="outlineItem;
             context:{ $implicit: item, nestingLevel: nestingLevel, parentItem: parent,

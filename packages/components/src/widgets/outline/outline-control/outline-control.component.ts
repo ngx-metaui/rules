@@ -90,6 +90,9 @@ export class OutlineControlComponent extends BaseComponent
     @Input()
     allowSelection: boolean = false;
 
+    @Input()
+    allowEdit: boolean = false;
+
     /**
      *
      * Triggers action when outline item is expanded
@@ -113,19 +116,19 @@ export class OutlineControlComponent extends BaseComponent
 
     isRootItem: boolean = false;
 
-    constructor (public env: Environment,
-                 @Optional() @Inject(forwardRef(() => OutlineState))
-                 private outlineState: OutlineState,
-                 @SkipSelf() @Optional() @Inject(forwardRef(() => OutlineControlComponent))
-                 private parentControl: OutlineControlComponent,
-                 @SkipSelf() @Optional() @Inject(forwardRef(() => OutlineForComponent))
-                 public outlineFor: OutlineForComponent)
+    constructor(public env: Environment,
+                @Optional() @Inject(forwardRef(() => OutlineState))
+                private outlineState: OutlineState,
+                @SkipSelf() @Optional() @Inject(forwardRef(() => OutlineControlComponent))
+                private parentControl: OutlineControlComponent,
+                @SkipSelf() @Optional() @Inject(forwardRef(() => OutlineForComponent))
+                public outlineFor: OutlineForComponent)
     {
         super(env);
 
     }
 
-    ngOnInit ()
+    ngOnInit()
     {
         super.ngOnInit();
 
@@ -138,21 +141,22 @@ export class OutlineControlComponent extends BaseComponent
      * We dont show expansion icons when there no children
      *
      */
-    hasExpansionControl (): boolean
+    hasExpansionControl(): boolean
     {
         return this.outlineFor.hasChildren(this.item) && this.outlineFor.showExpansionControl;
     }
 
 
-    isSelected (): boolean
+    isSelected(): boolean
     {
         return this.outlineFor.state.selectedItem === this.item;
     }
 
-    calculateStyleClass (): string
+    calculateStyleClass(): string
     {
         if (!this.hasExpansionControl() ||
-            (this.outlineFor.pushRootSectionOnNewLine && isBlank(this.item.$$parentItem))) {
+            (this.outlineFor.pushRootSectionOnNewLine && isBlank(this.item.$$parentItem)))
+        {
             return '';
         }
 
@@ -169,7 +173,7 @@ export class OutlineControlComponent extends BaseComponent
      * Collapses and expands current node
      *
      */
-    toggleExpansion (event: any): void
+    toggleExpansion(event: any): void
     {
         this.outlineFor.state.currentPath = [];
         let currentPath = this.item;
@@ -190,13 +194,13 @@ export class OutlineControlComponent extends BaseComponent
         event.stopPropagation();
     }
 
-    select (): void
+    select(): void
     {
         this.outlineFor.state.selectedItem = this.item;
         this.outlineFor.onItemSelected.emit(this.item);
     }
 
-    private prepareControl (): void
+    private prepareControl(): void
     {
         if (isBlank(this.outlineFor) && isPresent(this.outlineState)) {
             this.outlineFor = this.outlineState.outlineFor;

@@ -72,7 +72,8 @@ export type DTHAlignment = 'left' | 'center' | 'right';
     providers: [DomHandler]
 
 })
-export class DTColumn2Component extends BaseComponent implements AfterContentInit {
+export class DTColumn2Component extends BaseComponent implements AfterContentInit
+{
     /**
      * Column header label.
      *
@@ -266,30 +267,15 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
 
 
     constructor(public env: Environment,
-                public domHandler: DomHandler) {
+                public domHandler: DomHandler)
+    {
         super(env);
     }
 
 
-    ngOnInit(): void {
+    ngOnInit(): void
+    {
         super.ngOnInit();
-        this.sortOrder = this.dt.sortOrderingForString(this.sortOrdering);
-
-        if (isBlank(this.bodyTemplate) && this.useGlobalBody) {
-            this.bodyTemplate = this.dt.bodyTemplate;
-        }
-
-        if (isBlank(this.headerTemplate) && this.useGlobalHeader) {
-            this.headerTemplate = this.dt.headerTemplate;
-        }
-
-        if (isBlank(this.subHeaderTemplate) && this.useGlobalSubHeader) {
-            this.subHeaderTemplate = this.dt.subHeaderTemplate;
-        }
-
-        if (isBlank(this.bodyClassFn)) {
-            this.bodyClassFn = this.dt.bodyClassFn;
-        }
 
         if (isBlank(this.key) && isBlank(this.label)) {
             throw new Error('Missing required binding: ' +
@@ -301,22 +287,22 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
             throw new Error('Missing required binding [width]: ' +
                 'when [frozen]=true then [width] binding needs to be specified.');
         }
-
     }
 
 
-    ngAfterContentInit(): void {
+    ngAfterContentInit(): void
+    {
 
     }
 
-    ngAfterViewInit(): void {
+    ngAfterViewInit(): void
+    {
         // need to deffer this and trigger change detection otherwise I get
         // value was changed after it was checked error
-        setTimeout(() => {
-            this.maxWidthPx = this.widthToPx(this.maxWidth);
-            this.minWidthPx = this.widthToPx(this.minWidth);
-            this.widthPx = this.widthToPx(this.width);
-        });
+        // setTimeout(() =>
+        // {
+
+        // });
     }
 
     /**
@@ -325,7 +311,8 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
      * It delegates the call to the DT where it toggles currently selected value
      *
      */
-    handleHeaderClick(event: any, element: any): void {
+    handleHeaderClick(event: any, element: any): void
+    {
         if (this.isHeaderSelectable()) {
             this.dt.onHeaderSelectionChange(element, this);
 
@@ -340,14 +327,16 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
      * Todo: Implement our own sorting mechanism once we extract the sorting logic to its component
      *
      */
-    sort(event: any) {
+    sort(event: any)
+    {
         if (!this.sortable) {
             return;
         }
         let targetNode = event.target;
         if (this.domHandler.hasClass(targetNode, 'dt-u-sortable') ||
             this.domHandler.hasClass(targetNode, 'dt-col-title') ||
-            this.domHandler.hasClass(targetNode, 'dt-col-sortable-icon')) {
+            this.domHandler.hasClass(targetNode, 'dt-col-sortable-icon'))
+        {
 
             if (isPresent(this.dt.sortColumn) && this.dt.sortColumn.key === this.key) {
                 this.sortOrder = this.sortOrder * -1;
@@ -370,7 +359,8 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
      *
      *
      */
-    dynamicBodyClass(item: any): boolean {
+    dynamicBodyClass(item: any): boolean
+    {
         let dynClass = isPresent(this.bodyClassFn)
             ? this.bodyClassFn.apply(this.dt.context, [this, item]) : '';
 
@@ -385,7 +375,8 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
     }
 
 
-    isRowSelectable(item: any): boolean {
+    isRowSelectable(item: any): boolean
+    {
         if (isPresent(this.dt.isRowSelectable)) {
             return this.dt.isRowSelectable(item);
         }
@@ -393,19 +384,22 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
         return false;
     }
 
-    isCellSelectable(item: any): boolean {
+    isCellSelectable(item: any): boolean
+    {
         return this.dt.selectionMode === 'cell' && this.isRowSelectable(item) && this.selectable;
 
     }
 
 
-    isHeaderSelectable(): boolean {
+    isHeaderSelectable(): boolean
+    {
         return this.dt.selectionMode === 'cell' && this.selectable;
 
     }
 
 
-    getSortOrder() {
+    getSortOrder()
+    {
         let order = 0;
 
         if (isPresent(this.dt.sortColumn) && this.key === this.dt.sortColumn.key) {
@@ -414,14 +408,16 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
         return order;
     }
 
-    isSorted() {
+    isSorted()
+    {
         if (!this.sortable) {
             return false;
         }
         return isPresent(this.dt.sortColumn) && this.key === this.dt.sortColumn.key;
     }
 
-    initialize(table: AWDataTable): void {
+    initialize(table: AWDataTable): void
+    {
         this.dt = table;
 
         if (isPresent(this.dt.initialSortKey) && this.dt.initialSortKey === this.key) {
@@ -429,6 +425,26 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
             this.sortOrder = this.dt.sortOrderingForString(this.dt.initialSortOrder);
             this.dt.sortColumn = this;
         }
+
+        if (isBlank(this.bodyTemplate) && this.useGlobalBody) {
+            this.bodyTemplate = this.dt.bodyTemplate;
+        }
+
+        if (isBlank(this.headerTemplate) && this.useGlobalHeader) {
+            this.headerTemplate = this.dt.headerTemplate;
+        }
+
+        if (isBlank(this.subHeaderTemplate) && this.useGlobalSubHeader) {
+            this.subHeaderTemplate = this.dt.subHeaderTemplate;
+        }
+
+        if (isBlank(this.bodyClassFn)) {
+            this.bodyClassFn = this.dt.bodyClassFn;
+        }
+
+        this.maxWidthPx = this.widthToPx(this.maxWidth);
+        this.minWidthPx = this.widthToPx(this.minWidth);
+        this.widthPx = this.widthToPx(this.width);
     }
 
     /**
@@ -436,7 +452,8 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
      *
      * In case we use MaxWidth directive we set new width once for all columsn
      */
-    postInitialize(myIndex: number): void {
+    postInitialize(myIndex: number): void
+    {
         const colIndex = myIndex + 1;
         let table;
 
@@ -450,7 +467,8 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
 
         if (this.widestCell > 0) {
             let all = table.querySelectorAll('tr th:nth-child(' + colIndex + '), ' +
-                'tr td:nth-child(' + colIndex + ')').forEach((node: any) => {
+                'tr td:nth-child(' + colIndex + ')').forEach((node: any) =>
+            {
                 node.style.width = this.widestCell + 'px';
             });
         }
@@ -462,7 +480,8 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
      * biding we know it refers to some field.
      *
      */
-    isValueColumn(): boolean {
+    isValueColumn(): boolean
+    {
         return (isPresent(this.isDataColumn) && BooleanWrapper.isTrue(this.isDataColumn)) ||
             isPresent(this.key);
     }
@@ -473,9 +492,11 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
      * indent - 1 > only offset with
      * indent
      */
-    indentForControl(cell: any, level: number): any {
+    indentForControl(cell: any, level: number): any
+    {
         if (this.dt.isOutline() && level > 0 && cell.offsetWidth > 0
-            && isPresent(cell.nextElementSibling)) {
+            && isPresent(cell.nextElementSibling))
+        {
 
             let outlineNodePadding =
                 parseInt(getComputedStyle(cell.nextElementSibling).paddingLeft) || 0;
@@ -496,7 +517,8 @@ export class DTColumn2Component extends BaseComponent implements AfterContentIni
      *
      * Internal
      */
-    private widthToPx(width: string): number {
+    private widthToPx(width: string): number
+    {
         let px;
         if (isPresent(width)) {
             if (width.indexOf('%') > 0) {

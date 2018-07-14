@@ -7,34 +7,35 @@ import {isPresent} from '@aribaui/core';
  * This directive is responsible for checking and setting the widest content width onto
  * Column component as the widestCell property.
  *
- *
+ * We use this directive inside dt-column.component to store a current width for each td,th
  *
  *
  */
 @Directive({
-    selector: '[maxWidth]'
+    selector: '[dtMaxWidth]'
 })
 export class SetCellMaxWidthDirective implements OnInit, AfterViewInit
 {
 
     @Input()
-    maxWidth: number;
+    dtMaxWidth: number;
 
-    constructor (private element: ElementRef,
-                 private render: Renderer2,
-                 private td: DTColumn2Component)
+    constructor(private element: ElementRef,
+                private render: Renderer2,
+                private td: DTColumn2Component)
     {
     }
 
 
-    ngOnInit (): void
+    ngOnInit(): void
     {
 
     }
 
-    ngAfterViewInit (): void
+    ngAfterViewInit(): void
     {
-        if (isPresent(this.maxWidth) && this.maxWidth > 0) {
+        // console.log('Cell Max Width: ' + this.dtMaxWidth, this.dtMaxWidth > 0);
+        if (isPresent(this.dtMaxWidth) && this.dtMaxWidth > 0) {
             let inlineData = this.element.nativeElement.querySelector('.dt-col-cell-data');
             if (isPresent(inlineData)) {
                 inlineData.style.whiteSpace = 'nowrap';
@@ -49,13 +50,13 @@ export class SetCellMaxWidthDirective implements OnInit, AfterViewInit
 
                 cellWidth += this.tdPadding();
                 if (cellWidth > this.td.widthPx) {
-                    if (cellWidth < this.maxWidth) {
+                    if (cellWidth < this.dtMaxWidth) {
                         this.td.widestCell = cellWidth > this.td.widestCell ? cellWidth :
                             this.td.widestCell;
 
-                    } else if (cellWidth >= this.maxWidth) {
-                        this.td.widestCell = this.maxWidth > this.td.widestCell ? this.maxWidth :
-                            this.td.widestCell;
+                    } else if (cellWidth >= this.dtMaxWidth) {
+                        this.td.widestCell = (this.dtMaxWidth > this.td.widestCell)
+                            ? this.dtMaxWidth : this.td.widestCell;
                     }
                 }
             }
@@ -73,7 +74,7 @@ export class SetCellMaxWidthDirective implements OnInit, AfterViewInit
      * safe threshold
      *
      */
-    isInThresHold (newWidth: number): boolean
+    isInThresHold(newWidth: number): boolean
     {
         if (this.td.widestCell > 0) {
             return Math.abs(this.td.widestCell - newWidth) > 3 && newWidth > this.td.widestCell;
@@ -82,7 +83,7 @@ export class SetCellMaxWidthDirective implements OnInit, AfterViewInit
     }
 
 
-    private tdPadding (): number
+    private tdPadding(): number
     {
         let computedStyle = getComputedStyle(this.element.nativeElement);
         let cell = parseInt(computedStyle.paddingLeft) || 0;

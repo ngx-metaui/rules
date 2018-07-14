@@ -1,25 +1,21 @@
-<h3 class="first">Basic with pre-set search string "con"</h3>
+
+<h3 class="first">Tree format mode for outline</h3>
 
 <!-- save the reference #dt since we want to access outlinestate to ask if the item is expanded -->
-<aw-datatable2 #dt *ngIf="false" [list]="data" [loading]="loading"
-               [children]="children"
-               [context]="this"
+<aw-datatable2 #dtTree *ngIf="true" [list]="dataTree" [loading]="loading"
+               [outlineFormat]="'tree'"
                [selectionMode]="'cell'"
                [bodyClassFn]="calculatedClass"
                [isRowSelectable]="isRowSelectable"
-               [(state)]="dtState"
                [pivotalLayout]="true"
                [showSubHeader]="true">
 
-    <!--<aw-dt-header2>-->
-    <!--<h1>asdfafdafdas</h1>-->
-    <!--</aw-dt-header2>-->
-
-    <aw-dt-column2 key="itemDescr" label="" [styleClass]="'item-name-row-column'"
+    <aw-dt-column2 key="title" label="" [styleClass]="'item-name-row-column'"
                    [useGlobalHeader]="false" [useGlobalSubHeader]="false" width="36%">
         <ng-template #body let-colum let-item="rowData">
             <aw-outline-control #outlineCtrl>
-                {{item.itemDescr}}
+                <span
+                    [innerHTML]="item.title | highlightText:dtTree.state.currentSearchQuery"></span>
             </aw-outline-control>
         </ng-template>
     </aw-dt-column2>
@@ -28,8 +24,10 @@
                    [useGlobalHeader]="false" [useGlobalSubHeader]="false">
 
         <ng-template #body let-column let-rowData="rowData">
-            <ng-template [ngIf]="dt.outlineState.isExpanded(rowData) || rowData.type === 'item'">
-                {{rowData.qty}}
+            <ng-template
+                [ngIf]="dtTree.outlineState.isExpanded(rowData) || rowData.type === 'item'">
+                <span
+                    [innerHTML]="rowData.qty | highlightText:dtTree.state.currentSearchQuery"></span>
             </ng-template>
         </ng-template>
 
@@ -42,19 +40,19 @@
     <!-- Global templates for all columns, unless column defines its own body template -->
     <ng-template #dtBody let-column let-rowData="rowData">
         <ng-container *ngTemplateOutlet="dataTempl;
-                    context: {$implicit: column, rowData: rowData}">
+                    context: {$implicit: column, rowData: rowData, query:dtTree.state.currentSearchQuery}">
         </ng-container>
     </ng-template>
 
     <ng-template #dtHeader let-column let-rowData="rowData">
         <ng-container *ngTemplateOutlet="headerTempl;
-                context: {$implicit: column, rowData: rowData}">
+                context: {$implicit: column, rowData: rowData, query:dtTree.state.currentSearchQuery}">
         </ng-container>
     </ng-template>
 
     <ng-template #dtSubHeader let-column let-rowData="rowData">
         <ng-container *ngTemplateOutlet="totalsTempl;
-                context: {$implicit: '$17,170,100.00', eprice: '$17.180.250.00', column:column}">
+                context: {$implicit: '$17,170,100.00', eprice: '$17.180.250.00', column:column, query:dtTree.state.currentSearchQuery}">
         </ng-container>
     </ng-template>
 
@@ -63,7 +61,6 @@
         </ng-container>
     </ng-template>
 </aw-datatable2>
-
 
 <hr/>
 <h1> With detail row with single </h1>
@@ -281,7 +278,7 @@
 
 <hr/>
 <h1> Plain with single select and supporting Row Drag & Drop</h1>
-<p>Press Alt + CLICK to start dragging, then you can release ALT key</p>
+<p>Press Alt + CLICK to start dragging, then you can release ALT key to move and drop the row</p>
 <aw-datatable2 #dt4 *ngIf="true" [loading]="loading"
                [context]="this"
                [dataSource]="dataSource"
@@ -436,7 +433,8 @@
 </aw-datatable2>
 
 
-<ng-template #headerTempl let-column let data="rowData">
+
+<ng-template #headerTempl let-column let data="rowData" let-query="query">
     <div class="supplier-header">
         <div class="u-my-row">
             <div class="qualification">Preferred</div>
@@ -444,22 +442,24 @@
         </div>
         <div class="u-my-row">
                 <span class="supplier-name">
-                    {{column.label}}
+                    <span [innerHTML]="column.label | highlightText:query"></span>
                 </span>
         </div>
     </div>
 </ng-template>
 
-<ng-template #totalsTempl let-total let-eprice="eprice" let-column="column">
+<ng-template #totalsTempl let-total let-eprice="eprice" let-column="column" let-query="query">
     <div class="total section-amount">{{total}}</div>
     <div class="est-price-label">Estimated Price</div>
-    <div class="est-price">{{eprice}}</div>
+    <div class="est-price">
+        <span [innerHTML]="eprice | highlightText:query"></span>
+    </div>
 </ng-template>
 
-<ng-template #dataTempl let-column let-rowData="rowData">
+<ng-template #dataTempl let-column let-rowData="rowData" let-query="query">
 
     <span [ngClass]="{'section-amount': rowData.type && rowData.type === 'section'}">
-          {{rowData.valBySupplier[column.label]}}
+        <span [innerHTML]="rowData.valBySupplier[column.label] | highlightText:query"></span>
     </span>
 
 </ng-template>

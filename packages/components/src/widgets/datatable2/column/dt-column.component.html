@@ -57,7 +57,7 @@
         [attr.width]="width"
         [attr.align]="align"
         [attr.tabindex]="sortable ? 1 : null"
-        [maxWidth]="maxWidthPx"
+        [dtMaxWidth]="maxWidthPx"
     >
 
         <ng-template [ngIf]="dt.headerFilterTemplate && columnIndex === 0 ">
@@ -83,7 +83,7 @@
         [attr.width]="width"
         [attr.align]="align"
         [ngClass]="{'dt-is-default dt-cell-def dt-sub-header dt-u-unselectable-text':true}"
-        [maxWidth]="maxWidthPx">
+        [dtMaxWidth]="maxWidthPx">
 
         <span class="dt-col-title" *ngIf="dt.showSubHeader && subHeaderTemplate">
             <ng-container *ngTemplateOutlet="subHeaderTemplate;
@@ -108,7 +108,8 @@
         [ngClass]="{ 'dt-is-default': true,
         'dt-cell-def': !isCellSelectable(data),
         'dt-is-hidden': !isVisible}"
-        [maxWidth]="maxWidthPx">
+        [dtMaxWidth]="maxWidthPx"
+        >
 
         <!--
             Since we need to support cell selection when we need to draw border around it

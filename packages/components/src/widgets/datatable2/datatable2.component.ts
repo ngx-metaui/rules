@@ -52,7 +52,7 @@ import {
 } from '@angular/core';
 import {ObjectUtils} from 'primeng/components/utils/objectutils';
 import {Subscription} from 'rxjs';
-import {OutlineState} from '../outline/index';
+import {isOutlineNode, OutlineState} from '../outline/index';
 import {BaseComponent} from '../../core/base.component';
 import {
     assert,
@@ -81,6 +81,7 @@ import {
 import {
     DTSingleSelectColumnComponent
 } from './column/single-select/dt-single-select-column.component';
+import {ModelFormat} from '../outline/outline-for.component';
 
 
 export type SelectionMode = 'multi' | 'single' | 'cell' | 'none';
@@ -128,7 +129,8 @@ export type SelectionMode = 'multi' | 'single' | 'cell' | 'none';
 
 })
 export class Datatable2Component extends BaseComponent implements AWDataTable, AfterViewChecked,
-    AfterViewInit, AfterContentInit {
+    AfterViewInit, AfterContentInit
+{
 
     /**
      *  List of items to show in the datatable.
@@ -300,6 +302,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
 
     /**
      * See OutlineFor - only used in the tree mode
+     *
+     * Not used when [outlineFormat]="'truee'"
      */
     @Input()
     children: (value: any) => any[];
@@ -319,6 +323,14 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      */
     @Input()
     expandAll: boolean = false;
+
+
+    /**
+     *
+     * See OutlineFor  - format - only used in the tree mode
+     */
+    @Input()
+    outlineFormat: ModelFormat = 'free';
 
     /**
      * See AWDataTable
@@ -583,13 +595,32 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
                 public factoryResolver: ComponentFactoryResolver,
                 public outlineState: OutlineState,
                 public zone: NgZone,
-                private injector: Injector) {
+                private injector: Injector)
+    {
         super(env);
 
         this.dataSource = this._defaultDS;
     }
 
-    ngOnInit() {
+    /**
+     * Pushes a state out to application. Can be use as two way bindings
+     *
+     * [(state)]=dtState(s)
+     *
+     */
+    @Input()
+    get state(): any
+    {
+        return this.dataSource.state;
+    }
+
+    set state(val: any)
+    {
+        this.dataSource.state = val;
+    }
+
+    ngOnInit()
+    {
 
         super.ngOnInit();
         if (isPresent(this.list) && isPresent(this.destinationClass)) {
@@ -624,17 +655,18 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         this.outlineState.expansionStates = this.state.outlineState;
     }
 
-
     /**
      * When data arrives later maybe due to REST API latency, initialize DS only when we have a
      * data, otherwise if data changed thru the bindings just trigger dataChange event
      *
      */
-    ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes: SimpleChanges): void
+    {
         super.ngOnChanges(changes);
 
         if (changes['list'] && isPresent(changes['list'].currentValue)
-            && !this.dataSource.initialized) {
+            && !this.dataSource.initialized)
+        {
 
             this.initDatasource();
 
@@ -644,20 +676,23 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
 
     }
 
-    ngAfterContentInit() {
+    ngAfterContentInit()
+    {
 
         // make sure we init a state when detail column is present
         // todo: move this initialization to datasource
         this.detailRowExpansionState.detailExpansionEnabled = isPresent(this.rowDetailColumn);
 
         this.initColumns();
-        this.columnsSubscription = this.colsQuery.changes.subscribe(_ => {
+        this.columnsSubscription = this.colsQuery.changes.subscribe(_ =>
+        {
             this.initColumns();
             this.changeDetector.markForCheck();
         });
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit()
+    {
         // assign it programatically as we want to have a context for the filter
         if (isPresent(this.rowDetailColumn) && isPresent(this.outlineState.outlineFor)) {
             this.outlineState.outlineFor.filterOut = this.skipOutlineItem.bind(this);
@@ -671,7 +706,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         this.initialized = true;
     }
 
-    ngAfterViewChecked() {
+    ngAfterViewChecked()
+    {
         if (this.columnsChanged && this.el.nativeElement.offsetParent) {
             this.columnsChanged = false;
         }
@@ -697,7 +733,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * and then it will be rendered just like anythign else.
      *
      */
-    initColumns(): void {
+    initColumns(): void
+    {
         this.columns = [];
         this.frozenColumns = [];
 
@@ -705,8 +742,10 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
             this.initDetailColumnExpansion();
         }
         if (this.hasLeadingSelectColumn() && this.selectionMode === 'multi') {
+            this.multiSelectColumn.initialize(this);
             this.columns.push(this.multiSelectColumn);
         } else if (this.hasLeadingSelectColumn() && this.selectionMode === 'single') {
+            this.singleSelectColumn.initialize(this);
             this.columns.push(this.singleSelectColumn);
         }
 
@@ -714,70 +753,29 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
          * Add expansion column when detail row is enabled
          */
         if (this.detailRowExpansionState.detailExpansionEnabled && !this.isOutline()) {
+            this.rowDetailExpandColumn.initialize(this);
             this.columns.push(this.rowDetailExpandColumn);
         }
 
         this.colsQuery
             .filter((col1: DTColumn2Component) => !col1.frozen)
-            .forEach((col: DTColumn2Component) => {
+            .forEach((col: DTColumn2Component) =>
+            {
                 col.initialize(this);
                 this.columns.push(col);
             });
-
 
         this.initFrozenColumns();
         this.initColumnInfo();
         this.columnsChanged = true;
     }
 
-
-    /**
-     * Makes sure that we also include programmatic column if present. Move them to the correct
-     * array
-     *
-     */
-    private initFrozenColumns(): void {
-        this.colsQuery
-            .filter((col1: DTColumn2Component) => col1.frozen)
-            .forEach((col: DTColumn2Component) => {
-                col.initialize(this);
-                this.frozenColumns.push(col);
-
-            });
-
-        if (this.frozenColumns.length > 0) {
-            // find last index of column that is internal / programmatic
-
-            let lastInx = this.columns.slice()
-                .reverse()
-                .findIndex((col: DTColumn2Component) => this.isInternalColumn(col));
-
-            if (lastInx !== -1) {
-                let idx = this.columns.length - 1 - lastInx;
-                let internalCols = this.columns.splice(0, idx + 1);
-                this.frozenColumns = [...internalCols, ...this.frozenColumns];
-
-            }
-
-            let hasValidCols = this.columns
-                .findIndex((col: DTColumn2Component) => isBlank(col.width)) === -1;
-
-            assert(hasValidCols || isPresent(this.scrollWidth),
-                'When using [frozen] binding you need specify [width] for each ' +
-                'column or [scrollWidth] on datatable!');
-
-
-            assert(isBlank(this.rowDetailColumn),
-                'You cannot combine aw-dt-detail-column with frozen columns!');
-
-        }
-    }
-
     /**
      * Check if current column is programmatically created
      *
      */
-    isInternalColumn(col: DTColumn2Component): boolean {
+    isInternalColumn(col: DTColumn2Component): boolean
+    {
         return col instanceof DTSingleSelectColumnComponent ||
             col instanceof DTMultiSelectColumnComponent ||
             col instanceof DTDetailRowExpanderComponent;
@@ -790,7 +788,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * can be triggered also from ngOnChanges.
      *
      */
-    initDatasource(initialize: boolean = true): void {
+    initDatasource(initialize: boolean = true): void
+    {
         if (isBlank(this.state)) {
             this.state = Datatable2State.create(0, this.pageSize, this.displayRowSize,
                 this.initialSortKey, this.sortOrderingForString(this.initialSortOrder));
@@ -803,9 +802,13 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         }
 
         if (initialize) {
+
+            let qType = (this.isOutline() && this.outlineFormat === 'tree') ?
+                QueryType.FullTextOutline : QueryType.FullText;
+
             this.dataSource.init({
                 obj: isPresent(this.destinationClass) ? this.destinationClass : this.list,
-                queryType: QueryType.FullText,
+                queryType: qType,
                 state: this.state,
                 multiselect: false
             });
@@ -817,7 +820,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
 
         // This is the ENTRY point for the DATA CHANGES. All addition, edits, deletion ends up
         // here. We dont work directly with LIST. Any change is reactive and here is listener
-        this.dataSource.open().subscribe((data: any[]) => {
+        this.dataSource.open().subscribe((data: any[]) =>
+        {
             this.updateList(data);
         });
     }
@@ -831,11 +835,14 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * For example for outline tree table we need to connect a state from outline with a state in
      * here as we are using outline control to expand and collapse items
      */
-    initDetailColumnExpansion(): void {
+    initDetailColumnExpansion(): void
+    {
+        if (isPresent(this.rowDetailColumn)) {
+            this.rowDetailColumn.initialize(this);
+        }
         this.detailRowExpansionState.detailExpansionEnabled = isPresent(this.rowDetailColumn) &&
             BooleanWrapper.isTrue(this.showRowDetailExpansionControl);
     }
-
 
     /**
      * This method is executed after we initialize all the columns in order to calculate correct
@@ -844,10 +851,12 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * Here we need to be aware how many columns to span
      *
      */
-    initColumnInfo(): void {
+    initColumnInfo(): void
+    {
         this.numberOfColsBeforeData = 0;
 
-        this.columns.forEach((col: DTColumn2Component) => {
+        this.columns.forEach((col: DTColumn2Component) =>
+        {
             if (!col.isValueColumn()) {
                 this.numberOfColsBeforeData++;
             }
@@ -860,27 +869,12 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         this.startOfFirstDataColumn = this.columns.length - this.numberOfColsBeforeData;
     }
 
-
-    /**
-     * Pushes a state out to application. Can be use as two way bindings
-     *
-     * [(state)]=dtState(s)
-     *
-     */
-    @Input()
-    get state(): any {
-        return this.dataSource.state;
-    }
-
-    set state(val: any) {
-        this.dataSource.state = val;
-    }
-
     /**
      * See AWDataTable
      *
      */
-    onCellSelectionChange(cell: any, column: DTColumn2Component, item: any): void {
+    onCellSelectionChange(cell: any, column: DTColumn2Component, item: any): void
+    {
         if (this.selectionMode !== 'cell') {
             return;
         }
@@ -905,12 +899,12 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         this.onCellChange.emit(this.state.selection);
     }
 
-
     /**
      * See AWDataTable
      *
      */
-    onHeaderSelectionChange(cell: any, column: DTColumn2Component): void {
+    onHeaderSelectionChange(cell: any, column: DTColumn2Component): void
+    {
         if (isPresent(this.state.headerSelection)) {
             if (this.isHeaderSelected(column)) {
                 this.state.headerSelection = null;
@@ -923,7 +917,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         this.onHeaderSelection.emit(this.state.headerSelection);
     }
 
-    onHandleRowClicked(event: any, item: any): void {
+    onHandleRowClicked(event: any, item: any): void
+    {
         // special alt key modifier. When used with rows it indicates there is a D&D enabled
         if (event.altKey) {
             return;
@@ -937,12 +932,12 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         }
     }
 
-
     /**
      * See AWDataTable
      *
      */
-    onRowToggle(event: any, item: any): void {
+    onRowToggle(event: any, item: any): void
+    {
         let rowSelected = true;
         if (isPresent(this.state.selection) && this.state.selection.length > 0) {
             let foundIndex = ListWrapper.findIndexComplex(this.state.selection, item);
@@ -983,7 +978,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    onRowSelect(event: any, item: any): void {
+    onRowSelect(event: any, item: any): void
+    {
         this.state.selection = item;
         event.stopPropagation();
 
@@ -994,7 +990,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    onHandleOutlineRowToggleToChildren(currentItem: any, isSelected: boolean): void {
+    onHandleOutlineRowToggleToChildren(currentItem: any, isSelected: boolean): void
+    {
         let childrenForNode = this.children.apply(this.context, [currentItem]) || [];
 
         if (childrenForNode.length > 0) {
@@ -1024,7 +1021,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    oHandleOutlineRowToggleToParent(currentItem: any, isSelected: boolean): void {
+    oHandleOutlineRowToggleToParent(currentItem: any, isSelected: boolean): void
+    {
         let parent = currentItem.$$parentItem;
         if (isPresent(parent)) {
             let childrenForNode = this.children.apply(this.context, [parent]) || [];
@@ -1056,19 +1054,20 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    onDnDRowDrop(origPos: number, newPos: number, dropPos: DropPosition): void {
+    onDnDRowDrop(origPos: number, newPos: number, dropPos: DropPosition): void
+    {
         if (isPresent(this.dataSource)) {
-            console.log('Dropping row #: ', origPos + ' ' + dropPos + ' row #: ' + newPos);
+            // console.log('Dropping row #: ', origPos + ' ' + dropPos + ' row #: ' + newPos);
             this.dataSource.reorderRows(origPos, newPos, dropPos);
         }
     }
-
 
     /**
      * See AWDataTable
      *
      */
-    onOutlineExpandChange(event: any): void {
+    onOutlineExpandChange(event: any): void
+    {
         let item = event.item;
 
         // We dont really need to store a state form outline locally as we are using the same object
@@ -1080,13 +1079,13 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         }
     }
 
-
     /**
      * See AWDataTable
      *
      *
      */
-    sortSingle(): void {
+    sortSingle(): void
+    {
         if (isPresent(this.list) && isPresent(this.sortColumn)) {
 
             assert(isPresent(this.sortColumn.key), 'Invalid column to sort');
@@ -1103,7 +1102,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    handleDataChange(): void {
+    handleDataChange(): void
+    {
         if (this.state.sortKey || this.sortColumn) {
             if (!this.sortColumn && this.columns) {
                 this.sortColumn = this.columns.find(
@@ -1115,34 +1115,31 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         this.valueChange.emit(this.list);
     }
 
-    updateDataToRender(datasource?: any): void {
+    updateDataToRender(datasource?: any)
+    {
         this.dataToRender = datasource || this.list;
+
+        if (isBlank(this.children) && isPresent(this.dataToRender)
+            && this.dataToRender.length > 0 && isOutlineNode(this.dataToRender[0]))
+        {
+            this.outlineFormat = 'tree';
+        }
+
         // this.changeDetector.markForCheck();
         this.changeDetector.detectChanges();
     }
 
-    /**
-     * Updates current immutable list and trigger change detection. Need to wrap it with
-     * setTimeout as the change can easily come after view checked and this would result some errors
-     *
-     */
-    private updateList(newList: any[]): void {
-        setTimeout(() => {
-            this.list = newList;
-            this.handleDataChange();
-        });
-    }
-
-    reset() {
+    reset()
+    {
         this.sortColumn = null;
         this.updateDataToRender();
     }
 
-
     /**
      * See AWDataTable
      */
-    isHeaderSelected(item: DTColumn2Component): boolean {
+    isHeaderSelected(item: DTColumn2Component): boolean
+    {
         if (isBlank(this.state.headerSelection)) {
             return false;
         }
@@ -1157,7 +1154,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    isBodyCellSelected(column: DTColumn2Component, item: any): boolean {
+    isBodyCellSelected(column: DTColumn2Component, item: any): boolean
+    {
         let lookupKey = {
             col: column.key || column.label,
             item: item
@@ -1166,12 +1164,12 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
             ListWrapper.findIndexComplex(this.state.selection, lookupKey) !== -1;
     }
 
-
     /**
      *  See AWDataTable
      *
      */
-    isRowSelected(item: any): boolean {
+    isRowSelected(item: any): boolean
+    {
         if (this.hasLeadingSelectColumn() && isPresent(this.state.selection)) {
 
             if (this.selectionMode === 'multi') {
@@ -1184,49 +1182,50 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         return false;
     }
 
-
     /**
      *
      * Do we have data to render Used inside template to tell if we should use the NoData template
      *
      */
-    isEmpty() {
+    isEmpty()
+    {
         return isBlank(this.dataToRender) || (this.dataToRender.length === 0);
     }
 
-
-    hasFrozenColumns(): boolean {
+    hasFrozenColumns(): boolean
+    {
         return isPresent(this.frozenColumns) && this.frozenColumns.length > 0;
     }
 
     /**
      * See AWDataTable
      */
-    hasInvisibleSelectionColumn(): boolean {
+    hasInvisibleSelectionColumn(): boolean
+    {
         return this.hasLeadingSelectColumn() && !this.showSelectionColumn;
     }
 
-
     /**
      *
      * See AWDataTable
      *
      */
-    hasLeadingSelectColumn(): boolean {
+    hasLeadingSelectColumn(): boolean
+    {
         return this.selectionMode !== 'none' && this.selectionMode !== 'cell';
     }
 
-
-    visibleColumns(): DTColumn2Component[] {
+    visibleColumns(): DTColumn2Component[]
+    {
         return this.columns ? this.columns.filter(c => c.isVisible) : [];
     }
-
 
     /**
      * See AWDataTable
      *
      */
-    sortOrderingForString(direction: string): number {
+    sortOrderingForString(direction: string): number
+    {
         if (isBlank(direction) || direction === 'ascending') {
             return 1;
         }
@@ -1238,8 +1237,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         return 1;
     }
 
-
-    sortOrderingForNumber(direction: number): string {
+    sortOrderingForNumber(direction: number): string
+    {
         if (isBlank(direction) || direction === 1) {
             return 'ascending';
         }
@@ -1251,12 +1250,12 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
         return 'ascending';
     }
 
-
     /**
      * See AWDataTable
      *
      */
-    toggleAllColumns(event: any): void {
+    toggleAllColumns(event: any): void
+    {
         let currentItems = this.dataToRender || [];
         let selectedObject = this.state.selection || [];
         if (selectedObject.length >= currentItems.length) {
@@ -1272,19 +1271,20 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    isToggleAllColumnSelected(): boolean {
+    isToggleAllColumnSelected(): boolean
+    {
         let currentItems = this.dataToRender || [];
         let selectedObject = this.state.selection || [];
 
         return currentItems.length > 0 && selectedObject.length >= currentItems.length;
     }
 
-    isToggleAllColumnDisabled(): boolean {
+    isToggleAllColumnDisabled(): boolean
+    {
         let currentItems = this.dataToRender || [];
 
         return currentItems.length === 0;
     }
-
 
     /**
      *
@@ -1293,16 +1293,12 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * check if the item that is about to be rendered is eligible for detail row
      *
      */
-    showDetailColumn(item: any): boolean {
+    showDetailColumn(item: any): boolean
+    {
         if (this.canUseForDetailRow(item) && this.detailRowExpansionState.isExpanded(item)) {
             return true;
         }
         return false;
-    }
-
-    private canUseForDetailRow(item: any): boolean {
-        return isPresent(this.rowDetailColumn) &&
-            (<DTDetailRowComponent>this.rowDetailColumn).showDetailRow(item);
     }
 
     /**
@@ -1310,10 +1306,10 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDataTable
      *
      */
-    isOutline(): boolean {
-        return isPresent(this.children);
+    isOutline(): boolean
+    {
+        return isPresent(this.children) || this.outlineFormat === 'tree';
     }
-
 
     /**
      *
@@ -1325,7 +1321,8 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * if we should skip next level.
      *
      */
-    skipOutlineItem(item: any): boolean {
+    skipOutlineItem(item: any): boolean
+    {
         return this.canUseForDetailRow(item);
     }
 
@@ -1334,15 +1331,81 @@ export class Datatable2Component extends BaseComponent implements AWDataTable, A
      * See AWDaTable
      *
      */
-    getValue(data: any, field: string): any {
+    getValue(data: any, field: string): any
+    {
         return FieldPath.getFieldValue(data, field);
     }
 
-    ngOnDestroy() {
+    ngOnDestroy()
+    {
         super.ngOnDestroy();
         if (this.columnsSubscription) {
             this.columnsSubscription.unsubscribe();
         }
+    }
+
+    /**
+     * Makes sure that we also include programmatic column if present. Move them to the correct
+     * array
+     *
+     */
+    private initFrozenColumns(): void
+    {
+        this.colsQuery
+            .filter((col1: DTColumn2Component) => col1.frozen)
+            .forEach((col: DTColumn2Component) =>
+            {
+                col.initialize(this);
+                this.frozenColumns.push(col);
+
+            });
+
+        if (this.frozenColumns.length > 0) {
+            // find last index of column that is internal / programmatic
+
+            let lastInx = this.columns.slice()
+                .reverse()
+                .findIndex((col: DTColumn2Component) => this.isInternalColumn(col));
+
+            if (lastInx !== -1) {
+                let idx = this.columns.length - 1 - lastInx;
+                let internalCols = this.columns.splice(0, idx + 1);
+                this.frozenColumns = [...internalCols, ...this.frozenColumns];
+
+            }
+
+            let hasValidCols = this.columns
+                .findIndex((col: DTColumn2Component) => isBlank(col.width)) === -1;
+
+            assert(hasValidCols || isPresent(this.scrollWidth),
+                'When using [frozen] binding you need specify [width] for each ' +
+                'column or [scrollWidth] on datatable!');
+
+
+            assert(isBlank(this.rowDetailColumn),
+                'You cannot combine aw-dt-detail-column with frozen columns!');
+
+        }
+    }
+
+    /**
+     * Updates current immutable list and trigger change detection. Need to wrap it with
+     * setTimeout as the change can easily come after view checked and this would result some errors
+     *
+     */
+    private updateList(newList: any[]): void
+    {
+        setTimeout(() =>
+        {
+            this.list = newList;
+            this.handleDataChange();
+        });
+    }
+
+    private canUseForDetailRow(item: any): boolean
+    {
+        return isPresent(this.rowDetailColumn) &&
+            (<DTDetailRowComponent>this.rowDetailColumn).showDetailRow(item);
     }
 }
 
