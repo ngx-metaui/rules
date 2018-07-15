@@ -1,0 +1,52 @@
+<pre>
+<code class="language-typescript" pCode>
+@module=Home &#123;
+    label:"My Home";
+    pageTitle:"You are now on Homepage";
+
+    @layout=Today &#123;
+       after:zTop;
+       label: "Sales Graph";
+       component:SalesGraphComponent;
+    &#125;
+
+    @layout=Sport &#123;
+       after:Today;
+       label: "Sport today!";
+       component:StringComponent;
+       bindings:&#123;value:" ...... " &#125;
+    &#125;
+
+
+     @layout=Tech &#123;
+           after:Sport;
+           label: "Tech News";
+           component:StringComponent;
+           bindings:&#123;value:" ...... " &#125;
+     &#125;
+
+     @layout=MessageBoard &#123;
+        after:zBottom;
+        label: "Message Board";
+        component:StringComponent;
+        portletWidth:large
+        bindings:&#123;value:" ...... " &#125;
+     &#125;
+
+&#125;
+
+
+
+@module=Products &#123;
+    pageTitle:"You are now on Products";
+    homePage:ProductContentComponent;
+&#125;
+
+
+@module=Sources &#123;
+    label:"Sources for Module";
+    homePage:SourcesComponent;
+
+&#125;
+</code>
+</pre>

@@ -1,0 +1,54 @@
+<p-panel header="MetaUI with custom layout and actions. 2 stacked layouts and two actions. " [toggleable]="false">
+
+    <m-context [object]="user" operation="edit" layout="Inspect2">
+        <m-include-component></m-include-component>
+    </m-context>
+
+</p-panel>
+
+
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+<pre>
+<code class="language-markup" pCode>
+&lt;m-context [object]="userObject" operation="edit"
+    layout="Inspect2"&gt;
+    &lt;m-include-component&gt;&lt;/m-include-component&gt;
+&lt;/m-context&gt;
+</code>
+</pre>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+<pre>
+<code class="language-typescript" pCode>
+layout=Inspect2&#35;Stack &#123;
+    &#64;layout=MenuTop&#35;ActionButtons &#123;  &#125;
+
+   &#64;layout=First&#35;Form &#123;  &#125;
+
+&#125;
+
+object &#64;action=update  &#123;
+     actionResults:$&#123; object.firstName = "Mr." +  object.firstName &#125;;
+     visible: $&#123; properties.editing &#125;;
+&#125;
+
+
+object &#64;action=Save  &#123;
+     label: "My Save";
+     actionResults:$&#123; object.firstName = "Ms." +  object.firstName &#125;;
+     visible: $&#123; properties.editing &#125;;
+     buttonStyle:info;
+&#125;
+
+</code>
+</pre>
+
+    </div>
+</div>
+
+
+
+
+
+

@@ -34,7 +34,6 @@
               "node_modules/primeicons/primeicons.css",
               "dist/@aribaui/resources/themes/ariba/theme.scss",
               "dist/@aribaui/resources/styles/aribaui.scss",
-
               "modules/playground/src/styles.scss"
             ],
             "scripts": [
@@ -272,6 +271,139 @@
               "packages/metaui/tsconfig.lib.json",
               "packages/metaui/tsconfig.spec.json"
             ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "metaui-evolution": {
+      "root": "modules/metaui-evolution/",
+      "sourceRoot": "modules/metaui-evolution/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/metaui-evolution",
+            "index": "modules/metaui-evolution/src/index.html",
+            "main": "modules/metaui-evolution/src/main.ts",
+            "polyfills": "modules/metaui-evolution/src/polyfills.ts",
+            "tsConfig": "modules/metaui-evolution/tsconfig.app.json",
+            "assets": [
+              "modules/metaui-evolution/src/favicon.ico",
+              "modules/metaui-evolution/src/assets"
+            ],
+            "styles": [
+              "dist/@aribaui/resources/themes/_normalize.scss",
+              "node_modules/prismjs/themes/prism.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+              "dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
+              "node_modules/primeicons/primeicons.css",
+              "dist/@aribaui/resources/themes/ariba/theme.scss",
+              "dist/@aribaui/resources/styles/aribaui.scss",
+              "modules/metaui-evolution/src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/prismjs/prism.js",
+              "node_modules/quill/dist/quill.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "modules/metaui-evolution/src/environments/environment.ts",
+                  "with": "modules/metaui-evolution/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "metaui-evolution:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "metaui-evolution:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "metaui-evolution:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "modules/metaui-evolution/src/test.ts",
+            "polyfills": "modules/metaui-evolution/src/polyfills.ts",
+            "tsConfig": "modules/metaui-evolution/tsconfig.spec.json",
+            "karmaConfig": "modules/metaui-evolution/karma.conf.js",
+            "styles": [
+              "modules/metaui-evolution/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "modules/metaui-evolution/src/favicon.ico",
+              "modules/metaui-evolution/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "modules/metaui-evolution/tsconfig.app.json",
+              "modules/metaui-evolution/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "metaui-evolution-e2e": {
+      "root": "modules/metaui-evolution-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "modules/metaui-evolution-e2e/protractor.conf.js",
+            "devServerTarget": "metaui-evolution:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "metaui-evolution:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "modules/metaui-evolution-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]

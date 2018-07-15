@@ -1,0 +1,65 @@
+
+<p-panel header="My First Component Form" [toggleable]="false">
+
+    <aw-form-table>
+        <aw-form-row [label]="'First Name'">
+            <aw-input-field [type]="'string'" [name]="'firstName'"
+                            [(ngModel)]="userObject.firstName"></aw-input-field>
+        </aw-form-row>
+
+        <aw-form-row [label]="'Last Name'">
+            <aw-input-field [type]="'string'" [name]="'lastName'"
+                            [(ngModel)]="userObject.lastName"></aw-input-field>
+        </aw-form-row>
+
+        <aw-form-row [label]="'Age'">
+            <aw-input-field [type]="'number'" [name]="'age'"
+                            [(ngModel)]="userObject.age"></aw-input-field>
+        </aw-form-row>
+
+        <aw-form-row [label]="'Department'">
+            <aw-input-field [type]="'string'" [name]="'departmetn'"
+                            [(ngModel)]="userObject.department"></aw-input-field>
+        </aw-form-row>
+
+        <aw-form-row [label]="'Email'">
+            <aw-input-field [type]="'string'" [name]="'email'"
+                            [(ngModel)]="userObject.email"></aw-input-field>
+        </aw-form-row>
+    </aw-form-table>
+
+
+</p-panel>
+
+
+<pre>
+    <code class="language-markup" pCode>
+     &lt;w-form-table&gt;
+        &lt;w-form-row [label]="'First Name'"&gt;
+            &lt;w-input-field [type]="'string'" [name]="'firstName'"
+                           [(ngModel)]="userObject.firstName"&gt;&lt;/w-input-field&gt;
+        &lt;/w-form-row&gt;
+
+        &lt;w-form-row [label]="'Last Name'"&gt;
+            &lt;w-input-field [type]="'string'" [name]="'lastName'"
+                           [(ngModel)]="userObject.lastName"&gt;&lt;/w-input-field&gt;
+        &lt;/w-form-row&gt;
+
+        &lt;w-form-row [label]="'Age'"&gt;
+            &lt;w-input-field [type]="'number'" [name]="'age'"
+                           [(ngModel)]="userObject.age"&gt;&lt;/w-input-field&gt;
+        &lt;/w-form-row&gt;
+
+        &lt;w-form-row [label]="'Department'"&gt;
+            &lt;w-input-field [type]="'string'" [name]="'departmetn'"
+                           [(ngModel)]="userObject.department"&gt;&lt;/w-input-field&gt;
+        &lt;/w-form-row&gt;
+
+        &lt;w-form-row [label]="'Email'"&gt;
+            &lt;w-input-field [type]="'string'" [name]="'email'"
+                           [(ngModel)]="userObject.email"&gt;&lt;/w-input-field&gt;
+        &lt;/w-form-row&gt;
+    &lt;/w-form-table&gt;
+
+    </code>
+</pre>
