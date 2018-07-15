@@ -71,6 +71,13 @@ export declare abstract class DataProvider<T> {
      */
     dataChanges: BehaviorSubject<T[]>;
     /**
+     * Internal data source populated by fetch or search. JS application can hold large amount of
+     * records without going back to the REST server. This can be used to cache search result on
+     * the client site.
+     *
+     */
+    offScreenData: any[];
+    /**
      *  Return size of the source
      *
      */

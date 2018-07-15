@@ -71,6 +71,7 @@ export declare class OutlineControlComponent extends BaseComponent {
      *
      */
     allowSelection: boolean;
+    allowEdit: boolean;
     /**
      *
      * Triggers action when outline item is expanded

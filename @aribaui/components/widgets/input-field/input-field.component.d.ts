@@ -74,31 +74,32 @@ export declare class InputFieldComponent extends BaseFormComponent {
      */
     icon: string;
     /**
-     * Input field type. Currently we support either Number or text
-     */
-    private _type;
-    /**
-     * Just to clean up subscriber when component is destroyed
-     */
-    private vchSubscriber;
-    /**
      * The decimal pipe is used to format our number object.
      */
     decimalPipe: DecimalPipe;
     /**
      * The formatted decimal value. Uses angular decimalPipe to format based on locale.
      */
-    private _displayValue;
+    displayValue: string;
+    /**
+     * Just to clean up subscriber when component is destroyed
+     */
+    private vchSubscriber;
     constructor(env: Environment, parentContainer: BaseFormComponent);
-    ngOnInit(): void;
+    /**
+     * Input field type. Currently we support either Number or text
+     */
+    private _type;
     /**
      *
      * generated setter to check for value and normalizing into expected either number or text
      *
      */
     type: string;
-    readonly displayValue: string;
+    ngOnInit(): void;
     canSetType(): boolean;
+    onKeyDown(el: any): void;
+    onBlur(el: any): void;
     writeValue(value: any): void;
     /**
      * Format the number object according to its precision.

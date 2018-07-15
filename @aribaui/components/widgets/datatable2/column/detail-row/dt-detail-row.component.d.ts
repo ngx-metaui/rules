@@ -1,6 +1,7 @@
 import { Environment } from '@aribaui/core';
 import { DomHandler } from 'primeng/primeng';
 import { DTColumn2Component } from '../dt-column.component';
+import { AWDataTable } from '../../aw-datatable';
 /**
  *
  * Custom column implementation to render detail row spaning its column across whole table width.
@@ -38,4 +39,5 @@ export declare class DTDetailRowComponent extends DTColumn2Component {
      *
      */
     showDetailRow(item: any): boolean;
+    initialize(table: AWDataTable): void;
 }

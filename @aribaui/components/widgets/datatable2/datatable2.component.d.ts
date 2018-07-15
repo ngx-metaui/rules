@@ -37,6 +37,7 @@ import { DTColumn2Component } from './column/dt-column.component';
 import { DTHeaderComponent2 } from './header/header.component';
 import { DTDetailRowComponent } from './column/detail-row/dt-detail-row.component';
 import { DetailRowExpansionState, DT2DataSource } from './datatable2-data-source';
+import { ModelFormat } from '../outline/outline-for.component';
 export declare type SelectionMode = 'multi' | 'single' | 'cell' | 'none';
 /**
  * DT component that implements the data grid that shows tabular data. Even the basic
@@ -192,6 +193,8 @@ export declare class Datatable2Component extends BaseComponent implements AWData
     showSubHeader: boolean;
     /**
      * See OutlineFor - only used in the tree mode
+     *
+     * Not used when [outlineFormat]="'truee'"
      */
     children: (value: any) => any[];
     /**
@@ -205,6 +208,11 @@ export declare class Datatable2Component extends BaseComponent implements AWData
      * See OutlineFor - only used in the tree mode
      */
     expandAll: boolean;
+    /**
+     *
+     * See OutlineFor  - format - only used in the tree mode
+     */
+    outlineFormat: ModelFormat;
     /**
      * See AWDataTable
      */
@@ -385,6 +393,13 @@ export declare class Datatable2Component extends BaseComponent implements AWData
      *
      */
     constructor(env: Environment, el: ElementRef, _defaultDS: DT2DataSource, changeDetector: ChangeDetectorRef, factoryResolver: ComponentFactoryResolver, outlineState: OutlineState, zone: NgZone, injector: Injector);
+    /**
+     * Pushes a state out to application. Can be use as two way bindings
+     *
+     * [(state)]=dtState(s)
+     *
+     */
+    state: any;
     ngOnInit(): void;
     /**
      * When data arrives later maybe due to REST API latency, initialize DS only when we have a
@@ -408,12 +423,6 @@ export declare class Datatable2Component extends BaseComponent implements AWData
      *
      */
     initColumns(): void;
-    /**
-     * Makes sure that we also include programmatic column if present. Move them to the correct
-     * array
-     *
-     */
-    private initFrozenColumns();
     /**
      * Check if current column is programmatically created
      *
@@ -444,13 +453,6 @@ export declare class Datatable2Component extends BaseComponent implements AWData
      *
      */
     initColumnInfo(): void;
-    /**
-     * Pushes a state out to application. Can be use as two way bindings
-     *
-     * [(state)]=dtState(s)
-     *
-     */
-    state: any;
     /**
      * See AWDataTable
      *
@@ -504,12 +506,6 @@ export declare class Datatable2Component extends BaseComponent implements AWData
      */
     handleDataChange(): void;
     updateDataToRender(datasource?: any): void;
-    /**
-     * Updates current immutable list and trigger change detection. Need to wrap it with
-     * setTimeout as the change can easily come after view checked and this would result some errors
-     *
-     */
-    private updateList(newList);
     reset(): void;
     /**
      * See AWDataTable
@@ -570,7 +566,6 @@ export declare class Datatable2Component extends BaseComponent implements AWData
      *
      */
     showDetailColumn(item: any): boolean;
-    private canUseForDetailRow(item);
     /**
      *
      * See AWDataTable
@@ -595,4 +590,17 @@ export declare class Datatable2Component extends BaseComponent implements AWData
      */
     getValue(data: any, field: string): any;
     ngOnDestroy(): void;
+    /**
+     * Makes sure that we also include programmatic column if present. Move them to the correct
+     * array
+     *
+     */
+    private initFrozenColumns();
+    /**
+     * Updates current immutable list and trigger change detection. Need to wrap it with
+     * setTimeout as the change can easily come after view checked and this would result some errors
+     *
+     */
+    private updateList(newList);
+    private canUseForDetailRow(item);
 }

@@ -100,6 +100,8 @@ export declare class DTWrapper extends BaseComponent implements AfterViewInit, A
      *
      */
     supportFullScreen: boolean;
+    querySubscription: Subscription;
+    loadingSub: Subscription;
     /**
      *  Saves original bounding rect coordinates before we expand the DT to full screen
      *
@@ -109,8 +111,6 @@ export declare class DTWrapper extends BaseComponent implements AfterViewInit, A
      * Remembers original scroll position before we switch to full screen mode
      */
     private originalScrollPosition;
-    querySubscription: Subscription;
-    loadingSub: Subscription;
     constructor(env: Environment, render: Renderer2, thisElement: ElementRef, domUtils: DomUtilsService, platformId: Object, dt: Datatable2Component);
     ngOnInit(): void;
     /**
@@ -164,6 +164,18 @@ export declare class DTWrapper extends BaseComponent implements AfterViewInit, A
      */
     closeFullScreen(event: any): void;
     /**
+     * Applies set of set of css properties to make the DT main component on the page expand to
+     * full page mode and back
+     *
+     * We want to make it with little delay to let other animation finish
+     */
+    toggleFullScreenOnDT(fullScreen: boolean): void;
+    /**
+     * Listen for infinite scroll event and request new data from data source
+     *
+     */
+    onLazyLoad(event: any): void;
+    /**
      * Creates animation effect to make it feel like the element (in this case DT) is expanding
      * from the middle to the full page mode.
      *
@@ -204,22 +216,10 @@ export declare class DTWrapper extends BaseComponent implements AfterViewInit, A
      *
      */
     private applyTransformation(expand);
-    private initFullScreen();
-    /**
-     * Applies set of set of css properties to make the DT main component on the page expand to
-     * full page mode and back
-     *
-     * We want to make it with little delay to let other animation finish
-     */
-    toggleFullScreenOnDT(fullScreen: boolean): void;
     /**
      * INFINITE SCROLLING METHODS
      */
-    /**
-     * Listen for infinite scroll event and request new data from data source
-     *
-     */
-    onLazyLoad(event: any): void;
+    private initFullScreen();
     /**
      * When loading is finished mark loading icon is done so we can hide it. I am using little
      * delay to make the animation visible

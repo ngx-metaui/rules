@@ -18,6 +18,6 @@
  *
  *
  */
-export { OutlineForComponent } from './outline-for.component';
+export { OutlineForComponent, OutlineNode, isOutlineNode } from './outline-for.component';
 export { OutlineControlComponent } from './outline-control/outline-control.component';
 export { OutlineState } from './outline-state';

@@ -39,7 +39,7 @@ export declare class OutlineState {
      * expansionStates. This way we can pretty easily execute CollapseAll, ExpandAll
      *
      */
-    globalState: boolean;
+    isExpandedAll: boolean;
     /**
      *
      * Holds current level during tree node rendering so we can apply correct indentation
@@ -64,7 +64,8 @@ export declare class OutlineState {
     collapseAll(): void;
     expandAll(): void;
     expansionPath: any[];
-    toggleExpansion(currentPath: any[], chidren?: any[]): void;
+    toggleExpansion(currentPath: any[], children?: any[]): void;
+    updateNodes(nodes: any[], newState: boolean): void;
     setExpansionState(item: any, isExpanded: boolean): void;
     /**
      * To improve state persisting lets check if we are dealing with an Object that has Identity
@@ -73,6 +74,6 @@ export declare class OutlineState {
      *
      */
     private itemToKey(item);
-    setExpansionPath(item: any[]): void;
+    setExpansionPath(items: any[]): void;
     isExpanded(item: any): boolean;
 }

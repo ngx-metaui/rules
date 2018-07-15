@@ -28,12 +28,12 @@ export declare class DT2DataSource extends DataSource {
      * Keep track of current datatable state
      */
     state: Datatable2State;
+    initialized: boolean;
+    debugTime: number;
     /**
      * Defines object being rendered
      */
     private entity;
-    initialized: boolean;
-    debugTime: number;
     constructor(dataProviders?: DataProviders, finders?: DataFinders);
     init(...args: any[]): void;
     /**
@@ -216,10 +216,10 @@ export declare class DetailRowExpansionState {
     private dt;
     expansionStates: Map<any, boolean>;
     constructor(dt: AWDataTable);
-    private itemToKey(item);
     detailExpansionEnabled: boolean;
     toggle(item: any): void;
     isExpanded(item: any): boolean;
+    private itemToKey(item);
 }
 export interface DTStateSerializableHelper {
     offset: number;

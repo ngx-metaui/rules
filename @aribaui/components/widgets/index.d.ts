@@ -45,6 +45,8 @@ export { AWDatatable2Module } from './datatable2/datatable2.module';
 export { AWConfirmationModule } from './confirmation/confirmation.module';
 export { AWScrollableContainerModule } from './scrollable-container/scrollable-container.module';
 export { AWListModule } from './list/list.module';
+export { WizardProgressModule } from './wizard-progress/wizard-progress.module';
+export { ToggleSwitchModule } from './toggle-switch/toggle-switch.module';
 export { BasicNavigatorComponent } from './basic-navigator/basic-navigator.component';
 export { ButtonComponent, ButtonStyle } from './button/button.component';
 export { CheckBoxListComponent } from './check-box-list/check-box-list.component';
@@ -69,7 +71,7 @@ export { RadioButtonListComponent } from './radio-button-list/radio-button-list.
 export { StringComponent } from './string/string.component';
 export { TEXTAREA_CONTROL_VALUE_ACCESSOR, TextAreaComponent } from './text-area/text-area.component';
 export { CardComponent, CardZoneTitleComponent, CardZoneTopComponent, CardZoneBottomComponent } from './card/index';
-export { OutlineForComponent, OutlineControlComponent, OutlineState } from './outline/index';
+export { OutlineForComponent, OutlineControlComponent, OutlineState, OutlineNode, isOutlineNode } from './outline/index';
 export { PageContentComponent } from './page-wrapper/page-content/page-content.component';
 export { PageNotificationComponent, PageNotification, PageNotificationType } from './page-notification/page-notification.component';
 export { PageInitialized, PageDestroyed, PageWrapper, PageLifeCycleService, ObjectPageWrapperComponent, PageHeaderComponent, PageMenuItem, UserNotification, PageFooterComponent, SidenavComponent, PageActionsComponent } from './page-wrapper/index';
@@ -88,3 +90,5 @@ export { DTColumn2Component, DTHAlignment } from './datatable2/column/dt-column.
 export { DTDetailRowComponent } from './datatable2/column/detail-row/dt-detail-row.component';
 export { Datatable2State, DTDSInitParams, EntityDef2, isDTInitParams, DT2DataSource, DetailRowExpansionState } from './datatable2/datatable2-data-source';
 export { DTMultiSelectColumnComponent } from './datatable2/column/multi-select/dt-multi-select-column.component';
+export { WizardProgressComponent, Step } from './wizard-progress/wizard-progress.component';
+export { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';

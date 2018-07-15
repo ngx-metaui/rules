@@ -20,9 +20,48 @@
  */
 import { ElementRef, EventEmitter, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AnimationBuilder } from '@angular/animations';
-import { Environment } from '@aribaui/core';
+import { Environment, Identity } from '@aribaui/core';
 import { BaseComponent } from '../../core/base.component';
 import { OutlineState } from './outline-state';
+/**
+ * This interface represent concrete tree structure for the outline tree mode
+ */
+export interface OutlineNode extends Identity {
+    /**
+     * Reference to parent node.
+     */
+    parent: OutlineNode;
+    /**
+     * Node's children. Even its a field it can be implemented lazily using getter where a target
+     * object does not implement this as a public field but a getter with control over the
+     * retrieved list
+     */
+    children: OutlineNode[];
+    /**
+     * Different states for outline Node
+     *
+     * isExpanded: boolean;= moving out as this is managed by expansionstate.
+     */
+    isExpanded: boolean;
+    isSelected: boolean;
+    isMatch?: boolean;
+    readonly?: boolean;
+    type?: string;
+    draggable?: boolean;
+    droppable?: boolean;
+    visible?: boolean;
+}
+/**
+ *
+ * Checks type for OutlineNode
+ *
+ */
+export declare function isOutlineNode(node: any): node is OutlineNode;
+/**
+ * Currently outline supports only two modes free, where application is responsible to retrieve
+ * children for each node and tree with above OutlineNode structure
+ */
+export declare type ModelFormat = 'free' | 'tree';
 /**
  *
  * OutlineForComponent is like ngFor, but for hierarchical (outline/tree) structures -- i.e. in
@@ -179,6 +218,23 @@ export declare class OutlineForComponent extends BaseComponent {
     pushRootSectionOnNewLine: boolean;
     /**
      *
+     * Identifies current model mode.
+     *
+     * We recognize two modes:
+     *
+     * Free - Application needs to implement a children method to retrieve a list of children for
+     * each node and format is pretty much upt to the application
+     *
+     * Tree - this is more restrictive where we have concrete data structure
+     * interface that needs to be folled
+     *
+     * todo: instead of passing format binding try to look into the list to see what type so
+     * we dont make it mandatory
+     *
+     */
+    format: ModelFormat;
+    /**
+     *
      * Used when in selection mode to push current selected Item to the application
      *
      */
@@ -219,6 +275,7 @@ export declare class OutlineForComponent extends BaseComponent {
     constructor(env: Environment, _viewContainer: ViewContainerRef, builder: AnimationBuilder, element: ElementRef);
     ngOnInit(): void;
     ngDoCheck(): void;
+    isTreeModelFormat(): boolean;
     /**
      * Used by template and OutlineControl to identify which item is expanded and collapsed
      *

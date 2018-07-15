@@ -1,6 +1,6 @@
 {
   "name": "@aribaui/core",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Ariba UI core module providing basic set of API and services.",
   "homepage": "https://github.com/SAP/angular-metaui.git",
   "license": "Apache-2.0",

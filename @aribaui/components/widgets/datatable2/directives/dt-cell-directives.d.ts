@@ -5,7 +5,7 @@ import { DTColumn2Component } from '../column/dt-column.component';
  * This directive is responsible for checking and setting the widest content width onto
  * Column component as the widestCell property.
  *
- *
+ * We use this directive inside dt-column.component to store a current width for each td,th
  *
  *
  */
@@ -13,7 +13,7 @@ export declare class SetCellMaxWidthDirective implements OnInit, AfterViewInit {
     private element;
     private render;
     private td;
-    maxWidth: number;
+    dtMaxWidth: number;
     constructor(element: ElementRef, render: Renderer2, td: DTColumn2Component);
     ngOnInit(): void;
     ngAfterViewInit(): void;

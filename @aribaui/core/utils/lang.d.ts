@@ -114,6 +114,7 @@ export declare function hasConstructor(value: Object, type: any): boolean;
 export declare function escape(s: string): string;
 export declare function escapeRegExp(s: string): string;
 export declare function hashCode(str: string): number;
+export declare function objectValues(obj: any): any[];
 /**
  *
  * Converts object to a name;

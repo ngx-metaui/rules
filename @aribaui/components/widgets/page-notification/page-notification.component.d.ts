@@ -40,8 +40,7 @@ import { BaseComponent } from '../../core/base.component';
  *  @Component({
  *    selector: 'registration' ,
  *    template: `
- *      <
- *      aw-header></aw-header>
+ *      <aw-header></aw-header>
  *        Page Header
  *
  *        <ng-template [ngIf]="hasNotifications()">
