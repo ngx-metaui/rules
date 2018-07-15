@@ -31,7 +31,7 @@ make declarative UI possible.
 <small>_Credit:  Based on original work: MetaUI: Craig Federighi (Ariba 2008)_</small>
 
 
-Components are organized into 3 main areas:
+Packages are organized into 3 main areas:
  
  * **Core UI framework** providing reusable API which gives you additional layer on top of angular:        
     * App Configuration & bootstraping
