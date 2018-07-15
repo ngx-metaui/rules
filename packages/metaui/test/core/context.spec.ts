@@ -2083,7 +2083,7 @@ describe('Meta Context behaivor ', () => {
             metaUI = UIMeta.getInstance();
         });
 
-        it('should process more then 800 000 rule index entries in less than 2 sec', () => {
+        xit('should process more then 800 000 rule index entries in less than 2 sec', () => {
 
 
             let metaPefr = UIMeta.getInstance();
