@@ -51,7 +51,7 @@ Components are organized into 3 main areas:
 The rest of the sections are focused on the _MetaUI_ therefore it is recommended that you watch our online presentations that give
 you some ideas about Rule driven User Interface.
 
- - [Introduction declarative UI](https://www.youtube.com/watch?v=-Bv_ceUn1K8)
+ - [Introduction declarative UI](https://www.youtube.com/watch?v=-Bv_ceUn1K8) ([Demo](https://sap.github.io/angular-metaui/))
  - [Longer MetaUI presentation](https://www.youtube.com/watch?v=F0BMw_Sxjig)
  
                     
@@ -154,16 +154,16 @@ Install `npm` packages:
 Build for first time:
 
 ```
-    npm run build
+    npm run build.packages
 ```
-* This command assembles and copies necessary assets to the app directory. Once you run it then you can use regular `ng build`
+* This command assembles and copies necessary libraries to the dist directory. Once you run it then you can use regular `ng build playground`
 
 
 
 Run development web server:
 
 ```
-    ng serve
+    ng serve playground
 ```
 
 Now access [http://localhost:4200/play][1]
