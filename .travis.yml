@@ -8,6 +8,10 @@ addons:
   chrome: stable
 
 
+branches:
+  except:
+    - TestRelease
+
 cache:
   directories:
      - ./node_modules
