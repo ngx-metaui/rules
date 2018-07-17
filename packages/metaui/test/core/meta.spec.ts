@@ -301,18 +301,12 @@ describe('Loading rules functionality', () => {
 
             try {
 
-                let start = DateWrapper.toMillis(DateWrapper.now());
                 let metaUI = UIMeta.getInstance();
                 metaUI.registerLoader(new RuleLoaderService());
                 metaUI.loadDefaultRuleFiles();
 
-
-                let end = DateWrapper.toMillis(DateWrapper.now());
-
                 expect(metaUI).toBeDefined();
                 expect(metaUI._rules.length).toEqual(446); // commented out toOneRelationShip
-                expect(end - start).toBeLessThan(100); // whole loading process must not take
-                                                       // longer then 100mili.
 
             } catch (e) {
                 fail(e);

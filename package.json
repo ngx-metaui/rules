@@ -29,11 +29,7 @@
     "oss-user2": "java -jar lib/meta-ui-parser.jar --gen --user ./packages/metaui/src/core ./modules/metaui-evolution/src/app/rules",
     "build.resources": "rm -Rf ./dist/@aribaui/resources && cp -R packages/resources/src/ ./dist/@aribaui/resources && ./node_modules/.bin/scss-bundle -e  dist/@aribaui/resources/styles/aribaui.scss -d dist/@aribaui/resources/styles/aribaui.css && cp -rf  packages/resources/package.json ./dist/@aribaui/resources/.",
     "build.packages": "ng build core && ng build components && npm run build.resources && ng build metaui",
-    "lint.packages": "set -u -e  && echo Linting core && ng lint core  && echo Linting components && ng lint components && echo Linting metaui && ng lint metaui ",
-    "release.packages": "cd packages/core && npm run release.pa && cd ../components && npm run release.pa && cd ../resources && npm run release.pa && cd ../metaui && npm run release.pa && cd ../../ && npm run release.pa ",
-    "release.pa": "standard-version --release-as patch",
-    "release.mi": "standard-version --release-as minor",
-    "release.ma": "standard-version --release-as major"
+    "lint.packages": "set -u -e  && echo Linting core && ng lint core  && echo Linting components && ng lint components && echo Linting metaui && ng lint metaui "
   },
   "private": true,
   "dependencies": {
@@ -97,7 +93,8 @@
   },
   "standard-version": {
     "skip": {
-      "tag": true
+      "tag": true,
+      "commit": true
     }
   },
   "engines": {
