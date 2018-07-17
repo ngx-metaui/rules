@@ -49,7 +49,7 @@ if [ ${args[0]} != "none" ]; then
 
     printf "=============== Now go to CHANGELOG.md and check if everything is ok then run following commands:================\n\n"
     printf "  git add . &&  git commit -m \"chore(release): v${NEW_VERSION}\"\n\n"
-    printf "  git push --follow-tags origin master\n\n"
+    printf "  git push --follow-tags origin master && git push origin --tags\n\n"
 
 
 fi

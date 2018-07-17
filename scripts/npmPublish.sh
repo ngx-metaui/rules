@@ -17,10 +17,12 @@ echo "##### Validating packages"
 echo "##### Building packages to dist"
 ./ci/build.sh dev
 
-echo "##### Testing packages"
-./ci/test.sh
-
 cd ..
+echo "##### Testing packages"
+ng test core --source-map=false --watch=false --progress=false && ng test components --source-map=false --watch=false --progress=false  && ng test metaui --source-map=false --watch=false --progress=false
+
+
+
 NEW_VERSION=$(node -p "require('./package.json').version")
 echo "Updating packages.json under dist/@aribaui with version ${NEW_VERSION}"
 
