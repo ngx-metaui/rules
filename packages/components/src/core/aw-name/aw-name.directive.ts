@@ -127,12 +127,10 @@ export class AwNameDirective implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        if (!this.config.isProductionMode()) {
             this.name = this.createName(this.el);
             this.addElementToStore(this.name, this.el);
             this.el.nativeElement.setAttribute('awname', this.name);
         }
-    }
 
     ngOnDestroy() {
         this.store.remove(this.name);
