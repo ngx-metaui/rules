@@ -232,12 +232,6 @@ class TestContainerViewDefferedComponent extends BaseComponent {
 }
 
 
-@Component({
-    template: `Home`
-})
-export class HomeComponent {
-}
-
 
 // @formatter:off
 /**
