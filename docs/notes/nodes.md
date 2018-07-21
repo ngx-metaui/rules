@@ -1,5 +1,4 @@
-
-###Rendering magic
+### Rendering magic
 
 _This describes how metaui rendering worked in our old java based MetaUI_
 

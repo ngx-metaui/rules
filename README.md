@@ -168,6 +168,12 @@ Run development web server:
 
 Now access [http://localhost:4200/play][1]
 
+Or you can run other demo application, the one you can see in the demo:
+
+```
+    ng serve metaui-evolution
+```
+
 
 ##### MetaUI Hacking
 
