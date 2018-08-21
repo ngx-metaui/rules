@@ -4,16 +4,16 @@ _This describes how metaui rendering worked in our old java based MetaUI_
 
 
 Let's start with something simple. Without having layout in place, just render simple object with a operation using Form.
-Let's assume we need to render following object _$user_  which is inside UserFomSimple.awl
+Let's assume we need to render following object _$user_  which is inside UserFomSimple.html
 
 ```
-<m:Context object="$user" operation="edit">
+<m-context object="$user" operation="edit">
     <m:Form/>
-</m:Context>
+</m-context>
 ```
 
 1. AWL parser reads recursively every tags and converts it into Component reference and definition
-  + In this case it reads and parses m:Context and instantiate _MetaContext_ component
+  + In this case it reads and parses m-context and instantiate _MetaContext_ component
   + It reads m:Form and instantiate MetaForm
   + It continues into MetaForm and here parses every single elements
 
@@ -22,7 +22,7 @@ Uptill now there are only instances
 2. Once all is ready and component is about to be rendered this first part kicks in and _pushPop_ is invoked where:
 
   ```
-    <m:Context object="$user" operation="edit">
+    <m-context object="$user" operation="edit">
   ```
 
   + Retrieves current Context from env.
@@ -40,7 +40,7 @@ Uptill now there are only instances
     + set (scopeKey, class)
 
 ```
-<m:Context scopeKey="class">
+<m-context scopeKey="class">
 
 ```
   + Once we push the class scope properties are recalculated and now we have available _list of fields to be rendered_
@@ -53,12 +53,12 @@ Uptill now there are only instances
 
 ```
 <a:Block name="RowTemplate">\
-    <m:Context field="$field">
+    <m-context field="$field">
         <a:SetValue properties="$metaContext.properties"/>
 ```
   + pass all the required bindings into FormRow. All properties for current field are available on the _context_.
  ```
-  <w:FormRow  hidden="$!properties.visible"
+  <w-form-row  hidden="$!properties.visible"
                           label="$properties.label"
                           cueTip="$properties.cueTip"
                           required="$properties.required"
@@ -71,7 +71,7 @@ Uptill now there are only instances
                           highlightRow="$isInspectedField"
                           useNoLabelLayout="$^useNoLabelLayout:$properties.bindings.useNoLabelLayout">\
                       <m:IncludeComponent/>\
-              </w:FormRow>
+              </w-form-row>
 
 ```
 
@@ -79,7 +79,7 @@ Uptill now there are only instances
 
  ```
 
-         <m:IncludeComponent/>\
+         <m-includecomponent/>\
 ```
 
 
@@ -105,18 +105,18 @@ In this example I am looking at the usecase where I am using a _m:form_ but _met
 before:
 
 ```
-<m:Context object="$user" operation="edit">
-    <m:Form/>
-</m:Context>
+<m-context object="$user" operation="edit">
+    <m-form...>
+</m-context>
 ```
 
 
 now:
 
 ```
-<m:Context object="$user" operation="edit" layout="Inspect">
-    <m:IncludeComponent/>
-</m:Context>
+<m-context object="$user" operation="edit" layout="Inspect">
+    <m-includecomponent/>
+</m-context>
 ```
 
 1. Once again we are starting from UserForm Simple where I modified the context. Once it enters into MetaContext, at this time it pushes to context:
@@ -142,11 +142,11 @@ case where we have custom and stacked Layouts.
 
 
 ```
- <m:Context object="$user" layout="Inspect" filterActions="instance">
+ <m-context object="$user" layout="Inspect" filterActions="instance">
         <!--- The whole from comes from THIS!  The bindings (i.e. user, operation)
              in its containing context dictate what gets generated here -->
-        <m:IncludeComponent/>
-    </m:Context>
+        <m-includecomponent></m-includecomponent>
+    </m-context>
 ```
 
 
@@ -181,19 +181,23 @@ For operation _edit,view_ re-define custom layout.
 1. When we set _MetaContext_ with Inspect which has our custom layout, it will push _MetaElementList_ into the stack
  + Because we have _#stack_ and this is defined as _MetaElementList_
 
-2. MetaIncludeComponent:  which is inside out _<m:context_  it knows that it should render MetaElementList
+2. MetaIncludeComponent:  which is inside out _<m-context_  it knows that it should render MetaElementList
 
 3. MetaElementList layout inherits from MetaLayout and it iterates thru defined layout (this is inside MetaLayout)
 
 ```
-public List<ItemProperties> allLayouts ()
+ get allLayouts(): ItemProperties[]
     {
-        if (_allLayouts == null) {
-            Context context = MetaContext.currentContext(this);
-            UIMeta meta = (UIMeta)context.meta();
-            _allLayouts = meta.itemList(context, UIMeta.KeyLayout, zones());
+        if (isBlank(this._allLayouts)) {
+            let meta: UIMeta = <UIMeta> this.activeContext.meta;
+            this._allLayouts = meta.itemList(this.activeContext, UIMeta.KeyLayout, this.zones());
+            this.nameToLayout.clear();
+
+            this._allLayouts.forEach((item: ItemProperties) =>
+                this.nameToLayout.set(item.name, item));
+
         }
-        return _allLayouts;
+        return this._allLayouts;
     }
 
 ```
@@ -201,13 +205,9 @@ public List<ItemProperties> allLayouts ()
     current layout onthe the stack one by one.
 
 ```
-<a:For list="$allLayouts" item="$layout">\
-    <m:Context layout="$layout.name">\
-        -<b>MetaElementList: (layout $layout.name)</b><pre>$metaContext.debugString</pre>
-        <a:RefreshRegion tagName="$metaContext.properties.elementTag:div"
-                         class="$metaContext.properties.elementClass"
-                         style="$metaContext.properties.elementStyle">\
-            <m:IncludeComponent/>\
+    <ng-template ngFor [ngForOf]="allLayouts" let-cLayout>
+         <m-context [layout]="cLayout.name">\        
+            <m-includeComponent/>\
             ....
 ```
 
@@ -231,8 +231,8 @@ awcontentLayouts:{body:Content; buttonArea:Actions};
   + What I mean by this for OutlineBox to work it has this
 
   ```
- <a:IncludeContent required="$false" templateName="body"/>
- <a:IncludeContent required="$false" templateName="body"/>
+ <aw-includeComponent required="$false" templateName="body"/>
+ <aw-IncludeContent required="$false" templateName="body"/>
   ```
 
   + _MetaInclude_ with overriden method createElement() it checks if it has defined awcontentLayouts.
@@ -241,7 +241,7 @@ awcontentLayouts:{body:Content; buttonArea:Actions};
 
 ```
 <metaContext Layout=<value>
-   <m:IncludeContent>
+   <m-includeComponent>
 ```
 
    + else if there are more like in this case it creates: structure in the form of
@@ -298,17 +298,19 @@ awcontentLayouts:{body:Content; buttonArea:Actions};
 values from from context.values() and set them to context.
 
 ```
-  public void setScopeKey(String key)
-    {
-        Assert.that(meta().keyData(key).isPropertyScope(), "%s is not a valid context key", key);
-        String current = _currentPropertyScopeKey();
-        // Assert.that(current != null, "Can't set %s as context key when no context key on stack", key);
-        // FIXME: if current key isChaining then we need to set again to get a non-chaining assignment
-        if (!key.equals(current)) {
-            Object val = values().get(key);
-            // Assert.that(val != null, "Can't set %s as context key when it has no value already on the context", key);
-            if (val == null) val = Meta.KeyAny;
-            set(key, val);
+   setScopeKey(key: string) {
+        assert(this._meta.keyData(key).isPropertyScope, key + ' is not a valid context key');
+        let current: string = this._currentPropertyScopeKey();
+
+      
+        if (!(key === current)) {
+            let val: any = this.values.get(key);
+            // Assert.that(val != null, 'Can't set %s as context key when it has no value already
+            // on the context', key);
+            if (isBlank(val)) {
+                val = Meta.KeyAny;
+            }
+            this.set(key, val);
         }
     }
 ```
