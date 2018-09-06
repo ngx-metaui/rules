@@ -276,15 +276,10 @@ export class ListComponent extends BaseFormComponent
      */
     itemClicked(event: any, item: any, checkbox: CheckboxComponent): void
     {
-        if (isPresent(checkbox)) {
-            this.pListBox.onCheckboxClick(event, item);
+        this.pListBox.onOptionClick(event, item);
 
-        } else if (isPresent(this.pListBox)) {
-            this.pListBox.onOptionClick(event, item);
-
-            event.stopPropagation();
-            event.preventDefault();
-        }
+        event.stopPropagation();
+        event.preventDefault();
     }
 
     /**

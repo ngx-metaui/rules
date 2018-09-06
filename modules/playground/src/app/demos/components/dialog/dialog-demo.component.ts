@@ -167,8 +167,6 @@ export class DialogDemoComponent
             // Add content. There's not support for dynamic content projection yet.
             // So have add content directly.
             // This is probably not the best way.
-            overlay.instance.overlay.el.nativeElement.querySelector('.ui-overlaypanel-content')
-                .innerHTML = `<img style='width:300px;' src="sales.png" alt="Sales" />`;
 
             // delay the opening after ng lifecycle has been initalized.
             setTimeout(() =>
@@ -176,6 +174,19 @@ export class DialogDemoComponent
                 overlay.instance.open(event);
             }, 1);
 
+
+            (<any>overlay.instance)['ngAfterContentInit'] = () =>
+            {
+
+                setTimeout(() =>
+                {
+                    let content = overlay.instance.overlay.el.nativeElement
+                        .querySelector('.ui-overlaypanel-content');
+                    content.innerHTML = `<img style='width:300px;' src="assets/images/sales.png" 
+                    alt="Sales" />`;
+
+                }, 100);
+            };
             this.hasOverlayOpenedWithService = true;
 
         } else {

@@ -1,5 +1,7 @@
 
 /deep/ .ui-dropdown-panel {
+  z-index: 10010 !important; // need to get over inline style
+  top: 35px !important;
 
   // need to replace inline style which sets default height
   .ui-dropdown-items-wrapper {

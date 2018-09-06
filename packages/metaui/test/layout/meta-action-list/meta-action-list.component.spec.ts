@@ -414,7 +414,7 @@ describe('3 different layouts formed into Stack', () => {
         let fixtureWrapper = TestBed.createComponent(TestContainerEditPopupComponent);
         fixtureWrapper.detectChanges();
 
-        let menu = fixtureWrapper.debugElement.queryAllNodes(By.css('.ui-menu'));
+        let menu = fixtureWrapper.debugElement.queryAllNodes(By.css('p-menu'));
 
         fixtureWrapper.detectChanges();
         expect(menu).toBeDefined();

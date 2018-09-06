@@ -70,6 +70,26 @@
   border-color: $disabledBorderColor !important;
 }
 
+.ui-button-success {
+  border-color: $successBorderColor !important;
+  background-color: $successBgColor !important;
+  color: $successTextColor !important;
+  padding: 5px;
+  height: 36px;
+
+  &:focus, &:enabled:hover {
+    outline: 0 none;
+    background-color: $successStateHoverBgColor !important;
+    color: $successTextColor !important;
+  }
+
+  &:enabled:active {
+    background: $successStateHoverBgColor !important;
+    color: $successTextColor !important;
+  }
+}
+
+
 /* End Button */
 
 /* autocomplete */

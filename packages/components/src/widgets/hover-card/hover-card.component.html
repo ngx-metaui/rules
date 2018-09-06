@@ -9,7 +9,6 @@
          <aw-overlay #overlay [showCloseIcon]="forceClose" [dismissable]="!forceClose"
                      [styleClass]="arrowClass"
                      [appendTo]="appendTo"
-                     (onOpen)="cardOpened($event)"
                      (onClose)="cardClosed($event)">
 
         <!-- this is workaround to create a _ngcontent-INDEX reference so we can

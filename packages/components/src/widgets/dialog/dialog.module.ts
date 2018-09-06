@@ -25,7 +25,7 @@ import {DialogComponent} from './dialog.component';
 import {DialogHeaderComponent} from './dialog-header.component';
 import {DialogFooterComponent} from './dialog-footer.component';
 import {ModalComponent} from '../../core/modal-service/modal/modal.component';
-import {DialogModule} from 'primeng/primeng';
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
     declarations: [

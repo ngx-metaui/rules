@@ -13,12 +13,12 @@
 
 
                 <ng-template #defaultLeft>
-                    <aw-checkbox #check *ngIf="isMultiple && showCheckbox"
-                                 [isStandalone]="false"
-                                 [value]="listbox.isSelected(item)"
-                                 type="action"
-                                 (action)="itemClicked($event, item, check)">
-                    </aw-checkbox>
+                    <span (click)="itemClicked($event, item, null)">
+                        <aw-checkbox #check *ngIf="isMultiple && showCheckbox"
+                                     [isStandalone]="false"
+                                     [value]="listbox.isSelected(item)"
+                                     type="action">
+                    </aw-checkbox></span>
                 </ng-template>
             </div>
 

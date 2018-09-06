@@ -1,5 +1,5 @@
 <p-overlayPanel [dismissable]="dismissable" [showCloseIcon]="showCloseIcon"
                 [styleClass]="styleClass" [appendTo]="appendTo"
-                (onAfterHide)="onClosed($event)">
+                (onHide)="onClosed($event)">
     <ng-content></ng-content>
 </p-overlayPanel>

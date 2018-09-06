@@ -29,6 +29,7 @@ import {
 import {assert, Environment, isPresent} from '@aribaui/core';
 import {BaseComponent} from '../../core/base.component';
 import {OverlayComponent} from '../overlay/overlay.component';
+import {AnimationEvent} from '@angular/animations';
 
 
 /**
@@ -37,7 +38,8 @@ import {OverlayComponent} from '../overlay/overlay.component';
  *    - under the triggering link
  *    - completely on top of it - covering it. For this case there is none as no style is applied
  */
-export enum HCCardPosition {
+export enum HCCardPosition
+{
     top,
     bottom,
     none
@@ -50,7 +52,8 @@ export enum HCCardPosition {
  * (paddedLeft, paddedRight) otherwise. When there is not much space and card container
  *  is not aligned (left, right) with the trigering icon but it is shifted to fit into the screen
  */
-enum HCCardAlignment {
+enum HCCardAlignment
+{
     left,
     paddedLeft,
     right,
@@ -128,7 +131,8 @@ const AlignmentToStyle = {
     templateUrl: './hover-card.component.html',
     styleUrls: ['./hover-card.component.scss']
 })
-export class HoverCardComponent extends BaseComponent implements AfterViewChecked {
+export class HoverCardComponent extends BaseComponent implements AfterViewChecked
+{
 
     /**
      * Default padding representing a height of the Arrow for which we need to vertically adjust
@@ -199,13 +203,17 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
 
     currrentPosition: HCCardPosition = HCCardPosition.none;
 
+    overlayOnAnimationStart: (event: AnimationEvent) => void;
+
 
     constructor(protected elem: ElementRef, public env: Environment,
-                private cd: ChangeDetectorRef) {
+                private cd: ChangeDetectorRef)
+    {
         super(env);
     }
 
-    ngOnInit() {
+    ngOnInit()
+    {
         super.ngOnInit();
 
         assert(isPresent(this.linkTitle), 'You must provide [linkTitle] binding !');
@@ -216,6 +224,15 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
         if (!this.appendContentToBody) {
             this.appendTo = null;
         }
+
+        this.overlayOnAnimationStart = this.awOverlay.overlay.onAnimationStart;
+        this.awOverlay.overlay.onAnimationStart = (event: AnimationEvent) =>
+        {
+            this.overlayOnAnimationStart.call(this.awOverlay.overlay, event);
+
+            this.cardOpened();
+            this.onAnimationStart(event);
+        };
     }
 
 
@@ -227,7 +244,14 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      *   - Apply class styles
      *   - Position it.
      */
-    ngAfterViewChecked(): void {
+    ngAfterViewChecked(): void
+    {
+
+
+    }
+
+    onAnimationStart(event: AnimationEvent): void
+    {
         if (this.opening) {
             let container = this.awOverlay.overlay.container;
 
@@ -241,14 +265,15 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
 
             this.opening = false;
         }
-
     }
+
 
     /**
      * Init elements BoundingClientRect that we use for calculation
      *
      */
-    initElements(): void {
+    initElements(): void
+    {
         let titleElem = this.elem.nativeElement.querySelector('.w-hc-title');
         let triggerElem = this.elem.nativeElement.querySelector('.sap-icon');
         this.titleAreaRect = titleElem.getBoundingClientRect();
@@ -264,10 +289,11 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      *
      *
      */
-    openCard(event: any): any {
+    openCard(event: any): any
+    {
         if (isPresent(this.awOverlay) && !this.env.hasValue('hc-open')) {
             this.awOverlay.open(event);
-
+            this.cd.detectChanges();
             this.env.setValue('hc-open', true);
         }
     }
@@ -283,7 +309,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      * accordingly.
      *
      */
-    cardOpened(event: any): void {
+    cardOpened(event?: any): void
+    {
         let container = this.awOverlay.overlay.container;
         let target = this.awOverlay.overlay.target;
         this.openForAdjustments(container);
@@ -306,7 +333,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      *
      *
      */
-    cardClosed(event: any): void {
+    cardClosed(event: any): void
+    {
         this.env.deleteValue('hc-open');
     }
 
@@ -332,7 +360,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      *  either to the left or right.
      *
      */
-    adjustCard(container: any, containerRect: any, modalContainer: any): void {
+    adjustCard(container: any, containerRect: any, modalContainer: any): void
+    {
         let diff = (this.currrentPosition === HCCardPosition.bottom) ? 1 : -1;
         let scrollTop = modalContainer.domHandler.getWindowScrollTop();
         let posWithScroll = containerRect.top + scrollTop;
@@ -343,7 +372,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
     }
 
 
-    applyStyleClass(container: any, containerRect: any, modalContainer: any): void {
+    applyStyleClass(container: any, containerRect: any, modalContainer: any): void
+    {
 
         if (this.currrentPosition !== HCCardPosition.none) {
             let alignment = this.alignmentForCard(containerRect, modalContainer);
@@ -362,7 +392,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      * its covering it.
      *
      */
-    positionForCard(container: any, boundingRect: any): HCCardPosition {
+    positionForCard(container: any, boundingRect: any): HCCardPosition
+    {
         // secure this in case of IE returning undefined
         let borderWidth = getComputedStyle(container).borderWidth;
         let cntWidth = parseFloat(borderWidth || '0');
@@ -383,12 +414,14 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      * Detect horizontal alignment.
      *
      */
-    private alignmentForCard(boundingRect: any, modalContainer: any): HCCardAlignment {
+    private alignmentForCard(boundingRect: any, modalContainer: any): HCCardAlignment
+    {
         let alignment = HCCardAlignment.left;
         let viewPort = modalContainer.domHandler.getViewport();
 
         if (this.trigRect.left.toFixed(0) === boundingRect.left.toFixed(0) &&
-            boundingRect.left > HoverCardComponent.SpacingLimit) {
+            boundingRect.left > HoverCardComponent.SpacingLimit)
+        {
             alignment = HCCardAlignment.left;
 
         } else if (boundingRect.left < HoverCardComponent.SpacingLimit) {
@@ -398,7 +431,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
             alignment = HCCardAlignment.paddedRight;
 
         } else if (this.trigRect.right.toFixed(0) === boundingRect.right.toFixed(0) ||
-            (viewPort.width - boundingRect.right) > HoverCardComponent.SpacingLimit) {
+            (viewPort.width - boundingRect.right) > HoverCardComponent.SpacingLimit)
+        {
             alignment = HCCardAlignment.right;
 
         } else {
@@ -412,7 +446,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      * Turn on temporary display to BLOCK so we can read dimensions
      *
      */
-    openForAdjustments(container: any): void {
+    openForAdjustments(container: any): void
+    {
         container.style.visibility = 'hidden';
         container.style.display = 'block';
 
@@ -425,7 +460,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      * Turn off display back NONE
      *
      */
-    closeForAdjustments(container: any): void {
+    closeForAdjustments(container: any): void
+    {
         container.style.visibility = 'visible';
         // container.style.display = 'none';
     }
@@ -466,7 +502,8 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
      *
      *
      */
-    private calcLeftForAlignment(boundingRect: any, alignment: HCCardAlignment): number {
+    private calcLeftForAlignment(boundingRect: any, alignment: HCCardAlignment): number
+    {
         // width for which we need to shift card. 25% or 10% of the container width
         let wLargeTriangle = boundingRect.width * 0.25;
         let wSmallTriangle = boundingRect.width * 0.10;

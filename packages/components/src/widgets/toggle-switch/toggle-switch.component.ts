@@ -19,7 +19,7 @@
  *
  */
 import {Component, Input} from '@angular/core';
-import {BaseComponent} from '../../core';
+import {BaseComponent} from '../../core/base.component';
 import {Environment} from '@aribaui/core';
 
 

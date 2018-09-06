@@ -18,7 +18,15 @@
  *
  *
  */
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+    AfterContentInit, AfterViewInit,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import {ModalContainer} from '../../core/modal-service/modal-container';
 import {OverlayPanel} from 'primeng/primeng';
 import {Environment} from '@aribaui/core';
@@ -84,7 +92,8 @@ import {Environment} from '@aribaui/core';
     templateUrl: 'overlay.component.html',
     styleUrls: ['overlay.component.scss']
 })
-export class OverlayComponent extends ModalContainer implements OnInit
+export class OverlayComponent extends ModalContainer implements OnInit, AfterContentInit,
+    AfterViewInit
 {
     /**
      * Enables hide overlay when outside is clicked.
@@ -130,14 +139,28 @@ export class OverlayComponent extends ModalContainer implements OnInit
     {
     }
 
+    ngAfterContentInit(): void
+    {
+        // place holder to be overridden by Modal Service
+    }
+
+    ngAfterViewInit(): void
+    {
+        // place holder to be overridden by Modal Service
+    }
+
+
     /**
      * Open Overlay
      * @param event
      */
     open(event: any)
     {
-        this.overlay.show(event);
-        this.onOpened(null);
+        setTimeout(() =>
+        {
+            this.overlay.show(event);
+            this.onOpened(null);
+        }, 1);
     }
 
     /**
@@ -155,7 +178,10 @@ export class OverlayComponent extends ModalContainer implements OnInit
      */
     toggle(event: any)
     {
-        this.overlay.toggle(event);
+        setTimeout(() =>
+        {
+            this.overlay.toggle(event);
+        }, 0);
     }
 
 

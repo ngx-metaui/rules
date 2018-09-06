@@ -62,7 +62,7 @@ import {OutlineState} from '../outline-state';
  *
  * ```
  *
- * We can
+ *
  *
  *
  */
@@ -73,13 +73,6 @@ import {OutlineState} from '../outline-state';
 })
 export class OutlineControlComponent extends BaseComponent
 {
-
-    /**
-     * List of items that needs to be rendered.
-     */
-    @Input()
-    title: string;
-
 
     /**
      *
