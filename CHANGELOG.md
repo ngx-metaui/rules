@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/SAP/angular-metaui/compare/v6.0.2...v6.1.0) (2018-09-06)
+
+
+### Bug Fixes
+
+* **aw-name:** Removed production check ([079119a](https://github.com/SAP/angular-metaui/commit/079119a))
+* **components:** Updated components to support PrimeNG 6.1.1 ([52da645](https://github.com/SAP/angular-metaui/commit/52da645))
+
+
+
 <a name="6.0.2"></a>
 ## [6.0.2](https://github.com/SAP/angular-metaui/compare/v6.0.1...v6.0.2) (2018-07-17)
 

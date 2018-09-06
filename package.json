@@ -2,7 +2,7 @@
   "name": "aribaui",
   "description": "Ariba UI core module providing basic set of API and components.",
   "homepage": "https://github.com/SAP/angular-metaui.git",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "license": "Apache-2.0",
   "keywords": [
     "angular",
