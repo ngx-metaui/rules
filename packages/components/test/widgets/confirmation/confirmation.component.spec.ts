@@ -19,9 +19,9 @@
  *
  */
 import {Component, ViewChild} from '@angular/core';
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {fakeAsync, flushMicrotasks, TestBed, tick} from '@angular/core/testing';
 import {ConfirmationComponent} from '../../../src/widgets/confirmation/confirmation.component';
-import {AribaCoreModule} from '@aribaui/core';
+import {AribaCoreModule, isPresent, readGlobalParam} from '@aribaui/core';
 import {ModalService} from '../../../src/core/modal-service/modal.service';
 import {AWConfirmationModule} from '../../../src/widgets/confirmation/confirmation.module';
 import {AWButtonModule} from '../../../src/widgets/button/button.module';
@@ -31,8 +31,10 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {AribaComponentsTestProviderModule} from '../../../src/ariba.component.provider.module';
 
 
-describe('Component: confirmation', () => {
-    beforeEach(() => {
+describe('Component: confirmation', () =>
+{
+    beforeEach(() =>
+    {
         TestBed.configureTestingModule({
             declarations: [
                 TestConfirmationDefaultComponent,
@@ -53,7 +55,8 @@ describe('Component: confirmation', () => {
         TestBed.compileComponents();
     });
 
-    it('should instantiate confirmation component and values for title and body', () => {
+    it('should instantiate confirmation component and values for title and body', () =>
+    {
         let fixtureWrapper = TestBed.createComponent(TestConfirmationDefaultComponent);
         fixtureWrapper.detectChanges();
 
@@ -63,7 +66,8 @@ describe('Component: confirmation', () => {
         expect(fixtureWrapper.componentInstance.confirmation.closable).toEqual(false);
     });
 
-    it('should display confirmation component as popup', fakeAsync(() => {
+    it('should display confirmation component as popup', fakeAsync(() =>
+    {
 
         let fixtureWrapper = TestBed.createComponent(TestConfirmationDefaultComponent);
         fixtureWrapper.detectChanges();
@@ -75,21 +79,32 @@ describe('Component: confirmation', () => {
         tick();
         fixtureWrapper.detectChanges();
 
+        tick();
+        fixtureWrapper.detectChanges();
+
         // Verify that the confirmation has been opened.
         let confirmBtn = fixtureWrapper.nativeElement.querySelector('button[name="confirm"]');
         expect(confirmBtn).toBeDefined();
 
         // click on confirm
         confirmBtn.click();
+
+        tick();
+        fixtureWrapper.detectChanges();
+
         tick();
         fixtureWrapper.detectChanges();
 
         // verify that the confirm action has been clicked.
         expect(fixtureWrapper.componentInstance.action).toEqual('confirm');
+
+        flushMicrotasks();
+        flushPendingTimers();
     }));
 
     it('should close confirmation when default component closed button is clicked.',
-        fakeAsync(() => {
+        fakeAsync(() =>
+        {
 
             let fixtureWrapper = TestBed.createComponent(TestConfirmationServiceBehaviorComponent);
             fixtureWrapper.detectChanges();
@@ -114,9 +129,13 @@ describe('Component: confirmation', () => {
             // Verify that the confirmation is canceled.
             expect(fixtureWrapper.componentInstance.action).toEqual('cancel');
 
+            flushMicrotasks();
+            flushPendingTimers();
+
         }));
 
-    it('should display popup custom confirmation component', fakeAsync(() => {
+    it('should display popup custom confirmation component', fakeAsync(() =>
+    {
         // https://github.com/angular/angular/issues/10760
         // Work around because
         // TestBed.configureTestingModule
@@ -133,18 +152,17 @@ describe('Component: confirmation', () => {
         let fixtureWrapper = TestBed.createComponent(TestCustomConfirmationBehaviorComponent);
         fixtureWrapper.detectChanges();
 
-        // Find the open button
-        let button = fixtureWrapper.nativeElement.querySelector('button');
-        button.dispatchEvent(new Event('click'));
-
-        tick();
-        fixtureWrapper.detectChanges();
+        openDialog(fixtureWrapper);
 
         let templates = fixtureWrapper.nativeElement.querySelectorAll('.icon-alert');
         expect(templates.length).toEqual(1);
+
+        flushMicrotasks();
+        flushPendingTimers();
     }));
 
-    it('should close popup custom confirmation component', fakeAsync(() => {
+    it('should close popup custom confirmation component', fakeAsync(() =>
+    {
         // https://github.com/angular/angular/issues/10760
         // Work around because
         // TestBed.configureTestingModule
@@ -179,8 +197,45 @@ describe('Component: confirmation', () => {
 
         // Verify that the confirmation is canceled.
         expect(fixtureWrapper.componentInstance.confirmation.action).toEqual('cancel');
+
+        flushMicrotasks();
+        flushPendingTimers();
     }));
 });
+
+
+function openDialog(fixture: any)
+{
+    // Find the open button
+    let button = fixture.nativeElement.querySelector('button');
+    button.dispatchEvent(new Event('click'));
+
+    tick();
+    fixture.detectChanges();
+
+    tick();
+    fixture.detectChanges();
+
+}
+
+
+
+/**
+ * This is workaround to get rid of XX timer(s) still in the queue, as Autocomplete from PrimeNg
+ * is using Timers and they are not cleared before tests finishes I get this error
+ */
+function flushPendingTimers()
+{
+
+    let zone: any = readGlobalParam('Zone');
+
+    if (isPresent(zone) &&
+        isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec))
+    {
+
+        zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec.pendingTimers = [];
+    }
+}
 
 /* jshint ignore:start */
 @Component({
@@ -198,24 +253,29 @@ describe('Component: confirmation', () => {
     /**
      * Class that will only draw a confirmation.
      */
-class TestConfirmationDefaultComponent {
+class TestConfirmationDefaultComponent
+{
     @ViewChild(ConfirmationComponent)
     confirmation: ConfirmationComponent;
     display: boolean = false;
     action: string;
 
-    constructor() {
+    constructor()
+    {
     }
 
-    openConfirmation() {
+    openConfirmation()
+    {
         this.display = true;
     }
 
-    confirmAction() {
+    confirmAction()
+    {
         this.action = 'confirm';
     }
 
-    cancelAction() {
+    cancelAction()
+    {
         this.action = 'cancel';
     }
 }
@@ -229,37 +289,44 @@ class TestConfirmationDefaultComponent {
     `
 })
     /* jshint ignore:end */
-class TestConfirmationServiceBehaviorComponent {
+class TestConfirmationServiceBehaviorComponent
+{
     confirmation: ConfirmationComponent;
 
     display: boolean = true;
 
     action: string;
 
-    constructor(private modalService: ModalService) {
+    constructor(private modalService: ModalService)
+    {
     }
 
-    openConfirmation() {
+    openConfirmation()
+    {
         this.confirmation = this.modalService.open<ConfirmationComponent>(ConfirmationComponent, {
             title: 'Confirmation',
             body: 'Confirmation Body',
-            onConfirm: () => {
+            onConfirm: () =>
+            {
 
                 this.confirmAction();
             },
 
-            onCancel: () => {
+            onCancel: () =>
+            {
                 this.cancelAction();
             }
 
         }).instance;
     }
 
-    confirmAction() {
+    confirmAction()
+    {
         this.action = 'confirm';
     }
 
-    cancelAction() {
+    cancelAction()
+    {
         this.action = 'cancel';
     }
 }
@@ -268,20 +335,25 @@ class TestConfirmationServiceBehaviorComponent {
 @Component({
     selector: 'wrapper-comp',
     template: `
+
+        <h3>{{confirmation?.visible}}</h3>
         <aw-modal></aw-modal>
         <aw-button name="'open-button'" (action)="openConfirmation()"></aw-button>
     `
 })
     /* jshint ignore:end */
-class TestCustomConfirmationBehaviorComponent {
+class TestCustomConfirmationBehaviorComponent
+{
     confirmation: MyConfirmationComponent;
 
     action: string;
 
-    constructor(private modalService: ModalService) {
+    constructor(private modalService: ModalService)
+    {
     }
 
-    openConfirmation() {
+    openConfirmation()
+    {
         this.confirmation = this.modalService
             .open<MyConfirmationComponent>(MyConfirmationComponent, {}).instance;
     }
@@ -290,7 +362,8 @@ class TestCustomConfirmationBehaviorComponent {
 @Component({
     selector: 'aw-myconfirmation',
     template: `
-        <aw-confirmation [title]="'Custom Confirmation'" [(visible)]="display"
+
+        <aw-confirmation [title]="'Custom Confirmation'" [(visible)]="visible"
                          (onConfirm)="confirmAction()" (onCancel)="cancelAction()">
             <i class="sap-icon icon-alert"></i>
 
@@ -300,20 +373,24 @@ class TestCustomConfirmationBehaviorComponent {
         <aw-button name="'open-button'" (action)="openConfirmation()"></aw-button>
     `
 })
-class MyConfirmationComponent extends ConfirmationComponent {
+class MyConfirmationComponent extends ConfirmationComponent
+{
     display: boolean = false;
 
     action: string;
 
-    constructor(public env: Environment) {
+    constructor(public env: Environment)
+    {
         super(env);
     }
 
-    confirmAction() {
+    confirmAction()
+    {
         this.action = 'confirm';
     }
 
-    cancelAction() {
+    cancelAction()
+    {
         this.action = 'cancel';
     }
 }

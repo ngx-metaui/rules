@@ -30,8 +30,10 @@ import {AWCoreComponentModule} from '../../../src/core/core.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {AribaComponentsTestProviderModule} from '../../../src/ariba.component.provider.module';
 
-describe('Component: confirmation', () => {
-    beforeEach(() => {
+describe('Component: overlay', () =>
+{
+    beforeEach(() =>
+    {
         TestBed.configureTestingModule({
             declarations: [
                 TestOverlayDefaultComponent
@@ -49,7 +51,8 @@ describe('Component: confirmation', () => {
         TestBed.compileComponents();
     });
 
-    it('should instantiate overlay component and values for title and body', () => {
+    it('should instantiate overlay component and values for title and body', () =>
+    {
         let fixtureWrapper = TestBed.createComponent(TestOverlayDefaultComponent);
         fixtureWrapper.detectChanges();
 
@@ -57,7 +60,8 @@ describe('Component: confirmation', () => {
         expect(fixtureWrapper.componentInstance.overlay.showCloseIcon).toBe(false);
     });
 
-    it('should display overlay component as popup', fakeAsync(() => {
+    it('should display overlay component as popup', fakeAsync(() =>
+    {
         let fixtureWrapper = TestBed.createComponent(TestOverlayDefaultComponent);
         fixtureWrapper.detectChanges();
 
@@ -65,12 +69,21 @@ describe('Component: confirmation', () => {
         let button = fixtureWrapper.nativeElement.querySelector('button');
         button.click();
 
+
         tick();
         fixtureWrapper.detectChanges();
 
+        tick();
+        fixtureWrapper.detectChanges();
+
+        tick();
+        fixtureWrapper.detectChanges();
+
+
         // Verify that the overlay has been opened.
         let overlayContent = fixtureWrapper.nativeElement.querySelector('.ui-overlaypanel');
-        expect(overlayContent.style.display).toBe('block');
+        let display = getComputedStyle(overlayContent).display;
+        expect(display).toBe('block');
 
         // find close button and click it.
         button = fixtureWrapper.nativeElement.querySelector('button[name="close"]');
@@ -79,11 +92,14 @@ describe('Component: confirmation', () => {
         tick();
         fixtureWrapper.detectChanges();
 
+        tick();
+        fixtureWrapper.detectChanges();
+
         flushPendingTimers();
 
         // verify that the confirm action has been clicked.
-        expect(fixtureWrapper.nativeElement.querySelector('.ui-overlaypanel').style.display)
-            .toBe('none');
+        overlayContent = fixtureWrapper.nativeElement.querySelector('.ui-overlaypanel');
+        expect(overlayContent).toBeNull();
     }));
 });
 
@@ -95,9 +111,9 @@ describe('Component: confirmation', () => {
             <img [style.width]="'300px'" src="assets/images/sales.png" alt="Sales Chart"/>
         </aw-overlay>
 
-        <aw-button [size]="'small'" (click)="overlay.open($event)">Open Overlay</aw-button>
+        <aw-button [size]="'small'" (click)="open($event)">Open Overlay</aw-button>
         <aw-button name="close" [size]="'small'" (click)="overlay.close($event)">
-            Open Overlay
+            Close Overlay
         </aw-button>
     `
 })
@@ -105,11 +121,19 @@ describe('Component: confirmation', () => {
     /**
      * Class that will only draw a overlay.
      */
-class TestOverlayDefaultComponent {
+class TestOverlayDefaultComponent
+{
     @ViewChild(OverlayComponent)
     overlay: OverlayComponent;
 
-    constructor() {
+    constructor()
+    {
+    }
+
+    open(event: any): void
+    {
+        this.overlay.overlay.show(event);
+        this.overlay.onOpened(null);
     }
 }
 
@@ -122,13 +146,16 @@ class TestOverlayDefaultComponent {
     `
 })
     /* jshint ignore:end */
-class TestOverlayServiceBehaviorComponent {
+class TestOverlayServiceBehaviorComponent
+{
     confirmation: OverlayComponent;
 
-    constructor(private modalService: ModalService) {
+    constructor(private modalService: ModalService)
+    {
     }
 
-    openOverlay() {
+    openOverlay()
+    {
         let overlay = this.modalService.open<OverlayComponent>(OverlayComponent, {});
 
         // Add content. There's not support for dynamic content projection yet.
@@ -140,7 +167,8 @@ class TestOverlayServiceBehaviorComponent {
         tick();
 
         // delay the opening after ng lifecycle has been initalized.
-        setTimeout(() => {
+        setTimeout(() =>
+        {
             overlay.instance.open(event);
         }, 1);
     }
@@ -150,12 +178,14 @@ class TestOverlayServiceBehaviorComponent {
  * This is workaround to get rid of XX timer(s) still in the queue, as Autocomplete from PrimeNg
  * is using Timers and they are not cleared before tests finishes I get this error
  */
-function flushPendingTimers() {
+function flushPendingTimers()
+{
 
     let zone: any = readGlobalParam('Zone');
 
     if (isPresent(zone) &&
-        isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {
+        isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec))
+    {
 
         zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec.pendingTimers = [];
     }

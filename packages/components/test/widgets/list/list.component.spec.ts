@@ -333,7 +333,7 @@ describe('Component: List', () => {
             tick();
             fixtureWrapper.detectChanges();
 
-            expect(fixtureWrapper.componentInstance.fg.controls['weekdays'].value[0])
+            expect(fixtureWrapper.componentInstance.fg.controls['weekdays'].value[1])
                 .toBe('Tuesday');
         }));
 
@@ -609,6 +609,7 @@ class TestFormControlOnListBoxComponent implements OnInit {
     }
 
     itemClicked(event: any): void {
+
         this.itemSelected = event[0];
     }
 

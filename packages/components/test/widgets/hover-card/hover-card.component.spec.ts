@@ -18,7 +18,7 @@
  *
  *
  */
-import {Component, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {AribaCoreModule} from '@aribaui/core';
 import {HoverCardComponent} from '../../../src/widgets/hover-card/hover-card.component';
@@ -28,10 +28,12 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {AribaComponentsTestProviderModule} from '../../../src/ariba.component.provider.module';
 
 
-describe('Component: Hover card', () => {
+describe('Component: Hover card', () =>
+{
 
 
-    beforeEach(() => {
+    beforeEach(() =>
+    {
         TestBed.configureTestingModule({
             declarations: [
                 TestHCSimpleComponent
@@ -51,7 +53,8 @@ describe('Component: Hover card', () => {
     });
 
 
-    it('must throw an Error if link Title is not used', () => {
+    it('must throw an Error if link Title is not used', () =>
+    {
         let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
         fixtureWrapper.componentInstance.title = null;
 
@@ -62,8 +65,10 @@ describe('Component: Hover card', () => {
     });
 
 
-    describe('with forceClose Enable', () => {
-        it('can render a title with action icon', () => {
+    describe('with forceClose Enable', () =>
+    {
+        it('can render a title with action icon', () =>
+        {
             let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
             fixtureWrapper.detectChanges();
 
@@ -81,36 +86,53 @@ describe('Component: Hover card', () => {
         });
 
 
-        it('displays a Card on hover with content having close icon', () => {
+        it('displays a Card on hover with content having close icon',
+
+            fakeAsync(() =>
+            {
+
+                let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
+                fixtureWrapper.detectChanges();
+
+                let hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
+
+                fixtureWrapper.componentInstance.hover.awOverlay.overlay
+                    .show(newEvent('mouseover'));
+                fixtureWrapper.componentInstance.hover.awOverlay.onOpened(null);
+
+                tick();
+                fixtureWrapper.detectChanges();
+
+                tick();
+                fixtureWrapper.detectChanges();
+
+
+                let cardPanel = document.querySelector('.ui-overlaypanel');
+                let contentPanel = document
+                    .querySelector('.ui-overlaypanel-content .my-test-content');
+                let closeIcon = document.querySelector('.ui-overlaypanel-close');
+
+                let computedStyles = getComputedStyle(cardPanel);
+
+                expect(computedStyles.display).toBe('block');
+                expect(contentPanel.textContent.trim()).toBe('AAAA');
+                expect(closeIcon).toBeDefined();
+                expect(closeIcon).not.toBeNull();
+            }));
+
+
+        it('must close when clicked on close icon', fakeAsync(() =>
+        {
             let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
             fixtureWrapper.detectChanges();
 
             let hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
 
-            hcIcon.dispatchEvent(newEvent('mouseover'));
+            fixtureWrapper.componentInstance.hover.awOverlay.overlay
+                .show(newEvent('mouseover'));
+            fixtureWrapper.componentInstance.hover.awOverlay.onOpened(null);
 
-            fixtureWrapper.detectChanges();
-
-            let cardPanel = document.querySelector('.ui-overlaypanel');
-            let contentPanel = document
-                .querySelector('.ui-overlaypanel-content .my-test-content');
-            let closeIcon = document.querySelector('.ui-overlaypanel-close');
-
-            let computedStyles = getComputedStyle(cardPanel);
-
-            expect(computedStyles.display).toBe('block');
-            expect(contentPanel.textContent.trim()).toBe('AAAA');
-            expect(closeIcon).toBeDefined();
-            expect(closeIcon).not.toBeNull();
-        });
-
-
-        it('must close when clicked on close icon', fakeAsync(() => {
-            let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
-            fixtureWrapper.detectChanges();
-
-            let hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
-            hcIcon.dispatchEvent(newEvent('mouseover'));
+            tick();
             fixtureWrapper.detectChanges();
 
             let cardPanel = document.querySelector('.ui-overlaypanel');
@@ -122,21 +144,25 @@ describe('Component: Hover card', () => {
 
             (<any>closeIcon).click();
 
-            tick(100);
+            tick();
             fixtureWrapper.detectChanges();
 
-            cardPanel = document.querySelector('.ui-overlaypanel');
-            computedStyles = getComputedStyle(cardPanel);
+            tick();
+            fixtureWrapper.detectChanges();
 
-            expect(computedStyles.display).toBe('none');
+
+            cardPanel = document.querySelector('.ui-overlaypanel');
+            expect(cardPanel).toBeNull();
 
             discardPeriodicTasks();
 
         }));
     });
 
-    describe('with forceClose disable', () => {
-        it('can render a title with action icon', () => {
+    xdescribe('with forceClose disable', () =>
+    {
+        it('can render a title with action icon', () =>
+        {
             let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
             fixtureWrapper.componentInstance.forceClose = false;
             fixtureWrapper.detectChanges();
@@ -154,7 +180,8 @@ describe('Component: Hover card', () => {
         });
 
 
-        it('displays a Card container with content not having close icon', () => {
+        it('displays a Card container with content not having close icon', () =>
+        {
 
             let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
             fixtureWrapper.componentInstance.forceClose = false;
@@ -177,6 +204,7 @@ describe('Component: Hover card', () => {
 @Component({
     selector: 'wrapper-comp',
     template: `
+        <div class="placeholder"></div>
         <aw-hover-card [linkTitle]="title" [forceClose]="forceClose">
             <span class="my-test-content">AAAA</span>
         </aw-hover-card>
@@ -184,16 +212,23 @@ describe('Component: Hover card', () => {
         <button type="button" class="close-card"></button>
     `
 })
-class TestHCSimpleComponent {
+class TestHCSimpleComponent
+{
     @ViewChild(HoverCardComponent)
     hover: HoverCardComponent;
 
     title: string = 'testTitle';
     forceClose: boolean = true;
+
+    constructor(private el: ElementRef)
+    {
+
+    }
 }
 
 
-export function newEvent(eventName: string) {
+export function newEvent(eventName: string)
+{
     let evt = document.createEvent('CustomEvent');
     evt.initCustomEvent(eventName, false, false, null);
     return evt;

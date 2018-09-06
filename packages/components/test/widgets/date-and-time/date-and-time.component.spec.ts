@@ -21,12 +21,13 @@
 /* tslint:disable:no-unused-variable */
 import {Component, ViewChild} from '@angular/core';
 import {DateAndTimeComponent} from '../../../src/widgets/date-and-time/date-and-time.component';
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {fakeAsync, flushMicrotasks, TestBed, tick} from '@angular/core/testing';
 import {AribaCoreModule} from '@aribaui/core';
 import {AWDateAndTimeModule} from '../../../src/widgets/date-and-time/data-and-time.module';
 import {AWFormTableModule} from '../../../src/layouts/form-table/form-table.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {AribaComponentsTestProviderModule} from '../../../src/ariba.component.provider.module';
+import {isPresent, readGlobalParam} from '../../../../core/src/public_api';
 
 describe('Component: DateAndTime', () => {
 
@@ -91,19 +92,19 @@ describe('Component: DateAndTime', () => {
         item.click();
 
         tick();
-
-
         fixtureWrapper.detectChanges();
 
         let children = fixtureWrapper.nativeElement.querySelectorAll('a.ui-state-default')[7];
         children.click();
 
         tick();
+        fixtureWrapper.detectChanges();
 
         let changedDay = fixtureWrapper.componentInstance.dateTime.value.getDate();
-        expect(changedDay).not
-            .toEqual(currentDay);
+        expect(changedDay).not.toEqual(currentDay);
 
+        flushMicrotasks();
+        flushPendingTimers();
     }));
 
 
@@ -157,3 +158,19 @@ class TestDTContainerBehaviorComponent {
 
 }
 
+/**
+ * This is workaround to get rid of XX timer(s) still in the queue, as Autocomplete from PrimeNg
+ * is using Timers and they are not cleared before tests finishes I get this error
+ */
+function flushPendingTimers()
+{
+
+    let zone: any = readGlobalParam('Zone');
+
+    if (isPresent(zone) &&
+        isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec))
+    {
+
+        zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec.pendingTimers = [];
+    }
+}

@@ -30,6 +30,7 @@ import {DataFinders, QueryType} from '../../../src/core/data/data-finders';
 import {DataProviders} from '../../../src/core/data/data-providers';
 import {ArrayDataProvider} from '../../../src/core/data/array-data-provider';
 import {AribaComponentsTestProviderModule} from '../../../src/ariba.component.provider.module';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 
 describe('Component: Chooser ', () => {
@@ -51,6 +52,7 @@ describe('Component: Chooser ', () => {
                 imports: [
                     AribaCoreModule.forRoot({'i18n.enabled': false, 'env.test': true}),
                     AribaComponentsTestProviderModule.forRoot(),
+                    NoopAnimationsModule,
                     AWChooserModule
                 ]
             });
@@ -157,6 +159,9 @@ describe('Component: Chooser ', () => {
 
         let input = chooserInput(fixtureWrapper.nativeElement);
         expect(input.value).toEqual('');
+
+        flushMicrotasks();
+        flushPendingTimers();
 
     }));
 
