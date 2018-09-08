@@ -9,55 +9,28 @@
          <aw-overlay #overlay [showCloseIcon]="forceClose" [dismissable]="!forceClose"
                      [styleClass]="arrowClass"
                      [appendTo]="appendTo"
+                     (beforeClose)="beforeClose($event)"
                      (onClose)="cardClosed($event)">
+             <ng-content></ng-content>
+        </aw-overlay>
 
-        <!-- this is workaround to create a _ngcontent-INDEX reference so we can
-        refer to this ng-content. Angular does not have any way right now to track this
-        -->
-        <span class="u-ngcontent">
-                <ng-content></ng-content>
-            </span>
 
-    </aw-overlay>
+        <!-- this is workaround to create a dynamic _ngcontent  reference so we can refer to later on with dynamic
+                projection. We cannot really use componentFactory.create[injector, projectedContent] as what we
+                want to add is another angular component that needs to be still rendered.
 
+                Starting PrimeNG 6.1+ they put in ngIf which complicates programmatic creation of this
+                component and injecting another dynamic content into ngContent is hard, so we need to little
+                hacky hackity hack.
+
+                We have this extra span with a class that we use to insert out dynamic content using nativeElement
+                and its DOM manipulation and once the overlay is shown and ng-content appears we move "u-ngcontent"
+                to new location.
+
+         -->
+        <span class="u-ngcontent" [style.display]="'none'">
+        </span>
     </div>
 </span>
-
-
-<!--<ng-template #contentToBody>-->
-    <!--<aw-overlay #overlay [showCloseIcon]="forceClose" [dismissable]="!forceClose"-->
-                <!--[styleClass]="arrowClass"-->
-                <!--[appendTo]="appendTo"-->
-                <!--(onOpen)="cardOpened($event)"-->
-                <!--(onClose)="cardClosed($event)">-->
-
-        <!--&lt;!&ndash; this is workaround to create a _ngcontent-INDEX reference so we can-->
-        <!--refer to this ng-content. Angular does not have any way right now to track this-->
-        <!--&ndash;&gt;-->
-        <!--<span class="u-ngcontent">-->
-                <!--<ng-content></ng-content>-->
-            <!--</span>-->
-
-    <!--</aw-overlay>-->
-
-<!--</ng-template>-->
-
-
-<!--<ng-template #contentToOverlay>-->
-
-    <!--<aw-overlay #overlay [showCloseIcon]="forceClose" [dismissable]="!forceClose"-->
-                <!--[styleClass]="arrowClass"-->
-                <!--(onOpen)="cardOpened($event)"-->
-                <!--(onClose)="cardClosed($event)">-->
-
-        <!--&lt;!&ndash; this is workaround to create a _ngcontent-INDEX reference so we can-->
-        <!--refer to this ng-content. Angular does not have any way right now to track this-->
-        <!--&ndash;&gt;-->
-        <!--<span class="u-ngcontent">-->
-                <!--<ng-content></ng-content>-->
-            <!--</span>-->
-
-    <!--</aw-overlay>-->
-<!--</ng-template>-->
 
 

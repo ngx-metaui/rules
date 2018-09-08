@@ -18,18 +18,11 @@
  *
  *
  */
-import {
-    AfterViewChecked,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    Input,
-    ViewChild
-} from '@angular/core';
-import {assert, Environment, isPresent} from '@aribaui/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AnimationEvent} from '@angular/animations';
+import {assert, Environment, isBlank, isPresent} from '@aribaui/core';
 import {BaseComponent} from '../../core/base.component';
 import {OverlayComponent} from '../overlay/overlay.component';
-import {AnimationEvent} from '@angular/animations';
 
 
 /**
@@ -131,7 +124,7 @@ const AlignmentToStyle = {
     templateUrl: './hover-card.component.html',
     styleUrls: ['./hover-card.component.scss']
 })
-export class HoverCardComponent extends BaseComponent implements AfterViewChecked
+export class HoverCardComponent extends BaseComponent
 {
 
     /**
@@ -206,6 +199,15 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
     overlayOnAnimationStart: (event: AnimationEvent) => void;
 
 
+    /**
+     * In cases where we need to inject dynamic content using programmatic API we use this extra
+     * element which is outside of the <ng-content> and hidden and once the <ng-content>  of
+     * the component is shown we move this dynamic content into it.
+     *
+     */
+    dynamicContent: any;
+
+
     constructor(protected elem: ElementRef, public env: Environment,
                 private cd: ChangeDetectorRef)
     {
@@ -233,28 +235,16 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
             this.cardOpened();
             this.onAnimationStart(event);
         };
+
+        // this span is always available
+        this.dynamicContent = this.elem.nativeElement.querySelector('.u-ngcontent');
     }
 
-
-    /**
-     * As of Angular 5 we have to introduce this ViewChecked as PrimeNG does final calculation
-     * during this phase.
-     *
-     * So now its broken down into two parts:
-     *   - Apply class styles
-     *   - Position it.
-     */
-    ngAfterViewChecked(): void
-    {
-
-
-    }
 
     onAnimationStart(event: AnimationEvent): void
     {
         if (this.opening) {
             let container = this.awOverlay.overlay.container;
-
             let cntRect = container.getBoundingClientRect();
             if (this.currrentPosition !== HCCardPosition.none) {
                 this.adjustCard(container, cntRect, this.awOverlay.overlay);
@@ -267,6 +257,22 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
         }
     }
 
+
+    injectDynamicContent(): void
+    {
+        if (this.awOverlay.overlay.visible) {
+            let overlayCnt = this.elem.nativeElement
+                .querySelector('.ui-overlaypanel-content .u-ngcontent');
+
+            if (isBlank(overlayCnt) && this.dynamicContent.children.length > 0) {
+                overlayCnt = this.elem.nativeElement.querySelector('.ui-overlaypanel-content');
+                overlayCnt.prepend(this.dynamicContent);
+                this.dynamicContent.style = 'block';
+            }
+        } else {
+            this.dynamicContent.style = 'none';
+        }
+    }
 
     /**
      * Init elements BoundingClientRect that we use for calculation
@@ -313,7 +319,9 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
     {
         let container = this.awOverlay.overlay.container;
         let target = this.awOverlay.overlay.target;
+
         this.openForAdjustments(container);
+        this.injectDynamicContent();
 
         // pre-run positioning so we can calculate new coordinates
         this.awOverlay.overlay.domHandler.absolutePosition(container, target);
@@ -336,6 +344,18 @@ export class HoverCardComponent extends BaseComponent implements AfterViewChecke
     cardClosed(event: any): void
     {
         this.env.deleteValue('hc-open');
+    }
+
+
+    /**
+     *
+      * Before overlay is closed we hide internal content other it does little shake..
+     *
+     *
+     */
+    beforeClose(event: any): void
+    {
+        this.dynamicContent.style = 'none';
     }
 
     /**

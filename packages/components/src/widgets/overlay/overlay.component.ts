@@ -118,6 +118,13 @@ export class OverlayComponent extends ModalContainer implements OnInit, AfterCon
     @Output()
     onClose: EventEmitter<any> = new EventEmitter();
 
+
+    /**
+     * Event fired just before overlay is closed
+     */
+    @Output()
+    beforeClose: EventEmitter<any> = new EventEmitter();
+
     /**
      * Event fired when the overlay is opened.
      */
@@ -168,6 +175,7 @@ export class OverlayComponent extends ModalContainer implements OnInit, AfterCon
      */
     close()
     {
+        this.beforeClose.emit(null);
         this.overlay.hide();
     }
 
