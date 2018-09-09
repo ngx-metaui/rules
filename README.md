@@ -78,7 +78,12 @@ for every domain object and every situation extra user interface.
 ### What is our Goal
 Is to provide solution for generating fully functional UI application all only based MetaRules. Later on we are planing
  to be independent from actual component/widgets libraries. So the main goal is not trying to build reusable component (widgets) libraries 
-rather provide a solution to be able to plug-in anything you need and let the Rules generate UI for you. 
+rather provide a solution to be able to plug-in anything you need and let the Rules generate UI for you. _We might want to also fork this 
+project that will represent just MetaUI framework without libraries_ so we can take to the next level. 
+
+* Like we are working on Javascript compilers
+* We might want to drop completly OSS Support and move fully to annotation/decorators so we can utilize better type checking
+and existing compiles and language support.
   
 
 **What do we mean fully by functional UI application ?**
