@@ -1,0 +1,21 @@
+{
+  "name": "@aribaui/resources",
+  "description": "Global resouces for aribaui.",
+  "version": "VERSION_PLACEHOLDER",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/SAP/angular-metaui.git",
+  "keywords": [
+    "assets",
+    "resources",
+    "fonts",
+    "styles",
+    "tools"
+  ],
+  "standard-version": {
+    "skip": {
+      "changelog": true,
+      "commit": true,
+      "tag": true
+    }
+  }
+}
