@@ -86,7 +86,7 @@ Please see following examples:
 ![alt text](../../../../../docs/img/table/table-2.0.png "Regular columns")
 
 
-#### Pivovat row column
+#### Pivotal row column
 
 ![alt text](../../../../../docs/img/table/table-3.0.png "Regular columns")
 * _Future pivotal_ layout was probably the main reason why I chose to treat everything as column. Since pivot is nothing else
