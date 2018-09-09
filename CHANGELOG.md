@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.1.1"></a>
+## [6.1.1](https://github.com/SAP/angular-metaui/compare/v6.1.0...v6.1.1) (2018-09-09)
+
+
+### Bug Fixes
+
+* **hover-card:** Dynamic content projection updated ([018481e](https://github.com/SAP/angular-metaui/commit/018481e))
+* **metaui:** Fixed object nesting + updated demo ([97ba5f9](https://github.com/SAP/angular-metaui/commit/97ba5f9))
+
+
+### Features
+
+* **examples:** Updates examples with new screen to show complex nesting ([5f385d7](https://github.com/SAP/angular-metaui/commit/5f385d7))
+
+
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/SAP/angular-metaui/compare/v6.0.2...v6.1.0) (2018-09-06)
 
