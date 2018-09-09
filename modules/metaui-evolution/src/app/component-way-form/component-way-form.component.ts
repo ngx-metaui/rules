@@ -16,8 +16,8 @@ export class ComponentWayFormComponent implements OnInit
 
     ngOnInit()
     {
-        this.userObject = new User('Peter', 'Pan', 8,
-            'BEST', 'peter@neverland.com');
+        this.userObject = new User('ppan', 'Peter', 'Pan', 8,
+            new Date());
     }
 
 }

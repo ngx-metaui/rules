@@ -26,6 +26,34 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
+			        '_value': 'uniqueName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'label': 'User Id'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
 			        '_value': '*',
 			        '_isDecl': false
 			      }
@@ -54,12 +82,30 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'firstName',
+			        '_value': 'uniqueName',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
 			      'after': 'zLeft'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'firstName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'uniqueName'
 			    },
 			    '_rank': 0
 			  },
@@ -108,7 +154,7 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'department',
+			        '_value': 'dob',
 			        '_isDecl': false
 			      }
 			    ],
@@ -246,6 +292,219 @@ export const UserRule = {
 			      },
 			      'label': 'My Save'
 			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'layout',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': 'labelsOnTop'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'uniqueName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'label': 'User Id'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zNone'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'uniqueName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zLeft'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'firstName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'uniqueName'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'lastName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'firstName'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
 			    '_rank': 0
 			  }
 			]

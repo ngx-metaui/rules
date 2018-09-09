@@ -21,6 +21,7 @@ import * as userRules from './user-rules';
 import {PanelModule} from 'primeng/panel';
 import {CodeHighlighterModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MetauiWayNestingComponent} from './metaui-way-nesting/metaui-way-nesting.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         MetauiWayModuleComponent,
         SalesGraphComponent,
         ProductContentComponent,
-        SourcesComponent
+        SourcesComponent,
+        MetauiWayNestingComponent
     ],
     imports: [
         AppRoutingModule,

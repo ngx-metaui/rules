@@ -18,8 +18,8 @@ export class MetauiWayForm2Component implements OnInit
 
     ngOnInit()
     {
-        this.user = new User('Peter', 'Pan', 8, 'BEST',
-            'peter@neverland.com');
+        this.user = new User('pp', 'Peter', 'Pan', 8,
+            new Date());
     }
 
 }

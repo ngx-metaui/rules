@@ -10,6 +10,7 @@ import {
 } from './metaui-way-module/product-content/product-content.component';
 import {MetaHomePageComponent} from '@aribaui/metaui';
 import {SourcesComponent} from './metaui-way-module/sources/sources.component';
+import {MetauiWayNestingComponent} from './metaui-way-nesting/metaui-way-nesting.component';
 
 
 export const ModuleRoutes: Routes = [
@@ -20,6 +21,7 @@ export const ModuleRoutes: Routes = [
     {path: 'component', component: ComponentWayFormComponent},
     {path: 'metaui', component: MetauiWayFormComponent},
     {path: 'metaui2', component: MetauiWayForm2Component},
+    {path: 'metaui3', component: MetauiWayNestingComponent},
     {
         path: 'module', component: MetauiWayModuleComponent,
         children: [

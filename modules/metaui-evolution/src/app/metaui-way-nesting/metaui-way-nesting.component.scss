@@ -1,0 +1,21 @@
+/deep/ .u-description {
+  background-color: #f9f9f9;
+  border: 1px solid #f2f2f2;
+  padding: 5px;
+
+  .w-string-field {
+    background-color: #f9f9f9;
+    line-height: 18px !important;
+  }
+}
+
+.with-border {
+  border: 1px solid #f2f2f2;
+  margin: 15px 5px;
+  box-shadow: 3px 3px 4px #ccc;
+}
+
+
+/deep/ .section-label .control-value {
+  background-color: #e9e9e9;
+}

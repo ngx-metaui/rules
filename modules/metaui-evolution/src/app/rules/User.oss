@@ -1,6 +1,10 @@
 class=User {
+    field=uniqueName{
+        label:"User Id"
+    }
+
     zNone => *;
-    zLeft => firstName => lastName => age => department;
+    zLeft => uniqueName => firstName => lastName => age => dob;
 }
 
 
@@ -27,3 +31,17 @@ object @action=Save  {
      buttonStyle:info;
 }
 
+
+
+group=ObjectDetail class=User {
+    layout {
+            trait:labelsOnTop;
+    }
+
+    field=uniqueName {
+        label:"User Id";
+    }
+
+    zNone => *;
+    zLeft => uniqueName => firstName => lastName;
+}

@@ -1,0 +1,138 @@
+<p-panel header="MetaUI with complex nesting, rendering full object structure. " [toggleable]="false">
+
+    <div class=" ui-g">
+        <div class="ui-g-12 with-border">
+            <m-context [object]="myPO" operation="view" layout="Inspect">
+                <m-include-component></m-include-component>
+            </m-context>
+        </div>
+    </div>
+
+</p-panel>
+
+
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+        html
+        <pre>
+            <code class="language-markup" pCode>
+    &lt;m-context [object]="myPO" operation="view" layout="Inspect"&gt;
+            &lt;m-include-component&gt;&lt;/m-include-component&gt;
+    &lt;/m-context&gt;
+            </code>
+        </pre>
+        <hr/>
+        <br/>
+        typescript
+        <pre>
+            <code class="language-javascript" pCode>
+    export class Order implements Entity &#123;
+
+        constructor(public uniqueName?: string,
+                    public name?: string,
+                    public orderDate?: Date,
+                    public state?: String,
+                    public requestor?: User,
+                    public totalAmount?: Money,
+                    public billingAddress?: Address,
+                    public shippingAddress?: Address,
+                    public description?: string) &#123;
+            this.uniqueName = 'PO20180001';
+        &#125;
+
+
+        identity(): string &#123;
+            return this.uniqueName;
+        &#125;
+
+
+        getTypes(): any &#123;
+            return &#123;
+                uniqueName: String,
+                name: String,
+                requestor: User,
+                totalAmount: Money,
+                billingAddress: Address,
+                shippingAddress: Address,
+                description: String
+
+            &#125;;
+        &#125;
+        ...
+    &#125;
+            </code>
+        </pre>
+
+    </div>
+    <div class="ui-g-12 ui-md-6">
+        oss
+        <pre>
+            <code class="language-javascript" pCode>
+/**
+    Rules can work also with nested object where you can
+    define how they should be rendered.
+
+     You can easily define this on system level so it automatically
+     render nested form for each object
+*/
+class=Order &#123;
+     @field=title#derived &#123;
+        type:String;
+        value:$&#123;"Purchase Order: " + object.name &#125;;
+        bindings:&#123;
+            useNoLabelLayout:true;
+        &#125;
+        wrapperComponent:GenericContainerComponent;
+        wrapperBindings: &#123; tagName:h2; &#125;
+     &#125;
+     field=uniqueName &#123;
+        label:"PO #"
+     &#125;
+     field=description &#123;
+        bindings: &#123;
+            styleClass: 'u-description';
+        &#125;
+     &#125;
+     field=requestor#asHover &#123;
+        label: "Buyer";
+     &#125;
+
+    zNone => *;
+    zTop => title;
+    zLeft => uniqueName => requestor => totalAmount => orderDate => state;
+    zRight => shippingAddress#asObject => billingAddress#asObject;
+    zBottom => description;
+&#125;
+
+
+class=Address &#123;
+
+  field=fullName &#123;
+    label: "Name";
+  &#125;
+
+  @field=zipCity#derived &#123;
+       label: "Zip, City";
+       type:String;
+       value:$ &#123;object.zip  + ", " + object.city&#125;;
+   &#125;
+
+   zNone => *;
+   zLeft => fullName => street => zipCity;
+&#125;
+
+
+
+
+
+            </code>
+
+        </pre>
+
+    </div>
+</div>
+
+
+
+
+
