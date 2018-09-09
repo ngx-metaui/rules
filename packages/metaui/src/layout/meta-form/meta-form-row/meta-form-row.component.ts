@@ -125,7 +125,7 @@ export class MetaFormRowComponent extends MetaBaseComponent
     private createValidators(): ValidatorFn[]
     {
         let that = this;
-        let metaValidator = (control: AbstractControl): {[key: string]: any} =>
+        let metaValidator = (control: AbstractControl): { [key: string]: any } =>
         {
             if (isPresent(Validators.required(control)) || !control.touched) {
                 return null;
@@ -133,8 +133,8 @@ export class MetaFormRowComponent extends MetaBaseComponent
 
             let errorMsg = UIMeta.validationError(that.context);
             return isPresent(errorMsg) ? {
-                    'metavalid': {'msg': errorMsg}
-                } : null;
+                'metavalid': {'msg': errorMsg}
+            } : null;
         };
 
         return [metaValidator];

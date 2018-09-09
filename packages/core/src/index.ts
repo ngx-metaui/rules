@@ -1,5 +1,4 @@
 /**
- *
  * @license
  * Copyright 2017 SAP Ariba
  *
@@ -15,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
+ *
  */
-/**
- * This folder is here only for internal usage.
+
+/*
+ * Just re-export for the IDE and the mapping we have tsconfig
  */
-export * from './carrentalrequest';
-export * from './form-request';
-export * from './approver-user';
-export * from './invoice';
-export * from './order';
+
+export * from './public_api';
+
+

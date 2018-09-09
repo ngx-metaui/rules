@@ -74,8 +74,7 @@ import {
     Section3Component
 } from './meta-ui-sections/metaui-section.page.component';
 import {
-    MetaUINestedPageComponent,
-    NestedMetaComponent
+    MetaUINestedPageComponent
 } from './meta-ui-nested/metaui-nested.page.component';
 import {StepperDemoComponent} from './components/stepper/stepper-demo.component';
 import {
@@ -135,7 +134,6 @@ import {HighlightPipe} from './datatable/highlight-text.pipe';
         MetaUISectionPageComponent,
         Section2Component,
         Section3Component,
-        NestedMetaComponent,
         MetaUINestedPageComponent,
         StepperDemoComponent,
         DemoCardTestComponent,
@@ -171,8 +169,7 @@ import {HighlightPipe} from './datatable/highlight-text.pipe';
         DrivingSkillComponent,
         SalesGraphComponent,
         Section2Component,
-        Section3Component,
-        NestedMetaComponent
+        Section3Component
     ]
 })
 export class DemoModule {

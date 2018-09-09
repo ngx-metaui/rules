@@ -324,6 +324,219 @@ export const UserRule = {
 			      }
 			    ],
 			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'layout',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': 'labelsOnTop'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'uniqueName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'label': 'User Id'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zNone'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'uniqueName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zLeft'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'firstName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'uniqueName'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'lastName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'firstName'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'group',
+			        '_value': 'ObjectDetail',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
 			  }
 			]
 };

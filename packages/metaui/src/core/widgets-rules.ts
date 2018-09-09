@@ -2736,7 +2736,7 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'withHoverDetails',
+			        '_value': 'asObject',
 			        '_isDecl': true
 			      }
 			    ],
@@ -2751,7 +2751,83 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'withHoverDetails',
+			        '_value': 'asObject',
+			        '_isDecl': true
+			      },
+			      {
+			        '_key': 'editable',
+			        '_value': false,
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'component': 'MetaObjectDetailComponent',
+			      'nestedLayout': true,
+			      'bindings': {
+			        'layout': 'Inspect',
+			        'useNoLabelLayout': true,
+			        'label': {
+			          't': 'Expr',
+			          'v': 'properties.get("label")'
+			        },
+			        'object': {
+			          't': 'CFP',
+			          'v': 'value'
+			        }
+			      }
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'trait',
+			        '_value': 'asObject',
+			        '_isDecl': true
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'trait',
+			        '_value': 'asHover',
+			        '_isDecl': true
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'trait',
+			        '_value': 'asHover',
 			        '_isDecl': true
 			      },
 			      {
@@ -2782,7 +2858,7 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'withHoverDetails',
+			        '_value': 'asHover',
 			        '_isDecl': true
 			      }
 			    ],

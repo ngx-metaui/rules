@@ -20,12 +20,12 @@ import {Entity} from '@aribaui/core';
 
 export class User implements Entity
 {
-    uniqueName: string;
-    firstName: string;
-    lastName: string;
-    age: number;
-    dob: Date;
 
+
+    constructor(public uniqueName?: string, public firstName?: string,
+                public lastName?: string, public age?: number, public dob?: Date)
+    {
+    }
 
     identity(): string
     {
@@ -63,6 +63,18 @@ export class User implements Entity
     className(): string
     {
         return 'User';
+    }
+
+
+    displayKey(): string
+    {
+        return this.toString();
+    }
+
+
+    toString(): string
+    {
+        return this.firstName + ' ' + this.lastName;
     }
 
 }

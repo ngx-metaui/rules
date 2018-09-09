@@ -3,23 +3,19 @@
 </a>
 
 <div class=" ui-g">
-    <div class="ui-g-12">
-        <m-context [object]="myRequest" operation="view" layout="Inspect" case="nested"
-                   (onAction)="onAction($event)">
+    <div class="ui-g-12 with-border">
+        <m-context [object]="myPO" operation="view" layout="Inspect" >
             <m-include-component></m-include-component>
         </m-context>
     </div>
 </div>
 
 
-
 <div class="ui-g">
     <div class="ui-g-12 ui-md-6">
         <pre>
             <code class="language-markup" pCode>
-    &lt;m-context [object]="myRequest" operation="view" layout="Inspect"
-                case="nested"
-             (onAction)="onAction($event)"&gt;
+    &lt;m-context [object]="myPO" operation="view" layout="Inspect"&gt;
             &lt;m-include-component&gt;&lt;/m-include-component&gt;
     &lt;/m-context&gt;
             </code>
@@ -32,25 +28,38 @@
     Rules can work also with nested object where you can
     define how they should be rendered.
 
-    Here it says. When you render a footer field which is
-    type of XYZ class use my custom component for it
-    and place it at bottom zone
-
-                */
-
-case=nested class=Invoice &#123;
-    field=footer &#123;
-        component:NestedMetaComponent;
+     You can easily define this on system level so it automatically
+     render nested form for each object
+*/
+class=Order &#123;
+     @field=title#derived &#123;
+        type:String;
+        value:$&#123;"Purchase Order: " + object.name &#125;;
         bindings:&#123;
-            header:$value;
             useNoLabelLayout:true;
         &#125;
-    &#125;
-    zNone => *;
-    zLeft => uniqueName => itemPrice => supplier => requestor;
-    zBottom => footer;
+        wrapperComponent:GenericContainerComponent;
+        wrapperBindings: &#123; tagName:h2; &#125;
+     &#125;
+     field=uniqueName &#123;
+        label:"PO #"
+     &#125;
+     field=description &#123;
+        bindings: &#123;
+            styleClass: 'u-description';
+        &#125;
+     &#125;
+     field=requestor#asHover &#123;
+        label: "Buyer";
+     &#125;
 
+    zNone => *;
+    zTop => title;
+    zLeft => uniqueName => requestor => totalAmount => orderDate => state;
+    zRight => shippingAddress#asObject => billingAddress#asObject;
+    zBottom => description;
 &#125;
+
             </code>
 
         </pre>

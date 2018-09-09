@@ -2139,7 +2139,7 @@ describe('Meta Context behaivor ', () => {
      *        class=UserWithDetail {
      *
      *            field=name {
-     *                trait:withHoverDetails;
+     *                trait:asHover;
      *                label:"Frank Kolar";
      *            }
      *        }
@@ -2160,7 +2160,7 @@ describe('Meta Context behaivor ', () => {
 
         });
 
-        it('should retrieve correct component to render when trait withObjectDetail is used and' +
+        it('should retrieve correct component to render when trait asHover is used and' +
             ' overriden by user rules', () => {
 
             let metaUI = UIMeta.getInstance();
@@ -2987,7 +2987,7 @@ export const UserWithDetailRule = {
                 }
             ],
             '_properties': {
-                'trait': 'withHoverDetails',
+                'trait': 'asHover',
                 'label': 'Frank Kolar'
             },
             '_rank': 0

@@ -5,13 +5,13 @@
  *
  */
 /* tslint:disable */
-export const InvoiceRule = {
+export const AddressRule = {
  	oss:			[
 			  {
 			    '_selectors': [
 			      {
 			        '_key': 'class',
-			        '_value': 'Invoice',
+			        '_value': 'Address',
 			        '_isDecl': false
 			      }
 			    ],
@@ -21,17 +21,79 @@ export const InvoiceRule = {
 			    '_selectors': [
 			      {
 			        '_key': 'class',
-			        '_value': 'Invoice',
+			        '_value': 'Address',
 			        '_isDecl': false
 			      },
 			      {
-			        '_key': 'layout',
+			        '_key': 'field',
+			        '_value': 'fullName',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'label': 'Name'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'Address',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'Address',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'zipCity',
+			        '_isDecl': true
+			      }
+			    ],
+			    '_properties': {
+			      'trait': 'derived',
+			      'label': 'Zip, City',
+			      'type': 'String',
+			      'value': {
+			        't': 'Expr',
+			        'v': 'object.zip + ", " + object.city'
+			      }
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'Address',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'Address',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
 			        '_value': '*',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'trait': 'labelsOnTop'
+			      'after': 'zNone'
 			    },
 			    '_rank': 0
 			  },
@@ -39,7 +101,7 @@ export const InvoiceRule = {
 			    '_selectors': [
 			      {
 			        '_key': 'class',
-			        '_value': 'Invoice',
+			        '_value': 'Address',
 			        '_isDecl': false
 			      }
 			    ],
@@ -49,17 +111,17 @@ export const InvoiceRule = {
 			    '_selectors': [
 			      {
 			        '_key': 'class',
-			        '_value': 'Invoice',
+			        '_value': 'Address',
 			        '_isDecl': false
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'uniqueName',
+			        '_value': 'fullName',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'after': 'Header.zLeft'
+			      'after': 'zLeft'
 			    },
 			    '_rank': 0
 			  },
@@ -67,17 +129,17 @@ export const InvoiceRule = {
 			    '_selectors': [
 			      {
 			        '_key': 'class',
-			        '_value': 'Invoice',
+			        '_value': 'Address',
 			        '_isDecl': false
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'itemPrice',
+			        '_value': 'street',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'after': 'uniqueName'
+			      'after': 'fullName'
 			    },
 			    '_rank': 0
 			  },
@@ -85,27 +147,17 @@ export const InvoiceRule = {
 			    '_selectors': [
 			      {
 			        '_key': 'class',
-			        '_value': 'Invoice',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'Invoice',
+			        '_value': 'Address',
 			        '_isDecl': false
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'supplier',
+			        '_value': 'zipCity',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'after': 'Header.zRight'
+			      'after': 'street'
 			    },
 			    '_rank': 0
 			  },
@@ -113,53 +165,7 @@ export const InvoiceRule = {
 			    '_selectors': [
 			      {
 			        '_key': 'class',
-			        '_value': 'Invoice',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'requestor',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'supplier'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'Invoice',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'Invoice',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'itemDescription',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'Footer.zBottom'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'Invoice',
+			        '_value': 'Address',
 			        '_isDecl': false
 			      }
 			    ],

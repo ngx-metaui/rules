@@ -16,11 +16,12 @@
  * limitations under the License.
  *
  */
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
-import {BaseComponent} from '@aribaui/components';
+import {Component, OnInit} from '@angular/core';
+import {BaseComponent, Money} from '@aribaui/components';
 import {Environment} from '@aribaui/core';
-import {Invoice, InvHeader} from '../../domain/invoice';
-import {MetaUIActionEvent} from '@aribaui/metaui';
+import {Order} from '../../domain';
+import {User} from '../../domain/user';
+import {Address} from '../../domain/address';
 
 
 @Component({
@@ -30,7 +31,7 @@ import {MetaUIActionEvent} from '@aribaui/metaui';
 export class MetaUINestedPageComponent extends BaseComponent implements OnInit
 {
     op: string = 'view';
-    myRequest: Invoice;
+    myPO: Order;
 
     constructor(public env: Environment)
     {
@@ -43,49 +44,25 @@ export class MetaUINestedPageComponent extends BaseComponent implements OnInit
     {
         super.ngOnInit();
 
-        this.myRequest = new Invoice();
-        this.myRequest.uniqueName = '6';
-        this.myRequest.itemName = 'iPhone 8';
-        this.myRequest.itemDescription = 'iPhone 8, 16gb';
-        this.myRequest.supplier = 'Apple Inc.';
-        this.myRequest.itemPrice = '123.11';
-        this.myRequest.requestor = 'Dan John';
-    }
+        this.myPO = new Order('PO20180001', 'iPhone 11 5d touch',
+            new Date(), 'Shipping',
+            new User('zchapple', 'Zack', 'Chapple'),
+            new Money(1000, 'USD'),
+            new Address('Frank Kolar', 'Davey Glen 111', 'Foster City',
+                '94404', 'US'),
+            new Address('Frank Kolar', 'Zelena 400', 'Prague',
+                '14000', 'Czech republic'),
+            'The iPhone X is intended to showcase what Apple considers technology of ' +
+            'the future, specifically adopting OLED screen technology for the first time in iPhone ' +
+            'history, as well as using a glass and stainless-steel form factor, offering wireless ' +
+            'charging, and removing the home button in favor of introducing a new bezel-less design, ' +
+            'almost removing all the bezels in the smartphone and not having a "chin", unlike many ' +
+            'Android phones'
+        );
 
-    onAction(event: MetaUIActionEvent): void
-    {
-        console.log(event);
-    }
-
-}
-
-
-@Component({
-    selector: 'sec1',
-    template: `
-         <m-context [pushNewContext]="true" [object]="header" operation="view" layout="Inspect" >
-            <m-include-component></m-include-component>
-        </m-context>
-        <!--<aw-button (action)="handleClick($event)">Test</aw-button>-->
-    `
-})
-export class NestedMetaComponent
-{
-
-    @Input()
-    header: InvHeader;
-
-    @Output()
-    onClick: EventEmitter<MetaUIActionEvent> = new EventEmitter();
-
-
-    handleClick(event: any): void
-    {
-        this.onClick.emit(new MetaUIActionEvent(this, 'onClick', 'onClick', event));
     }
 
 }
-
 
 
 

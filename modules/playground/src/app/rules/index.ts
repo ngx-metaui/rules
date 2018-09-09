@@ -9,3 +9,5 @@ export * from './ts/CarRentalRequestOSS';
 export * from './ts/UserOSS';
 export * from './ts/InvoiceOSS';
 export * from './ts/InvHeaderOSS';
+export * from './ts/OrderOSS';
+export * from './ts/AddressOSS';

@@ -15,7 +15,7 @@ operation=view class=CarRentalRequest {
         label:"Name";
     }
 
-    field=requester#withHoverDetails {
+    field=requester#asHover {
         label:"Requester";
     }
 

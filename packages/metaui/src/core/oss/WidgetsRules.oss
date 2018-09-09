@@ -249,7 +249,21 @@ field {
     }
 
 
-    @trait=withHoverDetails {
+    @trait=asObject {
+        editable=false {
+            component:MetaObjectDetailComponent;
+            nestedLayout:true;
+            bindings: {
+                object:$value;
+                layout:Inspect;
+                useNoLabelLayout:true;
+                label:${properties.get("label")};
+            }
+        }
+    }
+
+
+    @trait=asHover {
         editable=false {
             component:HoverCardComponent;
             bindings:{

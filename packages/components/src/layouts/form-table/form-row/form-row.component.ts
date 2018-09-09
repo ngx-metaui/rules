@@ -44,7 +44,8 @@ import {BaseFormComponent, WidgetSizeColumns} from '../../../core/base-form.comp
         {provide: BaseFormComponent, useExisting: forwardRef(() => FormRowComponent)}
     ]
 })
-export class FormRowComponent extends BaseFormComponent {
+export class FormRowComponent extends BaseFormComponent
+{
 
     /**
      * Hides the label
@@ -102,6 +103,13 @@ export class FormRowComponent extends BaseFormComponent {
     customValidators: ValidatorFn[];
 
     /**
+     * Tells the form row that we are rendering another nested form in this row. so we need
+     * to go 100%
+     */
+    @Input()
+    isNestedLayout: boolean = false;
+
+    /**
      * What is the current size of the field. Current we support 4 different sizes: x-small, small,
      * medium, large, x-large
      */
@@ -122,7 +130,8 @@ export class FormRowComponent extends BaseFormComponent {
                 // Event this creates CI depends. Need to have a reference to parent
                 // I need to refactor more parent to not use this child and refactor layouting
                 @SkipSelf() @Optional() @Inject(forwardRef(() => FormTableComponent))
-                protected parentContainer: FormTableComponent) {
+                protected parentContainer: FormTableComponent)
+    {
         super(env, parentContainer);
 
         this._size = 'ui-g-12 ui-md-' + WidgetSizeColumns.medium;
@@ -133,7 +142,8 @@ export class FormRowComponent extends BaseFormComponent {
      * Right now we just initialize this once and use the values we do not expect now to react to
      * changes
      */
-    ngOnInit() {
+    ngOnInit()
+    {
         super.ngOnInit();
         super.registerFormControl(null);
 
@@ -151,7 +161,8 @@ export class FormRowComponent extends BaseFormComponent {
      * Just a size getter
      *
      */
-    get size(): string {
+    get size(): string
+    {
         return this._size;
     }
 
@@ -169,7 +180,8 @@ export class FormRowComponent extends BaseFormComponent {
 
 
     @Input()
-    set size(value: string) {
+    set size(value: string)
+    {
 
         let isDynVal = false;
 
@@ -178,15 +190,18 @@ export class FormRowComponent extends BaseFormComponent {
             value = value.substr(2, value.length - 1);
         }
 
-        if (isPresent(value)) {
+        if (isPresent(value) && !this.isNestedLayout) {
             this._size = value;
             let dSize = this.dynSize(value, isDynVal);
             this._size = 'ui-g-12 ui-md-' + dSize;
+        } else if (this.isNestedLayout) {
+            this._size = 'ui-g-12 ui-md-12';
         }
     }
 
 
-    ngDoCheck(): void {
+    ngDoCheck(): void
+    {
         super.ngDoCheck();
 
         if (isPresent(this.parentContainer) && this.editable !== this.parentContainer.editable) {
@@ -197,7 +212,8 @@ export class FormRowComponent extends BaseFormComponent {
     /**
      * Push out of box angular validator as well as custom one to current FormControl
      */
-    private registerValidators() {
+    private registerValidators()
+    {
         let validators: ValidatorFn[] = [];
 
         if (isPresent(this.maxLength)) {
@@ -239,7 +255,8 @@ export class FormRowComponent extends BaseFormComponent {
      * Do we have labels on TOP, try to read this from Parent
      *
      */
-    get labelsOnTop(): boolean {
+    get labelsOnTop(): boolean
+    {
         if (isBlank(this._labelsOnTop) && isPresent(this.parentContainer)) {
             return (<FormTableComponent>this.parentContainer).isLabelsOnTop();
         }
@@ -252,11 +269,13 @@ export class FormRowComponent extends BaseFormComponent {
      * Can refactor all into 1 line but its hard to debug so this is just for read
      *
      */
-    private dynSize(value: string, isDynValue: boolean): string {
+    private dynSize(value: string, isDynValue: boolean): string
+    {
         let normalizeSize = value.toLowerCase().replace('-', '');
 
         if (isPresent(this.parentContainer) &&
-            (<FormTableComponent>this.parentContainer).hasTwoColumn && isDynValue) {
+            (<FormTableComponent>this.parentContainer).hasTwoColumn && isDynValue)
+        {
 
             let enumValues: string[] = Object.keys(WidgetSizeColumns);
             normalizeSize = enumValues[enumValues.indexOf(normalizeSize) + 1];

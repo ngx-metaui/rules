@@ -111,7 +111,8 @@ export abstract class MetaBaseComponent extends BaseFormComponent implements Aft
     // provide as a expression
     properties(key: string, defValue: any = null): any
     {
-        return isPresent(this.context) ? this.context.propertyForKey(key) : defValue;
+        return isPresent(this.context) ? (isPresent(this.context.propertyForKey(key)) ?
+            this.context.propertyForKey(key) : defValue) : defValue;
 
     }
 

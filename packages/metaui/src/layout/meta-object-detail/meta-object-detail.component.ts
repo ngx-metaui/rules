@@ -73,6 +73,12 @@ export class MetaObjectDetailComponent extends BaseComponent
     @Input()
     layout: string = 'Inspect';
 
+    /**
+     * Rendered object detail can have a section label
+     */
+    @Input()
+    label: string;
+
     constructor(public env: Environment)
     {
         super(env);

@@ -306,7 +306,7 @@ describe('Loading rules functionality', () => {
                 metaUI.loadDefaultRuleFiles();
 
                 expect(metaUI).toBeDefined();
-                expect(metaUI._rules.length).toEqual(446); // commented out toOneRelationShip
+                expect(metaUI._rules.length).toEqual(455); // commented out toOneRelationShip
 
             } catch (e) {
                 fail(e);

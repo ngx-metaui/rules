@@ -1,6 +1,7 @@
 <aw-form-row
     [editable]="editable"
     [customValidators]="validators"
+    [isNestedLayout]="properties('nestedLayout', false)"
     [size]="size"
     [hidden]="!properties('visible')"
     [styleClass]="bindingStringProperty('styleClass')"

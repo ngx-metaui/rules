@@ -174,7 +174,7 @@ export const CarRentalRequestRule = {
 			      }
 			    ],
 			    '_properties': {
-			      'trait': 'withHoverDetails',
+			      'trait': 'asHover',
 			      'label': 'Requester'
 			    },
 			    '_rank': 0

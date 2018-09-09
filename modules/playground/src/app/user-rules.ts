@@ -20,6 +20,5 @@ export * from './rules';
 export * from './demos/meta-ui/components/driving-skill/driving-skill.component';
 export * from './demos/meta-ui-modules/sales-graph/sales-graph.component';
 export * from './demos/meta-ui-sections/metaui-section.page.component';
-export {NestedMetaComponent} from './demos/meta-ui-nested/metaui-nested.page.component';
 
 

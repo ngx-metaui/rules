@@ -33,3 +33,19 @@ class=User {
 }
 
 
+group=ObjectDetail class=User {
+    layout {
+            trait:labelsOnTop;
+    }
+
+    field=uniqueName {
+        label:"User Id";
+    }
+
+    zNone => *;
+    zLeft => uniqueName => firstName => lastName;
+}
+
+
+
+
