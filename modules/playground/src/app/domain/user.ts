@@ -59,7 +59,6 @@ export class User implements Entity
         return user;
     }
 
-
     className(): string
     {
         return 'User';
