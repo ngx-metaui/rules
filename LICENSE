@@ -1,5 +1,27 @@
 This software is licensed under the Apache 2 license, quoted below.
 
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+
+
+------------------------------------------------------------------------------
+
+ATTRIBUTION:
+
+Original License
+------------------
+
+This software is licensed under the Apache 2 license, quoted below.
+
 Copyright 2017 SAP Ariba
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -16,6 +38,9 @@ the License.
 
 
 
+
+
+
 --------------------------------------------------------------------------------------------------------------------------
 APIs / 3th party products or services
 
@@ -23,7 +48,16 @@ This project may include  third party APIs, products or services. The use of the
 In no event shall the application of the Apache Software License, v.2 to this project grant any rights in or to these APIs, products or
 services that would alter, expand, be inconsistent with, or supersede any terms of these additional agreements.
 
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+
+Key libraries used:
+
+Component: @ariba
+Licensor: SAP Ariba (Frank Kolar)
+Website: https://github.com/SAP/angular-metaui
+License:  Apache License, Version 2.0
+<year> = 2017-2018
+<copyright holders> = SAP Ariba (Frank Kolar)
 
 
 Component: @angular
@@ -32,14 +66,6 @@ Website: https://github.com/angular
 License: MIT License
 <year> = 2014-2018
 <copyright holders> = Google, Inc.
-
-
-Component: @ngx-translate
-Licensor: Olivier Combe
-Website: https://github.com/ngx-translate
-License: MIT License
-<year> = unspecified
-<copyright holders> = Olivier Combe
 
 
 Component: lodash
@@ -156,8 +182,6 @@ Website: https://github.com/angular/zone.js#readme
 License: MIT License
 <year> = 2014
 <copyright holders> = Google Inc.
-
-
 
 
 
