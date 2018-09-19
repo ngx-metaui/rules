@@ -25,6 +25,17 @@ it needs and mainly focus to make it lightweight framework without any UI depend
 You can also read more in the [High Level Architecture][1].
 
 
+``The rest of the sections are focused on the _MetaUI_ therefore it is recommended that you watch our online presentations that give
+you some ideas about Rule driven User Interface.
+
+_Links refer to our original repo:_
+
+ - [Introduction declarative UI](https://www.youtube.com/watch?v=-Bv_ceUn1K8) ([Demo](https://sap.github.io/angular-metaui/))
+ - [Longer MetaUI presentation](https://www.youtube.com/watch?v=F0BMw_Sxjig)
+ 
+
+
+
 ### Why MetaUI
 
 ```
