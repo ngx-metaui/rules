@@ -5,7 +5,7 @@
 ## Table of Contents
 
 * [Description](#description)
-* [What is our Goal](#what-is-our-goal)
+* [Project plan](#project-plan)
 * [How to obtain support](#howto-obtain-support)
 * [License](#license)
 
@@ -15,17 +15,18 @@
 
 ## Description
 
-**MetaUI** is set of API and components which uses your model (in this case _model_ is your domain object and meta data 
-describing this object - called Meta Rules) to dynamically assemble User Interface for you on the fly without templates. 
-Rather than letting you layout your fields for every usecase. 
+**MetaUI** is set of APIs and components that dynamically generates User Interface based on your object model (JSON object + its type).
+It does so without developers having to layout components in template files. MetaUI uses rules (Meta Rules) to generate the UI.
 
-This project is based on our original work of the `@aribaui` and the `MetaUI` was extracted out in order to give it attention 
-it needs and mainly focus to make it lightweight framework without any UI dependencies like it is now.
+This project is based on our original work on `@aribaui` and `MetaUI`. The MetaUI portion have been extracted and ported to Javascript. 
+Our goal is make it lightweight, framework and component library agnostic. It transforms the typical UI development model from one where
+a developer layouts out all UI components in multiple template files to one where a developer defines rules and leverages MetaUI engine to
+create UI. MetaUI rules can be applied universally or to a specific object.
 
 You can also read more in the [High Level Architecture][1].
 
 
-``The rest of the sections are focused on the _MetaUI_ therefore it is recommended that you watch our online presentations that give
+``Sections below focus on the _MetaUI_ therefore it is recommended that you watch our online presentations that give
 you some ideas about Rule driven User Interface.
 
 _Links refer to our original repo:_
@@ -46,10 +47,9 @@ Most of the UI code written in traditional frameworks is a mechanical applicatio
 ```
 
 
-### What is our Goal
+### Project plan
 
-We will be executing this project in 3 stages, which will gradually add tons of new features and as well as add enterprise 
-robustness.
+We will be executing this project in 3 stages with each stage adding more features on top of the previous one. 
 
 
 #### Stage #1 - Initial Setup
@@ -61,25 +61,25 @@ robustness.
 #### Stage #2 - Detach MetaUI from UI
 
 * Separate MetaUI from its UI layer
-* Make UI plugable to be easily extended by any UI framework
-* Create two default implementations for PrimeNG & Material  
+* Make MetaUI plugable so it can be easily adapted by other UI frameworks
+* Create two default implementations for PrimeNG & Material Design 
 
 
-#### Stage #3 - OSS Files and its next stage
+#### Stage #3 - OSS (Object Style Sheet) and improvements
 
 
-- Analyze in more details OSS and how it could be replaced with more natural tools that TS gives us
-- Ability to register rules on the fly from the server 
-- Since metadata deals with dynamic object we need to answer how any schema changes will propagate to the UI without changing single line
+- In depth analyze of OSS and how it could be replaced with more natural tools that TS gives us
+- Ability to modify rules dynamically from the server 
+- Since metadata deals with dynamic object we need to solve how schema changes will propagate to the UI without updating Meta Rules
 - Client side / server side data validation
-- Ability to generate default views out of the domain objects (master-detail view (list view), detail view, etcs.)
-- How to deal and handle different customer customization and differences from the out of box solution. 
--  Let customers and third parties defines their own conditions (visibility, validity, editability) and actions
-    - This one of the major need for enterprise you need to allow custom fields to be added on top of your domain objects with its own behavior.
-- Define best practices in terms of how to structure an application having default set of rules, and application rules and customer rules.
+- Generate default views out of the domain objects (master-detail view (list view), detail view, etcs.)
+- How to handle different customer customization out of box 
+- Let customers and third parties defines their own conditions (visibility, validity, editability) and actions
+    - This is a major requirement for enterprise where customer specific fields, with their own rules, need to be combined with default domain object
+- Define best practices in terms of how to structure an application. Create a default set of MetaUI rules.
 - MetaUI Inspector
-   -  At this point we will support heavy enterprise customization we need the inspector that tells us how a single element / component was 
-   rendered so we need to be able to print the whole stack and assignments and rules. Something like CSS inspector.
+   -  At this point the project will support heavy enterprise customization and it needs an inspector that helps with troubleshooting.
+      The inspector needs to show the state of a component and the rules applied to it. It's similar to a CSS inspector.
 
 
 
