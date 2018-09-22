@@ -1,10 +1,10 @@
 # MetaUI Architecture
 
-This document describes `MetaUI framework` fundamentals and also shows you the implementation aspects in the 
-Typescript (Javascript) environment, what are the limitations and workarounds that we need to follow. 
+This document describes `MetaUI framework` architecture and shows you how to use it in
+Typescript (Javascript) environment. In addition, it outlines the current limitations and provides few workarounds.
 
 
-_`Note: If you are trying to integrate MetaUI into your project you might want to read this document first!`_
+_`Note: Please read this document first when integrating your project with MetaUI!`_
 
 
 
@@ -12,17 +12,17 @@ Let's start with this simplified picture:
 
 ![alt text](../../../docs/img/meta/meta-1.0.png?size=small "High Level Diagram")
 
-We can see 3 big pieces  here that makes `MetaUI` framework what it is. So Let's start from the bottom:
+The 3 main modules that compose `MetaUI` framework. So Let's start from the bottom:
 
 #### Rule Engine
 
-_Rule engine_ is implemented by `UIMeta` class along with other helper classes and here we accepts different assignments passed 
-from _UIContext_ and evaluate the best possible match and return set of properties which are used later on to 
-render _User Interface_.  The same way you would expect any Internet Browser to work when parsing CSS. Simple right ?
+_Rule engine_ is implemented by `UIMeta` class along with other helper classes. It accepts assignments (Ex: {object: user})
+from _UIContext_, evaluates the best possible match and returns a set of properties used to  render _User Interface_.  
+This is analogous to how CSS works. CSS are rules that apply to a DOM element. Multiple CSS could target an element and the css rule engine determine which style takes precedence.
 
-Rules are loaded from the `files` as well as from `objects` by introspecting typescript class and trying to figure 
-some info about the objects such as data types. This is why _Domain Object_ implements interface `Deserializable` 
-for retrieving types.  You might also notice we have a `$proto() ` method there , this is something that we used before and it is still used on some places but it will be removed soon.
+Rules are defined in `files` and loaded during startup.  They are applied to properties derived from `objects` by introspecting their typescript class. For example, a field on object, `User.lastLogin`, can have `Date` type.
+Afterward, a rule can be apply to this field type specifying the browser to render the field with a DateTime Picker. This is why _Domain Object_ implements interface `Deserializable` 
+for retrieving types.  You might also notice there's `$proto()` method, it was used before but will be removed soon.
 
 
 ```ts
@@ -76,24 +76,20 @@ export class User implements Entity
 ```
 
 
-But to load rules from the files we use different method. OSS files are compiled to the 
-TS class and then are packaged along with the application. This is why we have in the `playground` or 
-in the `metaui-evolution` app file called `user-rules.ts` which references all the available rules and then 
-inside our module we have this line:
+In order to load rules from files, they are first compiled to TS class and then packaged with the application. Examples of the compiled TS classes can be seen in `playground` and 
+ `metaui-evolution` app. See `user-rules.ts`, it references all the pre-defined rules and import user defined rules with this line:
 
 ```ts
     import * as userRules from './user-rules';
 ``` 
 
-which registers this within the `AppConfig` and `Rule engine` can then iterate over all the compiled rules, load, index and 
-store them locally.
+All rules are registered with `AppConfig` and `Rule engine` will iterate over all the compiled rules, index and store them locally.
 
 
 
 #### UI Context
 
-`UI Context` is used to communicate with the `Rule Engine` and to hold stack of current assignments those that 
-you push using `MetaContext` component.
+`UI Context` communicates with the `Rule Engine` and holds a stack of current assignments that were pushed via the `MetaContext` component. 
 
 
 
@@ -104,7 +100,7 @@ you push using `MetaContext` component.
 
 ```
 
-When you use above HTML fragment it treats bindings as a list of key/values and results following calls:
+The above HTML fragment treats bindings as a list of key/values and results following calls:
 
 
 ```ts
@@ -116,7 +112,7 @@ When you use above HTML fragment it treats bindings as a list of key/values and 
     
 ```
 
-Every `.set()` call pushes key /value property onto the Stack (`Context`) followed by passing it the `Rule Engine` to get back a  result which is cached and properties are retrieved.
+Every `.set()` call pushes key /value property onto the Stack (`Context`). This context is passed to the `Rule Engine` and gets back a list of properties.
 
 Example of retrieved properties:
 
@@ -147,12 +143,10 @@ Example of retrieved properties:
 
 #### UI Generation
 
-Once rules are evaluated and list of properties is retrieved then the `MetaIncludeComponent`
-will take care of the rest.
+After rules are evaluated and properties are retrieved, next the `MetaIncludeComponent` will take care of the remaining work to render UI.
 
-Here you can notice the second line the `<m-include-component>` that reads generated properties. Therefore the wrapping element
-`<m-context>` is responsible for pushing and the `<m-include-component>` is here for collecting whatever is available 
-and rendering UI.
+Looking at the html below, `<m-context>` gathers all the properties from the evaluation of `object`, `operation` and `layout` and passes them to the `<m-include-component>` 
+`<m-include-component>` will read these properties and render the UI.
  
 
 ```html
@@ -183,7 +177,7 @@ To render a UI we use Angular's API (`ComponentFactoryResolver`, `ViewContainerR
 **Example**
 
 
-After a quick introduction, let's look at this old picture that takes us one level down. Even I am not really _Michelangelo_
+After a quick introduction, let's look at this design diagram that takes us one level down. Even I am not really _Michelangelo_
 I hope we can get some information out of it. 
 
 
@@ -193,8 +187,7 @@ Let's start from the top left corner:
 
 1) We push 3 assignments using ` <m-contex>` 
 2) Value is pre-processed and push one by one to the Stack
-3) Inside our Stack `(Context)`, we check and try to retrieve existing Activation which is sharable object
-that holds Assignments hierarchy
+3) Inside our Stack `(Context)`, we check and try to retrieve existing Activation which is sharable object that holds Assignments hierarchy
 4) If it does not exists we initiate `match`
 5) Before it reaches Indexed KEYDATA store (completely on the right), on its way it broadcasts several notifications (see the phone)
 6) These notification are received by Observers that are responsible to pre-load and register
@@ -211,10 +204,9 @@ properties are mirrored and pushed again to (step #1)
 
 ### Rule file loading
 
-As already mentioned above we can not simply load a rule file from the system since it's running inside 
-a browser but we do take the `OSS file` and compile it, it outputs `TS file`, which is then bundled as a part of the project.
+For performance reasons, rule files aren't loaded directly from the server, but they are compiled into Javascript objects, 'TS files', and bundled together with the project.
 
-For example something like this:
+For example: rules applying to an order object:
 
 ```js
 class=Order {
@@ -241,7 +233,7 @@ class=Order {
   }
 ```
 
-is converted into something like this a Map-like format:
+is compiled into OrderRule object:
 
 ```
 /**
@@ -297,8 +289,7 @@ export const OrderRule = {
 
 ```
 
-And this TS content is then read by our special loader `RuleLoader` which registers them with the rule 
- engine (the `Meta` class).
+Afterwards, `OrderRule` is read by `RuleLoader` which registers it with the rule engine (the `Meta` class).
  
 ```ts
 
@@ -317,9 +308,9 @@ and barrel `index.ts` that just exports all from this directory. It is worth men
 you want as long you can have one file at the end like `user-rules.ts` that exports everything so it can be imported 
 and used in the app module. The rest is standard cli's project.
 
-Everytime you change rules, you just run a OSS compiler.
+Everytime you change rules, you need to run a OSS compiler on it.
 
-_You can see how its used in the packages.json_
+_Here's how it's used in the packages.json_
 
 ```
 java -jar lib/meta-ui-parser.jar --gen --user ./packages/metaui/src/core ./modules/metaui-evolution/src/app/rules
@@ -345,18 +336,16 @@ Once you run this command it will create `ts` directory under the `<DIRECTORY WI
 
 `Note: Rules are loaded lazily so a specific rule file for example the  order.oss (order.ts) is loaded after you really push Order object to a stack`
 
-**Even there is a activity in progress where we try to finish a parser in TS** (there is a branch called compiler) , but it does not go as fast as I 
-would like to. Maybe we will drop OSS completely and we will try to replace it somehow with TS support to define system level as well as user level 
-rules. 
+**There is on going work to port the rules parser to TS** (there is a branch called compiler). 
+With the new parser in TS, MetaUI can load rule's files directly into the client and support system level as well as user level rule's updates on the fly. 
 
 
 
 ### Domain object introspection
 
-Just like in css world where you define CSS selectors and you try to match against these selectors your HTML along with some other context properties the same 
-works here. 
+Just like in css world where CSS selectors match against HTML and attribute on a page, Meta Rules works the same way to match again your domain object.  
 
-So far we loaded and registered `OSS files (TS files) ` and now we need to introspect object to understand its internal structure so we 
+So far we've loaded and registered `OSS files (TS files) ` and now we need to introspect object to understand its internal structure so we 
 can register additional rules that are not covered by our `OSS files`.
 
 
