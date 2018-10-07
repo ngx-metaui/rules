@@ -1,0 +1,228 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g grey-bg">
+
+
+    <div class="ui-g-12 page-header">
+        <h3>Sections</h3>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Default expanded section </h4></div>
+
+        <div class="ui-g-10">
+            <aw-section title="User Information">
+                <div>
+                    Content
+                </div>
+
+                <div>
+                    Content
+                </div>
+
+                <div>
+                    Content
+                </div>
+
+
+            </aw-section>
+
+
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Default collapsed section </h4></div>
+
+        <div class="ui-g-10">
+            <aw-section title="User Information" [opened]="false">
+                <div>
+                    Content
+                </div>
+
+                <div>
+                    Content
+                </div>
+
+                <div>
+                    Content
+                </div>
+
+
+            </aw-section>
+
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>With description and editability support</h4></div>
+
+        <div class="ui-g-10">
+            <aw-section #section1 title="User Information"
+                        description="Information about system user"
+                        [editable]="true" (onEdit)="sectionEditing1 = ($event === 'inEdit')"
+                        (onCancelAction)="section1.completeEditing()"
+                        (onSaveAction)="section1.completeEditing()"
+            >
+                <div>
+                    {{sectionEditing1 ? "Editing " : ""}} Content
+                </div>
+
+                <div>
+                    {{sectionEditing1 ? "Editing " : ""}}Content
+                </div>
+
+                <div>
+                    {{sectionEditing1 ? "Editing " : ""}}Content
+                </div>
+
+                <div>
+                    {{sectionEditing1 ? "Editing " : ""}}Content
+                </div>
+
+                <div>
+                    {{sectionEditing1 ? "Editing " : ""}}Content
+                </div>
+
+
+            </aw-section>
+
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>With editability support and custom actions</h4></div>
+
+        <div class="ui-g-10">
+            <aw-section #section2 title="User Information"
+                        [editable]="true" (onEdit)="sectionEditing2 = ($event === 'inEdit')">
+                <div>
+                    {{sectionEditing2 ? "Editing " : ""}} Content
+                </div>
+
+
+                <aw-section-actions>
+                    <aw-button [style]="'secondary'" (action)="section2.completeEditing()">
+                        Discard
+                    </aw-button>
+                    <aw-button (action)="section2.completeEditing()">
+                        Publish
+                    </aw-button>
+                </aw-section-actions>
+            </aw-section>
+
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>With editability support and custom action mode and icon </h4>
+        </div>
+
+        <div class="ui-g-10">
+            <aw-section #s1 title="User Information" [actionIcon]="'icon-positive'"
+                        (onEdit)="onAddSomething($event, s1)"
+                        [editable]="true" [editMode]="'external'">
+                <div>
+                    Content
+                </div>
+
+                <div>
+                    Content
+                </div>
+
+                <div>
+                    Content
+                </div>
+
+
+            </aw-section>
+
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Disable collapsing section</h4></div>
+
+        <div class="ui-g-10">
+            <aw-section title="User Information" [disableClose]="true">
+                <div>
+                    Content
+                </div>
+
+            </aw-section>
+
+
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Section with subsections</h4></div>
+
+        <div class="ui-g-10">
+            <aw-section title="User Information" [disableClose]="true">
+                <div>
+                    Content
+                </div>
+
+                <aw-subsection title="Subsection 1">
+                    <div>
+                        Content 2
+                    </div>
+
+
+                </aw-subsection>
+
+
+                <aw-subsection title="Subsection 1">
+                    <div>
+                        Content 3
+                    </div>
+
+
+                </aw-subsection>
+
+            </aw-section>
+
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>No title, description. editable.</h4></div>
+
+        <div class="ui-g-10">
+            <aw-section #section3 [disableClose]="true" [editable]="true"
+                        (onEdit)="sectionEditing3 = ($event === 'inEdit')"
+                        (onCancelAction)="section3.completeEditing()"
+                        (onSaveAction)="section3.completeEditing()">
+                <div>
+                    Content
+                </div>
+                <div>
+                    Content
+                </div>
+            </aw-section>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+

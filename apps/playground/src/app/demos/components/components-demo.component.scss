@@ -1,0 +1,34 @@
+.page-container {
+  margin: 0px;
+}
+
+.fa-code {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.side-menu {
+  height: 100%;
+  width: 150px;
+  background-color: #FFFFFF; /* white*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  float: left;
+
+  a {
+    padding: 5px 5px 5px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #818181;
+    display: block;
+  }
+}
+
+.component-detail {
+  padding: 20px;
+  margin-left: 150px;
+}
+
+.back-link {
+  text-align: right;
+  padding: 15px 50px 0px;
+}

@@ -1,0 +1,64 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- Text Area -->
+    <div class="ui-g-12">
+        <h3>Text Area</h3>
+    </div>
+
+    <!-- Field Type -->
+    <div class="ui-g-12">
+        <div class="ui-g-2 event-title"><h4>Text Area with Text</h4></div>
+
+        <div class="ui-g-10 event-actions">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Comments'">
+                    <aw-text-area [name]="'Comments'" rows="2" columns="50"
+                                  [autoResize]="autoResize"
+                                  value="'There is so much to write about!!!'"></aw-text-area>
+                </aw-form-row>
+
+            </aw-form-table>
+        </div>
+    </div>
+
+    <!-- Fields  -->
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Text Area with 10 rows and 100 columns</h4></div>
+
+        <div class="ui-g-10">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'Description'">
+                    <aw-text-area [name]="'description'" rows="10" columns="100"
+                                  [autoResize]="autoResize">
+
+                    </aw-text-area>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+    </div>
+
+    <!-- Fields  -->
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Readonly</h4></div>
+
+        <div class="ui-g-10">
+            <aw-form-table [editable]="false" [labelsOnTop]="true">
+                <aw-form-row [label]="'Description'">
+                    <aw-text-area [name]="'description'" rows="2" columns="50"
+                                  [autoResize]="autoResize" value="'This is the best text area'">
+
+                    </aw-text-area>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+    </div>
+
+</div>
+
+
+

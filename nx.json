@@ -1,0 +1,21 @@
+{
+  "npmScope": "ngx-meta",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "rules": {
+      "tags": []
+    },
+    "playground": {
+      "tags": []
+    },
+    "metaui-evolution": {
+      "tags": []
+    }
+  }
+}

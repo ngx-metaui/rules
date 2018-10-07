@@ -1,0 +1,19 @@
+.navbar-logo {
+  height: 25px;
+}
+
+.navbar-brand {
+  position: relative;
+  top: .3em;
+}
+
+.extra-space {
+  height: 350px;
+  transform: rotate(0deg);
+}
+
+.extra-space /deep/ .sidenav {
+  top: 55px;
+  left: .5em;
+  height: 240px;
+}

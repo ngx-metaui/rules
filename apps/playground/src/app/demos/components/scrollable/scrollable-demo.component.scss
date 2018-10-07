@@ -1,0 +1,36 @@
+.card-demo {
+  box-sizing: border-box;
+  width: 202px;
+  height: 154px;
+  padding: 5px;
+  text-align: center;
+
+  background: #ececec;
+
+  span {
+    font-weight: 400;
+  }
+}
+
+.parent-h-div {
+  width: 80%;
+  background: rgba(25, 185, 255, 0.41);
+  padding: 10px;
+}
+
+.my-scrollable-class {
+  background: green;
+}
+
+.vertical-parent-div {
+  background: darkgrey;
+  height: 400px;
+  margin-top: 50px;
+  overflow-y: auto;
+
+  border: 1px black solid;
+
+  .ui-g-9 {
+    border-right: 1px white solid;
+  }
+}

@@ -1,6 +1,7 @@
 {
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "node_modules/@nrwl/schematics/src/tslint"
   ],
   "rules": {
     "arrow-return-shorthand": true,
@@ -128,6 +129,15 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": false,
     "directive-class-suffix": false,
-    "no-access-missing-member": false
+
+    "nx-enforce-module-boundaries": [
+      true,
+      {
+        "allow": [],
+        "depConstraints": [
+          { "sourceTag": "*", "onlyDependOnLibsWithTags": ["*"] }
+        ]
+      }
+    ]
   }
 }

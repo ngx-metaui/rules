@@ -1,0 +1,531 @@
+/*
+    Copyright 2008 Craig Federighi
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+    file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    $Id:  $
+*/
+object { class: ${object.getClass().getName()} }
+object declare { class: ${object.getClass().getName()} }
+
+/* for search, force explicit class, not one from object (since that's a hashmap */
+operation=search {
+    class:${values.get("class")}
+}
+
+operation=(edit, create, search) {
+    layout { editing:true; }
+    class { editing:true; }
+    field { editing:true; }
+    action { editing:true; }
+}
+operation=(view, list) {
+    class { editing:false; }
+    field { editing:false; }
+    action { editing:false; }
+}
+
+field {
+    visible:$${!properties.hidden};
+    editing=true  { editable:true; }
+    editing=false { editable:false; }
+}
+
+class {
+    @trait=fourZones {
+        zones: zLeft, zRight, zTop, zBottom, zDetail;
+        fourZoneLayout:true;
+    }
+    @trait=oneZone {
+        zones: [zLeft, zDetail];
+    }
+    @trait=tableZones {
+        zones: [zMain, zLeft, zRight, zTop, zBottom, zDetail];
+    }
+
+    operation=(create,edit,view,search) {
+        trait: fourZones;
+    }
+    operation=(list) {
+        trait: tableZones;
+    }
+}
+@traitGroup=FormZones {
+    @trait=fourZones;
+    @trait=oneZone;
+}
+
+
+field {
+    type         { component:AWString; bindings:{value:$value} }
+    type=boolean {
+        bindings:{formatter:$formatters.boolean};
+        editable { component:AWCheckbox }
+    }
+    type=(java.lang.Integer, int) {
+        bindings:{formatter:$formatters.integer};
+        editable { component:AWTextField; bindings:{style:"text-align:right"; size:13} }
+        operation=search { bindings:{formatter:$formatters.blankNull.integer} }
+    }
+    type=(java.lang.Long, long) {
+        bindings:{formatter:$formatters.long};
+        editable { component:AWTextField; bindings:{style:"text-align:right"; size:13} }
+        operation=search { bindings:{formatter:$formatters.blankNull.long} }
+    }
+    type=(java.lang.Double, double) {
+        bindings:{formatter:$formatters.double};
+        editable { component:AWTextField; bindings:{style:"text-align:right"; size:13} }
+    }
+    type=java.math.BigDecimal   {
+        bindings:{formatter:$formatters.money};
+        editable { component:AWTextField; bindings:{ style:"text-align:right"; size:13; }; }
+    }
+    type=java.util.Date   {
+        bindings:{formatter:$formatters.shortDate};
+        editable                { component:DateField }
+    }
+
+    type=java.lang.Enum   {
+        editable                {
+            component:GenericChooser;
+            bindings:{
+                object:${object};
+                key:${field};
+                destinationClass:${type};
+                displayKey:"name";
+                formatter:$formatters.identifier;
+            };
+
+            operation=(search, list) {
+                bindings: { type:Popup; }
+            }
+        }
+    }
+
+    type=(java.util.List, java.util.Set) {
+        @trait=enum editable {
+            component:GenericChooser;
+            bindings:{
+                object:${object};
+                key:${field};
+                multiSelect:true;
+                destinationClass:${properties.enumClass};
+                displayKey:"name";
+                formatter:$formatters.identifier;
+            };
+        }
+
+        operation=(search, list)        { visible:false }
+
+        @trait=ownedToMany {
+            after:zDetail;
+            component:MetaDetailTable;
+        }
+    }
+
+    type="[B" {
+        editable {
+            component:FileUploadChooser; bindings:{ bytes:$value; };
+        }
+        editable=false {
+            bindings: {value:${value ? "" + (value.length + " bytes") : "(none)"}}
+        }
+    }
+
+    type="java.io.File" {
+        editable {
+            component:FileUploadChooser; bindings:{ file:$value };
+        }
+        editable=false {
+            bindings: {value:${value ? value.name : "(none)"}}
+        }
+    }
+
+    type=javax.mail.internet.MimeMessage {
+        component:MimeMessageView;
+        bindings:{ mimeMessage:$value }
+    }
+
+    type=ariba.ui.aribaweb.util.AWMimeParsedMessage {
+        component:MimeMessageView;
+        bindings:{ parsedMessage:$value }
+    }
+
+    type=java.lang.String {
+        editable                { component:AWTextField }
+        @trait=longtext {
+            after:zBottom;
+            editable            { component:AWTextArea;
+                                  bindings:{cols:60; rows:10} }
+            operation=(search, list)  { visible:false }
+        }
+        @trait=richtext {
+            after:zBottom;
+            bindings:{escapeUnsafeHtml:true}
+            editable            { component:RichTextArea;
+                                  bindings:{cols:60; rows:10} }
+            operation=(search)  { after:zNone }
+            operation=(list)  { editable:false; after:zDetail; }
+        }
+        @trait=secret {
+            bindings:{formatter:$formatters.hiddenPassword};
+            editable   { component:AWPasswordField; bindings:{formatter:null} }
+            operation=(search, list) { visible: false; }
+        }
+        trait=truncated { component:TruncateString; bindings:{size:10} }
+    }
+
+    type="[B" {
+        @trait=imageData {
+            contentType:"image/jpeg";
+            editable=false {
+                component:AWImageData;
+                bindings:{
+                    bytes:$value;
+                    contentType:${ariba.ui.aribaweb.util.AWContentType.contentTypeNamed(properties.contentType)}
+                }
+            }
+            editable {
+                bindings: { awcontentLayouts:{_main:_imgUploadPreview;} };
+            }
+        }
+    }
+
+    layout=_imgUploadPreview {
+        wrapperComponent:MetaContext; wrapperBindings:{scopeKey:field;};
+        component:AWImageData;
+        bindings:{
+            bytes:$value;
+            contentType:${ariba.ui.aribaweb.util.AWContentType.contentTypeNamed(properties.contentType)};
+            style:"width:100px";
+        }
+    }
+
+    @trait=derived {
+        editable:false;
+        editing { after:zNone; }
+    }
+
+    @trait=searchable {
+        operation=search {
+            visible:true; editable:true!; after:null!;
+        }
+    }
+
+    @trait=required {
+        operation=(edit, create) {
+            required:true;
+            object {
+                valid: ${(value != null && !"".equals(value)) ? true : "Answer required"}
+            }
+        }
+    }
+
+    @trait=enumeration {
+        editable { component:GenericChooser; bindings:{
+                    object:${object};
+                    key:${properties.field};
+                    list:${properties.choices};
+                    type:${properties.chooserStyle};
+                }
+        }
+    }
+
+    @trait=noCreate { operation=create { visible:false } }
+    @trait=noSearch { operation=search { visible:false } }
+
+    component=GenericChooser {
+        @trait=Popup        { bindings:{type:Popup} }
+        @trait=PopupControl { bindings:{type:PopupControl} }
+        @trait=Chooser      { bindings:{type:Chooser} }
+
+        @trait=PostOnChange { bindings:{action:null} }
+    }
+
+    component=(AWString,AWHyperlink,PopupMenuLink) {
+        @trait=bold {
+            wrapperComponent:AWGenericContainer;
+            wrapperBindings: { tagName:b; }
+        }
+        @trait=italic {
+            wrapperComponent:AWGenericContainer;
+            wrapperBindings: { tagName:i; }
+        }
+        @trait=heading1 {
+            wrapperComponent:AWGenericContainer;
+            wrapperBindings: { tagName:h1; }
+        }
+        @trait=heading2 {
+            wrapperComponent:AWGenericContainer;
+            wrapperBindings: { tagName:h2; }
+        }
+        @trait=heading3 {
+            wrapperComponent:AWGenericContainer;
+            wrapperBindings: { tagName:h3; }
+        }
+    }
+}
+
+@traitGroup=FieldType {
+    @trait=longtext;
+    @trait=richtext;
+    @trait=secret;
+}
+
+@traitGroup=ChooserType {
+    @trait=Popup;
+    @trait=PopupControl;
+    @trait=Chooser;
+}
+
+@traitGroup=WrapperStyle {
+    @trait=bold;
+    @trait=italic;
+    @trait=heading1;
+    @trait=heading2;
+    @trait=heading3;
+}
+
+/* Why would *field* have an action?!?
+field {
+    @trait=(action, pageAction) {
+        bindings: { action: [${meta().fireAction(this, component.requestContext)}] }
+    }
+
+    @trait=pageAction {
+        actionResults:${requestContext.pageWithName(properties.pageName)}
+    }
+}
+*/
+
+action {
+    visible:$${!properties.hidden};
+    enabled:true;
+
+    @trait=pageAction {
+        actionResults:${requestContext.pageWithName(properties.pageName)}
+    }
+
+    @trait=modalComponentPage {
+        actionResults:${requestContext.pageWithName("MetaModalPage")};
+        pageBindings:{
+            componentName:${properties.componentName};
+            title:${properties.title};
+        }
+    }
+
+    @trait=modalComponentPanel {
+        actionResults:${requestContext.pageWithName("MetaModalPage")};
+        pageBindings:{
+            componentName:${properties.componentName};
+            title:${properties.title};
+            clientPanel:true;
+        }
+    }
+
+    @trait=messageResults {
+        message:"Action Performed: %s";
+        actionResults:${
+            def o = (properties.isInstanceAction) ? object : ariba.ui.aribaweb.util.AWUtil.classForName(properties.class);
+            def v = ariba.util.fieldvalue.FieldValue.getFieldValue(o, properties.action);
+            def m = ariba.util.core.Fmt.S(properties.message, v);
+            ariba.ui.widgets.AribaPageContent.setMessage(m, requestContext.session());
+            null};
+    }
+
+    @trait=instance {
+    	enabled:${object != null};
+    	isInstanceAction:true;
+    }
+
+    filterActions=instance {
+    	visible:${properties.isInstanceAction == true}
+    }
+    filterActions=static {
+    	visible:${!properties.isInstanceAction}
+    }
+}
+
+layout {
+    zones: [zMain];
+    @trait=ActionMenu { visible:true; component:MetaActionList; bindings:{renderAsMenu:true}; elementClass:flR }
+    @trait=ActionButtons { visible:true; component:MetaActionList; bindings:{renderAsButtons:true}; elementClass:flR }
+    @trait=ActionLinks { visible:true; component:MetaActionList; bindings:{renderAsLinks:true}; elementClass:flR }
+    @trait=InstanceActionButtons { visible:true; component:MetaActionList
+                bindings:{renderAsButtons:true;filterActions:instance} elementClass:flR }
+    @trait=StaticActionButtons { visible:true; component:MetaActionList
+                bindings:{renderAsButtons:true;filterActions:static} elementClass:flR }
+    @trait=Tabs { visible:true; component:MetaTabs }
+    @trait=Sections { visible:true; component:MetaSections }
+    @trait=Form { visible:true; component:MetaForm }
+    @trait=Stack { visible:true; component:MetaElementList }
+
+    @trait=OwnZone {
+        zonePath:${layout}
+    }
+
+    @trait=OutlineBox {
+        visible:true;
+        wrapperComponent:AWGenericContainer;
+        wrapperBindings: { tagName:div; style:"padding-bottom:10px"; }
+        component:OutlineBox;
+        bindings: {
+            showExpandoCollapso:true;
+            verboseCollapsedContent:false;
+            awcontentLayouts:{body:Content; buttonArea:Actions};
+        };
+    }
+
+    @trait=Markdown {
+       component:Markdown;
+       bindings: {
+           value:${ariba.ui.aribaweb.util.AWUtil.stringWithContentsOfInputStream(requestContext.currentComponent.resourceManager.resourceNamed(properties.resourceName).inputStream)};
+       }
+    }
+    @trait=pad8 {
+        wrapperComponent:AWGenericContainer;
+        wrapperBindings:{ tagName:div; style:"padding:8px" }
+    }
+
+    @trait=Hint {
+        portletWrapper:AWTNullWrapper;
+        wrapperComponent:HintMessage;
+        after:zTop;
+        component:AWString;
+        bindings:{escapeUnsafeHtml:true; value:"Message..."};
+    }
+
+    component=MetaForm @trait=labelsOnTop;
+
+    layout_trait=labelsOnTop class {
+        bindings:{showLabelsAboveControls:true}
+    }
+}
+
+@traitGroup=ActionGrouping {
+    @trait=ActionMenu;
+    @trait=ActionButtons;
+    @trait=ActionLinks;
+    @trait=InstanceActionButtons;
+    @trait=StaticActionButtons;
+}
+
+@traitGroup=LayoutGrouping {
+    @trait=Tabs;
+    @trait=Sections;
+    @trait=Form;
+    @trait=Stack;
+}
+
+class layout=(Inspect, SearchForm) { trait:Form; label:${ariba.ui.meta.core.UIMeta.beautifyClassName(values.class)}; }
+~class layout=(Inspect, SearchForm) {component:AWString; bindings:{value:null}; }
+
+layout=InspectWithActions {
+    trait:Stack;
+    @layout=Actions#ActionMenu;
+    @layout=Inspect#Form;
+}
+layout=InspectStack {
+    trait:Stack;
+    @layout=Main {
+        visible:true;
+        component:OutlineBox;
+        bindings: {
+            title:$[a002]"No item selected";
+            showExpandoCollapso:true;
+            verboseCollapsedContent:false;
+            awcontentLayouts:{body:Inspect; buttonArea:Actions};
+        };
+        object { bindings: { title:$properties.objectTitle; } }
+
+        wrapperComponent:AWGenericContainer;
+        wrapperBindings: { tagName:div; style:"padding-bottom:10px;padding-top:3px"; }
+
+        @layout=Inspect {}
+        @layout=Actions#ActionButtons {}
+    }
+    @layout=ObjectDetail#Form { zonePath:ObjectDetail; }
+    }
+
+layout=ButtonArea { trait:StaticActionButtons }
+layout=SelectionButtonArea { trait:InstanceActionButtons }
+layout=Links { trait:ActionLinks }
+
+/* Support @Trait("labelField") to identity label field */
+layout=LabelField field {
+    visible:false;
+    @trait=labelField { visible:true! }
+}
+
+layout=(Table, DetailTable) class {
+    component:MetaTable;
+    bindings: {
+        displayGroup:$displayGroup;
+        enableScrolling:true;
+        title:$properties.label;
+        singleSelect:true;
+        showSelectionColumn:false;
+        submitOnSelectionChange:true;
+    }
+}
+
+layout=ListItem class {
+    component:AWString;
+    bindings:{
+        value:${properties.objectTitle};
+    }
+}
+/*
+layout=DetailTable class {
+    label:$${ariba.ui.meta.core.UIMeta.defaultLabelForIdentifier(field)};
+}
+*/
+
+object class  { objectTitle:${ariba.util.fieldvalue.FieldValue.getFieldValue(object,
+                    ariba.ui.meta.core.UIMeta.getInstance().displayKeyForClass(values.class))}; }
+object layout { objectTitle:${ariba.util.fieldvalue.FieldValue.getFieldValue(object,
+                    ariba.ui.meta.core.UIMeta.getInstance().displayKeyForClass(values.class))}; }
+operation=list {
+    @field=ActionCol {
+        label:"";
+        visible:true;
+        after:zNone;
+        component:MetaActionList;
+        columnBindings: { width:"1px" };
+        bindings: { renderAsMenu:true; }
+    }
+}
+
+module {
+    visible:$${!properties.hidden};
+    homePage:MetaHomePage;
+    pageBindings:${properties.homePage == "MetaHomePage" ? [module:values.module] : null};
+    component:MetaDashboardLayout;
+    layout { visible:true }
+
+    @trait=ActionTOC {
+        @layout=Actions {
+           label:"Actions";
+           component:"MetaActionList";
+           after:zToc;
+        }
+    }
+}
+
+actionCategory {
+    visible:$${!properties.hidden};
+}
+@actionCategory=General { after:zMain;  label:$[a001]General }
+
+
+/* For groovy */
+field=metaClass { visible:false }

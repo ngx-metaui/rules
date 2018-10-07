@@ -1,0 +1,260 @@
+<div class="ui-panel ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all">
+        <span class="ui-panel-title">My First Pure HTML Page</span>
+    </div>
+    <div class="ui-panel-content-wrapper">
+        <div class="ui-panel-content ui-widget-content">
+
+            <form class="w-form-table ui-g ui-fluid" novalidate>
+
+                <div class="ui-g-12 ui-g-nopad">
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="w-form-row ui-g">
+                                <div class="control-label ui-g-12 ui-md-3">
+                                    <label>User Id:</label>
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+                                    <input pInputText
+                                           name="userId"
+                                           [(ngModel)]="userObject.uniqueName"
+                                           type="text"
+                                           class="w-text-field"
+                                           placeholder="user id">
+
+                                    <div class="ui-g">
+                                        <small *ngIf="hasErrors()"
+                                               class="ui-g-12 ui-message ui-messages-error ui-corner-all">
+                                            {{ errorMsg }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-form-row ui-g">
+                                <div class="control-label ui-g-12 ui-md-3">
+                                    <label>First Name:</label>
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+                                    <input pInputText
+                                           name="firstName"
+                                           [(ngModel)]="userObject.firstName"
+                                           type="text"
+                                           class="w-text-field"
+                                           placeholder="First Name">
+
+                                    <div class="ui-g">
+                                        <small *ngIf="hasErrors()"
+                                               class="ui-g-12 ui-message ui-messages-error ui-corner-all">
+                                            {{ errorMsg }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-form-row ui-g">
+
+                                <div class="control-label ui-g-12 ui-md-3">
+                                    <label>Last Name:</label>
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+
+                                    <input pInputText
+                                           name="lastName"
+                                           [(ngModel)]="userObject.lastName"
+                                           type="text"
+                                           class="w-text-field"
+                                           placeholder="Last Name">
+
+                                    <div class="ui-g">
+                                        <small *ngIf="hasErrors()"
+                                               class="ui-g-12 ui-message ui-messages-error ui-corner-all">
+                                            {{ errorMsg }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-form-row ui-g">
+
+                                <div class="control-label ui-g-12 ui-md-3">
+                                    <label>Age: </label>
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+
+                                    <input pInputText
+                                           name="age"
+                                           [(ngModel)]="userObject.age"
+                                           class="w-text-field"
+                                           placeholder="Last Name">
+
+                                    <div class="ui-g">
+                                        <small *ngIf="hasErrors()"
+                                               class="ui-g-12 ui-message ui-messages-error ui-corner-all">
+                                            {{ errorMsg }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-form-row ui-g">
+
+                                <div class="control-label ui-g-12 ui-md-3">
+                                    <label>Date of birth: </label>
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+                                    <aw-date-time name="dob" [(ngModel)]="userObject.dob"
+                                                  [showTime]="false">
+                                    </aw-date-time>
+
+                                    <div class="ui-g">
+                                        <small *ngIf="hasErrors()"
+                                               class="ui-g-12 ui-message ui-messages-error ui-corner-all">
+                                            {{ errorMsg }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<pre>
+    <code class="language-markup" pCode>
+        &lt;div class="ui-panel ui-widget ui-widget-content ui-corner-all"&gt;
+                <div class="ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all"&gt;
+                    &lt;span class="ui-panel-title"&gt;My First Pure HTML Page&lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;div class="ui-panel-content-wrapper"&gt;
+                    &lt;div class="ui-panel-content ui-widget-content"&gt;
+
+                        &lt;form class="w-form-table ui-g ui-fluid" novalidate&gt;
+
+                            &lt;div class="ui-g-12 ui-g-nopad"&gt;
+                                &lt;div class="ui-g"&gt;
+                                    &lt;div class="ui-g-12"&gt;
+                                        &lt;div class="w-form-row ui-g"&gt;
+                                            &lt;div class="control-label ui-g-12 ui-md-3"&gt;
+                                                &lt;label&gt;User Id:&lt;/label&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class="ui-g-12 ui-md-6"&gt;
+                                                &lt;input pInputText
+                                                       name="userId"
+                                                       [(ngModel)]="userObject.uniqueName"
+                                                       type="text"
+                                                       class="w-text-field"
+                                                       placeholder="user id"&gt;
+
+                                                &lt;div class="ui-g"&gt;
+                                                    &lt;small *ngIf="hasErrors()"
+                                                           class="ui-g-12 ui-message ui-messages-error ui-corner-all"&gt;
+                                                        {{ errorMsg }}
+                                                    &lt;/small&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+
+                                        &lt;div class="w-form-row ui-g"&gt;
+                                            &lt;div class="control-label ui-g-12 ui-md-3"&gt;
+                                                &lt;label&gt;First Name:&lt;/label&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class="ui-g-12 ui-md-6"&gt;
+                                                &lt;input pInputText
+                                                       name="firstName"
+                                                       [(ngModel)]="userObject.firstName"
+                                                       type="text"
+                                                       class="w-text-field"
+                                                       placeholder="First Name"&gt;
+
+                                                &lt;div class="ui-g"&gt;
+                                                    &lt;small *ngIf="hasErrors()"
+                                                           class="ui-g-12 ui-message ui-messages-error ui-corner-all"&gt;
+                                                        {{ errorMsg }}
+                                                    &lt;/small&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+
+                                        &lt;div class="w-form-row ui-g"&gt;
+
+                                            &lt;div class="control-label ui-g-12 ui-md-3"&gt;
+                                                &lt;label&gt;Last Name:&lt;/label&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class="ui-g-12 ui-md-6"&gt;
+
+                                                &lt;input pInputText
+                                                       name="lastName"
+                                                       [(ngModel)]="userObject.lastName"
+                                                       type="text"
+                                                       class="w-text-field"
+                                                       placeholder="Last Name"&gt;
+
+                                                &lt;div class="ui-g"&gt;
+                                                    &lt;small *ngIf="hasErrors()"
+                                                           class="ui-g-12 ui-message ui-messages-error ui-corner-all"&gt;
+                                                        {{ errorMsg }}
+                                                    &lt;/small&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+
+                                        &lt;div class="w-form-row ui-g"&gt;
+
+                                            &lt;div class="control-label ui-g-12 ui-md-3"&gt;
+                                                &lt;label&gt;Age: &lt;/label&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class="ui-g-12 ui-md-6"&gt;
+
+                                                &lt;input pInputText
+                                                       name="age"
+                                                       [(ngModel)]="userObject.age"
+                                                       class="w-text-field"
+                                                       placeholder="Last Name"&gt;
+
+                                                &lt;div class="ui-g"&gt;
+                                                    &lt;small *ngIf="hasErrors()"
+                                                           class="ui-g-12 ui-message ui-messages-error ui-corner-all"&gt;
+                                                        {{ errorMsg }}
+                                                    &lt;/small&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+
+                                        &lt;div class="w-form-row ui-g"&gt;
+
+                                            &lt;div class="control-label ui-g-12 ui-md-3"&gt;
+                                                &lt;label&gt;Date of birth: &lt;/label&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class="ui-g-12 ui-md-6"&gt;
+                                                &lt;aw-date-time name="dob" [(ngModel)]="userObject.dob"
+                                                              [showTime]="false"&gt;
+                                                &lt;/aw-date-time&gt;
+
+                                                &lt;div class="ui-g"&gt;
+                                                    &lt;small *ngIf="hasErrors()"
+                                                           class="ui-g-12 ui-message ui-messages-error ui-corner-all"&gt;
+                                                        {{ errorMsg }}
+                                                    &lt;/small&gt;
+                                                &lt;/div&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+    </code>
+</pre>
+
+
+
+
+

@@ -1,0 +1,32 @@
+::ng-deep .ui-listbox-item {
+  > .ui-chkbox {
+
+    // hide default primeng checkbox as we need to use our aw-checkbox
+    display: none;
+  }
+  .ui-chkbox {
+    margin-right: 1em;
+  }
+}
+
+/**
+  There is one row representing list item that has 3 zones
+ */
+.w-li-wrapper {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+
+  .w-li-left, .w-li-right {
+    flex: 0 1 auto;
+  }
+
+  .w-li-middle {
+    flex: 1 1 auto;
+  }
+}
+
+
+
+

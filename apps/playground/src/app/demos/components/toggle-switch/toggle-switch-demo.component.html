@@ -1,0 +1,36 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- page header -->
+    <div class="ui-g-12 page-header">
+        <h3>Toggle Switch</h3>
+    </div>
+
+    <div class="ui-g-6">
+        <h4>Toggle without label</h4>
+        <aw-toggle [model]="toggleModel"></aw-toggle>
+    </div>
+    <div class="ui-g-2">
+        Model Value: {{toggleModel}}
+    </div>
+
+    <div class="ui-g-6">
+        <h4>Toggle with label</h4>
+        <aw-toggle [model]="toggleModelWithLabel" labelText="toggle"></aw-toggle>
+    </div>
+    <div class="ui-g-2">
+        Model Value: {{toggleModelWithLabel}}
+    </div>
+</div>
+
+
+
+
+
+
+
+

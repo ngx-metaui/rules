@@ -1,0 +1,11 @@
+<button
+  pButton
+  [attr.type]="type"
+  [attr.name]="name"
+  [ngClass]="buttonClass"
+  [disabled]="disabled"
+  [attr.value]="value"
+  (click)="clicked($event)">
+
+  <ng-content></ng-content>
+</button>

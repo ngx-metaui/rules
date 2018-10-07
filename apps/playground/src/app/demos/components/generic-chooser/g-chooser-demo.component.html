@@ -1,0 +1,118 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <div class="ui-g-12 page-header">
+        <h3>Generic Chooser</h3>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Render as Dropdown</h4></div>
+
+        <div class="ui-g-7">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'List'">
+                    <aw-generic-chooser
+                        [list]="list" [key]="'selection1'" [type]="'Dropdown'" [name]="'g1'">
+                    </aw-generic-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-3">
+            <b>{{selection1}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Render as RadioButtons</h4></div>
+
+        <div class="ui-g-7">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'List'">
+                    <aw-generic-chooser
+                        [list]="list" [key]="'selection2'" [type]="'Radio'" [name]="'g2'">
+                    </aw-generic-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-3">
+            <b>{{selection2}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Render as Checkboxes</h4></div>
+
+        <div class="ui-g-7">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'List'">
+                    <aw-generic-chooser
+                        [list]="list" [key]="'selection3'" [type]="'Checkbox'" [name]="'g3'">
+                    </aw-generic-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-3">
+            <b>{{selection3}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Render as Chooser - single selection </h4></div>
+
+        <div class="ui-g-7">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'List'">
+                    <aw-generic-chooser
+                        [list]="list" [key]="'selection4'" [type]="'Chooser'" [name]="'g4'">
+                    </aw-generic-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-3">
+            <b>{{selection4}}</b>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Render as Chooser - multi selection </h4></div>
+
+        <div class="ui-g-7">
+            <aw-form-table [labelsOnTop]="true">
+                <aw-form-row [label]="'List'">
+                    <aw-generic-chooser
+                        [list]="list" [key]="'selection5'" [multiselect]="true"
+                        [type]="'Chooser'" [name]="'g5'">
+                    </aw-generic-chooser>
+                </aw-form-row>
+            </aw-form-table>
+        </div>
+
+        <div class="ui-g-3">
+            <b>{{selection5}}</b>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+

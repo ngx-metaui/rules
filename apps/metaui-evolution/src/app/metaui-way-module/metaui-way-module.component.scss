@@ -1,0 +1,12 @@
+::ng-deep .ui-tabmenu {
+  background-color: transparent;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+}
+
+
+::ng-deep .ui-tabmenu-nav {
+  border-width: 0;
+  background-color: transparent;
+}

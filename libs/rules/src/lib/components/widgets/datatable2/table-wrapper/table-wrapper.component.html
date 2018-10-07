@@ -1,0 +1,118 @@
+<div class="dt-wrapper"
+     [ngClass]="dt.styleClass" [class.dt-full-screen-mode]="isFullScreenMode"
+     [style.width]="dt.width" >
+    <div class="dt-loading-overlay" *ngIf="dt.loading"></div>
+    <div class="dt-loading-content" *ngIf="dt.loading">
+        <i [class]="'sap-icon u-dt-spin-icon ' + dt.loadingIcon"></i>
+    </div>
+
+    <div class="dt-header" *ngIf="dt.showTableHeader">
+        <ng-template *ngIf="dt.header; then appDefinedHeader else defaultHeader"></ng-template>
+    </div>
+
+    <!-- DT BODY with table headers and values -->
+    <div class="dt-body-wrapper-view">
+        <ng-template
+            *ngIf="dt.hasFrozenColumns(); then dtBodyWithFrozenColumns else dtBodyNoFrozenColumns">
+        </ng-template>
+    </div>
+
+    <!--<div class="dt-footer" *ngIf="footer">-->
+    <!--&lt;!&ndash; footerArea&ndash;&gt;-->
+    <!--<ng-content select="aw-dt-footer"></ng-content>-->
+    <!--</div>-->
+</div>
+
+<!-- todo: dont activate this if we reached the end of list - -->
+<aw-infinite-scroll #infiniteScroll *ngIf="isFullScreenMode"
+                    [distance]="'10%'"
+                    [fetchSize]="dt.state.limit"
+                    (onLoad)="onLazyLoad($event)">
+</aw-infinite-scroll>
+
+
+<ng-template #appDefinedHeader>
+    <ng-container *ngTemplateOutlet="heading;"></ng-container>
+</ng-template>
+
+<ng-template #defaultHeader>
+    <div class="dt-global-filter">
+        <span class="sap-icon icon-filter"></span>
+    </div>
+
+    <div class="dt-global-actions">
+        <div class="dt-action-combo">
+            <span *ngIf="supportFullScreen" class="sap-icon icon-resize"
+                  (click)="toggleFullScreen($event)"></span>
+
+            <aw-input-field *ngIf="dt.showGlobalSearch" styleClass="dt-table-search"
+                            [(ngModel)]="dt.state.currentSearchQuery"
+                            placeHolder="search"
+                            icon="icon-search"
+                            (ngModelChange)="searchTerms.next($event)">
+            </aw-input-field>
+            <span class="ariba-icon icon-more"></span>
+        </div>
+    </div>
+</ng-template>
+
+<!--
+    Each section frozen/non-frozen is calculated inside table-wrapper in the ngAfterViewChecked, where we set
+    proper width for each frame as well as left coordinates for the right one
+-->
+<ng-template #dtBodyNoFrozenColumns>
+    <!--
+        For non-frozen case we also need to set TRUE as the view is actually frozen and does not
+        scroll.
+        We use this frozenColumns flag inside DT to properly set column index on the header level
+        columnIndex:(frozen ? columnIndex: (columns.length + columnIndex))
+
+        therefore we need to set true even in this case to return real columnIndex since we dont
+        have the second table.
+    -->
+    <ng-container *ngTemplateOutlet="dtBody; context:{$implicit: dt.columns, frozenColumns: true }">
+    </ng-container>
+</ng-template>
+
+<ng-template #dtBodyWithFrozenColumns>
+    <ng-container
+        *ngTemplateOutlet="dtBody; context:{$implicit: dt.frozenColumns, frozenColumns: true }">
+    </ng-container>
+    <ng-container
+        *ngTemplateOutlet="dtBody; context:{$implicit: dt.columns, frozenColumns: false }">
+    </ng-container>
+</ng-template>
+
+
+<ng-template #dtBody let-columns let-frozenColumns="frozenColumns">
+
+    <div #dtContainer class="dt-body-wrapper"
+         [style.overflow-x]="tableOverflow(frozenColumns)"
+         [style.width.px]="this.calculateFrozenWidth()"
+         [class.dt-body-unfrozen]="dt.hasFrozenColumns() && !frozenColumns"
+         [class.dt-body-frozen]="dt.hasFrozenColumns() && frozenColumns"
+    >
+
+        <table [ngClass]="dt.tableStyleClass"
+               [style.width]="calculateWidth()"
+               [class.dt-pivot-layout]="dt.pivotalLayout"
+               [class.dt-plain-layout]="!dt.pivotalLayout && !dt.isOutline()">
+
+            <!-- Render TH header rows-->
+            <thead class="dt-thead">
+            <ng-container *ngTemplateOutlet="headerRows; context:{$implicit: columns,frozenColumns:frozenColumns }">
+            </ng-container>
+            </thead>
+
+            <!--
+                Render data rows. For data rows we need to keep tbody tag inside DT table
+                due to Outline
+             -->
+            <ng-container *ngTemplateOutlet="bodyRows; context:{$implicit: columns,  frozenColumns:frozenColumns }">
+            </ng-container>
+        </table>
+    </div>
+</ng-template>
+
+
+<div #dtFullScreenOverlay class="dt-full-screen-overlay u-full-screen-element"></div>

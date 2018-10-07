@@ -1,0 +1,160 @@
+<!--
+    This template focus only on header and body rendering.
+
+    This datatable also supports frozen column and for this rendering it is pretty much transparent
+    as it received sets of column that it needs to render from the TableWrapper.
+
+    TableWrapper in case of frozen columns calls #headerRows and #bodyRows templates twice to
+    render to separate tables where one has frozen columns and another one has the rest and its
+    scrollable
+-->
+
+<aw-dt-wrapper #dtWrapper>
+    <ng-template #headingArea>
+        <ng-content select="aw-dt-header2"></ng-content>
+    </ng-template>
+
+    <ng-template #headerRows let-colsToRender let-frozenView="frozenColumns">
+        <ng-container
+            *ngTemplateOutlet="header; context:{$implicit: colsToRender, frozen:frozenView }">
+        </ng-container>
+    </ng-template>
+
+    <ng-template #bodyRows let-colsToRender>
+        <ng-template [ngIf]="isOutline()">
+            <ng-container
+                *ngTemplateOutlet="bodyOutline; context:{$implicit: colsToRender}"></ng-container>
+        </ng-template>
+        <ng-template [ngIf]="!isOutline()">
+            <ng-container
+                *ngTemplateOutlet="bodyPlain; context:{$implicit: colsToRender}"></ng-container>
+        </ng-template>
+    </ng-template>
+</aw-dt-wrapper>
+
+
+<!--
+    Each rendering column has its own renderTemplate which define how things should be render.
+    Based on different column types this code should be transparent as we dont care on this
+    level what kind of column we are rendering.
+
+    Later on when we will support single/multi selection, this will be just another column extending
+    DTColumn and providing its own template
+
+    We pass into this template if we are rendering header, subHeader, or data
+-->
+<ng-template #header let-colsToRender let-frozen="frozen">
+    <tr>
+        <ng-template ngFor let-col [ngForOf]="colsToRender" let-lastCol="last"
+                     let-columnIndex="index">
+            <ng-container *ngTemplateOutlet="col.rendererTemplate;
+                context:{$implicit: true, isSubHeader:false,
+                localColumnIndex: columnIndex,
+                columnIndex:(frozen ? columnIndex: (columns.length + columnIndex))}">
+            </ng-container>
+        </ng-template>
+    </tr>
+
+    <tr *ngIf="showSubHeader">
+        <ng-template ngFor let-col [ngForOf]="colsToRender" let-lastCol="last">
+            <ng-container *ngTemplateOutlet="col.rendererTemplate;
+                context:{$implicit: true, isSubHeader:true}">
+            </ng-container>
+        </ng-template>
+    </tr>
+</ng-template>
+
+
+<ng-template #bodyPlain let-colsToRender>
+
+    <tbody [ngClass]="{'dt-content dt-data-cells ': true, 'dt-is-hoverable-row': rowHover}">
+
+    <ng-template ngFor let-rowData [ngForOf]="dataToRender" let-even="even" let-odd="odd"
+                 let-rowIndex="index" [ngForTrackBy]="rowTrackBy">
+
+        <ng-container *ngTemplateOutlet="rowTemplate; context:{$implicit: rowData, even:even,
+                                          odd:odd, rowIndex:rowIndex, colsToRender:colsToRender}">
+        </ng-container>
+
+        <ng-template [ngIf]="showDetailColumn(rowData)">
+            <ng-container *ngTemplateOutlet="rowDetailColumn.rendererTemplate;
+                    context:{$implicit: false, data:rowData, rowIndex:(rowIndex)}">
+            </ng-container>
+        </ng-template>
+
+    </ng-template>
+    <ng-container *ngTemplateOutlet="noData"></ng-container>
+    </tbody>
+</ng-template>
+
+
+<ng-template #bodyOutline let-colsToRender>
+    <tbody #outlineFor awOutlineFor [list]="dataToRender"
+           [format]="outlineFormat"
+           [context]="context"
+           [indentationPerLevel]="indentationPerLevel"
+           [pushRootSectionOnNewLine]="pushRootSectionOnNewLine"
+           [children]="children" [expandAll]="expandAll"
+           [state]="outlineState"
+           [ngClass]="{'dt-content dt-data-cells ': true,
+                           'dt-is-hoverable-row': rowHover}"
+           (onExpandChange)="onOutlineExpandChange($event)">
+
+    <ng-template #outline let-rowData let-nestingLevel="nestingLevel" let-rowIndex="rowIndex">
+        <ng-container *ngTemplateOutlet="rowTemplate;
+                                context:{$implicit: rowData, nestingLevel:nestingLevel, colsToRender:colsToRender}">
+        </ng-container>
+
+        <ng-template [ngIf]="showDetailColumn(rowData)">
+            <ng-container *ngTemplateOutlet="rowDetailColumn.rendererTemplate;
+                    context:{$implicit: false, data:rowData, rowIndex:(rowIndex)}">
+            </ng-container>
+        </ng-template>
+
+    </ng-template>
+    <ng-container *ngTemplateOutlet="noData"></ng-container>
+    </tbody>
+</ng-template>
+
+<!--
+    Default template that is display when there are no data
+-->
+<ng-template #noData>
+    <tr *ngIf="isEmpty()" class=" dt-emptymessage-row"
+        [style.visibility]="loading ? 'hidden' : 'visible'">
+
+        <td [attr.colspan]="visibleColumns().length" class="dt-emptymessage">
+            <span *ngIf="!emptyMessageTemplate">{{emptyMessage}}</span>
+            <ng-container *ngTemplateOutlet="emptyMessageTemplate"></ng-container>
+        </td>
+    </tr>
+</ng-template>
+
+<!--
+    Template that renders actual row. Renders both header and body column. Each rendered
+    column has its own template called rendererTemplate that has all things that needs to be
+    rendered and we just tell the template if we are rendering header, subheader or body
+-->
+<ng-template #rowTemplate let-rowData let-even="event" let-odd="odd" let-rowIndex="rowIndex"
+             let-nestingLevel="nestingLevel" let-colsToRender="colsToRender">
+
+
+    <tr #rowElement dtDraggableRow [dndRowIndex]="rowIndex"
+        class="dt-body-row"
+        (click)="onHandleRowClicked($event, rowData)"
+        [attr.nestingLevel]="nestingLevel"
+        [ngClass]="{'dt-even-row': even, 'dt-odd-row': odd,
+            'dt-row-selected': isRowSelected(rowData),
+            'dt-row-draggable': dndRowEnabled,
+            'dt-root-section': nestingLevel === 0 }">
+
+        <ng-template ngFor let-col [ngForOf]="colsToRender" let-colIndex="index">
+            <ng-container *ngTemplateOutlet="col.rendererTemplate;
+                    context:{$implicit: false, data:rowData, rowIndex:rowIndex,
+                    columnIndex: colIndex, nestingLevel:nestingLevel}">
+            </ng-container>
+        </ng-template>
+    </tr>
+</ng-template>
+
+

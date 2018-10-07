@@ -1,0 +1,71 @@
+#m-toc {
+  position: relative;
+  float: left;
+  z-index: 99;
+  width: 15em;
+  padding: 0.5em;
+  -webkit-box-shadow: 6px 0px 10px -4px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 6px 0px 10px -4px rgba(0, 0, 0, 0.3);
+  box-shadow: 6px 0px 10px -4px rgba(0, 0, 0, 0.3);
+
+}
+
+#m-content {
+  float: left;
+  padding-top: 1em;
+  padding-left: 1em;
+  height: auto;
+}
+
+#m-toggle-bar {
+  box-sizing: border-box;
+  border-bottom: solid 1px #dde3e6;
+  overflow: hidden;
+  display: none;
+  border-radius: 5px;
+  padding: 0.5em;
+  width: 2em;
+  height: 2.3em;
+
+  &:hover,
+  &:focus,
+  &:hover,
+  &:focus {
+    background-color: #ececec;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+.m-dashbord-name {
+  font-weight: 600;
+}
+
+// canot have flex as it is broken by insert component that which is always between ui-g and
+// ui-g-12
+.ui-g {
+  display: block;
+}
+
+@media screen and (max-width: 64em) {
+  #m-toc {
+    display: none;
+    overflow-y: auto;
+    z-index: 999;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  #m-toggle-bar {
+    display: block;
+    position: relative;
+    z-index: 1000;
+    margin-right: 1em;
+  }
+}

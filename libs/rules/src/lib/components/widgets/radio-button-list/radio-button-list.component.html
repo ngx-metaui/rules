@@ -1,0 +1,14 @@
+<div *ngFor="let item of list;  let i = index" class="ui-g">
+
+  <div class="ui-g-12">
+    <aw-radiobutton
+      [(ngModel)]="model"
+      (ngModelChange)="onChange($event)"
+      [isStandalone]="false"
+      [name]="name"
+      [value]="i"
+      [label]="labelValue(item)">
+    </aw-radiobutton>
+  </div>
+
+</div>

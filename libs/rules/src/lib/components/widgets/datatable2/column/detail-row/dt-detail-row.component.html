@@ -1,0 +1,23 @@
+<!--
+    Renders application defined detail column. This template just renders a detail row and
+    not expansion control. This is implemented by different DtColumn implementation and its added
+    (will be) added programmatically during column initialization
+-->
+<ng-template #renderingTemplate let-column="column" let-rowData="data">
+
+    <tr #detailRowElement class="dt-body-row dt-detail-row">
+
+        <td *ngIf="dt.hasInvisibleSelectionColumn()" width="1px"></td>
+        <td *ngIf="visibleLeadingCols() > 0" colspan="visibleLeadingCols()" width="1px">
+            &nbsp;&nbsp;
+        </td>
+        <td [attr.colspan]="dt.startOfFirstDataColumn" [class]="dynamicBodyClass(rowData)"
+            [ngClass]="{ 'dt-is-default dt-cell-def': true}">
+
+            <ng-container
+                *ngTemplateOutlet="bodyTemplate; context:{$implicit: this, rowData:rowData}">
+            </ng-container>
+        </td>
+    </tr>
+</ng-template>
+

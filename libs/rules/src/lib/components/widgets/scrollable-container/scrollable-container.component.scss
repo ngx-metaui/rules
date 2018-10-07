@@ -1,0 +1,106 @@
+
+.w-scrollable {
+  display: flex;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  will-change: overflow;
+
+  // target direct children as flex box items
+  /deep/ > * {
+    flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    margin: 10px;
+  }
+}
+
+/**
+ * Utility classes
+ */
+
+// Flexbox flow options for horizontal scrolling
+// one row that scroll horizontally
+.u-scrollable-fh {
+  flex-flow: row nowrap;
+  -webkit-flex-flow: row nowrap;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+// Flexbox flow options for vertical scrolling
+// one column that scrolls vertically
+.u-scrollable-fv {
+  flex-flow: column nowrap;
+  -webkit-flex-flow: column nowrap;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// Flexbox flow options for vertical and horizontal scrolling (b=both)
+.u-scrollable-fb {
+  flex-flow: row nowrap;
+  -webkit-flex-flow: row nowrap;
+
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+// Flexbox flow options for vertical scroll with row flow
+// This is the case when we want layout element inline and let them wrap
+// and start scrolling horizontally once it reaches defined height.
+.u-scrollable-fv-row {
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// Flexbox flow options for wrapping
+.u-scrollable-fn {
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+}
+
+// Flexbox alignment options = Left
+.u-scrollable-al {
+  justify-content: flex-start;
+  -webkit-justify-content: flex-start;
+}
+
+// Flexbox alignment options = right
+.u-scrollable-ar {
+  justify-content: flex-end;
+  -webkit-justify-content: flex-end;
+}
+
+// Flexbox alignment options = center
+.u-scrollable-ac {
+  justify-content: center;
+  -webkit-justify-content: center;
+}
+
+// Flexbox alignment options = justify
+.u-scrollable-aj {
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+}
+
+// Flexbox alignment options = justify
+.u-scrollable-aj-around {
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+}
+
+//
+//@mixin scrollable-layout($flow, $ox: auto, $oy: auto, $wrap: nowrap) {
+//  flex-flow: $flow $wrap;
+//  overflow-x: $ox;
+//  overflow-y: $oy;
+//}

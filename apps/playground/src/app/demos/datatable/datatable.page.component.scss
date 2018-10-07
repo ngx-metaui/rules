@@ -1,0 +1,106 @@
+// some styles for table header
+.supplier-header {
+  display: block;
+  width: 100%;
+
+  .u-my-row:first-child {
+    margin-bottom: 12px;
+  }
+
+  .qualification {
+    flex: 0 0;
+    font-size: 10px;
+    padding: 2px 10px;
+    color: #ffffff;
+    background-color: #435559;
+    align-items: flex-start;
+  }
+
+  .award-menu {
+    flex: 0 0 5px;
+    align-items: flex-end;
+  }
+
+  .supplier-name {
+    color: #00679E;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
+// some styles for subHeader and its totals
+.est-price-label, .est-price {
+  color: #696969;
+  font-size: 12px;
+}
+
+.section-amount {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.table-filter {
+  font-weight: normal;
+  padding: 24px 17px 28px 32px;
+  cursor: pointer;
+
+  .label {
+    color: #696969;
+    padding-right: 20px;
+  }
+
+  .icon {
+    vertical-align: text-bottom;
+  }
+}
+
+/**
+ some hacks to make QTY to look just like in the UX design. Mainly hiding border for different
+ row types
+*/
+::ng-deep {
+
+  th.item-name-row-column.dt-is-default,
+  .app-dt-item-section.item-name-row-column,
+  .app-dt-item-term.item-name-row-column {
+    border-right-color: transparent;
+  }
+
+  // for row details terms change font and hide default div that is there from outline control
+  td.app-dt-item-term {
+    background-color: #F1F1F1;
+    color: #696969;
+    padding: 10px 16px 10px;
+    font-size: 12px;
+
+    .outline-icon {
+      display: none;
+    }
+  }
+  // change padding, font color for this small column
+  .qty-row-column {
+    &.dt-cell-def {
+      font-size: 12px;
+      color: #4A4A4A;
+      padding: 12px 3px 12px;
+      text-align: center;
+    }
+  }
+}
+
+// utility
+.u-my-row {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+
+::ng-deep .u-text-highlight {
+  color: black;
+  background: #e2ee41;
+  border: 1px solid red;
+  border-radius: 2px;
+  margin: -1px;
+}

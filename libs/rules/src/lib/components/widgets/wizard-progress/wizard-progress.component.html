@@ -1,0 +1,7 @@
+<div class="step-indicator">{{currentStep + 1}}/{{totalSteps}}</div>
+<div class="aw-step-progress">
+  <div class="aw-step-progress__item" *ngFor="let step of steps; let i = index;"
+       [ngClass]="{ 'aw-step-progress__item--is-active': step.current === true }"
+       (click)="goToStep(i);">
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<p-panel header="My First MetaUI" [toggleable]="false">
+
+
+    <m-context [object]="userObject" operation="edit" layout="Inspect">
+        <m-include-component></m-include-component>
+    </m-context>
+
+</p-panel>
+
+
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+<pre>
+<code class="language-markup" pCode>
+&lt;m-context [object]="userObject" operation="edit"
+    layout="Inspect"&gt;
+    &lt;m-include-component&gt;&lt;/m-include-component&gt;
+&lt;/m-context&gt;
+</code>
+</pre>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+<pre>
+<code class="language-javascript" pCode>
+
+class=User &#123;
+    zLeft => uniqueName => firstName => lastName => age => dob;
+&#125;
+
+
+</code>
+</pre>
+
+    </div>
+</div>
+
+
+
+

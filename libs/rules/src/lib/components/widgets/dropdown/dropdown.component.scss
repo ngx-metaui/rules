@@ -1,0 +1,61 @@
+
+/deep/ .ui-dropdown-panel {
+  z-index: 10010 !important; // need to get over inline style
+  top: 35px !important;
+
+  // need to replace inline style which sets default height
+  .ui-dropdown-items-wrapper {
+    max-height: none !important;
+  }
+
+  .ui-dropdown-item {
+    padding: 0.65em 2em 0.65em 0.64em;
+    margin: 0;
+  }
+
+  .ui-dropdown-filter-container {
+    width: 100%;
+
+    .fa {
+      top: 1.2em;
+    }
+  }
+
+  .ui-dropdown-list {
+    padding: 1.0em 0;
+  }
+}
+
+/deep/ .w-dropdown {
+  // color for default placeholder
+  &:not(.ng-dirty) {
+    label {
+      color: #969696;
+    }
+  }
+
+  .ui-dropdown-trigger {
+    &.ui-corner-right {
+      border-left: none;
+      color: #969696;
+    }
+
+    .pi {
+      font-family: "SAP icon fonts";
+      color: #767676;
+      cursor: pointer;
+      font-size: 1.4em;
+      margin-left: -0.85em;
+    }
+
+    .pi-caret-down:before {
+      content: '\e1ef';
+    }
+
+  }
+
+  .ui-dropdown-label {
+    padding-right: 2.4em;
+  }
+
+}

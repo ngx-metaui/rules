@@ -1,0 +1,42 @@
+<div class="back-link">
+    <aw-hyperlink routerLink="/play/"><< Back to DEMOs</aw-hyperlink>
+</div>
+
+
+<div class="ui-g">
+
+    <!-- page header -->
+    <div class="ui-g-12 page-header">
+        <h3>Text Editor</h3>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Default Editor</h4></div>
+
+        <div class="ui-g-10">
+
+            <aw-richtextarea [value]="value2" placeHolder="this is place holder"></aw-richtextarea>
+        </div>
+    </div>
+
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>Full Featured Text Editor</h4></div>
+
+        <div class="ui-g-10">
+            <aw-richtextarea [type]="editor2Type" [value]="value2"
+                             placeHolder="this is place holder"></aw-richtextarea>
+        </div>
+    </div>
+
+    <!-- Field Type -->
+    <div class="ui-g-12">
+        <div class="ui-g-2"><h4>TextFormat Editor</h4></div>
+
+        <div class="ui-g-10">
+            <aw-richtextarea [type]="editor3Type" [value]="value2"
+                             placeHolder="this is place holder"></aw-richtextarea>
+        </div>
+    </div>
+
+</div>

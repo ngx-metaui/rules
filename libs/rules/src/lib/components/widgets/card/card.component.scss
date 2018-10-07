@@ -1,0 +1,122 @@
+.w-card {
+  border: 2px solid #0076cb;
+  display: inline-block;
+  overflow: hidden;
+  color: #636363;
+  box-sizing: border-box;
+}
+
+.w-card-header {
+  position: relative;
+  height: 30px;
+  padding-left: 1em;
+}
+
+// defines properties for each zones
+.w-card-ztitle {
+  height: 100%;
+  padding-top: 3px;
+
+  // by default card content will be flex where we can have option to align children in
+  // more transparent way
+  ::ng-deep .w-card-title {
+    height: 100%;
+    width: 100%;
+    display: flex;
+
+    > * {
+      flex: 0 1;
+    }
+  }
+}
+
+.w-card-zaction {
+  height: 100%;
+  display: inline-block;
+  text-align: right;
+
+  .sap-icon {
+    width: 29px;
+    height: 29px;
+    text-align: center;
+    display: inline-block;
+    font-size: 1.5em;
+    line-height: 1.4em;
+
+    &.selection {
+      color: #FFF;
+    }
+
+    &.action {
+      color: #969696;
+    }
+  }
+}
+
+.w-card-ztop, .w-card-zbottom {
+  padding: 1em;
+}
+
+.w-card-zbottom {
+
+}
+
+.w-card-line-divider {
+  border-top: 1px solid #d6d6d6;
+  margin: 0 14px;
+}
+
+.w-card-user-cnt {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #eeeeee;
+}
+
+//.w-card:hover .u-card-hover {
+//  opacity: 0.5;
+//}
+
+// utility classes
+
+.u-card-hover {
+  @extend .u-card-pointer;
+
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #0076cb;
+  z-index: 100;
+
+  .sap-icon {
+    text-align: center;
+    display: inline-block;
+    font-size: 4em;
+    color: #ffffff;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.u-card-action-bg {
+  background: #0076cb;
+}
+
+.u-is-hover {
+  position: relative;
+}
+
+.u-card-selected {
+  border-color: #0076cb;
+}
+
+.u-card-unselected {
+  border-color: #d7d7d7;
+}
+
+.u-card-pointer {
+  cursor: pointer;
+}

@@ -1,0 +1,16 @@
+.step {
+    text-align: center;
+    position: relative;
+    padding: 50px;
+    .btn {
+        position: absolute;
+        bottom: 5px;
+        padding: 5px;
+    }
+    .next {
+        right: 24px;
+    }
+    .previous {
+        left: 24px;
+    }
+}

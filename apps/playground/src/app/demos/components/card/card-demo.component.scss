@@ -1,0 +1,41 @@
+.cards {
+  display: inline;
+  padding: 5px;
+}
+
+
+aw-card {
+  margin-right: 5px;
+}
+
+:host {
+  padding-top: 5px;
+  display: inline-block;
+}
+
+
+.a-supplier-tag {
+  background-color: #58b957;
+  padding: 2px 10px 2px 10px;
+  font-size: 10px;
+  color: #ffffff;
+  height: 11px;
+}
+
+
+.supplierName{
+  font-family: Arial;
+  font-weight: bold;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #00679e;
+  padding-bottom: 4px;
+}
+
+.supplierLocation {
+  font-size: 13px
+}
+
+.card-actions {
+  padding: 20px;
+}

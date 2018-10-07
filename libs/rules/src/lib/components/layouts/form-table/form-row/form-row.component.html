@@ -1,0 +1,21 @@
+<div *ngIf="!hidden"
+     class="w-form-row ui-g"
+     [class.highlight-row]="highlightRow"
+     [class.required]="required"
+     [class.label-on-top]="labelsOnTop"
+     [class.label-on-side]="!labelsOnTop"
+     [class.has-danger]="!formControl.valid && !formControl.pristine "
+     [ngClass]="styleClass">
+
+  <div class="control-label ui-g-12 ui-g-nopad"
+       *ngIf="!noLabelLayout"
+       [class.ui-md-3]="!labelsOnTop">
+    <label [class.sr-only]="noLabelLayout">{{label}}</label>
+  </div>
+
+  <div class="control-value ui-g-nopad" [ngClass]="size"
+       [class.read-only]="!editable">
+    <ng-content></ng-content>
+    <a-error-messages [control]="formControl"></a-error-messages>
+  </div>
+</div>
