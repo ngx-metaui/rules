@@ -1,5 +1,0 @@
-class=CarRentalRequest {
-
-    zNone => *;
-    zLeft => firstName#required => lastName#required => driverLicenseNumber#required => pickupDate => dropOffDate => note#longtext;
-}

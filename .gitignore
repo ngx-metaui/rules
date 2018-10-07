@@ -10,7 +10,6 @@
 
 # IDEs and editors
 /.idea
-.idea
 .project
 .classpath
 .c9/
@@ -36,25 +35,6 @@ yarn-error.log
 testem.log
 /typings
 
-# e2e
-/e2e/*.js
-/e2e/*.map
-
-#System Files
+# System Files
 .DS_Store
 Thumbs.db
-
-# build scripts
-generate-changelog-token.local.*
-
-# generated playground assets
-src/playground/assets/i18n/**/i18n.resource.json
-src/playground/assets/i18n/**/resource.common.json
-src/playground/assets/i18n/**/resource.widgets.*.json
-src/playground/assets/images/
-
-
-# make sure conf. for npm will not be pushed to REPO
-.npmrc
-
-
