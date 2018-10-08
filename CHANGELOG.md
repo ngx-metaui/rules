@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.3.0"></a>
+# [6.3.0](https://github.com/ngx-meta/rules/compare/v6.1.1...v6.3.0) (2018-10-08)
+
+Starting from this version the project has been refactored into single module with help of **nrwl** to make 
+the next development easier. We will be executing this project in 3 stages [README.md](https://github.com/ngx-meta/rules): 
+
+
+* Stage #1 - Initial Setup and basic structure (schematics / docs)
+* Stage #2 - Detach MetaUI from UI
+* Stage #3 - OSS (Object Style Sheet) and improvements
+
+
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/ngx-meta/rules) (2018-10-05)
+
+* MetaUI project moved into @ngx-meta/rules
+* Created new plan how to take this to the next level
+
 <a name="6.1.1"></a>
 ## [6.1.1](https://github.com/SAP/angular-metaui/compare/v6.1.0...v6.1.1) (2018-09-09)
 
