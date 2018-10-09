@@ -1,5 +1,5 @@
 {
-  "npmScope": "ngx-meta",
+  "npmScope": "ngx-metaui",
   "implicitDependencies": {
     "angular.json": "*",
     "package.json": "*",

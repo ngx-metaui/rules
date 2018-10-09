@@ -7,7 +7,7 @@ echo "CDing to $scriptDir"
 cd ${scriptDir}
 
 
-PACKAGES=(core components metaui resources)
+PACKAGES=(rules)
 
 rm -Rf ../dist
 
@@ -19,25 +19,25 @@ echo "##### Building packages to dist"
 
 cd ..
 echo "##### Testing packages"
-ng test core --source-map=false --watch=false --progress=false && ng test components --source-map=false --watch=false --progress=false  && ng test metaui --source-map=false --watch=false --progress=false
+ng test rules --source-map=false --watch=false --progress=false
 
 
 
 NEW_VERSION=$(node -p "require('./package.json').version")
-echo "Updating packages.json under dist/@aribaui with version ${NEW_VERSION}"
+echo "Updating packages.json under dist/libs/rules with version ${NEW_VERSION}"
 
-cd ./dist
+cd ./dist/
 perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g" $(grep -ril VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
 
 
 
-cd "@aribaui"
+cd "libs"
 
 pwd
 for P in ${PACKAGES[@]};
 do
-    echo publish "@aribaui/${P}"
+    echo publish "@ngx-meta/${P}"
     cd ${P}
-    npm publish
+    npm publish --accesss public
     cd ..
 done

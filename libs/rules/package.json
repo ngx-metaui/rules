@@ -1,6 +1,6 @@
 {
-  "name": "@ngx-meta/rules",
-  "name": "Updated MetaUI project into single modlue based on angular-metaui",
+  "name": "@ngx-metaui/rules",
+  "description": "Rule driven UI for Angular",
   "version": "VERSION_PLACEHOLDER",
   "license": "Apache-2.0",
   "peerDependencies": {
