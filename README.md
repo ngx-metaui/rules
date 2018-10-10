@@ -4,6 +4,9 @@
 [![Build Status](https://travis-ci.org/ngx-meta/rules.svg?branch=master)](https://travis-ci.org/ngx-meta/rules)
 [![npm version](https://badge.fury.io/js/%40ngx-metaui%2Frules.svg)](https://www.npmjs.com/@angular/core)
 
+[![Dependency Status](https://david-dm.org/ngx-meta/rules.svg)](https://david-dm.org/ngx-meta/rules)
+ [![devDependency Status](https://david-dm.org/ngx-meta/rules/dev-status.svg)](https://david-dm.org/ngx-meta/rules?type=dev) 
+
 ## Table of Contents
 
 * [Description](#description)
