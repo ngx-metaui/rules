@@ -176,39 +176,39 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-@angular/animations@6.1.6
+@angular/animations@6.1.8
 MIT
 MIT
 
-@angular/common@6.1.6
+@angular/common@6.1.8
 MIT
 MIT
 
-@angular/compiler@6.1.6
+@angular/compiler@6.1.8
 MIT
 MIT
 
-@angular/core@6.1.6
+@angular/core@6.1.8
 MIT
 MIT
 
-@angular/forms@6.1.6
+@angular/forms@6.1.8
 MIT
 MIT
 
-@angular/platform-browser-dynamic@6.1.6
+@angular/platform-browser-dynamic@6.1.8
 MIT
 MIT
 
-@angular/platform-browser@6.1.6
+@angular/platform-browser@6.1.8
 MIT
 MIT
 
-@angular/router@6.1.6
+@angular/router@6.1.8
 MIT
 MIT
 
-big-integer@1.6.35
+big-integer@1.6.32
 Unlicense
 This is free and unencumbered software released into the public domain.
 

@@ -1,14 +1,14 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["styles"],{
 
-/***/ "../../dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css":
-/*!***************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css ***!
-  \***************************************************************************************************************************/
+/***/ "../../libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css":
+/*!**********************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css ***!
+  \**********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../node_modules/raw-loader!../../../../../node_modules/postcss-loader/lib??embedded!./sap-ariba-icon-fonts.css */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css");
+var content = __webpack_require__(/*! !../../../../../../../node_modules/raw-loader!../../../../../../../node_modules/postcss-loader/lib??embedded!./sap-ariba-icon-fonts.css */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -22,7 +22,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
+var update = __webpack_require__(/*! ../../../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -30,15 +30,15 @@ if(false) {}
 
 /***/ }),
 
-/***/ "../../dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css":
-/*!***************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css ***!
-  \***************************************************************************************************************/
+/***/ "../../libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css":
+/*!**********************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css ***!
+  \**********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../node_modules/raw-loader!../../../../../node_modules/postcss-loader/lib??embedded!./sap-icon-fonts.css */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css");
+var content = __webpack_require__(/*! !../../../../../../../node_modules/raw-loader!../../../../../../../node_modules/postcss-loader/lib??embedded!./sap-icon-fonts.css */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -52,7 +52,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
+var update = __webpack_require__(/*! ../../../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -60,15 +60,15 @@ if(false) {}
 
 /***/ }),
 
-/***/ "../../dist/@aribaui/resources/styles/aribaui.scss":
-/*!*******************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/styles/aribaui.scss ***!
-  \*******************************************************************************************/
+/***/ "../../libs/rules/src/lib/resources/styles/aribaui.scss":
+/*!**************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/styles/aribaui.scss ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../node_modules/raw-loader!../../../../node_modules/postcss-loader/lib??embedded!../../../../node_modules/sass-loader/lib/loader.js??ref--15-3!./aribaui.scss */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../dist/@aribaui/resources/styles/aribaui.scss");
+var content = __webpack_require__(/*! !../../../../../../node_modules/raw-loader!../../../../../../node_modules/postcss-loader/lib??embedded!../../../../../../node_modules/sass-loader/lib/loader.js??ref--15-3!./aribaui.scss */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../libs/rules/src/lib/resources/styles/aribaui.scss");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -82,7 +82,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
+var update = __webpack_require__(/*! ../../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -90,15 +90,15 @@ if(false) {}
 
 /***/ }),
 
-/***/ "../../dist/@aribaui/resources/themes/_normalize.scss":
-/*!**********************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/_normalize.scss ***!
-  \**********************************************************************************************/
+/***/ "../../libs/rules/src/lib/resources/themes/_normalize.scss":
+/*!*****************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/_normalize.scss ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../node_modules/raw-loader!../../../../node_modules/postcss-loader/lib??embedded!../../../../node_modules/sass-loader/lib/loader.js??ref--15-3!./_normalize.scss */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../dist/@aribaui/resources/themes/_normalize.scss");
+var content = __webpack_require__(/*! !../../../../../../node_modules/raw-loader!../../../../../../node_modules/postcss-loader/lib??embedded!../../../../../../node_modules/sass-loader/lib/loader.js??ref--15-3!./_normalize.scss */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../libs/rules/src/lib/resources/themes/_normalize.scss");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -112,7 +112,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
+var update = __webpack_require__(/*! ../../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -120,15 +120,15 @@ if(false) {}
 
 /***/ }),
 
-/***/ "../../dist/@aribaui/resources/themes/ariba/theme.scss":
-/*!***********************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/ariba/theme.scss ***!
-  \***********************************************************************************************/
+/***/ "../../libs/rules/src/lib/resources/themes/ariba/theme.scss":
+/*!******************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/ariba/theme.scss ***!
+  \******************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../node_modules/raw-loader!../../../../../node_modules/postcss-loader/lib??embedded!../../../../../node_modules/sass-loader/lib/loader.js??ref--15-3!./theme.scss */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../dist/@aribaui/resources/themes/ariba/theme.scss");
+var content = __webpack_require__(/*! !../../../../../../../node_modules/raw-loader!../../../../../../../node_modules/postcss-loader/lib??embedded!../../../../../../../node_modules/sass-loader/lib/loader.js??ref--15-3!./theme.scss */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../libs/rules/src/lib/resources/themes/ariba/theme.scss");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -142,7 +142,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
+var update = __webpack_require__(/*! ../../../../../../../node_modules/style-loader/lib/addStyles.js */ "../../node_modules/style-loader/lib/addStyles.js")(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -151,9 +151,9 @@ if(false) {}
 /***/ }),
 
 /***/ "../../node_modules/font-awesome/css/font-awesome.min.css":
-/*!**************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/font-awesome/css/font-awesome.min.css ***!
-  \**************************************************************************************************/
+/*!****************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/font-awesome/css/font-awesome.min.css ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -181,9 +181,9 @@ if(false) {}
 /***/ }),
 
 /***/ "../../node_modules/primeicons/primeicons.css":
-/*!**************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/primeicons/primeicons.css ***!
-  \**************************************************************************************/
+/*!****************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/primeicons/primeicons.css ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -211,9 +211,9 @@ if(false) {}
 /***/ }),
 
 /***/ "../../node_modules/primeng/resources/primeng.min.css":
-/*!**********************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/primeng/resources/primeng.min.css ***!
-  \**********************************************************************************************/
+/*!************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/primeng/resources/primeng.min.css ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -241,9 +241,9 @@ if(false) {}
 /***/ }),
 
 /***/ "../../node_modules/prismjs/themes/prism.css":
-/*!*************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/prismjs/themes/prism.css ***!
-  \*************************************************************************************/
+/*!***************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/prismjs/themes/prism.css ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -271,9 +271,9 @@ if(false) {}
 /***/ }),
 
 /***/ "../../node_modules/quill/dist/quill.core.css":
-/*!**************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.core.css ***!
-  \**************************************************************************************/
+/*!****************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.core.css ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -301,9 +301,9 @@ if(false) {}
 /***/ }),
 
 /***/ "../../node_modules/quill/dist/quill.snow.css":
-/*!**************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.snow.css ***!
-  \**************************************************************************************/
+/*!****************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.snow.css ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -330,10 +330,10 @@ if(false) {}
 
 /***/ }),
 
-/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -341,10 +341,10 @@ module.exports = "@font-face {\n    font-family: \"SAP Ariba icon fonts\";\n    
 
 /***/ }),
 
-/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css":
-/*!*****************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************/
+/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css":
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -353,9 +353,9 @@ module.exports = "@font-face {\n    font-family: \"SAP icon fonts\";\n    src: u
 /***/ }),
 
 /***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/font-awesome/css/font-awesome.min.css":
-/*!****************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/font-awesome/css/font-awesome.min.css ***!
-  \****************************************************************************************************************************************************************************************************************************************************/
+/*!**********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/font-awesome/css/font-awesome.min.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -364,9 +364,9 @@ module.exports = "/*!\n *  Font Awesome 4.7.0 by @davegandy - http://fontawesome
 /***/ }),
 
 /***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/primeicons/primeicons.css":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/primeicons/primeicons.css ***!
-  \****************************************************************************************************************************************************************************************************************************************/
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/primeicons/primeicons.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -375,9 +375,9 @@ module.exports = "@font-face {\n    font-family: 'PrimeIcons';\n    src: url('pr
 /***/ }),
 
 /***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/primeng/resources/primeng.min.css":
-/*!************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/primeng/resources/primeng.min.css ***!
-  \************************************************************************************************************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/primeng/resources/primeng.min.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -386,9 +386,9 @@ module.exports = ".ui-widget,.ui-widget *{box-sizing:border-box}.ui-helper-hidde
 /***/ }),
 
 /***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/prismjs/themes/prism.css":
-/*!***************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/prismjs/themes/prism.css ***!
-  \***************************************************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/prismjs/themes/prism.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -397,9 +397,9 @@ module.exports = "/**\n * prism.js default theme for JavaScript, CSS and HTML\n 
 /***/ }),
 
 /***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/quill/dist/quill.core.css":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.core.css ***!
-  \****************************************************************************************************************************************************************************************************************************************/
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.core.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -408,9 +408,9 @@ module.exports = "/*!\n * Quill Editor v1.3.6\n * https://quilljs.com/\n * Copyr
 /***/ }),
 
 /***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/quill/dist/quill.snow.css":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.snow.css ***!
-  \****************************************************************************************************************************************************************************************************************************************/
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.snow.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -418,10 +418,10 @@ module.exports = "/*!\n * Quill Editor v1.3.6\n * https://quilljs.com/\n * Copyr
 
 /***/ }),
 
-/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../dist/@aribaui/resources/styles/aribaui.scss":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/sass-loader/lib/loader.js??ref--15-3!/Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/styles/aribaui.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../libs/rules/src/lib/resources/styles/aribaui.scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/sass-loader/lib/loader.js??ref--15-3!/Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/styles/aribaui.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -429,10 +429,10 @@ module.exports = "/**\n * Setting the html and body to be 100%. It works in conj
 
 /***/ }),
 
-/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../dist/@aribaui/resources/themes/_normalize.scss":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/sass-loader/lib/loader.js??ref--15-3!/Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/_normalize.scss ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../libs/rules/src/lib/resources/themes/_normalize.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/sass-loader/lib/loader.js??ref--15-3!/Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/_normalize.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -440,10 +440,10 @@ module.exports = "/*\n  Regular normalization rules to set defaults for ariba ba
 
 /***/ }),
 
-/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../dist/@aribaui/resources/themes/ariba/theme.scss":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/MetaUI/node_modules/sass-loader/lib/loader.js??ref--15-3!/Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/ariba/theme.scss ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!../../libs/rules/src/lib/resources/themes/ariba/theme.scss":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/sass-loader/lib/loader.js??ref--15-3!/Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/ariba/theme.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -451,10 +451,10 @@ module.exports = "@charset \"UTF-8\";\n/* In Ariba Theme, all the state colors a
 
 /***/ }),
 
-/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!./src/styles.css":
-/*!**************************************************************************************************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/raw-loader!/Users/fkolar/Documents/projects/MetaUI/node_modules/postcss-loader/lib??embedded!./src/styles.css ***!
-  \**************************************************************************************************************************************************************************/
+/***/ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!./src/styles.scss":
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/raw-loader!/Users/fkolar/Documents/projects/ngx-meta/node_modules/postcss-loader/lib??embedded!/Users/fkolar/Documents/projects/ngx-meta/node_modules/sass-loader/lib/loader.js??ref--15-3!./src/styles.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -463,9 +463,9 @@ module.exports = "/* You can add global styles to this file, and also import oth
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/addStyles.js":
-/*!******************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/style-loader/lib/addStyles.js ***!
-  \******************************************************************************************/
+/*!********************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/style-loader/lib/addStyles.js ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -854,9 +854,9 @@ function updateLink (link, options, obj) {
 /***/ }),
 
 /***/ "../../node_modules/style-loader/lib/urls.js":
-/*!*************************************************************************************!*\
-  !*** /Users/fkolar/Documents/projects/MetaUI/node_modules/style-loader/lib/urls.js ***!
-  \*************************************************************************************/
+/*!***************************************************************************************!*\
+  !*** /Users/fkolar/Documents/projects/ngx-meta/node_modules/style-loader/lib/urls.js ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -953,15 +953,15 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ "./src/styles.css":
-/*!************************!*\
-  !*** ./src/styles.css ***!
-  \************************/
+/***/ "./src/styles.scss":
+/*!*************************!*\
+  !*** ./src/styles.scss ***!
+  \*************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../node_modules/raw-loader!../../../node_modules/postcss-loader/lib??embedded!./styles.css */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!./src/styles.css");
+var content = __webpack_require__(/*! !../../../node_modules/raw-loader!../../../node_modules/postcss-loader/lib??embedded!../../../node_modules/sass-loader/lib/loader.js??ref--15-3!./styles.scss */ "../../node_modules/raw-loader/index.js!../../node_modules/postcss-loader/lib/index.js??embedded!../../node_modules/sass-loader/lib/loader.js??ref--15-3!./src/styles.scss");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -984,24 +984,24 @@ if(false) {}
 /***/ }),
 
 /***/ 2:
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** multi /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/_normalize.scss /Users/fkolar/Documents/projects/MetaUI/node_modules/prismjs/themes/prism.css /Users/fkolar/Documents/projects/MetaUI/node_modules/primeng/resources/primeng.min.css /Users/fkolar/Documents/projects/MetaUI/node_modules/font-awesome/css/font-awesome.min.css /Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.core.css /Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.snow.css /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css /Users/fkolar/Documents/projects/MetaUI/node_modules/primeicons/primeicons.css /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/ariba/theme.scss /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/styles/aribaui.scss ./src/styles.css ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** multi /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/_normalize.scss /Users/fkolar/Documents/projects/ngx-meta/node_modules/prismjs/themes/prism.css /Users/fkolar/Documents/projects/ngx-meta/node_modules/primeng/resources/primeng.min.css /Users/fkolar/Documents/projects/ngx-meta/node_modules/font-awesome/css/font-awesome.min.css /Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.core.css /Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.snow.css /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css /Users/fkolar/Documents/projects/ngx-meta/node_modules/primeicons/primeicons.css /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/ariba/theme.scss /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/styles/aribaui.scss ./src/styles.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/_normalize.scss */"../../dist/@aribaui/resources/themes/_normalize.scss");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/node_modules/prismjs/themes/prism.css */"../../node_modules/prismjs/themes/prism.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/node_modules/primeng/resources/primeng.min.css */"../../node_modules/primeng/resources/primeng.min.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/node_modules/font-awesome/css/font-awesome.min.css */"../../node_modules/font-awesome/css/font-awesome.min.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.core.css */"../../node_modules/quill/dist/quill.core.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/node_modules/quill/dist/quill.snow.css */"../../node_modules/quill/dist/quill.snow.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css */"../../dist/@aribaui/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css */"../../dist/@aribaui/resources/fonts/sap-icon-fonts/sap-icon-fonts.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/node_modules/primeicons/primeicons.css */"../../node_modules/primeicons/primeicons.css");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/themes/ariba/theme.scss */"../../dist/@aribaui/resources/themes/ariba/theme.scss");
-__webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/dist/@aribaui/resources/styles/aribaui.scss */"../../dist/@aribaui/resources/styles/aribaui.scss");
-module.exports = __webpack_require__(/*! /Users/fkolar/Documents/projects/MetaUI/modules/metaui-evolution/src/styles.css */"./src/styles.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/_normalize.scss */"../../libs/rules/src/lib/resources/themes/_normalize.scss");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/node_modules/prismjs/themes/prism.css */"../../node_modules/prismjs/themes/prism.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/node_modules/primeng/resources/primeng.min.css */"../../node_modules/primeng/resources/primeng.min.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/node_modules/font-awesome/css/font-awesome.min.css */"../../node_modules/font-awesome/css/font-awesome.min.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.core.css */"../../node_modules/quill/dist/quill.core.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/node_modules/quill/dist/quill.snow.css */"../../node_modules/quill/dist/quill.snow.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css */"../../libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css */"../../libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/node_modules/primeicons/primeicons.css */"../../node_modules/primeicons/primeicons.css");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/themes/ariba/theme.scss */"../../libs/rules/src/lib/resources/themes/ariba/theme.scss");
+__webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/libs/rules/src/lib/resources/styles/aribaui.scss */"../../libs/rules/src/lib/resources/styles/aribaui.scss");
+module.exports = __webpack_require__(/*! /Users/fkolar/Documents/projects/ngx-meta/apps/metaui-evolution/src/styles.scss */"./src/styles.scss");
 
 
 /***/ })
