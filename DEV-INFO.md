@@ -1,13 +1,13 @@
 ## How to release new version to GIT
 
 Since we are using `standard-version` the process is pretty straight forward since it only:
-* Modify root `package.json`
-* Tag with a version
-* Generate `ChangeLog`
+* Modifies root `package.json`
+* Tag project with a specific version
+* Generate `CHANGELOG`
 
 #### Steps
 
-* Run _release_ command from the root of the project and pass an option if you want create a patch, minor or major version
+* Run _release.sh_ command from the root of the project and pass an option if you want to create a `patch, minor or major `version
 
 ````
   ./scripts/release.sh <version>
@@ -30,7 +30,7 @@ Since we are using `standard-version` the process is pretty straight forward sin
 ``` 
 
 
-* Check _github_ for created tag and you are done!
+* Double check _github_ for if tag was reallly and you are done!
 
 
 ### If something goes wrong
@@ -57,10 +57,10 @@ To delete newly created tag:
 
 
    
- ## How to release new version to NPM
+ ## How to publish new version to NPM
  
  If you need to publish new version to the npm repo you need to run `./scripts/npmPublish.sh` and also understand what it does. You might 
- notice that our `package.json` under `/rules` has instead of actual version a `"VERSION_PLACEHOLDER"`. We are not hardcoding version within its source 
+ notice that our `package.json` under `/rules` has a `"VERSION_PLACEHOLDER"` as a version. We are not hardcoding version within its source 
  `package.json` rather we are using the same method angular does which is:
  * Build binaries into `./dist` folder
  * Read version from just released main `package.json`  
