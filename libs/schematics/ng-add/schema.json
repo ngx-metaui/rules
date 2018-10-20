@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "ngx-metaui-rules-ng-add",
+  "title": "Angular Service Worker Options Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "skipDependencies": {
+      "type": "boolean",
+      "description": "Tells if we should install required package.json dependencies",
+      "default": true
+    },
+    "skipNpmInstall": {
+      "type": "boolean",
+      "description": "Tells if we should skip npm install tasks",
+      "default": true
+    },
+    "skipStyles": {
+      "type": "boolean",
+      "description": "Dont add anything to angular.json style section.",
+      "default": true
+    },
+    "skipScripts": {
+      "type": "boolean",
+      "description": "Dont add anything to angular.json script section",
+      "default": true
+    },
+    "path": {
+      "type": "string",
+      "description": "Root path to the selected project  - a place where template files will be copied"
+    }
+  },
+  "required": []
+}

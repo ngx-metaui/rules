@@ -10,7 +10,7 @@ _`Note: If you are trying to integrate MetaUI into your project you might want t
 
 Let's start with this simplified picture:
 
-![alt text](../../../docs/img/meta/meta-1.0.png?size=small "High Level Diagram")
+![alt text](./meta/meta-1.0.png?size=small "High Level Diagram")
 
 We can see 3 big pieces  here that makes `MetaUI` framework what it is. So Let's start from the bottom:
 
@@ -311,7 +311,7 @@ export interface RuleLoader
 
 Therefore we are using following directory structure. Here we store `Rule files (.oss)`
 
-![alt text](../../../docs/img/meta/meta-1.2.png?size=small "Directory structure")
+![alt text](./meta/meta-1.2.png?size=small "Directory structure")
 
 and barrel `index.ts` that just exports all from this directory. It is worth mentioning that you can pick any structure 
 you want as long you can have one file at the end like `user-rules.ts` that exports everything so it can be imported 
