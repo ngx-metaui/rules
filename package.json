@@ -1,7 +1,7 @@
 {
-  "name": " ngx-metaui",
+  "name": "ngx-metaui",
   "description": "Rule driven UI for Angular",
-  "version": "6.3.0",
+  "version": "6.3.3",
   "license": "Apache 2.0",
   "scripts": {
     "ng": "ng",
@@ -26,7 +26,9 @@
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
     "oss-sys": "java -jar libs/rules/src/lib/resources/tools/oss/meta-ui-parser.jar --gen --sys ./libs/rules/src/lib/metaui/core",
-    "oss-user": "java -jar libs/rules/src/lib/resources/tools/oss/meta-ui-parser.jar --gen --user ./libs/rules/src/lib/metaui/core ./apps/metaui-evolution/src/app/rules"
+    "oss-user": "java -jar libs/rules/src/lib/resources/tools/oss/meta-ui-parser.jar --gen --user ./libs/rules/src/lib/metaui/core ./apps/metaui-evolution/src/app/rules",
+    "build:schematics": " ./node_modules/typescript/bin/tsc -p ./libs/schematics/tsconfig.json && cp ./libs/schematics/*.json ./dist/libs/rules/lib/schematics && cp ./libs/schematics/ng-add/*.json ./dist/libs/rules/lib/schematics/ng-add && cp -R ./libs/schematics/ng-add/files ./dist/libs/rules/lib/schematics/ng-add/files"
+
   },
   "private": true,
   "dependencies": {
@@ -60,11 +62,14 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
     "@angular-devkit/build-ng-packagr": "~0.7.0",
+    "@angular-devkit/core": "^0.8.5",
+    "@angular-devkit/schematics": "^0.8.5",
     "@angular/cli": "6.1.2",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
     "@ngrx/store-devtools": "6.0.1",
     "@nrwl/schematics": "6.3.0",
+    "@schematics/angular": "^0.8.5",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
@@ -82,8 +87,9 @@
     "prettier": "1.13.7",
     "prismjs": "^1.15.0",
     "protractor": "~5.3.0",
-    "ts-node": "~5.0.1",
+    "scss-bundle": "^2.4.0",
     "standard-version": "^4.4.0",
+    "ts-node": "~5.0.1",
     "tsickle": ">=0.29.0",
     "tslib": "^1.9.0",
     "tslint": "~5.9.1",
