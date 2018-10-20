@@ -1,7 +1,7 @@
 {
   "name": "ngx-metaui",
   "description": "Rule driven UI for Angular",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "license": "Apache 2.0",
   "scripts": {
     "ng": "ng",
@@ -28,7 +28,6 @@
     "oss-sys": "java -jar libs/rules/src/lib/resources/tools/oss/meta-ui-parser.jar --gen --sys ./libs/rules/src/lib/metaui/core",
     "oss-user": "java -jar libs/rules/src/lib/resources/tools/oss/meta-ui-parser.jar --gen --user ./libs/rules/src/lib/metaui/core ./apps/metaui-evolution/src/app/rules",
     "build:schematics": " ./node_modules/typescript/bin/tsc -p ./libs/schematics/tsconfig.json && cp ./libs/schematics/*.json ./dist/libs/rules/lib/schematics && cp ./libs/schematics/ng-add/*.json ./dist/libs/rules/lib/schematics/ng-add && cp -R ./libs/schematics/ng-add/files ./dist/libs/rules/lib/schematics/ng-add/files"
-
   },
   "private": true,
   "dependencies": {

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.4.0"></a>
+# [6.4.0](https://github.com/ngx-meta/rules/compare/v6.1.1...v6.4.0) (2018-10-20)
+
+
+### Features
+
+* **Schematics:** Added ng-add schematics support ([#16](https://github.com/ngx-meta/rules/issues/16)) ([fdfedc4](https://github.com/ngx-meta/rules/commit/fdfedc4))
+
+
+
 <a name="6.3.0"></a>
 # [6.3.0](https://github.com/ngx-meta/rules/compare/v6.1.1...v6.3.0) (2018-10-08)
 
