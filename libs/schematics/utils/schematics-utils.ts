@@ -317,6 +317,8 @@ function createConstructorForInjection(modulePath: string, nodes: ts.Node[]): Ch
   }
 
   let toAdd = `
+
+
   constructor(private appConfig: AppConfig) {
     ${RegisterBody}
   }
