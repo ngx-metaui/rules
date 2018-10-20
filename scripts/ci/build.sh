@@ -28,10 +28,11 @@ if [ ${args[0]} == "link" ]; then
 
    cd ./dist/
    perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g" $(grep -ril VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
+
+   cd ..
 fi
 
 
-cd ..
 # Copy resources
 echo "Building resources"
 rm -Rf ./dist/libs/rules/lib/resources && cp -R libs/rules/src/lib/resources ./dist/libs/rules/lib/resources && ./node_modules/.bin/scss-bundle -e  ./dist/libs/rules/lib/resources/styles/aribaui.scss -d ./dist/libs/rules/lib/resources/styles/aribaui.css

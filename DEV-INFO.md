@@ -83,3 +83,41 @@ Make sure you have your account in the npmjs.com and you are added into this pro
   ```
 
 * Done!
+
+## How to work with schematics
+
+If you need to update schematics and the same time you need to test it the easiest way is run these two steps
+
+* Build it
+```
+  ./scripts/ci/build.sh link
+```
+
+*  Npm link it
+
+    * You want to create new ng project using `ng new myTestApp --style=scss` and once the setup finishes cd into created
+    project and run following command:
+    
+```
+  npm link <ngx-meta project home>/dist/libs/rules
+  
+``` 
+
+It will create a symlink and every time you do a change and run `./scripts/ci/build.sh link` again you will see it in your
+new project.
+
+Then while you are in the directory of `myTestApp` project you can execute schematics command like this:
+
+```
+  schematics @ngx-metaui/rules:<schematics name>
+```
+
+e.g.: When testing the `ng-add` functionality I always run: 
+
+```
+  schematics @ngx-metaui/rules:ng-add --skipDependencies
+```
+
+not to install npm packages on every run.
+
+
