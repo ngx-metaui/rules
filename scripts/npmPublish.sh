@@ -38,6 +38,6 @@ for P in ${PACKAGES[@]};
 do
     echo publish "@ngx-meta/${P}"
     cd ${P}
-    npm publish --accesss public
+    npm publish --access public
     cd ..
 done
