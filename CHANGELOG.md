@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.4.1"></a>
+## [6.4.1](https://github.com/ngx-meta/rules/compare/v6.4.0...v6.4.1) (2018-10-21)
+
+
+### Bug Fixes
+
+* **polyfills:** Removed classlist dependency as we should not force this ([81eebaa](https://github.com/ngx-meta/rules/commit/81eebaa))
+* **schematics:** Add lint friendly spacing for generated constructor ([69833d6](https://github.com/ngx-meta/rules/commit/69833d6))
+* **scripts:** Fixes in the build scripts and updated DEV-INFO.md docs for schematics section ([6877216](https://github.com/ngx-meta/rules/commit/6877216))
+
+
+
 <a name="6.4.0"></a>
 # [6.4.0](https://github.com/ngx-meta/rules/compare/v6.1.1...v6.4.0) (2018-10-20)
 

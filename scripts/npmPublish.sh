@@ -3,21 +3,22 @@
 set -u -e
 
 scriptDir=$(cd $(dirname $0); pwd)
-echo "CDing to $scriptDir"
+
+echo "CDing to $scriptDir to start from CI dir to the root"
 cd ${scriptDir}
+cd ..
 
 
 PACKAGES=(rules)
 
-rm -Rf ../dist
+rm -Rf ./dist
 
 echo "##### Validating packages"
-./ci/lint.sh
+./scripts/ci/lint.sh
 
 echo "##### Building packages to dist"
-./ci/build.sh dev
+./scripts/ci/build.sh dev
 
-cd ..
 echo "##### Testing packages"
 ng test rules --source-map=false --watch=false --progress=false
 
@@ -28,7 +29,6 @@ echo "Updating packages.json under dist/libs/rules with version ${NEW_VERSION}"
 
 cd ./dist/
 perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g" $(grep -ril VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
-
 
 
 cd "libs"

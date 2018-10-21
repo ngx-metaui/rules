@@ -11,19 +11,20 @@ fi
 
 scriptDir=$(cd $(dirname $0); pwd)
 
-echo "CDing to $scriptDir"
+echo "CDing to $scriptDir to start from CI dir to the root"
 cd ${scriptDir}
+cd ..
 
-rm -Rf ../dist
+rm -Rf ./dist
 
 echo "##### Linting @ngx-meta/rules"
-./ci/lint.sh
+./scripts/ci/lint.sh
 
 echo "##### Building @ngx-meta/rules to dist"
-./ci/build.sh dev
+./scripts/ci/build.sh dev
 
 echo "##### Testing @ngx-meta/rules"
-./ci/test.sh
+./scripts/ci/test.sh
 
 if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "major" ] && [ ${args[0]} != "none" ]; then
 
@@ -33,12 +34,9 @@ if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "
     exit 1
 fi
 
-
-
 if [ ${args[0]} != "none" ]; then
     echo "Running standard-version to create a release package with --release-as ${args[0]}"
 
-    cd ..
     ./node_modules/.bin/standard-version --release-as ${args[0]}
 
     NEW_VERSION=$(node -p "require('./package.json').version")
