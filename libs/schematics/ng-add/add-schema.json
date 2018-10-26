@@ -23,12 +23,12 @@
     },
     "skipStyles": {
       "type": "boolean",
-      "description": "Dont add anything to angular.json style section.",
+      "description": "Don't add anything to angular.json style section.",
       "default": true
     },
     "skipScripts": {
       "type": "boolean",
-      "description": "Dont add anything to angular.json script section",
+      "description": "Don't add anything to angular.json script section",
       "default": true
     },
     "path": {

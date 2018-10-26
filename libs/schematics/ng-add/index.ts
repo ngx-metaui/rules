@@ -30,11 +30,15 @@ import {
   url
 } from '@angular-devkit/schematics';
 import {NodeDependency, NodeDependencyType} from '@schematics/angular/utility/dependencies';
-import {Schema} from './schema';
+import {AddSchema} from './add-schema';
 import {classify, dasherize} from '@angular-devkit/core/src/utils/strings';
 import {normalize} from '@angular-devkit/core';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
-import {addSymbolToNgModuleMetadata, isImported} from '@schematics/angular/utility/ast-utils';
+import {
+  addImportToModule,
+  addSymbolToNgModuleMetadata,
+  isImported
+} from '@schematics/angular/utility/ast-utils';
 import {InsertChange} from '@schematics/angular/utility/change';
 import {
   addDependenciesToPackageJson,
@@ -46,7 +50,7 @@ import {
   getSourceFile,
   registerUserRulesWithAppConfig,
   setupOptions
-} from '../utils/schematics-utils';
+} from '../common/schematics-utils';
 
 const stringUtils = {dasherize, classify};
 
@@ -60,7 +64,7 @@ const stringUtils = {dasherize, classify};
  *
  *
  */
-export default function (options: Schema): Rule {
+export default function (options: AddSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     setupOptions(tree, options);
 
@@ -79,7 +83,7 @@ export default function (options: Schema): Rule {
 }
 
 
-function addDependencies(options: Schema): Rule {
+function addDependencies(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     const dependencies: NodeDependency[] = [
       {type: NodeDependencyType.Default, version: '^6.3.3', name: '@ngx-metaui/rules'},
@@ -99,7 +103,7 @@ function addDependencies(options: Schema): Rule {
 }
 
 
-function addScripts(options: Schema): Rule {
+function addScripts(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     const scriptsPaths: string[] = [
       'node_modules/quill/dist/quill.js'
@@ -110,7 +114,7 @@ function addScripts(options: Schema): Rule {
 }
 
 
-function addStyles(options: Schema): Rule {
+function addStyles(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     const styleEntries: string[] = [
       'node_modules/@ngx-metaui/rules/lib/resources/themes/_normalize.scss',
@@ -131,7 +135,7 @@ function addStyles(options: Schema): Rule {
 }
 
 
-function addNgModuleImports(options: Schema): Rule {
+function addNgModuleImports(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
     try {
@@ -141,8 +145,14 @@ function addNgModuleImports(options: Schema): Rule {
       if (!isImported(srcPath, 'AppConfig, MetaUIRulesModule',
         '@ngx-metaui/rules')) {
 
-        const changes = addSymbolToNgModuleMetadata(srcPath, modulePath, 'imports',
-          'MetaUIRulesModule.forRoot({})');
+        let changes = addImportToModule(srcPath, modulePath,
+          'BrowserAnimationsModule',
+          '@angular/platform-browser/animations');
+
+
+        changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
+          'imports',
+          'MetaUIRulesModule.forRoot({})')];
 
         const recorder = host.beginUpdate(modulePath);
         changes.forEach((change) => {
@@ -166,7 +176,7 @@ function addNgModuleImports(options: Schema): Rule {
 }
 
 
-function addRulesSubsystem(options: Schema): Rule {
+function addRulesSubsystem(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
     try {
@@ -195,7 +205,7 @@ function addRulesSubsystem(options: Schema): Rule {
 }
 
 
-function addFileImports(options: Schema): Rule {
+function addFileImports(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
     return chain([

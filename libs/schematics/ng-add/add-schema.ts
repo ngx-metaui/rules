@@ -16,8 +16,9 @@
  *
  *
  */
+import {Schema} from '../common/schema';
 
-export interface Schema {
+export interface AddSchema extends Schema {
 
   /** Name of the project to target. */
   project: string;

@@ -22,6 +22,7 @@
   },
   "exclude": [
     "**/*.spec.ts",
-    "*/files/**/*"
+    "*/files/**/*",
+    "ng-generate/*/files/**/*"
   ]
 }

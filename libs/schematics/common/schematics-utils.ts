@@ -19,7 +19,7 @@
 import {Rule, SchematicContext, SchematicsException, Tree} from '@angular-devkit/schematics';
 import {addPackageJsonDependency, NodeDependency} from '@schematics/angular/utility/dependencies';
 import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
-import {Schema} from '../ng-add/schema';
+import {Schema} from './schema';
 import {getWorkspace, getWorkspacePath, WorkspaceSchema} from '@schematics/angular/utility/config';
 import {WorkspaceProject} from '@angular-devkit/core/src/workspace/workspace-schema';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
@@ -38,16 +38,14 @@ import {normalize} from '@angular-devkit/core';
  *
  */
 
-const RegisterBody = `
-    // mandatory - you need to register user's defined rules and types since there is no
-    // introspection in js
+const RegisterBody =
+  `\n// mandatory - you need to register user's defined rules and types since there is no
+   // introspection in js
 
     const rules: any[] = appConfig.get('metaui.rules.user-rules') || [];
     rules.push(userRules);
     appConfig.set('metaui.rules.user-rules', rules);
 `;
-
-const pkgJsonPath = '/package.json';
 
 export function addDependenciesToPackageJson(dependencies: NodeDependency[],
                                              skipInstall: boolean): Rule {
@@ -318,7 +316,6 @@ function createConstructorForInjection(modulePath: string, nodes: ts.Node[]): Ch
 
   let toAdd = `
 
-
   constructor(private appConfig: AppConfig) {
     ${RegisterBody}
   }
@@ -394,7 +391,7 @@ function findSuccessor(node: ts.Node, searchPath: ts.SyntaxKind[]) {
 }
 
 
-function showTree(node?: ts.Node, indent: string = '    '): void {
+export function showTree(node?: ts.Node, indent: string = '    '): void {
   if (!node) {
     return;
   }

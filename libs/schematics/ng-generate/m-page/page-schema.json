@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "ngx-metaui-ng-g-metaui-page",
+  "title": "Angular Service Worker Options Schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "path": {
+      "type": "string",
+      "description": "Root path to the selected project  - a place where template files will be copied"
+    },
+    "modelClass": {
+      "type": "string",
+      "description": "Name of the domain class and rule file"
+    },
+    "name": {
+      "type": "string",
+      "description": "New Page name"
+    },
+    "moduleName": {
+      "type": "string",
+      "description": "name of the module"
+    },
+    "skipOSS": {
+      "type": "boolean",
+      "description": "Tells if oss file will be generated.",
+      "default": false
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "Flag to indicate if a directory is created.",
+      "default": false
+    },
+    "modelPath": {
+      "type": "string",
+      "description": "Name of the folder where domain objects are stored",
+      "default": "model"
+    }
+
+  },
+  "required": []
+}

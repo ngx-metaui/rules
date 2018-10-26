@@ -4,6 +4,11 @@
     "ng-add": {
       "description": "Adds MetaUI ngx-meta/rules to the application ",
       "factory": "./ng-add/index"
+    },
+    "mPage": {
+      "description": "Generate simple MetaUI based page with modelClass and rules",
+      "factory": "./ng-generate/m-page/index",
+      "schema": "./ng-generate/m-page/page-schema.json"
     }
   }
 }
