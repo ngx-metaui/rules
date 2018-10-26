@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.4.2"></a>
+## [6.4.2](https://github.com/ngx-meta/rules/compare/v6.4.1...v6.4.2) (2018-10-26)
+
+
+### Features
+
+* **schematics:** Added new schematics for creating metaui page ([818054b](https://github.com/ngx-meta/rules/commit/818054b))
+
+
+
 <a name="6.4.1"></a>
 ## [6.4.1](https://github.com/ngx-meta/rules/compare/v6.4.0...v6.4.1) (2018-10-21)
 
