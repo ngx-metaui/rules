@@ -18,7 +18,7 @@ export class <%= classify(modelClass) %> implements Entity {
   getTypes(): any {
     return {
       uniqueName: String,
-      name: Number,
+      name: String,
       description: String,
       created: Date
     };
