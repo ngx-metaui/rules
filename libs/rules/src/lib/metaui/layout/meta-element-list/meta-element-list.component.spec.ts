@@ -20,14 +20,10 @@ import {Component} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
-import {AribaCoreModule} from '../../../core/ariba.core.module';
 import {Entity} from '../../../core/domain/domain-model';
 
 import {UIMeta} from '../../core/uimeta';
 import {MetaUIRulesModule} from '../../rules.module';
-import {
-  AribaComponentsTestProviderModule
-} from '../../../components/ariba.component.provider.module';
 
 
 // @formatter:off
@@ -146,10 +142,6 @@ class UserStack implements Entity {
   }
 
 
-  $proto(): UserStack {
-    return new UserStack('a', 'b', 1, 'c', 'd');
-  }
-
   identity(): string {
     return this.lastName;
   }
@@ -159,7 +151,13 @@ class UserStack implements Entity {
   }
 
   getTypes(): any {
-    return null;
+    return {
+      firstName: String,
+      lastName: String,
+      age: Number,
+      department: String,
+      eamil: String
+    };
   }
 }
 

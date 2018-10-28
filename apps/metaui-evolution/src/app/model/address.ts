@@ -43,14 +43,6 @@ export class Address implements Value
         };
     }
 
-    /**
-     * Used by MetaUI
-     *
-     */
-    $proto(): Address
-    {
-        return new Address('1', '2', '3', '4', 'a');
-    }
 
 
     className(): string

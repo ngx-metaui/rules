@@ -29,8 +29,6 @@ import {isPresent} from '../utils/lang';
 export interface CompositeType {
 
   className(): string;
-
-  $proto?(): CompositeType;
 }
 
 

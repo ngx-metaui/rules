@@ -426,11 +426,6 @@ class UserStackA implements Entity {
               public email: string) {
   }
 
-
-  $proto(): UserStackA {
-    return new UserStackA('a', 'b', 1, 'c', 'd');
-  }
-
   identity(): string {
     return this.lastName;
   }
@@ -441,7 +436,14 @@ class UserStackA implements Entity {
   }
 
   getTypes(): any {
-    return null;
+    return {
+      firstName: String,
+      lastName: String,
+      age: Number,
+      department: String,
+      email: String
+
+    };
   }
 }
 

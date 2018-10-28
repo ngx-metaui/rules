@@ -16,7 +16,9 @@
  * limitations under the License.
  *
  */
-export class UserProfile {
+import {Entity} from '@ngx-meta/rules';
+
+export class UserProfile implements Entity {
 
   constructor(public userId: string, public  firstName: string, public  lastName: string,
               public  age: number,
@@ -25,8 +27,27 @@ export class UserProfile {
 
   }
 
-  $proto(): UserProfile {
-    return new UserProfile('1', 'a', 'l', 1, 'n', 'p', 'en', 'Yesterday');
+  className(): string {
+    return 'UserProfile';
   }
+
+  getTypes(): any {
+    return {
+      userId: String,
+      firstName: String,
+      lastName: String,
+      age: Number,
+      note: String,
+      password: String,
+      locale: String,
+      lastAccessTime: String
+
+    };
+  }
+
+  identity(): string {
+    return this.userId;
+  }
+
 
 }

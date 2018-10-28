@@ -50,10 +50,6 @@ export class ApproverUser implements Entity {
     return this.firstName + ' ' + this.lastName + '(' + this.age + ')';
   }
 
-  $proto(): ApproverUser {
-    return new ApproverUser('1', 's', 's', 1);
-  }
-
 
   className(): string {
     return 'ApproverUser';

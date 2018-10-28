@@ -1015,10 +1015,6 @@ class User implements Entity {
   }
 
 
-  $proto(): Entity {
-    return null;
-  }
-
   className(): string {
     return null;
   }

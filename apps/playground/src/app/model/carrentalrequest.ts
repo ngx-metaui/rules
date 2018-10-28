@@ -39,15 +39,6 @@ export class CarRentalRequest implements Entity {
               public price: Money) {
   }
 
-
-  $proto(): CarRentalRequest {
-    return new CarRentalRequest('1', 's', 's', new Date(), new Date(), 's', 's',
-      ['a'], ['a'], [new ApproverUser('1', '', '', 1)], 'a', 'OK',
-      new ApproverUser('1', '', '', 1),
-      new Money(100)
-    );
-  }
-
   identity(): string {
     return this.lastName;
   }
@@ -68,7 +59,7 @@ export class CarRentalRequest implements Entity {
       dropOffLocation: String,
       carType: String,
       extras: String,
-      approvers: ApproverUser,
+      approvers: Array(ApproverUser),
       note: String,
       drivingSkills: String,
       requester: ApproverUser,

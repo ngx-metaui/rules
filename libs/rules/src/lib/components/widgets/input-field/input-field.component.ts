@@ -250,10 +250,6 @@ export class BigDecimal implements Value {
     return 'BigDecimal';
   }
 
-  $proto(): BigDecimal {
-    return new BigDecimal(1, 'en_US');
-  }
-
   toString(): string {
     return this.amount + ', locale: ' + this.locale;
   }

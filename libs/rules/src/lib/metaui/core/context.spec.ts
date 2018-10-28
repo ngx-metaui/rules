@@ -3061,11 +3061,6 @@ class MyUserTestClass implements Entity {
     this.bio = bio;
   }
 
-  $proto(): MyUserTestClass {
-    return new MyUserTestClass('a', 'b', 1, 'c');
-  }
-
-
   identity(): string {
     return this.lastName;
   }
@@ -3075,7 +3070,12 @@ class MyUserTestClass implements Entity {
   }
 
   getTypes(): any {
-    return null;
+    return {
+      firstName: String,
+      lastName: String,
+      age: Number,
+      bio: String
+    };
   }
 }
 
@@ -3109,11 +3109,6 @@ export class UserProfileTe implements Entity {
 
   }
 
-  $proto(): UserProfileTe {
-    return new UserProfileTe('1', 'a', 'l', 1, 'n', 'p', 'en', 'Yesterday');
-  }
-
-
   identity(): string {
     return this.userId;
   }
@@ -3123,23 +3118,27 @@ export class UserProfileTe implements Entity {
   }
 
   getTypes(): any {
-    return null;
+    return {
+      userId: String,
+      firstName: String,
+      lastName: String,
+      age: Number,
+      note: String,
+      password: String,
+      locale: String,
+      lastAccessTime: String
+    };
   }
 }
 
 
 class UserWithDetail implements Entity {
 
-  constructor(name: string) {
+  constructor(public name: string) {
   }
-
-  $proto(): UserWithDetail {
-    return new UserWithDetail('a');
-  }
-
 
   identity(): string {
-    return null;
+    return this.name;
   }
 
   className(): string {
@@ -3147,6 +3146,8 @@ class UserWithDetail implements Entity {
   }
 
   getTypes(): any {
-    return null;
+    return {
+      name: String
+    };
   }
 }

@@ -76,20 +76,13 @@ export class FormRequest implements Entity {
       dropOffDate: Date,
       pickupLocation: String,
       dropOffLocation: String,
-      carType: String,
-      extras: String,
+      carType: Array(String),
+      extras: Array(String),
       approver: ApproverUser,
       note: Money,
       price: Money
     };
   }
-
-  $proto(): FormRequest {
-    return new FormRequest('1', 's', 's', new Date(), new Date(), 's', 's', ['a'],
-      ['a'], new ApproverUser('1', '', '', 1), 'a', new Money(100)
-    );
-  }
-
 
   className(): string {
     return 'FormRequest';

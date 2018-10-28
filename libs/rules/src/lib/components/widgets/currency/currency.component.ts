@@ -267,9 +267,6 @@ export class Money implements Value {
     return 'Money';
   }
 
-  $proto(): Money {
-    return new Money(1, '23', '33');
-  }
 
   toString(): string {
     return this.amount + ', locale: ' + this.locale + ', code:  ' + this.currency;

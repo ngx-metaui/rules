@@ -58,23 +58,7 @@ export class Order implements Entity
 
         };
     }
-
-    /**
-     * Used by MetaUI
-     *
-     */
-    $proto(): Order
-    {
-        let po = new Order('PO20180001', 'iPhone 11 5d touch',
-            new Date(), 'Ordering', new User('Frank', 'Kolar'),
-            new Money(1000, 'USD'),
-            new Address('a', 'b', 'c', 'd', 's'),
-            new Address('a', 'b', 'c', 'd', 's'),
-            'iPhone 11 5d touch 2T storage'
-        );
-
-        return po;
-    }
+    
 
 
     className(): string
