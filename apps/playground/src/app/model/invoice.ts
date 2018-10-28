@@ -52,24 +52,6 @@ export class Invoice implements Entity
         };
     }
 
-    /**
-     * Used by MetaUI
-     *
-     */
-    $proto(): Invoice
-    {
-        let inv = new Invoice();
-        inv.uniqueName = '6';
-        inv.itemName = 'iPhone 8';
-        inv.itemDescription = 'iPhone 8, 16gb';
-        inv.supplier = 'Apple Inc.';
-        inv.itemPrice = '123.11';
-        inv.requestor = 'Dan John';
-        inv.header = new InvHeader();
-        return inv;
-    }
-
-
     className(): string
     {
         return 'Invoice';
@@ -86,12 +68,6 @@ export class InvHeader implements Value
         this.value = value;
         this.value2 = value2;
     }
-
-    $proto(): InvHeader
-    {
-        return new InvHeader('1', '1', '1');
-    }
-
 
     getTypes(): any
     {

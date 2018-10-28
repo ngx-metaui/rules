@@ -20,7 +20,6 @@ import {Component} from '@angular/core';
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
-import {AribaCoreModule} from '../../../core/ariba.core.module';
 import {Entity} from '../../../core/domain/domain-model';
 import {Environment} from '../../../core/config/environment';
 import {UIMeta} from '../../core/uimeta';
@@ -29,9 +28,6 @@ import {MetaUIActionEvent} from '../../core/meta-context/meta-context.component'
 import {BaseComponent} from '../../../components/core/base.component';
 import {SectionComponent} from '../../../components/widgets/section/section.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {
-  AribaComponentsTestProviderModule
-} from '../../../components/ariba.component.provider.module';
 
 
 // @formatter:off
@@ -531,26 +527,18 @@ export class InvoiceTest implements Entity {
    * Used by Resource in order to deserialize JSON to Typed Object
    */
   getTypes(): any {
-    return {};
+    return {
+      uniqueName: String,
+      itemName: String,
+      itemDescription: String,
+      supplier: String,
+      itemPrice: String,
+      requestor: String
+    };
   }
 
   identity(): string {
     return this.uniqueName;
-  }
-
-  /**
-   * Used by MetaUI
-   *
-   */
-  $proto(): InvoiceTest {
-    let inv = new InvoiceTest();
-    inv.uniqueName = '6';
-    inv.itemName = 'iPhone 8';
-    inv.itemDescription = 'iPhone 8, 16gb';
-    inv.supplier = 'Apple Inc.';
-    inv.itemPrice = '123.11';
-    inv.requestor = 'Dan John';
-    return inv;
   }
 
 

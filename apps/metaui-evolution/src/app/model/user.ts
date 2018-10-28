@@ -40,21 +40,6 @@ export class User implements Entity {
     };
   }
 
-  /**
-   * Used by MetaUI
-   *
-   */
-  $proto(): User {
-    let user = new User();
-    user.uniqueName = '6';
-    user.age = 1;
-    user.firstName = 'a';
-    user.lastName = 'a';
-    user.dob = new Date();
-    return user;
-  }
-
-
   className(): string {
     return 'User';
   }

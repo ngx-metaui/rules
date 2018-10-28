@@ -213,10 +213,10 @@ export class ObjectMeta extends Meta {
 }
 
 /**
- * When a class is pushed either directly or indirectly (using deffered rules) we receive a
- * ValueQueriedObserver notification in order to register  types for the object. Trying to achieve
- * at least some kind of introspection we need to implement $proto method inside the object that
- * instantiates all types which we can query.
+ * When a class is pushed either directly or indirectly (using deferred rules) we receive a
+ * ValueQueriedObserver notification in order to register field types for the object. Trying to
+ * achieve at least some kind of introspection we need to implement getTypes method from the
+ * Deserializable interface that retrieve all types which we can query.
  *
  * Ideally we want to use decorators when dealing with client side typescript class. but for cases
  * where Rules will be loaded using Rest API along with the object instance its impossible.
@@ -270,15 +270,15 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
   private registerRulesForFields(object: any, className: string): void {
     // todo: Can we somehow utilize decorators? Maybe for local typescript defined object, but
     // not objects loaded as json from rest API
-    assert(isPresent(object['$proto']),
-      'Cannot register fields without a $proto method that will expose all the fields');
-    let instance: any = object['$proto']();
-    let fieldNames = Object.keys(instance);
+    assert(isPresent(object['getTypes']),
+      'Cannot register fields without a getTypes method that will expose all the fields');
+    let types: any = object.getTypes();
+    let fieldNames = Object.keys(types);
 
     let rank = 0;
     for (let name of fieldNames) {
       // todo: check=>  can we rely on this ?
-      let type = instance[name].constructor.name;
+      let type = types[name].name || types[name].constructor.name;
 
       let properties = new Map<string, any>();
 
@@ -287,12 +287,12 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
 
       properties.set(ObjectMeta.KeyVisible, true);
 
-      if (isArray(instance[name])) {
-        assert(instance[name].length > 0,
+      if (isArray(types[name])) {
+        assert(types[name].length > 0,
           ' Cannot register type[array] and its type without properly initialized ' +
           'prototype');
-        let item = instance[name][0];
-        let collectionElementType = item.constructor.name;
+        let item = types[name][0];
+        let collectionElementType = item.name;
         properties.set(ObjectMeta.KeyElementType, collectionElementType);
       }
 

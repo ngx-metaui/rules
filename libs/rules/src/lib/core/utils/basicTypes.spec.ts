@@ -27,14 +27,12 @@ describe('a typescript types/class and how they are translated into runtime ', (
   it('it should sumulate javascript introspection so that we are able to read fields types of ' +
     'the objets', () => {
 
+
       let expectedTypes = new Map<string, string>();
       expectedTypes.set('stringLiteral', 'String');
       expectedTypes.set('someNumber', 'Number');
       expectedTypes.set('aBool', 'Boolean');
       expectedTypes.set('aDate', 'Date');
-      expectedTypes.set('arrayOfNumbers', 'Array');
-      expectedTypes.set('arrayOfNumbersElementType', 'Number');
-
       expectedTypes.set('arrayOfNumbers', 'Array');
       expectedTypes.set('arrayOfNumbersElementType', 'Number');
 
@@ -47,26 +45,23 @@ describe('a typescript types/class and how they are translated into runtime ', (
 
       expectedTypes.set('myMap', 'Map');
       expectedTypes.set('mySet', 'Set');
-      expectedTypes.set('myEnum', 'Number');
 
       let actualTypes = new Map<string, string>();
       let _item = new TestClass();
 
       let instance: any;
-      if (_item['$proto']) {
-        instance = _item['$proto']();
+      if (_item['getTypes']) {
+        instance = _item['getTypes']();
       }
       let ownPropertyNames = Object.keys(instance);
       for (let name of ownPropertyNames) {
-        let type = instance[name].constructor.name;
+        let type = instance[name].name || instance[name].constructor.name;
         actualTypes.set(name, type);
-
-        if (isArray(instance[name])) {
+        if (instance[name] && isArray(instance[name])) {
           assert(instance[name].length > 0,
             ' Cannot register type[array] with properly initialized prototype');
           let item = instance[name][0];
-          let elementType = item.constructor.name;
-
+          let elementType = item.name;
           actualTypes.set(name + 'ElementType', elementType);
 
         }
@@ -102,24 +97,24 @@ class TestClass {
   myMap: Map<string, string>;
   mySet: Set<string>;
 
-  myEnum: Color;
 
+  getTypes(): any {
+    return {
+      stringLiteral: String,
+      someNumber: Number,
+      aBool: Boolean,
+      aDate: Date,
+      arrayOfNumbers: Array(Number),
+      arrayOfNumbersElementType: Number,
 
-  $proto(): TestClass {
-    let prototype: TestClass = new TestClass();
-    prototype.stringLiteral = 'Hello';
-    prototype.someNumber = 123;
-    prototype.aBool = true;
-    prototype.aDate = new Date();
-    prototype.arrayOfNumbers = [0, 1, 23];
-    prototype.arrayOfStrings = ['a', 'bcd', 'zzz'];
-    prototype.myNestedObjects = new NestedObject(123);
-    prototype.myArrayOfNestedObjects = [new NestedObject(123)];
-    prototype.myMap = new Map<string, string>().set('a', 'b');
-    prototype.mySet = new Set<string>().add('a');
-    prototype.myEnum = Color.Blue;
+      arrayOfStrings: Array(String),
+      arrayOfStringsElementType: String,
 
-    return prototype;
+      myNestedObjects: NestedObject,
+      myArrayOfNestedObjects: Array(NestedObject),
+      myMap: Map,
+      mySet: Set
+    };
   }
 
 }
@@ -133,6 +128,12 @@ class NestedObject {
   constructor(field1: number) {
     this.field1 = field1;
   }
+
+  getTypes(): any {
+    return {
+      field1: Number
+    };
+  }
 }
 
 
@@ -144,6 +145,14 @@ class NestedType {
   constructor(someField: string, someField2: string) {
     this.someField = someField;
     this.someField2 = someField2;
+  }
+
+
+  getTypes(): any {
+    return {
+      someField: String,
+      someField2: String
+    };
   }
 }
 

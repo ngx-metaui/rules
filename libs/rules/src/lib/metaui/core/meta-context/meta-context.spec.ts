@@ -27,10 +27,9 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {MetaUIRulesModule} from '../../rules.module';
 import {ComponentRegistry} from '../../../components/core/component-registry.service';
 import {BaseComponent} from '../../../components/core/base.component';
-import {
-  AribaComponentsTestProviderModule
-} from '../../../components/ariba.component.provider.module';
+import {AribaComponentsTestProviderModule} from '../../../components/ariba.component.provider.module';
 import {Environment} from '../../../core/config/environment';
+import {Entity} from '../../../core/domain/domain-model';
 
 
 const routes: Routes = [
@@ -163,7 +162,7 @@ describe('Meta Context Component', () => {
 });
 
 
-class UserTestDynClass {
+class UserTestDynClass implements Entity {
   firstName: string;
   lastName: string;
   age: number;
@@ -177,8 +176,21 @@ class UserTestDynClass {
     this.bio = bio;
   }
 
-  $proto(): UserTestDynClass {
-    return new UserTestDynClass('a', 'b', 1, 'c');
+  className(): string {
+    return 'UserTestDynClass';
+  }
+
+  getTypes(): any {
+    return {
+      firstName: String,
+      lastName: String,
+      age: Number,
+      bio: String
+    };
+  }
+
+  identity(): string {
+    return 'UserTestDynClass';
   }
 }
 

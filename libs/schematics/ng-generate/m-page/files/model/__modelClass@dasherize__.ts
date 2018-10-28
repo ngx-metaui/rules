@@ -24,20 +24,6 @@ export class <%= classify(modelClass) %> implements Entity {
     };
   }
 
-  /**
-   * Used by MetaUI to introspect fields even those that are not initialized. Will be removed in the next version
-   * in favor of getTypes()
-   *
-   */
-  $proto(): <%= classify(modelClass) %> {
-    const obj = new <%= classify(modelClass) %>();
-    obj.uniqueName = '6';
-    obj.name = 's';
-    obj.description = 's';
-    obj.created = new Date();
-    return obj;
-  }
-
 
   /**
    * Used by MetaUI to identify the name of the class once everything is minified

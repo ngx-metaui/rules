@@ -23,7 +23,7 @@ render _User Interface_.  The same way you would expect any Internet Browser to 
 
 Rules are loaded from the `files` as well as from `objects` by introspecting typescript class and trying to figure 
 some info about the objects such as data types. This is why _Domain Object_ implements interface `Deserializable` 
-for retrieving types.  You might also notice we have a `$proto() ` method there , this is something that we used before and it is still used on some places but it will be removed soon.
+for retrieving types. 
 
 
 ```ts
@@ -56,22 +56,7 @@ export class User implements Entity
             lastName: String,
             dob: Date
         };
-    }
-
-    /**
-     * Used by MetaUI
-     *
-     */
-    $proto(): User
-    {
-        let user = new User();
-        user.uniqueName = '6';
-        user.age = 1;
-        user.firstName = 'a';
-        user.lastName = 'a';
-        user.dob = new Date();
-        return user;
-    }
+    }    
    ...
 
 ```
