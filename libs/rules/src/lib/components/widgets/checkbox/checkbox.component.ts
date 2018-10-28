@@ -30,7 +30,7 @@ import {
   SkipSelf
 } from '@angular/core';
 import {FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {isBoolean, isPresent} from '../../../core/utils/lang';
+import {isBlank, isBoolean, isPresent} from '../../../core/utils/lang';
 import {Environment} from '../../../core/config/environment';
 import {BaseFormComponent} from '../../core/base-form.component';
 
@@ -115,7 +115,7 @@ export class CheckboxComponent extends BaseFormComponent {
    *
    */
   @Input()
-  type: CheckboxType = 'form';
+  type: CheckboxType;
 
 
   /**
@@ -155,7 +155,10 @@ export class CheckboxComponent extends BaseFormComponent {
 
   ngOnInit() {
     this.model = this.value;
-    this.type = this.action.observers.length > 0 ? 'action' : this.type;
+
+    if (isBlank(this.type)) {
+      this.type = this.action.observers.length > 0 ? 'action' : 'form';
+    }
 
     if (this.isFormType()) {
       super.ngOnInit();
@@ -195,11 +198,13 @@ export class CheckboxComponent extends BaseFormComponent {
     if (this.isFormType()) {
       this.onModelChanged(this.model);
       if (this.isStandalone) {
-        this.formControl.setValue(this.model);
+        this.formControl.setValue(this.model, {onlySelf: false, emitEvent: true});
       }
     } else {
       this.action.emit(event);
     }
+
+    this.value = event;
   }
 
 

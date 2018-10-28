@@ -78,8 +78,11 @@ class {
 
 field {
     type         { component:StringComponent; bindings:{value:$value} }
-    type=boolean {
-        editable { component:Checkbox }
+    type=(boolean, Boolean) {
+        editable {
+            component:CheckboxComponent;
+            bindings:{ type:"form"};
+        }
     }
     type=(Number) {
         bindings:{formatter:$formatters.integer; };
