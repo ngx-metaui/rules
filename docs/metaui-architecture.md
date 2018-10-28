@@ -6,6 +6,7 @@ Typescript (Javascript) environment, what are the limitations and workarounds th
 
 _`Note: If you are trying to integrate MetaUI into your project you might want to read this document first!`_
 
+[GETTING-STARTED.md][1]
 
 
 Let's start with this simplified picture:
@@ -410,6 +411,8 @@ private registerRulesForFields(object: any, className: string): void {
 
 This way we automatically pre-register additional rules for  an `Object` such as data type for class field.
 
+
+[1]: https://github.com/ngx-meta/rules/blob/master/docs/OSSRules.md
 
 
 
