@@ -776,7 +776,7 @@ Select _create_ operation and uncheck `isAngularDeveloper` and we see that it th
 ![alt text](./meta/editable.png "Editable if Angular developer")
 
 
-### Action
+### Actions
 
 Action is the way how to add some logic into your MetaUI. For example:
 
@@ -905,7 +905,217 @@ When discard is clicked:
 
 ![alt text](./meta/action-links-clicked.png "Custom links with new m-context element")
 
+### Layouts
 
+So far we discussed how domain objects are rendered, we covered some advanced topics like conditions and 
+actions and all this is nothing without layouts. 
+
+Layouts are a like containers in MetaUI and they form high level structure in which you place your content.
+Even our form from above is backed up by layout:
+
+```
+class layout=Inspect { 
+  trait:Form; 
+  label:${UIMeta.beautifyClassName(values.class)}; 
+}
+
+@trait=Form { visible:true; component:MetaFormComponent }
+```
+
+In MetaUI we have two types of containers:
+* module
+* layout
+
+`Module` is just another container that can use multiple layouts to assemble actual page and it used
+to generate top level navigation menu where each menu have its own content
+
+
+Let's define 3 tabs:
+ 
+```
+@module=Home {
+    label:"My Home";
+    pageTitle:"You are now on Homepage";
+
+    @layout=Today {
+       after:zTop;
+       label: "Sales Graph";
+       component:SalesGraphComponent;
+    }
+
+    @layout=Sport {
+       after:Today;
+       label: "Sport today!";
+       component:StringComponent;
+       bindings:{value:" ...... " }
+    }
+
+
+     @layout=Tech {
+           after:Sport;
+           label: "Tech News";
+           component:StringComponent;
+           bindings:{value:" ...... " }
+     }
+
+     @layout=MessageBoard {
+        after:zBottom;
+        label: "Message Board";
+        component:StringComponent;
+        portletWidth:large
+        bindings:{value:" ...... " }
+     }
+
+}
+
+
+
+@module=Products {
+    pageTitle:"You are now on Products";
+    homePage:ProductContentComponent;
+}
+
+
+@module=Sources {
+    label:"Sources for Module";
+    homePage:SourcesComponent;
+
+}
+```
+
+
+Module is defined like this:
+
+```
+module {
+    homePage:MetaHomePageComponent;
+    component:MetaDashboardLayoutComponent;
+    layout { visible:true }   
+}
+```
+
+Every module is rendered on top of the `component` property (in this case `MetaDashboardLayoutComponent`) 
+and uses `homePage`to render given content. In `@module=Home` we defined 4 layouts and distributed
+them to different zones which are implemented by `MetaDashboardLayoutComponent`.
+Other tabs overrode `homePage` and added regular angular component.
+
+Layouts can in turn contain other layouts or object layouts and action layouts. Like our example from above where
+changed layout binding to `InspectWithActions` because we needed to have a container that can hold and render actions:
+
+```
+layout=InspectWithActions {
+    trait:Stack;
+    @layout=Actions#ActionMenu;
+    @layout=Inspect#Form;
+}
+```
+
+In above build-in rule  we defined a layout `InspectWithActions` with `trait` Stack, which adds additional properties such `component`
+that knows how to render its content in actual _stack_. And we have two named `@layout` where one creates a container 
+for actions and another renders a Form.
+
+Similar way you can construct any kinds of layouts. Here is an example from different context. Let's create a generic
+layout for `Invoice` class where we want to have expandable sections and each section will have its own content.
+
+ 
+![alt text](./meta/section.png "Custom links with new m-context element")
+
+when we expand first section:
+
+![alt text](./meta/section-expanded.png "Custom links with new m-context element")
+
+
+all defined with the rule:
+
+```
+layout=InvoicePage#Sections {
+    @layout=Header#Form {
+        zonePath:Header;
+        title:"Label for header section";
+        description:$object.itemDescription;
+        opened:false;
+    }
+
+    @layout=Participant {
+        title:"Label for Participant section";
+        visible:true;
+        canEdit:true;
+        component:Section2Component;
+        editing {
+            bindings:{
+                oper:'editx';
+            }
+        }
+        editing=false {
+            bindings:{
+                oper:'vieaaa';
+            }
+        }
+    }
+
+     @layout=Lines {
+        title:"Label for Line Item section";
+        visible:true;
+        canEdit:true;
+        editMode:"external";
+        actionIcon:"icon-positive";
+        component:Section3Component;
+        bindings:{
+            oper:${properties.get("operation")}
+        }
+    }
+    @layout=Footer#Form {
+        title:"Label for footer section";
+        zonePath:Footer;
+    }
+}
+```
+
+
+with html code like this:
+
+```html
+  <m-context [object]="myRequest" operation="view" layout="InvoicePage"
+                   (onAction)="onActionHandler($event)">
+        <m-include-component></m-include-component>
+   </m-context>
+```
+
+Fields are "zoned" by setting their predecessor with a dotted path (e.g. "header.zRight") that 
+is establish as the "zonePath" for the nested form in the above ` @layout=Header#Form`
+
+The application rule to render actual _Invoice_ could look like this:
+
+```
+class=Invoice {
+    layout {
+        trait:labelsOnTop;
+    }
+    Header.zLeft => uniqueName => itemPrice;
+    Header.zRight => supplier => requestor;
+    Footer.zBottom => itemDescription;
+}
+```
+
+
+### Other Areas to Explore
+
+So you've seen how `MetaUI` works with domain objects to generate various user interfaces derived from rules. The next steps could be 
+to give it a chance and try it out and also look at the following:
+
+* [Build-in rules][2]: Default rules where you can learn various oss constructions.
+* [MetaContext][3]: Angular component `m-context` responsible for setting context and communicating with the rule engine.
+* [MetaIncludeComponent][4]: Key component for reading final evaluated properties and rendering programatically UI.
+* [Meta][5]: Base class rule engine implementation.  
+* **OSS Grammer Tutorial**: Coming soon..  
 
 
 [1]: ../GETTING-STARTED.md
+[2]: https://github.com/ngx-meta/rules/tree/master/libs/rules/src/lib/metaui/core/oss
+[3]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/core/meta-context/meta-context.component.ts
+[4]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/layout/meta-include.directive.ts
+[5]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/core/meta.ts
+
+
+
+
