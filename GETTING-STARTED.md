@@ -1,4 +1,4 @@
-#Getting started
+# Getting started
 
 In this section we'll cover basics of the MetaUI rules framework `@ngx-metaui/rules` to assemble user interface on the fly without templates.
  
