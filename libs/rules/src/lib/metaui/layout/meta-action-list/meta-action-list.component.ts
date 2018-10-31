@@ -187,13 +187,13 @@ export class MetaActionListComponent extends MetaBaseComponent {
   }
 
 
-  // protected updateMeta(): any
-  // {
-  //     // todo: replace it with EventEmmitter.
-  //     this._actionsByCategory = null;
-  //     this._actionsByName = null;
-  //     return super.updateMeta();
-  // }
+  protected updateMeta(): any {
+    if (this.actionChanged()) {
+      this._actionsByCategory = null;
+
+      this.actionCategories();
+    }
+  }
 
   /**
    * Read and stores current action categories available to current Context
@@ -222,6 +222,24 @@ export class MetaActionListComponent extends MetaBaseComponent {
     }
 
     return this.categories;
+  }
+
+  private actionChanged(): boolean {
+    let meta: UIMeta = <UIMeta> this.context.meta;
+    let actionByCat = new Map<string, ItemProperties[]>();
+
+    this.context.push();
+    let cat = meta.actionsByCategory(this.context, actionByCat, UIMeta.ActionZones);
+    this.context.pop();
+
+
+    if (this._actionsByCategory && this.categories) {
+
+      return (actionByCat.size !== this._actionsByCategory.size) ||
+        (cat.length !== this.categories.length);
+    }
+
+    return false;
   }
 
 
@@ -268,7 +286,7 @@ export class MetaActionListComponent extends MetaBaseComponent {
    *
    */
   onContextChanged(change: string): void {
-    console.log('Changed = ' + change);
+
   }
 
   label(actionName: string): string {
