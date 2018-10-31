@@ -1810,7 +1810,7 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'RichTextArea',
+			      'component': 'RichTextAreaComponent',
 			      'bindings': {
 			        'rows': 10,
 			        'cols': 60
@@ -4134,6 +4134,40 @@ export const SystemRules = {
 			      'visible': true,
 			      'bindings': {
 			        'renderAs': 'links',
+			        'align': 'none'
+			      },
+			      'elementClass': 'l-action-buttons'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'layout',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'layout',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'trait',
+			        '_value': 'ActionLinksAligned',
+			        '_isDecl': true
+			      }
+			    ],
+			    '_properties': {
+			      'component': 'MetaActionListComponent',
+			      'visible': true,
+			      'bindings': {
+			        'renderAs': 'links',
 			        'align': 'right'
 			      },
 			      'elementClass': 'l-action-buttons'
@@ -4747,6 +4781,19 @@ export const SystemRules = {
 			    ],
 			    '_properties': {
 			      'trait': 'InstanceActionButtons'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'layout',
+			        '_value': 'LinksAligned',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': 'ActionLinksAligned'
 			    },
 			    '_rank': 0
 			  },

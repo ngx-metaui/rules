@@ -23,7 +23,7 @@
 **MetaUI** is set of APIs and components that dynamically generates User Interface based on your object model (JSON object + its type).
 It does so without developers having to layout components in template files. MetaUI uses rules (Meta Rules) to generate the UI.
 
-This project is based on our original work on `@aribaui` and `MetaUI`. The MetaUI portion have been extracted and ported to Javascript. 
+This project is based on our original work on `@aribaui`and `aribaweb`. The MetaUI portion have been extracted and ported to Javascript. 
 Our goal is make it lightweight, framework and component library agnostic. It transforms the typical UI development model from one where
 a developer layouts out all UI components in multiple template files to one where a developer defines rules and leverages MetaUI engine to
 create UI. MetaUI rules can be applied universally or to a specific object.

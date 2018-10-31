@@ -172,7 +172,7 @@ field {
         @trait=richtext {
             after:zBottom;
             bindings:{escapeUnsafeHtml:true}
-            editable            { component:RichTextArea;
+            editable            { component:RichTextAreaComponent;
                                   bindings:{cols:60; rows:10} }
             operation=(search)  { after:zNone }
             operation=(list)  { editable:false; after:zDetail; }
@@ -318,8 +318,6 @@ field {
             wrapperBindings: { tagName:h3; }
         }
     }
-
-
 }
 
 @traitGroup=FieldType {
@@ -411,6 +409,16 @@ layout {
         component:MetaActionListComponent;
         bindings:{
             renderAs:links;
+            align:none;
+         };
+         elementClass:"l-action-buttons";
+    }
+
+    @trait=ActionLinksAligned {
+        visible:true;
+        component:MetaActionListComponent;
+        bindings:{
+            renderAs:links;
             align:right;
          };
          elementClass:"l-action-buttons";
@@ -490,7 +498,8 @@ layout=InspectWithActions {
 
 layout=ButtonArea { trait:StaticActionButtons }
 layout=SelectionButtonArea { trait:InstanceActionButtons }
-layout=Links { trait:ActionLinks }
+layout=LinksAligned { trait:ActionLinksAligned }
+layout=Links  { trait:ActionLinks }
 
 
 /* Support @Trait("labelField") to identity label field */
