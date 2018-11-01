@@ -307,7 +307,7 @@ describe('Loading rules functionality', () => {
         metaUI.loadDefaultRuleFiles();
 
         expect(metaUI).toBeDefined();
-        expect(metaUI._rules.length).toEqual(455); // commented out toOneRelationShip
+        expect(metaUI._rules.length).toEqual(461); // commented out toOneRelationShip
 
       } catch (e) {
         fail(e);
@@ -511,7 +511,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
         let properties = metaUI._rules[prevMatch.matches()[i]].properties;
 
         if (properties.has('component')) {
-          expect(properties.get('component')).toEqual('RichTextArea');
+          expect(properties.get('component')).toEqual('RichTextAreaComponent');
           found = true;
           break;
         }
