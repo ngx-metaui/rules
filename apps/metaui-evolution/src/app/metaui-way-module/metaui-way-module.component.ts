@@ -6,7 +6,7 @@ import {
   MenuItemCommand,
   ModuleInfo,
   RoutingService, UIMeta
-} from '@ngx-meta/rules';
+} from '@ngx-metaui/rules';
 
 @Component({
     selector: 'app-way-module',

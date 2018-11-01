@@ -1,0 +1,26 @@
+<div class="page">
+  <h2>Object Detail</h2>
+
+  <aw-hyperlink (action)="operation = 'create'">Create</aw-hyperlink> &nbsp; | &nbsp;
+  <aw-hyperlink (action)="operation = 'edit'">Edit</aw-hyperlink> &nbsp; | &nbsp;
+  <aw-hyperlink (action)="operation = 'view'">View</aw-hyperlink>
+  <hr/>
+
+  <!--<span style="float: right">-->
+    <!--Actions: [-->
+    <!--<m-context [object]="object"  layout="Links">-->
+      <!--<m-include-component></m-include-component>-->
+    <!--</m-context>-->
+  <!--]-->
+
+  <!--</span>-->
+
+
+  <m-context [object]="object" [operation]="operation" layout="InspectWithActions">
+    <m-include-component></m-include-component>
+  </m-context>
+
+
+
+</div>
+

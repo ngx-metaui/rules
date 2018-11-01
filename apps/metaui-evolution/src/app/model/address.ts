@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-import {isPresent, Value} from '@ngx-meta/rules';
+import {isPresent, Value} from '@ngx-metaui/rules';
 
 
 export class Address implements Value

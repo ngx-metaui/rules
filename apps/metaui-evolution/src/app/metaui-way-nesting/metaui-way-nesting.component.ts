@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from '../model/user';
 import {Address} from '../model/address';
 import {Order} from '../model/order';
-import {Money} from '@ngx-meta/rules';
+import {Money} from '@ngx-metaui/rules';
 
 
 /**

@@ -19,12 +19,7 @@ import {PanelModule} from 'primeng/panel';
 import {CodeHighlighterModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MetauiWayNestingComponent} from './metaui-way-nesting/metaui-way-nesting.component';
-import {
-  AppConfig,
-  AribaComponentsModule,
-  AribaCoreModule,
-  MetaUIRulesModule
-} from '@ngx-meta/rules';
+import {AppConfig, AribaComponentsModule, MetaUIRulesModule} from '@ngx-metaui/rules';
 
 
 @NgModule({

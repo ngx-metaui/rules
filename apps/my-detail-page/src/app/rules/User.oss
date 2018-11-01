@@ -1,0 +1,75 @@
+/*
+    User rules.oss -- Meta-data rules. Generated file
+
+    Default definition
+*/
+class=User {
+      field=uniqueName {
+           label:"Id";
+      }
+
+      field=name {
+           label:"Full name";
+           trait:required;
+           editable: ${object.isAngularDeveloper};
+      }
+
+      field=description {
+           trait:longtext;
+
+           editing=false {
+            visible: ${object.isAngularDeveloper};
+           }
+      }
+
+       field=age  editable=false {
+        component:AgeRatingComponent;
+        bindings: {
+          value:$value;
+        }
+       }
+
+
+       field=created {
+         valid:${ object.isValidCreateDate() ? true : "The date cannot be in the future" };
+       }
+
+       zNone => *;
+       zLeft => uniqueName => name => description => created => age => isAngularDeveloper;
+}
+
+/*
+  Sample definition for operations edit and create
+
+*/
+ class= User {
+   operation=edit {
+      zNone => *;
+      zLeft  => name => description => age;
+   }
+
+  operation=create {
+      zNone => *;
+      zLeft => name => description => created => isAngularDeveloper;
+   }
+
+   @action=Save  {
+        label: "Save";
+        actionResults:${ alert("Record saved !") };
+        visible: ${properties.get("editing")};
+        buttonStyle:info;
+   }
+
+   @action=Discard  {
+         label: "Discard Changes";
+         actionResults:${ alert("All cleared !") };
+         visible: ${properties.get("editing")};
+         buttonStyle:info;
+   }
+}
+
+
+
+
+
+

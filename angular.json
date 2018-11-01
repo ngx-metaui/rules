@@ -299,6 +299,135 @@
           }
         }
       }
+    },
+    "my-detail-page": {
+      "root": "apps/my-detail-page/",
+      "sourceRoot": "apps/my-detail-page/src",
+      "projectType": "application",
+      "prefix": "ngx-metaui",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss",
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
+        },
+        "@schematics/angular:directive": {
+          "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
+        },
+        "@schematics/angular:module": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "showCircularDependencies": false,
+            "outputPath": "dist/apps/my-detail-page",
+            "index": "apps/my-detail-page/src/index.html",
+            "main": "apps/my-detail-page/src/main.ts",
+            "polyfills": "apps/my-detail-page/src/polyfills.ts",
+            "tsConfig": "apps/my-detail-page/tsconfig.app.json",
+            "assets": [
+              "apps/my-detail-page/src/favicon.ico",
+              "apps/my-detail-page/src/assets"
+            ],
+            "styles": [
+              "libs/rules/src/lib/resources/themes/_normalize.scss",
+              "node_modules/prismjs/themes/prism.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+              "libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
+              "node_modules/primeicons/primeicons.css",
+              "libs/rules/src/lib/resources/themes/ariba/theme.scss",
+              "libs/rules/src/lib/resources/styles/aribaui.scss",
+              "apps/my-detail-page/src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/quill/dist/quill.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/my-detail-page/src/environments/environment.ts",
+                  "with": "apps/my-detail-page/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "my-detail-page:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "my-detail-page:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "my-detail-page:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/my-detail-page/src/test.ts",
+            "polyfills": "apps/my-detail-page/src/polyfills.ts",
+            "tsConfig": "apps/my-detail-page/tsconfig.spec.json",
+            "karmaConfig": "apps/my-detail-page/karma.conf.js",
+            "styles": [
+              "apps/my-detail-page/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/my-detail-page/src/favicon.ico",
+              "apps/my-detail-page/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/my-detail-page/tsconfig.app.json",
+              "apps/my-detail-page/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

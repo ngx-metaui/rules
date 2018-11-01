@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import * as dynComponents from './dymamic-components';
 import {Router} from '@angular/router';
-import {ComponentRegistry, Notifications} from '@ngx-meta/rules';
+import {ComponentRegistry, Notifications} from '@ngx-metaui/rules';
 
 @Component({
   selector: 'app-root',
