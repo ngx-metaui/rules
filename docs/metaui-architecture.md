@@ -173,7 +173,7 @@ After a quick introduction, let's look at this old picture that takes us one lev
 I hope we can get some information out of it. 
 
 
-![alt text](../../../docs/img/meta/meta-1.1.jpg "Sketch")
+![alt text](./meta/meta-1.1.jpg "Sketch")
 
 Let's start from the top left corner:
 
