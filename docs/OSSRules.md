@@ -1107,7 +1107,7 @@ to give it a chance and try it out and also look at the following:
 * [MetaContext][3]: Angular component `m-context` responsible for setting context and communicating with the rule engine.
 * [MetaIncludeComponent][4]: Key component for reading final evaluated properties and rendering programatically UI.
 * [Meta][5]: Base class rule engine implementation.  
-* **OSS Grammer Tutorial**: Coming soon..  
+* [OSS Grammar Tutorial][6]: Introduction to oss syntax  
 
 
 [1]: ../GETTING-STARTED.md
@@ -1115,6 +1115,7 @@ to give it a chance and try it out and also look at the following:
 [3]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/core/meta-context/meta-context.component.ts
 [4]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/layout/meta-include.directive.ts
 [5]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/core/meta.ts
+[6]: https://github.com/ngx-meta/rules/blob/master/docs/oss-syntax.md
 
 
 
