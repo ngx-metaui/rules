@@ -27,7 +27,9 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {MetaUIRulesModule} from '../../rules.module';
 import {ComponentRegistry} from '../../../components/core/component-registry.service';
 import {BaseComponent} from '../../../components/core/base.component';
-import {AribaComponentsTestProviderModule} from '../../../components/ariba.component.provider.module';
+import {
+  AribaComponentsTestProviderModule
+} from '../../../components/ariba.component.provider.module';
 import {Environment} from '../../../core/config/environment';
 import {Entity} from '../../../core/domain/domain-model';
 
@@ -82,8 +84,8 @@ describe('Meta Context Component', () => {
   });
 
 
-  it('It should render 4 input fields with pre-loaded values: Frank, Kolar, 1000, Some note' +
-    ' about me.', fakeAsync(() => {
+  it('It should render 4 input fields with pre-loaded values: Frank, Kolar, 1000,' +
+    ' Some note' + ' about me.', fakeAsync(() => {
 
     let fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
 
@@ -108,8 +110,8 @@ describe('Meta Context Component', () => {
   }));
 
 
-  it('It should render 4 String components - read only mode pre-loaded values: Frank, Kolar,' +
-    ' 1000, Some note about me.',
+  it('It should render 4 String components - read only mode pre-loaded values: ' +
+    'Frank, Kolar,' + ' 1000, Some note about me.',
     fakeAsync(() => {
       let metaUI = UIMeta.getInstance();
       let env: Environment = new Environment();
@@ -202,7 +204,8 @@ class UserTestDynClass implements Entity {
     '</m-include-component></m-context>'
 })
 class TestContainerEditComponent {
-  user: UserTestDynClass = new UserTestDynClass('Frank', 'Kolar', 1000, 'Some note about me.');
+  user: UserTestDynClass = new UserTestDynClass('Frank', 'Kolar', 1000,
+    'Some note about me.');
 }
 
 @Component({
@@ -212,7 +215,8 @@ class TestContainerEditComponent {
     '</m-include-component></m-context>'
 })
 class TestContainerViewComponent {
-  user: UserTestDynClass = new UserTestDynClass('Frank', 'Kolar', 1000, 'Some note about me.');
+  user: UserTestDynClass = new UserTestDynClass('Frank', 'Kolar', 1000,
+    'Some note about me.');
 }
 
 
@@ -234,7 +238,8 @@ class TestContainerViewDefferedComponent extends BaseComponent {
     super.ngOnInit();
 
     setTimeout(() => {
-      this.user = new UserTestDynClass('Frank', 'Kolar', 1000, 'Some note about me.');
+      this.user = new UserTestDynClass('Frank', 'Kolar', 1000,
+        'Some note about me.');
 
     }, 0);
 
