@@ -87,7 +87,7 @@ Now we just touched the surface of the rule driven UI development and looked at 
 built. 
 
 * To understand how this works please jump to the [next topic][2] where we extend this application and give you 
-better introduction to the OSS Grammar.
+deeper introduction to the MetaUI.
 
 * Or you can read [High level fundamentals][3] that are behind this framework. 
     
