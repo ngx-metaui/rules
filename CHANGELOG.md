@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.4.3"></a>
+## [6.4.3](https://github.com/ngx-meta/rules/compare/v6.4.2...v6.4.3) (2018-11-01)
+
+
+### Bug Fixes
+
+* **meta-context test:** Fix lint errors ([de7a752](https://github.com/ngx-meta/rules/commit/de7a752))
+* **metaui:** Fixed boolean oss system rule ([307bc39](https://github.com/ngx-meta/rules/commit/307bc39))
+* **metaui:** Remove legacy $proto with getTypes() ([decb9e8](https://github.com/ngx-meta/rules/commit/decb9e8))
+
+
+### Features
+
+* **demo:** Add demo application that we refer in tutorials ([3faf4c9](https://github.com/ngx-meta/rules/commit/3faf4c9))
+* **docs:** New getting started guide and oss documentation ([82120d9](https://github.com/ngx-meta/rules/commit/82120d991ea56851f5d621987fdb0bfe2badca6e))
+
+
+
 <a name="6.4.2"></a>
 ## [6.4.2](https://github.com/ngx-meta/rules/compare/v6.4.1...v6.4.2) (2018-10-26)
 
