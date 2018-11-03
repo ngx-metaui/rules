@@ -1028,10 +1028,6 @@ for actions and another renders a Form.
 Similar way you can construct any kinds of layouts. Here is an example from different context. Let's create a generic
 layout for `Invoice` class where we want to have expandable sections and each section will have its own content.
 
- 
-![alt text](./meta/section.png "Custom links with new m-context element")
-
-when we expand first section:
 
 ![alt text](./meta/section-expanded.png "Custom links with new m-context element")
 

@@ -6,17 +6,17 @@
   <aw-hyperlink (action)="operation = 'view'">View</aw-hyperlink>
   <hr/>
 
-  <!--<span style="float: right">-->
-    <!--Actions: [-->
-    <!--<m-context [object]="object"  layout="Links">-->
-      <!--<m-include-component></m-include-component>-->
-    <!--</m-context>-->
-  <!--]-->
+  <span style="float: right">
+    Actions: [
+    <m-context [object]="object"  layout="Links">
+      <m-include-component></m-include-component>
+    </m-context>
+  ]
 
-  <!--</span>-->
+  </span>
 
 
-  <m-context [object]="object" [operation]="operation" layout="InspectWithActions">
+  <m-context [object]="object" [operation]="operation" layout="Inspect">
     <m-include-component></m-include-component>
   </m-context>
 
