@@ -4,6 +4,9 @@ In this section we will extend our application from the [getting started guide][
 advanced aspect behind all this in following sections:
 
 
+Before we get into how to use OSS, lets start with a [quick overview of the syntax][6] and its similarities and 
+differences to other syntaxes you may know already.
+
 * [Extend MetaUI Applications](#extend-metaui-applications)
 * [Rules](#rules)
 * [Context and Properties](#context-and-properties)
@@ -24,7 +27,7 @@ advanced aspect behind all this in following sections:
 
 Let's add two more fields on the `User.ts` object from the getting started guide:
 
-```typescript
+```ts
 
 constructor(public uniqueName?: string, public name?: string,
               public description?: string, public created?: Date,
@@ -38,7 +41,7 @@ We want to keep it relatively simple so we added fields `age` and `isAngularDeve
 rules can properly introspect these fields.
 
 
-```typescript
+```ts
 
   getTypes(): any {
     return {
@@ -54,13 +57,13 @@ rules can properly introspect these fields.
 and extend our rule file `app/rules/User.oss` which tells the framework how and where these new fields 
 should be rendered. Let's show these field in `create` operation and default one which is `view`
 
-```
+```ts
 
   class=User {
   
-      field=uniqueName {
+        field=uniqueName {
              label:"Id"
-         }
+        }
   
          field=name {
              label:"Name"
@@ -102,7 +105,7 @@ and also extend a component constructor where we instantiate `User`
 
 let's recompile and look at the application again
 
-```
+```ts
   npm run compile:oss
   ng serve 
 
@@ -123,7 +126,7 @@ applying (merging) their property maps, a set of effective properties can be com
 
 Each rule can be stated like this:
 
-```
+```ts
 If selectors [__,__,...] match the current context values,
 then apply the properties [__,__,...].
 ```
@@ -137,7 +140,7 @@ These rules can come from a variety of sources:
     _Example: "What are the fields in the `User` class?" In rules term:_
     
 
-```
+```ts
   If selectors [class=User, declare=field]
       match the current context values,
   then apply the properties
@@ -165,7 +168,7 @@ These rules can come from a variety of sources:
   In rules term:
   
 
-```
+```ts
   If selectors [field=any, type=Boolean, editable=true]
       match the current context values,
   then apply the properties
@@ -181,7 +184,7 @@ These rules can come from a variety of sources:
   
   Example: "The description field should appear after name field." In rules term:
   
-```
+```ts
   If selectors [class=User, field=description]
       match the current context values,
   then apply the properties
@@ -190,13 +193,13 @@ These rules can come from a variety of sources:
 
 In our example you could see OSS syntax in form of (description goes after name):
 
-```
+```ts
 zLeft => uniqueName => name => description => created => age => isAngularDeveloper;
 ```
 
 or can be expressed as:
 
-```
+```ts
 class=User {
      field=description {
          after: name;
@@ -289,7 +292,7 @@ In MetaUI, context values are set using `MetaContextComponent`:
 
 Then you have rules that depending on the context and how they are nested, you get different UI properties:
 
-```
+```ts
   If selectors [operation=create, field=any]
       match the current context values,
   then apply the properties
@@ -305,9 +308,14 @@ Then you have rules that depending on the context and how they are nested, you g
 `MetaIncludeComponent` and various Meta components takes the effective property map to generate 
 programatically the UI.
 
-![alt text](./meta/meta-create.png "Oss Create operation")
+<img width="600" height="385" title="Create operation" src="https://raw.githubusercontent.com/ngx-meta/rules/master/docs/meta/meta-create.png" >
 
-![alt text](./meta/meta-view.png "Oss View operation")
+
+and view operation: 
+
+
+<img width="400" height="305" title="view operation" src="https://raw.githubusercontent.com/ngx-meta/rules/master/docs/meta/meta-view.png" >
+
 
 
 ##### Here are some interesting context keys:
@@ -394,7 +402,7 @@ Referring to the rules listed below, we can see how this particular chaining seq
 * The `editable` property from 3 is chained/implicitly assigned backed into the context and activates rule 4.
 
 
-```
+```ts
 1) If selectors [class=User, field=isAngularDeveloper]
        match the current context values,
    then apply the properties
@@ -445,7 +453,7 @@ to worry about updating all the areas every time we add/remove/change a field.
 
 Let's add proper label _"Full name"_ for `name` field like this in the `User.oss`:
 
-```
+```ts
 class=User {
 
   field=name {
@@ -464,7 +472,7 @@ terminal "npm run watch:oss" command
 
 We just defined new selectors for [class=className, field=fieldName]. So in our example, this rule was created:
 
-```
+```ts
 If selectors [class=User, field=name]
     match the current context values,
 then apply the properties
@@ -480,7 +488,7 @@ then apply the properties
 
 We can similarly add `trait` properties like this:
 
-```
+```ts
 class=User {
 
   field=name {
@@ -496,7 +504,7 @@ class=User {
 
 The following rule is created:
 
-```
+```ts
   If selectors [class=User, field=name]
       match the current context values,
   then apply the properties
@@ -509,14 +517,14 @@ The following rule is created:
 
 ```
 
-Now the _name_ field is required  
+Now the _name_ field is required and description changed from simple text text field to text area.
 
-![alt text](./meta/required-trait.png "Trait required")
 
-and description changed from simple text text field to text area.
+<p width="10px">
 
-![alt text](./meta/rich-text.png "Trait required")
+![alt text](./meta/trait-longtext.png "Trait required")
 
+</p>
 We've discussed how `MetaIncludeComponent` switches in the right component with the 
 component property through chaining. As mentioned, the trait property is chained 
 back to the context, but where are the rest of rules involved? This takes us to 
@@ -530,7 +538,7 @@ An important source of built-in rules are specified in `WidgetsRules.oss`. In th
 you will find many useful rules for data type, decoration, trait, operation, layout, action, 
 and module in OSS. In particular, you will find these nested OSS rules:
 
-```
+```ts
 field {
      type=java.lang.String {
         @trait=longtext {
@@ -543,7 +551,7 @@ field {
 
 We'll cover the OSS syntax in more details in a different tutorial, but this is one of the rules:
 
-```
+```ts
   If selectors [field=any, type=String,
                 trait=longtext, editable=true]
       match the current context values,
@@ -556,7 +564,7 @@ We'll cover the OSS syntax in more details in a different tutorial, but this is 
 
 Since we have already `User.oss` in the `app/rules` directory we are going to add following
 
-```
+```ts
        field=age  editable=false {
           component:AgeRatingComponent;
           bindings: {
@@ -568,7 +576,7 @@ Since we have already `User.oss` in the `app/rules` directory we are going to ad
 The `AgeRatingComponent` might look like this
 
 
-```typescript
+```ts
   import {Component, Input, OnInit} from '@angular/core';
   import {BaseComponent, Environment} from '@ngx-metaui/rules';
   
@@ -601,7 +609,7 @@ The `AgeRatingComponent` might look like this
 And dont forget to add this into your module `declarations` as well as `entryComponents` since all is assembled 
 programmatically
 
-```typescript
+```ts
   @NgModule({
     declarations: [
       AppComponent,
@@ -624,7 +632,7 @@ To help the introspection when MetaUI tries to instantiate `AgeRatingComponent`t
 we are going to add export into `user-rules.oss`
 
 
-```typescript
+```ts
 /**
  * Export generated TS files from ./ts directory
  */
@@ -682,7 +690,7 @@ Let's continue by adding some advanced rules. We want to hide the description fi
 isAngularDeveloper is false with the visibility property
 
 
-```
+```ts
 field=description {
      trait:longtext;
 
@@ -694,7 +702,7 @@ field=description {
 
 which creates this rule:    
     
-```
+```ts
 If selectors [class=User, field=description, editing=false]
     match the current context values,
 then apply the properties
@@ -717,7 +725,7 @@ paths reference assignments in context
 Next we add a validation on the `created` field to ensure that it's not a future with the `Validation` condition:
 
 
-```
+```ts
    field=created {
       valid:${ object.isValidCreateDate() ? true : "The date cannot be in the future" };
    }
@@ -735,7 +743,7 @@ and let's add our validation method to domain object `user.ts`:
 
 which creates this rule:
 
-```
+```ts
   If selectors [class=user, field=created]
       match the current context values,
   then apply the properties
@@ -755,7 +763,7 @@ When you select future date our custom error message appears
 
 Let's add a rule to prevent the editing the `name` field if the value `isAngularDeveloper` is  not true. 
 
-```
+```ts
      field=name {
          label:"Full name";
          trait:required;
@@ -764,7 +772,8 @@ Let's add a rule to prevent the editing the `name` field if the value `isAngular
 ```
 
 which creates this rule:
-```
+
+```ts
 If selectors [class=User, field=name]
     match the current context values,
 then apply the properties
@@ -787,12 +796,14 @@ Action is the way how to add some logic into your MetaUI. For example:
 Let's add an action on the `User.oss` that shows only in editing mode and  when clicked it opens an alert 
 with the `object.name`:
 
-```
-  object @action=Save  {
-       label: "Save";
-       actionResults:${ alert("Record saved : " + object.name) };
-       visible: ${properties.get("editing")};
-       buttonStyle:info;
+```ts
+  class {   
+    @action=Save  {
+         label: "Save";
+         actionResults:${ alert("Record saved : " + object.name) };
+         visible: ${properties.get("editing")};
+         buttonStyle:info;
+    }
   }
 
 ```
@@ -811,7 +822,7 @@ You can define different variety of layouts but more about this in the next sect
 
 which creates this rule:
 
-```
+```ts
 If selectors [class=User declare=action]
     match the current context values,
 then apply the properties
@@ -849,7 +860,7 @@ and use other `m-context` element and render actions like this:
 Let's extend our rules to:
 
 
-```
+```ts
 /*
   Sample definition for operations edit and create
 
@@ -913,7 +924,7 @@ actions and all this is nothing without layouts.
 Layouts are a like containers in MetaUI and they form high level structure in which you place your content.
 Even our form from above is backed up by layout:
 
-```
+```ts
 class layout=Inspect { 
   trait:Form; 
   label:${UIMeta.beautifyClassName(values.class)}; 
@@ -932,7 +943,7 @@ to generate top level navigation menu where each menu have its own content
 
 Let's define 3 tabs:
  
-```
+```ts
 @module=Home {
     label:"My Home";
     pageTitle:"You are now on Homepage";
@@ -986,7 +997,7 @@ Let's define 3 tabs:
 
 Module is defined like this:
 
-```
+```ts
 module {
     homePage:MetaHomePageComponent;
     component:MetaDashboardLayoutComponent;
@@ -1002,7 +1013,7 @@ Other tabs overrode `homePage` and added regular angular component.
 Layouts can in turn contain other layouts or object layouts and action layouts. Like our example from above where
 changed layout binding to `InspectWithActions` because we needed to have a container that can hold and render actions:
 
-```
+```ts
 layout=InspectWithActions {
     trait:Stack;
     @layout=Actions#ActionMenu;
@@ -1017,17 +1028,13 @@ for actions and another renders a Form.
 Similar way you can construct any kinds of layouts. Here is an example from different context. Let's create a generic
 layout for `Invoice` class where we want to have expandable sections and each section will have its own content.
 
- 
-![alt text](./meta/section.png "Custom links with new m-context element")
-
-when we expand first section:
 
 ![alt text](./meta/section-expanded.png "Custom links with new m-context element")
 
 
 all defined with the rule:
 
-```
+```ts
 layout=InvoicePage#Sections {
     @layout=Header#Form {
         zonePath:Header;

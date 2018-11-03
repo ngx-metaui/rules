@@ -1,7 +1,7 @@
 ##  OSS Syntax
 
  
-Rule format is inspired by CSS, but extended to support nesting and chaining and tweaked to deal with identifiers containing “.”s. 
+Rule format is inspired by CSS, but extended to support nesting and chaining and tweaked to deal with identifiers containing `.`s. 
 
 **CSS**
 ```css
@@ -12,15 +12,15 @@ Rule format is inspired by CSS, but extended to support nesting and chaining and
 
 
 **OSS**
- ```css
+ ```ts
      class=User field=email {
-         cueTip:”Your email”;
+         toolTip:"Your email";
      }
 
 ```
 
 * **CSS**: if an `a` tag appears in a `div` named toc, set the property `text-decoration` to `underline`
-* **OSS**: if a field named `email` appears in a class named `User`, set the property `cueTip` to `Your email address`
+* **OSS**: if a field named `email` appears in a class named `User`, set the property `toolTip` to `Your email address`
 
 
 ### Basic syntax
@@ -29,7 +29,36 @@ Rule format is inspired by CSS, but extended to support nesting and chaining and
 
 These are equivalent
 
-```css
+```ts
+class=User {
+  field=firstName {
+    editing=true { 
+      visible:true; 
+    }
+  }
+}
+
+class=User {
+  field=lastName {
+    editing=true { 
+      visible:true; 
+    }
+  }
+}
+
+class=User {
+  field=email {
+    editing=true { 
+      visible:true; 
+    }
+  }
+}
+
+
+```
+or 
+
+```ts
 class=User field=firstName editing { visible:true; }
 class=User field=lastName  editing { visible:true; }
 class=User field=email editing     { visible:true; }
@@ -38,7 +67,7 @@ class=User field=email editing     { visible:true; }
 
 or 
 
-```css
+```ts
 class=User editing {
     field=firstName { visible:true; }
     field=lastName  { visible:true; }
@@ -48,7 +77,7 @@ class=User editing {
 
 or 
 
-```css
+```ts
 class=User editing field=(firstName, lastName) {
     visible:true; 
 }
@@ -59,16 +88,16 @@ class=User editing field=(firstName, lastName) {
 
 Values can be Boolean, Integer, String, List, Map, and Expressions 
 
-```javascript
+```ts
 field=password {
     // boolean
     editable:true;
     
-    //String literal
-    cueTip:"This is required";
+    //String literal quoted
+    toolTip:"This is required";
     
-    // List of strings
-    trait:required, secret;
+    // This is how specify list of values 
+    trait:(required, secret);
     
     // String literal (unquoted)
     component:AWPasswordField;
@@ -88,7 +117,7 @@ field=password {
 
 Like CSS classes: Used to assign sets of properties. E.g.:
 
-```javascript
+```ts
 class=User {
     field=password {
         trait: required, secret;
@@ -98,7 +127,7 @@ class=User {
 
 is expanded to:
 
-```javascript
+```ts
 class=User {
       field=password {
           // When editable use PasswordFieldComponent
@@ -119,7 +148,7 @@ class=User {
 
 Since `build-in` rules contains following trait definition:
 
-```javascript
+```ts
 field trait=secret {    
     editable {
         component:PasswordFieldComponent;
@@ -147,7 +176,7 @@ field trait=required operation=(edit, create) {
 
 **A derived field declaration:**
 
-```javascript
+```ts
 class=User {
   @field=fullName {
       value:${firstName + " " + lastName};
@@ -158,7 +187,7 @@ class=User {
 
 **List of section layouts**
 
-```javascript
+```ts
 layout=InvoicePage#Sections {
     @layout=Header#Form {
         zonePath:Header;
@@ -185,6 +214,8 @@ layout=InvoicePage#Sections {
     }
 ```
 
+![alt text](./meta/section-expanded.png "Custom links with new m-context element")
+
 
  ### Advanced syntax
 
@@ -193,7 +224,7 @@ layout=InvoicePage#Sections {
 
 These are equivalent:
  
-```javascript
+```ts
 field=firstName {
     trait:required;
 }
@@ -201,7 +232,7 @@ field=firstName {
 
 vs
 
-```javascript
+```ts
 // with # trait assignment 
 field=firstName#required;
 ```
@@ -210,7 +241,7 @@ field=firstName#required;
  
 #### Field rank
 
-```javascript
+```ts
 field=firstName {
     after:zLeft;
     trait:required;
@@ -228,7 +259,7 @@ field=password {
 
 vs using predecessor operator
 
-```javascript
+```ts
 
 zLeft => firstName#required => lastName#required => password#required,secret
 ```
@@ -242,7 +273,7 @@ The `“this”` is the `Context object` – key paths reference assignments in 
   while trying to more close to the code. This is phase [OSS Files and its next phase][2] 
 
 
-```javascript
+```ts
 object field=bio{
     editable: ${object.credits > 50}
 }
@@ -255,7 +286,7 @@ The context has special keys for value and properties
 
 
 
-```javascript
+```ts
 field=budget{
     valid: ${value >= 0 ? true : "Budget must be non-negative" }
 }
@@ -285,7 +316,7 @@ field {
  
 **`**selector ::= '@'? (selectorDef |  '~' IDENTIFIER_KEY)**`**
   * A selector can start with `@` in case we are declaring a field
-      ```javascript
+      ```ts
          @field=fullName {
               value:${firstName + " " + lastName};
           }
@@ -299,7 +330,7 @@ field {
 ```
 which is equivalent to:
        
-```javascript
+```ts
                class=* operation=edit {               
                    field=* {
                     editing:true; 
