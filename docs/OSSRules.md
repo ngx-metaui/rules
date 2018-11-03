@@ -1,12 +1,13 @@
 ## OSS Rules and MetaUI Application
 
-In this section we will extend our application from the [getting started guide][1] where a simple page was generated and also cover more 
-advanced aspect behind all this in following sections:
+In this section we will extend our application from the [getting started guide][1] where a simple 
+page was generated and also cover more advanced aspect behind but before we get into how to use OSS, 
+lets start with a [quick overview of the syntax][6] and its similarities and differences to other 
+syntaxes you may know already. 
 
 
-Before we get into how to use OSS, lets start with a [quick overview of the syntax][6] and its similarities and 
-differences to other syntaxes you may know already.
 
+* [Overview of the OSS syntax][6]
 * [Extend MetaUI Applications](#extend-metaui-applications)
 * [Rules](#rules)
 * [Context and Properties](#context-and-properties)
