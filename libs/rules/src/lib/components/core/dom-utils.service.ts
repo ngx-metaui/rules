@@ -48,7 +48,7 @@ export class DomUtilsService {
    *
    */
   closest(nativeElement: any, selector: string): any {
-    let firstChar = selector.charAt(0);
+    const firstChar = selector.charAt(0);
 
     let parentNode = nativeElement;
 
@@ -123,7 +123,7 @@ export class DomUtilsService {
     // default behavior is to insert it as child to parentNativeEl
     let ngContentParent = parentNativeEl;
 
-    let foundNgContent = parentNativeEl.querySelector('.u-ngcontent');
+    const foundNgContent = parentNativeEl.querySelector('.u-ngcontent');
     if (isPresent(foundNgContent)) {
       // we don't cover a case where there could be multiple ngcontents
       ngContentParent = foundNgContent;

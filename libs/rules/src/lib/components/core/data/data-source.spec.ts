@@ -71,7 +71,7 @@ describe('DataSource core with the', () => {
       inject([DATA_SOURCE], (ds: ChooserDataSourcePlainArray) => {
         ds.init(['aa', 'bb']);
 
-        let instant: string[] = ds.instant<string>();
+        const instant: string[] = ds.instant<string>();
         expect(instant).toBeDefined();
         expect(instant.length).toBe(2);
 
@@ -142,7 +142,7 @@ describe('DataSource core with the', () => {
           ]));
           ds.init(Car);
 
-          let cars = ds.instant<Car>();
+          const cars = ds.instant<Car>();
 
           expect(cars).toBeDefined();
           expect(cars.length).toBe(3);
@@ -158,7 +158,7 @@ describe('DataSource core with the', () => {
           ]));
           ds.init('Car');
 
-          let cars = ds.instant<Car>();
+          const cars = ds.instant<Car>();
 
           expect(cars).toBeDefined();
           expect(cars.length).toBe(3);
@@ -242,7 +242,7 @@ describe('DataSource core with the', () => {
       inject([DATA_SOURCE], (ds: ChooserDataSourcePlainArrayWithFinder) => {
         ds.init(['aaa', 'bbaa', 'bb'], QueryType.FullText);
 
-        let results = ds.instantFindBy('aa');
+        const results = ds.instantFindBy('aa');
         expect(results.length).toBe(2);
 
       }));
@@ -289,7 +289,7 @@ class ChooserDataSourcePlainArray extends DataSource {
 
 
   addNewItem(): void {
-    let copy = this.instant().slice();
+    const copy = this.instant().slice();
     copy.push('zz');
     this.dataProvider.dataChanges.next(copy);
 
@@ -339,7 +339,7 @@ class ChooserDataSourcePlain extends DataSource {
 
 
   addNewItem(): void {
-    let copy = this.instant().slice();
+    const copy = this.instant().slice();
     copy.push(new Car('aaaa'));
     this.dataProvider.dataChanges.next(copy);
 
@@ -379,7 +379,7 @@ class ChooserDataSourcePlainArrayWithFinder extends DataSource {
 
 
   addNewItem(): void {
-    let copy = this.instant().slice();
+    const copy = this.instant().slice();
     copy.push('zz');
     this.dataProvider.dataChanges.next(copy);
 

@@ -30,7 +30,7 @@ import {
   isPresent,
   OutlineNode,
   QueryType
-} from '@ngx-meta/rules';
+} from '@ngx-metaui/rules';
 
 
 @Component({

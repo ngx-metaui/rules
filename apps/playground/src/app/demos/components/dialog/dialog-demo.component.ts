@@ -22,7 +22,7 @@ import {
   DialogComponent,
   ModalService,
   OverlayComponent
-} from '@ngx-meta/rules';
+} from '@ngx-metaui/rules';
 
 @Component({
   templateUrl: './dialog-demo.component.html',

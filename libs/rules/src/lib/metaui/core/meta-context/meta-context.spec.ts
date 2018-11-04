@@ -50,7 +50,7 @@ describe('Meta Context Component', () => {
 
   beforeEach(() => {
 
-    let start = Date.now();
+    const start = Date.now();
 
     let metaUI = UIMeta.getInstance();
     metaUI._rules.forEach((v) => {
@@ -87,10 +87,10 @@ describe('Meta Context Component', () => {
   it('It should render 4 input fields with pre-loaded values: Frank, Kolar, 1000,' +
     ' Some note' + ' about me.', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
+    const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
 
-    let metaUI = UIMeta.getInstance();
-    let env: Environment = new Environment();
+    const metaUI = UIMeta.getInstance();
+    const env: Environment = new Environment();
     metaUI.componentRegistry = new ComponentRegistry(env);
     metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
@@ -113,12 +113,12 @@ describe('Meta Context Component', () => {
   it('It should render 4 String components - read only mode pre-loaded values: ' +
     'Frank, Kolar,' + ' 1000, Some note about me.',
     fakeAsync(() => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
-      let fixtureWrapper = TestBed.createComponent(TestContainerViewComponent);
+      const fixtureWrapper = TestBed.createComponent(TestContainerViewComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.detectChanges();
@@ -135,12 +135,12 @@ describe('Meta Context Component', () => {
 
   it('It should render 4 String components when object loaded is deffered using timer',
     fakeAsync(() => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
-      let fixtureWrapper = TestBed.createComponent(TestContainerViewDefferedComponent);
+      const fixtureWrapper = TestBed.createComponent(TestContainerViewDefferedComponent);
       fixtureWrapper.detectChanges();
 
       tick(50);

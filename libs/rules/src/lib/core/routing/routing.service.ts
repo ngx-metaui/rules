@@ -93,7 +93,7 @@ export class RoutingService {
   subscribeToRoutingEvents(event: Event): void {
 
     if (event instanceof NavigationEnd) {
-      let url = event.url;
+      const url = event.url;
       if (this.stateCacheHistory.has(url)) {
         this.stateCache.next(this.stateCacheHistory.get(url));
         this.stateCacheHistory.delete(url);
@@ -103,7 +103,7 @@ export class RoutingService {
 
     if (event instanceof NavigationStart) {
 
-      let itemBeforeRoute = ListWrapper.last<Event>(this.routingState);
+      const itemBeforeRoute = ListWrapper.last<Event>(this.routingState);
 
 
       if (isPresent(this.currentStateFrom) && isPresent(itemBeforeRoute) && isPresent(
@@ -130,7 +130,7 @@ export class RoutingService {
     let steps = -1;
     let navigateUrl = '/404';
     while (steps !== numOfSteps) {
-      let popState = this.routingState.pop();
+      const popState = this.routingState.pop();
       if (popState instanceof NavigationEnd || popState instanceof NavigationStart) {
         navigateUrl = popState.url;
         steps++;
@@ -181,7 +181,7 @@ export class RoutingService {
    *
    */
   operation(route: ActivatedRoute): string {
-    let operation = route.snapshot.params['o'];
+    const operation = route.snapshot.params['o'];
     return isBlank(
       operation) || (operation !== 'view' && operation !== 'create' && operation !== 'edit')
       ? 'view' : operation;
@@ -207,11 +207,11 @@ export class RoutingService {
     // we need this as we need to lookup if there is any route with given pageName as
     // child route, if not search for global onces
 
-    let normalizedPath = activatedPath.indexOf('/') === 0 ? activatedPath.substring(1) :
+    const normalizedPath = activatedPath.indexOf('/') === 0 ? activatedPath.substring(1) :
       activatedPath;
 
-    let currentRoute: Route = this.router.config.find((r: Route) => {
-        let routePath = r.path.indexOf('/') === 0 ? r.path.substring(1) :
+    const currentRoute: Route = this.router.config.find((r: Route) => {
+        const routePath = r.path.indexOf('/') === 0 ? r.path.substring(1) :
           r.path;
         return isPresent(normalizedPath) && normalizedPath === routePath;
       }
@@ -221,13 +221,13 @@ export class RoutingService {
     if (isPresent(pathName) && isPresent(currentRoute) && currentRoute.children.length > 0) {
 
       nextRoute = currentRoute.children.find((r: Route) => {
-        let componentName = r.component.prototype.constructor.name;
+        const componentName = r.component.prototype.constructor.name;
         return pathName === r.path && pageName === componentName;
       });
     } else if (isPresent(pageName)) {
 
       nextRoute = this.router.config.find((r: Route) => {
-        let componentName = r.component.prototype.constructor.name;
+        const componentName = r.component.prototype.constructor.name;
         return pathName === r.path && pageName === componentName;
       });
     }
@@ -235,7 +235,7 @@ export class RoutingService {
     if (isBlank(nextRoute)) {
       this.router.config.forEach((r: Route) => {
         if (isPresent(r.component)) {
-          let componentName = r.component.prototype.constructor.name;
+          const componentName = r.component.prototype.constructor.name;
           if (pageName === componentName) {
             nextRoute = r;
           }

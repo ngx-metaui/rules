@@ -71,7 +71,7 @@ describe('Application configuration', () => {
       });
 
 
-      let config: AppConfig = TestBed.get(AppConfig);
+      const config: AppConfig = TestBed.get(AppConfig);
       expect(config.get('prop1')).toEqual('val1');
       expect(config.get('restapi.project')).toEqual('/myuserservice/v1/');
       expect(config.get('i18n.enabled')).toEqual(false);
@@ -103,7 +103,7 @@ describe('Application configuration', () => {
         ],
       });
 
-      let config: AppConfig = TestBed.get(AppConfig);
+      const config: AppConfig = TestBed.get(AppConfig);
       expect(config.get(AppConfig.UserAgent))
         .toContain('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)');
       expect(config.get(AppConfig.Lang)).toContain('cz');
@@ -140,10 +140,10 @@ describe('Application configuration', () => {
 
 
     TestBed.compileComponents();
-    let fixtureWrapper = TestBed.createComponent(TestAppConfigGlobalEmbeddedComponent);
+    const fixtureWrapper = TestBed.createComponent(TestAppConfigGlobalEmbeddedComponent);
     fixtureWrapper.detectChanges();
 
-    let config: AppConfig = TestBed.get(AppConfig);
+    const config: AppConfig = TestBed.get(AppConfig);
 
 
     // In life app it will read directly from the page but for the test purposes we need
@@ -160,7 +160,7 @@ describe('Application configuration', () => {
 
 function setUserAgent(window: any, userAgent: any) {
   if (window.navigator.userAgent !== userAgent) {
-    let userAgentProp = {
+    const userAgentProp = {
       get: function () {
         return userAgent;
       }
@@ -178,7 +178,7 @@ function setUserAgent(window: any, userAgent: any) {
 
 function setLang(window: any, language: any) {
   if (window.navigator.language !== language) {
-    let languageProp = {
+    const languageProp = {
       get: function () {
         return language;
       }
@@ -195,7 +195,7 @@ function setLang(window: any, language: any) {
 
 function setPlatform(window: any, userAgent: any) {
   if (window.navigator.userAgent !== userAgent) {
-    let platformProp = {
+    const platformProp = {
       get: function () {
         return userAgent;
       }
@@ -224,7 +224,7 @@ class TestAppConfigGlobalEmbeddedComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let s = document.createElement('script');
+    const s = document.createElement('script');
 
     s.type = 'text/javascript';
     /* tslint:disable:no-var-keyword */

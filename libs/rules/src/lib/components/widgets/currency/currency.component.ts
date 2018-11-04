@@ -155,7 +155,6 @@ export class CurrencyComponent extends BaseFormComponent {
    * Display the real value when the user clicks in the currency widget. Then he can modify the
    * value without seeing the formatting.
    *
-   * @param el
    */
   onFocus(el: any): void {
     if (isPresent(this.money) && isPresent(this.money.amount)) {
@@ -165,7 +164,6 @@ export class CurrencyComponent extends BaseFormComponent {
 
   /**
    * display the formatted currency value when the user navigates away.
-   * @param el
    */
   onBlur(el: any): void {
     this.money = this.money.clone({amount: Number(el.value)});
@@ -183,7 +181,6 @@ export class CurrencyComponent extends BaseFormComponent {
 
   /**
    * Function will check to see if currency is a valid number before formatting.
-   * @param val
    */
   private formatCurrency(val: any): any {
     if (!val || val.length === 0) {

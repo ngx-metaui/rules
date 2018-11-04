@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {BaseComponent, Environment} from '@ngx-meta/rules';
+import {BaseComponent, Environment} from '@ngx-metaui/rules';
 
 
 @Component({

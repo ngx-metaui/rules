@@ -38,7 +38,7 @@ export class FieldPath {
    *
    */
   static setFieldValue(target: any, field: string, value: any): void {
-    let fp = new FieldPath(field);
+    const fp = new FieldPath(field);
     fp.setFieldValue(target, value);
   }
 
@@ -47,8 +47,8 @@ export class FieldPath {
    * Reads a value from target objects
    */
   static getFieldValue(target: any, field: string): any {
-    let fp = new FieldPath(field);
-    let value = fp.getFieldValue(target);
+    const fp = new FieldPath(field);
+    const value = fp.getFieldValue(target);
 
     if (field === '$toString') {
       return value();
@@ -86,8 +86,8 @@ export class FieldPath {
     // implement the same thing what we have on the get, if Map set field into map
     if (this._fieldPaths.length > 1 && !(target instanceof Map)) {
 
-      let path = this._fieldPaths.slice(0, this._fieldPaths.length - 1).join('.');
-      let objectToBeUpdated = this.objectPathInstance.get(target, path);
+      const path = this._fieldPaths.slice(0, this._fieldPaths.length - 1).join('.');
+      const objectToBeUpdated = this.objectPathInstance.get(target, path);
       if (objectToBeUpdated instanceof Map) {
         objectToBeUpdated.set(this._fieldPaths[this._fieldPaths.length - 1], value);
       } else {
@@ -96,10 +96,10 @@ export class FieldPath {
     }
 
     if (target instanceof Map) {
-      let mapTarget: Map<string, any> = target;
+      const mapTarget: Map<string, any> = target;
       // handle Nested Map
       if (this._fieldPaths.length > 1) {
-        let path = this._fieldPaths.splice(0, 1);
+        const path = this._fieldPaths.splice(0, 1);
 
         let nestedMap: Map<string, any> = mapTarget.get(path[0]);
         if (isBlank(nestedMap)) {
@@ -128,14 +128,14 @@ export class FieldPath {
         value = this.objectPathInstance.get(target, this._fieldPaths[i]);
         target = value;
       } else if (target instanceof Map) {
-        let targetMap: Map<string, any> = target;
+        const targetMap: Map<string, any> = target;
         value = targetMap.get(this._fieldPaths[i]);
       }
 
       // just tweak to be able to access maps field.someMapField.mapKey
       // I want this to get the element from the map
       if (value instanceof Map && (i + 1) < this._fieldPaths.length) {
-        let mapValue = <Map<string, any>> value;
+        const mapValue = <Map<string, any>> value;
         return mapValue.get(this._fieldPaths[i + 1]);
       }
     }

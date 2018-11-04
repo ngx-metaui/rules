@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AppConfig, ArrayDataProvider, DataProviders, Notifications} from '@ngx-meta/rules';
+import {AppConfig, ArrayDataProvider, DataProviders, Notifications} from '@ngx-metaui/rules';
 import {ApproverUser} from './model';
 
 @Component({

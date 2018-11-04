@@ -449,7 +449,7 @@ export class OutlineForComponent extends BaseComponent {
    */
   hasChildren(item: any): boolean {
     if (this.isTreeModelFormat()) {
-      let children = (<OutlineNode>item).children;
+      const children = (<OutlineNode>item).children;
       return isPresent(children) && children.length > 0;
 
     } else if (isBlank(this.children) && isBlank(item.children)) {
@@ -488,7 +488,7 @@ export class OutlineForComponent extends BaseComponent {
       this.animationInProgress = true;
     }
 
-    let currentItem = ListWrapper.last(this.state.currentPath);
+    const currentItem = ListWrapper.last(this.state.currentPath);
     this.state.toggleExpansion(this.state.currentPath, this.childrenForItem(currentItem));
 
     if (this.embedded) {

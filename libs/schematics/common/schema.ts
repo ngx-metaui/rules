@@ -25,9 +25,4 @@ export interface Schema {
   /** Root path to the selected project  - a place where template files will be copied */
   path: string;
 
-  /**
-   * Works with specific module within the project
-   */
-  moduleName: string;
-
 }

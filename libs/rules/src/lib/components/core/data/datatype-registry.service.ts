@@ -57,10 +57,10 @@ export class DataTypeProviderRegistry {
       throw new Error(' Cannot register non-object');
     }
 
-    let name = isType(target) ? target.prototype.constructor.name : target.constructor.name;
+    const  name = isType(target) ? target.prototype.constructor.name : target.constructor.name;
     this.registryByProvider.set(name, provider);
 
-    let prototype = Object.getPrototypeOf(target);
+    const prototype = Object.getPrototypeOf(target);
     this.registryNameToClass.set(name, prototype);
   }
 
@@ -75,7 +75,7 @@ export class DataTypeProviderRegistry {
     let classProto = this.registryNameToClass.get(className);
 
     while (isPresent(registeredClassName)) {
-      let provider: DataProvider<T> = this.registryByProvider.get(registeredClassName);
+      const provider: DataProvider<T> = this.registryByProvider.get(registeredClassName);
 
       if (isPresent(provider)) {
         provider.type = className;
@@ -85,7 +85,7 @@ export class DataTypeProviderRegistry {
       // Go up to parent
       if (isPresent(classProto)) {
         classProto = Object.getPrototypeOf(classProto);
-        let parentName = objectToName(classProto);
+        const parentName = objectToName(classProto);
         registeredClassName =
           (isPresent(parentName) && parentName !== registeredClassName) ? parentName
             : null;
@@ -104,7 +104,7 @@ export class DataTypeProviderRegistry {
    *
    */
   bestMatchForType<T>(type: Type<T>): DataProvider<T> {
-    let name: string = objectToName(type);
+    const name: string = objectToName(type);
 
     this.registryNameToClass.set(name, type);
     return this.bestMatchForClass<T>(name);

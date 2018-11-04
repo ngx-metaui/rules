@@ -60,7 +60,7 @@ export class ErrorMessagesComponent implements OnInit {
 
 
   hasMessage(): boolean {
-    let msg = this.errorMsg;
+    const msg = this.errorMsg;
     return isPresent(msg);
   }
 
@@ -69,7 +69,7 @@ export class ErrorMessagesComponent implements OnInit {
    *
    */
   get errorMsg(): string {
-    for (let propertyName in this.control.errors) {
+    for (const propertyName in this.control.errors) {
       if (this.control.errors.hasOwnProperty(propertyName) && this.control.touched) {
         return this.errManager.errorMessage(propertyName,
           this.control.errors[propertyName]);

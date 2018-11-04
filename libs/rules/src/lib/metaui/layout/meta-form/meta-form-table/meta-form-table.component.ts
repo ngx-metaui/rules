@@ -100,7 +100,7 @@ export class MetaFormTableComponent extends MetaBaseComponent {
     this.isFiveZoneLayout = this.context.propertyForKey(UIMeta.PropIsFieldsByZone);
 
 
-    let bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
+    const bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
     if (isPresent(bindings)) {
       this.showLabelsAboveControls = bindings.get('showLabelsAboveControls');
 
@@ -144,7 +144,7 @@ export class MetaFormTableComponent extends MetaBaseComponent {
     if (isPresent(this.form)) {
       this.form.editable = this.editable;
     }
-    let obj = (<UIContext>this.context).object;
+    const obj = (<UIContext>this.context).object;
     if (Object.keys(this.formGroup.value).length !== Object.keys(obj).length) {
       Object.keys(obj).forEach((key: string) => {
         this.doRegister(key, obj[key]);

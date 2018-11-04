@@ -138,7 +138,7 @@ describe('Data Providers', () => {
         it('should create new provider if we are dealing with Array type',
             inject([DataTypeProviderRegistry, DataProviders],
                 (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
-                    let arrProvider = dataProviders.find(['aa']);
+                    const arrProvider = dataProviders.find(['aa']);
                     expect(arrProvider instanceof ArrayDataProvider).toBeTruthy();
 
                 }));
@@ -162,7 +162,7 @@ describe('Data Providers', () => {
 
                 dataProviders.register(Car, new MyCoolProvider<Car>([]));
 
-                let arrProvider = dataProviders.find(['aa']);
+                const arrProvider = dataProviders.find(['aa']);
                 expect(arrProvider instanceof ArrayDataProvider).toBeTruthy();
 
             }));

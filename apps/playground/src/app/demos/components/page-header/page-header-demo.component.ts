@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {BaseComponent, Environment, PageMenuItem, UserNotification} from '@ngx-meta/rules';
+import {BaseComponent, Environment, PageMenuItem, UserNotification} from '@ngx-metaui/rules';
 
 @Component({
   templateUrl: './page-header-demo.component.html',

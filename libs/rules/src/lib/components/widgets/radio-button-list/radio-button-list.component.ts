@@ -177,7 +177,7 @@ export class RadioButtonListComponent extends BaseFormComponent implements After
    *
    */
   onChange(event: any) {
-    let updatedModel: any = this.list[this.model];
+    const updatedModel: any = this.list[this.model];
 
     this.onSelection.emit(updatedModel);
     this.onModelChanged(updatedModel);
@@ -193,14 +193,14 @@ export class RadioButtonListComponent extends BaseFormComponent implements After
    *
    */
   updateModel(souceItem: any): void {
-    let index = this.list.findIndex((elem: any) => {
+    const index = this.list.findIndex((elem: any) => {
       return souceItem === elem;
     });
     this.model = index === -1 ? 0 : index;
   }
 
   ngAfterContentInit(): void {
-    let updatedModel: any = this.list[this.model];
+    const updatedModel: any = this.list[this.model];
     this.formControl.setValue(updatedModel, {
       emitEvent: true,
       emitViewToModelChange: false
@@ -215,7 +215,7 @@ export class RadioButtonListComponent extends BaseFormComponent implements After
    */
   writeValue(value: any) {
     if (value !== this.value) {
-      let newModel = value;
+      const newModel = value;
       this.updateModel(newModel);
     }
 

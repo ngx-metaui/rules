@@ -178,8 +178,8 @@ export class ButtonComponent extends BaseComponent implements AfterViewInit {
    */
   ngAfterViewInit(): void {
     if (isPresent(this.element)) {
-      let button = this.element.nativeElement.querySelector('button');
-      let buttonTitle = button.children[0];
+      const button = this.element.nativeElement.querySelector('button');
+      const buttonTitle = button.children[0];
       button.children[0].textContent = this.element.nativeElement.textContent.trim()
         .replace('ui-button', '').replace('ui-btn', '');
 

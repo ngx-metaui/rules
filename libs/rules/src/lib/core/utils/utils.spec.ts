@@ -57,11 +57,11 @@ function decamelize(string: string, separator: string = ' ', initialCaps: boolea
   let lastUCIndex = -1;
   let allCaps = true;
 
-  let splitOnUC = !StringWrapper.contains(string, '_');
+  const splitOnUC = !StringWrapper.contains(string, '_');
   let buf = '';
   let inWord = 0;
 
-  for (let i = string.length; inWord < i; ++inWord) {
+  for (const i = string.length; inWord < i; ++inWord) {
     let c = string[inWord];
 
     if (c.toUpperCase() === c) {
@@ -87,7 +87,7 @@ function decamelize(string: string, separator: string = ' ', initialCaps: boolea
   if (allCaps) {
     let toCaps = false;
     for (let i = 0, c = buf.length; i < c; i++) {
-      let ch = buf[i];
+      const ch = buf[i];
 
       if (ch.toLowerCase() !== ch.toUpperCase()) {
         if (inWord && ch === ch.toUpperCase()) {

@@ -156,7 +156,6 @@ export class StepperComponent extends BaseComponent {
   /**
    * Getting the color of the step for the current index
    *
-   * @param index
    */
   getStepColor(index: number) {
     // Color Array overrides everything else.

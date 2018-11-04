@@ -16,9 +16,9 @@
  *
  *
  */
-import {Schema} from '../common/schema';
 
-export interface AddSchema extends Schema {
+
+export interface AddSchema {
 
   /** Name of the project to target. */
   project: string;
@@ -40,5 +40,9 @@ export interface AddSchema extends Schema {
   /** Root path to the selected project  - a place where template files will be copied */
   path: string;
 
+  /**
+   * Works with specific module within the project
+   */
+  moduleName: string;
 
 }

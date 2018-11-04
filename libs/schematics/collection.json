@@ -3,7 +3,8 @@
   "schematics": {
     "ng-add": {
       "description": "Adds MetaUI ngx-meta/rules to the application ",
-      "factory": "./ng-add/index"
+      "factory": "./ng-add/index",
+      "schema": "./ng-add/add-schema.json"
     },
     "mPage": {
       "description": "Generate simple MetaUI based page with modelClass and rules",

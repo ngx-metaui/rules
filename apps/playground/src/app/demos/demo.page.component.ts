@@ -17,7 +17,7 @@
  *
  */
 import {Component, OnInit} from '@angular/core';
-import {BaseComponent, Environment, RoutingService} from '@ngx-meta/rules';
+import {BaseComponent, Environment, RoutingService} from '@ngx-metaui/rules';
 
 
 @Component({

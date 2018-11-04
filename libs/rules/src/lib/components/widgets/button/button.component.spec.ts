@@ -51,7 +51,7 @@ describe('Component: Button', () => {
   it('should instantiate and have default values for value, Button type, class, disabled, ' +
     'value, ' + 'etc', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestButtonDefaultBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestButtonDefaultBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.button.type).toEqual('button');
@@ -62,13 +62,13 @@ describe('Component: Button', () => {
   });
 
   it('Basic behaviors for setting the type, size, name, value properties', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(
+    const fixtureWrapper = TestBed.createComponent(
       TestButtonBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector(
+    const el = fixtureWrapper.nativeElement.querySelector(
       'button');
-    let className = el.className;
+    const className = el.className;
     fixtureWrapper.detectChanges();
 
 
@@ -82,11 +82,11 @@ describe('Component: Button', () => {
 
   it('should trigger action behavior when clicking on button', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(
+    const fixtureWrapper = TestBed.createComponent(
       TestButtonActionBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector('button');
+    const el = fixtureWrapper.nativeElement.querySelector('button');
     el.dispatchEvent(new Event('click'));
 
     fixtureWrapper.detectChanges();
@@ -98,7 +98,7 @@ describe('Component: Button', () => {
 
 
   it('should have initialized formControl and formGroup when wrapped inside FormRow', () => {
-    let fixtureWrapper = TestBed.createComponent(TestDTContainerBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDTContainerBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.button.type).toEqual('submit');

@@ -52,7 +52,7 @@ describe('Component: Hover card', () => {
 
 
   it('must throw an Error if link Title is not used', () => {
-    let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
+    const fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
     fixtureWrapper.componentInstance.title = null;
 
     expect(() => fixtureWrapper.detectChanges())
@@ -64,14 +64,14 @@ describe('Component: Hover card', () => {
 
   describe('with forceClose Enable', () => {
     it('can render a title with action icon', () => {
-      let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
       fixtureWrapper.detectChanges();
 
-      let hcTitle = fixtureWrapper.nativeElement
+      const hcTitle = fixtureWrapper.nativeElement
         .querySelector('.w-hc-title .w-string-field');
 
 
-      let hcIcon = fixtureWrapper.nativeElement
+      const hcIcon = fixtureWrapper.nativeElement
         .querySelector('.w-hc-title .sap-icon');
 
       expect(hcTitle.textContent).toBe('testTitle');
@@ -85,10 +85,10 @@ describe('Component: Hover card', () => {
 
       fakeAsync(() => {
 
-        let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
+        const fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
         fixtureWrapper.detectChanges();
 
-        let hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
+        const hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
 
         fixtureWrapper.componentInstance.hover.awOverlay.overlay
           .show(newEvent('mouseover'));
@@ -101,12 +101,12 @@ describe('Component: Hover card', () => {
         fixtureWrapper.detectChanges();
 
 
-        let cardPanel = document.querySelector('.ui-overlaypanel');
-        let contentPanel = document
+        const cardPanel = document.querySelector('.ui-overlaypanel');
+        const contentPanel = document
           .querySelector('.ui-overlaypanel-content .my-test-content');
-        let closeIcon = document.querySelector('.ui-overlaypanel-close');
+        const closeIcon = document.querySelector('.ui-overlaypanel-close');
 
-        let computedStyles = getComputedStyle(cardPanel);
+        const computedStyles = getComputedStyle(cardPanel);
 
         expect(computedStyles.display).toBe('block');
         expect(contentPanel.textContent.trim()).toBe('AAAA');
@@ -116,10 +116,10 @@ describe('Component: Hover card', () => {
 
 
     it('must close when clicked on close icon', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
       fixtureWrapper.detectChanges();
 
-      let hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
+      const hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
 
       fixtureWrapper.componentInstance.hover.awOverlay.overlay
         .show(newEvent('mouseover'));
@@ -129,9 +129,9 @@ describe('Component: Hover card', () => {
       fixtureWrapper.detectChanges();
 
       let cardPanel = document.querySelector('.ui-overlaypanel');
-      let closeIcon = document.querySelector('.ui-overlaypanel-close');
+      const closeIcon = document.querySelector('.ui-overlaypanel-close');
 
-      let computedStyles = getComputedStyle(cardPanel);
+      const computedStyles = getComputedStyle(cardPanel);
       expect(computedStyles.display).toBe('block');
       expect(cardPanel.textContent.trim()).toBe('AAAA');
 
@@ -154,15 +154,15 @@ describe('Component: Hover card', () => {
 
   xdescribe('with forceClose disable', () => {
     it('can render a title with action icon', () => {
-      let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
       fixtureWrapper.componentInstance.forceClose = false;
       fixtureWrapper.detectChanges();
 
-      let hcTitle = fixtureWrapper.nativeElement
+      const hcTitle = fixtureWrapper.nativeElement
         .querySelector('.w-hc-title .w-string-field');
 
 
-      let hcIcon = fixtureWrapper.nativeElement
+      const hcIcon = fixtureWrapper.nativeElement
         .querySelector('.w-hc-title .sap-icon');
 
       expect(hcTitle.textContent).toBe('testTitle');
@@ -173,16 +173,16 @@ describe('Component: Hover card', () => {
 
     it('displays a Card container with content not having close icon', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHCSimpleComponent);
       fixtureWrapper.componentInstance.forceClose = false;
       fixtureWrapper.detectChanges();
 
-      let hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
+      const hcIcon = fixtureWrapper.nativeElement.querySelector('.w-hc-title .sap-icon');
 
       hcIcon.dispatchEvent(newEvent('mouseover'));
       fixtureWrapper.detectChanges();
 
-      let closeIcon = fixtureWrapper.nativeElement.querySelector('.ui-overlaypanel-close');
+      const closeIcon = fixtureWrapper.nativeElement.querySelector('.ui-overlaypanel-close');
       expect(closeIcon).toBeNull();
     });
   });
@@ -216,7 +216,7 @@ class TestHCSimpleComponent {
 
 
 export function newEvent(eventName: string) {
-  let evt = document.createEvent('CustomEvent');
+  const evt = document.createEvent('CustomEvent');
   evt.initCustomEvent(eventName, false, false, null);
   return evt;
 }

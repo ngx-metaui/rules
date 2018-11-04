@@ -155,7 +155,6 @@ export class OverlayComponent extends ModalContainer implements OnInit, AfterCon
 
   /**
    * Open Overlay
-   * @param event
    */
   open(event: any) {
     setTimeout(() => {
@@ -175,7 +174,6 @@ export class OverlayComponent extends ModalContainer implements OnInit, AfterCon
 
   /**
    * toggle open and close.
-   * @param event
    */
   toggle(event: any) {
     setTimeout(() => {

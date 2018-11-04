@@ -58,7 +58,7 @@ describe(' Input field', () => {
     it('It should setup a default values when just a value bindings is passed.',
       () => {
 
-        let fixtureWrapper = TestBed.createComponent(TestInputInstantiationComponent);
+        const fixtureWrapper = TestBed.createComponent(TestInputInstantiationComponent);
         fixtureWrapper.detectChanges();
 
         expect(fixtureWrapper.componentInstance.inputComponent.editable)
@@ -75,14 +75,14 @@ describe(' Input field', () => {
     it('it should be instantiated with correct input value that we pass in ' +
       'which is => Some text', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestInputInstantiationComponent);
+      const fixtureWrapper = TestBed.createComponent(TestInputInstantiationComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.inputComponent.value)
         .toEqual('Some text');
 
 
-      let formInput = fixtureWrapper.debugElement.query(By.css('.w-input-field'));
+      const formInput = fixtureWrapper.debugElement.query(By.css('.w-input-field'));
       expect(formInput.nativeElement.value).toEqual('Some text');
     });
 
@@ -90,11 +90,11 @@ describe(' Input field', () => {
     it('It should have default input field type  = text if not specified.',
       () => {
 
-        let fixtureWrapper = TestBed.createComponent(TestInputInstantiationComponent);
+        const fixtureWrapper = TestBed.createComponent(TestInputInstantiationComponent);
         fixtureWrapper.detectChanges();
 
 
-        let formInput = fixtureWrapper.debugElement.query(By.css('.w-input-field'));
+        const formInput = fixtureWrapper.debugElement.query(By.css('.w-input-field'));
         expect(formInput.nativeElement.type).toEqual('text');
       });
 
@@ -102,7 +102,7 @@ describe(' Input field', () => {
     it('It should have default input field type text when we pass string or text. ' +
       'or number of we pass number as binding', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestInputTypenComponent);
+      const fixtureWrapper = TestBed.createComponent(TestInputTypenComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.inputType = 'string';
@@ -127,7 +127,7 @@ describe(' Input field', () => {
 
     it('It should recognize all types as incase sensitive', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestInputTypenComponent);
+      const fixtureWrapper = TestBed.createComponent(TestInputTypenComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.inputType = 'StrIng';
@@ -159,13 +159,13 @@ describe(' Input field', () => {
 
       it('It should corectly inherit editability mode', () => {
 
-        let fixtureWrapper = TestBed.createComponent(TestInputWithImplicitValuesComponent);
+        const fixtureWrapper = TestBed.createComponent(TestInputWithImplicitValuesComponent);
         fixtureWrapper.detectChanges();
 
         expect(fixtureWrapper.componentInstance.inputComponent.editable).toEqual(true);
 
         // its rendered as a text field
-        let formInput = fixtureWrapper.debugElement.query(By.css('.w-input-field'));
+        const formInput = fixtureWrapper.debugElement.query(By.css('.w-input-field'));
         expect(formInput.nativeElement.value).toEqual('Some text');
 
 
@@ -175,7 +175,7 @@ describe(' Input field', () => {
 
         expect(fixtureWrapper.componentInstance.inputComponent.editable).toEqual(false);
 
-        let stringComp = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
+        const stringComp = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
         expect(stringComp.nativeElement.textContent).toEqual('Some text');
 
       });
@@ -184,14 +184,14 @@ describe(' Input field', () => {
       it('It should corectly display a label that comes from parent as well as has ' +
         'placeHolder',
         () => {
-          let fixtureWrapper = TestBed
+          const fixtureWrapper = TestBed
             .createComponent(TestInputWithImplicitValuesComponent);
           fixtureWrapper.detectChanges();
 
           expect(fixtureWrapper.componentInstance.inputComponent.placeHolder)
             .toEqual('My Name');
 
-          let formInput = fixtureWrapper.debugElement
+          const formInput = fixtureWrapper.debugElement
             .query(By.css('.ui-g-12 > label'));
           expect(formInput.nativeElement.textContent).toEqual('My Name');
         });
@@ -199,13 +199,13 @@ describe(' Input field', () => {
 
       it('It should inherit and render the required flag just next the the ' +
         'label and field', () => {
-        let fixtureWrapper = TestBed.createComponent(TestInputWithImplicitValuesComponent);
+        const fixtureWrapper = TestBed.createComponent(TestInputWithImplicitValuesComponent);
         fixtureWrapper.detectChanges();
 
         expect(fixtureWrapper.componentInstance.inputComponent.placeHolder)
           .toEqual('My Name');
 
-        let formInput = fixtureWrapper.debugElement.query(By.css('.w-form-row'));
+        const formInput = fixtureWrapper.debugElement.query(By.css('.w-form-row'));
         expect(formInput.classes['required']).toBeTruthy();
       });
     });
@@ -218,12 +218,12 @@ describe(' Input field', () => {
     it('The field size should be 1 grid column when we pass size x-small',
       () => {
 
-        let fixtureWrapper = TestBed.createComponent(TestInputSizeComponent);
+        const fixtureWrapper = TestBed.createComponent(TestInputSizeComponent);
         fixtureWrapper.detectChanges();
 
 
         // its rendered as a text field
-        let formInput = fixtureWrapper.debugElement.query(By.css('.w-form-row'));
+        const formInput = fixtureWrapper.debugElement.query(By.css('.w-form-row'));
         expect(formInput.children[1].nativeElement.classList.contains('ui-md-1')).toBeTruthy();
 
       });
@@ -231,7 +231,7 @@ describe(' Input field', () => {
 
     it('The field size should 3 column when we pass size small', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestInputSizeComponent);
+      const fixtureWrapper = TestBed.createComponent(TestInputSizeComponent);
       fixtureWrapper.detectChanges();
 
 
@@ -239,7 +239,7 @@ describe(' Input field', () => {
       fixtureWrapper.detectChanges();
 
       // its rendered as a text field
-      let formInput = fixtureWrapper.debugElement.query(By.css('.w-form-row'));
+      const formInput = fixtureWrapper.debugElement.query(By.css('.w-form-row'));
       expect(formInput.children[1].nativeElement.classList.contains('ui-md-3')).toBeTruthy();
 
     });
@@ -253,7 +253,7 @@ describe(' Input field', () => {
 
     it('should get initialized using ControlValueAccessor so we know writeValue is triggered',
       () => {
-        let fixtureWrapper = TestBed.createComponent(TestInputInitWithNgModelComponent);
+        const fixtureWrapper = TestBed.createComponent(TestInputInitWithNgModelComponent);
         fixtureWrapper.detectChanges();
 
         fixtureWrapper.componentInstance.inputValue = 'xxxx';

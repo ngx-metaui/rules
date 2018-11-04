@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-import {Entity} from '@ngx-meta/rules';
+import {Entity} from '@ngx-metaui/rules';
 
 export class ApproverUser implements Entity {
 

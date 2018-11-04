@@ -50,7 +50,7 @@ describe('Component: Radiobutton', () => {
 
   it('renders radio buttons using [(ngModel)] and correctly initialize model', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.rb.toArray().length).toEqual(2);
@@ -59,10 +59,10 @@ describe('Component: Radiobutton', () => {
 
   it('renders radio buttons so that main element has css class .w-radiobutton', () => {
     TestBed.compileComponents();
-    let fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
     fixtureWrapper.detectChanges();
 
-    let rds = fixtureWrapper.nativeElement.querySelectorAll('span.w-radiobutton');
+    const rds = fixtureWrapper.nativeElement.querySelectorAll('span.w-radiobutton');
     expect(rds.length).toEqual(2);
   });
 
@@ -70,12 +70,12 @@ describe('Component: Radiobutton', () => {
   it('renders two radio buttons using [(ngModel)] where first one with value "red" is checked',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
+      const fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
       fixtureWrapper.detectChanges();
       tick();
       fixtureWrapper.detectChanges();
 
-      let rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
+      const rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
       expect(rbs.length).toEqual(2);
 
       fixtureWrapper.detectChanges();
@@ -89,7 +89,7 @@ describe('Component: Radiobutton', () => {
 
   it('renders 2 radio buttons and it should updates [(ngModel)] when second radio is clicked so' +
     ' it will changes the selection value from "red" to "blue" ', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBBasicWithNgModelComponent);
     fixtureWrapper.detectChanges();
     tick();
     fixtureWrapper.detectChanges();
@@ -115,12 +115,12 @@ describe('Component: Radiobutton', () => {
   it('renders 2 radio buttons using [formGroup] so that "blue" value is checked',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
+      const fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
       fixtureWrapper.detectChanges();
       tick();
       fixtureWrapper.detectChanges();
 
-      let rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
+      const rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
       expect(rbs.length).toEqual(2);
 
       fixtureWrapper.detectChanges();
@@ -136,12 +136,12 @@ describe('Component: Radiobutton', () => {
     ' should propagate change to FormGroup when radio value "red" is clicked',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
+      const fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
       fixtureWrapper.detectChanges();
       tick();
       fixtureWrapper.detectChanges();
 
-      let rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
+      const rbs = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
       let rbsi = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
       expect(rbs.length).toEqual(2);
 
@@ -163,13 +163,13 @@ describe('Component: Radiobutton', () => {
 
   it('triggers event with current radio value when radio is clicked', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBBasicWithFormGroupComponent);
     fixtureWrapper.detectChanges();
     tick();
     fixtureWrapper.detectChanges();
 
-    let rbsl = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
-    let rbsi = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
+    const rbsl = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
+    const rbsi = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
 
     rbsl[0].click();
     tick();
@@ -181,13 +181,13 @@ describe('Component: Radiobutton', () => {
 
 
   it('should not change mode when clicking on disabled option', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestRBDisabledWithNgModelComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBDisabledWithNgModelComponent);
     fixtureWrapper.detectChanges();
     tick();
 
     fixtureWrapper.detectChanges();
     tick();
-    let rbsl = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
+    const rbsl = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
     let rbsi = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton input');
 
     // initial state

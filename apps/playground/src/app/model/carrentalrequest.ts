@@ -17,7 +17,7 @@
  *
  */
 import {ApproverUser} from './approver-user';
-import {Entity, Money} from '@ngx-meta/rules';
+import {Entity, Money} from '@ngx-metaui/rules';
 
 
 export class CarRentalRequest implements Entity {

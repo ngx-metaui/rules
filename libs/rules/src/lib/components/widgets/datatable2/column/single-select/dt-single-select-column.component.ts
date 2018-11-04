@@ -31,23 +31,21 @@ import {DTColumn2Component} from '../dt-column.component';
  *
  */
 @Component({
-    selector: 'aw-dt-single-select-column',
-    templateUrl: 'dt-single-select-column.component.html',
-    styleUrls: ['dt-single-select-column.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    providers: [DomHandler]
+  selector: 'aw-dt-single-select-column',
+  templateUrl: 'dt-single-select-column.component.html',
+  styleUrls: ['dt-single-select-column.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [DomHandler]
 
 })
-export class DTSingleSelectColumnComponent extends DTColumn2Component
-{
+export class DTSingleSelectColumnComponent extends DTColumn2Component {
 
-    constructor(public env: Environment, public domHandler: DomHandler)
-    {
-        super(env, domHandler);
+  constructor(public env: Environment, public domHandler: DomHandler) {
+    super(env, domHandler);
 
-        // default width of the selection control
-        this.width = '45px';
-    }
+    // default width of the selection control
+    this.width = '45px';
+  }
 
 
 }

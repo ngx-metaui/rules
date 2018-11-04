@@ -54,7 +54,7 @@ describe('RichTextArea component behavior', () => {
 
   it('It should setup a default values when just a value bindings is passed', () => {
 
-    let fixtureWrapper = TestBed.createComponent(EditorInstantiationComponent);
+    const fixtureWrapper = TestBed.createComponent(EditorInstantiationComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.editorComponent.editable).toEqual(true);
@@ -70,18 +70,18 @@ describe('RichTextArea component behavior', () => {
   it('should pass the correct value based on new template value', fakeAsync(() => {
 
 
-    let tmpl = '<aw-richtextarea [value]="inputValue"></aw-richtextarea>';
+    const tmpl = '<aw-richtextarea [value]="inputValue"></aw-richtextarea>';
     TestBed.overrideComponent(EditorInstantiationComponent, {set: {template: tmpl}});
 
 
-    let fixtureWrapper = TestBed.createComponent(EditorInstantiationComponent);
+    const fixtureWrapper = TestBed.createComponent(EditorInstantiationComponent);
     fixtureWrapper.detectChanges();
 
     // Editor uses javascript to update it's inner content. Needs to wait until that's done.
     tick(100);
     fixtureWrapper.detectChanges();
 
-    let editor = fixtureWrapper.debugElement.query(By.css('.ui-editor-content'));
+    const editor = fixtureWrapper.debugElement.query(By.css('.ui-editor-content'));
     expect(editor.nativeElement.firstChild.innerHTML).toEqual('<p>Some text</p>');
 
   }));
@@ -89,7 +89,7 @@ describe('RichTextArea component behavior', () => {
 
   it('should inherit values from parent component such as name, formControl, formGroup.', () => {
 
-    let fixtureWrapper = TestBed.createComponent(EditorInsideParentContainerComponent);
+    const fixtureWrapper = TestBed.createComponent(EditorInsideParentContainerComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.editorComponent.editable).toEqual(true);
@@ -101,11 +101,11 @@ describe('RichTextArea component behavior', () => {
   });
 
   it('should render in readonly mode when editable is FALSE. ', () => {
-    let fixtureWrapper = TestBed.createComponent(EditorReadOnlyComponent);
+    const fixtureWrapper = TestBed.createComponent(EditorReadOnlyComponent);
     fixtureWrapper.detectChanges();
 
 
-    let txtArea = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
+    const txtArea = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
     expect(txtArea.nativeElement.textContent).toEqual('Some text-ReadOnly');
   });
 

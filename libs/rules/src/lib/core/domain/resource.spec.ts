@@ -51,12 +51,12 @@ describe('Resource', () => {
 
     it('should deserialize value to correct Entity form',
       inject([Resource], (service: Resource) => {
-        let jsonUser = {
+        const jsonUser = {
           uniqueName: 'ID1',
           created: new Date()
         };
 
-        let typeValue = service.deserialize(jsonUser, User);
+        const typeValue = service.deserialize(jsonUser, User);
 
         expect(typeValue.uniqueName).toBe('ID1');
         expect(typeValue.hasOwnProperty('id')).toBeFalsy();
@@ -65,12 +65,12 @@ describe('Resource', () => {
 
     it('should serialize value to correct JSON form',
       inject([Resource], (service: Resource) => {
-        let user = new User();
+        const user = new User();
         user.uniqueName = 'U1';
         user.created = new Date();
 
-        let toString = service.serialize<User>(user);
-        let jsonValue = JSON.parse(toString);
+        const toString = service.serialize<User>(user);
+        const jsonValue = JSON.parse(toString);
 
         expect(jsonValue.uniqueName).toBe('U1');
         expect(jsonValue.hasOwnProperty('uniqName')).toBeFalsy();
@@ -98,12 +98,12 @@ describe('Resource', () => {
     it('should have correctly assembled url for simple fetch',
       inject([Resource], (service: Resource) => {
 
-        let resource = service
+        const resource = service
           .load()
           .resource(Requisition)
           .withId('123');
 
-        let url = resource.url;
+        const url = resource.url;
 
         expect(resource.url)
           .toBe('http://api.ariba.com/myService/v1/requisitions/123');
@@ -113,11 +113,11 @@ describe('Resource', () => {
     it('should have correctly assembled url for simple fetch with return all',
       inject([Resource], (service: Resource) => {
 
-        let resource = service
+        const resource = service
           .load()
           .resource(Requisition);
 
-        let url = resource.url;
+        const url = resource.url;
 
         expect(resource.url)
           .toBe('http://api.ariba.com/myService/v1/requisitions');
@@ -128,14 +128,14 @@ describe('Resource', () => {
     it('should have correctly assembled url for subcontext resources',
       inject([Resource], (service: Resource) => {
 
-        let resource = service
+        const resource = service
           .load()
           .resource(LineItem)
           .of
           .resource(Requisition)
           .withId('123');
 
-        let url = resource.url;
+        const url = resource.url;
 
         expect(url)
           .toBe('http://api.ariba.com/myService/v1/requisitions/123/lineitems');
@@ -146,14 +146,14 @@ describe('Resource', () => {
     it('should have correctly assembled url for subcontext resources resource',
       inject([Resource], (service: Resource) => {
 
-        let resource = service.load()
+        const resource = service.load()
           .resource(LineItem)
           .withId('abc')
           .of
           .resource(Requisition)
           .withId('123');
 
-        let url = resource.url;
+        const url = resource.url;
 
         expect(resource.url)
           .toBe('http://api.ariba.com/myService/v1/requisitions/123/lineitems/abc');
@@ -163,17 +163,17 @@ describe('Resource', () => {
 
     it('should have correctly assembled url for simple save',
       inject([Resource], (service: Resource) => {
-        let r = new Requisition();
-        let resource = service
+        const r = new Requisition();
+        const resource = service
           .save()
           .resource(Requisition)
           .withId('123')
           .withData(r);
 
-        let url = resource.url;
+        const url = resource.url;
 
 
-        let urlSegment: ActionSegment = <ActionSegment>resource
+        const urlSegment: ActionSegment = <ActionSegment>resource
           .urlGroup.lookup(RestSegmentType.Action);
         expect(urlSegment.data).toBeDefined();
         expect((urlSegment.data instanceof Requisition)).toBeTruthy();
@@ -186,20 +186,20 @@ describe('Resource', () => {
     it('should have correctly assembled url for simple fetch with return all',
       inject([Resource], (service: Resource) => {
 
-        let r = new Requisition();
+        const r = new Requisition();
 
-        let resource = service
+        const resource = service
           .save()
           .resource(Requisition)
           .withId('123')
           .withData(r);
 
-        let url = resource.url;
+        const url = resource.url;
 
         expect(resource.url)
           .toBe('http://api.ariba.com/myService/v1/requisitions/123');
 
-        let urlSegment: ActionSegment = <ActionSegment>resource
+        const urlSegment: ActionSegment = <ActionSegment>resource
           .urlGroup.lookup(RestSegmentType.Action);
         expect(urlSegment.data).toBeDefined();
         expect((urlSegment.data instanceof Requisition)).toBeTruthy();
@@ -210,9 +210,9 @@ describe('Resource', () => {
     it('should fail when trying to save subcontext resources without Id',
       inject([Resource], (service: Resource) => {
 
-        let r = new Requisition();
+        const r = new Requisition();
 
-        let resource = service
+        const resource = service
           .save()
           .resource(LineItem)
           .of
@@ -228,9 +228,9 @@ describe('Resource', () => {
     it('should have correctly assembled url for subcontext resources resource',
       inject([Resource], (service: Resource) => {
 
-        let r = new Requisition();
+        const r = new Requisition();
 
-        let resource = service.save()
+        const resource = service.save()
           .resource(LineItem)
           .withId('abc')
           .of
@@ -238,12 +238,12 @@ describe('Resource', () => {
           .withId('123')
           .withData(r);
 
-        let url = resource.url;
+        const url = resource.url;
 
         expect(resource.url)
           .toBe('http://api.ariba.com/myService/v1/requisitions/123/lineitems/abc');
 
-        let urlSegment: ActionSegment = <ActionSegment>resource
+        const urlSegment: ActionSegment = <ActionSegment>resource
           .urlGroup.lookup(RestSegmentType.Action);
 
         expect(urlSegment.data).toBeDefined();
@@ -254,16 +254,16 @@ describe('Resource', () => {
 
     it('should have correctly assembled url for simple interaction',
       inject([Resource], (service: Resource) => {
-        let r = new Requisition();
-        let resource = service
+        const r = new Requisition();
+        const resource = service
           .do('publish')
           .resource(Requisition)
           .withId('123');
 
 
-        let url = resource.url;
+        const url = resource.url;
 
-        let urlSegment: ActionSegment = <ActionSegment>resource
+        const urlSegment: ActionSegment = <ActionSegment>resource
           .urlGroup.lookup(RestSegmentType.Action);
         expect(urlSegment.data).toBeDefined();
         expect((urlSegment.data)).toBe('publish');
@@ -277,9 +277,9 @@ describe('Resource', () => {
     it('should have correctly assembled url for subcontext resources resource',
       inject([Resource], (service: Resource) => {
 
-        let r = new Requisition();
+        const r = new Requisition();
 
-        let resource = service
+        const resource = service
           .do('triggeremail')
           .resource(LineItem)
           .withId('abc')
@@ -287,13 +287,13 @@ describe('Resource', () => {
           .resource(Requisition)
           .withId('123');
 
-        let url = resource.url;
+        const url = resource.url;
 
         expect(resource.url)
           .toBe('http://api.ariba.com/myService/v1/' +
             'requisitions/123/lineitems/abc/actions/triggeremail');
 
-        let urlSegment: ActionSegment = <ActionSegment>resource
+        const urlSegment: ActionSegment = <ActionSegment>resource
           .urlGroup.lookup(RestSegmentType.Action);
 
         expect(urlSegment.data).toBe('triggeremail');
@@ -302,8 +302,8 @@ describe('Resource', () => {
 
     it('should fail when executing interaction on resource without identifier set',
       inject([Resource], (service: Resource) => {
-        let r = new Requisition();
-        let resource = service
+        const r = new Requisition();
+        const resource = service
           .do('publish')
           .resource(Requisition);
 
@@ -337,7 +337,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
 
             let receivedR: Requisition;
 
@@ -347,12 +347,12 @@ describe('Resource', () => {
               .withId('123')
               .asEntity<Requisition>((r: Requisition) => receivedR = r);
 
-            let pr = new Requisition('aaa', 'rr');
+            const pr = new Requisition('aaa', 'rr');
 
-            let rr: Response<Requisition> = {
+            const rr: Response<Requisition> = {
               payload: pr
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(receivedR).not.toBeNull();
@@ -367,7 +367,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
 
             let receivedR: Requisition[];
             service
@@ -378,13 +378,13 @@ describe('Resource', () => {
                 receivedR = r;
               });
 
-            let pr = new Requisition('aaa', 'rr');
-            let pr2 = new Requisition('ssss', 'eeeeee');
+            const pr = new Requisition('aaa', 'rr');
+            const pr2 = new Requisition('ssss', 'eeeeee');
 
-            let rr: Response<Requisition[]> = {
+            const rr: Response<Requisition[]> = {
               payload: [pr, pr2]
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(receivedR).not.toBeNull();
@@ -400,7 +400,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
               'lineitems';
 
             let receivedLI: LineItem[];
@@ -413,13 +413,13 @@ describe('Resource', () => {
               .withId('123')
               .asEntity<LineItem>((r: LineItem[]) => receivedLI = r);
 
-            let l1 = new LineItem('iPhone1', 2, 2);
-            let l2 = new LineItem('iPhone2', 2, 111);
+            const l1 = new LineItem('iPhone1', 2, 2);
+            const l2 = new LineItem('iPhone2', 2, 111);
 
-            let rr: Response<LineItem[]> = {
+            const rr: Response<LineItem[]> = {
               payload: [l1, l2]
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(receivedLI).not.toBeNull();
@@ -436,7 +436,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
               'lineitems/aa';
 
             let receivedLI: LineItem;
@@ -450,12 +450,12 @@ describe('Resource', () => {
               .withId('123')
               .asEntity<LineItem>((r: LineItem) => receivedLI = r);
 
-            let l1 = new LineItem('iPhone1', 2, 2);
+            const l1 = new LineItem('iPhone1', 2, 2);
 
-            let rr: Response<LineItem> = {
+            const rr: Response<LineItem> = {
               payload: l1
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(receivedLI).not.toBeNull();
@@ -475,8 +475,8 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
-            let pr = new Requisition('aaa', 'rr');
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const pr = new Requisition('aaa', 'rr');
             let receivedR: Requisition;
 
             service
@@ -486,11 +486,11 @@ describe('Resource', () => {
               .withData(pr)
               .asEntity<Requisition>((r: Requisition) => receivedR = r);
 
-            let updPr = new Requisition(pr.uniqueName, 'updated');
-            let r4: Response<Requisition> = {
+            const updPr = new Requisition(pr.uniqueName, 'updated');
+            const r4: Response<Requisition> = {
               payload: updPr
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'PUT'
             });
@@ -508,8 +508,8 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
-            let pr = new Requisition(null, 'rr');
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const pr = new Requisition(null, 'rr');
             let receivedR: Requisition;
 
             service
@@ -519,11 +519,11 @@ describe('Resource', () => {
               .withData(pr)
               .asEntity<Requisition>((r: Requisition) => receivedR = r);
 
-            let updPr = new Requisition('Pr12', 'updated');
-            let rr: Response<Requisition> = {
+            const updPr = new Requisition('Pr12', 'updated');
+            const rr: Response<Requisition> = {
               payload: updPr
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'POST'
             });
@@ -541,10 +541,10 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
               'lineitems';
 
-            let li: LineItem = new LineItem('aaa', 1, 2);
+            const li: LineItem = new LineItem('aaa', 1, 2);
             let receivedLi: LineItem;
 
             service
@@ -556,12 +556,12 @@ describe('Resource', () => {
               .withId('123')
               .asEntity<LineItem>((r: LineItem) => receivedLi = r);
 
-            let l1 = new LineItem('aaa-update', 2, 2);
+            const l1 = new LineItem('aaa-update', 2, 2);
 
-            let rr: Response<LineItem> = {
+            const rr: Response<LineItem> = {
               payload: l1
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'PUT'
             });
@@ -585,11 +585,11 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/' +
               '123/actions/approve';
 
             // just sending back PR, i dont know what MS will send
-            let pr = new Requisition('aaa', 'rr');
+            const pr = new Requisition('aaa', 'rr');
             let receivedR: Requisition;
 
             service
@@ -598,10 +598,10 @@ describe('Resource', () => {
               .withId('123')
               .asEntity<Requisition>((r: Requisition) => receivedR = r);
 
-            let rr: Response<Requisition> = {
+            const rr: Response<Requisition> = {
               payload: pr
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'POST'
             });
@@ -642,7 +642,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
 
             let resp: HttpResponse<Response<Requisition>>;
             service
@@ -652,12 +652,12 @@ describe('Resource', () => {
               .asHttpResponse<Requisition>(
                 (r: HttpResponse<Response<Requisition>>) => resp = r);
 
-            let pr = new Requisition('aaa', 'rr');
+            const pr = new Requisition('aaa', 'rr');
 
-            let rr: Response<Requisition> = {
+            const rr: Response<Requisition> = {
               payload: pr
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(resp.status).toBe(200);
@@ -673,7 +673,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
 
             let resp: HttpResponse<Response<Requisition[]>>;
             service
@@ -683,13 +683,13 @@ describe('Resource', () => {
               .asHttpResponse<Requisition>(
                 (r: HttpResponse<Response<Requisition[]>>) => resp = r);
 
-            let pr = new Requisition('aaa', 'rr');
-            let pr2 = new Requisition('ssss', 'eeeeee');
+            const pr = new Requisition('aaa', 'rr');
+            const pr2 = new Requisition('ssss', 'eeeeee');
 
-            let rr: Response<Requisition[]> = {
+            const rr: Response<Requisition[]> = {
               payload: [pr, pr2]
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(resp).not.toBeNull();
@@ -707,7 +707,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/' +
               'requisitions/123/lineitems';
 
             let resp: HttpResponse<Response<LineItem[]>>;
@@ -721,13 +721,13 @@ describe('Resource', () => {
               .asHttpResponse<LineItem>(
                 (r: HttpResponse<Response<LineItem[]>>) => resp = r);
 
-            let l1 = new LineItem('iPhone1', 2, 2);
-            let l2 = new LineItem('iPhone2', 2, 111);
+            const l1 = new LineItem('iPhone1', 2, 2);
+            const l2 = new LineItem('iPhone2', 2, 111);
 
-            let rr: Response<LineItem[]> = {
+            const rr: Response<LineItem[]> = {
               payload: [l1, l2]
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(resp).not.toBeNull();
@@ -745,7 +745,7 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123/' +
               'lineitems/aa';
 
             let resp: HttpResponse<Response<LineItem>>;
@@ -761,12 +761,12 @@ describe('Resource', () => {
               .asHttpResponse<LineItem>(
                 (r: HttpResponse<Response<LineItem>>) => resp = r);
 
-            let l1 = new LineItem('iPhone1', 2, 2);
+            const l1 = new LineItem('iPhone1', 2, 2);
 
-            let rr: Response<LineItem> = {
+            const rr: Response<LineItem> = {
               payload: l1
             };
-            let testRequest = httpMock.expectOne(matchUrl);
+            const testRequest = httpMock.expectOne(matchUrl);
             testRequest.flush(rr);
 
             expect(resp).not.toBeNull();
@@ -786,8 +786,8 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
-            let pr = new Requisition('aaa', 'rr');
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const pr = new Requisition('aaa', 'rr');
 
             let resp: HttpResponse<Response<Requisition>>;
 
@@ -799,11 +799,11 @@ describe('Resource', () => {
               .asHttpResponse<Requisition>(
                 (r: HttpResponse<Response<Requisition>>) => resp = r);
 
-            let updPr = new Requisition(pr.uniqueName, 'updated');
-            let rr: Response<Requisition> = {
+            const updPr = new Requisition(pr.uniqueName, 'updated');
+            const rr: Response<Requisition> = {
               payload: updPr
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'PUT'
             });
@@ -822,8 +822,8 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
-            let pr = new Requisition(null, 'rr');
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/123';
+            const pr = new Requisition(null, 'rr');
             let resp: HttpResponse<Response<Requisition>>;
 
             service
@@ -834,11 +834,11 @@ describe('Resource', () => {
               .asHttpResponse<Requisition>(
                 (r: HttpResponse<Response<Requisition>>) => resp = r);
 
-            let updPr = new Requisition('Pr12', 'updated');
-            let rr: Response<Requisition> = {
+            const updPr = new Requisition('Pr12', 'updated');
+            const rr: Response<Requisition> = {
               payload: updPr
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'POST'
             });
@@ -857,10 +857,10 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/' +
               'requisitions/123/lineitems';
 
-            let li: LineItem = new LineItem('aaa', 1, 2);
+            const li: LineItem = new LineItem('aaa', 1, 2);
             let resp: HttpResponse<Response<LineItem>>;
 
             service
@@ -873,12 +873,12 @@ describe('Resource', () => {
               .asHttpResponse<LineItem>(
                 (r: HttpResponse<Response<LineItem>>) => resp = r);
 
-            let l1 = new LineItem('aaa-update', 2, 2);
+            const l1 = new LineItem('aaa-update', 2, 2);
 
-            let rr: Response<LineItem> = {
+            const rr: Response<LineItem> = {
               payload: l1
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'PUT'
             });
@@ -903,11 +903,11 @@ describe('Resource', () => {
         inject([HttpClient, HttpTestingController, Resource],
           (http: HttpClient, httpMock: HttpTestingController, service: Resource) => {
 
-            let matchUrl = 'http://api.ariba.com/myService/v1/requisitions/' +
+            const matchUrl = 'http://api.ariba.com/myService/v1/requisitions/' +
               '123/actions/approve';
 
             // just sending back PR, i dont know what MS will send
-            let pr = new Requisition('aaa', 'rr');
+            const pr = new Requisition('aaa', 'rr');
             let resp: HttpResponse<Response<Requisition>>;
 
 
@@ -918,10 +918,10 @@ describe('Resource', () => {
               .asHttpResponse<Requisition>(
                 (r: HttpResponse<Response<Requisition>>) => resp = r);
 
-            let rr: Response<Requisition> = {
+            const rr: Response<Requisition> = {
               payload: pr
             };
-            let testRequest = httpMock.expectOne({
+            const testRequest = httpMock.expectOne({
               url: matchUrl,
               method: 'POST'
             });

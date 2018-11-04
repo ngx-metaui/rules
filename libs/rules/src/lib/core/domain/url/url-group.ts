@@ -69,7 +69,7 @@ export class RestUrlGroup {
   }
 
   updateSegment(segmentType: RestSegmentType, data: any): void {
-    let urlSegment = this.lookup(segmentType);
+    const urlSegment = this.lookup(segmentType);
     urlSegment.value = data;
   }
 
@@ -87,7 +87,7 @@ export class RestUrlGroup {
     ss = ss.reverse();
 
     return ss.find(((s: UrlSegment) => {
-      let hasMatch = s.type === segment;
+      const hasMatch = s.type === segment;
 
       if (segment === RestSegmentType.Resource) {
 
@@ -107,7 +107,7 @@ export class RestUrlGroup {
    *
    */
   count(segment: RestSegmentType): number {
-    let segments = this.segments.filter((s: UrlSegment) => segment === s.type);
+    const segments = this.segments.filter((s: UrlSegment) => segment === s.type);
     return isPresent(segments) ? segments.length : 0;
   }
 

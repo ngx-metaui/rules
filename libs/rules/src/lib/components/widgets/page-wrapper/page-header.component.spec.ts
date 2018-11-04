@@ -58,7 +58,7 @@ describe('Page Header component behavior', () => {
 
 
   it('It should have logo, user name and notification set correctly', () => {
-    let fixtureWrapper = TestBed.createComponent(PageHeaderBasicComponent);
+    const fixtureWrapper = TestBed.createComponent(PageHeaderBasicComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.header.userName).toEqual('Chad Noll');
@@ -83,11 +83,11 @@ describe('Page Header component behavior', () => {
 
   it('It should have the the menu icon, when clicked, it should show menu items',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(PageHeaderWithMenuComponent);
+      const fixtureWrapper = TestBed.createComponent(PageHeaderWithMenuComponent);
       fixtureWrapper.detectChanges();
 
       // Make sure the menu icon is there.
-      let icon = fixtureWrapper.nativeElement.querySelector('.icon-paging');
+      const icon = fixtureWrapper.nativeElement.querySelector('.icon-paging');
       expect(icon).toBeDefined();
 
       // Parent is the anchor where the click event handler is attached.
@@ -96,11 +96,11 @@ describe('Page Header component behavior', () => {
       fixtureWrapper.detectChanges();
 
       // Make sure that the menu is open
-      let menu = fixtureWrapper.debugElement.query(By.css('.sidenav-active'));
+      const menu = fixtureWrapper.debugElement.query(By.css('.sidenav-active'));
       expect(menu.nativeElement).toBeDefined();
 
       // Make sure that all the menu items is there.
-      let menuItems = fixtureWrapper.nativeElement.querySelector('.sidenav-content');
+      const menuItems = fixtureWrapper.nativeElement.querySelector('.sidenav-content');
       expect(menuItems.children.length).toEqual(4);
 
 
@@ -108,15 +108,15 @@ describe('Page Header component behavior', () => {
 
   it('It should have the user notification number correct, and show notification items',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(PageHeaderWithNotificationsComponent);
+      const fixtureWrapper = TestBed.createComponent(PageHeaderWithNotificationsComponent);
       fixtureWrapper.detectChanges();
 
       // Make sure the notification icon is there.
-      let icon = fixtureWrapper.nativeElement.querySelector('.icon-notification');
+      const icon = fixtureWrapper.nativeElement.querySelector('.icon-notification');
       expect(icon).toBeDefined();
 
       // Make sure that that the notification count is correct.
-      let count = fixtureWrapper.nativeElement.querySelector('.notification-badge');
+      const count = fixtureWrapper.nativeElement.querySelector('.notification-badge');
       expect(count.textContent).toEqual('3');
 
       icon.dispatchEvent(new Event('click'));
@@ -124,11 +124,11 @@ describe('Page Header component behavior', () => {
       fixtureWrapper.detectChanges();
 
       // Make sure that the notification panel is open
-      let notifications = fixtureWrapper.debugElement.query(By.css('.notification-panel'));
+      const notifications = fixtureWrapper.debugElement.query(By.css('.notification-panel'));
       expect(notifications.nativeElement).toBeDefined();
 
       // Make sure that all the items are there.
-      let items = fixtureWrapper.nativeElement.querySelector('.notification-content');
+      const items = fixtureWrapper.nativeElement.querySelector('.notification-content');
       expect(items.children.length).toEqual(3);
 
     }));

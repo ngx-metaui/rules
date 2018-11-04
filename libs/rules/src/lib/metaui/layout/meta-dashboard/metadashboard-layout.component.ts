@@ -153,27 +153,27 @@ export class MetaDashboardLayoutComponent extends MetaLayout {
   }
 
   topLayouts(): ItemProperties[] {
-    let tops = this.layoutsByZones.get(UIMeta.ZoneTop);
+    const tops = this.layoutsByZones.get(UIMeta.ZoneTop);
 
     return isPresent(tops) ? tops : [];
   }
 
   portletWidth(name: string): any {
-    let lContext: Context = this.contextMap.get(name);
-    let width = lContext.propertyForKey('portletWidth');
+    const lContext: Context = this.contextMap.get(name);
+    const width = lContext.propertyForKey('portletWidth');
     return isPresent(width) && isPresent(PortletSizes[width]) ? PortletSizes[width] :
       'ui-md-4';
   }
 
   bottomLayouts(): ItemProperties[] {
-    let bottom = this.layoutsByZones.get(UIMeta.ZoneBottom);
+    const bottom = this.layoutsByZones.get(UIMeta.ZoneBottom);
 
     return isPresent(bottom) ? bottom : [];
   }
 
 
   zTocLayouts(): ItemProperties[] {
-    let bottom = this.layoutsByZones.get(MetaDashboardLayoutComponent.ZoneToc);
+    const bottom = this.layoutsByZones.get(MetaDashboardLayoutComponent.ZoneToc);
     return isPresent(bottom) ? bottom : [];
   }
 

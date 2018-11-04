@@ -50,10 +50,10 @@ describe('component: Card', () => {
 
   it('inits card with correctly initialized state so that its selectable by default, has no' +
     ' action', () => {
-    let fixtureWrapper = TestBed.createComponent(TestDefaultBehaviorForCardComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDefaultBehaviorForCardComponent);
     fixtureWrapper.detectChanges();
 
-    let cardCmp = fixtureWrapper.componentInstance.cardComponent;
+    const cardCmp = fixtureWrapper.componentInstance.cardComponent;
 
     expect(cardCmp.selectable).toBeTruthy();
     expect(cardCmp.hasAction).toBeFalsy();
@@ -65,11 +65,11 @@ describe('component: Card', () => {
 
   it('should unselect the card when clicked on icon, default is selected so we expect' +
     'unselected', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
     fixtureWrapper.detectChanges();
 
 
-    let el = fixtureWrapper.nativeElement.querySelector('.w-card-ztitle');
+    const el = fixtureWrapper.nativeElement.querySelector('.w-card-ztitle');
     el.dispatchEvent(new Event('click'));
 
     fixtureWrapper.detectChanges();
@@ -80,10 +80,10 @@ describe('component: Card', () => {
   }));
 
   it('should select the card when clicked on icon', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector('.w-card-ztitle');
+    const el = fixtureWrapper.nativeElement.querySelector('.w-card-ztitle');
     el.click();
 
     fixtureWrapper.detectChanges();
@@ -104,52 +104,52 @@ describe('component: Card', () => {
   }));
 
   it('should set the card width to 200px', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
-    let component = fixtureWrapper.componentInstance;
+    const fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
+    const component = fixtureWrapper.componentInstance;
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector('.w-card');
+    const el = fixtureWrapper.nativeElement.querySelector('.w-card');
     expect(el.style.width).toEqual('202px');
   });
 
   it('should set the card height to 154px', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCardSelectActionBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector('.w-card');
+    const el = fixtureWrapper.nativeElement.querySelector('.w-card');
 
-    let card = fixtureWrapper.nativeElement.querySelector('.w-card-actions');
+    const card = fixtureWrapper.nativeElement.querySelector('.w-card-actions');
     expect(el.style.height).toEqual('154px');
   });
 
 
   it('should not render action zone when [hasAction] binding is false', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCardHideActionButtonComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCardHideActionButtonComponent);
     fixtureWrapper.componentInstance.showAction = false;
     fixtureWrapper.detectChanges();
     fixtureWrapper.detectChanges();
 
-    let action = fixtureWrapper.nativeElement.querySelector('.icon-question-mark');
+    const action = fixtureWrapper.nativeElement.querySelector('.icon-question-mark');
     expect(action).toBeNull();
   });
 
 
   it('should render action zone with our custom icon when [hasAction] binding is true', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCardHideActionButtonComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCardHideActionButtonComponent);
     fixtureWrapper.componentInstance.showAction = true;
     fixtureWrapper.detectChanges();
     fixtureWrapper.detectChanges();
 
-    let action = fixtureWrapper.nativeElement.querySelector('.icon-question-mark');
+    const action = fixtureWrapper.nativeElement.querySelector('.icon-question-mark');
     expect(action).toBeDefined();
   });
 
 
   it('should render hover overlay when we mouse enter to the card', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCardShowHoverComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCardShowHoverComponent);
     fixtureWrapper.detectChanges();
 
-    let card = fixtureWrapper.nativeElement.querySelector('.w-card');
+    const card = fixtureWrapper.nativeElement.querySelector('.w-card');
     card.dispatchEvent(new Event('mouseenter'));
 
     tick();
@@ -157,16 +157,16 @@ describe('component: Card', () => {
     tick();
     fixtureWrapper.detectChanges();
 
-    let hoverDiv = fixtureWrapper.nativeElement.querySelector('.u-card-hover');
+    const hoverDiv = fixtureWrapper.nativeElement.querySelector('.u-card-hover');
     expect(hoverDiv.style.opacity).toBe('0.5');
   }));
 
   it('should trigger hoverAction, when hover overlay is displayed and we click on it',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestCardShowHoverComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCardShowHoverComponent);
       fixtureWrapper.detectChanges();
 
-      let card = fixtureWrapper.nativeElement.querySelector('.w-card');
+      const card = fixtureWrapper.nativeElement.querySelector('.w-card');
       card.dispatchEvent(new Event('mouseenter'));
 
       tick();
@@ -174,7 +174,7 @@ describe('component: Card', () => {
       tick();
       fixtureWrapper.detectChanges();
 
-      let hoverCard = fixtureWrapper.nativeElement.querySelector('.u-card-hover');
+      const hoverCard = fixtureWrapper.nativeElement.querySelector('.u-card-hover');
 
       hoverCard.click();
 
@@ -188,10 +188,10 @@ describe('component: Card', () => {
 
   it('can render custom content with button when action icon is clicked',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestCardCustomBodyComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCardCustomBodyComponent);
       fixtureWrapper.detectChanges();
 
-      let card = fixtureWrapper.nativeElement.querySelector('.icon-question-mark');
+      const card = fixtureWrapper.nativeElement.querySelector('.icon-question-mark');
 
       let body = fixtureWrapper.nativeElement.querySelector('.card-actions button');
       expect(body).toBeNull();
@@ -208,20 +208,20 @@ describe('component: Card', () => {
 
   it('can hide custom content when component property [useBodyTemplate] is set to False',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestCardCustomBodyComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCardCustomBodyComponent);
       fixtureWrapper.detectChanges();
       fixtureWrapper.componentInstance.card.useBodyTemplate = true;
 
       tick();
       fixtureWrapper.detectChanges();
 
-      let button = fixtureWrapper.nativeElement.querySelector('.card-actions button');
+      const button = fixtureWrapper.nativeElement.querySelector('.card-actions button');
       button.click();
 
       tick();
       fixtureWrapper.detectChanges();
 
-      let body = fixtureWrapper.nativeElement.querySelector('.w-card-user-cnt' +
+      const body = fixtureWrapper.nativeElement.querySelector('.w-card-user-cnt' +
         ' .card-actions button');
       expect(body).toBeNull();
     }));

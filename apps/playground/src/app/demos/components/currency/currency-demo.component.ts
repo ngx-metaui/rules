@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {Money} from '@ngx-meta/rules';
+import {Money} from '@ngx-metaui/rules';
 
 @Component({
   templateUrl: './currency-demo.component.html',

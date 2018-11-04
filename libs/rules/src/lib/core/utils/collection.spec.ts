@@ -29,10 +29,10 @@ describe('a ListWrapper utilities so ', () => {
 
   it(' addElementIfAbsent add only object literal if mising', () => {
 
-      let item = new SomeData('Test', 'Test');
-      let item2 = new SomeData('Test', 'Test');
+      const item = new SomeData('Test', 'Test');
+      const item2 = new SomeData('Test', 'Test');
 
-      let arr: any = [];
+      const arr: any = [];
 
       ListWrapper.addElementIfAbsent(arr, item);
       ListWrapper.addElementIfAbsent(arr, item2);
@@ -45,12 +45,12 @@ describe('a ListWrapper utilities so ', () => {
   it(' addElement(s)IfAbsent add only object literal if mising', () => {
 
 
-      let item = new SomeData('Test', 'Test');
-      let item2 = new SomeData('Test', 'Test');
-      let itemx = new SomeData('Test', 'Test');
+      const item = new SomeData('Test', 'Test');
+      const item2 = new SomeData('Test', 'Test');
+      const itemx = new SomeData('Test', 'Test');
 
-      let arr = [item, item2];
-      let result: any[] = [];
+      const arr = [item, item2];
+      const result: any[] = [];
 
       ListWrapper.addElementIfAbsent(result, itemx);
       ListWrapper.addElementsIfAbsent(result, arr);
@@ -63,7 +63,7 @@ describe('a ListWrapper utilities so ', () => {
 
   it(' it can group by element by calculated field', () => {
 
-    let itemsProperties = [
+    const itemsProperties = [
       {name: 'name1', zone: 'zLeft'},
       {name: 'name2', zone: 'zLeft'},
       {name: 'name3', zone: 'zLeft'},
@@ -73,7 +73,7 @@ describe('a ListWrapper utilities so ', () => {
       {name: 'name7', zone: 'zLeft'},
     ];
 
-    let grouped = itemsProperties.reduce((groupResult: any, currentValue: any) => {
+    const grouped = itemsProperties.reduce((groupResult: any, currentValue: any) => {
 
       let groupKey = 'RightLayout';
       if (currentValue.zone === 'zLeft') {
@@ -88,7 +88,7 @@ describe('a ListWrapper utilities so ', () => {
       return groupResult;
     }, {});
 
-    let res: Map<string, any> = new Map<string, any>();
+    const res: Map<string, any> = new Map<string, any>();
 
     Object.keys(grouped).forEach((key) => {
       res.set(key, grouped[key]);
@@ -101,7 +101,7 @@ describe('a ListWrapper utilities so ', () => {
   it('it can group by element by calculated field using our utility method grouby',
     () => {
 
-      let itemsProperties = [
+      const itemsProperties = [
         {name: 'name1', zone: 'zLeft'},
         {name: 'name2', zone: 'zLeft'},
         {name: 'name3', zone: 'zLeft'},
@@ -112,7 +112,7 @@ describe('a ListWrapper utilities so ', () => {
       ];
 
 
-      let res = MapWrapper.groupBy(itemsProperties,
+      const res = MapWrapper.groupBy(itemsProperties,
         (item: any) => {
           return (item.zone === 'zLeft') ? 'LeftLayout' : 'RightLayout';
         });
@@ -127,8 +127,8 @@ describe('a ListWrapper utilities so ', () => {
     'master list', () => {
 
 
-      let subList: any[] = ['a', 'b'];
-      let masterList: any[] = ['a', 'b', 'c'];
+      const subList: any[] = ['a', 'b'];
+      const masterList: any[] = ['a', 'b', 'c'];
 
       expect(ListWrapper.containsAll(masterList, subList)).toBe(true);
     }
@@ -139,8 +139,8 @@ describe('a ListWrapper utilities so ', () => {
     'master list', () => {
 
 
-      let subList: any[] = ['a', 'z'];
-      let masterList: any[] = ['a', 'b', 'c'];
+      const subList: any[] = ['a', 'z'];
+      const masterList: any[] = ['a', 'b', 'c'];
 
       expect(ListWrapper.containsAll(masterList, subList)).toBe(false);
     }
@@ -155,13 +155,13 @@ describe('Dictionary if it works as expect', () => {
   it('retrieved object should not be equal is key is different ', () => {
 
 
-      let dict = new Collections.Dictionary();
+      const dict = new Collections.Dictionary();
       dict.setValue(new User('Frank', 'Kolar'), {aa: 'ss'});
       dict.setValue(new User('David', 'Kolar'), {aa: 'ssaaa'});
 
 
-      let value = dict.getValue(new User('Frank', 'Kolar'));
-      let value2 = dict.getValue(new User('David', 'Kolar'));
+      const value = dict.getValue(new User('Frank', 'Kolar'));
+      const value2 = dict.getValue(new User('David', 'Kolar'));
 
 
       expect(value).not.toEqual(value2);
@@ -176,8 +176,8 @@ describe('object-path that we can simulate set and get values on the objects for
   it(' retrives values from object literal ', () => {
 
       const op = (<any>objectPath)['create']({includeInheritedProps: true});
-      let object = {'a': [{'b': {'c': 3}}]};
-      let result = op.get(object, 'a.0.b.c');
+      const object = {'a': [{'b': {'c': 3}}]};
+      const result = op.get(object, 'a.0.b.c');
 
       expect(result).toEqual(3);
     }
@@ -186,8 +186,8 @@ describe('object-path that we can simulate set and get values on the objects for
   it(' retrives values from typescript Class object ', () => {
 
       const op = (<any>objectPath)['create']({includeInheritedProps: true});
-      let user = new User('11', '222');
-      let result = op.get(user, 'someField');
+      const user = new User('11', '222');
+      const result = op.get(user, 'someField');
 
       expect(result).toEqual('myAccessTest');
     }
@@ -196,8 +196,8 @@ describe('object-path that we can simulate set and get values on the objects for
 
   it(' retrives values from typescript nested Class object ', () => {
       const op = (<any>objectPath)['create']({includeInheritedProps: true});
-      let user = new User('11', '222');
-      let result = op.get(user, 'address.city');
+      const user = new User('11', '222');
+      const result = op.get(user, 'address.city');
 
       expect(result).toEqual('Prague');
     }
@@ -206,11 +206,11 @@ describe('object-path that we can simulate set and get values on the objects for
 
   it(' retrives values from FieldPath where target is normal JS object', () => {
 
-      let user = new User('11', '222');
+      const user = new User('11', '222');
 
-      let path: FieldPath = new FieldPath('address.city');
+      const path: FieldPath = new FieldPath('address.city');
 
-      let result = path.getFieldValue(user);
+      const result = path.getFieldValue(user);
 
       expect(result).toEqual('Prague');
     }
@@ -219,11 +219,11 @@ describe('object-path that we can simulate set and get values on the objects for
 
   it(' retrives values from FieldPath where target is map object', () => {
 
-      let user = new User('11', '222');
+      const user = new User('11', '222');
 
-      let path: FieldPath = new FieldPath('properties.myKey');
+      const path: FieldPath = new FieldPath('properties.myKey');
 
-      let result = path.getFieldValue(user);
+      const result = path.getFieldValue(user);
 
       expect(result).toEqual('MyValue');
     }
@@ -231,10 +231,10 @@ describe('object-path that we can simulate set and get values on the objects for
 
   it(' retrives values from FieldPath where target is map with deep nesting', () => {
 
-    let user = new User('11', '222');
-    let path: FieldPath = new FieldPath('address.properties.prague');
+    const user = new User('11', '222');
+    const path: FieldPath = new FieldPath('address.properties.prague');
 
-    let result = path.getFieldValue(user);
+    const result = path.getFieldValue(user);
 
     expect(result).toEqual('czech');
   });
@@ -242,14 +242,14 @@ describe('object-path that we can simulate set and get values on the objects for
 
   it('should read read value from the nested Map by its Fieldpath', () => {
 
-      let sourceMap: Map<string, any> = new Map<string, any>();
-      let nestedMap: Map<string, any> = new Map<string, any>();
+      const sourceMap: Map<string, any> = new Map<string, any>();
+      const nestedMap: Map<string, any> = new Map<string, any>();
 
       nestedMap.set('zLeft', ['s', 'b']);
       sourceMap.set('zLetft', ['a', 'b']);
       sourceMap.set('Second', nestedMap);
 
-      let fieldValue = FieldPath.getFieldValue(sourceMap, 'Second');
+      const fieldValue = FieldPath.getFieldValue(sourceMap, 'Second');
 
       expect(fieldValue instanceof Map).toBeTruthy();
     }
@@ -258,17 +258,17 @@ describe('object-path that we can simulate set and get values on the objects for
 
   it('should set object in form of aa.bb.cc as nested map.', () => {
 
-      let sourceMap: Map<string, any> = new Map<string, any>();
+      const sourceMap: Map<string, any> = new Map<string, any>();
 
       sourceMap.set('zLeft', ['a', 'b']);
 
       FieldPath.setFieldValue(sourceMap, 'Second.zLeft', ['c', 'z']);
 
-      let second = sourceMap.get('Second');
+      const second = sourceMap.get('Second');
       expect(second instanceof Map).toBeTruthy();
 
-      let subMap: Map<string, any> = second;
-      let zLeft = subMap.get('zLeft');
+      const subMap: Map<string, any> = second;
+      const zLeft = subMap.get('zLeft');
       expect(isArray(zLeft)).toBeTruthy();
     }
   );
@@ -280,7 +280,7 @@ describe('Expression language', () => {
 
   it('It evaluates correct expression and return result of 1 + 2', () => {
 
-      let result = evalExpression(' num1 + num2;', 'let context1;', {num1: 1, num2: 2});
+      const result = evalExpression(' num1 + num2;', 'let context1;', {num1: 1, num2: 2});
       expect(result).toEqual(3);
     }
   );
@@ -291,12 +291,12 @@ describe('Describe if we can sort lexically inputs into metaContexs correctly', 
 
   it(' it should sort all by example', () => {
 
-      let patern = [
+      const patern = [
         'module', 'layout', 'operation', 'class', 'object', 'action', 'field', 'type',
         'elementType', 'editing', 'trait'
       ];
 
-      let input = ['operation', 'object', 'layout'];
+      const input = ['operation', 'object', 'layout'];
       ListWrapper.sortByExample(input, patern);
 
       // print(input);
@@ -305,7 +305,7 @@ describe('Describe if we can sort lexically inputs into metaContexs correctly', 
       expect(input[2]).toEqual('object');
 
 
-      let input2 = ['operation', 'role', 'object', 'layout'];
+      const input2 = ['operation', 'role', 'object', 'layout'];
       ListWrapper.sortByExample(input2, patern);
 
       // print(input2);
@@ -348,7 +348,7 @@ class Address {
 class SomeData {
 
   static aaaa(): number {
-    let updatedMask = 0;
+    const updatedMask = 0;
 
 
     return 0;

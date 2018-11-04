@@ -52,7 +52,7 @@ describe('Describe dropdown menu behavior', () => {
 
   it('It should should have non null formControl', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestDDInstantiationComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDDInstantiationComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.dropDown.editable).toEqual(true);
@@ -64,14 +64,14 @@ describe('Describe dropdown menu behavior', () => {
 
   it('It should have selected Item set when using binding selection', () => {
 
-    let largeLst = '<aw-dropdown name="asdf" [list]="testItemSmall"' +
+    const largeLst = '<aw-dropdown name="asdf" [list]="testItemSmall"' +
       ' [selection]="itemSelected" ' +
       '   (onSelection)="onSelection($event)">' +
       '</aw-dropdown>';
     TestBed.overrideComponent(TestDDInstantiationComponent, {set: {template: largeLst}});
 
 
-    let fixtureWrapper = TestBed.createComponent(TestDDInstantiationComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDDInstantiationComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.dropDown.selection).toEqual('view');
@@ -82,17 +82,17 @@ describe('Describe dropdown menu behavior', () => {
   it('it should propagate the selection back to TestDDInstantiationComponent using onSelection ',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestDDInstantiationComponent);
+      const fixtureWrapper = TestBed.createComponent(TestDDInstantiationComponent);
       fixtureWrapper.detectChanges();
 
 
-      let dd = fixtureWrapper.nativeElement.querySelector('.w-dropdown .ui-dropdown');
+      const dd = fixtureWrapper.nativeElement.querySelector('.w-dropdown .ui-dropdown');
       dd.click();
 
       tick();
       fixtureWrapper.detectChanges();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-dropdown-item ');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-dropdown-item ');
       expect(items.length).toEqual(2);
 
       items[1].click();
@@ -109,22 +109,22 @@ describe('Describe dropdown menu behavior', () => {
 
   it(' should render a list with preselected  item when using both bindings list and selection',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestDDInstantiationWithSelItemComponent);
+      const fixtureWrapper = TestBed.createComponent(TestDDInstantiationWithSelItemComponent);
 
       fixtureWrapper.detectChanges();
       tick();
 
-      let item = fixtureWrapper.nativeElement.querySelector('label.ui-dropdown-label');
+      const item = fixtureWrapper.nativeElement.querySelector('label.ui-dropdown-label');
       expect(item.textContent.trim()).toEqual('Monday');
     }));
 
 
   it(' must be able to initialize selection using ngModel', () => {
-    let fixtureWrapper = TestBed.createComponent(TestDDWithNgModelComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDDWithNgModelComponent);
     fixtureWrapper.detectChanges();
 
 
-    let item = fixtureWrapper.nativeElement.querySelector('label.ui-dropdown-label');
+    const item = fixtureWrapper.nativeElement.querySelector('label.ui-dropdown-label');
     expect(item.textContent.trim()).toEqual('view');
   });
 
@@ -210,7 +210,7 @@ class TestDDWithNgModelComponent {
  */
 function flushPendingTimers() {
 
-  let zone: any = readGlobalParam('Zone');
+  const zone: any = readGlobalParam('Zone');
 
   if (isPresent(zone) &&
     isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {

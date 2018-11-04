@@ -53,12 +53,12 @@ export class MetaContentPageComponent implements OnInit {
     this.layout = this.route.snapshot.params['layout'];
     this.operation = this.route.snapshot.params['operation'];
 
-    let url = '/' + this.route.snapshot.url[0].toString();
+    const url = '/' + this.route.snapshot.url[0].toString();
     if (this.routingService.stateCacheHistory.has(url)) {
       this.object = this.routingService.stateCacheHistory.get(url);
       this.objectName = UIMeta.defaultLabelForIdentifier(this.object.constructor.name);
     }
-    let withBackAction = this.route.snapshot.params['b'];
+    const withBackAction = this.route.snapshot.params['b'];
     if (isPresent(withBackAction) && BooleanWrapper.isTrue(withBackAction)) {
       this.isInspectAction = true;
     }

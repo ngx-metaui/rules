@@ -132,9 +132,9 @@ export class MetaSectionsComponent extends MetaLayout implements AfterViewInit {
    *
    */
   onAction(name: string, sectionIndex: number, cnxName: string, event: any): void {
-    let section = this.sections[sectionIndex];
+    const section = this.sections[sectionIndex];
     if (this.env.hasValue('parent-cnx')) {
-      let cnx: MetaContextComponent = this.env.getValue('parent-cnx');
+      const cnx: MetaContextComponent = this.env.getValue('parent-cnx');
 
       cnx.onAction.emit(new MetaUIActionEvent(section, name, cnxName,
         event));
@@ -160,7 +160,7 @@ export class MetaSectionsComponent extends MetaLayout implements AfterViewInit {
    *
    */
   sectionProp(propName: string, cnxName: string, defaultVal: any): any {
-    let lContext: Context = this.contextMap.get(cnxName);
+    const lContext: Context = this.contextMap.get(cnxName);
     return (isPresent(lContext) && isPresent(lContext.propertyForKey(propName))) ?
       lContext.propertyForKey(propName) : defaultVal;
   }

@@ -44,10 +44,10 @@ describe('Data Finders', () => {
   it('should retrieve a correct finder if we work with list of values and query is string',
     inject([DataFinders, DataProviders],
       (finders: DataFinders, dataProviders: DataProviders) => {
-        let cars = ['aaron', 'ben', 'baloon'];
+        const cars = ['aaron', 'ben', 'baloon'];
 
-        let dataProvider = dataProviders.find(cars);
-        let dataFinder = finders.find(dataProvider, QueryType.FullText);
+        const dataProvider = dataProviders.find(cars);
+        const dataFinder = finders.find(dataProvider, QueryType.FullText);
 
         expect(isPresent(dataFinder)).toBeTruthy();
         expect(dataFinder instanceof FullTextArrayDataFinder).toBeTruthy();
@@ -57,12 +57,12 @@ describe('Data Finders', () => {
   it('should find correct matching element with the Finder found',
     inject([DataFinders, DataProviders],
       (finders: DataFinders, dataProviders: DataProviders) => {
-        let cars = ['aaron', 'ben', 'baloon'];
+        const cars = ['aaron', 'ben', 'baloon'];
 
-        let dataProvider = dataProviders.find(cars);
-        let dataFinder = finders.find(dataProvider, QueryType.FullText);
+        const dataProvider = dataProviders.find(cars);
+        const dataFinder = finders.find(dataProvider, QueryType.FullText);
 
-        let match = dataFinder.forData(dataProvider).instantMatch<string>('aa', 100);
+        const match = dataFinder.forData(dataProvider).instantMatch<string>('aa', 100);
         expect(match).toContain('aaron');
       }));
 
@@ -70,10 +70,10 @@ describe('Data Finders', () => {
   it('should set DataProvider instance to the Finder during a find process',
     inject([DataFinders, DataProviders],
       (finders: DataFinders, dataProviders: DataProviders) => {
-        let cars = ['aaron', 'ben', 'baloon'];
+        const cars = ['aaron', 'ben', 'baloon'];
 
-        let dataProvider = dataProviders.find(cars);
-        let dataFinder = finders.find(dataProvider, QueryType.FullText);
+        const dataProvider = dataProviders.find(cars);
+        const dataFinder = finders.find(dataProvider, QueryType.FullText);
 
         expect(() => dataFinder.instantMatch<string>('aa', 100)).not
           .toThrowError(/Missing DataProvider/);
@@ -83,7 +83,7 @@ describe('Data Finders', () => {
   it('should throw error when DataProvider is not set ',
     inject([DataFinders, DataProviders],
       (finders: DataFinders, dataProviders: DataProviders) => {
-        let dataFinder = new FullTextArrayDataFinder();
+        const dataFinder = new FullTextArrayDataFinder();
 
         expect(() => dataFinder.instantMatch<string>('aa', 100))
           .toThrowError(/Missing DataProvider/);

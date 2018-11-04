@@ -48,11 +48,11 @@ describe('Component: Scrollable Container', () => {
 
   describe('Horizontal scrolling', () => {
     it('should render horizontally scrolled items of no options is passed', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableDefaultComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableDefaultComponent);
       fixtureWrapper.detectChanges();
 
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
       expect(container.classList).toContain('u-scrollable-fh');
       expect(container.classList).toContain('u-scrollable-al');
@@ -65,11 +65,11 @@ describe('Component: Scrollable Container', () => {
 
 
     it('should render horizontally scrolled items if direction is horizontal', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
       fixtureWrapper.detectChanges();
 
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
       expect(container.classList).toContain('u-scrollable-fh');
       expect(container.classList).toContain('u-scrollable-al');
@@ -81,23 +81,23 @@ describe('Component: Scrollable Container', () => {
 
 
     it('should render horizontal container with default width set to 100%', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableDefaultComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableDefaultComponent);
       fixtureWrapper.detectChanges();
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
       expect(container.style.width).toEqual('100%');
     });
 
 
     it('should render horizontal container with width set to 300px', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableDefaultComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableDefaultComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.scrollableWidth = '300px';
       fixtureWrapper.detectChanges();
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
       expect(container.style.width).toEqual('300px');
     });
 
@@ -107,10 +107,10 @@ describe('Component: Scrollable Container', () => {
     it('should render horizontal container wrapped by parent div that set ' +
       '300px x 100px and' +
       ' container should fit into this parent div.', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithWrapperDivComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithWrapperDivComponent);
       fixtureWrapper.detectChanges();
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
       expect(container.classList).toContain('u-scrollable-fh');
 
@@ -126,13 +126,13 @@ describe('Component: Scrollable Container', () => {
     it('should render vertically scrolled items when direction is vertical', () => {
 
 
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.direction = 'vertical';
       fixtureWrapper.detectChanges();
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
       expect(container.classList).toContain('u-scrollable-fv');
       expect(container.classList).toContain('u-scrollable-al');
@@ -144,14 +144,14 @@ describe('Component: Scrollable Container', () => {
 
 
     it('should render horizontal container with height set to 300px', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.direction = 'vertical';
       fixtureWrapper.componentInstance.height = ' 300px';
       fixtureWrapper.detectChanges();
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
       expect(container.classList).toContain('u-scrollable-fv');
       expect(getComputedStyle(container).height).toEqual('300px');
@@ -161,13 +161,13 @@ describe('Component: Scrollable Container', () => {
     it('should render vertical container wrapped by parent div that set 300px x 100px and' +
       ' container should fit into this parent div.', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithWrapperDivComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithWrapperDivComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.direction = 'vertical';
       fixtureWrapper.detectChanges();
 
-      let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+      const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
       expect(container.classList).toContain('u-scrollable-fv');
       expect(getComputedStyle(container).height).toEqual('100px');
@@ -179,7 +179,7 @@ describe('Component: Scrollable Container', () => {
 
   describe('Scrolling disabled - wrapping ', () => {
     it('should render items and wrapped so no scroll bar is visible ', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.direction = 'none';
@@ -192,7 +192,7 @@ describe('Component: Scrollable Container', () => {
     it('should render items and wrapped and aligned to right when "alignment" is set to ' +
       '"right" ', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.direction = 'none';
@@ -206,7 +206,7 @@ describe('Component: Scrollable Container', () => {
     it('should render items and wrapped and center its content when "alignment" is set' +
       ' to "center" ',
       () => {
-        let fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
+        const fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
         fixtureWrapper.detectChanges();
 
         fixtureWrapper.componentInstance.direction = 'none';
@@ -219,7 +219,7 @@ describe('Component: Scrollable Container', () => {
 
     it('should render items and wrapped and justify its content when "alignment" is set' +
       ' to "justify" ', () => {
-      let fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestScrollableWithDirectionComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.direction = 'none';
@@ -235,10 +235,10 @@ describe('Component: Scrollable Container', () => {
 });
 
 function dumpComputedStyles(cs: any) {
-  let len = cs.length;
+  const len = cs.length;
   for (let i = 0; i < len; i++) {
 
-    let style = cs[i];
+    const style = cs[i];
     console.log(style + ' : ' + cs.getPropertyValue(style));
   }
 
@@ -246,12 +246,12 @@ function dumpComputedStyles(cs: any) {
 
 function checkDirectionNone(fixtureWrapper: any, alignClass: string) {
 
-  let container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
+  const container = fixtureWrapper.nativeElement.querySelector('.w-scrollable ');
 
   expect(container.classList).toContain('u-scrollable-fn');
   expect(container.classList).toContain(alignClass);
-  let computedStyle = getComputedStyle(container);
-  let style = computedStyle.flexFlow !== '' ? computedStyle.flexFlow
+  const computedStyle = getComputedStyle(container);
+  const style = computedStyle.flexFlow !== '' ? computedStyle.flexFlow
     : computedStyle.flexDirection + ' ' + computedStyle.flexWrap;
   expect(style).toEqual('row wrap');
 

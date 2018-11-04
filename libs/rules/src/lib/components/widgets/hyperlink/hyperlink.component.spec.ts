@@ -48,7 +48,7 @@ describe('Component: Hyperlink', () => {
     ' disabled, value, etc',
     () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestHyperlinkDefaultBehaviorComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHyperlinkDefaultBehaviorComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.link.type).toEqual(undefined);
@@ -60,12 +60,12 @@ describe('Component: Hyperlink', () => {
 
   it('Basic behaviors for setting the type, size, name, value properties', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestHyperlinkBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestHyperlinkBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector(
+    const el = fixtureWrapper.nativeElement.querySelector(
       'a.link');
-    let className = el.className;
+    const className = el.className;
     fixtureWrapper.detectChanges();
 
     expect(className).toMatch('link-lg');
@@ -79,17 +79,17 @@ describe('Component: Hyperlink', () => {
 
   it('Action behavior triggered when clicking on link', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestHyperlinkActionBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestHyperlinkActionBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector('a.link');
+    const el = fixtureWrapper.nativeElement.querySelector('a.link');
     el.dispatchEvent(new Event('click'));
 
     fixtureWrapper.detectChanges();
     tick();
     fixtureWrapper.detectChanges();
 
-    let value: any = fixtureWrapper.componentInstance.actionValue['value'];
+    const value: any = fixtureWrapper.componentInstance.actionValue['value'];
     expect(value).toEqual('my link');
   }));
 

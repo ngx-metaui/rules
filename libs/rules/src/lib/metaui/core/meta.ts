@@ -142,7 +142,7 @@ export class Meta {
   }
 
   static addTraits(traits: string[], map: Map<string, any>): void {
-    let current: string[] = map.get(Meta.KeyTrait);
+    const current: string[] = map.get(Meta.KeyTrait);
     if (isBlank(current)) {
       map.set(Meta.KeyTrait, traits);
 
@@ -153,7 +153,7 @@ export class Meta {
   }
 
   static addTrait(trait: string, map: Map<string, any>): void {
-    let current: string[] = map.get(Meta.KeyTrait);
+    const current: string[] = map.get(Meta.KeyTrait);
     if (isBlank(current)) {
       map.set(Meta.KeyTrait, Meta.toList(trait));
     } else {
@@ -187,7 +187,7 @@ export class Meta {
     this.registerPropertyMerger(Meta.KeyTrait, Meta.PropertyMerger_Traits);
 
 
-    let nooprule: Rule = new Rule(null, null, 0, 0);
+    const nooprule: Rule = new Rule(null, null, 0, 0);
     nooprule.disable();
     this._rules[0] = nooprule;
     this._ruleCount = 1;
@@ -199,10 +199,10 @@ export class Meta {
 
   addRule(rule: Rule): void {
 
-    let selectors: Array<Selector> = rule.selectors;
+    const selectors: Array<Selector> = rule.selectors;
 
     if (selectors.length > 0 && selectors[selectors.length - 1].isDecl) {
-      let decl = rule.createDecl();
+      const decl = rule.createDecl();
       this._addRule(decl, true);
     }
 
@@ -223,9 +223,9 @@ export class Meta {
   // todo: TEST unit test this
   _addRule(rule: Rule, checkPropScope: boolean): void {
     assert(isPresent(this._currentRuleSet), 'Attempt to add rule without current RuleSet');
-    let selectors: Array<Selector> = rule._selectors;
+    const selectors: Array<Selector> = rule._selectors;
 
-    let entryId: number = this._currentRuleSet.allocateNextRuleEntry();
+    const entryId: number = this._currentRuleSet.allocateNextRuleEntry();
     rule.id = entryId;
     if (rule.rank === 0) {
       rule.rank = this._currentRuleSet._rank++;
@@ -236,23 +236,23 @@ export class Meta {
     // index it
     let lastScopeKeyData: KeyData;
     let declKey: string;
-    let declMask: number = this.declareKeyMask;
+    const declMask: number = this.declareKeyMask;
     let matchMask = 0, indexedMask = 0, antiMask = 0;
-    let count = selectors.length;
+    const count = selectors.length;
 
-    let indexOnlySelector: Selector = Meta._UsePartialIndexing ? this.bestSelectorToIndex(
+    const indexOnlySelector: Selector = Meta._UsePartialIndexing ? this.bestSelectorToIndex(
       selectors) : null;
     for (let i = count - 1; i >= 0; i--) {
-      let p: Selector = selectors[i];
+      const p: Selector = selectors[i];
 
-      let shouldIndex: boolean = (indexOnlySelector === null || p === indexOnlySelector);
+      const shouldIndex: boolean = (indexOnlySelector === null || p === indexOnlySelector);
 
-      let data: KeyData = this.keyData(p.key);
-      let dataMask: number = data.maskValue();
+      const data: KeyData = this.keyData(p.key);
+      const dataMask: number = data.maskValue();
       if (!this.isNullMarker(p.value)) {
         if (shouldIndex || Meta._DebugDoubleCheckMatches) {
           if (isArray(p.value)) {
-            for (let v of p.value) {
+            for (const v of p.value) {
               data.addEntry(v, entryId);
             }
 
@@ -279,8 +279,8 @@ export class Meta {
         antiMask |= dataMask;
       }
     }
-    let isDecl: boolean = isPresent(declKey);
-    let nonScopeKeyDecl: boolean = isPresent(declKey) && !this.keyData(declKey).isPropertyScope;
+    const isDecl: boolean = isPresent(declKey);
+    const nonScopeKeyDecl: boolean = isPresent(declKey) && !this.keyData(declKey).isPropertyScope;
     if (!isDecl || nonScopeKeyDecl) {
 
       // all non-decl rules don't apply outside decl context
@@ -289,16 +289,16 @@ export class Meta {
       }
 
       if (isPresent(lastScopeKeyData) && checkPropScope) {
-        let traitVal = rule.properties.get(Meta.KeyTrait);
+        const traitVal = rule.properties.get(Meta.KeyTrait);
 
 
         if (isPresent(traitVal)) {
-          let traitKey: string = lastScopeKeyData._key + '_trait';
+          const traitKey: string = lastScopeKeyData._key + '_trait';
 
-          let properties = MapWrapper.createEmpty<string, any>();
+          const properties = MapWrapper.createEmpty<string, any>();
           properties.set(traitKey, traitVal);
 
-          let traitRule: Rule = new Rule(rule._selectors, properties, rule.rank,
+          const traitRule: Rule = new Rule(rule._selectors, properties, rule.rank,
             rule.lineNumber);
 
           this._addRule(traitRule, false);
@@ -306,10 +306,10 @@ export class Meta {
 
         rule._selectors = selectors.slice(0);
 
-        let scopeSel: Selector = new Selector(Meta.ScopeKey, lastScopeKeyData.key);
+        const scopeSel: Selector = new Selector(Meta.ScopeKey, lastScopeKeyData.key);
         rule.selectors.push(scopeSel);
 
-        let data: KeyData = this.keyData(Meta.ScopeKey);
+        const data: KeyData = this.keyData(Meta.ScopeKey);
 
         if (!Meta._UsePartialIndexing || Meta._DebugDoubleCheckMatches) {
           data.addEntry(lastScopeKeyData._key, entryId);
@@ -328,8 +328,8 @@ export class Meta {
     let best: Selector;
     let bestRank = Number.MIN_VALUE;
     let pos = 0;
-    for (let sel of  selectors) {
-      let rank = this.selectivityRank(sel) + pos++;
+    for (const sel of  selectors) {
+      const rank = this.selectivityRank(sel) + pos++;
       if (rank > bestRank) {
         best = sel;
         bestRank = rank;
@@ -342,13 +342,13 @@ export class Meta {
     // Score selectors: good if property scope, key !== '*' or bool
     // '*' is particularly bad, since these are inherited by all others
     let score = 1;
-    let value = selector.value;
+    const value = selector.value;
 
     if (isPresent(value) && !(Meta.KeyAny === value)) {
       score += (isBoolean(value) ? 1 : 9);
     }
 
-    let keyData: KeyData = this.keyData(selector.key);
+    const keyData: KeyData = this.keyData(selector.key);
     if (keyData.isPropertyScope) {
       score *= 5;
     }
@@ -367,14 +367,14 @@ export class Meta {
 
 
   _addRuleAndReturnExtras(rule: Rule): Array<Rule> {
-    let start = this._editingRuleEnd();
+    const start = this._editingRuleEnd();
     let extras: Array<Rule>;
 
     this.addRule(rule);
 
     // Return any extra rules created by addition of this one
     for (let i = start, c = this._editingRuleEnd(); i < c; i++) {
-      let r = this._rules[i];
+      const r = this._rules[i];
       if (r !== rule) {
         if (isBlank(extras)) {
           extras = new Array<Rule>();
@@ -388,20 +388,20 @@ export class Meta {
   // Icky method to replace an exited rule in place
   _updateEditedRule(rule: Rule, extras: Array<Rule>): Array<Rule> {
     // in place replace existing rule with NoOp
-    let nooprule: Rule = new Rule(null, null, 0, 0);
+    const nooprule: Rule = new Rule(null, null, 0, 0);
     nooprule.disable();
 
     this._rules[rule.id] = nooprule;
 
     if (isPresent(extras)) {
-      for (let r of extras) {
+      for (const r of extras) {
         r.disable();
       }
     }
 
     // Since this rule has already been mutated (the first time it was added) we need to
     // reverse the addition of the scopeKey
-    let preds = rule.selectors;
+    const preds = rule.selectors;
 
     if ((isPresent(preds) && preds.length > 0) && ListWrapper.last<Selector>(
       preds).key === Meta.ScopeKey) {
@@ -417,8 +417,8 @@ export class Meta {
 
   scopeKeyForSelector(preds: Array<Selector>): string {
     for (let i = preds.length - 1; i >= 0; i--) {
-      let pred = preds[i];
-      let data = this.keyData(pred.key);
+      const pred = preds[i];
+      const data = this.keyData(pred.key);
       if (data.isPropertyScope) {
         return pred.key;
       }
@@ -433,7 +433,7 @@ export class Meta {
 
   addRuleFromSelectorMapWithRank(selectorMap: Map<string, any>, propertyMap: Map<string, any>,
                                  rank: number): void {
-    let rule = new Rule(Selector.fromMap(selectorMap), propertyMap, 0, -1);
+    const rule = new Rule(Selector.fromMap(selectorMap), propertyMap, 0, -1);
     if (rank !== 0) {
       rule.rank = rank;
     }
@@ -461,7 +461,7 @@ export class Meta {
       this.addRule(new Rule(selectors, props, 0));
     }
     if (isPresent(rules)) {
-      for (let r of rules) {
+      for (const r of rules) {
         this.addRules(r, selectors);
       }
     }
@@ -520,7 +520,7 @@ export class Meta {
   isTraitExportRule(rule: Rule): boolean {
     if (isBlank(rule.properties) || rule || rule.properties.size === 1) {
 
-      let key: string = Array.from(rule.properties.keys())[0];
+      const key: string = Array.from(rule.properties.keys())[0];
       return StringWrapper.endsWidth(key, '_trait');
     }
     return false;
@@ -548,7 +548,7 @@ export class Meta {
   }
 
   beginReplacementRuleSet(orig: RuleSet): void {
-    let origRank = orig.startRank();
+    const origRank = orig.startRank();
     this.beginRuleSetWithRank(this._ruleCount, orig._filePath);
     this._currentRuleSet._rank = origRank;
   }
@@ -556,7 +556,7 @@ export class Meta {
 
   endRuleSet(): RuleSet {
     assert(isPresent(this._currentRuleSet), 'No rule set progress');
-    let result: RuleSet = this._currentRuleSet;
+    const result: RuleSet = this._currentRuleSet;
     if (this._ruleCount < result._end) {
       this._ruleCount = result._end;
     }
@@ -588,7 +588,7 @@ export class Meta {
 
   // Touch a key/value to force pre-loading/registration of associated rule files
   touch(key: string, value: any): void {
-    let context = this.newContext();
+    const context = this.newContext();
     context.push();
     context.set(key, value);
     context.allProperties();
@@ -597,7 +597,7 @@ export class Meta {
 
 
   transformValue(key: string, value: any): any {
-    let keyData = this._keyData.get(key);
+    const keyData = this._keyData.get(key);
     if (isPresent(keyData) && isPresent(keyData._transformer)) {
       value = keyData._transformer.tranformForMatch(value);
     }
@@ -605,11 +605,11 @@ export class Meta {
   }
 
   match(key: string, value: any, intermediateResult: MatchResult): MatchResult {
-    let keyData = this._keyData.get(key);
+    const keyData = this._keyData.get(key);
     if (isBlank(keyData)) {
       return intermediateResult;
     }
-    let keyMask: number = shiftLeft(1, keyData._id);
+    const keyMask: number = shiftLeft(1, keyData._id);
 
     // Does our result already include this key?  Then no need to join again
     // if (intermediateResult !== null && (intermediateResult._keysMatchedMask & keyMask) !==
@@ -621,7 +621,7 @@ export class Meta {
 
   unionOverrideMatch(key: string, value: any,
                      intermediateResult: UnionMatchResult): UnionMatchResult {
-    let keyData: KeyData = this._keyData.get(Meta.overrideKeyForKey(key));
+    const keyData: KeyData = this._keyData.get(Meta.overrideKeyForKey(key));
     if (isBlank(keyData)) {
       return intermediateResult;
     }
@@ -640,14 +640,14 @@ export class Meta {
 
     properties = this.newPropertiesMap();
 
-    let arr: number[] = matchResult.filteredMatches();
+    const arr: number[] = matchResult.filteredMatches();
     if (isBlank(arr)) {
       return properties;
     }
 
     // first entry is count
-    let count: number = arr[0];
-    let rules: Array<Rule> = new Array<Rule>(count);
+    const count: number = arr[0];
+    const rules: Array<Rule> = new Array<Rule>(count);
 
     for (let i = 0; i < count; i++) {
       rules[i] = this._rules[arr[i + 1]];
@@ -656,11 +656,11 @@ export class Meta {
     ListWrapper.sort<Rule>(rules, (o1, o2) => o1.rank - o2.rank);
 
     let modifiedMask = 0;
-    let declareKey: string = ((this._declareKeyMask & matchResult.keysMatchedMask) !== 0)
+    const declareKey: string = ((this._declareKeyMask & matchResult.keysMatchedMask) !== 0)
       ? matchResult.valueForKey(Meta.KeyDeclare) : null;
 
 
-    for (let r in rules) {
+    for (const r in rules) {
       modifiedMask |= rules[r].apply(this, properties, declareKey);
     }
 
@@ -674,7 +674,7 @@ export class Meta {
     let data: KeyData = this._keyData.get(key);
 
     if (isBlank(data)) {
-      let id: number = this._nextKeyId;
+      const id: number = this._nextKeyId;
 
       if (id >= Meta.MaxKeyDatas - 1) {
         print('Exceeded maximum number of context keys');
@@ -690,7 +690,7 @@ export class Meta {
 
 
   _keysInMask(mask: number): string[] {
-    let matches: string[] = [];
+    const matches: string[] = [];
     let pos = 0;
     while (mask !== 0) {
       if ((mask & 1) !== 0) {
@@ -721,8 +721,8 @@ export class Meta {
   }
 
   matchArrayAssign(array: MatchValue[], keyData: KeyData, matchValue: MatchValue): void {
-    let idx = keyData._id;
-    let curr = array[idx];
+    const idx = keyData._id;
+    const curr = array[idx];
     if (isPresent(curr)) {
       matchValue = curr.updateByAdding(matchValue);
     }
@@ -731,7 +731,7 @@ export class Meta {
 
 
   propertyWillDoMerge(propertyName: string, origValue: any): boolean {
-    let merger: PropertyMerger = this.mergerForProperty(propertyName);
+    const merger: PropertyMerger = this.mergerForProperty(propertyName);
 
     return this.isPropertyMergerIsChaining(merger) || (isPresent(
       origValue) && (origValue instanceof Map));
@@ -749,17 +749,17 @@ export class Meta {
 
 
   mirrorPropertyToContext(propertyName: string, contextKey: string): void {
-    let keyData = this.keyData(contextKey);
-    let manager = this.managerForProperty(propertyName);
+    const keyData = this.keyData(contextKey);
+    const manager = this.managerForProperty(propertyName);
     manager._keyDataToSet = keyData;
   }
 
 
   defineKeyAsPropertyScope(contextKey: string): void {
-    let keyData: KeyData = this.keyData(contextKey);
+    const keyData: KeyData = this.keyData(contextKey);
     keyData.isPropertyScope = true;
 
-    let traitKey: string = contextKey + '_trait';
+    const traitKey: string = contextKey + '_trait';
     this.mirrorPropertyToContext(traitKey, traitKey);
     this.registerPropertyMerger(traitKey, Meta.PropertyMerger_DeclareList);
   }
@@ -772,12 +772,12 @@ export class Meta {
     if (isBlank(merger._meta)) {
       merger._meta = this;
     }
-    let manager: PropertyManager = this.managerForProperty(propertyName);
+    const manager: PropertyManager = this.managerForProperty(propertyName);
     manager._merger = merger;
   }
 
   mergerForProperty(propertyName: string): PropertyMerger {
-    let manager: PropertyManager = this.managerForProperty(propertyName);
+    const manager: PropertyManager = this.managerForProperty(propertyName);
     return manager._merger;
   }
 
@@ -793,16 +793,16 @@ export class Meta {
   _logRuleStats(): void {
     let total = 0;
 
-    let values = this._keyData.keys();
+    const values = this._keyData.keys();
 
-    let counts: any[] = [];
+    const counts: any[] = [];
 
     for (const id of Array.from(values)) {
-      let keyData = this._keyData.get(id);
-      let valuess = keyData.ruleVecs.values();
+      const keyData = this._keyData.get(id);
+      const valuess = keyData.ruleVecs.values();
 
-      for (let vm  of valuess) {
-        let kvc = new KeyValueCount(keyData._key, (<any>vm)['_value'], isPresent(
+      for (const vm  of valuess) {
+        const kvc = new KeyValueCount(keyData._key, (<any>vm)['_value'], isPresent(
           vm._arr) ? vm._arr[0] : 0);
 
         total += kvc.count;
@@ -811,8 +811,8 @@ export class Meta {
     }
     ListWrapper.sort<KeyValueCount>(counts, (o1, o2) => o2.count - o1.count);
 
-    let buf = new StringJoiner([]);
-    let c = Math.min(10, counts.length);
+    const buf = new StringJoiner([]);
+    const c = Math.min(10, counts.length);
 
     buf.add('Total index entries comparisons performed: ' + Match._Debug_ElementProcessCount);
     buf.add('\nTotal index entries: ' + total);
@@ -820,7 +820,7 @@ export class Meta {
 
 
     for (let i = 0; i < c; i++) {
-      let kvc = counts[i];
+      const kvc = counts[i];
 
       buf.add('     ' + kvc.key + '  = ' + kvc.value + ' : ' + kvc.count + ' entries');
       buf.add('\n');
@@ -882,7 +882,7 @@ export class PropertyManager {
         if (isPresent(newValue) && newValue instanceof Map) {
           // merge maps
           // todo: TEST check outcome of the merge and compare
-          let origClone = MapWrapper.clone<string, any>(orig);
+          const origClone = MapWrapper.clone<string, any>(orig);
           newValue = MapWrapper.mergeMapIntoMapWithObject(origClone, newValue, true);
         }
       }
@@ -970,11 +970,11 @@ export class KeyData {
 
   matchValue(value: any): MatchValue {
     if (isArray(value)) {
-      let list = value;
+      const list = value;
       if (list.length === 1) {
         return this.get(list[0]);
       }
-      let multi: MultiMatchValue = new MultiMatchValue();
+      const multi: MultiMatchValue = new MultiMatchValue();
 
       ListWrapper.forEachWithIndex(list, (v, i) => {
         multi.data.push(this.get(v));
@@ -987,9 +987,9 @@ export class KeyData {
 
 
   addEntry(value: any, id: number): void {
-    let matches: ValueMatches = this.get(value);
-    let before: number[] = matches._arr;
-    let after: number[] = Match.addInt(before, id);
+    const matches: ValueMatches = this.get(value);
+    const before: number[] = matches._arr;
+    const after: number[] = Match.addInt(before, id);
     if (before !== after) {
       matches._arr = after;
     }
@@ -997,7 +997,7 @@ export class KeyData {
 
 
   lookup(owner: Meta, value: any): number[] {
-    let matches: ValueMatches = this.get(value);
+    const matches: ValueMatches = this.get(value);
     if (!matches._read && isPresent(this._observers)) {
 
       try {
@@ -1021,14 +1021,14 @@ export class KeyData {
 
 
   setParent(value: any, parentValue: any): void {
-    let parent: ValueMatches = this.get(parentValue);
-    let child: ValueMatches = this.get(value);
+    const parent: ValueMatches = this.get(parentValue);
+    const child: ValueMatches = this.get(value);
     child._parent = parent;
   }
 
 
   parent(value: any): any {
-    let child: ValueMatches = this.get(value);
+    const child: ValueMatches = this.get(value);
     return child._parent._value;
   }
 
@@ -1152,7 +1152,7 @@ export class PropertyMap implements Map<string, any> {
   awakeProperties(): void {
     MapWrapper.iterable(this).forEach((value, key) => {
       if (isPropertyMapAwaking(value)) {
-        let newValue = value.awakeForPropertyMap(this);
+        const newValue = value.awakeForPropertyMap(this);
         if (newValue !== value) {
           this.set(key, newValue);
         }
@@ -1175,11 +1175,11 @@ export class PropertyMap implements Map<string, any> {
   toString() {
     // todo: find better way for the string. thsi is also used as key for the dictionary
     // not really efficient
-    let sj = new StringJoiner(['PropertyMap:']);
+    const sj = new StringJoiner(['PropertyMap:']);
     sj.add(this.size + ',');
     MapWrapper.iterable(this).forEach((value, key) => {
       if (isPropertyMapAwaking(value)) {
-        let newValue = value.awakeForPropertyMap(this);
+        const newValue = value.awakeForPropertyMap(this);
         if (newValue !== value) {
           sj.add(key + ':' + value);
           sj.add(', ');
@@ -1254,10 +1254,10 @@ export class PropertyMerger_List implements PropertyMerger {
     if (!(isArray(orig)) && !(isArray(override)) && Meta.objectEquals(orig, override)) {
       return orig;
     }
-    let l1 = Meta.toList(orig);
-    let l2 = Meta.toList(override);
+    const l1 = Meta.toList(orig);
+    const l2 = Meta.toList(override);
 
-    let result = ListWrapper.clone(l1);
+    const result = ListWrapper.clone(l1);
 
     ListWrapper.addElementsIfAbsent(result, l2);
     return result;
@@ -1284,7 +1284,7 @@ export class PropertyMergerDeclareList extends PropertyMergerDynamic {
       return orig;
     }
 
-    let result: any[] = [];
+    const result: any[] = [];
     ListWrapper.addElementsIfAbsent(result, Meta.toList(orig));
     ListWrapper.addElementsIfAbsent(result, Meta.toList(override));
 
@@ -1319,16 +1319,16 @@ export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList
     if (!isArray(orig) && !isArray(override) && Meta.objectEquals(orig, override)) {
       return orig;
     }
-    let origL = Meta.toList(orig);
-    let overrideL = Meta.toList(override);
-    let result: any[] = [];
+    const origL = Meta.toList(orig);
+    const overrideL = Meta.toList(override);
+    const result: any[] = [];
     for (let trait of origL) {
       if (trait instanceof OverrideValue) {
         trait = (<OverrideValue> trait).value();
       }
 
       let canAdd = true;
-      let group = this._meta.groupForTrait(trait);
+      const group = this._meta.groupForTrait(trait);
 
       if (isPresent(group)) {
 
@@ -1462,11 +1462,11 @@ export class RuleSet {
   }
 
   rules(editableOnly: any): Array<Rule> {
-    let result: Array<Rule> = [];
+    const result: Array<Rule> = [];
     let i = (editableOnly) ? (this._editableStart === -1 ? this._end : this._editableStart)
       : this._start;
     for (; i < this._end; i++) {
-      let r = this._meta._rules[i];
+      const r = this._meta._rules[i];
       if (!r.disabled() && !this._meta.isTraitExportRule(r)) {
         result.push(r);
       }
@@ -1551,7 +1551,7 @@ export class ValueMatches implements MatchValue {
     if (isPresent(this._parent)) {
       this._parent.checkParent();
 
-      let parentArr: number[] = this._parent._arr;
+      const parentArr: number[] = this._parent._arr;
 
       if (isPresent(parentArr) && parentArr[0] !== this._parentSize) {
         this._arr = Match.union(this._arr, parentArr);
@@ -1571,7 +1571,7 @@ export class ValueMatches implements MatchValue {
   }
 
   updateByAdding(other: MatchValue): MatchValue {
-    let multi: MultiMatchValue = new MultiMatchValue();
+    const multi: MultiMatchValue = new MultiMatchValue();
     multi.data.push(this);
     return multi.updateByAdding(other);
   }
@@ -1606,7 +1606,7 @@ export class MultiMatchValue implements MatchValue {
 
   updateByAdding(other: MatchValue): MatchValue {
     if (other instanceof MultiMatchValue) {
-      let matchValue: MultiMatchValue = <MultiMatchValue> other;
+      const matchValue: MultiMatchValue = <MultiMatchValue> other;
       ListWrapper.addAll(this.data, matchValue.data);
     } else {
       this.data.push(other);

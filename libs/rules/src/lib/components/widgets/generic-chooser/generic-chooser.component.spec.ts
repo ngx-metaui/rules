@@ -58,7 +58,7 @@ describe('Component: GenericChooser', () => {
     it('should default with correct values ', () => {
 
 
-      let fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.genericChooser.type).toEqual('Checkbox');
@@ -68,10 +68,10 @@ describe('Component: GenericChooser', () => {
 
 
     it('should render CheckboxList', () => {
-      let fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
       fixtureWrapper.detectChanges();
 
-      let dd = fixtureWrapper.nativeElement.querySelector('aw-checkbox-list');
+      const dd = fixtureWrapper.nativeElement.querySelector('aw-checkbox-list');
 
       expect(dd).toBeDefined();
     });
@@ -79,7 +79,7 @@ describe('Component: GenericChooser', () => {
 
     it('should derive a type if none is passed in', () => {
 
-      let largeLst = `
+      const largeLst = `
              <aw-generic-chooser
                     [list]="list" [key]="'selection'" [multiselect]="multiselect"
                     [name]="'ssssss'" >
@@ -88,7 +88,7 @@ describe('Component: GenericChooser', () => {
       TestBed.overrideComponent(TestGCCheckBoxComponent, {set: {template: largeLst}});
 
 
-      let fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
       fixtureWrapper.detectChanges();
 
 
@@ -99,7 +99,7 @@ describe('Component: GenericChooser', () => {
     it('should set value /Yesterday/ when clicking on the first checkbox', fakeAsync(() => {
 
 
-      let fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCCheckBoxComponent);
       fixtureWrapper.detectChanges();
 
       tick();
@@ -108,7 +108,7 @@ describe('Component: GenericChooser', () => {
       tick();
       fixtureWrapper.detectChanges();
 
-      let list = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox input');
+      const list = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox input');
 
       list[0].click();
 
@@ -133,7 +133,7 @@ describe('Component: GenericChooser', () => {
 
     it('should default with correct values ', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.genericChooser.type).toEqual('Radio');
@@ -144,10 +144,10 @@ describe('Component: GenericChooser', () => {
 
     it('should render Radio button LIST', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
       fixtureWrapper.detectChanges();
 
-      let dd = fixtureWrapper.nativeElement.querySelector('aw-radiobutton-list');
+      const dd = fixtureWrapper.nativeElement.querySelector('aw-radiobutton-list');
 
       expect(dd).toBeDefined();
     });
@@ -156,14 +156,14 @@ describe('Component: GenericChooser', () => {
     it('should derive a type if none is passed in', () => {
 
 
-      let largeLst = `
+      const largeLst = `
      <aw-generic-chooser [list]="list" [key]="'selection'" [name]="'ssssss'" >
     </aw-generic-chooser>
 `;
       TestBed.overrideComponent(TestGCCheckBoxComponent, {set: {template: largeLst}});
 
 
-      let fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
       fixtureWrapper.detectChanges();
 
 
@@ -173,10 +173,10 @@ describe('Component: GenericChooser', () => {
 
     it('should set value /Yesterday/ when clicking on the first checkbox', fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCRadioComponent);
       fixtureWrapper.detectChanges();
 
-      let list = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton-box');
+      const list = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton-box');
       list[0].click();
       fixtureWrapper.detectChanges();
       tick();
@@ -197,7 +197,7 @@ describe('Component: GenericChooser', () => {
 
     it('should default with correct values ', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.genericChooser.type).toEqual('Dropdown');
@@ -208,10 +208,10 @@ describe('Component: GenericChooser', () => {
 
     it('should render Radio button LIST', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
       fixtureWrapper.detectChanges();
 
-      let dd = fixtureWrapper.nativeElement.querySelector('aw-dropdown');
+      const dd = fixtureWrapper.nativeElement.querySelector('aw-dropdown');
 
       expect(dd).toBeDefined();
     });
@@ -220,7 +220,7 @@ describe('Component: GenericChooser', () => {
     it('should derive a type if none is passed in', () => {
 
 
-      let largeLst = `
+      const largeLst = `
      <aw-generic-chooser [list]="list" [key]="'selection'" [noSelectionString]="'no value'"
             [name]="'ssssss'" >
     </aw-generic-chooser>
@@ -228,7 +228,7 @@ describe('Component: GenericChooser', () => {
       TestBed.overrideComponent(TestGCCheckBoxComponent, {set: {template: largeLst}});
 
 
-      let fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
       fixtureWrapper.detectChanges();
 
 
@@ -238,16 +238,16 @@ describe('Component: GenericChooser', () => {
 
     it('should set value /Monday/ when clicking on the first Dropdown item', fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
+      const fixtureWrapper = TestBed.createComponent(TestGCDDComponent);
       fixtureWrapper.detectChanges();
 
-      let dd = fixtureWrapper.nativeElement.querySelector('.ui-dropdown');
+      const dd = fixtureWrapper.nativeElement.querySelector('.ui-dropdown');
       dd.click();
 
       tick();
       fixtureWrapper.detectChanges();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-dropdown-item ');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-dropdown-item ');
       items[1].click();
       tick();
       fixtureWrapper.detectChanges();
@@ -345,7 +345,7 @@ class TestGCDDComponent {
  */
 function flushPendingTimers() {
 
-  let zone: any = readGlobalParam('Zone');
+  const zone: any = readGlobalParam('Zone');
 
   if (isPresent(zone) &&
     isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {

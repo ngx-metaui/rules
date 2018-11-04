@@ -55,7 +55,7 @@ describe('Component: confirmation', () => {
   });
 
   it('should instantiate confirmation component and values for title and body', () => {
-    let fixtureWrapper = TestBed.createComponent(TestConfirmationDefaultComponent);
+    const fixtureWrapper = TestBed.createComponent(TestConfirmationDefaultComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.confirmation.title).toEqual('Confirmation');
@@ -66,11 +66,11 @@ describe('Component: confirmation', () => {
 
   it('should display confirmation component as popup', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestConfirmationDefaultComponent);
+    const fixtureWrapper = TestBed.createComponent(TestConfirmationDefaultComponent);
     fixtureWrapper.detectChanges();
 
     // Find the open button
-    let button = fixtureWrapper.nativeElement.querySelector('button');
+    const button = fixtureWrapper.nativeElement.querySelector('button');
     button.click();
 
     tick();
@@ -80,7 +80,7 @@ describe('Component: confirmation', () => {
     fixtureWrapper.detectChanges();
 
     // Verify that the confirmation has been opened.
-    let confirmBtn = fixtureWrapper.nativeElement.querySelector('button[name="confirm"]');
+    const confirmBtn = fixtureWrapper.nativeElement.querySelector('button[name="confirm"]');
     expect(confirmBtn).toBeDefined();
 
     // click on confirm
@@ -102,10 +102,10 @@ describe('Component: confirmation', () => {
   it('should close confirmation when default component closed button is clicked.',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestConfirmationServiceBehaviorComponent);
+      const fixtureWrapper = TestBed.createComponent(TestConfirmationServiceBehaviorComponent);
       fixtureWrapper.detectChanges();
 
-      let button = fixtureWrapper.nativeElement.querySelector('button');
+      const button = fixtureWrapper.nativeElement.querySelector('button');
       button.dispatchEvent(new Event('click'));
 
       tick();
@@ -116,7 +116,7 @@ describe('Component: confirmation', () => {
       expect(fixtureWrapper.componentInstance.confirmation.body).toEqual('Confirmation Body');
 
       // Find the close button, click it to close the popup.
-      let cancelBtn = fixtureWrapper.nativeElement.querySelector('button[name="cancel"]');
+      const cancelBtn = fixtureWrapper.nativeElement.querySelector('button[name="cancel"]');
       cancelBtn.dispatchEvent(new Event('click'));
 
       tick();
@@ -144,12 +144,12 @@ describe('Component: confirmation', () => {
       },
     });
 
-    let fixtureWrapper = TestBed.createComponent(TestCustomConfirmationBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCustomConfirmationBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     openDialog(fixtureWrapper);
 
-    let templates = fixtureWrapper.nativeElement.querySelectorAll('.icon-alert');
+    const templates = fixtureWrapper.nativeElement.querySelectorAll('.icon-alert');
     expect(templates.length).toEqual(1);
 
     flushMicrotasks();
@@ -171,19 +171,19 @@ describe('Component: confirmation', () => {
       });
 
     TestBed.compileComponents();
-    let fixtureWrapper = TestBed.createComponent(
+    const fixtureWrapper = TestBed.createComponent(
       TestCustomConfirmationBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     // Find the open button
-    let button = fixtureWrapper.nativeElement.querySelector('button');
+    const button = fixtureWrapper.nativeElement.querySelector('button');
     button.dispatchEvent(new Event('click'));
 
     tick();
     fixtureWrapper.detectChanges();
 
     // Find the close button, click it to close the popup.
-    let cancelBtn = fixtureWrapper.nativeElement.querySelector('button[name="cancel"]');
+    const cancelBtn = fixtureWrapper.nativeElement.querySelector('button[name="cancel"]');
     cancelBtn.dispatchEvent(new Event('click'));
 
     tick();
@@ -200,7 +200,7 @@ describe('Component: confirmation', () => {
 
 function openDialog(fixture: any) {
   // Find the open button
-  let button = fixture.nativeElement.querySelector('button');
+  const button = fixture.nativeElement.querySelector('button');
   button.dispatchEvent(new Event('click'));
 
   tick();
@@ -218,7 +218,7 @@ function openDialog(fixture: any) {
  */
 function flushPendingTimers() {
 
-  let zone: any = readGlobalParam('Zone');
+  const zone: any = readGlobalParam('Zone');
 
   if (isPresent(zone) &&
     isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {

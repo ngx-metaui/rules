@@ -32,13 +32,13 @@ export class NestedMap<K, V> implements Map<K, V> {
 
 
   static toMapEntry(iteratorResult: IteratorResult<any>): MapEntry {
-    let value = iteratorResult.value;
+    const value = iteratorResult.value;
 
     if (isPresent(value) && NestedMap.isMapEntry(value)) {
       return value;
     }
 
-    let entry: MapEntry = {
+    const entry: MapEntry = {
 
       key: (isPresent(
         iteratorResult.value)) ? iteratorResult.value[0] : iteratorResult.value,
@@ -70,14 +70,14 @@ export class NestedMap<K, V> implements Map<K, V> {
 
 
   reparentedMap(newParent: Map<K, V>): NestedMap<K, V> {
-    let newMap = new NestedMap<K, V>(newParent, this._map);
+    const newMap = new NestedMap<K, V>(newParent, this._map);
     newMap._overrideCount = this._overrideCount;
     return newMap;
   }
 
 
   get(key: K): any | V {
-    let val = this._map.has(key) ? this._map.get(key) : this._parent.get(key);
+    const val = this._map.has(key) ? this._map.get(key) : this._parent.get(key);
     return NestedMap.isNMNullMarker(val) ? null : val;
   }
 
@@ -97,7 +97,7 @@ export class NestedMap<K, V> implements Map<K, V> {
   }
 
   set(key: K, value?: V): any {
-    let orig = this._map.get(key);
+    const orig = this._map.get(key);
 
     if ((NestedMap.isNMNullMarker(orig) || isBlank(orig)) && this._parent.has(key)) {
       this._overrideCount += (NestedMap.isNMNullMarker(orig) ? -1 : 1);
@@ -138,7 +138,7 @@ export class NestedMap<K, V> implements Map<K, V> {
 
   forEach(callbackfn: (value: V, index: K, map: Map<K, V>) => void, thisArg?: any): void {
 
-    let entries = this.entries();
+    const entries = this.entries();
 
     let nextEntry: MapEntry;
     while ((nextEntry = NestedMap.toMapEntry(entries.next())) && nextEntry.hasNext) {
@@ -213,7 +213,7 @@ class NestedEntryIterator<K, V> implements IterableIterator<MapEntry> {
     this._currentEntry = this._nextEntry;
     this.advanceToNext();
 
-    let next: IteratorResult<MapEntry> = {
+    const next: IteratorResult<MapEntry> = {
       value: this._currentEntry,
       done: !this._currentEntry.hasNext
 

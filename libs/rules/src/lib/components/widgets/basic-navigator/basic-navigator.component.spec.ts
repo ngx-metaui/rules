@@ -51,11 +51,11 @@ describe('Basic navigator component ', () => {
   it('should  render default buttons OK and cancel on the top and bottom', () => {
 
 
-    let fixtureWrapper = TestBed.createComponent(BasicNavigatorTestComponent);
+    const fixtureWrapper = TestBed.createComponent(BasicNavigatorTestComponent);
     fixtureWrapper.detectChanges();
 
 
-    let buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
+    const buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
     expect(buttons.length).toEqual(4);
     expect(buttons[0].textContent.trim()).toEqual('Cancel');
     expect(buttons[1].textContent.trim()).toEqual('OK');
@@ -67,11 +67,11 @@ describe('Basic navigator component ', () => {
 
   it('should  render default buttons OK and cancel With Custom label Save Done', () => {
 
-    let fixtureWrapper = TestBed.createComponent(BNCustomLabelComponent);
+    const fixtureWrapper = TestBed.createComponent(BNCustomLabelComponent);
     fixtureWrapper.detectChanges();
 
 
-    let buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
+    const buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
     expect(buttons.length).toEqual(4);
     expect(buttons[0].textContent.trim()).toEqual('Done');
     expect(buttons[1].textContent.trim()).toEqual('Save');
@@ -84,10 +84,10 @@ describe('Basic navigator component ', () => {
   it('should  it should emit action even when registered and we click on save, cancel',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(BNActionsComponent);
+      const fixtureWrapper = TestBed.createComponent(BNActionsComponent);
       fixtureWrapper.detectChanges();
 
-      let buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
+      const buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
       buttons[1].click();
 
       tick();
@@ -105,11 +105,11 @@ describe('Basic navigator component ', () => {
 
   it('should attach custom brand template', () => {
 
-    let fixtureWrapper = TestBed.createComponent(BNCustomBrandComponent);
+    const fixtureWrapper = TestBed.createComponent(BNCustomBrandComponent);
     fixtureWrapper.detectChanges();
 
 
-    let brand = fixtureWrapper.nativeElement.querySelector('.brand-title');
+    const brand = fixtureWrapper.nativeElement.querySelector('.brand-title');
 
     expect(brand.textContent.trim()).toEqual('xxxxx');
 
@@ -118,11 +118,11 @@ describe('Basic navigator component ', () => {
 
   it('should attach custom buttons template', () => {
 
-    let fixtureWrapper = TestBed.createComponent(BNCustomButtonsComponent);
+    const fixtureWrapper = TestBed.createComponent(BNCustomButtonsComponent);
     fixtureWrapper.detectChanges();
 
 
-    let btns = fixtureWrapper.nativeElement.querySelectorAll('.btn');
+    const btns = fixtureWrapper.nativeElement.querySelectorAll('.btn');
     expect(btns.length).toEqual(2);
   });
 

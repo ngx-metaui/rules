@@ -153,7 +153,7 @@ export class Rule {
 
 
   matches(matchArray: Array<MatchValue>): boolean {
-    for (let sel of this._selectors) {
+    for (const sel of this._selectors) {
       if (!sel.matches(matchArray)) {
         return false;
       }
@@ -189,7 +189,7 @@ export class Rule {
 
 
   location(): string {
-    let path: string = isPresent(this._ruleSet) ? this._ruleSet.filePath : 'Unknow';
+    const path: string = isPresent(this._ruleSet) ? this._ruleSet.filePath : 'Unknow';
     return (this._lineNumber >= 0) ? (new StringJoiner([
       path, ':', this._lineNumber + ''
     ])).toString() : path;
@@ -251,15 +251,15 @@ export class Rule {
      */
     // add rule for declaration
 
-    let selectors: Array<Selector> = this._selectors;
-    let declPred: Selector = selectors[selectors.length - 1];
-    let prePreds: Array<Selector> = this.convertKeyOverrides(
+    const selectors: Array<Selector> = this._selectors;
+    const declPred: Selector = selectors[selectors.length - 1];
+    const prePreds: Array<Selector> = this.convertKeyOverrides(
       selectors.slice(0, selectors.length - 1));
 
     if (isBlank(this._properties)) {
       this._properties = new Map<string, any>();
     }
-    for (let p of selectors) {
+    for (const p of selectors) {
       if (!(isArray(p.value))) {
         this._properties.set(p.key, p.value);
       }
@@ -269,7 +269,7 @@ export class Rule {
 
     // check for override scope
     let hasOverrideScope = false;
-    for (let p of prePreds) {
+    for (const p of prePreds) {
       if (p.key === declPred.key) {
         hasOverrideScope = true;
       }
@@ -277,14 +277,14 @@ export class Rule {
 
     // if decl key isn't scoped, then select on no scope
     if (!hasOverrideScope) {
-      let overrideKey: string = Meta.overrideKeyForKey(declPred.key);
+      const overrideKey: string = Meta.overrideKeyForKey(declPred.key);
       prePreds.unshift(new Selector(overrideKey, Meta.NullMarker));
     }
 
     // The decl rule...
     prePreds.push(new Selector(Meta.KeyDeclare, declPred.key));
 
-    let m = new Map<string, any>();
+    const m = new Map<string, any>();
     m.set(declPred.key, declPred.value);
     return new Rule(prePreds, m, 0, -1);
   }
@@ -297,12 +297,12 @@ export class Rule {
   convertKeyOverrides(orig: Array<Selector>): Array<Selector> {
 
     let result = orig;
-    let count: number = orig.length;
+    const count: number = orig.length;
     for (let i = 0; i < count; i++) {
       let p: Selector = orig[i];
       // See if overridded by same key later in selector
       for (let j = i + 1; j < count; j++) {
-        let pNext: Selector = orig[j];
+        const pNext: Selector = orig[j];
 
         if (pNext.key === p.key) {
           // if we're overridden, we drop ours, and replace the next collision
@@ -324,7 +324,7 @@ export class Rule {
   }
 
   toString(): string {
-    let sj = new StringJoiner(['<Rule [']);
+    const sj = new StringJoiner(['<Rule [']);
     sj.add(this._rank + '] ');
 
     if (isBlank(this.selectors)) {
@@ -359,7 +359,7 @@ export class Rule {
   _checkRule(values: Map<string, any>, meta: Meta): void {
     ListWrapper.forEachWithIndex<Selector>(this.selectors, (p, i) => {
       let contextValue = values.get(p.key);
-      let keyData: KeyData = meta.keyData(p.key);
+      const keyData: KeyData = meta.keyData(p.key);
 
       if (isPresent(keyData._transformer)) {
         contextValue = keyData._transformer.tranformForMatch(contextValue);

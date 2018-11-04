@@ -238,8 +238,8 @@ export class HoverCardComponent extends BaseComponent {
 
   onAnimationStart(event: AnimationEvent): void {
     if (this.opening) {
-      let container = this.awOverlay.overlay.container;
-      let cntRect = container.getBoundingClientRect();
+      const container = this.awOverlay.overlay.container;
+      const cntRect = container.getBoundingClientRect();
       if (this.currrentPosition !== HCCardPosition.none) {
         this.adjustCard(container, cntRect, this.awOverlay.overlay);
 
@@ -272,8 +272,8 @@ export class HoverCardComponent extends BaseComponent {
    *
    */
   initElements(): void {
-    let titleElem = this.elem.nativeElement.querySelector('.w-hc-title');
-    let triggerElem = this.elem.nativeElement.querySelector('.sap-icon');
+    const titleElem = this.elem.nativeElement.querySelector('.w-hc-title');
+    const triggerElem = this.elem.nativeElement.querySelector('.sap-icon');
     this.titleAreaRect = titleElem.getBoundingClientRect();
     this.trigRect = triggerElem.getBoundingClientRect();
     this.trigIconMiddle = this.trigRect.width / 2;
@@ -307,15 +307,15 @@ export class HoverCardComponent extends BaseComponent {
    *
    */
   cardOpened(event?: any): void {
-    let container = this.awOverlay.overlay.container;
-    let target = this.awOverlay.overlay.target;
+    const container = this.awOverlay.overlay.container;
+    const target = this.awOverlay.overlay.target;
 
     this.openForAdjustments(container);
     this.injectDynamicContent();
 
     // pre-run positioning so we can calculate new coordinates
     this.awOverlay.overlay.domHandler.absolutePosition(container, target);
-    let cntRect = container.getBoundingClientRect();
+    const cntRect = container.getBoundingClientRect();
     this.currrentPosition = this.positionForCard(container, cntRect);
 
     this.applyStyleClass(container, cntRect, this.awOverlay.overlay);
@@ -369,12 +369,12 @@ export class HoverCardComponent extends BaseComponent {
    *
    */
   adjustCard(container: any, containerRect: any, modalContainer: any): void {
-    let diff = (this.currrentPosition === HCCardPosition.bottom) ? 1 : -1;
-    let scrollTop = modalContainer.domHandler.getWindowScrollTop();
-    let posWithScroll = containerRect.top + scrollTop;
+    const diff = (this.currrentPosition === HCCardPosition.bottom) ? 1 : -1;
+    const scrollTop = modalContainer.domHandler.getWindowScrollTop();
+    const posWithScroll = containerRect.top + scrollTop;
     container.style.top = (posWithScroll + (HoverCardComponent.ArrowPad * diff)) + 'px';
 
-    let alignment = this.alignmentForCard(containerRect, modalContainer);
+    const alignment = this.alignmentForCard(containerRect, modalContainer);
     container.style.left = this.calcLeftForAlignment(containerRect, alignment) + 'px';
   }
 
@@ -382,7 +382,7 @@ export class HoverCardComponent extends BaseComponent {
   applyStyleClass(container: any, containerRect: any, modalContainer: any): void {
 
     if (this.currrentPosition !== HCCardPosition.none) {
-      let alignment = this.alignmentForCard(containerRect, modalContainer);
+      const alignment = this.alignmentForCard(containerRect, modalContainer);
 
       this.arrowClass = (<any>PositionToStyle)[(<any>HCCardPosition)[this.currrentPosition]];
       this.arrowClass += (<any>AlignmentToStyle)[(<any>HCCardAlignment)[alignment]];
@@ -400,8 +400,8 @@ export class HoverCardComponent extends BaseComponent {
    */
   positionForCard(container: any, boundingRect: any): HCCardPosition {
     // secure this in case of IE returning undefined
-    let borderWidth = getComputedStyle(container).borderWidth;
-    let cntWidth = parseFloat(borderWidth || '0');
+    const borderWidth = getComputedStyle(container).borderWidth;
+    const cntWidth = parseFloat(borderWidth || '0');
     let pos = HCCardPosition.none;
 
     if (this.trigRect.bottom < boundingRect.top) {
@@ -421,7 +421,7 @@ export class HoverCardComponent extends BaseComponent {
    */
   private alignmentForCard(boundingRect: any, modalContainer: any): HCCardAlignment {
     let alignment = HCCardAlignment.left;
-    let viewPort = modalContainer.domHandler.getViewport();
+    const viewPort = modalContainer.domHandler.getViewport();
 
     if (this.trigRect.left.toFixed(0) === boundingRect.left.toFixed(0) &&
       boundingRect.left > HoverCardComponent.SpacingLimit) {
@@ -504,28 +504,28 @@ export class HoverCardComponent extends BaseComponent {
    */
   private calcLeftForAlignment(boundingRect: any, alignment: HCCardAlignment): number {
     // width for which we need to shift card. 25% or 10% of the container width
-    let wLargeTriangle = boundingRect.width * 0.25;
-    let wSmallTriangle = boundingRect.width * 0.10;
+    const wLargeTriangle = boundingRect.width * 0.25;
+    const wSmallTriangle = boundingRect.width * 0.10;
 
     switch (alignment) {
       case HCCardAlignment.right:
-        let shiftRight = boundingRect.left + wLargeTriangle;
-        let trigRight = this.trigRect.right - this.trigIconMiddle;
+        const shiftRight = boundingRect.left + wLargeTriangle;
+        const trigRight = this.trigRect.right - this.trigIconMiddle;
         return shiftRight - (boundingRect.right - trigRight);
 
       case HCCardAlignment.paddedRight:
-        let shiftRightS = boundingRect.left + wSmallTriangle;
-        let trigRightS = this.trigRect.right - this.trigIconMiddle;
+        const shiftRightS = boundingRect.left + wSmallTriangle;
+        const trigRightS = this.trigRect.right - this.trigIconMiddle;
         return shiftRightS - (boundingRect.right - trigRightS);
 
 
       case HCCardAlignment.paddedLeft:
-        let shiftLeftPad = boundingRect.left - wSmallTriangle;
+        const shiftLeftPad = boundingRect.left - wSmallTriangle;
         return shiftLeftPad + this.trigIconMiddle;
 
       case HCCardAlignment.left:
       default:
-        let shiftLeft = boundingRect.left - wLargeTriangle;
+        const shiftLeft = boundingRect.left - wLargeTriangle;
         return shiftLeft + this.trigIconMiddle;
     }
   }

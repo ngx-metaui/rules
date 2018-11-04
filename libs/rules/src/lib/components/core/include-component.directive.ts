@@ -250,7 +250,7 @@ export class IncludeComponentDirective implements OnDestroy, OnInit, AfterViewCh
    *
    */
   protected placeTheComponent(): void {
-    let reference = this.componentReference();
+    const reference = this.componentReference();
     this.currentComponent = this.viewContainer.createComponent(reference.resolvedCompFactory);
   }
 
@@ -270,14 +270,14 @@ export class IncludeComponentDirective implements OnDestroy, OnInit, AfterViewCh
   protected createContentElementIfAny(): boolean {
 
     let detectChanges = false;
-    let ngContent = this.ngContent();
-    let ngContentElement = this.ngContentElement();
+    const ngContent = this.ngContent();
+    const ngContentElement = this.ngContentElement();
     if (isPresent(ngContent)) {
-      let awContentComponent = this.factoryResolver.resolveComponentFactory(StringComponent);
-      let component = this.viewContainer.createComponent(awContentComponent, 0);
+      const awContentComponent = this.factoryResolver.resolveComponentFactory(StringComponent);
+      const component = this.viewContainer.createComponent(awContentComponent, 0);
 
       (<StringComponent>component.instance).value = ngContent;
-      let awContentContainer = this.currentComponent.location.nativeElement.firstChild;
+      const awContentContainer = this.currentComponent.location.nativeElement.firstChild;
       awContentContainer.appendChild(component.location.nativeElement);
 
       detectChanges = true;
@@ -324,12 +324,12 @@ export class IncludeComponentDirective implements OnDestroy, OnInit, AfterViewCh
     if (isPresent(this.resolvedComponentRef)) {
       return this.resolvedComponentRef;
     }
-    let currType = this.resolveComponentType();
-    let componentFactory: ComponentFactory<any> = this.factoryResolver
+    const currType = this.resolveComponentType();
+    const componentFactory: ComponentFactory<any> = this.factoryResolver
       .resolveComponentFactory(currType);
 
-    let componentMeta: Component = this.resolveDirective(componentFactory);
-    let compReference: ComponentReference = {
+    const componentMeta: Component = this.resolveDirective(componentFactory);
+    const compReference: ComponentReference = {
       metadata: componentMeta,
       resolvedCompFactory: componentFactory,
       componentType: currType,
@@ -347,7 +347,7 @@ export class IncludeComponentDirective implements OnDestroy, OnInit, AfterViewCh
   protected applyBindings(cRef: ComponentReference,
                           component: ComponentRef<any>,
                           bindings: Map<string, any>): void {
-    let inputs: string[] = cRef.metadata.inputs;
+    const inputs: string[] = cRef.metadata.inputs;
 
     if (isBlank(inputs) || inputs.length === 0) {
       return;
@@ -370,7 +370,7 @@ export class IncludeComponentDirective implements OnDestroy, OnInit, AfterViewCh
    * todo: rename the method so its clear that it returns component type based on string.
    */
   protected resolveComponentType(): any {
-    let componentType = this.compRegistry.nameToType.get(this.name);
+    const componentType = this.compRegistry.nameToType.get(this.name);
 
     if (isBlank(componentType)) {
       assert(false, this.name + ' component does not exists. Create Dummy Component instead' +
@@ -382,7 +382,7 @@ export class IncludeComponentDirective implements OnDestroy, OnInit, AfterViewCh
 
 
   protected resolveDirective(compFactory: ComponentFactory<any>): Component {
-    let compMeta: Component = {
+    const compMeta: Component = {
       inputs: [],
       outputs: []
     };

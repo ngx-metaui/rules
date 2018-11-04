@@ -197,7 +197,7 @@ export abstract class BaseFormComponent extends BaseComponent implements Control
 
     } else {
       fControl = <FormControl> this.formGroup.controls[name];
-      let updatedValue: any = isPresent(fControl.value) ? fControl.value : value;
+      const updatedValue: any = isPresent(fControl.value) ? fControl.value : value;
       fControl.patchValue(updatedValue, {onlySelf: true, emitEvent: false});
     }
     return fControl;

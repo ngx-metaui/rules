@@ -58,7 +58,6 @@ export class PageLifeCycleService {
 
   /**
    * Called when page is initialized.
-   * @param pageTitle
    */
   public onPageInit(pageTitle: string): void {
     this.pageEvents.next(new PageInitialized(pageTitle));
@@ -66,7 +65,6 @@ export class PageLifeCycleService {
 
   /**
    * Call when page has been destroyed
-   * @param title
    */
   public onPageDestroy(pageTitle: string): void {
     this.pageEvents.next(new PageDestroyed(pageTitle));

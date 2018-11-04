@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AribaComponentsModule, AribaCoreModule} from '@ngx-meta/rules';
+import {AribaComponentsModule, AribaCoreModule} from '@ngx-metaui/rules';
 import {DemoModule} from './demos/demo.module';
 import {AppRoutingModule} from './app-routing.module';
 

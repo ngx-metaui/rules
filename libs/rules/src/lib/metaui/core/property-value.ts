@@ -78,7 +78,7 @@ export class StaticDynamicWrapper extends StaticallyResolvable implements Proper
   awakeForPropertyMap(map: PropertyMap): any {
     // copy ourselves so there's a fresh copy for each context in which is appears
 
-    let origaw = (isPropertyMapAwaking(this._orig)) ?
+    const origaw = (isPropertyMapAwaking(this._orig)) ?
       <StaticallyResolvable>(<PropertyMapAwaking>this._orig).awakeForPropertyMap(map)
       : this._orig;
     return new StaticDynamicWrapper(origaw);
@@ -94,7 +94,7 @@ export class StaticDynamicWrapper extends StaticallyResolvable implements Proper
 
 
   toString(): string {
-    let sj = new StringJoiner(['StaticDynamicWrapper']);
+    const sj = new StringJoiner(['StaticDynamicWrapper']);
     sj.add('(');
     sj.add(((isPresent(this._cached)) ? this._cached : this._orig));
     sj.add(((isBlank(this._cached)) ? ' unevaluated' : ''));
@@ -117,7 +117,7 @@ export class StaticallyResolvableWrapper extends StaticallyResolvable {
   }
 
   toString(): string {
-    let sj = new StringJoiner(['StaticallyResolvableWrapper']);
+    const sj = new StringJoiner(['StaticallyResolvableWrapper']);
     sj.add('(');
     sj.add(this._orig.toString());
     sj.add(')');
@@ -181,7 +181,7 @@ export class Expr extends DynamicPropertyValue {
       }
     });
 
-    let result = evalExpressionWithCntx(this._expressionString, '', context, context);
+    const result = evalExpressionWithCntx(this._expressionString, '', context, context);
 
     index = 0;
     this._extendedObjects.forEach((v, k) => {
@@ -195,7 +195,7 @@ export class Expr extends DynamicPropertyValue {
   }
 
   toString(): string {
-    let sj = new StringJoiner(['expr:']);
+    const sj = new StringJoiner(['expr:']);
     sj.add('(');
     sj.add(this._expressionString);
     sj.add(')');
@@ -237,7 +237,7 @@ export class DeferredOperationChain extends DynamicPropertyValue implements Prop
 
 
   toString(): string {
-    let sj = new StringJoiner(['Chain']);
+    const sj = new StringJoiner(['Chain']);
     sj.add('<');
     sj.add(this._merger.toString());
     sj.add('>');

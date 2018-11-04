@@ -49,7 +49,7 @@ describe('RadioButton LIST   behavior', () => {
 
   it(' it should be initialized with all required properties', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
     tick();
 
@@ -62,10 +62,10 @@ describe('RadioButton LIST   behavior', () => {
 
   it('should render all the available options based on the input rbListValues', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton input');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton input');
 
     expect(items.length).toEqual(fixtureWrapper.componentInstance.rbListValues.length);
   });
@@ -73,18 +73,18 @@ describe('RadioButton LIST   behavior', () => {
 
   it('should have 1 radiobutton already checked based on the selectedValue', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
     tick();
 
     fixtureWrapper.detectChanges();
     tick();
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton input');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton input');
 
-    let checkedCount = 0;
+    const checkedCount = 0;
     let checkedValue = 'xxx';
-    for (let item of items) {
+    for (const item of items) {
       if (item.checked) {
         checkedValue = item.value;
       }
@@ -101,13 +101,13 @@ describe('RadioButton LIST   behavior', () => {
   it('should change the selection when clicking on the "male" option so in the ' +
     'model we should see the change', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
 
     fixtureWrapper.detectChanges();
     tick();
 
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
 
     items[0].click();
 
@@ -129,18 +129,18 @@ describe('RadioButton LIST   behavior', () => {
     fakeAsync(() => {
 
 
-      let tmpl = '<aw-radiobutton-list [list]="rbListValues"' +
+      const tmpl = '<aw-radiobutton-list [list]="rbListValues"' +
         '[name]="name"> </aw-radiobutton-list>';
       TestBed.overrideComponent(TestRBListBasicBehaviorComponent, {set: {template: tmpl}});
 
-      let fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
+      const fixtureWrapper = TestBed.createComponent(TestRBListBasicBehaviorComponent);
       fixtureWrapper.detectChanges();
       tick();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton input');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-radiobutton input');
 
       let checkedCount = 0;
-      for (let item of items) {
+      for (const item of items) {
         if (item.checked) {
           checkedCount++;
         }

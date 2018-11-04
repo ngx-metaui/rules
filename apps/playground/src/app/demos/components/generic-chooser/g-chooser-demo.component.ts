@@ -17,7 +17,7 @@
  *
  */
 import {Component, DoCheck} from '@angular/core';
-import {isPresent, Environment} from '@ngx-meta/rules';
+import {isPresent, Environment} from '@ngx-metaui/rules';
 
 @Component({
     templateUrl: 'g-chooser-demo.component.html',

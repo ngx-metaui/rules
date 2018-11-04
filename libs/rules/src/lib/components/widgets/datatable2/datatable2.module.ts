@@ -30,14 +30,12 @@ import {AWInputFieldModule} from '../input-field/input-field.module';
 import {DTHeaderComponent2} from './header/header.component';
 import {DTDetailRowComponent} from './column/detail-row/dt-detail-row.component';
 import {
-    DTDetailRowExpanderComponent
+  DTDetailRowExpanderComponent
 } from './column/detail-row-expander/dt-detail-row-expander.component';
-import {
-    DTMultiSelectColumnComponent
-} from './column/multi-select/dt-multi-select-column.component';
+import {DTMultiSelectColumnComponent} from './column/multi-select/dt-multi-select-column.component';
 import {AWCheckBoxModule} from '../checkbox/check-box.module';
 import {
-    DTSingleSelectColumnComponent
+  DTSingleSelectColumnComponent
 } from './column/single-select/dt-single-select-column.component';
 import {AWRadioButtonModule} from '../radio-button/radio-button.module';
 import {SetCellMaxWidthDirective} from './directives/dt-cell-directives';
@@ -46,44 +44,43 @@ import {DTDraggableColumnDirective} from './directives/dt-draggable-column.direc
 
 
 @NgModule({
-    declarations: [
-        Datatable2Component,
-        DTWrapper,
-        DTColumn2Component,
-        DTHeaderComponent2,
-        DTDetailRowComponent,
-        DTDetailRowExpanderComponent,
-        DTMultiSelectColumnComponent,
-        DTSingleSelectColumnComponent,
-        DTDraggableRowDirective,
-        DTDraggableColumnDirective,
-        SetCellMaxWidthDirective
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        AWCoreComponentModule,
-        AWCheckBoxModule,
-        AWOutlineForModule,
-        AWRadioButtonModule,
-        AWInputFieldModule
-    ],
-    entryComponents: [
-        DTDetailRowExpanderComponent,
-        DTMultiSelectColumnComponent,
-        DTSingleSelectColumnComponent
-    ],
-    exports: [
-        Datatable2Component,
-        DTColumn2Component,
-        AWOutlineForModule,
-        DTHeaderComponent2,
-        DTDetailRowComponent
-    ],
-    providers: []
+  declarations: [
+    Datatable2Component,
+    DTWrapper,
+    DTColumn2Component,
+    DTHeaderComponent2,
+    DTDetailRowComponent,
+    DTDetailRowExpanderComponent,
+    DTMultiSelectColumnComponent,
+    DTSingleSelectColumnComponent,
+    DTDraggableRowDirective,
+    DTDraggableColumnDirective,
+    SetCellMaxWidthDirective
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AWCoreComponentModule,
+    AWCheckBoxModule,
+    AWOutlineForModule,
+    AWRadioButtonModule,
+    AWInputFieldModule
+  ],
+  entryComponents: [
+    DTDetailRowExpanderComponent,
+    DTMultiSelectColumnComponent,
+    DTSingleSelectColumnComponent
+  ],
+  exports: [
+    Datatable2Component,
+    DTColumn2Component,
+    AWOutlineForModule,
+    DTHeaderComponent2,
+    DTDetailRowComponent
+  ],
+  providers: []
 })
-export class AWDatatable2Module
-{
+export class AWDatatable2Module {
 }
 
 

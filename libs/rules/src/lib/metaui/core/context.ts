@@ -203,7 +203,7 @@ export class Context extends Extensible {
 
   static getActivationTree(meta: Meta): Activation {
     // todo: check the syntax Actionvation contructor name.
-    let name = objectToName(Activation);
+    const name = objectToName(Activation);
     let root: Activation = meta.identityCache.getValue(name);
     if (isBlank(root)) {
       root = new Activation();
@@ -240,15 +240,15 @@ export class Context extends Extensible {
 
 
   pop(): void {
-    let size = this._frameStarts.length;
+    const size = this._frameStarts.length;
     assert(size > 0, 'Popping empty stack');
 
-    let pos = this._frameStarts.pop();
+    const pos = this._frameStarts.pop();
 
     let entriesSize: number;
     while ((entriesSize = this._entries.length) > pos) {
-      let recIdx = entriesSize - 1;
-      let rec: Assignment = this._entries.splice(recIdx, 1)[0];
+      const recIdx = entriesSize - 1;
+      const rec: Assignment = this._entries.splice(recIdx, 1)[0];
 
       if (rec.srec.lastAssignmentIdx === -1) {
         this._values.delete(rec.srec.key);
@@ -277,10 +277,10 @@ export class Context extends Extensible {
 
     // implement default toString for our object so we can retrieve objectTitle
     if (key === ObjectMeta.KeyObject) {
-      let toCheck = this._values.get(ObjectMeta.KeyObject);
+      const toCheck = this._values.get(ObjectMeta.KeyObject);
       if (isBlank(toCheck['$toString'])) {
         toCheck['$toString'] = () => {
-          let clazz = this.values.get(ObjectMeta.KeyClass);
+          const clazz = this.values.get(ObjectMeta.KeyClass);
           return UIMeta.beautifyClassName(clazz);
         };
       }
@@ -294,7 +294,7 @@ export class Context extends Extensible {
 
   setScopeKey(key: string) {
     assert(this._meta.keyData(key).isPropertyScope, key + ' is not a valid context key');
-    let current: string = this._currentPropertyScopeKey();
+    const current: string = this._currentPropertyScopeKey();
 
     // Assert.that(current != null, 'Can't set %s as context key when no context key on stack',
     // key); TODO: if current key isChaining then we need to set again to get a non-chaining
@@ -325,25 +325,25 @@ export class Context extends Extensible {
 
 
   propertyForKey(key: string): any {
-    let val = this.allProperties().get(key);
+    const val = this.allProperties().get(key);
 
     return this.resolveValue(val);
   }
 
   listPropertyForKey(key: string): Array<any> {
-    let val = this.propertyForKey(key);
+    const val = this.propertyForKey(key);
     return (isBlank(val)) ? [] : (isArray(val)) ? val : [val];
   }
 
   booleanPropertyForKey(key: string, defaultVal: boolean): boolean {
-    let val = this.propertyForKey(key);
+    const val = this.propertyForKey(key);
     return (isBlank(val)) ? defaultVal : BooleanWrapper.boleanValue(val);
   }
 
 
   allProperties(): PropertyMap {
     if (isBlank(this._currentProperties)) {
-      let m: MatchResult = this.lastMatch();
+      const m: MatchResult = this.lastMatch();
       if (isPresent(m)) {
         this._currentProperties = m.properties();
 
@@ -358,7 +358,7 @@ export class Context extends Extensible {
     while (value !== lastValue && isPresent(value) && value instanceof DynamicPropertyValue) {
       lastValue = value;
 
-      let propValue: DynamicPropertyValue = value;
+      const propValue: DynamicPropertyValue = value;
       if (propValue instanceof Expr) {
         propValue.addTypeToContext('UIMeta', UIMeta);
       }
@@ -423,12 +423,12 @@ export class Context extends Extensible {
    */
   activeAssignments(): Array<AssignmentSnapshot> {
 
-    let list: Array<AssignmentSnapshot> = new Array<AssignmentSnapshot>();
+    const list: Array<AssignmentSnapshot> = new Array<AssignmentSnapshot>();
 
     for (let i = 0, c = this._entries.length; i < c; i++) {
-      let rec: Assignment = this._entries[i];
+      const rec: Assignment = this._entries[i];
       if (rec.maskedByIdx === 0 && !rec.srec.fromChaining) {
-        let a: AssignmentSnapshot = new AssignmentSnapshot();
+        const a: AssignmentSnapshot = new AssignmentSnapshot();
         a.key = rec.srec.key;
         a.value = rec.val;
         a.salience = rec.srec.salience;
@@ -450,12 +450,12 @@ export class Context extends Extensible {
    */
   allAssignments(): Array<AssignmentSnapshot> {
 
-    let list: Array<AssignmentSnapshot> = new Array<AssignmentSnapshot>();
+    const list: Array<AssignmentSnapshot> = new Array<AssignmentSnapshot>();
 
     for (let i = 0, c = this._entries.length; i < c; i++) {
-      let rec: Assignment = this._entries[i];
+      const rec: Assignment = this._entries[i];
       if (!rec.srec.fromChaining) {
-        let a: AssignmentSnapshot = new AssignmentSnapshot();
+        const a: AssignmentSnapshot = new AssignmentSnapshot();
         a.key = rec.srec.key;
         a.value = rec.val;
         a.salience = rec.srec.salience;
@@ -467,15 +467,15 @@ export class Context extends Extensible {
 
 
   _set(key: string, value: any, merge: boolean, chaining: boolean): void {
-    let sval = this._meta.transformValue(key, value);
+    const sval = this._meta.transformValue(key, value);
     let didSet = false;
 
-    let registry = (<UIMeta>this.meta).componentRegistry;
+    const registry = (<UIMeta>this.meta).componentRegistry;
     if (key === ObjectMeta.KeyObject && isPresent(registry)) {
       registry.registerType(className(value), value.constructor);
     }
 
-    let activation: Activation = this._currentActivation.getChildActivation(key, sval,
+    const activation: Activation = this._currentActivation.getChildActivation(key, sval,
       chaining);
 
     if (isBlank(activation)) {
@@ -491,7 +491,7 @@ export class Context extends Extensible {
   }
 
   newContextRec(): Assignment {
-    let count = this._recPool.length;
+    const count = this._recPool.length;
     return (count > 0) ? this._recPool.splice(count - 1, 1)[0] : new Assignment();
   }
 
@@ -508,13 +508,13 @@ export class Context extends Extensible {
         'Mismatched context stack size (%s) from when activation was popped ' +
         this._entries.length + ' ' + activation._origEntryCount);
     }
-    let count = activation._recs.length;
+    const count = activation._recs.length;
     if (count === 0) {
       return false;
     }
     for (let i = 0; i < count; i++) {
-      let srec: StaticRec = activation._recs[i];
-      let rec: Assignment = this.newContextRec();
+      const srec: StaticRec = activation._recs[i];
+      const rec: Assignment = this.newContextRec();
       rec.srec = srec;
 
       // Apply masking for any property that we mask out
@@ -536,21 +536,21 @@ export class Context extends Extensible {
 
   private awakeCurrentActivation(): void {
     // See if this activation requires further chaining
-    let currentActivation = this._currentActivation;
-    let deferredAssignments: Array<DeferredAssignment> = currentActivation.deferredAssignments;
+    const currentActivation = this._currentActivation;
+    const deferredAssignments: Array<DeferredAssignment> = currentActivation.deferredAssignments;
     if (isPresent(deferredAssignments)) {
       this.applyDeferredAssignments(deferredAssignments);
     }
   }
 
   private applyDeferredAssignments(deferredAssignments: Array<DeferredAssignment>): void {
-    for (let da of  deferredAssignments) {
+    for (const da of  deferredAssignments) {
       // verify that deferred value still applies
-      let currentPropValue = this.staticallyResolveValue(this.allProperties().get(da.key));
+      const currentPropValue = this.staticallyResolveValue(this.allProperties().get(da.key));
 
       if (da.value === currentPropValue) {
 
-        let resolvedValue = this.resolveValue(da.value);
+        const resolvedValue = this.resolveValue(da.value);
 
         this._set(da.key, resolvedValue, false, true);
       } else {
@@ -563,7 +563,7 @@ export class Context extends Extensible {
 
 
   _inDeclare(): boolean {
-    let match: MatchResult = this.lastMatchWithoutContextProps();
+    const match: MatchResult = this.lastMatchWithoutContextProps();
     return isPresent(match) && (match._keysMatchedMask & this._meta.declareKeyMask) !== 0;
   }
 
@@ -573,13 +573,13 @@ export class Context extends Extensible {
    */
   _createNewFrameForSet(key: string, svalue: any, value: any, merge: boolean,
                         chaining: any): boolean {
-    let lastActivation: Activation = this._currentActivation;
-    let newActivation: Activation = new Activation(lastActivation);
+    const lastActivation: Activation = this._currentActivation;
+    const newActivation: Activation = new Activation(lastActivation);
     newActivation._origEntryCount = this._entries.length;
     this._currentActivation = newActivation;
 
     // set this value
-    let didSet: boolean = this._set2(key, svalue, value, merge, chaining);
+    const didSet: boolean = this._set2(key, svalue, value, merge, chaining);
     // mirror properties
     if (didSet) {
       while (this._checkApplyProperties()) {
@@ -610,9 +610,9 @@ export class Context extends Extensible {
     propActivation._origEntryCount = this._entries.length;
 
     this._currentActivation = propActivation;
-    let origValues = this._values;
+    const origValues = this._values;
 
-    let nestedMap: NestedMap<string, any> = new NestedMap<string, any>(origValues);
+    const nestedMap: NestedMap<string, any> = new NestedMap<string, any>(origValues);
     this._values = nestedMap;
     this.applyPropertyContextAndChain();
 
@@ -642,7 +642,7 @@ export class Context extends Extensible {
       this.push();
       // nest a dynamic nested map on our static nested map (which is on our last dynamic
       // nested map...)
-      let origValues = this._values;
+      const origValues = this._values;
       this._values = new NestedMap<string, any>(propValues);
       this._applyActivation(propActivation, Meta.NullMarker);
       this.applyDeferredAssignments(propActivation.deferredAssignments);
@@ -683,11 +683,11 @@ export class Context extends Extensible {
 
 
     MapWrapper.iterable(this._values).forEach((value, key) => {
-      let lastAssignmentIdx = this.findLastAssignmentOfKey(key);
+      const lastAssignmentIdx = this.findLastAssignmentOfKey(key);
       assert(lastAssignmentIdx >= 0, 'Value in context but no assignment record found ' +
         key + ' = ' + value);
 
-      let contextVal = this._entries[lastAssignmentIdx].val;
+      const contextVal = this._entries[lastAssignmentIdx].val;
 
       assert(value === contextVal || (isPresent(value) && value === contextVal),
         'Value in context  doesnt match value on stack ' + value + ' / ' + contextVal);
@@ -696,11 +696,11 @@ export class Context extends Extensible {
 
     // check entries for proper relationship with any previous records that they override
     for (let i = this._entries.length - 1; i >= 0; i--) {
-      let r: Assignment = this._entries[i];
+      const r: Assignment = this._entries[i];
       let foundFirst = false;
 
       for (let j = i - 1; j >= 0; j--) {
-        let pred: Assignment = this._entries[j];
+        const pred: Assignment = this._entries[j];
         if (pred.srec.key === r.srec.key) {
           // Predecessors must be masked
           assert((!foundFirst && pred.maskedByIdx === i) ||
@@ -729,19 +729,19 @@ export class Context extends Extensible {
 
     Context._Debug_SetsCount++;
     // print('Setting key/vale onto stack: ' + key + '=' + value);
-    let hasOldValue = this._values.has(key) && isPresent(this._values.get(key));
-    let oldVal = hasOldValue ? this._values.get(key) : null;
+    const hasOldValue = this._values.has(key) && isPresent(this._values.get(key));
+    const oldVal = hasOldValue ? this._values.get(key) : null;
 
-    let isNewValue = !hasOldValue || this._isNewValue(oldVal, value);
+    const isNewValue = !hasOldValue || this._isNewValue(oldVal, value);
 
-    let matchingPropKeyAssignment = !isNewValue && !isChaining &&
+    const matchingPropKeyAssignment = !isNewValue && !isChaining &&
       ((this._meta.keyData(key).isPropertyScope) &&
         key !== this._currentPropertyScopeKey());
     if (isNewValue || matchingPropKeyAssignment) {
       let lastMatch: MatchResult;
       let newMatch: MatchResult;
 
-      let salience = this._frameStarts.length;
+      const salience = this._frameStarts.length;
       let lastAssignmentIdx = -1;
       if (isBlank(oldVal)) {
         lastMatch = this.lastMatchWithoutContextProps();
@@ -751,7 +751,7 @@ export class Context extends Extensible {
         // from the point of the last assignment to this key (skipping it), then
         // match against the array of our value and the old
 
-        let recIdx = this._entries.length;
+        const recIdx = this._entries.length;
         lastAssignmentIdx = this.findLastAssignmentOfKey(key);
         assert(lastAssignmentIdx >= 0,
           'Value in context but no assignment record found ' + key + ' = ' + oldVal);
@@ -769,10 +769,10 @@ export class Context extends Extensible {
           // key (we wouldn't realize that we need to go further back to find the
           // original one).
 
-          let oldRec: Assignment = this._entries[lastAssignmentIdx];
+          const oldRec: Assignment = this._entries[lastAssignmentIdx];
 
           if (oldRec.srec.salience === salience) {
-            let prev = this.findLastAssignmentOfKeyWithValue(key, value);
+            const prev = this.findLastAssignmentOfKeyWithValue(key, value);
 
             if (prev !== -1 && this._entries[prev].srec.salience === salience) {
               return false;
@@ -785,7 +785,7 @@ export class Context extends Extensible {
             // ', ' + value + ', ' + salience + ', ' + oldRec.srec.salience);
             return false;
           }
-          let firstAssignmentIdx = this._prepareForOverride(recIdx, lastAssignmentIdx);
+          const firstAssignmentIdx = this._prepareForOverride(recIdx, lastAssignmentIdx);
           newMatch = this._rematchForOverride(key, svalue, recIdx, firstAssignmentIdx);
 
           if (merge) {
@@ -798,7 +798,7 @@ export class Context extends Extensible {
         'MetaUI context stack exceeded max size -- likely infinite chaining: ' +
         this._entries.length
       );
-      let srec: StaticRec = new StaticRec();
+      const srec: StaticRec = new StaticRec();
       srec.key = key;
       // todo: conversion
       srec.val = svalue;
@@ -814,7 +814,7 @@ export class Context extends Extensible {
       srec.activation = this._currentActivation;
       this._currentActivation._recs.push(srec);
 
-      let rec = this.newContextRec();
+      const rec = this.newContextRec();
       rec.srec = srec;
       rec.val = value;
       this._entries.push(rec);
@@ -873,7 +873,7 @@ export class Context extends Extensible {
 
     // undo all conflicting or dervied assignments (and mark them)
     for (let i = this._entries.length - 1; i >= lastAssignmentIdx; i--) {
-      let r = this._entries[i];
+      const r = this._entries[i];
       // we need to undo (and mask) any record that conflict or are derived
       // NOTE: We are skipping the remove all chained records, because this can result in
       // undoing derived state totally unrelated to this key.  Ideally we'd figure out what
@@ -895,7 +895,7 @@ export class Context extends Extensible {
     let lastMatch: MatchResult;
     let i = 0;
     for (; i < firstAssignmentIdx; i++) {
-      let rec = this._entries[i];
+      const rec = this._entries[i];
       if (rec.maskedByIdx !== 0) {
         break;
       }
@@ -906,8 +906,8 @@ export class Context extends Extensible {
 
     // Rematch skipping over the last assignment of this property
     // and all assignments from chainging
-    for (let end = this._entries.length; i < end; i++) {
-      let r: Assignment = this._entries[i];
+    for (const end = this._entries.length; i < end; i++) {
+      const r: Assignment = this._entries[i];
       // rematch on any unmasked records
       if (r.maskedByIdx === 0) {
         lastMatch = this._meta.match(r.srec.key, r.srec.val, lastMatch);
@@ -938,7 +938,7 @@ export class Context extends Extensible {
     }
 
     for (let i = lastAssignmentIdx, c = this._entries.length; i < c; i++) {
-      let r: Assignment = this._entries[i];
+      const r: Assignment = this._entries[i];
 
       if (r.maskedByIdx === recIdx) {
         this._values.set(r.srec.key, r.val);
@@ -954,7 +954,7 @@ export class Context extends Extensible {
 
   findLastAssignmentOfKey(key: string): number {
     for (let i = this._entries.length - 1; i >= 0; i--) {
-      let rec: Assignment = this._entries[i];
+      const rec: Assignment = this._entries[i];
       if (rec.srec.key === key && rec.maskedByIdx === 0) {
         return i;
       }
@@ -964,7 +964,7 @@ export class Context extends Extensible {
 
   findLastAssignmentOfKeyWithValue(key: string, value: any): number {
     for (let i = this._entries.length - 1; i >= 0; i--) {
-      let rec: Assignment = this._entries[i];
+      const rec: Assignment = this._entries[i];
       if (rec.srec.key === key && !this._isNewValue(rec.val, value)) {
         return i;
       }
@@ -983,21 +983,21 @@ export class Context extends Extensible {
     let didSet = false;
     let numEntries = 0;
     let lastSize = 0;
-    let declareKey: string = this._inDeclare() ? this._values.get(Meta.KeyDeclare) : null;
+    const declareKey: string = this._inDeclare() ? this._values.get(Meta.KeyDeclare) : null;
 
     while ((numEntries = this._entries.length) > lastSize) {
       lastSize = numEntries;
-      let rec: Assignment = this._entries[numEntries - 1];
-      let properties: PropertyMap = rec.srec.properties();
+      const rec: Assignment = this._entries[numEntries - 1];
+      const properties: PropertyMap = rec.srec.properties();
 
-      let contextKeys: Array<PropertyManager> = properties.contextKeysUpdated;
+      const contextKeys: Array<PropertyManager> = properties.contextKeysUpdated;
 
       if (isPresent(contextKeys)) {
 
         for (let i = 0, c = contextKeys.length; i < c; i++) {
 
-          let propMgr: PropertyManager = contextKeys[i];
-          let key: string = propMgr._name;
+          const propMgr: PropertyManager = contextKeys[i];
+          const key: string = propMgr._name;
           if (isPresent(declareKey) && key === declareKey) {
             continue;
           }
@@ -1005,17 +1005,31 @@ export class Context extends Extensible {
           // values Suppress chained assignment if: 1) Our parent will assign this
           // property (has a deferred activation for it), or 2) There's already a
           // matching assignment with higher salience
-          let newVal = this.staticallyResolveValue(properties.get(key));
-          let prevProps: PropertyMap;
+          const newVal = this.staticallyResolveValue(properties.get(key));
+          const prevProps: PropertyMap = null;
 
-          let suppress: boolean = (isPresent(prevProps) && prevProps.has(key)
+          /**
+           if (_frameStarts.size() > 1) {
+                       // find the nearest enabled rec from the previous frame
+                       for (int prevFrameEnd = _frameStarts.get(_frameStarts.size()-1) - 1;
+                        prevFrameEnd >= 0; prevFrameEnd--) {
+                           _Assignment prevRec = _entries.get(prevFrameEnd);
+                           if (prevRec.maskedByIdx == 0) {
+                               prevProps = prevRec.srec.properties();
+                               break;
+                           }
+                       }
+                   }
+           */
+
+          const suppress: boolean = (isPresent(prevProps) && prevProps.has(key)
             && !this._isNewValue(this.staticallyResolveValue(prevProps.get(key)),
               newVal)) ||
             (this._currentActivation._parent.hasDeferredAssignmentForKey(key)
               /* && this._values.containsKey(key) */);
 
           if (!suppress) {
-            let mirrorKey = propMgr._keyDataToSet._key;
+            const mirrorKey = propMgr._keyDataToSet._key;
             if (newVal instanceof DynamicPropertyValue) {
               // print('(deferred) chaining key: ' , propMgr._keyDataToSet._key);
 
@@ -1048,11 +1062,11 @@ export class Context extends Extensible {
 
 
   _currentPropertyScopeKey(): string {
-    let foundKey: string;
+    const foundKey: string = null;
     let foundActivation: Activation;
 
     for (let i = this._entries.length - 1; i >= 0; i--) {
-      let rec: Assignment = this._entries[i];
+      const rec: Assignment = this._entries[i];
       if (isPresent(foundActivation) && rec.srec.activation !== foundActivation) {
         break;
       }
@@ -1076,7 +1090,7 @@ export class Context extends Extensible {
   // Apply a 'property context' property (e.g. field_p for field) to the context if necessary
   _checkPropertyContext(): boolean {
     assert(this._values instanceof NestedMap, 'Property assignment on base map?');
-    let scopeKey: string = this._currentPropertyScopeKey();
+    const scopeKey: string = this._currentPropertyScopeKey();
     if (isPresent(scopeKey)) {
       return this._set2(Meta.ScopeKey, scopeKey, scopeKey, false, false);
     }
@@ -1092,7 +1106,7 @@ export class Context extends Extensible {
 
 
   debugString(): string {
-    let buffer = new StringJoiner(['<b>Context:</b>&nbsp;']);
+    const buffer = new StringJoiner(['<b>Context:</b>&nbsp;']);
 
     buffer.add('(&nbsp;');
     buffer.add(this._entries.length + '');
@@ -1106,7 +1120,7 @@ export class Context extends Extensible {
       }
 
 
-      let r: Assignment = this._entries[i];
+      const r: Assignment = this._entries[i];
 
       buffer.add('&nbsp;');
       buffer.add(r.srec.key);
@@ -1117,9 +1131,9 @@ export class Context extends Extensible {
       buffer.add('<br/>');
     }
 
-    let propertyActivation: Activation = this.currentActivation._propertyActivation;
+    const propertyActivation: Activation = this.currentActivation._propertyActivation;
     if (isPresent(propertyActivation)) {
-      let srecs: Array<StaticRec> = propertyActivation._recs;
+      const srecs: Array<StaticRec> = propertyActivation._recs;
 
       buffer.add('&nbsp;&nbsp;&nbsp;<b>PropertyActivation...</b><br/>');
 
@@ -1129,7 +1143,7 @@ export class Context extends Extensible {
         while (sp-- > 0) {
           buffer.add('&nbsp;&nbsp;');
         }
-        let r: StaticRec = srecs[i];
+        const r: StaticRec = srecs[i];
         buffer.add(r.key);
         buffer.add('&nbsp;&nbsp;:&nbsp;');
         buffer.add(r.val);
@@ -1144,7 +1158,7 @@ export class Context extends Extensible {
   }
 
   _logContext(): void {
-    let debugString: string = this.debugString();
+    const debugString: string = this.debugString();
     print(debugString);
     print('\n');
   }
@@ -1212,7 +1226,7 @@ export class Context extends Extensible {
     if (ListWrapper.isEmpty(this._entries)) {
       return null;
     }
-    let match: MatchResult = ListWrapper.last<Assignment>(this._entries)
+    const match: MatchResult = ListWrapper.last<Assignment>(this._entries)
       .propertyLocalMatches(this);
     return (isPresent(match)) ? match : this.lastMatchWithoutContextProps();
 
@@ -1222,7 +1236,7 @@ export class Context extends Extensible {
     if (ListWrapper.isEmpty(this._entries)) {
       return null;
     }
-    let rec: StaticRec = ListWrapper.last(this._entries).propertyLocalStaticRec(this);
+    const rec: StaticRec = ListWrapper.last(this._entries).propertyLocalStaticRec(this);
     return isPresent(rec) ? rec : ListWrapper.last(this._entries).srec;
   }
 
@@ -1284,14 +1298,14 @@ export class Activation {
       value = Meta.NullMarker;
     }
 
-    let byKey: Map<string, Collections.Dictionary<any, any>> = (chaining)
+    const byKey: Map<string, Collections.Dictionary<any, any>> = (chaining)
       ? this._valueNodeMapByContextKeyChaining :
       this._valueNodeMapByContextKey;
 
     if (isBlank(byKey)) {
       return null;
     }
-    let byVal: Collections.Dictionary<any, any> = byKey.get(contextKey);
+    const byVal: Collections.Dictionary<any, any> = byKey.get(contextKey);
     return (isBlank(byVal)) ? null : byVal.getValue(value);
   }
 
@@ -1330,7 +1344,7 @@ export class Activation {
       this.deferredAssignments = new Array<DeferredAssignment>();
 
     } else {
-      for (let da of this.deferredAssignments) {
+      for (const da of this.deferredAssignments) {
         if (da.key === key) {
           newDa = da;
           break;
@@ -1347,7 +1361,7 @@ export class Activation {
 
   hasDeferredAssignmentForKey(key: string): boolean {
     if (isPresent(this.deferredAssignments)) {
-      for (let da of this.deferredAssignments) {
+      for (const da of this.deferredAssignments) {
         if (da.key === key) {
           return true;
         }
@@ -1375,7 +1389,7 @@ export class Activation {
     let activation: Activation = this;
     while (isPresent(activation)) {
 
-      let propertyActivation: Activation = activation._propertyActivation;
+      const propertyActivation: Activation = activation._propertyActivation;
 
       if (isPresent(propertyActivation) && propertyActivation !== activation
         && !(isBlank(propertyActivation._recs) || ListWrapper.isEmpty(
@@ -1449,7 +1463,7 @@ export class Assignment {
 
     // Todo: base it on whether we've tries yet to process them.
 
-    let propActivation: Activation = (this.srec.activation.propertyActivation(context));
+    const propActivation: Activation = (this.srec.activation.propertyActivation(context));
     if (isPresent(propActivation)) {
       context._applyPropertyActivation(propActivation, this);
     }
@@ -1542,11 +1556,11 @@ export class Snapshot {
 
 
   hydrate(shellCopy: boolean = true): Context {
-    let assignments = (shellCopy) ? this._assignments : this._allAssignments;
-    let newContext: Context = this._meta.newContext();
+    const assignments = (shellCopy) ? this._assignments : this._allAssignments;
+    const newContext: Context = this._meta.newContext();
     newContext.push();
-    let lastCnxGeneration = 1;
-    for (let a of  assignments) {
+    const lastCnxGeneration = 1;
+    for (const a of  assignments) {
       if (lastCnxGeneration < a.salience) {
         newContext.push();
       }
@@ -1571,26 +1585,26 @@ export class ObjectMetaContext extends Context {
 
 
   get value(): any {
-    let obj = this.object;
+    const obj = this.object;
 
     if (isBlank(obj)) {
       return null;
     }
-    let fieldPath = this.fieldPath();
+    const fieldPath = this.fieldPath();
     return isPresent(fieldPath) ? fieldPath.getFieldValue(obj) : this.propertyForKey('value');
   }
 
 
   set value(val: any) {
-    let fieldPath = this.fieldPath();
+    const fieldPath = this.fieldPath();
     if (isPresent(fieldPath)) {
       assert(isPresent(this.object), 'Call to setValue() with no current object');
       fieldPath.setFieldValue(this.object, val);
     } else {
-      let value = this.allProperties().get(ObjectMeta.KeyValue);
+      const value = this.allProperties().get(ObjectMeta.KeyValue);
       assert(isDynamicSettable(value), 'Cant set derived property: ' + value);
 
-      let settable: DynamicSettablePropertyValue = value;
+      const settable: DynamicSettablePropertyValue = value;
 
       ((<DynamicSettablePropertyValue>value)).evaluateSet(this, val);
       settable.evaluateSet(this, val);
@@ -1610,7 +1624,7 @@ export class ObjectMetaContext extends Context {
   }
 
   fieldPath(): FieldPath {
-    let propMap: ObjectMetaPropertyMap = <ObjectMetaPropertyMap> this.allProperties();
+    const propMap: ObjectMetaPropertyMap = <ObjectMetaPropertyMap> this.allProperties();
     return propMap.fieldPath;
   }
 

@@ -51,10 +51,10 @@ describe(
       });
 
       TestBed.compileComponents();
-      let fixtureWrapper = TestBed.createComponent(TestStringCompComponent);
+      const fixtureWrapper = TestBed.createComponent(TestStringCompComponent);
       fixtureWrapper.detectChanges();
 
-      let formInput = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
+      const formInput = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
       expect(formInput.nativeElement.textContent).toEqual('Some text');
     });
 
