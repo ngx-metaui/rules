@@ -60,7 +60,7 @@ export function addDependenciesToPackageJson(dependencies: NodeDependency[],
       `✅️ Added ${dependencies.length} packages into dependencies section`);
 
     if (!skipInstall) {
-      // context.addTask(new NodePackageInstallTask());
+      context.addTask(new NodePackageInstallTask());
       context.logger.log('info', `🔍 Installing packages...`);
     }
     return host;
