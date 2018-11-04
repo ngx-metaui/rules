@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/ngx-meta/rules/compare/v6.4.3...v7.0.0) (2018-11-04)
+
+
+### Bug Fixes
+
+* **update:** Update library to angular 7 ([5046f43](https://github.com/ngx-meta/rules/commit/5046f43))
+
+
+
 <a name="6.4.3"></a>
 ## [6.4.3](https://github.com/ngx-meta/rules/compare/v6.4.2...v6.4.3) (2018-11-01)
 
