@@ -31,12 +31,12 @@ create UI. MetaUI rules can be applied universally or to a specific object.
 You can also read more in the [High Level Architecture][1].
 
 
-``Sections below focus on the _MetaUI_ therefore it is recommended that you watch our online presentations that give
+Sections below focus on the _MetaUI_ therefore it is recommended that you watch our online presentations that give
 you some ideas about Rule driven User Interface.
 
 _Links refer to our original repo:_
 
- - [Introduction declarative UI](https://www.youtube.com/watch?v=-Bv_ceUn1K8) ([Demo](https://sap.github.io/angular-metaui/))
+ - [Introduction declarative UI](https://www.youtube.com/watch?v=-Bv_ceUn1K8) ([Demo](https://ngx-meta.github.io/rules/))
  - [Longer MetaUI presentation](https://www.youtube.com/watch?v=F0BMw_Sxjig)
  
 
@@ -90,9 +90,16 @@ We will be executing this project in 3 stages with each stage adding more featur
 
 ## How to obtain support
 
-Please stay tuned we will create necessary social channels to communicate out news as well to listen all your questions
+If you find some problem or have suggestion please do not hesitate to open up new issue and properly marking if this is a bug or 
+feature suggestion.
+
+Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've 
+got much better chances of getting your question answered on our [Slack channel][2] 
+
+
 
  [1]: https://github.com/ngx-meta/rules/blob/master/packages/metaui/docs/architecture.md
+ [2]: https://join.slack.com/t/ngxmetaui/shared_invite/enQtNDcyNTUyNDE3NjIzLTVkYmVmNGNjMjVjMzMzNDNkOGMwMWVjNTRlNTE4NTA3ODdhM2U1ZjdlZDIzNjZkMmJhMTc5ODA5ZTU2MWE1Yjk
  
   
 
