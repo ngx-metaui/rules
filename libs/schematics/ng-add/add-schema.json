@@ -14,26 +14,23 @@
     "skipDependencies": {
       "type": "boolean",
       "description": "Tells if we should install required package.json dependencies",
-      "default": false,
-      "x-prompt": "Do not add required dependencies to package.json (e.g., --skipDependencies)?"
+      "default": false
     },
     "skipNpmInstall": {
       "type": "boolean",
       "description": "Tells if we should skip npm install tasks",
       "default": false,
-      "x-prompt": "Do not run 'npm install' (e.g., --skipNpmInstall)?"
+      "x-prompt": "Do you want to skip 'npm install' (e.g., --skipNpmInstall)?"
     },
     "skipStyles": {
       "type": "boolean",
       "description": "Don't add anything to angular.json style section.",
-      "default": false,
-      "x-prompt": "Do you want to update styles in angular.json (e.g., --skipStyles)?"
+      "default": false
     },
     "skipScripts": {
       "type": "boolean",
       "description": "Don't add anything to angular.json script section",
-      "default": false,
-      "x-prompt": "Do you want to update scripts in angular.json (e.g., --skipScripts)?"
+      "default": false
     },
     "path": {
       "type": "string",
