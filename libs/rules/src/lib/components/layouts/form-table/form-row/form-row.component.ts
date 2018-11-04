@@ -192,7 +192,7 @@ export class FormRowComponent extends BaseFormComponent {
 
     if (isPresent(value) && !this.isNestedLayout) {
       this._size = value;
-      let dSize = this.dynSize(value, isDynVal);
+      const dSize = this.dynSize(value, isDynVal);
       this._size = 'ui-g-12 ui-md-' + dSize;
     } else if (this.isNestedLayout) {
       this._size = 'ui-g-12 ui-md-12';
@@ -212,7 +212,7 @@ export class FormRowComponent extends BaseFormComponent {
    * Push out of box angular validator as well as custom one to current FormControl
    */
   private registerValidators() {
-    let validators: ValidatorFn[] = [];
+    const validators: ValidatorFn[] = [];
 
     if (isPresent(this.maxLength)) {
       validators.push(Validators.maxLength(this.maxLength));
@@ -272,7 +272,7 @@ export class FormRowComponent extends BaseFormComponent {
     if (isPresent(this.parentContainer) &&
       (<FormTableComponent>this.parentContainer).hasTwoColumn && isDynValue) {
 
-      let enumValues: string[] = Object.keys(WidgetSizeColumns);
+      const enumValues: string[] = Object.keys(WidgetSizeColumns);
       normalizeSize = enumValues[enumValues.indexOf(normalizeSize) + 1];
     }
     return (<any>WidgetSizeColumns)[normalizeSize];

@@ -26,7 +26,7 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
   it(' should set correct primitive values on the class string, number, etc', () => {
 
-      let obj: TestObject = new TestObject();
+      const obj: TestObject = new TestObject();
 
 
       setValue(obj, 'field1', 'field1Value');
@@ -38,8 +38,8 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
   it(' should set correct complext values on the class  - nested, etc', () => {
 
-      let obj: TestObject = new TestObject();
-      let nestedValue = new NestedObject();
+      const obj: TestObject = new TestObject();
+      const nestedValue = new NestedObject();
 
 
       setValue(obj, 'nestedObject', nestedValue);
@@ -50,8 +50,8 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
   it(' should set correct values on the nested class field ', () => {
 
-      let obj: TestObject = new TestObject();
-      let nestedValue = new NestedObject();
+      const obj: TestObject = new TestObject();
+      const nestedValue = new NestedObject();
       setValue(obj, 'nestedObject', nestedValue);
 
 
@@ -66,8 +66,8 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
   it(' should set correct values on the nested MAP that is on nested class field ', () => {
 
-      let obj: TestObject = new TestObject();
-      let nestedValue = new NestedObject();
+      const obj: TestObject = new TestObject();
+      const nestedValue = new NestedObject();
       setValue(obj, 'nestedObject', nestedValue);
 
 
@@ -83,10 +83,10 @@ describe('A Field Path functionality that it can corectly retrieve and set value
   it(' should set correct values on the nested MAP that is on nested class field using ' +
     'FieldPath ', () => {
 
-      let obj: TestObject = new TestObject();
+      const obj: TestObject = new TestObject();
       obj.nestedObject = new NestedObject();
 
-      let fp = new FieldPath('nestedObject.mapField2.newKey');
+      const fp = new FieldPath('nestedObject.mapField2.newKey');
       fp.setFieldValue(obj, 'New Value');
 
       expect(obj.nestedObject.mapField2.size).toEqual(1);
@@ -97,12 +97,12 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
   it(' should get correct primitive values on the class', () => {
 
-      let obj: TestObject = new TestObject();
-      let nestedValue = new NestedObject();
+      const obj: TestObject = new TestObject();
+      const nestedValue = new NestedObject();
       obj.field1 = 'value1';
 
 
-      let value = getValue(obj, 'field1');
+      const value = getValue(obj, 'field1');
       expect(value).toEqual('value1');
 
     }
@@ -110,13 +110,13 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
   it(' should get correct next values from the class  ', () => {
 
-      let obj: TestObject = new TestObject();
-      let nestedValue = new NestedObject();
+      const obj: TestObject = new TestObject();
+      const nestedValue = new NestedObject();
       obj.field1 = 'value1';
       obj.nestedObject = nestedValue;
 
 
-      let value = getValue(obj, 'nestedObject');
+      const value = getValue(obj, 'nestedObject');
       expect(value).toBeDefined();
 
     }
@@ -125,15 +125,15 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
   it(' should get correct next values from the class property MAP  ', () => {
 
-      let obj: TestObject = new TestObject();
-      let nestedValue = new NestedObject();
+      const obj: TestObject = new TestObject();
+      const nestedValue = new NestedObject();
       obj.field1 = 'value1';
       obj.nestedObject = nestedValue;
 
       obj.nestedObject.mapField2.set('Key', 'Prague');
 
 
-      let value = getValue(obj, 'nestedObject.mapField2.Key');
+      const value = getValue(obj, 'nestedObject.mapField2.Key');
       expect(value).toEqual('Prague');
 
     }
@@ -144,10 +144,10 @@ describe('A Field Path functionality that it can corectly retrieve and set value
 
 function setValue(target: any, fieldPath: string, value: any) {
 
-  let path: string[] = fieldPath.split('.');
+  const path: string[] = fieldPath.split('.');
   if (path.length > 1) {
 
-    let objectToBeUpdated = objectPath.get(target, path.slice(0, path.length - 1).join('.'));
+    const objectToBeUpdated = objectPath.get(target, path.slice(0, path.length - 1).join('.'));
     if (objectToBeUpdated instanceof Map) {
       objectToBeUpdated.set(path[path.length - 1], value);
     } else {
@@ -161,9 +161,9 @@ function setValue(target: any, fieldPath: string, value: any) {
 
 function getValue(target: any, fieldPath: string) {
 
-  let path: string[] = fieldPath.split('.');
+  const path: string[] = fieldPath.split('.');
   if (path.length > 1) {
-    let objectToBeUpdated = objectPath.get(target, path.slice(0, path.length - 1).join('.'));
+    const objectToBeUpdated = objectPath.get(target, path.slice(0, path.length - 1).join('.'));
     if (objectToBeUpdated instanceof Map) {
       return objectToBeUpdated.get(path[path.length - 1]);
     } else {

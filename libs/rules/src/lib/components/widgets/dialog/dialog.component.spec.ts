@@ -53,7 +53,7 @@ describe('Component: dialog', () => {
 
   it('should instantiate dialog component and values for title and body', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestDialogDefaultComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDialogDefaultComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.dialog.title).toEqual('title text');
@@ -62,11 +62,11 @@ describe('Component: dialog', () => {
 
   it('should display popup default dialog component', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestBasicDialogPopupBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestBasicDialogPopupBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     // Find the open button
-    let button = fixtureWrapper.nativeElement.querySelector('button');
+    const button = fixtureWrapper.nativeElement.querySelector('button');
     button.click();
 
     tick();
@@ -80,10 +80,10 @@ describe('Component: dialog', () => {
   it('should close dialog when default dialog component closed button is clicked.',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestBasicDialogPopupBehaviorComponent);
+      const fixtureWrapper = TestBed.createComponent(TestBasicDialogPopupBehaviorComponent);
       fixtureWrapper.detectChanges();
 
-      let button = fixtureWrapper.nativeElement.querySelector('button');
+      const button = fixtureWrapper.nativeElement.querySelector('button');
       button.dispatchEvent(new Event('click'));
 
       tick();
@@ -121,16 +121,16 @@ describe('Component: dialog', () => {
       // create components.
       TestBed.overrideModule(AWDialogModule, {
         set: {
-          entryComponents: [MyDialogComponent],
-        },
+          entryComponents: [MyDialogComponent]
+        }
       });
 
-      let fixtureWrapper = TestBed.createComponent(TestCustomDialogBehaviorComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCustomDialogBehaviorComponent);
       fixtureWrapper.detectChanges();
 
       openDialog(fixtureWrapper);
 
-      let templates = fixtureWrapper.nativeElement.querySelectorAll('.icon-action');
+      const templates = fixtureWrapper.nativeElement.querySelectorAll('.icon-action');
       expect(templates.length).toEqual(2);
 
       closeDialog(fixtureWrapper);
@@ -149,12 +149,12 @@ describe('Component: dialog', () => {
     TestBed.overrideModule(
       AWDialogModule, {
         set: {
-          entryComponents: [MyDialogComponent],
-        },
+          entryComponents: [MyDialogComponent]
+        }
       });
 
     TestBed.compileComponents();
-    let fixtureWrapper = TestBed.createComponent(TestCustomDialogBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCustomDialogBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     openDialog(fixtureWrapper);
@@ -173,7 +173,7 @@ describe('Component: dialog', () => {
 
 function openDialog(fixture: any) {
   // Find the open button
-  let button = fixture.nativeElement.querySelector('button');
+  const button = fixture.nativeElement.querySelector('button');
   button.dispatchEvent(new Event('click'));
 
   tick();
@@ -188,7 +188,7 @@ function openDialog(fixture: any) {
 function closeDialog(fixture: any) {
   // Find the close button, click
   // it to close the popup.
-  let closeBtn = fixture.nativeElement
+  const closeBtn = fixture.nativeElement
     .getElementsByClassName('ui-dialog-titlebar-close');
   closeBtn[0].dispatchEvent(new Event('click'));
 

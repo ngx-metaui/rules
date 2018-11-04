@@ -259,7 +259,7 @@ export class DateAndTimeComponent extends BaseFormComponent {
     }
 
     if (this.showTime) {
-      let timeStarts = this.formatPattern.indexOf('h');
+      const timeStarts = this.formatPattern.indexOf('h');
       if (timeStarts !== -1) {
         this.formatNameWithTime = this.formatPattern.substring(0, timeStarts);
       }

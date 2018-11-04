@@ -25,7 +25,7 @@ import {
   Environment,
   Money,
   QueryType
-} from '@ngx-meta/rules';
+} from '@ngx-metaui/rules';
 import {FormGroup} from '@angular/forms';
 import {ApproverUser} from '../../model/approver-user';
 

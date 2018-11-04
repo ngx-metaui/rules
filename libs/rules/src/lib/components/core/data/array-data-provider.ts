@@ -48,8 +48,8 @@ export class ArrayDataProvider<T> extends DataProvider<T> {
     let data = this.offScreenData;
 
     if (isPresent(params) && params.has('offset') && params.has('limit')) {
-      let offset = params.get('offset');
-      let limit = params.get('limit');
+      const offset = params.get('offset');
+      const limit = params.get('limit');
 
       if (data.length > (offset + limit)) {
         data = data.slice(offset, offset + limit);
@@ -80,8 +80,8 @@ export class ArrayDataProvider<T> extends DataProvider<T> {
    */
   private sort(arrayToSort: any[], key: string, sortOrder: number): void {
     arrayToSort.sort((data1: any, data2: any) => {
-      let value1 = FieldPath.getFieldValue(data1, key);
-      let value2 = FieldPath.getFieldValue(data2, key);
+      const value1 = FieldPath.getFieldValue(data1, key);
+      const value2 = FieldPath.getFieldValue(data2, key);
       let result = null;
 
       if (value1 == null && value2 != null) {

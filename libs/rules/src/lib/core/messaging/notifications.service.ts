@@ -115,7 +115,7 @@ export class Notifications {
    *
    */
   publish(topic: string, message: any): void {
-    let msg: Message = {topic: topic, content: message};
+    const msg: Message = {topic: topic, content: message};
     this.events.next(msg);
 
   }

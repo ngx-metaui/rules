@@ -68,11 +68,12 @@ export default function (options: AddSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     setupOptions(tree, options);
 
+    console.log('options.skipDependencies', options.skipDependencies)
 
     return chain([
-      options && options.skipDependencies ? noop() : addDependencies(options),
-      options && options.skipScripts ? noop() : addScripts(options),
-      options && options.skipStyles ? noop() : addStyles(options),
+      options.skipDependencies ? noop() : addDependencies(options),
+      options.skipScripts ? noop() : addScripts(options),
+      options.skipStyles ? noop() : addStyles(options),
       addRulesSubsystem(options),
       addNgModuleImports(options),
       addFileImports(options),
@@ -86,19 +87,19 @@ export default function (options: AddSchema): Rule {
 function addDependencies(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     const dependencies: NodeDependency[] = [
-      {type: NodeDependencyType.Default, version: '^6.3.3', name: '@ngx-metaui/rules'},
-      {type: NodeDependencyType.Default, version: '1.6.32', name: 'big-integer'},
+      {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/rules'},
+      {type: NodeDependencyType.Default, version: '1.6.36', name: 'big-integer'},
       {type: NodeDependencyType.Default, version: '1.3.0', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
-      {type: NodeDependencyType.Default, version: '^1.0.0-beta.10', name: 'primeicons'},
-      {type: NodeDependencyType.Default, version: '6.1.3', name: 'primeng'},
+      {type: NodeDependencyType.Default, version: '^1.0.0', name: 'primeicons'},
+      {type: NodeDependencyType.Default, version: '7.0.0-beta.1', name: 'primeng'},
       {type: NodeDependencyType.Default, version: '1.3.2', name: 'typescript-collections'},
       {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
       {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
       {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
     ];
 
-    return addDependenciesToPackageJson(dependencies, options && !options.skipNpmInstall);
+    return addDependenciesToPackageJson(dependencies, options.skipNpmInstall);
   };
 }
 

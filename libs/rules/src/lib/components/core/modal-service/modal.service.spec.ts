@@ -27,17 +27,14 @@ import {ModalService} from './modal.service';
  * this service is done with Dialog, Confirmation and Overlay components that uses
  * this service.
  */
-describe('Service: ModelService', () =>
-{
-    beforeEach(() =>
-    {
-        TestBed.configureTestingModule({
-            providers: [ModalService]
-        });
+describe('Service: ModelService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [ModalService]
     });
+  });
 
-    it('should ...', inject([ModalService], (service: ModalService) =>
-    {
-        expect(service).toBeTruthy();
-    }));
+  it('should ...', inject([ModalService], (service: ModalService) => {
+    expect(service).toBeTruthy();
+  }));
 });

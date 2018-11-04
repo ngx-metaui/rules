@@ -144,13 +144,13 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
   ngDoCheck(): void {
     // console.log('MetaInclude(ngDoCheck):', this.name);
 
-    let context = this.metaContext.myContext();
+    const context = this.metaContext.myContext();
     if (isBlank(context) || isBlank(this.currentComponent)) {
       // console.log('No context/ component for ' + this.name);
       return;
     }
 
-    let newComponent = context.propertyForKey('component');
+    const newComponent = context.propertyForKey('component');
     if (isPresent(newComponent) && isPresent(this.name) && (this.name !== newComponent)) {
       this.viewContainer.clear();
       this.doRenderComponent();
@@ -166,9 +166,9 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
       if (isBlank(editable)) {
         editable = context.propertyForKey(UIMeta.KeyEditing);
       }
-      let metaBindings = context.propertyForKey(UIMeta.KeyBindings);
-      let type = context.propertyForKey(ObjectMeta.KeyType);
-      let inputs: string[] = this.componentReference().metadata.inputs;
+      const metaBindings = context.propertyForKey(UIMeta.KeyBindings);
+      const type = context.propertyForKey(ObjectMeta.KeyType);
+      const inputs: string[] = this.componentReference().metadata.inputs;
 
       // re-apply Inputs
       // maybe we should diff properties and only if they changed re-apply
@@ -214,7 +214,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    */
   protected ngContent(): string {
     let cntValue: any;
-    let bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
+    const bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
 
     if (isPresent(bindings) &&
       isPresent(cntValue = bindings.get(IncludeComponentDirective.NgContent))) {
@@ -227,7 +227,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
 
   protected ngContentElement(): string {
     let cntValue: any;
-    let bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
+    const bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
 
     if (isPresent(bindings) &&
       isPresent(cntValue = bindings.get(IncludeComponentDirective.NgContentElement))) {
@@ -245,27 +245,27 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    */
   protected createContentElementIfAny(): boolean {
     let detectChanges = false;
-    let bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
+    const bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
 
 
     if (isPresent(bindings) && bindings.has(MetaIncludeComponentDirective.NgContentLayout)) {
 
-      let layoutName = bindings.get(MetaIncludeComponentDirective.NgContentLayout);
-      let context = this.metaContext.myContext();
+      const layoutName = bindings.get(MetaIncludeComponentDirective.NgContentLayout);
+      const context = this.metaContext.myContext();
 
       context.push();
       context.set(UIMeta.KeyLayout, layoutName);
 
-      let componentName = context.propertyForKey('component');
-      let compType = this.compRegistry.nameToType.get(componentName);
+      const componentName = context.propertyForKey('component');
+      const compType = this.compRegistry.nameToType.get(componentName);
 
-      let componentFactory: ComponentFactory<any> = this.factoryResolver
+      const componentFactory: ComponentFactory<any> = this.factoryResolver
         .resolveComponentFactory(compType);
 
-      let componentMeta: Component = this.resolveDirective(componentFactory);
-      let ngComponent = this.viewContainer.createComponent(componentFactory, 0);
+      const componentMeta: Component = this.resolveDirective(componentFactory);
+      const ngComponent = this.viewContainer.createComponent(componentFactory, 0);
 
-      let cReference: ComponentReference = {
+      const cReference: ComponentReference = {
         metadata: componentMeta,
         resolvedCompFactory: componentFactory,
         componentType: compType,
@@ -299,28 +299,28 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    * inside the wrapper component.
    */
   protected createWrapperElementIfAny(): void {
-    let wrapperName = this.metaContext.myContext().propertyForKey(UIMeta.KeyWrapperComponent);
+    const wrapperName = this.metaContext.myContext().propertyForKey(UIMeta.KeyWrapperComponent);
     if (isBlank(wrapperName)) {
       return;
     }
 
     // Now we have wrapperComponent. We do the following:
     // 1.  Create wrapper component.
-    let wrapperType = this.compRegistry.nameToType.get(wrapperName);
+    const wrapperType = this.compRegistry.nameToType.get(wrapperName);
 
-    let componentFactory: ComponentFactory<any> = this.factoryResolver
+    const componentFactory: ComponentFactory<any> = this.factoryResolver
       .resolveComponentFactory(wrapperType);
-    let componentMeta: Component = this.resolveDirective(wrapperType);
+    const componentMeta: Component = this.resolveDirective(wrapperType);
 
-    let wrapperComponent = this.viewContainer.createComponent(componentFactory);
+    const wrapperComponent = this.viewContainer.createComponent(componentFactory);
 
     // 2. Add wrapper bindings to wrapper component.
-    let wrapperBindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyWrapperBinding);
+    const wrapperBindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyWrapperBinding);
     (<any> wrapperComponent.instance)['bindings'] = wrapperBindings;
 
     // 3. Apply the bindings. Get the wrapper metadata, look through it's input - output
     // bindings. and apply the wrapperBindings to these bindings.
-    let wrapperComponentRef: ComponentReference = {
+    const wrapperComponentRef: ComponentReference = {
       metadata: componentMeta,
       resolvedCompFactory: componentFactory,
       componentType: wrapperType,
@@ -342,12 +342,12 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
                           bindings: Map<string, any>,
                           bUseMetaBindings: boolean = true): void {
     super.applyBindings(cRef, component, bindings);
-    let inputs: string[] = cRef.metadata.inputs;
-    let outputs: string[] = cRef.metadata.outputs;
+    const inputs: string[] = cRef.metadata.inputs;
+    const outputs: string[] = cRef.metadata.outputs;
 
     let metaBindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
-    let editable = this.metaContext.myContext().propertyForKey(ObjectMeta.KeyEditable);
-    let type = this.metaContext.myContext().propertyForKey(ObjectMeta.KeyType);
+    const editable = this.metaContext.myContext().propertyForKey(ObjectMeta.KeyEditable);
+    const type = this.metaContext.myContext().propertyForKey(ObjectMeta.KeyType);
 
     // There are cases where we want to use the bindings passed into this function.
     // For example, the wrapperBindings.
@@ -359,7 +359,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
       return;
     }
 
-    let currenBindings = MapWrapper.clone(metaBindings);
+    const currenBindings = MapWrapper.clone(metaBindings);
     this.applyInputs(component, type, currenBindings, inputs, editable);
     this.applyOutputs(component, currenBindings, outputs);
   }
@@ -376,8 +376,8 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
       component.instance['editable'] = editable;
     }
 
-    for (let key of inputs) {
-      let publicKey = nonPrivatePrefix(key);
+    for (const key of inputs) {
+      const publicKey = nonPrivatePrefix(key);
       let value = bindings.get(publicKey);
 
       // Handle special case where we do not pass explicitly or inherit from parent @Input
@@ -397,8 +397,8 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
           editable);
 
       } else if (compToBeRendered && value instanceof DynamicPropertyValue) {
-        let dynval: DynamicPropertyValue = value;
-        let newValue = dynval.evaluate(this.metaContext.myContext());
+        const dynval: DynamicPropertyValue = value;
+        const newValue = dynval.evaluate(this.metaContext.myContext());
         component.instance[publicKey] = newValue;
 
       } else {
@@ -430,14 +430,14 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
   }
 
   private applyOutputs(component: ComponentRef<any>, bindings: any, outputs: string[]) {
-    for (let key of outputs) {
-      let publicKey = nonPrivatePrefix(key);
-      let value = bindings.get(publicKey);
+    for (const key of outputs) {
+      const publicKey = nonPrivatePrefix(key);
+      const value = bindings.get(publicKey);
 
       if (key === IncludeComponentDirective.NgContent) {
         continue;
       }
-      let eventEmitter: EventEmitter<any> = component.instance[publicKey];
+      const eventEmitter: EventEmitter<any> = component.instance[publicKey];
       if (value instanceof DynamicPropertyValue) {
         this.applyDynamicOutputBinding(eventEmitter, value, this.metaContext.myContext());
       } else {
@@ -446,7 +446,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
         eventEmitter.subscribe((val: any) => {
           if (this.env.hasValue('parent-cnx')) {
             let event: any = val;
-            let cnx: MetaContextComponent = this.env.getValue('parent-cnx');
+            const cnx: MetaContextComponent = this.env.getValue('parent-cnx');
 
             if (!(val instanceof MetaUIActionEvent)) {
               event = new MetaUIActionEvent(component.instance, publicKey,
@@ -463,7 +463,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
                                     context: Context): void {
 
     emitter.asObservable().subscribe((val: any) => {
-      let dynval: DynamicPropertyValue = value;
+      const dynval: DynamicPropertyValue = value;
       context.resolveValue(dynval);
     });
   }
@@ -471,9 +471,9 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
   private applyDynamicInputBindings(me: any, bindings: any, inputs: string[], key: string,
                                     value: any, editable: boolean) {
 
-    let publicKey = nonPrivatePrefix(key);
-    let cnxtPath: ContextFieldPath = value;
-    let metaContext = this.metaContext;
+    const publicKey = nonPrivatePrefix(key);
+    const cnxtPath: ContextFieldPath = value;
+    const metaContext = this.metaContext;
     /**
      * captured also current context snapshot so we can replay ContextFieldPath.evaluate() if
      * called outside of push/pop cycle.
@@ -483,17 +483,17 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
     Object.defineProperty(me, publicKey, {
       get: () => {
 
-        let context = this.metaContext.myContext();
+        const context = this.metaContext.myContext();
         return cnxtPath.evaluate(context);
       },
 
       set: (val) => {
-        let context = this.metaContext.myContext();
-        let editing = context.propertyForKey(ObjectMeta.KeyEditable)
+        const context = this.metaContext.myContext();
+        const editing = context.propertyForKey(ObjectMeta.KeyEditable)
           || context.propertyForKey(UIMeta.KeyEditing);
 
         if (editing && !StringWrapper.equals(val, me[publicKey])) {
-          let type = context.propertyForKey(ObjectMeta.KeyType);
+          const type = context.propertyForKey(ObjectMeta.KeyType);
 
           cnxtPath.evaluateSet(context, ValueConverter.value(type, val));
         }

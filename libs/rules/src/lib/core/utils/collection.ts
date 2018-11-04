@@ -36,7 +36,7 @@ export const createMapFromMap: { (m: Map<any, any>): Map<any, any> } = (function
   } catch (e) {
   }
   return function createMapAndPopulateFromMap(m: Map<any, any>): Map<any, any> {
-    let map = new Map();
+    const map = new Map();
     m.forEach((v, k) => {
       map.set(k, v);
     });
@@ -46,7 +46,7 @@ export const createMapFromMap: { (m: Map<any, any>): Map<any, any> } = (function
 export const _clearValues: { (m: Map<any, any>): void } = (function () {
   if ((<any>(new Map()).keys()).next) {
     return function _clearValuesInner(m: Map<any, any>) {
-      let keyIterator = m.keys();
+      const keyIterator = m.keys();
       let k: any /** TODO #???? */;
       while (!((k = (<any>keyIterator).next()).done)) {
         m.set(k.value, null);
@@ -74,7 +74,7 @@ export class MapWrapper {
       }
     } catch (e) {
     }
-    let map = new Map();
+    const map = new Map();
     m.forEach((v, k) => {
       map.set(k, v);
     });
@@ -82,8 +82,8 @@ export class MapWrapper {
   }
 
   static createFromStringMap<T>(stringMap: { [key: string]: T }): Map<string, T> {
-    let result = new Map<string, T>();
-    for (let key in stringMap) {
+    const result = new Map<string, T>();
+    for (const key in stringMap) {
       result.set(key, stringMap[key]);
     }
     return result;
@@ -91,8 +91,8 @@ export class MapWrapper {
 
 
   static createFromAnyMap<T>(stringMap: { [key: string]: T }): Map<any, T> {
-    let result = new Map<any, T>();
-    for (let key in stringMap) {
+    const result = new Map<any, T>();
+    for (const key in stringMap) {
       result.set(key, stringMap[key]);
     }
     return result;
@@ -102,22 +102,22 @@ export class MapWrapper {
   static createFromStringMapWithResolve<T>(stringMap: { [key: string]: T },
                                            resolve: (key: string,
                                                      value: any) => any): Map<string, T> {
-    let result = new Map<string, T>();
-    for (let key in stringMap) {
-      let updatedValue = resolve(key, stringMap[key]);
+    const result = new Map<string, T>();
+    for (const key in stringMap) {
+      const updatedValue = resolve(key, stringMap[key]);
       result.set(key, updatedValue);
     }
     return result;
   }
 
   static toStringMap<T>(m: Map<string, T>): { [key: string]: T } {
-    let r: { [key: string]: T } = {};
+    const r: { [key: string]: T } = {};
     m.forEach((v, k) => r[k] = v);
     return r;
   }
 
   static toAnyMap<T>(m: Map<any, T>): any {
-    let r = {};
+    const r = {};
 
     if (isPresent(m)) {
       m.forEach((v, k) => (<any>r)[k] = v);
@@ -127,7 +127,7 @@ export class MapWrapper {
 
 
   static toString(m: Map<string, any>, inner: boolean = false): string {
-    let sj = new StringJoiner(['']);
+    const sj = new StringJoiner(['']);
     if (!inner) {
       sj.add('{');
     }
@@ -163,11 +163,11 @@ export class MapWrapper {
   static mergeMapIntoMapWithObject(dest: Map<string, any>, source: Map<string, any>,
                                    overwriteMismatched: boolean): Map<string, any> {
 
-    let keys = Array.from(source.keys());
+    const keys = Array.from(source.keys());
 
-    for (let key of keys) {
-      let sourceValue = source.get(key);
-      let destValue = dest.get(key);
+    for (const key of keys) {
+      const sourceValue = source.get(key);
+      const destValue = dest.get(key);
 
       if (isBlank(destValue)) {
         dest.set(key, ListWrapper.copyValue(sourceValue));
@@ -189,7 +189,7 @@ export class MapWrapper {
           );
 
         } else {
-          let sourceVect: string[] = ListWrapper.clone<any>(sourceValue);
+          const sourceVect: string[] = ListWrapper.clone<any>(sourceValue);
           ListWrapper.addElementIfAbsent<any>(sourceVect, destValue);
           dest.set(key, sourceVect);
         }
@@ -209,13 +209,13 @@ export class MapWrapper {
           );
         }
       } else if (destValue instanceof Map && isString(sourceValue)) {
-        let destValueMap = MapWrapper.clone(destValue);
+        const destValueMap = MapWrapper.clone(destValue);
 
         if (isBlank(destValueMap.get(sourceValue))) {
           destValue.set(sourceValue, MapWrapper.createEmpty());
         }
       } else if (isString(destValue) && sourceValue instanceof Map) {
-        let sourceHash = MapWrapper.clone(sourceValue);
+        const sourceHash = MapWrapper.clone(sourceValue);
         if (isBlank(sourceHash.get(destValue))) {
           sourceHash.set(destValue, MapWrapper.createEmpty());
         }
@@ -228,7 +228,7 @@ export class MapWrapper {
         ListWrapper.addElementIfAbsent(destValue, sourceValue);
 
       } else if (isString(destValue) && isArray(sourceValue)) {
-        let sourceVect: string[] = ListWrapper.clone<string>(sourceValue);
+        const sourceVect: string[] = ListWrapper.clone<string>(sourceValue);
 
         ListWrapper.addElementIfAbsent(sourceVect, destValue);
         dest.set(key, sourceVect);
@@ -239,8 +239,8 @@ export class MapWrapper {
       } else if (overwriteMismatched) {
         dest.set(key, sourceValue);
       } else {
-        let destClass = className(destValue);
-        let sourceClass = className(sourceValue);
+        const destClass = className(destValue);
+        const sourceClass = className(sourceValue);
 
         if (destClass === sourceClass) {
           dest.set(key, sourceValue);
@@ -251,7 +251,7 @@ export class MapWrapper {
   }
 
   static convertListToMap(keys: string[]): Map<string, any> {
-    let map = new Map<string, any>();
+    const map = new Map<string, any>();
     for (let i = 0; i < keys.length; i++) {
       map.set(keys[i], MapWrapper.createEmpty<string, any>());
     }
@@ -259,15 +259,15 @@ export class MapWrapper {
   }
 
   static groupBy<K>(items: any, groupByKey: (item: K) => string): Map<string, any> {
-    let result = items.reduce((groupResult: any, currentValue: any) => {
+    const result = items.reduce((groupResult: any, currentValue: any) => {
 
-      let gKey = groupByKey(currentValue);
+      const gKey = groupByKey(currentValue);
       (groupResult[gKey] = groupResult[gKey] || []).push(currentValue);
       return groupResult;
     }, {});
 
 
-    let grouped: Map<string, any> = new Map<string, any>();
+    const grouped: Map<string, any> = new Map<string, any>();
     Object.keys(result).forEach((key) => {
       grouped.set(key, result[key]);
     });
@@ -300,7 +300,7 @@ export class StringMapWrapper {
 
 
   static isEmpty(map: { [key: string]: any }): boolean {
-    for (let prop in map) {
+    for (const prop in map) {
       return false;
     }
     return true;
@@ -311,19 +311,19 @@ export class StringMapWrapper {
   }
 
   static forEach<K, V>(map: { [key: string]: V }, callback: (v: V, K: string) => void) {
-    for (let k of Object.keys(map)) {
+    for (const k of Object.keys(map)) {
       callback(map[k], k);
     }
   }
 
   static merge<V>(m1: { [key: string]: V }, m2: { [key: string]: V }): { [key: string]: V } {
-    let m: { [key: string]: V } = {};
+    const m: { [key: string]: V } = {};
 
-    for (let k of Object.keys(m1)) {
+    for (const k of Object.keys(m1)) {
       m[k] = m1[k];
     }
 
-    for (let k of Object.keys(m2)) {
+    for (const k of Object.keys(m2)) {
       m[k] = m2[k];
     }
 
@@ -331,8 +331,8 @@ export class StringMapWrapper {
   }
 
   static equals<V>(m1: { [key: string]: V }, m2: { [key: string]: V }): boolean {
-    let k1 = Object.keys(m1);
-    let k2 = Object.keys(m2);
+    const k1 = Object.keys(m1);
+    const k2 = Object.keys(m2);
     if (k1.length !== k2.length) {
       return false;
     }
@@ -421,7 +421,7 @@ export class ListWrapper {
 
 
   static removeIfExist(list: Array<any>, item: any): void {
-    let index: number = list.findIndex(el => {
+    const index: number = list.findIndex(el => {
       return equals(el, item);
     });
     if (index !== -1) {
@@ -430,7 +430,7 @@ export class ListWrapper {
   }
 
   static reversed<T>(array: T[]): T[] {
-    let a = ListWrapper.clone(array);
+    const a = ListWrapper.clone(array);
     return a.reverse();
   }
 
@@ -443,20 +443,20 @@ export class ListWrapper {
   }
 
   static removeAt<T>(list: T[], index: number): T {
-    let res = list[index];
+    const res = list[index];
     list.splice(index, 1);
     return res;
   }
 
   static removeAll<T>(list: T[], items: T[]) {
     for (let i = 0; i < items.length; ++i) {
-      let index = list.indexOf(items[i]);
+      const index = list.indexOf(items[i]);
       list.splice(index, 1);
     }
   }
 
   static remove<T>(list: T[], el: T): boolean {
-    let index = list.indexOf(el);
+    const index = list.indexOf(el);
     if (index > -1) {
       list.splice(index, 1);
       return true;
@@ -515,8 +515,8 @@ export class ListWrapper {
 
   static sortByExample(toSort: string[], pattern: string[]) {
     toSort.sort((a: string, b: string) => {
-      let indexA = pattern.indexOf(a) === -1 ? 10 : pattern.indexOf(a);
-      let indexB = pattern.indexOf(b) === -1 ? 10 : pattern.indexOf(b);
+      const indexA = pattern.indexOf(a) === -1 ? 10 : pattern.indexOf(a);
+      const indexB = pattern.indexOf(b) === -1 ? 10 : pattern.indexOf(b);
 
       return indexA - indexB;
     });
@@ -524,7 +524,7 @@ export class ListWrapper {
 
   static toString<T>(l: T[]): string {
     let out = '';
-    for (let item of l) {
+    for (const item of l) {
       out += item.toString() + ',  ';
     }
     return out;
@@ -541,11 +541,11 @@ export class ListWrapper {
     let solution: any /** TODO #???? */ = null;
     let maxValue = -Infinity;
     for (let index = 0; index < list.length; index++) {
-      let candidate = list[index];
+      const candidate = list[index];
       if (isBlank(candidate)) {
         continue;
       }
-      let candidateValue = predicate(candidate);
+      const candidateValue = predicate(candidate);
       if (candidateValue > maxValue) {
         solution = candidate;
         maxValue = candidateValue;
@@ -555,15 +555,15 @@ export class ListWrapper {
   }
 
   static flatten<T>(list: Array<T | T[]>): T[] {
-    let target: any[] = [];
+    const target: any[] = [];
     _flattenArray(list, target);
     return target;
   }
 
 
   static allElementsAreStrings<T>(list: Array<T | T[]>): boolean {
-    let target: any[] = ListWrapper.flatten(list);
-    for (let element of target) {
+    const target: any[] = ListWrapper.flatten(list);
+    for (const element of target) {
       if (!isString(element)) {
         return false;
       }
@@ -581,7 +581,7 @@ export class ListWrapper {
   // todo: check if this handles objects with contains
   static addElementIfAbsent<T>(list: Array<T>, element: T): void {
 
-    let contains = Collections.arrays.contains(list, element, (item1: any, item2: any) => {
+    const contains = Collections.arrays.contains(list, element, (item1: any, item2: any) => {
 
       if (item1['equalsTo']) {
         return item1['equalsTo'](item2);
@@ -602,9 +602,9 @@ export class ListWrapper {
       return;
     }
 
-    for (let elem of elements) {
+    for (const elem of elements) {
 
-      let contains = Collections.arrays.contains(list, elem, (item1: any, item2: any) => {
+      const contains = Collections.arrays.contains(list, elem, (item1: any, item2: any) => {
         if (item1['equalsTo'] && item2['equalsTo']) {
           return item1['equalsTo'](item2);
         }
@@ -633,7 +633,7 @@ export class ListWrapper {
 function _flattenArray(source: any[], target: any[]): any[] {
   if (isPresent(source)) {
     for (let i = 0; i < source.length; i++) {
-      let item = source[i];
+      const item = source[i];
       if (isArray(item)) {
         _flattenArray(item, target);
       } else {
@@ -655,12 +655,12 @@ export function isListLikeIterable(obj: any): boolean {
 }
 
 export function areIterablesEqual(a: any, b: any, comparator: Function): boolean {
-  let iterator1 = a[getSymbolIterator()]();
-  let iterator2 = b[getSymbolIterator()]();
+  const iterator1 = a[getSymbolIterator()]();
+  const iterator2 = b[getSymbolIterator()]();
 
   while (true) {
-    let item1 = iterator1.next();
-    let item2 = iterator2.next();
+    const item1 = iterator1.next();
+    const item2 = iterator2.next();
     if (item1.done && item2.done) {
       return true;
     }
@@ -679,7 +679,7 @@ export function iterateListLike(obj: any, fn: Function) {
       fn(obj[i]);
     }
   } else {
-    let iterator = obj[getSymbolIterator()]();
+    const iterator = obj[getSymbolIterator()]();
     let item: any /** TODO #???? */;
     while (!((item = iterator.next()).done)) {
       fn(item.value);
@@ -699,15 +699,15 @@ export function findLast<T>(arr: T[], condition: (value: T) => boolean): T | nul
 
 // Safari and Internet Explorer do not support the iterable parameter to the
 // Set constructor.  We work around that by manually adding the items.
-let createSetFromList: { (lst: any[]): Set<any> } = (function () {
-  let test = new Set([1, 2, 3]);
+const createSetFromList: { (lst: any[]): Set<any> } = (function () {
+  const test = new Set([1, 2, 3]);
   if (test.size === 3) {
     return function createSetFromListInner(lst: any[]): Set<any> {
       return new Set(lst);
     };
   } else {
     return function createSetAndPopulateFromList(lst: any[]): Set<any> {
-      let res = new Set(lst);
+      const res = new Set(lst);
       if (res.size !== lst.length) {
         for (let i = 0; i < lst.length; i++) {
           res.add(lst[i]);

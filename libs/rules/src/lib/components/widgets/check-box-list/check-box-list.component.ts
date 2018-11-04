@@ -160,7 +160,7 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
 
 
   ngAfterContentInit(): void {
-    let updatedModel: any[] = [];
+    const updatedModel: any[] = [];
 
     this.model.forEach((index: number) => updatedModel.push(this.list[index]));
     this.formControl.setValue(updatedModel, {
@@ -199,7 +199,7 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
    *
    */
   onChange(event: any): void {
-    let updatedModel: any[] = [];
+    const updatedModel: any[] = [];
 
     this.model.forEach((index: number) => {
       updatedModel.push(this.list[index]);
@@ -220,7 +220,7 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
    */
   updateModel(sourceList: any[]): void {
     sourceList.forEach((item: any) => {
-      let index = this.list.findIndex((elem: any) => {
+      const index = this.list.findIndex((elem: any) => {
         return equals(item, elem);
       });
       this.model.push(index);
@@ -234,7 +234,7 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
    */
   writeValue(value: any) {
     if (isPresent(this.model) && isPresent(value)) {
-      let newModel = value;
+      const newModel = value;
       this.updateModel(newModel);
 
       // this.cd.markForCheck();

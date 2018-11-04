@@ -55,7 +55,7 @@ describe('Component: Currency', () => {
   it('should instantiate and have default values for value, formatCurrency, name, editing',
     () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestCurrencyBasicBehaviorComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCurrencyBasicBehaviorComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.currency.displayValue).toEqual('$1,000');
@@ -67,16 +67,16 @@ describe('Component: Currency', () => {
     });
 
   it('should format currency based on currency code clicked', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCurrencyBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCurrencyBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let dd = fixtureWrapper.nativeElement.querySelector('.w-dropdown .ui-dropdown');
+    const dd = fixtureWrapper.nativeElement.querySelector('.w-dropdown .ui-dropdown');
     dd.click();
 
     tick();
     fixtureWrapper.detectChanges();
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-dropdown-item ');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-dropdown-item ');
     items[3].click();
 
     tick();
@@ -90,10 +90,10 @@ describe('Component: Currency', () => {
 
   it('should format the currency when new value is entered', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestCurrencyBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCurrencyBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector('.currency-format');
+    const el = fixtureWrapper.nativeElement.querySelector('.currency-format');
     el.value = 1234567890.00;
     el.dispatchEvent(new Event('blur'));
 
@@ -109,7 +109,7 @@ describe('Component: Currency', () => {
 
   it('should have empty value and default currencies when no default value and currency' +
     ' code are passed in.', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCurrencyDefaultBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCurrencyDefaultBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.currency.displayValue).toEqual(null);
@@ -123,7 +123,7 @@ describe('Component: Currency', () => {
 
   it('should have initialized control correctly with default values', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestDTContainerBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDTContainerBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.currency.displayValue).toEqual('$1,000');
@@ -135,16 +135,16 @@ describe('Component: Currency', () => {
 
   it('should have read only currency code', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestReadonlyCurrencyCodeComponent);
+    const fixtureWrapper = TestBed.createComponent(TestReadonlyCurrencyCodeComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.currency.displayValue).toEqual('$1,000');
     expect(fixtureWrapper.componentInstance.currency.money.amount).toEqual(1000);
 
-    let readonlyField = fixtureWrapper.nativeElement.querySelector('.w-cc-readonly-field');
+    const readonlyField = fixtureWrapper.nativeElement.querySelector('.w-cc-readonly-field');
     expect(readonlyField.textContent).toEqual('USD');
 
-    let dd = fixtureWrapper.nativeElement.querySelector('.w-dropdown .ui-dropdown');
+    const dd = fixtureWrapper.nativeElement.querySelector('.w-dropdown .ui-dropdown');
     expect(dd).toBeNull();
   });
 });
@@ -248,7 +248,7 @@ class TestReadonlyCurrencyCodeComponent {
  */
 function flushPendingTimers() {
 
-  let zone: any = readGlobalParam('Zone');
+  const zone: any = readGlobalParam('Zone');
 
   if (isPresent(zone) &&
     isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {

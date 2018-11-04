@@ -91,7 +91,7 @@ export class ChooserDataSource extends DataSource {
     if (isBlank(args) || args.length !== 1 && !isDSChooserInitParams(args[0])) {
       throw new Error('You need to initialize DS with (DSChooserInitParams)');
     }
-    let init: DSChooserInitParams = args[0];
+    const init: DSChooserInitParams = args[0];
 
     this.dataProvider = isPresent(init.dataProvider) ? init.dataProvider
       : this.dataProviders.find(init.obj);
@@ -126,7 +126,7 @@ export class ChooserDataSource extends DataSource {
 
 
     // make sure we dataFinder has expected lookup key
-    let origKey = this.dataFinder.lookupKey;
+    const origKey = this.dataFinder.lookupKey;
     this.dataFinder.lookupKey = this.state.lookupKey;
     this.dataFinder.forData(this.dataProvider).match<any>(pattern, max)
       .subscribe((result: any[]) => {
@@ -134,7 +134,7 @@ export class ChooserDataSource extends DataSource {
 
         if (this.state.multiselect) {
           for (let i = 0; i < this.state.selectedObjects().length; i++) {
-            let item = this.state.selectedObjects()[i];
+            const item = this.state.selectedObjects()[i];
             ListWrapper.removeIfExist(this.state.matches, item);
           }
         }
@@ -171,7 +171,7 @@ export class ChooserDataSource extends DataSource {
   updateValue(value: any): void {
     this.state.addMode = true;
     if (isArray(value)) {
-      let items: any[] = value;
+      const items: any[] = value;
       items.forEach((item) => this.state.updatedSelectedObjects(item));
     } else {
       this.state.updatedSelectedObjects(value);

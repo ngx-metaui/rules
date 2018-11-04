@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import { Step } from '@ngx-meta/rules';
+import { Step } from '@ngx-metaui/rules';
 
 @Component({
     templateUrl: './wizard-progress-demo.component.html',

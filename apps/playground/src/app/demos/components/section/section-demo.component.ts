@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {SectionComponent} from '@ngx-meta/rules';
+import {SectionComponent} from '@ngx-metaui/rules';
 
 @Component({
     templateUrl: './section-demo.component.html',

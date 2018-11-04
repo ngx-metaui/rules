@@ -58,7 +58,7 @@ export class RuleLoaderService implements RuleLoader {
   loadRules(meta: Meta, source: any, module: string, onRule: (rule: Rule) => void) {
     this._uiMeta = <UIMeta>meta;
     source.forEach((val: any, index: any) => {
-      let rule = this.readRule(val, module);
+      const rule = this.readRule(val, module);
       if (isPresent(onRule)) {
         onRule(rule);
 
@@ -70,9 +70,9 @@ export class RuleLoaderService implements RuleLoader {
 
   loadRulesWithReturn(source: any, module: string): Array<Rule> {
 
-    let rules: Array<Rule> = new Array<Rule>();
+    const rules: Array<Rule> = new Array<Rule>();
     source.forEach((val: any, index: any) => {
-      let rule = this.readRule(val, module);
+      const rule = this.readRule(val, module);
       rules.push(rule);
     });
 
@@ -82,18 +82,18 @@ export class RuleLoaderService implements RuleLoader {
 
   private readRule(jsonRule: JsonRule, module: string): Rule {
 
-    let selectors: Array<Selector> = new Array<Selector>();
-    for (let item of jsonRule._selectors) {
+    const selectors: Array<Selector> = new Array<Selector>();
+    for (const item of jsonRule._selectors) {
 
       if (isPresent(item._value) && item._value.constructor === Object && Object.keys(
         item._value).length === 0) {
         item._value = Meta.NullMarker;
       }
 
-      let selector = new Selector(item._key, item._value, item._isDecl);
+      const selector = new Selector(item._key, item._value, item._isDecl);
       selectors.push(selector);
     }
-    let properties = MapWrapper.createFromStringMapWithResolve<any>(jsonRule._properties,
+    const properties = MapWrapper.createFromStringMapWithResolve<any>(jsonRule._properties,
       (k, v) => {
         if (isStringMap(v) &&
           isPresent(v['t'])) {
@@ -124,8 +124,8 @@ export class RuleLoaderService implements RuleLoader {
         }
         return v;
       });
-    let props = properties.size === 0 ? undefined : properties;
-    let rule: Rule = new Rule(selectors, props, jsonRule._rank);
+    const props = properties.size === 0 ? undefined : properties;
+    const rule: Rule = new Rule(selectors, props, jsonRule._rank);
 
     return rule;
   }
@@ -140,7 +140,7 @@ export class RuleLoaderService implements RuleLoader {
     if (type === 'Expr') {
       return new Expr(value['v']);
     } else if (type === 'SDW') {
-      let expr = new Expr(value['v']);
+      const expr = new Expr(value['v']);
       return new StaticDynamicWrapper(new StaticallyResolvableWrapper(expr));
 
     } else if (type === 'CFP') {
@@ -150,7 +150,7 @@ export class RuleLoaderService implements RuleLoader {
       return new OverrideValue(value['v']);
 
     } else if (type === 'i18n' && value['v']['key']) {
-      let locKey = value['v']['key'];
+      const locKey = value['v']['key'];
 
       return isPresent(this._uiMeta) ? this._uiMeta.createLocalizedString(locKey,
         value['v']['defVal'])

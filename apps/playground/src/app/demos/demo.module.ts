@@ -22,7 +22,7 @@ import {
   AribaCoreModule,
   ModalService,
   RoutingService
-} from '@ngx-meta/rules';
+} from '@ngx-metaui/rules';
 import {DemoPageComponent} from './demo.page.component';
 import {DemoRoutingModule} from './demo-routing.module';
 import {FormsPageComponent} from './forms/forms.page.component';

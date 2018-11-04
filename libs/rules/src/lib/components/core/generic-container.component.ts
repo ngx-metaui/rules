@@ -108,8 +108,7 @@ export class GenericContainerComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
 
-    if (isPresent(this.childElement) &&
-      this.childElement.parentNode !== this.nativeElement.firstChild) {
+    if (isPresent(this.childElement) && this.childElement !== this.nativeElement.firstChild) {
 
       this.nativeElement.firstChild.appendChild(this.childElement);
     }

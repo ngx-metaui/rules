@@ -128,9 +128,9 @@ export class MetaUIRulesModule {
  *
  */
 export function initMetaUI(injector: Injector) {
-  let initFce = function init(inj: Injector) {
-    let promise: Promise<any> = new Promise((resolve: any) => {
-      let metaUI = UIMeta.getInstance();
+  const initFce = function init(inj: Injector) {
+    const promise: Promise<any> = new Promise((resolve: any) => {
+      const metaUI = UIMeta.getInstance();
 
       // access services lazily when they are needed and initialized as workaround for
       // https://github.com/angular/angular/issues/16853

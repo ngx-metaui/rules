@@ -134,8 +134,8 @@ export class ChooserState {
     if (!this.multiselect) {
       this.setSelectionState(item, true);
     } else {
-      let selectedObject = this.selectedObject();
-      let selectedObjects = this.selectedObjects();
+      const selectedObject = this.selectedObject();
+      const selectedObjects = this.selectedObjects();
 
 
       if (this.addMode) {
@@ -176,10 +176,10 @@ export class ChooserState {
       return [];
     }
 
-    let recentSelectedObjects: any[] = [];
+    const recentSelectedObjects: any[] = [];
     this.recentSelectedDisplayed = 0;
-    let selectedObjects = this.selectedObjects();
-    let size = selectedObjects.length;
+    const selectedObjects = this.selectedObjects();
+    const size = selectedObjects.length;
     let maxCount = DataSource.MaxRecentSelected;
     if (size > DataSource.MaxRecentSelected && !this.showAllRecentlySelected) {
       maxCount -= 1;
@@ -189,7 +189,7 @@ export class ChooserState {
     }
 
     for (let i = size - 1; i >= 0 && (this.recentSelectedDisplayed < maxCount); i--) {
-      let selection = selectedObjects[i];
+      const selection = selectedObjects[i];
       recentSelectedObjects.push(selection);
       this.recentSelectedDisplayed++;
     }

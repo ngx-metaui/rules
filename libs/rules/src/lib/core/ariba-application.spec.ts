@@ -47,7 +47,7 @@ describe('generic Ariba application ', () => {
   });
 
   it('should have Title and MetaTags service defined', () => {
-      let fixtureWrapper = TestBed.createComponent(MyTodoAppTestComponent);
+      const fixtureWrapper = TestBed.createComponent(MyTodoAppTestComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.title).toBeDefined();
@@ -57,8 +57,8 @@ describe('generic Ariba application ', () => {
 
 
   it('should set page title when application starts', () => {
-      let fixtureWrapper = TestBed.createComponent(MyTodoAppTestComponent);
-      let titleS = TestBed.get(Title);
+      const fixtureWrapper = TestBed.createComponent(MyTodoAppTestComponent);
+      const titleS = TestBed.get(Title);
       spyOn(titleS, 'setTitle');
 
       fixtureWrapper.detectChanges();

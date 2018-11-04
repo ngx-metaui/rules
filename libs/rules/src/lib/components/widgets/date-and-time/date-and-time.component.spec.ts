@@ -53,7 +53,7 @@ describe('Component: DateAndTime', () => {
   it('should instantiate and have default values for value, formatPattern, showTime,' +
     ' showDate, name, editing', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestDateTimeBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDateTimeBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.dateTime.formatPattern).toEqual('mm/dd/yy');
@@ -65,17 +65,18 @@ describe('Component: DateAndTime', () => {
 
   });
 
-  it('should show date popup when showDate is TRUE and input is clicked', fakeAsync(() => {
+  it('should show date popup when showDate is TRUE and input is clicked',
+    fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestDateTimeBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDateTimeBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let items = fixtureWrapper.nativeElement.querySelector('.pi-calendar');
+    const items = fixtureWrapper.nativeElement.querySelector('.pi-calendar');
     items.click();
 
     tick();
     fixtureWrapper.detectChanges();
-    let item = fixtureWrapper.nativeElement.querySelector('.ui-datepicker-calendar');
+    const item = fixtureWrapper.nativeElement.querySelector('.ui-datepicker-calendar');
     expect(item).toBeDefined();
 
   }));
@@ -83,24 +84,24 @@ describe('Component: DateAndTime', () => {
 
   it('should change the date value when date is clicked', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestDateTimeBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestDateTimeBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
 
-    let currentDay = fixtureWrapper.componentInstance.dateTime.value.getDate();
-    let item = fixtureWrapper.nativeElement.querySelector('.pi-calendar');
+    const currentDay = fixtureWrapper.componentInstance.dateTime.value.getDate();
+    const item = fixtureWrapper.nativeElement.querySelector('.pi-calendar');
     item.click();
 
     tick();
     fixtureWrapper.detectChanges();
 
-    let children = fixtureWrapper.nativeElement.querySelectorAll('a.ui-state-default')[7];
+    const children = fixtureWrapper.nativeElement.querySelectorAll('a.ui-state-default')[7];
     children.click();
 
     tick();
     fixtureWrapper.detectChanges();
 
-    let changedDay = fixtureWrapper.componentInstance.dateTime.value.getDate();
+    const changedDay = fixtureWrapper.componentInstance.dateTime.value.getDate();
     expect(changedDay).not.toEqual(currentDay);
 
     flushMicrotasks();
@@ -164,7 +165,7 @@ class TestDTContainerBehaviorComponent {
  */
 function flushPendingTimers() {
 
-  let zone: any = readGlobalParam('Zone');
+  const zone: any = readGlobalParam('Zone');
 
   if (isPresent(zone) &&
     isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {

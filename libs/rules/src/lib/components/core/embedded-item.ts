@@ -110,7 +110,7 @@ export class EmbeddedItemDirective implements OnChanges {
     }
 
     if (isPresent(this.embeddedItem)) {
-      let context = new EmbededItem(this._implicitValue);
+      const context = new EmbededItem(this._implicitValue);
       this._viewRef = this._viewContainer.createEmbeddedView(this.embeddedItem, context);
     }
   }

@@ -205,7 +205,7 @@ export class ScrollableContainerComponent extends BaseComponent {
    *
    */
   hasHorizontalScroll(): boolean {
-    let scrollContainer = this.elementRef.nativeElement.querySelector('.w-scrollable');
+    const scrollContainer = this.elementRef.nativeElement.querySelector('.w-scrollable');
     return scrollContainer.scrollWidth > scrollContainer.clientWidth;
   }
 
@@ -215,7 +215,7 @@ export class ScrollableContainerComponent extends BaseComponent {
    *
    */
   hasVerticalScroll(): boolean {
-    let scrollContainer = this.elementRef.nativeElement.querySelector('.w-scrollable');
+    const scrollContainer = this.elementRef.nativeElement.querySelector('.w-scrollable');
     return scrollContainer.scrollHeight > scrollContainer.clientHeight;
   }
 }

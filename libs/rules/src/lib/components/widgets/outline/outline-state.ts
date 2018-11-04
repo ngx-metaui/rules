@@ -137,9 +137,9 @@ export class OutlineState {
     if (isBlank(currentPath)) {
       return;
     }
-    let item = ListWrapper.last(currentPath);
-    let itemChildren = children || [];
-    let newState = !this.isExpanded(item);
+    const item = ListWrapper.last(currentPath);
+    const itemChildren = children || [];
+    const newState = !this.isExpanded(item);
     this.setExpansionState(item, newState);
 
     if (!newState) {
@@ -152,7 +152,7 @@ export class OutlineState {
 
   updateNodes(nodes: any[], newState: boolean): void {
     nodes.forEach((child: any) => {
-      let items = this.outlineFor.childrenForItem(child);
+      const items = this.outlineFor.childrenForItem(child);
       if (isPresent(items) && items.length > 0) {
         this.updateNodes(items, newState);
       }
@@ -167,7 +167,7 @@ export class OutlineState {
       this.outlineFor.isTreeModelFormat()) {
       (<OutlineNode>item).isExpanded = isExpanded;
     } else {
-      let key = this.itemToKey(item);
+      const key = this.itemToKey(item);
       if (isExpanded === this.isExpandedAll) {
         this.expansionStates.delete(key);
       } else {
@@ -200,7 +200,7 @@ export class OutlineState {
       this.outlineFor.isTreeModelFormat()) {
       return (<OutlineNode>item).isExpanded;
     } else {
-      let key = this.itemToKey(item);
+      const key = this.itemToKey(item);
       if (!this.expansionStates.has(key)) {
         return this.isExpandedAll;
       }

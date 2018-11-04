@@ -80,7 +80,7 @@ export class MetaElementListComponent extends MetaLayout {
 
 
   styleString(name: string): any {
-    let lContext: Context = this.contextMap.get(name);
+    const lContext: Context = this.contextMap.get(name);
     // return isPresent(lContext) && isPresent(lContext.propertyForKey('elementStyle')) ?
     //     this.sanitizer.bypassSecurityTrustStyle(lContext.propertyForKey('elementStyle')) :
     // null;
@@ -90,7 +90,7 @@ export class MetaElementListComponent extends MetaLayout {
 
 
   classString(name: string): any {
-    let lContext: Context = this.contextMap.get(name);
+    const lContext: Context = this.contextMap.get(name);
     return isPresent(lContext) ? lContext.propertyForKey('elementClass') : null;
   }
 }

@@ -55,24 +55,24 @@ describe('Describe basic page wrapper component ', () => {
   });
 
   it('should render object object page wrapper with title, header, footer', () => {
-    let fixtureWrapper = TestBed.createComponent(BasicPageWrapperTestComponent);
+    const fixtureWrapper = TestBed.createComponent(BasicPageWrapperTestComponent);
     fixtureWrapper.detectChanges();
 
 
-    let title = fixtureWrapper.nativeElement.querySelector('.page-title-text');
+    const title = fixtureWrapper.nativeElement.querySelector('.page-title-text');
     expect(title.textContent.trim()).toEqual('Object Page Title');
 
-    let header = fixtureWrapper.nativeElement.querySelectorAll('.page-header');
+    const header = fixtureWrapper.nativeElement.querySelectorAll('.page-header');
     expect(header.length).toEqual(1);
 
-    let footer = fixtureWrapper.nativeElement.querySelectorAll('.page-footer');
+    const footer = fixtureWrapper.nativeElement.querySelectorAll('.page-footer');
     expect(footer.length).toEqual(1);
 
     // verify object status and label.
-    let statusLabel = fixtureWrapper.nativeElement.querySelector('.object-status-label');
+    const statusLabel = fixtureWrapper.nativeElement.querySelector('.object-status-label');
     expect(statusLabel.textContent.trim()).toEqual('Event Status');
 
-    let status = fixtureWrapper.nativeElement.querySelector('.object-status');
+    const status = fixtureWrapper.nativeElement.querySelector('.object-status');
     expect(status.textContent.trim()).toEqual('Draft');
 
   });
@@ -80,16 +80,16 @@ describe('Describe basic page wrapper component ', () => {
 
   it('should render object page wrapper with page notification and buttons', () => {
 
-    let fixtureWrapper = TestBed.createComponent(ButtonAndNotificationPageWrapperTestComponent);
+    const fixtureWrapper = TestBed.createComponent(ButtonAndNotificationPageWrapperTestComponent);
     fixtureWrapper.detectChanges();
 
 
-    let buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
+    const buttons = fixtureWrapper.nativeElement.querySelectorAll('.ui-button');
     expect(buttons.length).toEqual(2);
     expect(buttons[0].textContent.trim()).toEqual('Edit');
     expect(buttons[1].textContent.trim()).toEqual('Cancel');
 
-    let notifications = fixtureWrapper.nativeElement.querySelectorAll('.page-notification');
+    const notifications = fixtureWrapper.nativeElement.querySelectorAll('.page-notification');
     expect(notifications.length).toEqual(1);
     expect(notifications[0].querySelector('.title').textContent.trim())
       .toEqual('Policy Warning');
@@ -97,10 +97,10 @@ describe('Describe basic page wrapper component ', () => {
 
   it('should render the page content with items put into the content area.',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(PageWrapperContentTestComponent);
+      const fixtureWrapper = TestBed.createComponent(PageWrapperContentTestComponent);
       fixtureWrapper.detectChanges();
 
-      let contents = fixtureWrapper.nativeElement.querySelectorAll('aw-page-content');
+      const contents = fixtureWrapper.nativeElement.querySelectorAll('aw-page-content');
       expect(contents.length).toEqual(1);
       expect(contents[0].textContent.trim()).toEqual('This is my page content Success');
     }));
@@ -108,17 +108,17 @@ describe('Describe basic page wrapper component ', () => {
 
   it('should respond on page when page action is triggered.', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(PageActionPageWrapperTestComponent);
+    const fixtureWrapper = TestBed.createComponent(PageActionPageWrapperTestComponent);
     fixtureWrapper.detectChanges();
 
-    let el = fixtureWrapper.nativeElement.querySelector('button');
+    const el = fixtureWrapper.nativeElement.querySelector('button');
     el.dispatchEvent(new Event('click'));
 
     fixtureWrapper.detectChanges();
     tick();
     fixtureWrapper.detectChanges();
 
-    let contents = fixtureWrapper.nativeElement.querySelectorAll('aw-page-content');
+    const contents = fixtureWrapper.nativeElement.querySelectorAll('aw-page-content');
     expect(contents.length).toEqual(1);
     expect(contents[0].textContent.trim()).toEqual('This is my page content edit');
 

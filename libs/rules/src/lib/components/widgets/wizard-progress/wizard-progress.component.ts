@@ -42,7 +42,7 @@ export class WizardProgressComponent {
 
   ngOnInit() {
     if (this.steps) {
-      let currentIndex = this.steps.indexOf(this.steps.filter(step => step.current)[0]);
+      const currentIndex = this.steps.indexOf(this.steps.filter(step => step.current)[0]);
       this.totalSteps = this.steps.length;
       this.setCurrentStep(~currentIndex ? currentIndex : 0);
     }
@@ -59,7 +59,7 @@ export class WizardProgressComponent {
       return;
     }
 
-    let currentIndex = this.steps.indexOf(this.steps.filter(step => step.current)[0]);
+    const currentIndex = this.steps.indexOf(this.steps.filter(step => step.current)[0]);
     this.steps[currentIndex].current = false;
 
     this.setCurrentStep(index);

@@ -19,7 +19,7 @@
 import {Component} from '@angular/core';
 import {
     DataProviders, DataFinders, QueryType, ArrayDataProvider, ChooserDataSource
-} from '@ngx-meta/rules';
+} from '@ngx-metaui/rules';
 
 @Component({
     templateUrl: './chooser-demo.component.html',

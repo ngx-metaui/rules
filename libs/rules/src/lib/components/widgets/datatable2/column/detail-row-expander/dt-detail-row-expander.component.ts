@@ -31,46 +31,41 @@ import {DTColumn2Component} from '../dt-column.component';
  *
  */
 @Component({
-    selector: 'aw-dt-detail-column-expand',
-    templateUrl: 'dt-detail-row-expander.component.html',
-    styleUrls: ['dt-detail-row-expander.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    providers: [DomHandler]
+  selector: 'aw-dt-detail-column-expand',
+  templateUrl: 'dt-detail-row-expander.component.html',
+  styleUrls: ['dt-detail-row-expander.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [DomHandler]
 
 })
-export class DTDetailRowExpanderComponent extends DTColumn2Component
-{
+export class DTDetailRowExpanderComponent extends DTColumn2Component {
 
-    constructor(public env: Environment, public domHandler: DomHandler)
-    {
-        super(env, domHandler);
+  constructor(public env: Environment, public domHandler: DomHandler) {
+    super(env, domHandler);
 
-        // we dont want to show the row/column unless application says so
-        this.isVisible = false;
+    // we dont want to show the row/column unless application says so
+    this.isVisible = false;
 
-        // default width of the selection control
-        this.width = '45px';
-    }
+    // default width of the selection control
+    this.width = '45px';
+  }
 
 
-    ngOnInit(): void
-    {
-        // just to get around the check in parent class
-        this.key = '';
+  ngOnInit(): void {
+    // just to get around the check in parent class
+    this.key = '';
 
-        super.ngOnInit();
-    }
+    super.ngOnInit();
+  }
 
-    toggleExpansion(event: any, item: any): void
-    {
-        this.dt.detailRowExpansionState.toggle(item);
-        event.stopPropagation();
-    }
+  toggleExpansion(event: any, item: any): void {
+    this.dt.detailRowExpansionState.toggle(item);
+    event.stopPropagation();
+  }
 
-    calculateStyleClass(item: any): string
-    {
-        return this.dt.detailRowExpansionState.isExpanded(item) ?
-            'icon-slim-arrow-down' : 'icon-slim-arrow-right';
-    }
+  calculateStyleClass(item: any): string {
+    return this.dt.detailRowExpansionState.isExpanded(item) ?
+      'icon-slim-arrow-down' : 'icon-slim-arrow-right';
+  }
 }
 

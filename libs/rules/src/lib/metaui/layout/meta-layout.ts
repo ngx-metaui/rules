@@ -110,7 +110,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
    */
   get allLayouts(): ItemProperties[] {
     if (isBlank(this._allLayouts)) {
-      let meta: UIMeta = <UIMeta> this.activeContext.meta;
+      const meta: UIMeta = <UIMeta> this.activeContext.meta;
       this._allLayouts = meta.itemList(this.activeContext, UIMeta.KeyLayout, this.zones());
       this.nameToLayout.clear();
 
@@ -127,7 +127,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
    */
   get layoutsByZones(): Map<string, any> {
     if (isBlank(this._layoutsByZones)) {
-      let meta: UIMeta = <UIMeta> this.activeContext.meta;
+      const meta: UIMeta = <UIMeta> this.activeContext.meta;
       this._layoutsByZones = meta.itemsByZones(this.activeContext, UIMeta.KeyLayout,
         this.zones());
     }
@@ -161,7 +161,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
 
 
   labelForContext(name: string): string {
-    let context: Context = this.contextMap.get(name);
+    const context: Context = this.contextMap.get(name);
     return super.aProperties(context, UIMeta.KeyLabel);
   }
 
@@ -177,7 +177,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   }
 
   debugString(name: string): string {
-    let context = this.contextMap.get(name);
+    const context = this.contextMap.get(name);
     assert(isPresent(context), 'Trying to retrive debugString on non-existing context');
 
     return context.debugString();

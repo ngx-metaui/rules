@@ -37,14 +37,15 @@ export class CurrencyFormatPipe implements PipeTransform {
   transform(value: string, ...args: any[]): any {
 
     // Default values
-    let currencyCode = 'USD', symbolDisplay = true, digits = '1.0-2';
+    let currencyCode = 'USD';
+    const symbolDisplay = true, digits = '1.0-2';
 
     if (!value || value.length === 0) {
       return value;
     }
 
     if (args && args.length > 0) {
-      let code = args[0];
+      const code = args[0];
       if (code && code.length > 0) {
         currencyCode = code;
       }

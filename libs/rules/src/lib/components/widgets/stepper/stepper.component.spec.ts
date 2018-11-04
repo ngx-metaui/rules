@@ -52,11 +52,11 @@ describe('Stepper component', () => {
   describe('methods', () => {
 
     it('should be able to go previous and next step with method()', fakeAsync(() => {
-      let colorCompleted = 'rgb(88, 185, 87)',
+      const colorCompleted = 'rgb(88, 185, 87)',
         colorCurrent = 'rgb(0, 118, 203)',
         colorRemaining = 'rgb(215, 215, 215)';
 
-      let fixtureWrapper = TestBed.createComponent(BasicStepperTestComponent);
+      const fixtureWrapper = TestBed.createComponent(BasicStepperTestComponent);
       fixtureWrapper.detectChanges();
 
       // verify current step
@@ -101,11 +101,11 @@ describe('Stepper component', () => {
     }));
 
     it('should be able to go previous and next step with button click action', fakeAsync(() => {
-      let colorCompleted = 'rgb(151, 168, 34)',
+      const colorCompleted = 'rgb(151, 168, 34)',
         colorCurrent = 'rgb(255, 153, 0)',
         colorRemaining = 'rgb(204, 0, 0)';
 
-      let fixtureWrapper = TestBed.createComponent(StepperWithColorsOverridenTestComponent);
+      const fixtureWrapper = TestBed.createComponent(StepperWithColorsOverridenTestComponent);
       fixtureWrapper.detectChanges();
 
       // verify current step
@@ -178,11 +178,11 @@ describe('Stepper component', () => {
     });
 
     it('should correctly have titles, colors, and number of steps displayed', () => {
-      let fixtureWrapper = TestBed.createComponent(BasicStepperTestComponent);
+      const fixtureWrapper = TestBed.createComponent(BasicStepperTestComponent);
       fixtureWrapper.detectChanges();
 
       // Verify three titles are correct.
-      let titles = fixtureWrapper.nativeElement.querySelectorAll('.step-title');
+      const titles = fixtureWrapper.nativeElement.querySelectorAll('.step-title');
       expect(titles.length).toEqual(3);
 
       expect(titles[0].textContent.trim()).toEqual('Monitor');
@@ -190,14 +190,14 @@ describe('Stepper component', () => {
       expect(titles[2].textContent.trim()).toEqual('Get Quote');
 
       // Verify that the colors are correct.
-      let colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
+      const colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
       expect(colors.length).toEqual(3);
 
       expect(borderColor(colors[0])).toEqual('rgb(88, 185, 87)');
       expect(borderColor(colors[1])).toEqual('rgb(0, 118, 203)');
       expect(borderColor(colors[2])).toEqual('rgb(215, 215, 215)');
 
-      let steps = fixtureWrapper.nativeElement.querySelectorAll('.step-container');
+      const steps = fixtureWrapper.nativeElement.querySelectorAll('.step-container');
 
       // ensure all the steps are present.
       expect(steps.length).toEqual(3);
@@ -209,11 +209,11 @@ describe('Stepper component', () => {
 
 
     it('should display with custom color when colors are overriden', () => {
-      let fixtureWrapper = TestBed.createComponent(StepperWithColorsOverridenTestComponent);
+      const fixtureWrapper = TestBed.createComponent(StepperWithColorsOverridenTestComponent);
       fixtureWrapper.detectChanges();
 
       // ensure all the steps are present.
-      let steps = fixtureWrapper.nativeElement.querySelectorAll('.step-container');
+      const steps = fixtureWrapper.nativeElement.querySelectorAll('.step-container');
       expect(steps.length).toEqual(5);
 
       // Check default variables are  initialized correctly.
@@ -221,7 +221,7 @@ describe('Stepper component', () => {
       expect(fixtureWrapper.componentInstance.stepper.currentStep).toBe(2);
 
       // Get the colors
-      let colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
+      const colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
       expect(colors.length).toEqual(5);
 
       // Current step is 2, so the first two have completed colors.
@@ -240,11 +240,11 @@ describe('Stepper component', () => {
 
     it('should display with color array when colors array are provided.', fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(StepperWithColorArrayTestComponent);
+      const fixtureWrapper = TestBed.createComponent(StepperWithColorArrayTestComponent);
       fixtureWrapper.detectChanges();
 
       // ensure all the steps are present.
-      let steps = fixtureWrapper.nativeElement.querySelectorAll('.step-container');
+      const steps = fixtureWrapper.nativeElement.querySelectorAll('.step-container');
       expect(steps.length).toEqual(6);
 
       // Check default variables are  initialized correctly.
@@ -252,7 +252,7 @@ describe('Stepper component', () => {
       expect(fixtureWrapper.componentInstance.stepper.currentStep).toBe(0);
 
       // Get the colors
-      let colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
+      const colors = fixtureWrapper.nativeElement.querySelectorAll('.outer-circle');
       expect(colors.length).toEqual(6);
 
       expect(borderColor(colors[0])).toEqual('rgb(0, 153, 153)');
@@ -267,7 +267,7 @@ describe('Stepper component', () => {
 
 
 function borderColor(element: any) {
-  let computedStyle = getComputedStyle(element);
+  const computedStyle = getComputedStyle(element);
 
   return computedStyle.borderColor !== '' ? computedStyle.borderColor :
     computedStyle.borderBottomColor;

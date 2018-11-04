@@ -58,11 +58,11 @@ describe('Component: List', () => {
 
 
     it('render list with 3 items default single selection mode ', () => {
-      let fixtureWrapper = TestBed.createComponent(TestListSimpleComponent);
+      const fixtureWrapper = TestBed.createComponent(TestListSimpleComponent);
       fixtureWrapper.detectChanges();
 
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-wrapper');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-wrapper');
       expect(items.length).toBe(3);
 
     });
@@ -70,11 +70,11 @@ describe('Component: List', () => {
 
     it('can select only 1 item at the time when single selection mode is enabled ',
       fakeAsync(() => {
-        let fixtureWrapper = TestBed.createComponent(TestListSimpleComponent);
+        const fixtureWrapper = TestBed.createComponent(TestListSimpleComponent);
         fixtureWrapper.detectChanges();
 
 
-        let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
+        const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
         items[0].click();
 
         tick();
@@ -94,10 +94,10 @@ describe('Component: List', () => {
 
     it('render list 3 item and multiselection mode so that checkboxes are not visible ',
       fakeAsync(() => {
-        let fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
+        const fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
         fixtureWrapper.detectChanges();
 
-        let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-left input');
+        const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-left input');
 
         expect(items.length).toBe(0);
         expect(fixtureWrapper.componentInstance.list.selectionMode).toBe('multi');
@@ -106,11 +106,11 @@ describe('Component: List', () => {
 
 
     it('render list 3 item and multiselection with visible checkboxes', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
+      const fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
       fixtureWrapper.componentInstance.mode = 'multiWithCheckbox';
       fixtureWrapper.detectChanges();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-left input');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-left input');
 
       expect(items.length).toBe(3);
       expect(fixtureWrapper.componentInstance.list.selectionMode).toBe('multiWithCheckbox');
@@ -118,10 +118,10 @@ describe('Component: List', () => {
     }));
 
     it('can select multiple item when multi selection mode is enabled', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
+      const fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
       fixtureWrapper.detectChanges();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
       items[0].click();
       //    tick there is a problem that is fixed in new version
       // in writeValue there needs to be call markFor.. inside Plistbox
@@ -143,7 +143,7 @@ describe('Component: List', () => {
 
 
     it('should throw error when [list] binding is not provided', () => {
-      let fixtureWrapper = TestBed.createComponent(TestListBindingComponent);
+      const fixtureWrapper = TestBed.createComponent(TestListBindingComponent);
 
       expect(() => fixtureWrapper.detectChanges())
         .toThrowError('Missing [list] binding.');
@@ -151,7 +151,7 @@ describe('Component: List', () => {
     });
 
     it('should throw error when it has [field] and [valueTransformer] bindings ', () => {
-      let fixtureWrapper = TestBed.createComponent(TestFieldValueTransformBindingComponent);
+      const fixtureWrapper = TestBed.createComponent(TestFieldValueTransformBindingComponent);
 
       expect(() => fixtureWrapper.detectChanges())
         .toThrowError('You can have either [field] or [valueTransformer].');
@@ -160,7 +160,7 @@ describe('Component: List', () => {
 
 
     it('render list with 3 items and  1st item selected ', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestWithPreselectedItemMultiComponent);
+      const fixtureWrapper = TestBed.createComponent(TestWithPreselectedItemMultiComponent);
       fixtureWrapper.detectChanges();
 
       tick();
@@ -170,7 +170,7 @@ describe('Component: List', () => {
       fixtureWrapper.detectChanges();
 
 
-      let items = fixtureWrapper.nativeElement
+      const items = fixtureWrapper.nativeElement
         .querySelectorAll('.w-li-wrapper .ui-chkbox-icon');
       expect(items.length).toBe(3);
       expect(fixtureWrapper.componentInstance.list.selection[0]).toBe('Monday');
@@ -180,10 +180,10 @@ describe('Component: List', () => {
 
 
     it(' should set the height style on the top level element ', () => {
-      let fixtureWrapper = TestBed.createComponent(TestHeightWidthForListComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHeightWidthForListComponent);
       fixtureWrapper.detectChanges();
 
-      let listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
+      const listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
 
       // computed styles does not work on Travis so I just need to check if the style
       // was properly set onto the element
@@ -194,46 +194,46 @@ describe('Component: List', () => {
     });
 
     it('should set the with style on the top level element ', () => {
-      let fixtureWrapper = TestBed.createComponent(TestHeightWidthForListComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHeightWidthForListComponent);
       fixtureWrapper.detectChanges();
 
-      let listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
-      let computedStyle = getComputedStyle(listbox);
+      const listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
+      const computedStyle = getComputedStyle(listbox);
 
       expect(listbox.attributes.style.textContent.indexOf('width: 150px;') !== -1)
         .toBeTruthy();
     });
 
     it('should change overflow-y to auto when height is used ', () => {
-      let fixtureWrapper = TestBed.createComponent(TestHeightWidthForListComponent);
+      const fixtureWrapper = TestBed.createComponent(TestHeightWidthForListComponent);
       fixtureWrapper.detectChanges();
 
-      let listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
-      let computedStyle = getComputedStyle(listbox);
+      const listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
+      const computedStyle = getComputedStyle(listbox);
 
       expect(computedStyle.overflowY).toBe('auto');
     });
 
     it('hides LIST border when [borderless] is set to TRUE', () => {
-      let fixtureWrapper = TestBed.createComponent(TestListSimpleComponent);
+      const fixtureWrapper = TestBed.createComponent(TestListSimpleComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.componentInstance.noBorder = true;
 
       fixtureWrapper.detectChanges();
 
-      let listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
+      const listbox = fixtureWrapper.nativeElement.querySelector('.ui-listbox');
 
       expect(borderColor(listbox)).toBe('rgb(0, 0, 0)');
     });
 
 
     it('triggers onSelection event when item is clicked', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
+      const fixtureWrapper = TestBed.createComponent(TestListMultiComponent);
       fixtureWrapper.detectChanges();
 
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
       items[1].click();
 
       tick();
@@ -244,12 +244,12 @@ describe('Component: List', () => {
 
 
     it('prefixes list items with XXX when valueTransformer is used', () => {
-      let fixtureWrapper = TestBed.createComponent(TestFieldValueTransformBindingComponent);
+      const fixtureWrapper = TestBed.createComponent(TestFieldValueTransformBindingComponent);
       fixtureWrapper.componentInstance.field = null;
       fixtureWrapper.detectChanges();
 
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
       expect(items[1].textContent.trim()).toBe('XXX-Tuesday');
     });
 
@@ -259,7 +259,7 @@ describe('Component: List', () => {
 
   describe('Support for [(ngModel)]', () => {
     it('initialize list selection using [(ngModel)]', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestNgModelOnListBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestNgModelOnListBoxComponent);
       fixtureWrapper.detectChanges();
 
       tick();
@@ -273,13 +273,13 @@ describe('Component: List', () => {
 
     it('propagates selection to [(ngModel)] when item is clicked', fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestNgModelOnListBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestNgModelOnListBoxComponent);
       fixtureWrapper.detectChanges();
 
       tick();
       fixtureWrapper.detectChanges();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
       items[1].click();
 
       tick();
@@ -301,7 +301,7 @@ describe('Component: List', () => {
 
   describe('Support for FormGroup', () => {
     it('initialize list selection using Initialized FormGroup', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestFormControlOnListBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestFormControlOnListBoxComponent);
       fixtureWrapper.detectChanges();
 
       tick();
@@ -315,13 +315,13 @@ describe('Component: List', () => {
     }));
 
     it('propagates selection to FormControl when item is clicked', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestFormControlOnListBoxComponent);
+      const fixtureWrapper = TestBed.createComponent(TestFormControlOnListBoxComponent);
       fixtureWrapper.detectChanges();
 
       tick();
       fixtureWrapper.detectChanges();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-middle');
       items[1].click();
 
       tick();
@@ -344,34 +344,34 @@ describe('Component: List', () => {
   describe('Custom templates to override list item', () => {
 
     it('renders LEFT zone with custom template', () => {
-      let fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
+      const fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
       fixtureWrapper.detectChanges();
 
-      let selector = fixtureWrapper.nativeElement.querySelector('.w-li-left');
+      const selector = fixtureWrapper.nativeElement.querySelector('.w-li-left');
       expect(selector.textContent.trim()).toBe('I am Left');
     });
 
     it('renders MIDDLE zone with custom template', () => {
-      let fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
+      const fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
       fixtureWrapper.detectChanges();
 
-      let selector = fixtureWrapper.nativeElement.querySelector('.w-li-middle');
+      const selector = fixtureWrapper.nativeElement.querySelector('.w-li-middle');
       expect(selector.textContent.trim()).toBe('M-Monday');
     });
 
 
     it('renders RIGHT zone with custom template', () => {
-      let fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
+      const fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
       fixtureWrapper.detectChanges();
 
-      let selector = fixtureWrapper.nativeElement.querySelector('.w-li-right');
+      const selector = fixtureWrapper.nativeElement.querySelector('.w-li-right');
       expect(selector.textContent.trim()).toBe('I am Right');
     });
 
 
     it('can provide custom behavior to show check mark in the right if item ' +
       'is selected', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
+      const fixtureWrapper = TestBed.createComponent(TestZonesForListComponent);
       fixtureWrapper.detectChanges();
 
       tick();
@@ -380,7 +380,7 @@ describe('Component: List', () => {
       tick();
       fixtureWrapper.detectChanges();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-right .sap-icon');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.w-li-right .sap-icon');
       expect(items[0].classList).toContain('icon-accept');
       expect(items[1].classList).not.toContain('icon-accept');
       expect(items[2].classList).not.toContain('icon-accept');
@@ -391,17 +391,17 @@ describe('Component: List', () => {
 });
 
 function dumpComputedStyles(cs: any) {
-  let len = cs.length;
+  const len = cs.length;
   for (let i = 0; i < len; i++) {
 
-    let style = cs[i];
+    const style = cs[i];
     console.log(style + ' : ' + cs.getPropertyValue(style));
   }
 
 }
 
 function borderColor(element: any) {
-  let computedStyle = getComputedStyle(element);
+  const computedStyle = getComputedStyle(element);
 
   return computedStyle.borderColor !== '' ? computedStyle.borderColor :
     computedStyle.borderBottomColor;
@@ -601,7 +601,7 @@ class TestFormControlOnListBoxComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let formControl = new FormControl();
+    const formControl = new FormControl();
     formControl.setValue(this.selectedItems);
 
     this.fg.addControl('weekdays', formControl);

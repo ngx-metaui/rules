@@ -37,7 +37,7 @@ export class ComponentRegistry {
 
   initialize(references: any): Promise<any> {
     this.registerTypes(references);
-    let promise: Promise<any> = new Promise((resolve: any) => {
+    const promise: Promise<any> = new Promise((resolve: any) => {
       resolve(true);
     });
     return promise;

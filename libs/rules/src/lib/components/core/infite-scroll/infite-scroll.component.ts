@@ -198,9 +198,9 @@ export class InfiniteScrollComponent implements OnInit, AfterContentInit {
     }
 
     this._lastCheck = ev.timeStamp;
-    let scrollTop = this.scrollTop();
+    const scrollTop = this.scrollTop();
 
-    let winHeight = this.domUtils.browserDimentions().height;
+    const winHeight = this.domUtils.browserDimentions().height;
     const height = Math.max(this._docBody.scrollHeight, this._docBody.offsetHeight,
       winHeight, this._content.scrollHeight, this._content.offsetHeight);
 
@@ -209,7 +209,7 @@ export class InfiniteScrollComponent implements OnInit, AfterContentInit {
       return;
     }
     const threshold = this._thrPc ? (height * this._thrPc) : this._thrPx;
-    let distanceFromInfinite = this._content.scrollHeight - winHeight - scrollTop - threshold;
+    const distanceFromInfinite = this._content.scrollHeight - winHeight - scrollTop - threshold;
 
     // console.log('Document height (' + height + ') , Distance from bottom '
     // + distanceFromInfinite + ',  => threshold = ' +

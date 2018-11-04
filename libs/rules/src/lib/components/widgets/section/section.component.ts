@@ -331,7 +331,7 @@ export class SectionComponent extends BaseComponent {
     // which needs to be handled by developer and only then change the editState
     if (!this.editState) {
       this.editState = !this.editState;
-      let state: string = (this.editState) ? 'inEdit' : 'notInEdit';
+      const state: string = (this.editState) ? 'inEdit' : 'notInEdit';
 
       this.onEdit.emit(state);
       this.open();

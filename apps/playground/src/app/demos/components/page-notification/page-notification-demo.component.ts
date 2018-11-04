@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {PageNotification} from '@ngx-meta/rules';
+import {PageNotification} from '@ngx-metaui/rules';
 
 @Component({
     templateUrl: './page-notification-demo.component.html',

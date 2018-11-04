@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {EditorType} from '@ngx-meta/rules';
+import {EditorType} from '@ngx-metaui/rules';
 
 @Component({
     templateUrl: './texteditor-demo.component.html',

@@ -17,7 +17,7 @@
  *
  */
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {Entity, Environment, isPresent, OutlineNode} from '@ngx-meta/rules';
+import {Entity, Environment, isPresent, OutlineNode} from '@ngx-metaui/rules';
 
 
 @Component({

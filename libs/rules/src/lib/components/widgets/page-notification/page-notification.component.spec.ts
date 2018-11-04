@@ -52,7 +52,7 @@ describe('Page Notification component behavior', () => {
 
 
   it('It should have the title, description and style for a success notification', () => {
-    let fixtureWrapper = TestBed.createComponent(PageNotificationSuccessComponent);
+    const fixtureWrapper = TestBed.createComponent(PageNotificationSuccessComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.notification.notification.type).toEqual('success');
@@ -62,12 +62,12 @@ describe('Page Notification component behavior', () => {
       .toEqual('This request has been saved.');
 
     // Make sure the icon is there.
-    let icon = fixtureWrapper.debugElement.query(By.css('.icon-success'));
+    const icon = fixtureWrapper.debugElement.query(By.css('.icon-success'));
     expect(icon.nativeElement).toBeDefined();
   });
 
   it('It should have the title, description and style for a information notification', () => {
-    let fixtureWrapper = TestBed.createComponent(PageNotificationInfoComponent);
+    const fixtureWrapper = TestBed.createComponent(PageNotificationInfoComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.notification.notification.type).toEqual('info');
@@ -77,12 +77,12 @@ describe('Page Notification component behavior', () => {
       .toEqual('Use the community panel to help you with your questions.');
 
     // Make sure the icon is there.
-    let icon = fixtureWrapper.debugElement.query(By.css('.icon-info'));
+    const icon = fixtureWrapper.debugElement.query(By.css('.icon-info'));
     expect(icon.nativeElement).toBeDefined();
   });
 
   it('It should have the title, description and style for a warning notification', () => {
-    let fixtureWrapper = TestBed.createComponent(PageNotificationWarningComponent);
+    const fixtureWrapper = TestBed.createComponent(PageNotificationWarningComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.notification.notification.type)
@@ -93,12 +93,12 @@ describe('Page Notification component behavior', () => {
       .toEqual('This request requires 3 bids.');
 
     // Make sure the icon is there.
-    let icon = fixtureWrapper.debugElement.query(By.css('.icon-warning'));
+    const icon = fixtureWrapper.debugElement.query(By.css('.icon-warning'));
     expect(icon.nativeElement).toBeDefined();
   });
 
   it('It should have the title, description and style for a error notification', () => {
-    let fixtureWrapper = TestBed.createComponent(PageNotificationErrorComponent);
+    const fixtureWrapper = TestBed.createComponent(PageNotificationErrorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.notification.notification.type).toEqual('error');
@@ -108,19 +108,19 @@ describe('Page Notification component behavior', () => {
       .toEqual('The server is offline!');
 
     // Make sure the icon is there.
-    let icon = fixtureWrapper.debugElement.query(By.css('.icon-error'));
+    const icon = fixtureWrapper.debugElement.query(By.css('.icon-error'));
     expect(icon.nativeElement).toBeDefined();
   });
 
 
   it('should render notification with custom content', () => {
-    let fixtureWrapper = TestBed.createComponent(PageNotificationWithCustomTemplComponent);
+    const fixtureWrapper = TestBed.createComponent(PageNotificationWithCustomTemplComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.notification.notification.contentTmpl)
       .toBeDefined();
 
-    let templ = fixtureWrapper.nativeElement.querySelector('.my-noti-cnt');
+    const templ = fixtureWrapper.nativeElement.querySelector('.my-noti-cnt');
     expect(templ).toBeDefined();
   });
 

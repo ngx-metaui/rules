@@ -212,13 +212,12 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
   /**
    * For any other immutable object detect changes here and refresh the context stack
    *
-   * @param changes
    */
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     // console.log(this.indent() + '    => ngOnChanges', this.contextKey());
 
 
-    for (let name of IMMUTABLE_PROPERTIES) {
+    for (const name of IMMUTABLE_PROPERTIES) {
       if (isPresent(changes[name])
         && (changes[name].currentValue !== changes[name].previousValue)) {
         this.initBindings();
@@ -296,16 +295,16 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    *
    * myContext is current context for this MetaContext Component.
    *
-   * @param isPush identifies if we are pushing or popping to context stack
+   *    isPush identifies if we are pushing or popping to context stack
    */
   private pushPop(isPush: boolean): void {
     // console.log(this.indent() + '=> pushPop: isPush' + isPush, this.contextKey());
     let activeContext: Context = this.activeContext();
     assert(isPush || isPresent(activeContext), 'pop(): Missing context');
 
-    let forceCreate = isPush && (isPresent(this.pushNewContext) && this.pushNewContext);
+    const forceCreate = isPush && (isPresent(this.pushNewContext) && this.pushNewContext);
     if (isBlank(activeContext) || forceCreate) {
-      let metaUI = UIMeta.getInstance();
+      const metaUI = UIMeta.getInstance();
       activeContext = metaUI.newContext(forceCreate);
 
       this.contextCreated = true;
@@ -324,8 +323,8 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
       } else {
         for (let index = 0; index < this.bindingKeys.length; index++) {
 
-          let key = this.bindingKeys[index];
-          let value = this.bindingsMap.get(key);
+          const key = this.bindingKeys[index];
+          const value = this.bindingsMap.get(key);
 
           this.beforeContextSet.emit(value);
           activeContext.set(key, value);
@@ -421,11 +420,11 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    */
   private initBindings() {
     this.bindingsMap = new Map<string, any>();
-    let nativeElement = this.elementRef.nativeElement;
+    const nativeElement = this.elementRef.nativeElement;
 
     this.initImplicitBindings();
     for (let i = 0; i < nativeElement.attributes.length; i++) {
-      let attr: Attr = nativeElement.attributes.item(i);
+      const attr: Attr = nativeElement.attributes.item(i);
       if (this.ignoreBinding(attr)) {
         continue;
       }
@@ -501,9 +500,9 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    * changes and updates in metaui use object references
    */
   private updateModel() {
-    let fields = Object.keys(this.object);
+    const fields = Object.keys(this.object);
     fields.forEach((field: string) => {
-      let control: FormControl = <FormControl> this.formGroup.get(field);
+      const control: FormControl = <FormControl> this.formGroup.get(field);
       if (isPresent(control)) {
         control.patchValue(this.object[field], {onlySelf: false, emitEvent: true});
       }
@@ -514,7 +513,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
 
 
   private _hasObject(): boolean {
-    let context = this.activeContext();
+    const context = this.activeContext();
     if (isPresent(context)) {
       return isPresent((<UIContext> context).object);
     }

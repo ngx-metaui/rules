@@ -26,9 +26,8 @@ import {Component} from '@angular/core';
  * See {@link DataTableComponent} for more explanation.
  */
 @Component({
-    selector: 'aw-dt-header2',
-    template: '<ng-content></ng-content>'
+  selector: 'aw-dt-header2',
+  template: '<ng-content></ng-content>'
 })
-export class DTHeaderComponent2
-{
+export class DTHeaderComponent2 {
 }

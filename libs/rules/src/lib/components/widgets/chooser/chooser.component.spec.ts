@@ -66,14 +66,14 @@ describe('Component: Chooser ', () => {
   it(' should render empty input box when chooser is rendered ',
     () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
+      const fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
       fixtureWrapper.detectChanges();
 
 
-      let chooser = fixtureWrapper.componentInstance.chooser;
-      let initValue = chooser.internalChooserModel;
+      const chooser = fixtureWrapper.componentInstance.chooser;
+      const initValue = chooser.internalChooserModel;
 
-      let dd = fixtureWrapper.nativeElement.querySelector(
+      const dd = fixtureWrapper.nativeElement.querySelector(
         '.ui-autocomplete-input-token > input');
 
 
@@ -84,7 +84,7 @@ describe('Component: Chooser ', () => {
 
   it('should show chooser popup with two choices when I type /bl/', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
+    const fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
     fixtureWrapper.detectChanges();
 
     sendInput(fixtureWrapper.nativeElement, fixtureWrapper, 'bl');
@@ -96,7 +96,7 @@ describe('Component: Chooser ', () => {
     fixtureWrapper.detectChanges();
 
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-list-item');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-list-item');
 
     flushMicrotasks();
     flushPendingTimers();
@@ -108,7 +108,7 @@ describe('Component: Chooser ', () => {
   it('should should format each value with custom formatter so it prefix each item with xx-',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
+      const fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
       fixtureWrapper.detectChanges();
 
       sendInput(fixtureWrapper.nativeElement, fixtureWrapper, 'bl');
@@ -118,7 +118,7 @@ describe('Component: Chooser ', () => {
       flushMicrotasks();
       flushPendingTimers();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll(
+      const items = fixtureWrapper.nativeElement.querySelectorAll(
         '.ui-autocomplete-list-item');
       expect(items.length).toEqual(2);
       expect(items[0].textContent.indexOf('xx-')).toBeGreaterThan(0);
@@ -126,10 +126,10 @@ describe('Component: Chooser ', () => {
     }));
 
   it(' should match /bl/  among values and return list of 2 matches', () => {
-    let fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
+    const fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
     fixtureWrapper.detectChanges();
 
-    let chooser = fixtureWrapper.componentInstance.chooser;
+    const chooser = fixtureWrapper.componentInstance.chooser;
     chooser.match('bl');
 
     expect(chooser.dataSource.state.matches.length).toEqual(2);
@@ -137,7 +137,7 @@ describe('Component: Chooser ', () => {
 
   it('it should clear search input box when item is selected', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
+    const fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
     fixtureWrapper.detectChanges();
 
 
@@ -150,7 +150,7 @@ describe('Component: Chooser ', () => {
     flushMicrotasks();
     flushPendingTimers();
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-list-item');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-list-item');
     expect(items.length).toEqual(2);
 
     items[0].click();
@@ -158,7 +158,7 @@ describe('Component: Chooser ', () => {
     tick();
 
 
-    let input = chooserInput(fixtureWrapper.nativeElement);
+    const input = chooserInput(fixtureWrapper.nativeElement);
     expect(input.value).toEqual('');
 
     flushMicrotasks();
@@ -169,7 +169,7 @@ describe('Component: Chooser ', () => {
   it('should render all matches with show more when  SELECTION < MaxRecentSelected',
     fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
+      const fixtureWrapper = TestBed.createComponent(TestChooserBasicComponent);
       fixtureWrapper.detectChanges();
 
 
@@ -178,7 +178,7 @@ describe('Component: Chooser ', () => {
       tick();
       fixtureWrapper.detectChanges();
 
-      let hasShowMore = fixtureWrapper.nativeElement.querySelector('.more-selected');
+      const hasShowMore = fixtureWrapper.nativeElement.querySelector('.more-selected');
       // is closed
       expect(hasShowMore).toBeNull();
 
@@ -186,7 +186,7 @@ describe('Component: Chooser ', () => {
 
 
   it('should fail to initialize when dataSource and destination class are missing', () => {
-    let fixtureWrapper = TestBed.createComponent(TestChooserErrorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestChooserErrorComponent);
 
     expect(() => fixtureWrapper.detectChanges())
       .toThrowError(/You need to provide destinationClass or custom DataSource/);
@@ -195,10 +195,10 @@ describe('Component: Chooser ', () => {
 
   it('should render selection with SHOWMORE link when the selection is > MaxRecentSelected',
     () => {
-      let fixtureWrapper = TestBed.createComponent(TestChooserRenderComponent);
+      const fixtureWrapper = TestBed.createComponent(TestChooserRenderComponent);
       fixtureWrapper.detectChanges();
 
-      let hasShowMore = fixtureWrapper.nativeElement
+      const hasShowMore = fixtureWrapper.nativeElement
         .querySelector('.ui-autocomplete-list-item');
 
       // is closed
@@ -208,11 +208,11 @@ describe('Component: Chooser ', () => {
 
   it('should render selection with custom css class tag-circle', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestChooserWCustomTemplComponent);
+    const fixtureWrapper = TestBed.createComponent(TestChooserWCustomTemplComponent);
     fixtureWrapper.detectChanges();
 
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.tag-circle');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.tag-circle');
     expect(items.length).toEqual(3);
 
   });
@@ -220,14 +220,14 @@ describe('Component: Chooser ', () => {
 
   it('should show selected value inside actual input box', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestChooserBasicSingleComponent);
+    const fixtureWrapper = TestBed.createComponent(TestChooserBasicSingleComponent);
     fixtureWrapper.detectChanges();
 
-    let chooserComponent = fixtureWrapper.componentInstance.chooser;
+    const chooserComponent = fixtureWrapper.componentInstance.chooser;
     chooserComponent.dataSource.state.selectionState.setSelectionState('blue', true);
     fixtureWrapper.detectChanges();
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-token-icon');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-token-icon');
 
     expect(items.length).toEqual(0);
   });
@@ -235,7 +235,7 @@ describe('Component: Chooser ', () => {
 
   it('should should render data from DataProvider registered under MyInvoice class',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestChooserWithDestinationClassComponent);
+      const fixtureWrapper = TestBed.createComponent(TestChooserWithDestinationClassComponent);
       fixtureWrapper.detectChanges();
 
       sendInput(fixtureWrapper.nativeElement, fixtureWrapper, '11');
@@ -245,21 +245,21 @@ describe('Component: Chooser ', () => {
       flushMicrotasks();
       flushPendingTimers();
 
-      let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-list-item');
+      const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-autocomplete-list-item');
       expect(items.length).toEqual(2);
     }));
 
 
   it('should render selection outside a Chooser. Inside the .selection-test" ',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestChooserWithDetachedSelectionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestChooserWithDetachedSelectionComponent);
       fixtureWrapper.detectChanges();
 
       tick();
       fixtureWrapper.detectChanges();
 
 
-      let selections = fixtureWrapper.nativeElement
+      const selections = fixtureWrapper.nativeElement
         .querySelectorAll('.selection-test .w-chooser-selections .ui-autocomplete-token');
       expect(selections).toBeDefined();
       expect(selections.length).toBe(1);
@@ -288,14 +288,14 @@ function sendKeyDownEvent(debugElement: any, key: number) {
 
 
 function chooserInput(nativeElement: any) {
-  let input = nativeElement.querySelector('.ui-autocomplete-input-token > input');
+  const input = nativeElement.querySelector('.ui-autocomplete-input-token > input');
 
   return isPresent(input) ? input : nativeElement.querySelector('.ui-autocomplete-dd-input');
 }
 
 
 function sendInput(nativeElement: any, fixture: any, text: string) {
-  let inputElement = chooserInput(nativeElement);
+  const inputElement = chooserInput(nativeElement);
   inputElement.value = text;
 
   inputElement.dispatchEvent(new Event('keydown'));
@@ -310,7 +310,7 @@ function sendInput(nativeElement: any, fixture: any, text: string) {
  */
 function flushPendingTimers() {
 
-  let zone: any = readGlobalParam('Zone');
+  const zone: any = readGlobalParam('Zone');
 
   if (isPresent(zone) &&
     isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {

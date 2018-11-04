@@ -60,7 +60,7 @@ describe('Form Table behavior ', () => {
     it(' should be editable by default and labelsOnTop should be FALSE, useFiveZone should ' +
       'be false', () => {
 
-      let fixtureWrapper = TestBed.createComponent(OneColLayoutTestComponent);
+      const fixtureWrapper = TestBed.createComponent(OneColLayoutTestComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.formTable.editable).toBeTruthy();
@@ -72,12 +72,12 @@ describe('Form Table behavior ', () => {
     it(' should render component wrapped in Form and layout in 2 columns 1 for labels and 1 ' +
       'for control', () => {
 
-      let fixtureWrapper = TestBed.createComponent(OneColLayoutTestComponent);
+      const fixtureWrapper = TestBed.createComponent(OneColLayoutTestComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.formTable.useFiveZone).toBeFalsy();
 
-      let formRow = fixtureWrapper.nativeElement.querySelectorAll('.w-form-row');
+      const formRow = fixtureWrapper.nativeElement.querySelectorAll('.w-form-row');
       expect(formRow).toBeDefined();
       expect(formRow.length).toBe(2);
 
@@ -96,12 +96,12 @@ describe('Form Table behavior ', () => {
 
 
     it(' it should render 12 columns for control when labelsOnTop is TRUE', () => {
-      let fixtureWrapper = TestBed.createComponent(OneColLayoutTestComponent);
+      const fixtureWrapper = TestBed.createComponent(OneColLayoutTestComponent);
       fixtureWrapper.componentInstance.labelsOnTop = true;
       fixtureWrapper.detectChanges();
 
 
-      let formRow = fixtureWrapper.nativeElement.querySelectorAll('.w-form-row');
+      const formRow = fixtureWrapper.nativeElement.querySelectorAll('.w-form-row');
 
       expect(formRow).toBeDefined();
       expect(formRow.length).toBe(2);
@@ -119,7 +119,7 @@ describe('Form Table behavior ', () => {
     it(' it should have default zone zLeft defauled when we have 5 zone layout and nothing ' +
       'is passed in', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TwoColLayoutTestComponent);
+      const fixtureWrapper = TestBed.createComponent(TwoColLayoutTestComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.formTable.useFiveZone).toBeTruthy();
@@ -128,13 +128,13 @@ describe('Form Table behavior ', () => {
 
     it(' it should render controls in two column layout', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TwoColLayoutTestComponent);
+      const fixtureWrapper = TestBed.createComponent(TwoColLayoutTestComponent);
       fixtureWrapper.detectChanges();
 
-      let left = fixtureWrapper.nativeElement.querySelectorAll('aw-left');
-      let right = fixtureWrapper.nativeElement.querySelectorAll('aw-right');
-      let top = fixtureWrapper.nativeElement.querySelectorAll('aw-top');
-      let bottom = fixtureWrapper.nativeElement.querySelectorAll('aw-bottom');
+      const left = fixtureWrapper.nativeElement.querySelectorAll('aw-left');
+      const right = fixtureWrapper.nativeElement.querySelectorAll('aw-right');
+      const top = fixtureWrapper.nativeElement.querySelectorAll('aw-top');
+      const bottom = fixtureWrapper.nativeElement.querySelectorAll('aw-bottom');
 
       expect(left.length).toEqual(1);
       expect(right.length).toEqual(1);
@@ -146,15 +146,15 @@ describe('Form Table behavior ', () => {
 
     it(' it should render controls in two column layout and Top zone', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TwoColAndTopLayoutTestComponent);
+      const fixtureWrapper = TestBed.createComponent(TwoColAndTopLayoutTestComponent);
       fixtureWrapper.detectChanges();
 
       fixtureWrapper.detectChanges();
 
-      let left = fixtureWrapper.nativeElement.querySelectorAll('aw-left');
-      let right = fixtureWrapper.nativeElement.querySelectorAll('aw-right');
-      let top = fixtureWrapper.nativeElement.querySelectorAll('aw-top');
-      let bottom = fixtureWrapper.nativeElement.querySelectorAll('aw-bottom');
+      const left = fixtureWrapper.nativeElement.querySelectorAll('aw-left');
+      const right = fixtureWrapper.nativeElement.querySelectorAll('aw-right');
+      const top = fixtureWrapper.nativeElement.querySelectorAll('aw-top');
+      const bottom = fixtureWrapper.nativeElement.querySelectorAll('aw-bottom');
 
       expect(left.length).toEqual(1);
       expect(right.length).toEqual(1);
@@ -165,13 +165,13 @@ describe('Form Table behavior ', () => {
 
     it(' it should render controls in two rows with zones top and bottom', () => {
 
-      let fixtureWrapper = TestBed.createComponent(TopBottomTestComponent);
+      const fixtureWrapper = TestBed.createComponent(TopBottomTestComponent);
       fixtureWrapper.detectChanges();
 
 
-      let left = fixtureWrapper.nativeElement.querySelectorAll('aw-left');
-      let right = fixtureWrapper.nativeElement.querySelectorAll('aw-right');
-      let top = fixtureWrapper.nativeElement.querySelectorAll('aw-top');
+      const left = fixtureWrapper.nativeElement.querySelectorAll('aw-left');
+      const right = fixtureWrapper.nativeElement.querySelectorAll('aw-right');
+      const top = fixtureWrapper.nativeElement.querySelectorAll('aw-top');
 
       expect(left.length).toEqual(0);
       expect(right.length).toEqual(0);
@@ -182,7 +182,7 @@ describe('Form Table behavior ', () => {
     it(' should  says TRUE when calling hasTwoColumns when we have LEFT, RIGHT columns' +
       ' present', fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(TwoColLayoutTestComponent);
+      const fixtureWrapper = TestBed.createComponent(TwoColLayoutTestComponent);
       fixtureWrapper.detectChanges();
 
       tick();
@@ -197,7 +197,7 @@ describe('Form Table behavior ', () => {
   describe('FormTable row level validation', () => {
     it('should apply correct maxLength validation and set FormControl.valid property',
       async(() => {
-        let fixtureWrapper =
+        const fixtureWrapper =
           TestBed.createComponent(RowValidationWithInputFieldTestComponent);
         fixtureWrapper.componentInstance.type = 1;
         fixtureWrapper.detectChanges();
@@ -225,7 +225,7 @@ describe('Form Table behavior ', () => {
 
     it('should apply correct minLength validation and set FormControl.valid property',
       async(() => {
-        let fixtureWrapper =
+        const fixtureWrapper =
           TestBed.createComponent(RowValidationWithInputFieldTestComponent);
         fixtureWrapper.componentInstance.type = 2;
         fixtureWrapper.detectChanges();
@@ -252,7 +252,7 @@ describe('Form Table behavior ', () => {
 
     it('should apply pattern validation and set FormControl.valid property',
       async(() => {
-        let fixtureWrapper =
+        const fixtureWrapper =
           TestBed.createComponent(RowValidationWithInputFieldTestComponent);
         fixtureWrapper.componentInstance.type = 3;
         fixtureWrapper.detectChanges();
@@ -279,7 +279,7 @@ describe('Form Table behavior ', () => {
 
     it('should apply required validation and set FormControl.valid property',
       async(() => {
-        let fixtureWrapper =
+        const fixtureWrapper =
           TestBed.createComponent(RowValidationWithInputFieldTestComponent);
         fixtureWrapper.componentInstance.type = 4;
         fixtureWrapper.detectChanges();
@@ -306,7 +306,7 @@ describe('Form Table behavior ', () => {
 
     it('should apply customed validators and set FormControl.valid property',
       async(() => {
-        let fixtureWrapper =
+        const fixtureWrapper =
           TestBed.createComponent(RowValidationWithInputFieldTestComponent);
         fixtureWrapper.componentInstance.type = 5;
         fixtureWrapper.detectChanges();
@@ -536,7 +536,7 @@ class RowValidationWithInputFieldTestComponent {
   }
 
   getInputValidators(): ValidatorFn[] {
-    let inputValidator = (control: AbstractControl): { [key: string]: any } => {
+    const inputValidator = (control: AbstractControl): { [key: string]: any } => {
       if (control == null || control.value == null) {
         return null;
       }

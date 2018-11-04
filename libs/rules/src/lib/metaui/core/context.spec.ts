@@ -48,17 +48,17 @@ describe('Meta Context behaivor ', () => {
       'correct order ', () => {
 
 
-        let xx = new Map<string, any>();
+        const xx = new Map<string, any>();
         xx.set('a', ' this is value a');
         xx.set('b', ' this is value b');
         xx.set('c', ' this is value c');
 
 
-        let nestedMap = new NestedMap<string, any>(xx);
+        const nestedMap = new NestedMap<string, any>(xx);
 
-        let expectedOrder = ['a', 'b', 'c'];
+        const expectedOrder = ['a', 'b', 'c'];
         nestedMap.forEach((v, k) => {
-          let key = expectedOrder.shift();
+          const key = expectedOrder.shift();
           expect(k).toEqual(key);
 
         });
@@ -70,23 +70,23 @@ describe('Meta Context behaivor ', () => {
     it(' it should instantiate and retrieve nested and parent entries in specified order ',
       () => {
 
-        let xx = new Map<string, any>();
+        const xx = new Map<string, any>();
         xx.set('a', ' this is value a');
         xx.set('b', ' this is value b');
         xx.set('c', ' this is value c');
 
 
-        let child = new Map<string, any>();
+        const child = new Map<string, any>();
         child.set('a1', ' this is value a');
         child.set('b1', ' this is value b');
         child.set('c1', ' this is value c');
 
 
-        let nestedMap = new NestedMap<string, any>(xx, child);
+        const nestedMap = new NestedMap<string, any>(xx, child);
 
-        let expectedOrder = ['a1', 'b1', 'c1', 'a', 'b', 'c'];
+        const expectedOrder = ['a1', 'b1', 'c1', 'a', 'b', 'c'];
         nestedMap.forEach((v, k) => {
-          let key = expectedOrder.shift();
+          const key = expectedOrder.shift();
           expect(k).toEqual(key);
 
         });
@@ -100,7 +100,7 @@ describe('Meta Context behaivor ', () => {
   describe('Context Layout representing context assignments  ', () => {
 
     beforeEach(() => {
-      let metaUI = UIMeta.getInstance();
+      const metaUI = UIMeta.getInstance();
       metaUI._rules.forEach((v) => {
         v.disable();
       });
@@ -111,14 +111,14 @@ describe('Meta Context behaivor ', () => {
     });
 
     it(' It should retrieve Default Empty context with preset letiables ', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
 
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         expect(context.meta).toBeDefined();
 
@@ -150,13 +150,13 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
       'record size of 1 and ' + 'after we pop zero ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         expect(context.frameStarts).toBeDefined();
@@ -174,13 +174,13 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for N-times time we ' +
       'expect correct framestarts records size as well as internal numbers ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         expect(context.frameStarts).toBeDefined();
@@ -229,19 +229,19 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrive default exaclty for basic when no user rules are loaded  and no ' +
       'class is specified after we push layout=Inspect', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
 
 
-        let propertyMap = context.allProperties();
+        const propertyMap = context.allProperties();
 
 
         expect(propertyMap.size).toEqual(5);
@@ -259,20 +259,20 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map when user rules are not loaded, after we push ' +
       'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
         context.set('operation', 'edit');
 
 
-        let propertyMap = context.allProperties();
+        const propertyMap = context.allProperties();
 
 
         expect(propertyMap.size).toEqual(6);
@@ -293,19 +293,19 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property, after we push layout=Inspect and operation=view. ' +
       'we expect editing false in properties', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
         context.set('operation', 'view');
 
-        let propertyMap = context.allProperties();
+        const propertyMap = context.allProperties();
 
         expect(propertyMap.size).toEqual(6);
         expect(propertyMap.has('label')).toBeTruthy();
@@ -329,7 +329,7 @@ describe('Meta Context behaivor ', () => {
 
 
     beforeEach(() => {
-      let metaUI = UIMeta.getInstance();
+      const metaUI = UIMeta.getInstance();
       metaUI._rules.forEach((v) => {
         v.disable();
       });
@@ -340,13 +340,13 @@ describe('Meta Context behaivor ', () => {
     });
 
     it(' It should retrieve Default Empty context with preset letiables ', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         expect(context.meta).toBeDefined();
 
@@ -378,13 +378,13 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
       'record size of 1 and after we pop zero ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         expect(context.frameStarts).toBeDefined();
@@ -402,13 +402,13 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for N-times time we ' +
       'expect correct framestarts records size as well as internal numbers ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         expect(context.frameStarts).toBeDefined();
@@ -457,19 +457,19 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrive default exaclty for basic when no user rules are loaded  and no ' +
       'class is specified after we push layout=Inspect', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
 
 
-        let propertyMap = context.allProperties();
+        const propertyMap = context.allProperties();
 
         expect(propertyMap.size).toEqual(5);
         expect(propertyMap.has('label')).toBeTruthy();
@@ -486,20 +486,20 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map when user rules are not loaded, after we push ' +
       'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
         context.set('operation', 'edit');
 
 
-        let propertyMap = context.allProperties();
+        const propertyMap = context.allProperties();
 
 
         expect(propertyMap.size).toEqual(6);
@@ -520,19 +520,19 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map after we push layout=Inspect ' +
       'and operation=view. we expect editing false in properties', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
         context.set('operation', 'view');
 
-        let propertyMap = context.allProperties();
+        const propertyMap = context.allProperties();
 
         expect(propertyMap.size).toEqual(6);
         expect(propertyMap.has('label')).toBeTruthy();
@@ -556,7 +556,7 @@ describe('Meta Context behaivor ', () => {
 
 
     beforeEach(() => {
-      let metaUI = UIMeta.getInstance();
+      const metaUI = UIMeta.getInstance();
       metaUI._rules.forEach((v) => {
         v.disable();
       });
@@ -568,22 +568,22 @@ describe('Meta Context behaivor ', () => {
 
     it('It should retrieve correct Form Component  a MetaForm with fiveZones trait to render ' +
       'all the fields ', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
         context.set('operation', 'edit');
         context.set('object',
           new MyUserTestClass('Frank', 'Kolar', 16, 'From Czech Republic'));
-        let props = context.allProperties();
+        const props = context.allProperties();
         context.pop();
 
 
@@ -596,15 +596,15 @@ describe('Meta Context behaivor ', () => {
 
     it(' It should switch into different layout component (MetaElementList) in case we push ' +
       'Stack trait ', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -612,7 +612,7 @@ describe('Meta Context behaivor ', () => {
         context.set('operation', 'edit');
         context.set('object',
           new MyUserTestClass('Frank', 'Kolar', 16, 'From Czech Republic'));
-        let props = context.allProperties();
+        const props = context.allProperties();
 
         // props.forEach((v , k) =>
         // {
@@ -631,22 +631,22 @@ describe('Meta Context behaivor ', () => {
 
     it('It should change layout to tableZone trait in case I push operation list so that it ' +
       'will have  6 zone layout ', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
         context.set('operation', 'list');
         context.set('object', new MyUserTestClass('Frank', 'Kolar', 16,
           'From Czech Republic'));
-        let props = context.allProperties();
+        const props = context.allProperties();
 
         // props.forEach((v , k) =>
         // {
@@ -666,15 +666,15 @@ describe('Meta Context behaivor ', () => {
     it('field: It should retrieve correct component type => TextField for firstName when in ' +
       'editing mode', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -686,9 +686,9 @@ describe('Meta Context behaivor ', () => {
 
         context.set('field', 'firstName');
 
-        let props = context.allProperties();
+        const props = context.allProperties();
 
-        let componentName = context.propertyForKey(UIMeta.KeyComponentName);
+        const componentName = context.propertyForKey(UIMeta.KeyComponentName);
 
 
         expect(componentName).toEqual('InputFieldComponent');
@@ -702,15 +702,15 @@ describe('Meta Context behaivor ', () => {
     it('field: It should have correct class trait, editability to false as well as change ' +
       'component to String if we change operation from Edit to list ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -722,9 +722,9 @@ describe('Meta Context behaivor ', () => {
 
         context.set('field', 'firstName');
 
-        let props = context.allProperties();
+        const props = context.allProperties();
 
-        let componentName = context.propertyForKey(UIMeta.KeyComponentName);
+        const componentName = context.propertyForKey(UIMeta.KeyComponentName);
 
         // print(componentName);
 
@@ -739,15 +739,15 @@ describe('Meta Context behaivor ', () => {
     it('It should change component name from TextField to StringComponent when in View mode',
       () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -759,9 +759,9 @@ describe('Meta Context behaivor ', () => {
 
         context.set('field', 'firstName');
 
-        let props = context.allProperties();
+        const props = context.allProperties();
 
-        let componentName = context.propertyForKey(UIMeta.KeyComponentName);
+        const componentName = context.propertyForKey(UIMeta.KeyComponentName);
 
         // print(componentName);
 
@@ -775,15 +775,15 @@ describe('Meta Context behaivor ', () => {
 
     it('It should retrieve a label My First Name specified in the rules', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -795,9 +795,9 @@ describe('Meta Context behaivor ', () => {
 
         context.set('field', 'firstName');
 
-        let props = context.allProperties();
+        const props = context.allProperties();
 
-        let label = context.propertyForKey(UIMeta.KeyLabel);
+        const label = context.propertyForKey(UIMeta.KeyLabel);
 
         expect(label).toEqual('My First Name');
         context.pop();
@@ -806,15 +806,15 @@ describe('Meta Context behaivor ', () => {
 
     it(' firstName should be required as specified in the rule', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -827,7 +827,7 @@ describe('Meta Context behaivor ', () => {
 
         context.set('field', 'firstName');
 
-        let props = context.allProperties();
+        const props = context.allProperties();
 
         //
         // props.forEach((v , k) =>
@@ -844,15 +844,15 @@ describe('Meta Context behaivor ', () => {
     it(' it should layout fields in their rank order so that firstName => lastName ' +
       '=> age => bio ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -891,15 +891,15 @@ describe('Meta Context behaivor ', () => {
     it('it should retrive correct component for field Age whcih is a number and it will be ' +
       'rendered as a numer', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -915,7 +915,7 @@ describe('Meta Context behaivor ', () => {
         expect(context.propertyForKey(UIMeta.KeyComponentName))
           .toEqual('InputFieldComponent');
 
-        let type = context.propertyForKey(UIMeta.KeyType);
+        const type = context.propertyForKey(UIMeta.KeyType);
         expect(type).toEqual('Number');
 
 
@@ -928,15 +928,15 @@ describe('Meta Context behaivor ', () => {
     it('it should render field age which is a number in view only mode as a StringComponent',
       () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -958,15 +958,15 @@ describe('Meta Context behaivor ', () => {
 
     it('it should render a label for field age as a My age', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -988,15 +988,15 @@ describe('Meta Context behaivor ', () => {
 
     it('age field should have a validity condition ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -1010,7 +1010,7 @@ describe('Meta Context behaivor ', () => {
         context.set('field', 'age');
 
         // I do not want to resolve it right away, therefore using directly propertyMap
-        let validity = context.allProperties().get(UIMeta.KeyValid);
+        const validity = context.allProperties().get(UIMeta.KeyValid);
         expect(validity instanceof Expr).toBeTruthy();
         context.pop();
 
@@ -1021,15 +1021,15 @@ describe('Meta Context behaivor ', () => {
 
     it('age bio should have a visibility condition ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -1043,7 +1043,7 @@ describe('Meta Context behaivor ', () => {
         context.set('field', 'bio');
 
         // visibilty is deffered value so we need to access directly the expression
-        let visibility = context.allProperties().get(UIMeta.KeyVisible);
+        const visibility = context.allProperties().get(UIMeta.KeyVisible);
         // print('XXXXX:' + visibility);
         expect(visibility._override instanceof Expr).toBeTruthy();
         context.pop();
@@ -1055,16 +1055,16 @@ describe('Meta Context behaivor ', () => {
 
     // Safari issue
     it('it should render correct value when switching operation from edit to view', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let ob = new MyUserTestClass('Frank', 'Kolar', 16, 'From Czech Republic');
-        let context = metaUI.newContext();
+        const ob = new MyUserTestClass('Frank', 'Kolar', 16, 'From Czech Republic');
+        const context = metaUI.newContext();
         context.push();
 
         context.set('layout', 'Inspect');
@@ -1085,7 +1085,7 @@ describe('Meta Context behaivor ', () => {
         expect(fields.get('zLeft').length).toEqual(4);
 
 
-        let context2 = metaUI.newContext();
+        const context2 = metaUI.newContext();
         context2.push();
 
         context2.set('layout', 'Inspect');
@@ -1119,7 +1119,7 @@ describe('Meta Context behaivor ', () => {
 
 
       beforeEach(() => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI._rules.forEach((v) => {
           v.disable();
         });
@@ -1131,14 +1131,14 @@ describe('Meta Context behaivor ', () => {
       it('it should change the label of the age field when switching from editable mode to ' +
         'ready only mode', () => {
 
-          let metaUI = UIMeta.getInstance();
+          const metaUI = UIMeta.getInstance();
           metaUI.registerLoader(new RuleLoaderService());
           metaUI.loadDefaultRuleFiles();
-          let env: Environment = new Environment();
+          const env: Environment = new Environment();
           metaUI.componentRegistry = new ComponentRegistry(env);
 
           metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-          let context = metaUI.newContext();
+          const context = metaUI.newContext();
 
 
           context.push();
@@ -1169,14 +1169,14 @@ describe('Meta Context behaivor ', () => {
       it('it should change the label of the firstName field when switching from editable ' +
         'mode to create  mode', () => {
 
-          let metaUI = UIMeta.getInstance();
+          const metaUI = UIMeta.getInstance();
           metaUI.registerLoader(new RuleLoaderService());
           metaUI.loadDefaultRuleFiles();
-          let env: Environment = new Environment();
+          const env: Environment = new Environment();
           metaUI.componentRegistry = new ComponentRegistry(env);
 
           metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-          let context = metaUI.newContext();
+          const context = metaUI.newContext();
 
 
           context.push();
@@ -1266,10 +1266,10 @@ describe('Meta Context behaivor ', () => {
         'that it matches above ' +
         'rule, but once we push it role=admin we should see all the fields', () => {
 
-          let metaUI = UIMeta.getInstance();
+          const metaUI = UIMeta.getInstance();
           metaUI.registerLoader(new RuleLoaderService());
           metaUI.loadDefaultRuleFiles();
-          let env: Environment = new Environment();
+          const env: Environment = new Environment();
           metaUI.componentRegistry = new ComponentRegistry(env);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
@@ -1408,14 +1408,14 @@ describe('Meta Context behaivor ', () => {
         'role=admin no earlier ' +
         'then after settings a objects', () => {
 
-          let metaUI = UIMeta.getInstance();
+          const metaUI = UIMeta.getInstance();
           metaUI.registerLoader(new RuleLoaderService());
           metaUI.loadDefaultRuleFiles();
-          let env: Environment = new Environment();
+          const env: Environment = new Environment();
           metaUI.componentRegistry = new ComponentRegistry(env);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
-          let context = metaUI.newContext();
+          const context = metaUI.newContext();
 
 
           context.push();
@@ -1430,12 +1430,12 @@ describe('Meta Context behaivor ', () => {
           context.setScopeKey('class');
 
 
-          let mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          const mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
 
           expect(mapp.size).toEqual(2);
 
-          let zLeft = mapp.get('zLeft');
-          let zNone = mapp.get('zNone');
+          const zLeft = mapp.get('zLeft');
+          const zNone = mapp.get('zNone');
 
           expect(zLeft.length).toEqual(5);
           expect(zNone.length).toEqual(5);
@@ -1463,14 +1463,14 @@ describe('Meta Context behaivor ', () => {
       it('it should match top level selectors extending a class=xxx for class=xxx ' +
         'role=admin ' + 'no earlier then after settings a objects', () => {
 
-          let metaUI = UIMeta.getInstance();
+          const metaUI = UIMeta.getInstance();
           metaUI.registerLoader(new RuleLoaderService());
           metaUI.loadDefaultRuleFiles();
-          let env: Environment = new Environment();
+          const env: Environment = new Environment();
           metaUI.componentRegistry = new ComponentRegistry(env);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
-          let context = metaUI.newContext();
+          const context = metaUI.newContext();
 
 
           context.push();
@@ -1485,12 +1485,12 @@ describe('Meta Context behaivor ', () => {
           context.setScopeKey('class');
 
 
-          let mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          const mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
 
           expect(mapp.size).toEqual(1);
 
-          let zLeft = mapp.get('zLeft');
-          let zNone = mapp.get('zNone');
+          const zLeft = mapp.get('zLeft');
+          const zNone = mapp.get('zNone');
 
           expect(zLeft.length).toEqual(10);
           expect(zLeft.length).toEqual(10);
@@ -1512,7 +1512,7 @@ describe('Meta Context behaivor ', () => {
 
 
     beforeEach(() => {
-      let metaUI = UIMeta.getInstance();
+      const metaUI = UIMeta.getInstance();
       metaUI._rules.forEach((v) => {
         v.disable();
       });
@@ -1524,15 +1524,15 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve dynamic validity condition ${ value > 19}  so that it can give ' +
       'info back if the field is valid', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context: UIContext = <UIContext> metaUI.newContext();
+        const context: UIContext = <UIContext> metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
@@ -1562,15 +1562,15 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve visiblity condition that depends on the value of other fields so ' +
       'that it check the field AGE ${object.age > 18}', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context: UIContext = <UIContext> metaUI.newContext();
+        const context: UIContext = <UIContext> metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
@@ -1600,15 +1600,15 @@ describe('Meta Context behaivor ', () => {
     it(' it should be able to translate a className to the page title so it resolve our ' +
       'page title ', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
-        let context: UIContext = <UIContext> metaUI.newContext();
+        const context: UIContext = <UIContext> metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
@@ -1617,7 +1617,7 @@ describe('Meta Context behaivor ', () => {
           new MyUserTestClass('Frank', 'Kolar', 16, 'From Czech Republic'));
         context.setScopeKey('class');
 
-        let title = context.propertyForKey('objectTitle');
+        const title = context.propertyForKey('objectTitle');
         expect(title).toEqual('My User Test Class');
 
         context.pop();
@@ -1639,14 +1639,14 @@ describe('Meta Context behaivor ', () => {
       'concatenates result form 2 other fields. value:' +
       ' ${object.bio.substring(0, 10) + ... };', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
 
         context.push();
@@ -1683,14 +1683,14 @@ describe('Meta Context behaivor ', () => {
     it(' a bioView should be visible only if bio field len is more then 15 and only in ' +
       'view mode', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-        let context: UIContext = <UIContext> metaUI.newContext();
+        const context: UIContext = <UIContext> metaUI.newContext();
 
 
         context.push();
@@ -1721,14 +1721,14 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the field that belongs to current class MyUserTestClass for ' +
       'operation EDIT', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
 
         context.push();
@@ -1739,7 +1739,7 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        let field = metaUI.itemNames(context, 'field');
+        const field = metaUI.itemNames(context, 'field');
 
         expect(field.length).toEqual(4);
         expect(field[0]).toEqual('firstName');
@@ -1755,14 +1755,14 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the field that belongs to current class MyUserTestClass VIEW ' +
       'so that we will get 5 fields as 1 is derived', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
 
         context.push();
@@ -1773,7 +1773,7 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        let field = metaUI.itemNames(context, 'field');
+        const field = metaUI.itemNames(context, 'field');
         // print(field);
 
         expect(field.length).toEqual(5);
@@ -1791,14 +1791,14 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the VISIBILE fields that belongs to current class for view ' +
       'operations VIEW', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
 
         context.push();
@@ -1809,21 +1809,21 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        let byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
+        const byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
         expect(byZone.has('zLeft')).toBeTruthy();
 
 
-        let expResult: Map<string, boolean> = new Map<string, boolean>().set(
+        const expResult: Map<string, boolean> = new Map<string, boolean>().set(
           'firstName', true)
           .set('lastName',
             true).set('age', true).set('bio', false).set('bioView', true);
 
-        let fields = byZone.get('zLeft');
+        const fields = byZone.get('zLeft');
 
-        for (let fieldName of fields) {
+        for (const fieldName of fields) {
           context.push();
           context.set('field', fieldName);
-          let visible = context.propertyForKey(UIMeta.KeyVisible);
+          const visible = context.propertyForKey(UIMeta.KeyVisible);
           expect(expResult.get(fieldName)).toEqual(visible);
 
           context.pop();
@@ -1849,14 +1849,14 @@ describe('Meta Context behaivor ', () => {
       'zLeft=lastName,age, bio, zBottom=bioView ignoring their visibility properties', () => {
 
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClasForZonesRule);
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
 
         context.push();
@@ -1867,15 +1867,15 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        let byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
+        const byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
         expect(byZone.has('zLeft')).toBeTruthy();
         expect(byZone.has('zTop')).toBeTruthy();
         expect(byZone.has('zBottom')).toBeTruthy();
 
 
-        let fieldsL = byZone.get('zLeft');
-        let fieldsT = byZone.get('zTop');
-        let fieldsB = byZone.get('zBottom');
+        const fieldsL = byZone.get('zLeft');
+        const fieldsT = byZone.get('zTop');
+        const fieldsB = byZone.get('zBottom');
 
 
         expect(fieldsL.length).toBe(3);
@@ -1899,15 +1899,15 @@ describe('Meta Context behaivor ', () => {
       'fields', () => {
 
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
         metaUI.loadDefaultRuleFiles();
         metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
@@ -1917,10 +1917,10 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        let byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
+        const byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
         expect(byZone.has('zLeft')).toBeTruthy();
 
-        let zLeft = byZone.get('zLeft');
+        const zLeft = byZone.get('zLeft');
         expect(zLeft.length).toEqual(5);
 
         context.pop();
@@ -1933,15 +1933,15 @@ describe('Meta Context behaivor ', () => {
       () => {
 
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
         metaUI.loadDefaultRuleFiles();
         metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
 
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
         context.push();
         context.set('layout', 'Inspect');
@@ -1955,11 +1955,11 @@ describe('Meta Context behaivor ', () => {
         context.set('field', 'userId');
 
 
-        let bindings = context.propertyForKey(UIMeta.KeyBindings);
+        const bindings = context.propertyForKey(UIMeta.KeyBindings);
         // print(bindings.size);
 
 
-        let value: ContextFieldPath = bindings.get('value');
+        const value: ContextFieldPath = bindings.get('value');
         expect(value.evaluate(context)).toEqual('123');
 
 
@@ -1971,14 +1971,14 @@ describe('Meta Context behaivor ', () => {
     it('it should automatically resolve a field label if not specified. All this by ' +
       'decamelizing its Field', () => {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
-        let env: Environment = new Environment();
+        const env: Environment = new Environment();
         metaUI.componentRegistry = new ComponentRegistry(env);
         metaUI.loadDefaultRuleFiles();
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
-        let context = metaUI.newContext();
+        const context = metaUI.newContext();
 
 
         context.push();
@@ -2087,21 +2087,21 @@ describe('Meta Context behaivor ', () => {
     xit('should process more then 800 000 rule index entries in less than 2 sec', () => {
 
 
-      let metaPefr = UIMeta.getInstance();
+      const metaPefr = UIMeta.getInstance();
       metaPefr.registerLoader(new RuleLoaderService());
 
       metaPefr.loadDefaultRuleFiles();
-      let env: Environment = new Environment();
+      const env: Environment = new Environment();
       metaPefr.componentRegistry = new ComponentRegistry(env);
 
       metaPefr.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
 
       metaPefr.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
 
-      let start = Date.now();
+      const start = Date.now();
 
       for (let i = 0; i < 1000; i++) {
-        let context = metaPefr.newContext();
+        const context = metaPefr.newContext();
         context.push();
 
         // console.log('#### ################ activation #', i)
@@ -2122,7 +2122,7 @@ describe('Meta Context behaivor ', () => {
         context.pop();
       }
 
-      let processedIn = Date.now() - start;
+      const processedIn = Date.now() - start;
 
       expect(processedIn).toBeLessThan(5000);
       expect(Match._Debug_ElementProcessCount).toBeGreaterThan(800000);
@@ -2164,15 +2164,15 @@ describe('Meta Context behaivor ', () => {
     it('should retrieve correct component to render when trait asHover is used and' +
       ' overriden by user rules', () => {
 
-      let metaUI = UIMeta.getInstance();
+      const metaUI = UIMeta.getInstance();
       metaUI.registerLoader(new RuleLoaderService());
-      let env: Environment = new Environment();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
 
       metaUI.loadDefaultRuleFiles();
 
       metaUI.addTestUserRule('UserWithDetailRule', UserWithDetailRule);
-      let context = metaUI.newContext();
+      const context = metaUI.newContext();
 
       context.push();
       context.set('layout', 'Inspect');
@@ -2184,7 +2184,7 @@ describe('Meta Context behaivor ', () => {
       context.set('field', 'name');
 
       expect(context.propertyForKey('component')).toBe('HoverCardComponent');
-      let bindings = context.propertyForKey('bindings');
+      const bindings = context.propertyForKey('bindings');
 
       context.push();
       context.set('layout', bindings.get('ngcontentLayout'));

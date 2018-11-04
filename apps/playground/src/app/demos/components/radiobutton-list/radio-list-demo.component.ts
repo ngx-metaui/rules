@@ -17,7 +17,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {Environment} from '@ngx-meta/rules';
+import {Environment} from '@ngx-metaui/rules';
 
 @Component({
     templateUrl: './radio-list-demo.component.html',

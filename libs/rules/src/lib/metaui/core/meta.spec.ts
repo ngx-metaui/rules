@@ -46,7 +46,7 @@ describe('Loading rules functionality', () => {
 
 
   beforeEach(() => {
-    let metaUI = UIMeta.getInstance();
+    const metaUI = UIMeta.getInstance();
     metaUI._rules.forEach((v) => {
       v.disable();
     });
@@ -58,20 +58,20 @@ describe('Loading rules functionality', () => {
   it('should convert Meta rule that are prepared in JSON ', () => {
 
 
-      let jsonRule: JsonRule = {
+      const jsonRule: JsonRule = {
         _rank: 0,
         _properties: {'visible': false},
         _selectors: [{'_isDecl': false, '_value': '*', '_key': 'object'}]
       };
 
-      let selectors: Array<Selector> = new Array<Selector>();
-      for (let item of jsonRule._selectors) {
-        let selector = new Selector(item._key, item._value, item._isDecl);
+      const selectors: Array<Selector> = new Array<Selector>();
+      for (const item of jsonRule._selectors) {
+        const selector = new Selector(item._key, item._value, item._isDecl);
         selectors.push(selector);
       }
 
-      let properties = MapWrapper.createFromStringMap<any>(jsonRule._properties);
-      let rule: Rule = new Rule(selectors, properties, jsonRule._rank);
+      const properties = MapWrapper.createFromStringMap<any>(jsonRule._properties);
+      const rule: Rule = new Rule(selectors, properties, jsonRule._rank);
 
       expect(rule.selectors.length).toEqual(1);
       expect(rule.properties.get('visible')).toEqual(false);
@@ -137,27 +137,27 @@ describe('Loading rules functionality', () => {
       // @formatter:on
       /* tslint:enable */
 
-      let rules: Array<Rule> = [];
+      const rules: Array<Rule> = [];
 
       jsonRules.forEach((val, index) => {
-        let jsonRule: JsonRule = <JsonRule> val;
+        const jsonRule: JsonRule = <JsonRule> val;
 
-        let selectors: Array<Selector> = new Array<Selector>();
-        for (let item of jsonRule._selectors) {
-          let selector = new Selector(item._key, item._value, item._isDecl);
+        const selectors: Array<Selector> = new Array<Selector>();
+        for (const item of jsonRule._selectors) {
+          const selector = new Selector(item._key, item._value, item._isDecl);
           selectors.push(selector);
         }
 
-        let properties = MapWrapper.createFromStringMap<any>(
+        const properties = MapWrapper.createFromStringMap<any>(
           jsonRule._properties);
-        let rule: Rule = new Rule(selectors, properties, jsonRule._rank);
+        const rule: Rule = new Rule(selectors, properties, jsonRule._rank);
 
         rules.push(rule);
       });
 
       expect(rules.length).toEqual(7);
 
-      let class2 = rules[0].properties.get('class');
+      const class2 = rules[0].properties.get('class');
       expect(class2['t']).toEqual('Expr');
 
     }
@@ -227,60 +227,60 @@ describe('Loading rules functionality', () => {
       // @formatter:on
       /* tslint:enable */
 
-      let ruleLoader: RuleLoaderService = new RuleLoaderService();
-      let rules: Array<Rule> = ruleLoader.loadRulesWithReturn(jsonRulesTypes, 'system');
+      const ruleLoader: RuleLoaderService = new RuleLoaderService();
+      const rules: Array<Rule> = ruleLoader.loadRulesWithReturn(jsonRulesTypes, 'system');
 
 
       // expect 7 rules loaded
       expect(rules.length).toEqual(7);
 
       // expect first rule will have expression
-      let rule1: Rule = rules[0];
-      let expr: Expr = rule1.properties.get('class');
+      const rule1: Rule = rules[0];
+      const expr: Expr = rule1.properties.get('class');
       expect(expr instanceof Expr).toBeTruthy();
       expect(expr.toString()).toMatch('expr:');
 
       // expect first rule will have expression
-      let rule2: Rule = rules[1];
+      const rule2: Rule = rules[1];
       expect(rule2.properties).not.toBeDefined();
 
 
-      let rule3: Rule = rules[2];
-      let isEditing: boolean = rule3.properties.get('editing');
+      const rule3: Rule = rules[2];
+      const isEditing: boolean = rule3.properties.get('editing');
       expect(isEditing).toBeTruthy();
 
-      let rule4: Rule = rules[3];
-      let wrapper: StaticDynamicWrapper = rule4.properties.get('visible');
+      const rule4: Rule = rules[3];
+      const wrapper: StaticDynamicWrapper = rule4.properties.get('visible');
       expect(wrapper.toString()).toMatch('StaticDynamicWrapper');
 
 
-      let rule5: Rule = rules[4];
+      const rule5: Rule = rules[4];
 
       expect(rule5.properties.size).toEqual(4);
 
-      let subMap: any = rule5.properties.get('bindings');
+      const subMap: any = rule5.properties.get('bindings');
       expect(subMap instanceof Map).toBeTruthy();
 
-      let contentType: Expr = subMap.get('contentType');
+      const contentType: Expr = subMap.get('contentType');
       expect(contentType instanceof Expr).toBeTruthy();
       expect(contentType.toString()).toMatch('expr:');
 
 
-      let rule6: Rule = rules[5];
+      const rule6: Rule = rules[5];
 
       expect(rule6.properties.size).toEqual(3);
 
-      let editable: OverrideValue = rule6.properties.get('editable');
+      const editable: OverrideValue = rule6.properties.get('editable');
 
       expect(editable instanceof OverrideValue).toBeTruthy();
       expect(editable.toString()).toMatch('!');
 
 
-      let rule7: Rule = rules[6];
+      const rule7: Rule = rules[6];
 
       expect(rule7.properties.size).toEqual(1);
 
-      let loc: LocalizedString = rule7.properties.get('visible');
+      const loc: LocalizedString = rule7.properties.get('visible');
 
       expect(loc instanceof LocalizedString).toBeTruthy();
       expect(loc.toString()).toMatch('LocaledString');
@@ -289,7 +289,7 @@ describe('Loading rules functionality', () => {
   );
 
   it(' should retrieve singleton instance of UIMeta and defauls rules  and policies', () => {
-      let instance = UIMeta.getInstance();
+      const instance = UIMeta.getInstance();
 
       // we are exlucding bindingDictionary
       expect(instance).toBeDefined();
@@ -302,7 +302,7 @@ describe('Loading rules functionality', () => {
 
       try {
 
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
 
@@ -321,7 +321,7 @@ describe('Loading rules functionality', () => {
 describe('Rule matching functionality on preloaded ruleset', () => {
 
   beforeEach(() => {
-    let metaUI = UIMeta.getInstance();
+    const metaUI = UIMeta.getInstance();
     metaUI._rules.forEach((v) => {
       v.disable();
     });
@@ -333,23 +333,23 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it(' it must pick the best selector to Index from list of selectors ', () => {
 
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
 
-      let classSel: Selector = new Selector('class', '*');
-      let operSel: Selector = new Selector('operation', 'view');
+      const classSel: Selector = new Selector('class', '*');
+      const operSel: Selector = new Selector('operation', 'view');
 
       let bestMatch = metaUI.bestSelectorToIndex([classSel, operSel]);
 
       expect(bestMatch.key).toEqual('operation');
 
-      let visibleSel: Selector = new Selector('visible', 'true');
+      const visibleSel: Selector = new Selector('visible', 'true');
       bestMatch = metaUI.bestSelectorToIndex([operSel, visibleSel]);
       expect(bestMatch.key).toEqual('visible');
 
 
-      let visibleSel2: Selector = new Selector('visible', true);
+      const visibleSel2: Selector = new Selector('visible', true);
       bestMatch = metaUI.bestSelectorToIndex([operSel, visibleSel2]);
       expect(bestMatch.key).toEqual('operation');
 
@@ -359,8 +359,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it(' it should recognized as scope properties and scope property must be set to thru for ' +
     'field, action,' + ' action category, class, layout', () => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
 
       let keyData = metaUI.keyData('field');
@@ -384,8 +384,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it(' it should not recognized as scope properties for anything but  field, action,' +
     ' action category, class, layout', () => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
 
       let keyData = metaUI.keyData('operation');
@@ -403,8 +403,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it(' It can match properties layout=Inspect, operation=edit, field=*, type=int and ' +
     'return MatchResult ', () => {
 
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -416,7 +416,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
       prevMatch = metaUI.match('type', 'Number', prevMatch);
 
       for (let i = 1; i < prevMatch.matches()[0]; i++) {
-        let rule = metaUI._rules[prevMatch.matches()[i]].toString();
+        const rule = metaUI._rules[prevMatch.matches()[i]].toString();
 
         // print(rule);
         expect(rule)
@@ -428,8 +428,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it(' It can match properties for string and Editing and expect InputFieldComponent in  the ' +
     'retrieved rule properties', () => {
 
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -442,7 +442,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       let found = false;
       for (let i = prevMatch.matches()[0]; i > 0; i--) {
-        let properties = metaUI._rules[prevMatch.matches()[i]].properties;
+        const properties = metaUI._rules[prevMatch.matches()[i]].properties;
 
         if (properties.has('component')) {
           expect(properties.get('component')).toEqual('InputFieldComponent');
@@ -460,8 +460,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it(' It can match properties for date and viewing and expect DateAndTimeComponent in of ' +
     'the retrieve rule properties ', () => {
 
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -474,7 +474,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       let found = false;
       for (let i = prevMatch.matches()[0]; i > 0; i--) {
-        let properties = metaUI._rules[prevMatch.matches()[i]].properties;
+        const properties = metaUI._rules[prevMatch.matches()[i]].properties;
 
         if (properties.has('component')) {
           expect(properties.get('component')).toEqual('DateAndTimeComponent');
@@ -493,8 +493,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it('It can match string with trait richtext expect RichTextArea in the retrieved rule ' +
     'properties', () => {
 
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -508,7 +508,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       let found = false;
       for (let i = prevMatch.matches()[0]; i > 0; i--) {
-        let properties = metaUI._rules[prevMatch.matches()[i]].properties;
+        const properties = metaUI._rules[prevMatch.matches()[i]].properties;
 
         if (properties.has('component')) {
           expect(properties.get('component')).toEqual('RichTextAreaComponent');
@@ -525,8 +525,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it('It can match layout Inspect and retrieve StringComponent component if ~class', () => {
 
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -536,7 +536,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       let found = false;
       for (let i = prevMatch.matches()[0]; i > 0; i--) {
-        let properties = metaUI._rules[prevMatch.matches()[i]].properties;
+        const properties = metaUI._rules[prevMatch.matches()[i]].properties;
 
         if (properties.has('component')) {
           expect(properties.get('component')).toEqual('StringComponent');
@@ -552,8 +552,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   );
 
   it('It can match class with trait  form and retrieve MetaForm', () => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -565,7 +565,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       let found = false;
       for (let i = prevMatch.matches()[0]; i > 0; i--) {
-        let properties = metaUI._rules[prevMatch.matches()[i]].properties;
+        const properties = metaUI._rules[prevMatch.matches()[i]].properties;
 
         if (properties.has('component')) {
           expect(properties.get('component')).toEqual('MetaFormComponent');
@@ -582,8 +582,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   );
 
   it('It can match class with trait Stack and retrieve MetaElementList', () => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -595,7 +595,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       let found = false;
       for (let i = prevMatch.matches()[0]; i > 0; i--) {
-        let properties = metaUI._rules[prevMatch.matches()[i]].properties;
+        const properties = metaUI._rules[prevMatch.matches()[i]].properties;
 
         if (properties.has('component')) {
           expect(properties.get('component')).toEqual('MetaElementListComponent');
@@ -613,8 +613,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it('It can match trait with form  and field name and retrieve InputFieldComponent component ',
     () => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
@@ -624,10 +624,10 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       metaUI.beginRuleSet('MyIntrospection');
 
-      let selectorClass = new Selector(UIMeta.KeyClass, 'MyClass');
-      let selectorField = new Selector(UIMeta.KeyField, 'name', true);
+      const selectorClass = new Selector(UIMeta.KeyClass, 'MyClass');
+      const selectorField = new Selector(UIMeta.KeyField, 'name', true);
 
-      let mp = new Map<string, any>();
+      const mp = new Map<string, any>();
       mp.set('type', 'String');
       mp.set('visible', true);
       mp.set('field', 'name');
@@ -646,8 +646,8 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
       let found = false;
       for (let i = prevMatch.matches()[0]; i > 0; i--) {
-        let properties = metaUI._rules[prevMatch.matches()[i]].properties;
-        let selectors = metaUI._rules[prevMatch.matches()[i]].selectors;
+        const properties = metaUI._rules[prevMatch.matches()[i]].properties;
+        const selectors = metaUI._rules[prevMatch.matches()[i]].selectors;
 
         if (selectors[0].key === 'field' && properties.has('component')) {
           expect(properties.get('component')).toEqual('InputFieldComponent');
@@ -665,26 +665,26 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it('It checks if observers were registered and called when we do match on class or field ',
     () => {
-      let metaUI = UIMeta.getInstance();
-      let env: Environment = new Environment();
+      const metaUI = UIMeta.getInstance();
+      const env: Environment = new Environment();
       metaUI.componentRegistry = new ComponentRegistry(env);
       metaUI.registerLoader(new RuleLoaderService());
       metaUI.loadDefaultRuleFiles();
 
 
-      let observers = metaUI.keyData(UIMeta.KeyClass).observers;
-      let spy = spyOn(observers[0], 'notify');
-      let spy2 = spyOn(observers[1], 'notify');
+      const observers = metaUI.keyData(UIMeta.KeyClass).observers;
+      const spy = spyOn(observers[0], 'notify');
+      const spy2 = spyOn(observers[1], 'notify');
 
 
       metaUI.keyData(UIMeta.KeyClass).setParent('MyClass', 'Object');
 
       metaUI.beginRuleSet('MyIntrospection');
 
-      let selectorClass = new Selector(UIMeta.KeyClass, 'MyClass');
-      let selectorField = new Selector(UIMeta.KeyField, 'name', true);
+      const selectorClass = new Selector(UIMeta.KeyClass, 'MyClass');
+      const selectorField = new Selector(UIMeta.KeyField, 'name', true);
 
-      let mp = new Map<string, any>();
+      const mp = new Map<string, any>();
       mp.set('type', 'String');
       mp.set('visible', true);
       mp.set('field', 'name');
@@ -717,7 +717,7 @@ describe('Expression eval of Matched properties how they can be resolved on the 
 
   it('It evaluates correct expression and return result of 1 + 2', () => {
 
-      let result = evalExpression(' num1 + num2;', 'let  context1;', {num1: 1, num2: 2});
+      const result = evalExpression(' num1 + num2;', 'let  context1;', {num1: 1, num2: 2});
       expect(result).toEqual(3);
     }
   );
@@ -757,12 +757,12 @@ describe('Expression eval of Matched properties how they can be resolved on the 
         }
       }
 
-      let context = new MyContext();
+      const context = new MyContext();
       context.someObject = new User('Frank');
 
 
-      let ex = new Expr('object.firstName.length > 4');
-      let isTruthy = ex.evaluate(context);
+      const ex = new Expr('object.firstName.length > 4');
+      const isTruthy = ex.evaluate(context);
 
       expect(isTruthy).toBeTruthy();
     }
@@ -803,7 +803,7 @@ describe('Expression eval of Matched properties how they can be resolved on the 
         }
       }
 
-      let context = new MyContext();
+      const context = new MyContext();
       context.someObject = new User('Frank');
 
 
@@ -855,12 +855,12 @@ describe('Expression eval of Matched properties how they can be resolved on the 
         }
       }
 
-      let context = new MyContext();
+      const context = new MyContext();
       context.someObject = new User('Frank', 'Kolar');
 
 
-      let cnxFp = new ContextFieldPath('object.firstName');
-      let any = cnxFp.evaluate(context);
+      const cnxFp = new ContextFieldPath('object.firstName');
+      const any = cnxFp.evaluate(context);
       expect(any).toEqual('Frank');
 
     }
@@ -902,11 +902,11 @@ describe('Expression eval of Matched properties how they can be resolved on the 
         }
       }
 
-      let context = new MyContext();
+      const context = new MyContext();
       context.someObject = new User('Frank', 'Kolar');
 
 
-      let cnxFp = new ContextFieldPath('object.firstName');
+      const cnxFp = new ContextFieldPath('object.firstName');
       let someval = cnxFp.evaluate(context);
       expect(someval).toEqual('Frank');
 

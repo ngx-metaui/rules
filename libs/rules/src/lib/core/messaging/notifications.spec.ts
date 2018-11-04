@@ -102,7 +102,7 @@ describe('Notifications service ', () => {
         let sysHttp: string;
 
 
-        let subscription = notifications.subscribe('sys:http', (message: any) =>
+        const subscription = notifications.subscribe('sys:http', (message: any) =>
           sysHttp = message);
 
 
@@ -118,7 +118,7 @@ describe('Notifications service ', () => {
     inject([Notifications],
       fakeAsync((notifications: Notifications) => {
 
-        let sysHttp: string[] = [];
+        const sysHttp: string[] = [];
 
 
         notifications.subscribe('sys:http', (message: any) => sysHttp.push(message));
@@ -139,7 +139,7 @@ describe('Notifications service ', () => {
     inject([Notifications],
       fakeAsync((notifications: Notifications) => {
 
-        let messages: string[] = [];
+        const messages: string[] = [];
 
 
         notifications.subscribe('*', (message: any) => messages.push(message));

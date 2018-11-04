@@ -206,7 +206,7 @@ export class MetaActionListComponent extends MetaBaseComponent {
         this.context.set('filterActions', this.filterActions);
       }
 
-      let meta: UIMeta = <UIMeta> this.context.meta;
+      const meta: UIMeta = <UIMeta> this.context.meta;
       this.context.push();
 
       this.menuModel = [];
@@ -225,11 +225,11 @@ export class MetaActionListComponent extends MetaBaseComponent {
   }
 
   private actionChanged(): boolean {
-    let meta: UIMeta = <UIMeta> this.context.meta;
-    let actionByCat = new Map<string, ItemProperties[]>();
+    const meta: UIMeta = <UIMeta> this.context.meta;
+    const actionByCat = new Map<string, ItemProperties[]>();
 
     this.context.push();
-    let cat = meta.actionsByCategory(this.context, actionByCat, UIMeta.ActionZones);
+    const cat = meta.actionsByCategory(this.context, actionByCat, UIMeta.ActionZones);
     this.context.pop();
 
 
@@ -259,8 +259,8 @@ export class MetaActionListComponent extends MetaBaseComponent {
    *
    */
   actionClicked(action: any): void {
-    let context = this._contextMap.get(action);
-    let meta: UIMeta = <UIMeta> context.meta;
+    const context = this._contextMap.get(action);
+    const meta: UIMeta = <UIMeta> context.meta;
 
     meta.fireActionFromProps(this._actionsByName.get(action), <UIContext> context);
   }
@@ -271,7 +271,7 @@ export class MetaActionListComponent extends MetaBaseComponent {
    *
    */
   onAfterContextSet(actionName: string): void {
-    let aContext = this._metaContext.activeContext().snapshot().hydrate(false);
+    const aContext = this._metaContext.activeContext().snapshot().hydrate(false);
     this._contextMap.set(actionName, aContext);
 
 
@@ -290,12 +290,12 @@ export class MetaActionListComponent extends MetaBaseComponent {
   }
 
   label(actionName: string): string {
-    let context: Context = this._contextMap.get(actionName);
+    const context: Context = this._contextMap.get(actionName);
     return super.aProperties(context, UIMeta.KeyLabel);
   }
 
   isActionDisabled(actionName: string): boolean {
-    let context: Context = this._contextMap.get(actionName);
+    const context: Context = this._contextMap.get(actionName);
     return isPresent(context) ? !context.booleanPropertyForKey('enabled', false) : true;
   }
 
@@ -304,19 +304,19 @@ export class MetaActionListComponent extends MetaBaseComponent {
   }
 
   style(actionName: string): string {
-    let context: Context = this._contextMap.get(actionName);
-    let style = super.aProperties(context, 'buttonStyle');
+    const context: Context = this._contextMap.get(actionName);
+    const style = super.aProperties(context, 'buttonStyle');
 
     return isPresent(style) ? style : this.defaultStyle;
   }
 
 
   private populateMenu(actionName: string): void {
-    let label = this.label(actionName);
-    let index = this.menuModel.findIndex(
+    const label = this.label(actionName);
+    const index = this.menuModel.findIndex(
       (item: MenuItemCommand) => item.actionName === actionName);
 
-    let itemCommand: MenuItemCommand = {
+    const itemCommand: MenuItemCommand = {
       label: label,
       actionName: actionName,
       disabled: this.isActionDisabled(actionName),

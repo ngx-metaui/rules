@@ -103,7 +103,6 @@ export class ModalService {
   /**
    * DI ComponentFactoryResolver to be used to create modal component.
    *
-   * @param cfr
    */
   constructor(private cfr: ComponentFactoryResolver) {
   }
@@ -111,7 +110,6 @@ export class ModalService {
   /**
    *  PlaceHolder for modal to be inserted.
    *
-   * @param vcRef
    */
   registerViewContainerRef(vcRef: ViewContainerRef): void {
     this.vcRef = vcRef;
@@ -123,7 +121,7 @@ export class ModalService {
    */
   open<T>(component: Type<T>, parameters?: any): ComponentRef<T> {
     const cf: ComponentFactory<T> = this.cfr.resolveComponentFactory(component);
-    let componentRef: ComponentRef<T> = this.vcRef.createComponent(cf);
+    const componentRef: ComponentRef<T> = this.vcRef.createComponent(cf);
 
     // Auto set visiblity to true. So that the Dialog will display
     parameters = (parameters) ? parameters : {};

@@ -47,7 +47,7 @@ describe('Checkbox List ', () => {
 
   it('it should have defined formGroup and name, and after ngInit internal model needs to be ' +
     'initialized ', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.checkboxList.name).toBeDefined();
@@ -56,7 +56,7 @@ describe('Checkbox List ', () => {
 
   it('it should correctly init model from selections bindings ', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.checkboxList.selections.length)
@@ -67,10 +67,10 @@ describe('Checkbox List ', () => {
 
   it(' it shoudl render N- checkboxes equals to checkBoxListValues ', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox');
 
     expect(items.length).toEqual(fixtureWrapper.componentInstance.checkBoxListValues.length);
 
@@ -80,7 +80,7 @@ describe('Checkbox List ', () => {
   it('it should rendered checked checkboxes for those values that are in selections' +
     ' (selectedValues) ', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     tick();
@@ -89,10 +89,10 @@ describe('Checkbox List ', () => {
     tick();
     fixtureWrapper.detectChanges();
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox input');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox input');
 
     let checkedCount = 0;
-    for (let item of items) {
+    for (const item of items) {
       if (item.checked) {
         checkedCount++;
       }
@@ -105,7 +105,7 @@ describe('Checkbox List ', () => {
     ' selected', fakeAsync(() => {
 
 
-    let fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
     fixtureWrapper.detectChanges();
 
     tick();
@@ -116,7 +116,7 @@ describe('Checkbox List ', () => {
     expect(fixtureWrapper.componentInstance.checkboxList.formGroup.value['myColors'].length)
       .toEqual(fixtureWrapper.componentInstance.selectedValues.length);
 
-    let items = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox input');
+    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox input');
     items[2].click();  // lets click on 3th item since we know this one is not selected
 
     tick();

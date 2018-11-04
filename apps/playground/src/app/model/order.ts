@@ -17,7 +17,7 @@
  *
  */
 import {User} from './user';
-import {Entity, Money} from '@ngx-meta/rules';
+import {Entity, Money} from '@ngx-metaui/rules';
 import {Address} from './address';
 
 

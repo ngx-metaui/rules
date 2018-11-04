@@ -313,17 +313,17 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
       return;
     }
 
-    let searchInput = this.elemementRef.nativeElement.querySelector(
+    const searchInput = this.elemementRef.nativeElement.querySelector(
       '.ui-autocomplete-input-token');
 
     if (isPresent(searchInput)) {
-      let iconElement = document.createElement('span');
+      const iconElement = document.createElement('span');
       iconElement.className = 'search-icon-right fa fa-fw fa-search';
       searchInput.appendChild(iconElement);
     }
 
     if (isPresent(this.selectionAppendTo) && isPresent(this.selectionViewElem)) {
-      let parentElem = this.selectionAppendTo instanceof ElementRef ?
+      const parentElem = this.selectionAppendTo instanceof ElementRef ?
         this.selectionAppendTo.nativeElement : this.selectionAppendTo;
 
       parentElem.appendChild(this.selectionViewElem.nativeElement);
@@ -339,7 +339,7 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
       return;
     }
 
-    let tokens = this.elemementRef.nativeElement.querySelectorAll(
+    const tokens = this.elemementRef.nativeElement.querySelectorAll(
       '.ui-autocomplete .ui-autocomplete-token');
     if (isPresent(tokens) && tokens.length > 0) {
       tokens.forEach((item: any) => {
@@ -357,7 +357,7 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
    *  the matched resulted is saved in the: this.dataSource.state.matches
    */
   match(pattern: string): void {
-    let maxLen = this.maxLength ? this.maxLength : ChooserDataSource.MaxLength;
+    const maxLen = this.maxLength ? this.maxLength : ChooserDataSource.MaxLength;
     this.dataSource.find(pattern, maxLen);
 
 
@@ -465,7 +465,7 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
    *
    */
   moreSelectString(): string {
-    let moreSelected = this.dataSource.state.selectedObjects().length -
+    const moreSelected = this.dataSource.state.selectedObjects().length -
       this.dataSource.state.recentSelectedDisplayed;
     if (moreSelected < 2 && !this.dataSource.state.showAllRecentlySelected) {
       return '';
@@ -514,8 +514,8 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
     if (isPresent(this.dataSource)) {
       this.dataSource.updateValue(value);
     } else {
-      let selState: DefaultSelectionState = new DefaultSelectionState(this.multiselect);
-      let chState: ChooserState = new ChooserState(selState, this.multiselect);
+      const selState: DefaultSelectionState = new DefaultSelectionState(this.multiselect);
+      const chState: ChooserState = new ChooserState(selState, this.multiselect);
       this.initDatasource(chState);
 
       this.dataSource.updateValue(value);

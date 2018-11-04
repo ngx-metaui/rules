@@ -50,7 +50,7 @@ describe('Component: overlay', () => {
   });
 
   it('should instantiate overlay component and values for title and body', () => {
-    let fixtureWrapper = TestBed.createComponent(TestOverlayDefaultComponent);
+    const fixtureWrapper = TestBed.createComponent(TestOverlayDefaultComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.overlay.dismissable).toEqual(true);
@@ -58,7 +58,7 @@ describe('Component: overlay', () => {
   });
 
   it('should display overlay component as popup', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestOverlayDefaultComponent);
+    const fixtureWrapper = TestBed.createComponent(TestOverlayDefaultComponent);
     fixtureWrapper.detectChanges();
 
     // Find the open button
@@ -78,7 +78,7 @@ describe('Component: overlay', () => {
 
     // Verify that the overlay has been opened.
     let overlayContent = fixtureWrapper.nativeElement.querySelector('.ui-overlaypanel');
-    let display = getComputedStyle(overlayContent).display;
+    const display = getComputedStyle(overlayContent).display;
     expect(display).toBe('block');
 
     // find close button and click it.
@@ -146,7 +146,7 @@ class TestOverlayServiceBehaviorComponent {
   }
 
   openOverlay() {
-    let overlay = this.modalService.open<OverlayComponent>(OverlayComponent, {});
+    const overlay = this.modalService.open<OverlayComponent>(OverlayComponent, {});
 
     // Add content. There's not support for dynamic content projection yet.
     // So have add content directly.
@@ -169,7 +169,7 @@ class TestOverlayServiceBehaviorComponent {
  */
 function flushPendingTimers() {
 
-  let zone: any = readGlobalParam('Zone');
+  const zone: any = readGlobalParam('Zone');
 
   if (isPresent(zone) &&
     isPresent(zone['ProxyZoneSpec'].get().properties.FakeAsyncTestZoneSpec)) {

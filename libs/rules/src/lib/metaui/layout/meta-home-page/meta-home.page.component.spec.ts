@@ -38,15 +38,15 @@ describe('How we can retrieve homepage from module', () => {
 
 
     it('should retrieve generic module homepage called MetaHomePageComponent', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
 
-        let context: Context = metaUI.newContext();
+        const context: Context = metaUI.newContext();
         context.push();
         context.set(UIMeta.KeyModule, Meta.KeyAny);
 
-        let homePage = context.propertyForKey(UIMeta.KeyHomePage);
+        const homePage = context.propertyForKey(UIMeta.KeyHomePage);
         // meta.naviateToPage(context, '', false)
 
         context.pop();
@@ -58,15 +58,15 @@ describe('How we can retrieve homepage from module', () => {
 
     it('should retrieve generic module component representing layout called' +
         ' MetaDashboardLayoutComponent', () => {
-        let metaUI = UIMeta.getInstance();
+        const metaUI = UIMeta.getInstance();
         metaUI.registerLoader(new RuleLoaderService());
         metaUI.loadDefaultRuleFiles();
 
-        let context: Context = metaUI.newContext();
+        const context: Context = metaUI.newContext();
         context.push();
         context.set(UIMeta.KeyModule, Meta.KeyAny);
 
-        let homePage = context.propertyForKey(UIMeta.KeyComponentName);
+        const homePage = context.propertyForKey(UIMeta.KeyComponentName);
         // meta.naviateToPage(context, '', false)
 
         context.pop();

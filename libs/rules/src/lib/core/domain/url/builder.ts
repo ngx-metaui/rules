@@ -37,9 +37,9 @@ export class DefaultRestBuilder {
 
     this.validate();
 
-    let sortedSegments = this.adjustRank(this.urlGroup.segments);
+    const sortedSegments = this.adjustRank(this.urlGroup.segments);
 
-    let url = new StringJoiner();
+    const url = new StringJoiner();
     for (let i = 1; i < sortedSegments.length; i++) {
 
       switch (sortedSegments[i].type) {
@@ -48,7 +48,7 @@ export class DefaultRestBuilder {
           break;
 
         case RestSegmentType.Resource:
-          let resSegment: ResourceSegment = <ResourceSegment> sortedSegments[i];
+          const resSegment: ResourceSegment = <ResourceSegment> sortedSegments[i];
           if (isMocked) {
             url.add('mocked').add('/');
           }
@@ -82,14 +82,14 @@ export class DefaultRestBuilder {
 
 
   private validate(): void {
-    let action: ActionSegment = <ActionSegment>this.urlGroup.lookup(RestSegmentType.Action);
+    const action: ActionSegment = <ActionSegment>this.urlGroup.lookup(RestSegmentType.Action);
 
     switch (action.actionType) {
       case RestAction.Save:
       case RestAction.Do:
         // make sure we have a Identifier
-        let withIdCount = this.urlGroup.count(RestSegmentType.Identifier);
-        let of = this.urlGroup.lookup(RestSegmentType.OfParent);
+        const withIdCount = this.urlGroup.count(RestSegmentType.Identifier);
+        const of = this.urlGroup.lookup(RestSegmentType.OfParent);
 
         assert(withIdCount >= 1, 'Missing withId(<IDENTIFIER>) call!');
         break;
@@ -131,7 +131,7 @@ export class DefaultRestBuilder {
       .findIndex((s: UrlSegment) => s.type === RestSegmentType.OfParent);
 
     if (ofIndex !== -1) {
-      let of = segments[ofIndex];
+      const of = segments[ofIndex];
       let segment: UrlSegment;
       do {
         segment = segments[--ofIndex];

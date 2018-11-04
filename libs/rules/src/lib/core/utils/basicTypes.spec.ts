@@ -28,7 +28,7 @@ describe('a typescript types/class and how they are translated into runtime ', (
     'the objets', () => {
 
 
-      let expectedTypes = new Map<string, string>();
+      const expectedTypes = new Map<string, string>();
       expectedTypes.set('stringLiteral', 'String');
       expectedTypes.set('someNumber', 'Number');
       expectedTypes.set('aBool', 'Boolean');
@@ -46,22 +46,22 @@ describe('a typescript types/class and how they are translated into runtime ', (
       expectedTypes.set('myMap', 'Map');
       expectedTypes.set('mySet', 'Set');
 
-      let actualTypes = new Map<string, string>();
-      let _item = new TestClass();
+      const actualTypes = new Map<string, string>();
+      const _item = new TestClass();
 
       let instance: any;
       if (_item['getTypes']) {
         instance = _item['getTypes']();
       }
-      let ownPropertyNames = Object.keys(instance);
-      for (let name of ownPropertyNames) {
-        let type = instance[name].name || instance[name].constructor.name;
+      const ownPropertyNames = Object.keys(instance);
+      for (const name of ownPropertyNames) {
+        const type = instance[name].name || instance[name].constructor.name;
         actualTypes.set(name, type);
         if (instance[name] && isArray(instance[name])) {
           assert(instance[name].length > 0,
             ' Cannot register type[array] with properly initialized prototype');
-          let item = instance[name][0];
-          let elementType = item.name;
+          const item = instance[name][0];
+          const elementType = item.name;
           actualTypes.set(name + 'ElementType', elementType);
 
         }

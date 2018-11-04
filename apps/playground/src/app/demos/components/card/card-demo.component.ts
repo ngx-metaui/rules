@@ -17,7 +17,7 @@
  *
  */
 import {Component, ViewChild} from '@angular/core';
-import {CardComponent, isPresent} from '@ngx-meta/rules';
+import {CardComponent, isPresent} from '@ngx-metaui/rules';
 
 
 const SUPPLIERS: Supplier[] = [

@@ -34,81 +34,75 @@ import {AWDataTable} from '../../aw-datatable';
  *
  */
 @Component({
-    selector: 'aw-dt-detail-column',
-    templateUrl: 'dt-detail-row.component.html',
-    styleUrls: ['dt-detail-row.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    providers: [DomHandler]
+  selector: 'aw-dt-detail-column',
+  templateUrl: 'dt-detail-row.component.html',
+  styleUrls: ['dt-detail-row.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [DomHandler]
 
 })
-export class DTDetailRowComponent extends DTColumn2Component
-{
+export class DTDetailRowComponent extends DTColumn2Component {
 
-    /**
-     * Defines current visibility for current data row using method reference
-     *
-     */
-    @Input()
-    isVisibleFn: (column: DTColumn2Component, item: any) => boolean;
-
-
-    /**
-     *
-     * tells if we need to render a line between item row and its detail
-     *
-     */
-    @Input()
-    showRowLine: boolean = true;
+  /**
+   * Defines current visibility for current data row using method reference
+   *
+   */
+  @Input()
+  isVisibleFn: (column: DTColumn2Component, item: any) => boolean;
 
 
-    constructor(public env: Environment, public domHandler: DomHandler)
-    {
-        super(env, domHandler);
+  /**
+   *
+   * tells if we need to render a line between item row and its detail
+   *
+   */
+  @Input()
+  showRowLine: boolean = true;
+
+
+  constructor(public env: Environment, public domHandler: DomHandler) {
+    super(env, domHandler);
+  }
+
+
+  ngOnInit(): void {
+    // just to get around the check in parent class
+    this.key = '';
+    super.ngOnInit();
+  }
+
+
+  /**
+   * Check if we need to keep some leading TDs
+   *
+   */
+  visibleLeadingCols(): number {
+    return this.dt.numberOfColsBeforeData - (this.dt.hasInvisibleSelectionColumn() ? 1 : 0);
+  }
+
+
+  /**
+   *
+   * Check if we can show detail row/column using either [isVisible] or [isVisibleFn] bindings.
+   * Here can hook on application level custom method to decide if current item has detail row
+   * or not
+   *
+   * Or we can use isVisible=true to tell all row have detail row
+   *
+   */
+  showDetailRow(item: any): boolean {
+    let isVisible = this.isVisible;
+    if (isPresent(this.isVisibleFn)) {
+      isVisible = this.isVisibleFn.apply(this.dt.context, [this, item]);
     }
+    return isVisible;
+  }
 
 
-    ngOnInit(): void
-    {
-        // just to get around the check in parent class
-        this.key = '';
-        super.ngOnInit();
-    }
+  initialize(table: AWDataTable): void {
+    super.initialize(table);
 
-
-    /**
-     * Check if we need to keep some leading TDs
-     *
-     */
-    visibleLeadingCols(): number
-    {
-        return this.dt.numberOfColsBeforeData - (this.dt.hasInvisibleSelectionColumn() ? 1 : 0);
-    }
-
-
-    /**
-     *
-     * Check if we can show detail row/column using either [isVisible] or [isVisibleFn] bindings.
-     * Here can hook on application level custom method to decide if current item has detail row
-     * or not
-     *
-     * Or we can use isVisible=true to tell all row have detail row
-     *
-     */
-    showDetailRow(item: any): boolean
-    {
-        let isVisible = this.isVisible;
-        if (isPresent(this.isVisibleFn)) {
-            isVisible = this.isVisibleFn.apply(this.dt.context, [this, item]);
-        }
-        return isVisible;
-    }
-
-
-    initialize(table: AWDataTable): void
-    {
-        super.initialize(table);
-
-        this.isVisible = !this.dt.isOutline() || !this.dt.pivotalLayout;
-    }
+    this.isVisible = !this.dt.isOutline() || !this.dt.pivotalLayout;
+  }
 }
 

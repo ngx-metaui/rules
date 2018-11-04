@@ -113,7 +113,7 @@ export abstract class MetaBaseComponent extends BaseFormComponent implements Aft
    *
    */
   aProperties(me: Context, key: string, defValue: any = null): any {
-    let activeContext: Context = this._metaContext.activeContext();
+    const activeContext: Context = this._metaContext.activeContext();
     return isPresent(me) ? me.propertyForKey(key) : defValue;
 
   }

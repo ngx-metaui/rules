@@ -161,7 +161,7 @@ export class GenericChooserComponent extends BaseFormComponent {
       defaultDataProvider = this.dataSource.dataProviders.find(this.destinationClass);
     }
 
-    let projectedSize = defaultDataProvider.expectedCount(this.choiceProviderParams);
+    const projectedSize = defaultDataProvider.expectedCount(this.choiceProviderParams);
     this.initType(projectedSize);
 
     if (this.type === 'Chooser') {
@@ -248,7 +248,7 @@ export class GenericChooserComponent extends BaseFormComponent {
     if (isBlank(this.displayKey)) {
       return item;
     }
-    let fieldValue = FieldPath.getFieldValue(item, this.displayKey);
+    const fieldValue = FieldPath.getFieldValue(item, this.displayKey);
     if (isFunction(fieldValue)) {
       return fieldValue.call(item);
     }
@@ -329,7 +329,7 @@ export class GCChooserState extends ChooserSelectionState {
 
   selectedObject(): any {
     if (this.gChooser.multiselect) {
-      let objects = this.selectedObjects();
+      const objects = this.selectedObjects();
       return (isBlank(objects) || ListWrapper.isEmpty(objects)) ? null : ListWrapper.last(
         objects);
     }
@@ -348,7 +348,7 @@ export class GCChooserState extends ChooserSelectionState {
     if (this.gChooser.multiselect) {
       return ListWrapper.containsComplex(this.selectedObjects(), selection);
     }
-    let curValue = this.selectedObject();
+    const curValue = this.selectedObject();
     return equals(curValue, selection);
   }
 }

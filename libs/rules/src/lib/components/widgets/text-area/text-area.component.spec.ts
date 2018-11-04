@@ -55,7 +55,7 @@ describe('TextArea component behavior', () => {
 
   it('It should setup a default values when just a value bindings is passed', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TextAreaInstantiationComponent);
+    const fixtureWrapper = TestBed.createComponent(TextAreaInstantiationComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.textAreaComponent.editable).toEqual(true);
@@ -69,16 +69,16 @@ describe('TextArea component behavior', () => {
 
   it('should size the text area correct based on the passed input rows and columns.', () => {
 
-    let tmpl = '<aw-text-area [value]="inputValue" [rows]="rows" ' +
+    const tmpl = '<aw-text-area [value]="inputValue" [rows]="rows" ' +
       '[columns]="cols"></aw-text-area>';
     TestBed.overrideComponent(TextAreaInstantiationComponent, {set: {template: tmpl}});
 
 
-    let fixtureWrapper = TestBed.createComponent(TextAreaInstantiationComponent);
+    const fixtureWrapper = TestBed.createComponent(TextAreaInstantiationComponent);
     fixtureWrapper.detectChanges();
 
 
-    let txtArea = fixtureWrapper.debugElement.query(By.css('.w-text-area'));
+    const txtArea = fixtureWrapper.debugElement.query(By.css('.w-text-area'));
     expect(txtArea.nativeElement.cols).toEqual(50);
     expect(txtArea.nativeElement.rows).toEqual(40);
 
@@ -87,7 +87,7 @@ describe('TextArea component behavior', () => {
 
   it('should inherit values from parent component such as name, formControl, formGroup.', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TextAreaInsideParentContainerComponent);
+    const fixtureWrapper = TestBed.createComponent(TextAreaInsideParentContainerComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.textAreaComponent.editable).toEqual(true);
@@ -102,11 +102,11 @@ describe('TextArea component behavior', () => {
   // todo: think about also how text area values should or should not be wrapped
   it('should render in readonly mode when editable is FALSE. ', () => {
 
-    let fixtureWrapper = TestBed.createComponent(TextAreaReadOnlyComponent);
+    const fixtureWrapper = TestBed.createComponent(TextAreaReadOnlyComponent);
     fixtureWrapper.detectChanges();
 
 
-    let txtArea = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
+    const txtArea = fixtureWrapper.debugElement.query(By.css('.w-string-field'));
     expect(txtArea.nativeElement.textContent).toEqual('Some text-ReadOnly');
   });
 

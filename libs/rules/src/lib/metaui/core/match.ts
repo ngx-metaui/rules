@@ -49,7 +49,7 @@ export class Match {
   // Word lists are int arrays with the first element holding the length
   static addInt(intArr: number[], val: number): number[] {
     if (isBlank(intArr)) {
-      let r: Array<number> = new Array<number>(4);
+      const r: Array<number> = new Array<number>(4);
       r[0] = 1;
       r[1] = val;
 
@@ -76,10 +76,10 @@ export class Match {
       return null;
     }
     let result: number[];
-    let count = arr[0];
+    const count = arr[0];
     for (let i = 0; i < count; i++) {
-      let r = arr[i + 1];
-      let rule = rules[r];
+      const r = arr[i + 1];
+      const rule = rules[r];
       if ((rule.keyMatchesMask & usesMask) !== 0) {
         result = Match.addInt(result, r);
       }
@@ -125,13 +125,14 @@ export class Match {
       return b;
     }
     let result: number[];
-    let iA = 1, sizeA = isPresent(a[0]) ? a[0] : 0, iB = 1, sizeB = isPresent(b[0]) ? b[0] : 0;
+    let iA = 1, iB = 1;
+    const sizeA = isPresent(a[0]) ? a[0] : 0, sizeB = isPresent(b[0]) ? b[0] : 0;
     Match._Debug_ElementProcessCount += sizeA + sizeB;
 
     while (iA <= sizeA || iB <= sizeB) {
-      let iAMask = (iA <= sizeA) ? allRules[a[iA]].keyIndexedMask : 0;
-      let iBMask = (iB <= sizeB) ? allRules[b[iB]].keyIndexedMask : 0;
-      let c = (iA > sizeA ? 1 : (iB > sizeB ? -1 : (a[iA] - b[iB])));
+      const iAMask = (iA <= sizeA) ? allRules[a[iA]].keyIndexedMask : 0;
+      const iBMask = (iB <= sizeB) ? allRules[b[iB]].keyIndexedMask : 0;
+      const c = (iA > sizeA ? 1 : (iB > sizeB ? -1 : (a[iA] - b[iB])));
 
       if (c === 0) {
         result = Match.addInt(result, a[iA]);
@@ -161,7 +162,7 @@ export class Match {
     if (isBlank(b)) {
       return a;
     }
-    let sizeA = a[0], sizeB = b[0];
+    const sizeA = a[0], sizeB = b[0];
     if (sizeA === 0) {
       return b;
     }
@@ -175,7 +176,7 @@ export class Match {
 
 
     while (iA <= sizeA || iB <= sizeB) {
-      let c: number = vA - vB;
+      const c: number = vA - vB;
       result = Match.addInt(result, ((c <= 0) ? vA : vB));
       if (c <= 0) {
         iA++;
@@ -196,7 +197,7 @@ export class Match {
     if (a === null || b === null) {
       return false;
     }
-    let count = a[0];
+    const count = a[0];
     if (count !== b[0]) {
       return false;
     }
@@ -234,14 +235,14 @@ export class Match {
     // }
 
     let result: number[];
-    let count = matchesArr[0];
+    const count = matchesArr[0];
 
     for (let i = 0; i < count; i++) {
-      let r = matchesArr[i + 1];
+      const r = matchesArr[i + 1];
       if (r >= maxRule) {
         continue;
       }
-      let rule: Rule = allRules[r];
+      const rule: Rule = allRules[r];
 
 
       if (rule.disabled() || (rule.keyAntiMask & queriedMask) !== 0) {
@@ -302,7 +303,7 @@ export class Match {
   }
 
   toString() {
-    let buf = new StringJoiner([]);
+    const buf = new StringJoiner([]);
     buf.add('_matches');
     buf.add((isPresent(this._matches) ? this._matches.length : 0) + '');
     buf.add('_keysMatchedMask');
@@ -394,7 +395,6 @@ export class MatchResult extends MatchWithUnion {
 
   /**
    * Fill in matchArray with MatchValues to use in Selector matching
-   * @param matchArray
    */
   initMatchValues(matchArray: MatchValue[]): void {
     if (isPresent(this._prevMatch)) {
@@ -411,7 +411,7 @@ export class MatchResult extends MatchWithUnion {
   filteredMatches(): number[] {
     // shouldn't this be cached?!?
     let matches: number[] = this.matches();
-    let keysMatchedMask = this._keysMatchedMask | (isPresent(
+    const keysMatchedMask = this._keysMatchedMask | (isPresent(
       this._overUnionMatch) ? this._overUnionMatch._keysMatchedMask : 0);
 
     let overrideMatches: number[];
@@ -462,21 +462,21 @@ export class MatchResult extends MatchWithUnion {
 
 
   protected _initMatch(): void {
-    let keyMask: number = shiftLeft(1, this._keyData._id);
+    const keyMask: number = shiftLeft(1, this._keyData._id);
 
     // get vec for this key/value -- if value is list, compute the union
     let newArr: number[];
     if (isArray(this._value)) {
 
-      for (let v of this._value) {
-        let a: number[] = this._keyData.lookup(this._meta, v);
+      for (const v of this._value) {
+        const a: number[] = this._keyData.lookup(this._meta, v);
         newArr = Match.union(a, newArr);
       }
     } else {
       newArr = this._keyData.lookup(this._meta, this._value);
     }
 
-    let prevMatches: number[] = (isBlank(this._prevMatch)) ? null : this._prevMatch.matches();
+    const prevMatches: number[] = (isBlank(this._prevMatch)) ? null : this._prevMatch.matches();
 
     this._keysMatchedMask = (isBlank(
       this._prevMatch)) ? keyMask : (keyMask | this._prevMatch._keysMatchedMask);
@@ -503,7 +503,7 @@ export class MatchResult extends MatchWithUnion {
       this._matchPathCRC = crc32(this._matchPathCRC, mr._keyData._key.length);
 
       if (isPresent(mr._value)) {
-        let value = isArray(mr._value) ? mr._value.join(',') : mr._value;
+        const value = isArray(mr._value) ? mr._value.join(',') : mr._value;
         this._matchPathCRC = crc32(this._matchPathCRC, hashCode(value));
       }
     }
@@ -516,10 +516,11 @@ export class MatchResult extends MatchWithUnion {
 
 
   _logMatchDiff(a: number[], b: number[]): void {
-    let iA = 1, sizeA = a[0], iB = 1, sizeB = b[0];
+    let iA = 1, iB = 1;
+    const sizeA = a[0], sizeB = b[0];
 
     while (iA <= sizeA || iB <= sizeB) {
-      let c = (iA > sizeA ? 1 : (iB > sizeB ? -1 : (a[iA] - b[iB])));
+      const c = (iA > sizeA ? 1 : (iB > sizeB ? -1 : (a[iA] - b[iB])));
       if (c === 0) {
         iA++;
         iB++;
@@ -544,7 +545,7 @@ export class MatchResult extends MatchWithUnion {
 
   debugString(): string {
 
-    let sj = new StringJoiner(['Match Result path: \n']);
+    const sj = new StringJoiner(['Match Result path: \n']);
     this._appendPrevPath(sj);
 
     if (isPresent(this._overUnionMatch)) {
@@ -565,14 +566,14 @@ export class MatchResult extends MatchWithUnion {
   }
 
   _checkMatch(values: Map<string, any>, meta: Meta): void {
-    let arr: number[] = this.filterResult();
+    const arr: number[] = this.filterResult();
     if (isBlank(arr)) {
       return;
     }
     // first entry is count
-    let count: number = arr[0];
+    const count: number = arr[0];
     for (let i = 0; i < count; i++) {
-      let r = this._meta._rules[arr[i + 1]];
+      const r = this._meta._rules[arr[i + 1]];
       r._checkRule(values, meta);
     }
 

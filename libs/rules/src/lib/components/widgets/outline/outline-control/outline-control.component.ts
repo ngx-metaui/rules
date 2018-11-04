@@ -170,7 +170,7 @@ export class OutlineControlComponent extends BaseComponent {
     }
 
     this.outlineFor.toggleExpansion();
-    let payload = {
+    const payload = {
       item: this.item,
       expanded: this.outlineFor.state.isExpanded(this.item)
     };

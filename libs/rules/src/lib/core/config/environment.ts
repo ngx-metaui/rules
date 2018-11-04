@@ -128,14 +128,14 @@ export class Environment {
   }
 
   peak<T>(key: string): T {
-    let stack: T[] = this.stacksVariables.get(key) || [];
+    const stack: T[] = this.stacksVariables.get(key) || [];
     return ListWrapper.last<T>(stack);
 
   }
 
 
   pop<T>(key: string): T {
-    let stack: T[] = this.stacksVariables.get(key) || [];
+    const stack: T[] = this.stacksVariables.get(key) || [];
     assert(stack.length > 0, ' Attempt to get value from empty stack');
 
     return ListWrapper.removeAt<any>(stack, stack.length - 1);
@@ -143,7 +143,7 @@ export class Environment {
 
 
   push<T>(key: string, value: T): void {
-    let stack: T[] = this.stacksVariables.get(key) || [];
+    const stack: T[] = this.stacksVariables.get(key) || [];
     stack.push(value);
     this.stacksVariables.set(key, stack);
   }

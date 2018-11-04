@@ -66,7 +66,7 @@ export class DataFinders {
     });
 
     if (isPresent(finderMatch)) {
-      let copy = new finderMatch();
+      const copy = new finderMatch();
       copy.forData(forProvider);
       return copy;
 
@@ -195,7 +195,7 @@ export class FullTextArrayDataFinder extends DataFinder {
   instantMatch<T>(query: any, max: number): T[] {
     assert(isPresent(this._provider), 'Missing DataProvider');
 
-    let list = this._provider.dataForParams(new Map().set('limit', max));
+    const list = this._provider.dataForParams(new Map().set('limit', max));
     return this.instantMatchWithSelections<T>(list, query, max);
   }
 
@@ -205,11 +205,11 @@ export class FullTextArrayDataFinder extends DataFinder {
     if (isBlank(query)) {
       return selectionsForMatch;
     }
-    let result: any[] = [];
-    let toLowerPattern = query.toLowerCase();
+    const result: any[] = [];
+    const toLowerPattern = query.toLowerCase();
 
     for (let i = 0; i < selectionsForMatch.length; i++) {
-      let item = selectionsForMatch[i];
+      const item = selectionsForMatch[i];
       if (this.matches(item, toLowerPattern)) {
         result.push(item);
         if (result.length >= max) {
@@ -250,9 +250,9 @@ export class FullTextArrayDataFinder extends DataFinder {
   }
 
   protected hasObjectValue(obj: any, pattern: string): boolean {
-    let values = objectValues(obj);
-    let parentObj = objectToName(obj);
-    let length2 = values.filter((value: any) => {
+    const values = objectValues(obj);
+    const parentObj = objectToName(obj);
+    const length2 = values.filter((value: any) => {
       if (isBlank(value) || isArray(value)) {
         return false;
 
@@ -291,9 +291,9 @@ export class OutlineFullTextArrayDataFinder extends FullTextArrayDataFinder {
     if (isBlank(query)) {
       return selectionsForMatch;
     }
-    let toLowerPattern = query.toLowerCase();
+    const toLowerPattern = query.toLowerCase();
 
-    let sourceToSearch = selectionsForMatch.slice();
+    const sourceToSearch = selectionsForMatch.slice();
     this.rollup(sourceToSearch, toLowerPattern);
     return this.shake(sourceToSearch);
   }

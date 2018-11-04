@@ -178,13 +178,13 @@ export class AppConfig {
 
 
   getNumber(key: string): number {
-    let val = this.get(key);
+    const val = this.get(key);
     return NumberWrapper.parseIntAutoRadix(val);
   }
 
 
   getBoolean(key: string): boolean {
-    let val = this.get(key);
+    const val = this.get(key);
     return BooleanWrapper.boleanValue(val);
   }
 
@@ -231,8 +231,8 @@ export class AppConfig {
 
 
   getRestApiContextUrl(entity: string, isNested: boolean = false): string {
-    let nestedFlag = isNested ? '$' : '';
-    let withEntity = `${AppConfig.RestApiContextUrl}.${nestedFlag}${entity}`;
+    const nestedFlag = isNested ? '$' : '';
+    const withEntity = `${AppConfig.RestApiContextUrl}.${nestedFlag}${entity}`;
     let url = this.get(withEntity) || this.get(AppConfig.RestApiContextUrl);
 
     if (isPresent(url)) {
@@ -268,7 +268,7 @@ export class AppConfig {
       return `${prefix}${cnx || '/'}`;
     }
 
-    let url = `${host}${cnx || '/'}`;
+    const url = `${host}${cnx || '/'}`;
     return url;
   }
 
@@ -278,7 +278,7 @@ export class AppConfig {
    *
    */
   initializeI18n(): Promise<any> {
-    let promise: Promise<any> = new Promise((resolve: any) => {
+    const promise: Promise<any> = new Promise((resolve: any) => {
       resolve(true);
     });
     return promise;
@@ -295,7 +295,7 @@ export function makeConfig(config: { [key: string]: any }, injector: Injector,
   // when empty we asume we are in Test. Application should always have some basic initialization
   // todo: Need to get back to this as this is temporary.
 
-  let conf: AppConfig = new AppConfig(injector, env);
+  const conf: AppConfig = new AppConfig(injector, env);
   conf.init(config);
   return conf;
 }

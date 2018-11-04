@@ -60,16 +60,16 @@ describe('Section component', () => {
     it('should be able to open and close', fakeAsync(() => {
 
 
-      let fixtureWrapper = TestBed.createComponent(BasicSectionTestComponent);
+      const fixtureWrapper = TestBed.createComponent(BasicSectionTestComponent);
       fixtureWrapper.detectChanges();
 
       // Verify that the section is open.
-      let contentW = fixtureWrapper.nativeElement.querySelector(
+      const contentW = fixtureWrapper.nativeElement.querySelector(
         '.ui-accordion-content-wrapper');
       expect(getComputedStyle(contentW).height).not.toEqual('0px');
 
       // Send a click to close it.
-      let title = fixtureWrapper.nativeElement.querySelector('.section-title');
+      const title = fixtureWrapper.nativeElement.querySelector('.section-title');
       title.click();
 
       // wait for the change
@@ -99,30 +99,30 @@ describe('Section component', () => {
 
     it('should correctly have title, description and content displayed', () => {
 
-      let fixtureWrapper = TestBed.createComponent(BasicSectionTestComponent);
+      const fixtureWrapper = TestBed.createComponent(BasicSectionTestComponent);
       fixtureWrapper.detectChanges();
 
-      let title = fixtureWrapper.nativeElement.querySelector('.section-title');
+      const title = fixtureWrapper.nativeElement.querySelector('.section-title');
       expect(title.textContent.trim()).toEqual('section title');
 
-      let description = fixtureWrapper.nativeElement.querySelector('.section-description');
+      const description = fixtureWrapper.nativeElement.querySelector('.section-description');
       expect(description.textContent.trim()).toEqual('section description');
 
-      let contentW = fixtureWrapper.nativeElement.querySelector(
+      const contentW = fixtureWrapper.nativeElement.querySelector(
         '.ui-accordion-content-wrapper');
       expect(getComputedStyle(contentW).height).not.toEqual('0px');
 
-      let content = fixtureWrapper.nativeElement.querySelector('.ui-widget-content');
+      const content = fixtureWrapper.nativeElement.querySelector('.ui-widget-content');
       expect(content.textContent.trim()).toEqual('section content');
     });
 
 
     it('should display edit icon and be editable when editable="true"', () => {
 
-      let fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
+      const fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
       fixtureWrapper.detectChanges();
 
-      let editIcon = fixtureWrapper.nativeElement.querySelector('.icon-edit');
+      const editIcon = fixtureWrapper.nativeElement.querySelector('.icon-edit');
       expect(editIcon).not.toBeNull();
 
     });
@@ -130,36 +130,36 @@ describe('Section component', () => {
 
     it('should content be hidden when opened="false"', fakeAsync(() => {
 
-      let fixtureWrapper = TestBed.createComponent(SectionAttributeClosedTestComponent);
+      const fixtureWrapper = TestBed.createComponent(SectionAttributeClosedTestComponent);
       fixtureWrapper.detectChanges();
 
-      let title = fixtureWrapper.nativeElement.querySelector('.section-title');
+      const title = fixtureWrapper.nativeElement.querySelector('.section-title');
       expect(title.textContent.trim()).toEqual('section title');
 
-      let description = fixtureWrapper.nativeElement.querySelector('.section-description');
+      const description = fixtureWrapper.nativeElement.querySelector('.section-description');
       expect(description.textContent.trim()).toEqual('section description');
 
       // Have to tick to let animation take place to hide the value.
       tick();
 
       // The contents are hidden.  0px
-      let content = fixtureWrapper.nativeElement.querySelector(
+      const content = fixtureWrapper.nativeElement.querySelector(
         '.ui-accordion-content-wrapper');
       expect(getComputedStyle(content).getPropertyValue('height')).toEqual('0px');
     }));
 
     it('should be opened and not closable when title and description are not present', () => {
 
-      let fixtureWrapper = TestBed.createComponent(SectionWithNoHeaderTestComponent);
+      const fixtureWrapper = TestBed.createComponent(SectionWithNoHeaderTestComponent);
       fixtureWrapper.detectChanges();
 
-      let title = fixtureWrapper.nativeElement.querySelector('.section-title');
+      const title = fixtureWrapper.nativeElement.querySelector('.section-title');
       expect(title.textContent.trim()).toEqual('');
 
-      let description = fixtureWrapper.nativeElement.querySelector('.section-description');
+      const description = fixtureWrapper.nativeElement.querySelector('.section-description');
       expect(description).toEqual(null);
 
-      let contentW = fixtureWrapper.nativeElement.querySelector(
+      const contentW = fixtureWrapper.nativeElement.querySelector(
         '.ui-accordion-header');
       expect(getComputedStyle(contentW).height).toEqual('1px');
 
@@ -173,10 +173,10 @@ describe('Section component', () => {
 
     it('should expand section and set editState to TRUE when edit icon is clicked',
       fakeAsync(() => {
-        let fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
+        const fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
         fixtureWrapper.detectChanges();
 
-        let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
+        const editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
         editIcon.click();
 
         tick();
@@ -193,7 +193,7 @@ describe('Section component', () => {
 
 
     it('should not render edit icon when in editing mode (editState=true)', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
+      const fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
       fixtureWrapper.detectChanges();
 
       let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
@@ -213,10 +213,10 @@ describe('Section component', () => {
 
 
     it('should render default buttons when in Editing mode', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
+      const fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
       fixtureWrapper.detectChanges();
 
-      let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
+      const editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
       editIcon.click();
 
 
@@ -224,7 +224,7 @@ describe('Section component', () => {
       fixtureWrapper.detectChanges();
 
 
-      let buttons = fixtureWrapper.nativeElement.querySelectorAll('.footer-actions' +
+      const buttons = fixtureWrapper.nativeElement.querySelectorAll('.footer-actions' +
         ' button');
       expect(buttons.length).toBe(2);
 
@@ -232,10 +232,10 @@ describe('Section component', () => {
 
 
     it('should render custom actions when action template is used', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(SectionEditableWithButtonsTestComponent);
+      const fixtureWrapper = TestBed.createComponent(SectionEditableWithButtonsTestComponent);
       fixtureWrapper.detectChanges();
 
-      let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
+      const editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
       editIcon.click();
 
 
@@ -243,7 +243,7 @@ describe('Section component', () => {
       fixtureWrapper.detectChanges();
 
 
-      let buttons = fixtureWrapper.nativeElement.querySelectorAll('.footer-actions button');
+      const buttons = fixtureWrapper.nativeElement.querySelectorAll('.footer-actions button');
       expect(buttons[0].textContent.trim()).toBe('ButtonTest1');
       expect(buttons[1].textContent.trim()).toBe('ButtonTest2');
 
@@ -251,11 +251,11 @@ describe('Section component', () => {
 
 
     it('should trigger events when actions Save/Canced are clicked', fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
+      const fixtureWrapper = TestBed.createComponent(SectionAttributeEditableTestComponent);
       fixtureWrapper.detectChanges();
 
       // switch to edit mode
-      let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
+      const editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
       editIcon.click();
 
 
@@ -263,7 +263,7 @@ describe('Section component', () => {
       fixtureWrapper.detectChanges();
 
 
-      let buttons = fixtureWrapper.nativeElement.querySelectorAll('.footer-actions button');
+      const buttons = fixtureWrapper.nativeElement.querySelectorAll('.footer-actions button');
       buttons[0].click();
 
       tick();
@@ -283,11 +283,11 @@ describe('Section component', () => {
 
     it('should render custom edit icon when [actionIcon] binding is provided',
       fakeAsync(() => {
-        let fixtureWrapper = TestBed.createComponent(
+        const fixtureWrapper = TestBed.createComponent(
           SectionEditableWithCustomEditActionTestComponent);
         fixtureWrapper.detectChanges();
 
-        let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
+        const editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
 
         expect(editIcon.classList).toContain('icon-positive');
 
@@ -296,12 +296,12 @@ describe('Section component', () => {
 
     it('should emit onEdit event when custom editAction is clicked and editMode=external',
       fakeAsync(() => {
-        let fixtureWrapper = TestBed.createComponent(
+        const fixtureWrapper = TestBed.createComponent(
           SectionEditableWithCustomEditActionTestComponent);
         fixtureWrapper.detectChanges();
 
         // switch to edit mode
-        let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
+        const editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
         editIcon.click();
 
 
@@ -317,12 +317,12 @@ describe('Section component', () => {
     it('should not render in editable state the footer container with buttons when editMode' +
       ' = external',
       fakeAsync(() => {
-        let fixtureWrapper = TestBed.createComponent(
+        const fixtureWrapper = TestBed.createComponent(
           SectionEditableWithCustomEditActionTestComponent);
         fixtureWrapper.detectChanges();
 
         // switch to edit mode
-        let editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
+        const editIcon = fixtureWrapper.nativeElement.querySelector('.section-edit-action');
         editIcon.click();
 
 
@@ -331,7 +331,7 @@ describe('Section component', () => {
         fixtureWrapper.detectChanges();
 
 
-        let fAction = fixtureWrapper.nativeElement.querySelector('.footer-actions');
+        const fAction = fixtureWrapper.nativeElement.querySelector('.footer-actions');
 
         expect(fAction).toBeNull();
       }));

@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-import {Entity, isPresent, Money} from '@ngx-meta/rules';
+import {Entity, isPresent, Money} from '@ngx-metaui/rules';
 
 import {ApproverUser} from './approver-user';
 

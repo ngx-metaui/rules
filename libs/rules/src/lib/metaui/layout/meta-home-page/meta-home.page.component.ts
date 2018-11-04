@@ -80,7 +80,7 @@ export class MetaHomePageComponent extends BaseComponent {
   ngOnInit(): void {
     super.ngOnInit();
 
-    let routeParams = this.activatedRoute.snapshot.params;
+    const routeParams = this.activatedRoute.snapshot.params;
     if (isPresent(routeParams) && isPresent(routeParams[UIMeta.KeyModule])) {
       this.module = routeParams[UIMeta.KeyModule];
     }

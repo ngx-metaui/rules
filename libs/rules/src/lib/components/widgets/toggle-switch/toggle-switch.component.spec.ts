@@ -32,14 +32,14 @@ describe('ToggleSwitchComponent', () => {
   it('should show the label', () => {
     component.labelText = 'New Title';
     fixture.detectChanges();
-    let test = fixture.debugElement.query(By.css('label.w-toggle__label'));
+    const test = fixture.debugElement.query(By.css('label.w-toggle__label'));
 
     expect(test.nativeElement.textContent.toString().trim()).toBe('New Title');
   });
 
   it('should be switched off by default', () => {
     fixture.detectChanges();
-    let test = fixture.debugElement.query(By.css('div.slider__button'));
+    const test = fixture.debugElement.query(By.css('div.slider__button'));
 
     expect(test.nativeElement.classList.contains('on')).toBe(false);
   });
@@ -48,12 +48,12 @@ describe('ToggleSwitchComponent', () => {
     component.model = false;
 
     fixture.detectChanges();
-    let test = fixture.debugElement.query(By.css('div.slider'));
+    const test = fixture.debugElement.query(By.css('div.slider'));
 
     test.nativeElement.click();
     fixture.detectChanges();
 
-    let sliderSwitch = fixture.debugElement.query(By.css('div.slider__button'));
+    const sliderSwitch = fixture.debugElement.query(By.css('div.slider__button'));
 
     expect(component.model).toBe(true);
     expect(sliderSwitch.nativeElement.classList.contains('slider__button--is-active'))
@@ -64,12 +64,12 @@ describe('ToggleSwitchComponent', () => {
     component.model = true;
 
     fixture.detectChanges();
-    let test = fixture.debugElement.query(By.css('div.slider'));
+    const test = fixture.debugElement.query(By.css('div.slider'));
 
     test.nativeElement.click();
     fixture.detectChanges();
 
-    let sliderSwitch = fixture.debugElement.query(By.css('div.slider__button'));
+    const sliderSwitch = fixture.debugElement.query(By.css('div.slider__button'));
 
     expect(component.model).toBe(false);
     expect(sliderSwitch.nativeElement.classList.contains('slider__button--is-active'))

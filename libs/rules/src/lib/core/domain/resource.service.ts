@@ -281,8 +281,8 @@ export class Resource {
    *
    */
   withData<T extends Entity | Value>(data: T): Resource {
-    let urlSegment = this.urlGroup.lookup(RestSegmentType.Action);
-    let isSave = (<ActionSegment>urlSegment).actionType === RestAction.Save;
+    const urlSegment = this.urlGroup.lookup(RestSegmentType.Action);
+    const isSave = (<ActionSegment>urlSegment).actionType === RestAction.Save;
 
     assert(isSave, 'withData can be used with SAVE operation only!');
 
@@ -321,12 +321,12 @@ export class Resource {
                                        responseType?: 'json',
                                        withCredentials?: boolean,
                                      } = {observe: 'body'}): Subscription {
-    let segment: ActionSegment = <ActionSegment> this.urlGroup.lookup(RestSegmentType.Action);
+    const segment: ActionSegment = <ActionSegment> this.urlGroup.lookup(RestSegmentType.Action);
     assert(isPresent(segment), 'Missing Http method. Not sure how to handle this!');
 
     let observable: Observable<any>;
 
-    let actionType: RestAction = segment.value;
+    const actionType: RestAction = segment.value;
     switch (actionType) {
       case RestAction.Load:
         observable = this.http.get<Response<T | T[]>>(this.url, options);
@@ -369,12 +369,12 @@ export class Resource {
              responseType?: 'json', withCredentials?: boolean
            } = {observe: 'response'}): Subscription {
 
-    let segment: ActionSegment = <ActionSegment> this.urlGroup.lookup(RestSegmentType.Action);
+    const segment: ActionSegment = <ActionSegment> this.urlGroup.lookup(RestSegmentType.Action);
     assert(isPresent(segment), 'Missing Http method. Not sure how to handle this!');
 
     let observable: Observable<any>;
 
-    let actionType: RestAction = segment.value;
+    const actionType: RestAction = segment.value;
     switch (actionType) {
       case RestAction.Load:
         observable = this.http.get<Response<T | T[]>>(this.url, options);
@@ -416,7 +416,7 @@ export class Resource {
    */
   get url(): string {
     if (isBlank(this._url)) {
-      let isMocked = this.appConfig.getBoolean(AppConfig.ConnectionUseMockServer);
+      const isMocked = this.appConfig.getBoolean(AppConfig.ConnectionUseMockServer);
 
       this._url = this._urlBuilder.assembleUrl(isMocked);
     }
@@ -467,14 +467,14 @@ export class Resource {
       return res;
     }
     // unsorted segments will have have our target resource as first one
-    let sgm: ResourceSegment = <ResourceSegment>this.urlGroup.lookup(RestSegmentType.Resource);
+    const sgm: ResourceSegment = <ResourceSegment>this.urlGroup.lookup(RestSegmentType.Resource);
 
     if (isComposite) {
       return this.deserialize((<Response<T>>res).payload, sgm.value);
 
     } else {
-      let httpRes = <HttpResponse<Response<T>>>res;
-      let myResp: Response<T> = {
+      const httpRes = <HttpResponse<Response<T>>>res;
+      const myResp: Response<T> = {
         payload: this.deserialize(httpRes.body.payload, sgm.value)
       };
       return httpRes.clone({body: myResp});
@@ -495,8 +495,8 @@ export class Resource {
    */
   deserialize(json: any, clazz: Type<any>): any {
     if (isArray(json)) {
-      let instances = [];
-      for (let item in json) {
+      const instances = [];
+      for (const item in json) {
         instances.push(this.deserialize(json[item], clazz));
       }
       return instances;
@@ -510,9 +510,9 @@ export class Resource {
         instance = json;
       } else {
         instance = new clazz();
-        let types = instance.getTypes();
+        const types = instance.getTypes();
 
-        for (let prop in json) {
+        for (const prop in json) {
           if (!json.hasOwnProperty(prop)) {
             continue;
           }

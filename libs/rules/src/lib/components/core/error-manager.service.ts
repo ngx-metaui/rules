@@ -46,7 +46,7 @@ export class ErrorManagerService {
 
 
   errorMessage(validatorName: string, validatorValue?: any) {
-    let message = this.messages[validatorName];
+    const message = this.messages[validatorName];
     if (StringWrapper.contains(message, '%s')) {
       // todo: use ng-translate with proper message formatting
 

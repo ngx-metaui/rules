@@ -158,8 +158,8 @@ export function stringify(token: any): string {
     return token.name;
   }
 
-  let res = token.toString();
-  let newLineIndex = res.indexOf('\n');
+  const res = token.toString();
+  const newLineIndex = res.indexOf('\n');
   return (newLineIndex === -1) ? res : res.substring(0, newLineIndex);
 }
 
@@ -264,14 +264,14 @@ export class StringWrapper {
   static endsWidth(subject: string, searchString: string, position: number = 0): boolean {
     if (!String.prototype.endsWith) {
       String.prototype.endsWith = function (sstring, pos = 0) {
-        let subjectString = this.toString();
+        const subjectString = this.toString();
         if (typeof pos !== 'number' || !isFinite(pos) || Math.floor(pos) !== pos || pos
           >
           subjectString.length) {
           pos = subjectString.length;
         }
         pos -= sstring.length;
-        let lastIndex = subjectString.indexOf(sstring, pos);
+        const lastIndex = subjectString.indexOf(sstring, pos);
         return lastIndex !== -1 && lastIndex === pos;
       };
     }
@@ -314,7 +314,7 @@ export class NumberWrapper {
   }
 
   static parseIntAutoRadix(text: string): number {
-    let result: number = parseInt(text);
+    const result: number = parseInt(text);
     if (isNaN(result)) {
       throw new Error('Invalid integer literal when parsing ' + text);
     }
@@ -331,7 +331,7 @@ export class NumberWrapper {
         return parseInt(text, radix);
       }
     } else {
-      let result: number = parseInt(text, radix);
+      const result: number = parseInt(text, radix);
       if (!isNaN(result)) {
         return result;
       }
@@ -408,7 +408,7 @@ export function assert(condition: boolean, msg: string) {
 
 export function checksum(s: any) {
   let chk = 0x12345678;
-  let len = s.length;
+  const len = s.length;
   for (let i = 0; i < len; i++) {
     chk += (s.charCodeAt(i) * (i + 1));
   }
@@ -424,7 +424,7 @@ export function crc32(crc: number, anInt: number) {
   let x = 0;
   let y = 0;
 
-  let myCrc = crc ^ (-1);
+  const myCrc = crc ^ (-1);
   for (let i = 0; i < 4; i++) {
     y = (crc ^ anInt) & 0xFF;
     x = Number('0x' + table.substr(y * 9, 8));
@@ -520,9 +520,9 @@ export function getSymbolIterator(): string | symbol {
       _symbolIterator = Symbol.iterator;
     } else {
       // es6-shim specific logic
-      let keys = Object.getOwnPropertyNames(Map.prototype);
+      const keys = Object.getOwnPropertyNames(Map.prototype);
       for (let i = 0; i < keys.length; ++i) {
-        let key = keys[i];
+        const key = keys[i];
         if (key !== 'entries' && key !== 'size' &&
           (Map as any).prototype[key] === Map.prototype['entries']) {
           _symbolIterator = key;
@@ -537,17 +537,17 @@ const ReservedKeyword = ['class'];
 
 export function evalExpression(expr: string, declarations: string,
                                lets: { [key: string]: any }): any {
-  let fnBody = `${declarations}\n\treturn ${expr}\n//# sourceURL=AribaExpression`;
-  let fnArgNames: string[] = [];
-  let fnArgValues: any[] = [];
-  for (let argName in lets) {
+  const fnBody = `${declarations}\n\treturn ${expr}\n//# sourceURL=AribaExpression`;
+  const fnArgNames: string[] = [];
+  const fnArgValues: any[] = [];
+  for (const argName in lets) {
     if (StringWrapper.contains(expr, argName)) {
       fnArgNames.push(argName);
       fnArgValues.push(lets[argName]);
     }
   }
   if (lets instanceof Extensible) {
-    let extValues: Extensible = lets;
+    const extValues: Extensible = lets;
 
     extValues.extendedFields().forEach((value, key) => {
       if (StringWrapper.contains(expr, key) &&
@@ -569,17 +569,17 @@ export function evalExpression(expr: string, declarations: string,
 export function evalExpressionWithCntx(expr: string, declarations: string,
                                        lets: { [key: string]: any },
                                        thisContext: any): any {
-  let fnBody = `${declarations}\n\treturn ${expr}\n//# sourceURL=AribaExpression`;
-  let fnArgNames: string[] = [];
-  let fnArgValues: any[] = [];
-  for (let argName in lets) {
+  const fnBody = `${declarations}\n\treturn ${expr}\n//# sourceURL=AribaExpression`;
+  const fnArgNames: string[] = [];
+  const fnArgValues: any[] = [];
+  for (const argName in lets) {
     if (StringWrapper.contains(expr, argName)) {
       fnArgNames.push(argName);
       fnArgValues.push(lets[argName]);
     }
   }
   if (lets instanceof Extensible) {
-    let extValues: Extensible = lets;
+    const extValues: Extensible = lets;
 
     extValues.extendedFields().forEach((value, key) => {
       if (StringWrapper.contains(expr, key) &&
@@ -594,9 +594,9 @@ export function evalExpressionWithCntx(expr: string, declarations: string,
 
   // fnArgNames.push('this');
   // fnArgValues.push(lets);
-  let fn = new Function(...fnArgNames.concat(fnBody));
+  const fn = new Function(...fnArgNames.concat(fnBody));
   assert(isPresent(fn), 'Cannot evaluate expression. FN is not defined');
-  let fnBound = fn.bind(thisContext);
+  const fnBound = fn.bind(thisContext);
 
   return fnBound(...fnArgValues);
 }
@@ -656,9 +656,9 @@ export function objectToName(target: any): string {
  */
 export function uuid(): string {
   let dt = new Date().getTime();
-  let proto = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+  const proto = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
     (c: string) => {
-      let r = (dt + Math.random() * 16) % 16 | 0;
+      const r = (dt + Math.random() * 16) % 16 | 0;
       dt = Math.floor(dt / 16);
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
@@ -681,7 +681,9 @@ export function equals(o1: any, o2: any): boolean {
     return true; // NaN === NaN
   }
 
-  let t1 = typeof o1, t2 = typeof o2, length: any, key: any, keySet: any;
+  const t1 = typeof o1;
+  const t2 = typeof o2;
+  let length: any = -1, key: any, keySet: any;
   if (t1 === t2 && t1 === 'object') {
     if (isArray(o1)) {
       if (!isArray(o2)) {
@@ -751,11 +753,11 @@ export function decamelize(string: string, separator: string = ' ', initialCaps:
   let lastUCIndex = -1;
   let allCaps = true;
 
-  let splitOnUC = !StringWrapper.contains(string, '_');
+  const splitOnUC = !StringWrapper.contains(string, '_');
   let buf = '';
   let inWord = 0;
 
-  for (let i = string.length; inWord < i; ++inWord) {
+  for (const i = string.length; inWord < i; ++inWord) {
     let c = string[inWord];
 
     if (c.toUpperCase() === c) {
@@ -781,7 +783,7 @@ export function decamelize(string: string, separator: string = ' ', initialCaps:
   if (allCaps) {
     let toCaps = false;
     for (let i = 0, c = buf.length; i < c; i++) {
-      let ch = buf[i];
+      const ch = buf[i];
 
       if (ch.toLowerCase() !== ch.toUpperCase()) {
         if (inWord && ch === ch.toUpperCase()) {

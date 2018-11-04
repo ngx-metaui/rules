@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-import {Entity, Value} from '@ngx-meta/rules';
+import {Entity, Value} from '@ngx-metaui/rules';
 
 
 export class Invoice implements Entity

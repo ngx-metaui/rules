@@ -77,10 +77,10 @@ export class MetaFormRowComponent extends MetaBaseComponent {
   }
 
   bindingBoolProperty(key: string): boolean {
-    let bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
+    const bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
 
     if (isPresent(bindings) && bindings.has(key)) {
-      let value = bindings.get(key);
+      const value = bindings.get(key);
       return BooleanWrapper.boleanValue(value);
 
     }
@@ -89,7 +89,7 @@ export class MetaFormRowComponent extends MetaBaseComponent {
 
 
   bindingStringProperty(key: string): string {
-    let bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
+    const bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
 
     if (isPresent(bindings) && bindings.has(key)) {
       return bindings.get(key);
@@ -100,7 +100,7 @@ export class MetaFormRowComponent extends MetaBaseComponent {
 
 
   get size(): string {
-    let bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
+    const bindings: Map<string, any> = this.context.propertyForKey(UIMeta.KeyBindings);
 
     if (isPresent(bindings) && bindings.has('size')) {
       return bindings.get('size');
@@ -119,13 +119,13 @@ export class MetaFormRowComponent extends MetaBaseComponent {
    *
    */
   private createValidators(): ValidatorFn[] {
-    let that = this;
-    let metaValidator = (control: AbstractControl): { [key: string]: any } => {
+    const that = this;
+    const metaValidator = (control: AbstractControl): { [key: string]: any } => {
       if (isPresent(Validators.required(control)) || !control.touched) {
         return null;
       }
 
-      let errorMsg = UIMeta.validationError(that.context);
+      const errorMsg = UIMeta.validationError(that.context);
       return isPresent(errorMsg) ? {
         'metavalid': {'msg': errorMsg}
       } : null;

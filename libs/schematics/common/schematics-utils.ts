@@ -20,14 +20,15 @@ import {Rule, SchematicContext, SchematicsException, Tree} from '@angular-devkit
 import {addPackageJsonDependency, NodeDependency} from '@schematics/angular/utility/dependencies';
 import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
 import {Schema} from './schema';
-import {getWorkspace, getWorkspacePath, WorkspaceSchema} from '@schematics/angular/utility/config';
+import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
 import {WorkspaceProject} from '@angular-devkit/core/src/workspace/workspace-schema';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {getSourceNodes, insertImport, isImported} from '@schematics/angular/utility/ast-utils';
 import {Change, InsertChange, NoopChange} from '@schematics/angular/utility/change';
 import * as ts from 'typescript';
-import {buildDefaultPath} from '@schematics/angular/utility/project';
+import {buildDefaultPath, getProject} from '@schematics/angular/utility/project';
 import {normalize} from '@angular-devkit/core';
+import {WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
 
 
 /**
@@ -58,8 +59,8 @@ export function addDependenciesToPackageJson(dependencies: NodeDependency[],
     context.logger.log('info',
       `✅️ Added ${dependencies.length} packages into dependencies section`);
 
-    if (skipInstall) {
-      context.addTask(new NodePackageInstallTask());
+    if (!skipInstall) {
+      // context.addTask(new NodePackageInstallTask());
       context.logger.log('info', `🔍 Installing packages...`);
     }
     return host;
@@ -70,14 +71,14 @@ export function addDependenciesToPackageJson(dependencies: NodeDependency[],
 export function addOssCompilerScriptsToPackageJson(options: Schema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
-    let content = readPackageJson(host);
+    const content = readPackageJson(host);
     if (!content['scripts']) {
       content['scripts'] = {};
     }
 
-    let cmd = 'java -jar node_modules/@ngx-metaui/rules/lib/resources/tools/oss/' +
+    const cmd = 'java -jar node_modules/@ngx-metaui/rules/lib/resources/tools/oss/' +
       'meta-ui-parser.jar --gen --user ./node_modules/@ngx-metaui/rules/lib/metaui/core';
-    let srcPath = normalize(`./${options.path}/rules`);
+    const srcPath = normalize(`./${options.path}/rules`);
     content['scripts']['compile:oss'] = `${cmd} ${srcPath}`;
     content['scripts']['watch:oss'] = `watch --wait=8 'npm run compile:oss' ${srcPath} `;
 
@@ -91,12 +92,12 @@ export function addScriptsToAngularJson(scriptsPaths: string[], options: Schema)
   return (host: Tree, context: SchematicContext) => {
     try {
       const workspace: WorkspaceSchema = getWorkspace(host);
-      let projectName = options.project || workspace.defaultProject;
+      const projectName = options.project || workspace.defaultProject;
 
       if (!projectName) {
         throw Error(`Cant Find project by name ${projectName}`);
       }
-      let project: WorkspaceProject = workspace.projects[projectName];
+      const project: WorkspaceProject = workspace.projects[projectName];
       const scripts: any[] = (<any>project.architect)['build']['options']['scripts'];
       scriptsPaths.forEach(path => {
         if (scripts.indexOf(path) === -1) {
@@ -118,13 +119,13 @@ export function addScriptsToAngularJson(scriptsPaths: string[], options: Schema)
 export function addStylesToAngularJson(styleEntries: string[], options: Schema): Rule {
   return (host: Tree, context: SchematicContext) => {
     try {
-      const workspace: WorkspaceSchema = getWorkspace(host);
-      let projectName = options.project || workspace.defaultProject;
+      const workspace = getWorkspace(host);
+      const projectName = options.project || workspace.defaultProject;
 
       if (!projectName) {
         throw Error(`Cant Find project by name ${projectName}`);
       }
-      let project: WorkspaceProject = workspace.projects[projectName];
+      const project: WorkspaceProject = workspace.projects[projectName];
       const styles: any[] = (<any>project.architect)['build']['options']['styles'];
 
       styleEntries.reverse().forEach(path => {
@@ -152,11 +153,11 @@ export function addFileHeaderImports(options: Schema, importSymbol: string,
   return (host: Tree, context: SchematicContext) => {
     try {
 
-      let modulePath = getAppModulePath(host, getMainProjectPath(host, options));
-      let srcPath = getSourceFile(host, modulePath);
+      const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
+      const srcPath = getSourceFile(host, modulePath);
 
       if (!isImported(srcPath, importSymbol, importPath)) {
-        let changes = doAddImportStatement(srcPath, modulePath, importSymbol, importPath,
+        const changes = doAddImportStatement(srcPath, modulePath, importSymbol, importPath,
           isDefault);
 
         const recorder = host.beginUpdate(modulePath);
@@ -181,13 +182,15 @@ export function addFileHeaderImports(options: Schema, importSymbol: string,
 
 export function setupOptions(host: Tree, options: Schema): Tree {
   const workspace = getWorkspace(host);
-  let projectName = options.project || workspace.defaultProject;
+
+  const projectName = options.project || workspace.defaultProject;
 
   if (!projectName) {
     throw Error(`Cant Find project by name ${projectName}`);
   }
-  const project: WorkspaceProject = workspace.projects[projectName];
-  if (project.projectType === 'library') {
+  const project = getProject(host, projectName);
+
+  if (project.projectType !== 'application') {
     throw Error('At the moment we support only application project type !');
   }
   if (!options.path) {
@@ -227,7 +230,7 @@ export function getSourceFile(host: Tree, path: string) {
 
 
 export function getMainProjectPath(host: Tree, options: Schema) {
-  let project: WorkspaceProject = getWorkspaceProject(host, options);
+  const project: WorkspaceProject = getWorkspaceProject(host, options);
 
   return (<any>project.architect).build.options.main;
 }
@@ -236,7 +239,7 @@ export function getMainProjectPath(host: Tree, options: Schema) {
 export function getWorkspaceProject(host: Tree, options: Schema) {
 
   const workspace: WorkspaceSchema = getWorkspace(host);
-  let projectName = options.project || workspace.defaultProject;
+  const projectName = options.project || workspace.defaultProject;
 
   if (!projectName) {
     throw Error(`Cant Find project by name ${projectName}`);
@@ -247,11 +250,11 @@ export function getWorkspaceProject(host: Tree, options: Schema) {
 export function registerUserRulesWithAppConfig(options: Schema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
-    let modulePath = getAppModulePath(host, getMainProjectPath(host, options));
+    const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
 
-    let changes = addConstructorInjectionForAppConfig(host, options);
+    const changes = addConstructorInjectionForAppConfig(host, options);
     const declarationRecorder = host.beginUpdate(modulePath);
-    for (let change of changes) {
+    for (const change of changes) {
       if (change instanceof InsertChange) {
         declarationRecorder.insertLeft(change.pos, change.toAdd);
       }
@@ -266,10 +269,10 @@ export function registerUserRulesWithAppConfig(options: Schema): Rule {
 
 
 function addConstructorInjectionForAppConfig(host: Tree, options: Schema): Change[] {
-  let modulePath = getAppModulePath(host, getMainProjectPath(host, options));
-  let srcPath = getSourceFile(host, modulePath);
-  let nodes = getSourceNodes(srcPath);
-  let ctorNode = nodes.find(n => n.kind === ts.SyntaxKind.Constructor);
+  const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
+  const srcPath = getSourceFile(host, modulePath);
+  const nodes = getSourceNodes(srcPath);
+  const ctorNode = nodes.find(n => n.kind === ts.SyntaxKind.Constructor);
 
   let constructorChange: Change[];
   if (!ctorNode) {
@@ -284,7 +287,7 @@ function addConstructorInjectionForAppConfig(host: Tree, options: Schema): Chang
 
 function createConstructorForInjection(modulePath: string, nodes: ts.Node[]): Change[] {
 
-  let classNode = nodes.find(n => n.kind === ts.SyntaxKind.ClassKeyword);
+  const classNode = nodes.find(n => n.kind === ts.SyntaxKind.ClassKeyword);
   if (!classNode) {
     throw new SchematicsException(`expected class in ${modulePath}`);
   }
@@ -294,27 +297,27 @@ function createConstructorForInjection(modulePath: string, nodes: ts.Node[]): Ch
   }
 
   let siblings = classNode.parent.getChildren();
-  let classIndex = siblings.indexOf(classNode);
+  const classIndex = siblings.indexOf(classNode);
 
   siblings = siblings.slice(classIndex);
-  let classIdentifierNode = siblings.find(n => n.kind === ts.SyntaxKind.Identifier);
+  const classIdentifierNode = siblings.find(n => n.kind === ts.SyntaxKind.Identifier);
 
   if (!classIdentifierNode) {
     throw new SchematicsException(`expected class in ${modulePath} to have an identifier`);
   }
 
 
-  let curlyNodeIndex = siblings.findIndex(n => n.kind === ts.SyntaxKind.FirstPunctuation);
+  const curlyNodeIndex = siblings.findIndex(n => n.kind === ts.SyntaxKind.FirstPunctuation);
 
   siblings = siblings.slice(curlyNodeIndex);
 
-  let listNode = siblings.find(n => n.kind === ts.SyntaxKind.SyntaxList);
+  const listNode = siblings.find(n => n.kind === ts.SyntaxKind.SyntaxList);
 
   if (!listNode) {
     throw new SchematicsException(`expected first class in ${modulePath} to have a body`);
   }
 
-  let toAdd = `
+  const toAdd = `
 
   constructor(private appConfig: AppConfig) {
     ${RegisterBody}
@@ -328,18 +331,18 @@ function createConstructorForInjection(modulePath: string, nodes: ts.Node[]): Ch
 
 function addInjectionToExistingConstructor(modulePath: string, ctorNode: ts.Node): Change[] {
 
-  let siblings = ctorNode.getChildren();
+  const siblings = ctorNode.getChildren();
 
-  let parameterListNode = siblings.find(n => n.kind === ts.SyntaxKind.SyntaxList);
+  const parameterListNode = siblings.find(n => n.kind === ts.SyntaxKind.SyntaxList);
 
   if (!parameterListNode) {
     throw new SchematicsException(`expected constructor in ${modulePath} to have a parameter list`);
   }
 
-  let parameterNodes = parameterListNode.getChildren();
+  const parameterNodes = parameterListNode.getChildren();
 
-  let paramNode = parameterNodes.find(p => {
-    let typeNode = findSuccessor(p, [ts.SyntaxKind.TypeReference,
+  const paramNode = parameterNodes.find(p => {
+    const typeNode = findSuccessor(p, [ts.SyntaxKind.TypeReference,
       ts.SyntaxKind.Identifier]);
     if (!typeNode) {
       return false;
@@ -348,20 +351,20 @@ function addInjectionToExistingConstructor(modulePath: string, ctorNode: ts.Node
   });
 
   if (!paramNode && parameterNodes.length === 0) {
-    let toAdd = `private appConfig: AppConfig`;
+    const toAdd = `private appConfig: AppConfig`;
     return [new InsertChange(modulePath, parameterListNode.pos, toAdd)];
 
   } else if (!paramNode && parameterNodes.length > 0) {
 
-    let toAdd = `, private appConfig: AppConfig`;
-    let lastParameter = parameterNodes[parameterNodes.length - 1];
+    const toAdd = `, private appConfig: AppConfig`;
+    const lastParameter = parameterNodes[parameterNodes.length - 1];
 
-    let ctorBlock = siblings.find(n => n.kind === ts.SyntaxKind.Block);
+    const ctorBlock = siblings.find(n => n.kind === ts.SyntaxKind.Block);
     if (!ctorBlock) {
       throw new SchematicsException(`unable to locale ctor block`);
     }
 
-    let bodyStart = ctorBlock.getChildren().find(n => n.kind === ts.SyntaxKind.SyntaxList);
+    const bodyStart = ctorBlock.getChildren().find(n => n.kind === ts.SyntaxKind.SyntaxList);
     if (!bodyStart) {
       throw new SchematicsException(`unable to locale ctor body`);
     }
@@ -380,7 +383,7 @@ function findSuccessor(node: ts.Node, searchPath: ts.SyntaxKind[]) {
   let children = node.getChildren();
   let next: ts.Node | undefined;
 
-  for (let syntaxKind of searchPath) {
+  for (const syntaxKind of searchPath) {
     next = children.find(n => n.kind === syntaxKind);
     if (!next) {
       return null;
@@ -402,7 +405,7 @@ export function showTree(node?: ts.Node, indent: string = '    '): void {
     console.log(indent + '    Text: ' + node.getText());
   }
 
-  for (let child of node.getChildren()) {
+  for (const child of node.getChildren()) {
     showTree(child, indent + '    ');
   }
 }

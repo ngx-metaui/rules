@@ -77,7 +77,7 @@ export class ObjectMeta extends Meta {
 
 
   static validationError(context: Context): string {
-    let error = context.propertyForKey(ObjectMeta.KeyValid);
+    const error = context.propertyForKey(ObjectMeta.KeyValid);
     if (isBlank(error)) {
       return null;
     }
@@ -142,7 +142,7 @@ export class ObjectMeta extends Meta {
   itemNames(context: Context, key: string): Array<string> {
     context.push();
     context.set(ObjectMeta.KeyDeclare, key);
-    let itemsNames = context.listPropertyForKey(key);
+    const itemsNames = context.listPropertyForKey(key);
     context.pop();
 
     return itemsNames;
@@ -156,15 +156,15 @@ export class ObjectMeta extends Meta {
 
   itemPropertiesForNames(context: Context, key: string, itemNames: string[],
                          filterHidden: boolean): Array<ItemProperties> {
-    let result: Array<ItemProperties> = [];
-    for (let itemName of itemNames) {
+    const result: Array<ItemProperties> = [];
+    for (const itemName of itemNames) {
       context.push();
       context.set(key, itemName);
 
-      let isVisible = context.allProperties().get(ObjectMeta.KeyVisible);
-      let visible = context.staticallyResolveValue(isVisible);
+      const isVisible = context.allProperties().get(ObjectMeta.KeyVisible);
+      const visible = context.staticallyResolveValue(isVisible);
 
-      let isHidden = (isBlank(visible)) || BooleanWrapper.isFalse(visible);
+      const isHidden = (isBlank(visible)) || BooleanWrapper.isFalse(visible);
 
       if (!isHidden || !filterHidden) {
         result.push(new ItemProperties(itemName, context.allProperties(), isHidden));
@@ -180,12 +180,12 @@ export class ObjectMeta extends Meta {
       this._traitToGroupGeneration = this.ruleSetGeneration;
       this._traitToGroup = new Map<string, string>();
 
-      let context = this.newContext();
-      for (let group of this.itemNames(context, ObjectMeta.KeyTraitGroup)) {
+      const context = this.newContext();
+      for (const group of this.itemNames(context, ObjectMeta.KeyTraitGroup)) {
         context.push();
         context.set(ObjectMeta.KeyTraitGroup, group);
 
-        for (let name of this.itemNames(context, ObjectMeta.KeyTrait)) {
+        for (const name of this.itemNames(context, ObjectMeta.KeyTrait)) {
           this._traitToGroup.set(name, group);
         }
         context.pop();
@@ -228,7 +228,7 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
     this._meta = meta;
     let myObject;
 
-    let componentRegistry: ComponentRegistry = (<ObjectMeta>this._meta).componentRegistry;
+    const componentRegistry: ComponentRegistry = (<ObjectMeta>this._meta).componentRegistry;
     assert(isPresent(componentRegistry),
       'Component registry is not initialized');
 
@@ -252,11 +252,11 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
     this._meta.beginRuleSet(className);
 
     try {
-      let selectors: Array<Selector> = [new Selector(ObjectMeta.KeyClass, className)];
-      let propertyMap = this._meta.newPropertiesMap();
+      const selectors: Array<Selector> = [new Selector(ObjectMeta.KeyClass, className)];
+      const propertyMap = this._meta.newPropertiesMap();
       selectors[0].isDecl = true;
 
-      let rule: Rule = new Rule(selectors, propertyMap, ObjectMeta.ClassRulePriority);
+      const rule: Rule = new Rule(selectors, propertyMap, ObjectMeta.ClassRulePriority);
       this._meta.addRule(rule);
 
       this.registerRulesForFields(object, className);
@@ -272,15 +272,15 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
     // not objects loaded as json from rest API
     assert(isPresent(object['getTypes']),
       'Cannot register fields without a getTypes method that will expose all the fields');
-    let types: any = object.getTypes();
-    let fieldNames = Object.keys(types);
+    const types: any = object.getTypes();
+    const fieldNames = Object.keys(types);
 
     let rank = 0;
-    for (let name of fieldNames) {
+    for (const name of fieldNames) {
       // todo: check=>  can we rely on this ?
-      let type = types[name].name || types[name].constructor.name;
+      const type = types[name].name || types[name].constructor.name;
 
-      let properties = new Map<string, any>();
+      const properties = new Map<string, any>();
 
       properties.set(ObjectMeta.KeyField, name);
       properties.set(ObjectMeta.KeyType, type);
@@ -291,19 +291,19 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
         assert(types[name].length > 0,
           ' Cannot register type[array] and its type without properly initialized ' +
           'prototype');
-        let item = types[name][0];
-        let collectionElementType = item.name;
+        const item = types[name][0];
+        const collectionElementType = item.name;
         properties.set(ObjectMeta.KeyElementType, collectionElementType);
       }
 
-      let selectorList: Array<Selector> = [
+      const selectorList: Array<Selector> = [
         new Selector(ObjectMeta.KeyClass, className),
         new Selector(ObjectMeta.KeyField, name)
       ];
       selectorList[1].isDecl = true;
       properties.set(ObjectMeta.KeyRank, (rank++ + 1) * 10);
 
-      let rule: Rule = new Rule(selectorList, properties, ObjectMeta.ClassRulePriority);
+      const rule: Rule = new Rule(selectorList, properties, ObjectMeta.ClassRulePriority);
       this._meta.addRule(rule);
     }
   }
@@ -327,14 +327,14 @@ export class ObjectMetaPropertyMap extends PropertyMap {
 
   get fieldPath(): FieldPath {
     if (isBlank(this._fieldPath)) {
-      let value = this.get(ObjectMeta.KeyValue);
-      let fieldName = this.get(ObjectMeta.KeyField);
+      const value = this.get(ObjectMeta.KeyValue);
+      const fieldName = this.get(ObjectMeta.KeyField);
 
       this._fieldPath = (isPresent(fieldName) && isBlank(value))
         ? new FieldPath(fieldName)
         : ObjectMeta._FieldPathNullMarker;
     }
-    let isNullPath = this._fieldPath === ObjectMeta._FieldPathNullMarker;
+    const isNullPath = this._fieldPath === ObjectMeta._FieldPathNullMarker;
     return isNullPath ? null : this._fieldPath;
   }
 

@@ -19,13 +19,13 @@
  *
  */
 import {
-    AfterContentInit,
-    Component,
-    ContentChild,
-    Input,
-    TemplateRef,
-    ViewChild,
-    ViewEncapsulation
+  AfterContentInit,
+  Component,
+  ContentChild,
+  Input,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import {AWDataTable} from '../aw-datatable';
 import {Datatable2Component} from '../datatable2.component';
@@ -66,494 +66,473 @@ export type DTHAlignment = 'left' | 'center' | 'right';
  *
  */
 @Component({
-    selector: 'aw-dt-column2',
-    templateUrl: 'dt-column.component.html',
-    styleUrls: ['dt-column.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    providers: [DomHandler]
+  selector: 'aw-dt-column2',
+  templateUrl: 'dt-column.component.html',
+  styleUrls: ['dt-column.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [DomHandler]
 
 })
-export class DTColumn2Component extends BaseComponent implements AfterContentInit
-{
-    /**
-     * Column header label.
-     *
-     * Or you can use headerTemplate to define your own template
-     */
-    @Input()
-    label: string;
+export class DTColumn2Component extends BaseComponent implements AfterContentInit {
+  /**
+   * Column header label.
+   *
+   * Or you can use headerTemplate to define your own template
+   */
+  @Input()
+  label: string;
 
-    /**
-     * What field name to read from the given object
-     */
-    @Input()
-    key: string;
+  /**
+   * What field name to read from the given object
+   */
+  @Input()
+  key: string;
 
-    /**
-     *
-     * Cell alignment. It inserts regular align attribute to the table cell
-     *
-     */
-    @Input()
-    align: DTHAlignment = 'left';
-
-
-    /**
-     * Retrieves dynamic class based on data and then its added to the table cell TD
-     */
-    @Input()
-    bodyClassFn: (column: DTColumn2Component, item: any) => string;
-
-    /**
-     *
-     * If false applies dt-is-hidden style that hides the column
-     *
-     */
-    @Input()
-    isVisible: boolean = true;
-
-    /**
-     * Marks column as sortable which means sorting icon is added to the header with special
-     * sorting handling
-     */
-    @Input()
-    sortable: any;
-
-    /**
-     * Sorting direction
-     *
-     */
-    @Input()
-    sortOrdering: string = 'descending';
-
-    /**
-     * Tells the template if whether to render a label
-     *
-     */
-    @Input()
-    showColumnLabel: boolean = true;
-
-    /**
-     *
-     * See AWDataTable
-     *
-     */
-    @Input()
-    showSubHeader: boolean = false;
+  /**
+   *
+   * Cell alignment. It inserts regular align attribute to the table cell
+   *
+   */
+  @Input()
+  align: DTHAlignment = 'left';
 
 
-    /**
-     * Default static class that is added to the TH into the header. It does not rely on data
-     *
-     */
-    @Input()
-    headerStyleClass: string;
+  /**
+   * Retrieves dynamic class based on data and then its added to the table cell TD
+   */
+  @Input()
+  bodyClassFn: (column: DTColumn2Component, item: any) => string;
 
-    /**
-     * Default static class that is added to the td into the body. It does not rely on data
-     *
-     */
-    @Input()
-    bodyStyleClass: string;
+  /**
+   *
+   * If false applies dt-is-hidden style that hides the column
+   *
+   */
+  @Input()
+  isVisible: boolean = true;
 
-    /**
-     *
-     * Used together with cell selectionMode to tell which column is selectable
-     *
-     */
-    @Input()
-    selectable: boolean = false;
+  /**
+   * Marks column as sortable which means sorting icon is added to the header with special
+   * sorting handling
+   */
+  @Input()
+  sortable: any;
 
-    /**
-     *
-     * Use to tell the main column header if we allow dragging by showing dragging handle
-     *
-     */
-    @Input()
-    isDraggable: boolean = false;
+  /**
+   * Sorting direction
+   *
+   */
+  @Input()
+  sortOrdering: string = 'descending';
 
+  /**
+   * Tells the template if whether to render a label
+   *
+   */
+  @Input()
+  showColumnLabel: boolean = true;
 
-    /**
-     *
-     * Since in pivotal like layout we might have hidden columns that could be style to be hidden
-     * so they blend in to other column we cannot allow dropping while dragging a column
-     *
-     */
-    @Input()
-    isDroppable: boolean = true;
-
-
-    /**
-     * Use globally defined HEADER template for current column
-     *
-     */
-    @Input()
-    useGlobalHeader: boolean = true;
-
-    /**
-     * Use globally defined SubHeader template for current column
-     *
-     */
-    @Input()
-    useGlobalSubHeader: boolean = true;
-
-    /**
-     * Use globally defined body template
-     *
-     */
-    @Input()
-    useGlobalBody: boolean = true;
+  /**
+   *
+   * See AWDataTable
+   *
+   */
+  @Input()
+  showSubHeader: boolean = false;
 
 
-    /**
-     * Tells if the column is data column  - if it is rendering data or just a label or some
-     * control
-     *
-     * This is important when calculating a column span and we need to know which columns are or
-     * will be just for selection controls and which holds data
-     */
-    @Input()
-    isDataColumn: boolean = true;
+  /**
+   * Default static class that is added to the TH into the header. It does not rely on data
+   *
+   */
+  @Input()
+  headerStyleClass: string;
 
-    /**
-     * Identifies column that will not scroll horizontally with other columns. Column is
-     * frozen.
-     *
-     * For such columns that are marked as frozen binding [width] is required.
-     *
-     */
-    @Input()
-    frozen: boolean = false;
+  /**
+   * Default static class that is added to the td into the body. It does not rely on data
+   *
+   */
+  @Input()
+  bodyStyleClass: string;
 
-    /**
-     * Sets the Max Width for the TD. Even TD does not support we calculate the content width
-     * for each cell and then decide if we need to enlarge the column.
-     *
-     * @Experimantal binding that is currently working if the content of the cell is inline
-     * element where we can control whitespace wrapping in order to find out the real width
-     */
-    @Input()
-    maxWidth: string;
+  /**
+   *
+   * Used together with cell selectionMode to tell which column is selectable
+   *
+   */
+  @Input()
+  selectable: boolean = false;
 
-
-    /**
-     * Sets the minWidth on the cell. Again just like maxWidth css properly is not supported on
-     * the table so there is a workaround where we create additional row that sets padding right
-     * and this will prevent the column to collapse under specified width
-     *
-     * todo: still TBD
-     */
-    @Input()
-    minWidth: string;
-
-    /**
-     * Main rendering template used by datatable to render each column.
-     */
-    @ViewChild('renderingTemplate')
-    rendererTemplate: TemplateRef<any>;
-
-    /**
-     * Custom header template. It will override provided label
-     */
-    @ContentChild('header')
-    headerTemplate: TemplateRef<any>;
-
-    /**
-     * Custom subHeader template.
-     */
-    @ContentChild('subHeader')
-    subHeaderTemplate: TemplateRef<any>;
-
-    /**
-     * Custom body template that will override read value from the [key] binding
-     */
-    @ContentChild('body')
-    bodyTemplate: TemplateRef<any>;
+  /**
+   *
+   * Use to tell the main column header if we allow dragging by showing dragging handle
+   *
+   */
+  @Input()
+  isDraggable: boolean = false;
 
 
-    /**
-     * Internal...
-     */
-    sortOrder: number;
-    maxWidthPx: number = 0;
-    minWidthPx: number = 0;
-    widthPx: number = 0;
-    widestCell: number = 0;
-
-    /**
-     * Reference to Datatable Implementations
-     */
-    dt: AWDataTable;
+  /**
+   *
+   * Since in pivotal like layout we might have hidden columns that could be style to be hidden
+   * so they blend in to other column we cannot allow dropping while dragging a column
+   *
+   */
+  @Input()
+  isDroppable: boolean = true;
 
 
-    constructor(public env: Environment,
-                public domHandler: DomHandler)
-    {
-        super(env);
+  /**
+   * Use globally defined HEADER template for current column
+   *
+   */
+  @Input()
+  useGlobalHeader: boolean = true;
+
+  /**
+   * Use globally defined SubHeader template for current column
+   *
+   */
+  @Input()
+  useGlobalSubHeader: boolean = true;
+
+  /**
+   * Use globally defined body template
+   *
+   */
+  @Input()
+  useGlobalBody: boolean = true;
+
+
+  /**
+   * Tells if the column is data column  - if it is rendering data or just a label or some
+   * control
+   *
+   * This is important when calculating a column span and we need to know which columns are or
+   * will be just for selection controls and which holds data
+   */
+  @Input()
+  isDataColumn: boolean = true;
+
+  /**
+   * Identifies column that will not scroll horizontally with other columns. Column is
+   * frozen.
+   *
+   * For such columns that are marked as frozen binding [width] is required.
+   *
+   */
+  @Input()
+  frozen: boolean = false;
+
+  /**
+   * Sets the Max Width for the TD. Even TD does not support we calculate the content width
+   * for each cell and then decide if we need to enlarge the column.
+   *
+   * @Experimantal binding that is currently working if the content of the cell is inline
+   * element where we can control whitespace wrapping in order to find out the real width
+   */
+  @Input()
+  maxWidth: string;
+
+
+  /**
+   * Sets the minWidth on the cell. Again just like maxWidth css properly is not supported on
+   * the table so there is a workaround where we create additional row that sets padding right
+   * and this will prevent the column to collapse under specified width
+   *
+   * todo: still TBD
+   */
+  @Input()
+  minWidth: string;
+
+  /**
+   * Main rendering template used by datatable to render each column.
+   */
+  @ViewChild('renderingTemplate')
+  rendererTemplate: TemplateRef<any>;
+
+  /**
+   * Custom header template. It will override provided label
+   */
+  @ContentChild('header')
+  headerTemplate: TemplateRef<any>;
+
+  /**
+   * Custom subHeader template.
+   */
+  @ContentChild('subHeader')
+  subHeaderTemplate: TemplateRef<any>;
+
+  /**
+   * Custom body template that will override read value from the [key] binding
+   */
+  @ContentChild('body')
+  bodyTemplate: TemplateRef<any>;
+
+
+  /**
+   * Internal...
+   */
+  sortOrder: number;
+  maxWidthPx: number = 0;
+  minWidthPx: number = 0;
+  widthPx: number = 0;
+  widestCell: number = 0;
+
+  /**
+   * Reference to Datatable Implementations
+   */
+  dt: AWDataTable;
+
+
+  constructor(public env: Environment,
+              public domHandler: DomHandler) {
+    super(env);
+  }
+
+
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    if (isBlank(this.key) && isBlank(this.label)) {
+      throw new Error('Missing required binding: ' +
+        '[key] or [label] bindings must be used at minimum');
+    }
+
+    // To be able to position second DT we require [width] to be set as well
+    if (this.frozen && isBlank(this.width)) {
+      throw new Error('Missing required binding [width]: ' +
+        'when [frozen]=true then [width] binding needs to be specified.');
+    }
+  }
+
+
+  ngAfterContentInit(): void {
+
+  }
+
+  ngAfterViewInit(): void {
+    // need to deffer this and trigger change detection otherwise I get
+    // value was changed after it was checked error
+    // setTimeout(() =>
+    // {
+
+    // });
+  }
+
+  /**
+   *
+   * When cell selectionMode is enabled this method is triggered when we click on header.
+   * It delegates the call to the DT where it toggles currently selected value
+   *
+   */
+  handleHeaderClick(event: any, element: any): void {
+    if (event.target.classList.contains('icon-grab')) {
+      return;
+    }
+
+    if (this.isHeaderSelectable()) {
+      this.dt.onHeaderSelectionChange(element, this);
+
+    } else if (this.sortable) {
+      this.sort(event);
+    }
+    event.preventDefault();
+  }
+
+  /**
+   *
+   * Todo: Implement our own sorting mechanism once we extract the sorting logic to its component
+   *
+   */
+  sort(event: any) {
+    if (!this.sortable) {
+      return;
+    }
+    const targetNode = event.target;
+    if (this.domHandler.hasClass(targetNode, 'dt-u-sortable') ||
+      this.domHandler.hasClass(targetNode, 'dt-col-title') ||
+      this.domHandler.hasClass(targetNode, 'dt-col-sortable-icon')) {
+
+      if (isPresent(this.dt.sortColumn) && this.dt.sortColumn.key === this.key) {
+        this.sortOrder = this.sortOrder * -1;
+        this.sortOrdering = this.dt.sortOrderingForNumber(this.sortOrder);
+
+      } else {
+        this.dt.sortColumn = this;
+
+      }
+      this.dt.dataSource.state.sortKey = this.key;
+      this.dt.dataSource.state.sortOrder = this.dt.sortOrderingForString(this.sortOrdering);
+
+      this.dt.sortSingle();
+    }
+    this.dt.updateDataToRender();
+  }
+
+  /**
+   * Calculated style class based on data
+   *
+   *
+   */
+  dynamicBodyClass(item: any): boolean {
+    let dynClass = isPresent(this.bodyClassFn)
+      ? this.bodyClassFn.apply(this.dt.context, [this, item]) : '';
+
+    if (isPresent(this.bodyStyleClass)) {
+      dynClass += ' ' + this.bodyStyleClass;
+
+    } else if (isPresent(this.styleClass)) {
+      dynClass += ' ' + this.styleClass;
+    }
+
+    return dynClass;
+  }
+
+
+  isRowSelectable(item: any): boolean {
+    if (isPresent(this.dt.isRowSelectable)) {
+      return this.dt.isRowSelectable(item);
+    }
+
+    return false;
+  }
+
+  isCellSelectable(item: any): boolean {
+    return this.dt.selectionMode === 'cell' && this.isRowSelectable(item) && this.selectable;
+
+  }
+
+
+  isHeaderSelectable(): boolean {
+    return this.dt.selectionMode === 'cell' && this.selectable;
+
+  }
+
+
+  getSortOrder() {
+    let order = 0;
+
+    if (isPresent(this.dt.sortColumn) && this.key === this.dt.sortColumn.key) {
+      order = this.dt.sortColumn.sortOrder;
+    }
+    return order;
+  }
+
+  isSorted() {
+    if (!this.sortable) {
+      return false;
+    }
+    return isPresent(this.dt.sortColumn) && this.key === this.dt.sortColumn.key;
+  }
+
+  initialize(table: AWDataTable): void {
+    this.dt = table;
+
+    if (isPresent(this.dt.initialSortKey) && this.dt.initialSortKey === this.key) {
+      this.sortable = true;
+      this.sortOrder = this.dt.sortOrderingForString(this.dt.initialSortOrder);
+      this.dt.sortColumn = this;
+    }
+
+    if (isBlank(this.bodyTemplate) && this.useGlobalBody) {
+      this.bodyTemplate = this.dt.bodyTemplate;
+    }
+
+    if (isBlank(this.headerTemplate) && this.useGlobalHeader) {
+      this.headerTemplate = this.dt.headerTemplate;
+    }
+
+    if (isBlank(this.subHeaderTemplate) && this.useGlobalSubHeader) {
+      this.subHeaderTemplate = this.dt.subHeaderTemplate;
+    }
+
+    if (isBlank(this.bodyClassFn)) {
+      this.bodyClassFn = this.dt.bodyClassFn;
+    }
+
+    this.maxWidthPx = this.widthToPx(this.maxWidth);
+    this.minWidthPx = this.widthToPx(this.minWidth);
+    this.widthPx = this.widthToPx(this.width);
+  }
+
+  /**
+   * This method is called at the end of the view init cycle from the dt.ngAfterViewChecked.
+   *
+   * In case we use MaxWidth directive we set new width once for all columsn
+   */
+  postInitialize(myIndex: number): void {
+    const colIndex = myIndex + 1;
+    let table;
+
+    if (this.dt.hasFrozenColumns()) {
+      table = (<Datatable2Component>this.dt).el
+        .nativeElement.querySelector('.dt-body-frozen table');
+    } else {
+      table = (<Datatable2Component>this.dt).el.nativeElement.querySelector('table');
     }
 
 
-    ngOnInit(): void
-    {
-        super.ngOnInit();
+    if (this.widestCell > 0) {
+      const all = table.querySelectorAll('tr th:nth-child(' + colIndex + '), ' +
+        'tr td:nth-child(' + colIndex + ')').forEach((node: any) => {
+        node.style.width = this.widestCell + 'px';
+      });
+    }
+  }
 
-        if (isBlank(this.key) && isBlank(this.label)) {
-            throw new Error('Missing required binding: ' +
-                '[key] or [label] bindings must be used at minimum');
-        }
 
-        // To be able to position second DT we require [width] to be set as well
-        if (this.frozen && isBlank(this.width)) {
-            throw new Error('Missing required binding [width]: ' +
-                'when [frozen]=true then [width] binding needs to be specified.');
-        }
+  /**
+   * You either use this binding directly and say its datacolumn or when there is a [key]
+   * biding we know it refers to some field.
+   *
+   */
+  isValueColumn(): boolean {
+    return (isPresent(this.isDataColumn) && BooleanWrapper.isTrue(this.isDataColumn)) ||
+      isPresent(this.key);
+  }
+
+  /**
+   * When we are in outline mode  we need to also indend each selection control accordingly.
+   *
+   * indent - 1 > only offset with
+   * indent
+   */
+  indentForControl(cell: any, level: number): any {
+    if (this.dt.isOutline() && level > 0 && cell.offsetWidth > 0
+      && isPresent(cell.nextElementSibling)) {
+
+      const outlineNodePadding =
+        parseInt(getComputedStyle(cell.nextElementSibling).paddingLeft) || 0;
+
+      // 1st level is pushed as root
+      if (this.dt.pushRootSectionOnNewLine) {
+        return (level === 1) ? null : (this.dt.indentationPerLevel * level)
+          - outlineNodePadding;
+      } else {
+        return (this.dt.indentationPerLevel * level) + outlineNodePadding;
+      }
+    }
+    return null;
+  }
+
+
+  /**
+   *
+   * Internal
+   */
+  private widthToPx(width: string): number {
+    let px;
+    if (isPresent(width)) {
+      if (width.indexOf('%') > 0) {
+        const nonPc = parseFloat(width) / 100;
+        px = nonPc * (<Datatable2Component>this.dt).el.nativeElement.offsetWidth;
+      } else {
+        px = parseFloat(width);
+      }
     }
 
-
-    ngAfterContentInit(): void
-    {
-
-    }
-
-    ngAfterViewInit(): void
-    {
-        // need to deffer this and trigger change detection otherwise I get
-        // value was changed after it was checked error
-        // setTimeout(() =>
-        // {
-
-        // });
-    }
-
-    /**
-     *
-     * When cell selectionMode is enabled this method is triggered when we click on header.
-     * It delegates the call to the DT where it toggles currently selected value
-     *
-     */
-    handleHeaderClick(event: any, element: any): void
-    {
-        if (event.target.classList.contains('icon-grab')) {
-            return;
-        }
-
-        if (this.isHeaderSelectable()) {
-            this.dt.onHeaderSelectionChange(element, this);
-
-        } else if (this.sortable) {
-            this.sort(event);
-        }
-        event.preventDefault();
-    }
-
-    /**
-     *
-     * Todo: Implement our own sorting mechanism once we extract the sorting logic to its component
-     *
-     */
-    sort(event: any)
-    {
-        if (!this.sortable) {
-            return;
-        }
-        let targetNode = event.target;
-        if (this.domHandler.hasClass(targetNode, 'dt-u-sortable') ||
-            this.domHandler.hasClass(targetNode, 'dt-col-title') ||
-            this.domHandler.hasClass(targetNode, 'dt-col-sortable-icon'))
-        {
-
-            if (isPresent(this.dt.sortColumn) && this.dt.sortColumn.key === this.key) {
-                this.sortOrder = this.sortOrder * -1;
-                this.sortOrdering = this.dt.sortOrderingForNumber(this.sortOrder);
-
-            } else {
-                this.dt.sortColumn = this;
-
-            }
-            this.dt.dataSource.state.sortKey = this.key;
-            this.dt.dataSource.state.sortOrder = this.dt.sortOrderingForString(this.sortOrdering);
-
-            this.dt.sortSingle();
-        }
-        this.dt.updateDataToRender();
-    }
-
-    /**
-     * Calculated style class based on data
-     *
-     *
-     */
-    dynamicBodyClass(item: any): boolean
-    {
-        let dynClass = isPresent(this.bodyClassFn)
-            ? this.bodyClassFn.apply(this.dt.context, [this, item]) : '';
-
-        if (isPresent(this.bodyStyleClass)) {
-            dynClass += ' ' + this.bodyStyleClass;
-
-        } else if (isPresent(this.styleClass)) {
-            dynClass += ' ' + this.styleClass;
-        }
-
-        return dynClass;
-    }
-
-
-    isRowSelectable(item: any): boolean
-    {
-        if (isPresent(this.dt.isRowSelectable)) {
-            return this.dt.isRowSelectable(item);
-        }
-
-        return false;
-    }
-
-    isCellSelectable(item: any): boolean
-    {
-        return this.dt.selectionMode === 'cell' && this.isRowSelectable(item) && this.selectable;
-
-    }
-
-
-    isHeaderSelectable(): boolean
-    {
-        return this.dt.selectionMode === 'cell' && this.selectable;
-
-    }
-
-
-    getSortOrder()
-    {
-        let order = 0;
-
-        if (isPresent(this.dt.sortColumn) && this.key === this.dt.sortColumn.key) {
-            order = this.dt.sortColumn.sortOrder;
-        }
-        return order;
-    }
-
-    isSorted()
-    {
-        if (!this.sortable) {
-            return false;
-        }
-        return isPresent(this.dt.sortColumn) && this.key === this.dt.sortColumn.key;
-    }
-
-    initialize(table: AWDataTable): void
-    {
-        this.dt = table;
-
-        if (isPresent(this.dt.initialSortKey) && this.dt.initialSortKey === this.key) {
-            this.sortable = true;
-            this.sortOrder = this.dt.sortOrderingForString(this.dt.initialSortOrder);
-            this.dt.sortColumn = this;
-        }
-
-        if (isBlank(this.bodyTemplate) && this.useGlobalBody) {
-            this.bodyTemplate = this.dt.bodyTemplate;
-        }
-
-        if (isBlank(this.headerTemplate) && this.useGlobalHeader) {
-            this.headerTemplate = this.dt.headerTemplate;
-        }
-
-        if (isBlank(this.subHeaderTemplate) && this.useGlobalSubHeader) {
-            this.subHeaderTemplate = this.dt.subHeaderTemplate;
-        }
-
-        if (isBlank(this.bodyClassFn)) {
-            this.bodyClassFn = this.dt.bodyClassFn;
-        }
-
-        this.maxWidthPx = this.widthToPx(this.maxWidth);
-        this.minWidthPx = this.widthToPx(this.minWidth);
-        this.widthPx = this.widthToPx(this.width);
-    }
-
-    /**
-     * This method is called at the end of the view init cycle from the dt.ngAfterViewChecked.
-     *
-     * In case we use MaxWidth directive we set new width once for all columsn
-     */
-    postInitialize(myIndex: number): void
-    {
-        const colIndex = myIndex + 1;
-        let table;
-
-        if (this.dt.hasFrozenColumns()) {
-            table = (<Datatable2Component>this.dt).el
-                .nativeElement.querySelector('.dt-body-frozen table');
-        } else {
-            table = (<Datatable2Component>this.dt).el.nativeElement.querySelector('table');
-        }
-
-
-        if (this.widestCell > 0) {
-            let all = table.querySelectorAll('tr th:nth-child(' + colIndex + '), ' +
-                'tr td:nth-child(' + colIndex + ')').forEach((node: any) =>
-            {
-                node.style.width = this.widestCell + 'px';
-            });
-        }
-    }
-
-
-    /**
-     * You either use this binding directly and say its datacolumn or when there is a [key]
-     * biding we know it refers to some field.
-     *
-     */
-    isValueColumn(): boolean
-    {
-        return (isPresent(this.isDataColumn) && BooleanWrapper.isTrue(this.isDataColumn)) ||
-            isPresent(this.key);
-    }
-
-    /**
-     * When we are in outline mode  we need to also indend each selection control accordingly.
-     *
-     * indent - 1 > only offset with
-     * indent
-     */
-    indentForControl(cell: any, level: number): any
-    {
-        if (this.dt.isOutline() && level > 0 && cell.offsetWidth > 0
-            && isPresent(cell.nextElementSibling))
-        {
-
-            let outlineNodePadding =
-                parseInt(getComputedStyle(cell.nextElementSibling).paddingLeft) || 0;
-
-            // 1st level is pushed as root
-            if (this.dt.pushRootSectionOnNewLine) {
-                return (level === 1) ? null : (this.dt.indentationPerLevel * level)
-                    - outlineNodePadding;
-            } else {
-                return (this.dt.indentationPerLevel * level) + outlineNodePadding;
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     *
-     * Internal
-     */
-    private widthToPx(width: string): number
-    {
-        let px;
-        if (isPresent(width)) {
-            if (width.indexOf('%') > 0) {
-                const nonPc = parseFloat(width) / 100;
-                px = nonPc * (<Datatable2Component>this.dt).el.nativeElement.offsetWidth;
-            } else {
-                px = parseFloat(width);
-            }
-        }
-
-        return px;
-    }
+    return px;
+  }
 }
 

@@ -50,7 +50,7 @@ describe('Component: Checkbox', () => {
 
   it('renders checkbox group using [(ngModel)] and correctly initialize "model" and "isBinary"',
     () => {
-      let fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.cb.toArray().length).toEqual(2);
@@ -65,10 +65,10 @@ describe('Component: Checkbox', () => {
 
 
   it('renders checkbox group so thatmain element has class .w-checkbox', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
     fixtureWrapper.detectChanges();
 
-    let cbs = fixtureWrapper.nativeElement.querySelectorAll('span.w-checkbox');
+    const cbs = fixtureWrapper.nativeElement.querySelectorAll('span.w-checkbox');
 
     expect(fixtureWrapper.componentInstance.cb.toArray().length).toEqual(2);
 
@@ -76,7 +76,7 @@ describe('Component: Checkbox', () => {
 
 
   it('should set "isBinary" property to TRUE when boolean value is passed as value', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCBCheckIsBinaryComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBCheckIsBinaryComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.cb.isBinary).toEqual(true);
@@ -84,7 +84,7 @@ describe('Component: Checkbox', () => {
 
 
   it('should set "isBinary" property to FALSE when checkbox type is "action"', () => {
-    let fixtureWrapper = TestBed.createComponent(TestCBForActionComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBForActionComponent);
     fixtureWrapper.detectChanges();
 
     expect(fixtureWrapper.componentInstance.cb.isBinary).toEqual(false);
@@ -94,7 +94,7 @@ describe('Component: Checkbox', () => {
   it('should set automatically property "type" to "action" value when "action" binding is used',
     () => {
 
-      let fixtureWrapper = TestBed.createComponent(TestCBForActionComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCBForActionComponent);
       fixtureWrapper.detectChanges();
 
       expect(fixtureWrapper.componentInstance.cb.isFormType()).toEqual(false);
@@ -103,12 +103,12 @@ describe('Component: Checkbox', () => {
 
   it('renders checkbox group using [(ngModel)] where first one with value "red" is checked',
     fakeAsync(() => {
-      let fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
+      const fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
       fixtureWrapper.detectChanges();
       tick();
       fixtureWrapper.detectChanges();
 
-      let cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox input');
+      const cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox input');
       expect(cbs.length).toEqual(2);
 
       fixtureWrapper.detectChanges();
@@ -122,10 +122,10 @@ describe('Component: Checkbox', () => {
 
   it('renders checkbox group and updates [(ngModel)] when second checkbox is clicked so it will' +
     ' contain two values red and blue', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBBasicWithNgModelComponent);
     fixtureWrapper.detectChanges();
 
-    let cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox label');
+    const cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox label');
     expect(cbs.length).toEqual(2);
 
     tick();
@@ -143,12 +143,12 @@ describe('Component: Checkbox', () => {
 
   it('renders checkbox group where "blue" value is checked using [formGroup]', fakeAsync(() => {
 
-    let fixtureWrapper = TestBed.createComponent(TestCBBasicWithFormGroupComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBBasicWithFormGroupComponent);
     fixtureWrapper.detectChanges();
     tick();
     fixtureWrapper.detectChanges();
 
-    let cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox input');
+    const cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox input');
     expect(cbs.length).toEqual(2);
 
     fixtureWrapper.detectChanges();
@@ -161,9 +161,9 @@ describe('Component: Checkbox', () => {
 
 
   it('triggers event when property "type" is set to "action" and its clicked', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCBForActionComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBForActionComponent);
     fixtureWrapper.detectChanges();
-    let cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox input');
+    const cbs = fixtureWrapper.nativeElement.querySelectorAll('.w-checkbox input');
 
     fixtureWrapper.detectChanges();
     cbs[0].click();
@@ -171,21 +171,21 @@ describe('Component: Checkbox', () => {
 
     fixtureWrapper.detectChanges();
 
-    let clicked = fixtureWrapper.componentInstance.clicked;
+    const clicked = fixtureWrapper.componentInstance.clicked;
     expect(clicked).toBeTruthy();
   }));
 
 
   it('works with boolean value so that when we set value as FALSE it can set back TRUE when' +
     ' clicked', fakeAsync(() => {
-    let fixtureWrapper = TestBed.createComponent(TestCBWithBooleanComponent);
+    const fixtureWrapper = TestBed.createComponent(TestCBWithBooleanComponent);
 
     tick();
     fixtureWrapper.detectChanges();
     tick();
     fixtureWrapper.detectChanges();
 
-    let cb = fixtureWrapper.nativeElement.querySelector('.w-checkbox label');
+    const cb = fixtureWrapper.nativeElement.querySelector('.w-checkbox label');
 
     fixtureWrapper.detectChanges();
     cb.click();
@@ -196,7 +196,7 @@ describe('Component: Checkbox', () => {
     tick();
     fixtureWrapper.detectChanges();
 
-    let model = fixtureWrapper.componentInstance.model;
+    const model = fixtureWrapper.componentInstance.model;
     expect(model).toBeTruthy();
   }));
 });

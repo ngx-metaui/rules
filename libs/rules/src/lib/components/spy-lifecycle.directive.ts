@@ -88,7 +88,7 @@ export class SpyLifeCycleHooksDirective implements OnDestroy, OnInit, DoCheck, O
 
   private logIt(msg: string) {
     let level = 0;
-    let me = this.elementRef.nativeElement;
+    const me = this.elementRef.nativeElement;
     let tagBody = me;
 
     while ((tagBody = tagBody.parentNode) != null) {
@@ -98,7 +98,7 @@ export class SpyLifeCycleHooksDirective implements OnDestroy, OnInit, DoCheck, O
       }
     }
     let indent = '';
-    let indentNumber = level;
+    const indentNumber = level;
     while (level > 0) {
       indent += '\t';
       level--;
@@ -108,7 +108,7 @@ export class SpyLifeCycleHooksDirective implements OnDestroy, OnInit, DoCheck, O
     let params = '';
     if (isPresent(me.attributes)) {
       for (let i = 0; i < me.attributes.length; i++) {
-        let attr: Attr = me.attributes.item(i);
+        const attr: Attr = me.attributes.item(i);
         if (this.ignore(attr.name.toLowerCase())) {
           continue;
         }
