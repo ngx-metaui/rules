@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.2"></a>
+## [7.0.2](https://github.com/ngx-meta/rules/compare/v7.0.1...v7.0.2) (2018-11-04)
+
+### Bug Fixes
+
+* **schematics:** Commenting out npm install tasks ([d9f5fe](https://github.com/ngx-meta/rules/commit/50be923b7399eeecb24f4a655f61109e9cd9f5fe))
+
+
 <a name="7.0.1"></a>
 ## [7.0.1](https://github.com/ngx-meta/rules/compare/v7.0.0...v7.0.1) (2018-11-04)
 
