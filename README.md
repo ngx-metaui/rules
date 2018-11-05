@@ -98,7 +98,7 @@ got much better chances of getting your question answered on our [Slack channel]
 
 
 
- [1]: https://github.com/ngx-meta/rules/blob/master/packages/metaui/docs/architecture.md
+ [1]: https://github.com/ngx-meta/rules/blob/master/docs/metaui-architecture.md
  [2]: https://join.slack.com/t/ngxmetaui/shared_invite/enQtNDcyNTUyNDE3NjIzLTVkYmVmNGNjMjVjMzMzNDNkOGMwMWVjNTRlNTE4NTA3ODdhM2U1ZjdlZDIzNjZkMmJhMTc5ODA5ZTU2MWE1Yjk
  
   
