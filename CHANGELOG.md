@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.3"></a>
+## [7.0.3](https://github.com/ngx-meta/rules/compare/v7.0.2...v7.0.3) (2018-11-06)
+
+
+### Bug Fixes
+
+* **README:** Added slack channel link for a general support ([a3c15f2](https://github.com/ngx-meta/rules/commit/a3c15f2))
+* **schematics:** Update formatting and add missing commas for oss file ([0f71fc8](https://github.com/ngx-meta/rules/commit/0f71fc8))
+
+
+
 <a name="7.0.2"></a>
 ## [7.0.2](https://github.com/ngx-meta/rules/compare/v7.0.1...v7.0.2) (2018-11-04)
 
