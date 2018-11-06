@@ -3,14 +3,14 @@
 
     Default definition
 */
-class= <%= classify(modelClass) %> {
+class=<%= classify(modelClass) %> {
 
     field=uniqueName {
-           label:"Id"
+           label:"Id";
        }
 
        field=name {
-           label:"Name"
+           label:"Name";
        }
 
        field=description {
@@ -25,7 +25,7 @@ class= <%= classify(modelClass) %> {
   Sample definition for operations edit and create
 
 */
-class= <%= classify(modelClass) %> {
+class=<%= classify(modelClass) %> {
    operation=(edit, create) {
       zNone => *;
       zLeft => name => description;
