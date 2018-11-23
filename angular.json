@@ -84,17 +84,17 @@
               }
             ],
             "styles": [
-              "libs/rules/src/lib/resources/themes/_normalize.scss",
+              "libs/primeng-rules/src/lib/resources/themes/_normalize.scss",
               "node_modules/prismjs/themes/prism.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
-              "libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
+              "libs/primeng-rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+              "libs/primeng-rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
               "node_modules/primeicons/primeicons.css",
-              "libs/rules/src/lib/resources/themes/ariba/theme.scss",
-              "libs/rules/src/lib/resources/styles/aribaui.scss",
+              "libs/primeng-rules/src/lib/resources/themes/ariba/theme.scss",
+              "libs/primeng-rules/src/lib/resources/styles/aribaui.scss",
               "apps/playground/src/styles.scss"
             ],
             "scripts": [
@@ -214,17 +214,17 @@
               "apps/metaui-evolution/src/assets"
             ],
             "styles": [
-              "libs/rules/src/lib/resources/themes/_normalize.scss",
+              "libs/primeng-rules/src/lib/resources/themes/_normalize.scss",
               "node_modules/prismjs/themes/prism.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
-              "libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
+              "libs/primeng-rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+              "libs/primeng-rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
               "node_modules/primeicons/primeicons.css",
-              "libs/rules/src/lib/resources/themes/ariba/theme.scss",
-              "libs/rules/src/lib/resources/styles/aribaui.scss",
+              "libs/primeng-rules/src/lib/resources/themes/ariba/theme.scss",
+              "libs/primeng-rules/src/lib/resources/styles/aribaui.scss",
               "apps/metaui-evolution/src/styles.scss"
             ],
             "scripts": [
@@ -421,6 +421,52 @@
             "tsConfig": [
               "apps/my-detail-page/tsconfig.app.json",
               "apps/my-detail-page/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "primeng-rules": {
+      "root": "libs/primeng-rules",
+      "sourceRoot": "libs/primeng-rules/src",
+      "projectType": "library",
+      "prefix": "ngx-metaui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/primeng-rules/tsconfig.lib.json",
+            "project": "libs/primeng-rules/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/primeng-rules/src/test.ts",
+            "tsConfig": "libs/primeng-rules/tsconfig.spec.json",
+            "karmaConfig": "libs/primeng-rules/karma.conf.js",
+            "scripts": [
+              "node_modules/prismjs/prism.js",
+              "node_modules/quill/dist/quill.js"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "libs/primeng-rules/src/lib/resources",
+                "output": "/assets"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/primeng-rules/tsconfig.lib.json",
+              "libs/primeng-rules/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

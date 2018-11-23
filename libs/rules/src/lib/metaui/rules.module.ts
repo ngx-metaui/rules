@@ -18,35 +18,28 @@
  */
 import {
   APP_INITIALIZER,
-  ErrorHandler,
+  InjectionToken,
   Injector,
   ModuleWithProviders,
-  NgModule
+  NgModule,
+  Optional
 } from '@angular/core';
+import {Router} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {UIMeta} from './core/uimeta';
 import {RuleLoaderService} from './core/rule-loader.service';
 import * as sysMetaComponents from './entry-components';
 import {AWMetaCoreModule} from './core/meta-core.module';
+import {Environment} from './core/config/environment';
+import {RoutingService} from './core/utils/routing.service';
+import {ComponentRegistry} from './core/component-registry.service';
+import {makeConfig, MetaConfig} from './core/config/meta-config';
+import {META_RULES, MetaRules} from './core/meta-rules';
+import {DomUtilsService} from './layout/core/dom-utils.service';
 import {AWMetaLayoutModule} from './layout/meta-layout.module';
-import {MetaUIRulesRoutingModule} from './rules-routing.module';
-import {ModalService} from '../components/core/modal-service/modal.service';
-import {ComponentRegistry} from '../components/core/component-registry.service';
-import {ErrorManagerService} from '../components/core/error-manager.service';
-import {DomUtilsService} from '../components/core/dom-utils.service';
-import {DataTypeProviderRegistry} from '../components/core/data/datatype-registry.service';
-import {DataProviders} from '../components/core/data/data-providers';
-import {DataFinders} from '../components/core/data/data-finders';
-import {registerComponents} from '../components/ariba.component.module';
-import {Meta, Title} from '@angular/platform-browser';
-import {Environment} from '../core/config/environment';
-import {Notifications} from '../core/messaging/notifications.service';
-import {Resource} from '../core/domain/resource.service';
-import {AppConfig, makeConfig} from '../core/config/app-config';
-import {GlobalErrorHandler} from '../core/global-error-handler';
-import {RoutingService} from '../core/routing/routing.service';
-import {Router} from '@angular/router';
-import {AribaCoreModule, UserConfig} from '../core/ariba.core.module';
+
+
+export const AppMetaConfig = new InjectionToken<string>('meta.AppConfig');
 
 
 /**
@@ -58,10 +51,8 @@ import {AribaCoreModule, UserConfig} from '../core/ariba.core.module';
 @NgModule({
   imports: [
     CommonModule,
-    MetaUIRulesRoutingModule,
     AWMetaCoreModule,
-    AWMetaLayoutModule,
-    AribaCoreModule
+    AWMetaLayoutModule
   ],
   exports: [
     AWMetaCoreModule,
@@ -79,37 +70,22 @@ export class MetaUIRulesModule {
     return {
       ngModule: MetaUIRulesModule,
       providers: [
-        // CORE Provides
-        Title,
-        Meta,
         Environment,
-        Notifications,
-        Resource,
-
-        {provide: UserConfig, useValue: config},
+        {provide: AppMetaConfig, useValue: config},
         {
-          provide: AppConfig, useFactory: makeConfig,
-          deps: [UserConfig, Injector, Environment]
+          provide: MetaConfig, useFactory: makeConfig,
+          deps: [AppMetaConfig, Environment]
         },
-        {provide: ErrorHandler, useClass: GlobalErrorHandler, deps: [Notifications]},
-        {provide: RoutingService, useClass: RoutingService, deps: [Router]},
+        {provide: RoutingService, useClass: RoutingService, deps: [[new Optional(), Router]]},
 
-
-        // COMPONENTS Providers
-        ModalService,
         ComponentRegistry,
-        ErrorManagerService,
         DomUtilsService,
-        DataTypeProviderRegistry,
-        DataProviders,
-        DataFinders,
+        RuleLoaderService,
         {
-          provide: APP_INITIALIZER,
-          useFactory: registerComponents,
-          deps: [ComponentRegistry],
-          multi: true
+          provide: META_RULES,
+          useClass: UIMeta,
+          deps: [ComponentRegistry, Environment, MetaConfig, RuleLoaderService, RoutingService]
         },
-        // MetaUI Providers
         {
           'provide': APP_INITIALIZER,
           'useFactory': initMetaUI,
@@ -129,15 +105,10 @@ export class MetaUIRulesModule {
  */
 export function initMetaUI(injector: Injector) {
   const initFce = function init(inj: Injector) {
+
     const promise: Promise<any> = new Promise((resolve: any) => {
-      const metaUI = UIMeta.getInstance();
-
-      // access services lazily when they are needed and initialized as workaround for
-      // https://github.com/angular/angular/issues/16853
-      metaUI.injector = inj;
-
-      metaUI.registerLoader(new RuleLoaderService());
-      metaUI.loadDefaultRuleFiles(sysMetaComponents);
+      const metaRules: MetaRules = injector.get(META_RULES);
+      metaRules.loadSystemRuleFiles(sysMetaComponents);
 
       resolve(true);
     });

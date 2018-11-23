@@ -33,7 +33,7 @@ class {
         useTextIndex:true;
 
         field { visible:false; }
-        @field=keywords#SearchableProperty { visible:true!; type:java.lang.String; rank:0; after:zTop; bindings: { size:30 } }
+        @field=keywords#SearchableProperty { visible:true!; type:string; rank:0; after:zTop; bindings: { size:30 } }
     }
 
     operation=textSearch {
@@ -46,64 +46,6 @@ class {
 }
 
 
-
-field {
-    trait=toOneRelationship {
-        editable {
-            component:GenericChooserComponent;
-            bindings:{
-                object:${object};
-                key:${field};
-                destinationClass:${elementType};
-                multiselect:false;
-                type:Dropdown;
-                displayKey:${ meta.displayLabel(type, properties.get("labelField") )};
-            }
-        }
-        /*editable=false {
-            component:HyperlinkComponent;
-            bindings: {
-                action: ${
-                    this.set("object", value);
-                    this.set("actionCategory", "General");
-                    this.set("action", "Inspect");
-                    meta.fireAction(this, true)
-                };
-                ngcontent: $value;
-            }
-        }*/
-
-    }
-
-    trait=toManyChooser {
-        editable {
-            component:GenericChooserComponent;
-            bindings:{
-                object:${object};
-                key:${field};
-                destinationClass:${elementType};
-                multiselect:true;
-                type:Chooser;
-                displayKey:${ meta.displayLabel(type, properties.get("labelField") )};
-            }
-        }
-    }
-
-
-    trait=toManyLink {
-        component:AWHyperlink;
-        bindings: {
-            action: ${
-                set("object", value);
-                set("actionCategory", "General");
-                set("action", "Inspect");
-                ariba.ui.meta.core.UIMeta.getInstance().fireAction(this, requestContext)
-            };
-            omitTags:${!value || value.size() ==0};
-            awcontent: ${value ? ("" + value.size() + " items") : "(none)"};
-        }
-    }
-}
 
 @traitGroup=RelViewers {
     @trait=toOneRelationship;

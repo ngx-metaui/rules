@@ -19,7 +19,8 @@
 
 import {User} from './user';
 import {Address} from './address';
-import {Entity, Money} from '@ngx-metaui/rules';
+import {Entity} from '@ngx-metaui/rules';
+import {Money} from '@ngx-metaui/primeng-rules';
 
 
 export class Order implements Entity

@@ -17,15 +17,16 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {assert, isBlank, isPresent} from '../../core/utils/lang';
-import {Environment} from '../../core/config/environment';
+import {OnDestroy} from '@angular/core';
+import {assert, isBlank, isPresent} from '../core/utils/lang';
+import {Environment} from '../core/config/environment';
 import {MetaBaseComponent} from './meta.base.component';
 import {ItemProperties} from '../core/item-properties';
-import {PropertyMap} from '../core/meta';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
-import {UIMeta} from '../core/uimeta';
 import {Context} from '../core/context';
-import {OnDestroy} from '@angular/core';
+import {KeyLabel, KeyLayout, ZonesTLRMB} from '../core/meta-rules';
+import {PropertyMap} from '../core/policies/merging-policy';
+
 
 /**
  * MetaLayout represent a high level rule that aggregates defined layout. When we iterate thru the
@@ -110,8 +111,8 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
    */
   get allLayouts(): ItemProperties[] {
     if (isBlank(this._allLayouts)) {
-      const meta: UIMeta = <UIMeta> this.activeContext.meta;
-      this._allLayouts = meta.itemList(this.activeContext, UIMeta.KeyLayout, this.zones());
+      this._allLayouts = this.activeContext.meta.itemList(this.activeContext, KeyLayout,
+        this.zones());
       this.nameToLayout.clear();
 
       this._allLayouts.forEach((item: ItemProperties) =>
@@ -127,8 +128,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
    */
   get layoutsByZones(): Map<string, any> {
     if (isBlank(this._layoutsByZones)) {
-      const meta: UIMeta = <UIMeta> this.activeContext.meta;
-      this._layoutsByZones = meta.itemsByZones(this.activeContext, UIMeta.KeyLayout,
+      this._layoutsByZones = this.activeContext.meta.itemsByZones(this.activeContext, KeyLayout,
         this.zones());
     }
     return this._layoutsByZones;
@@ -156,17 +156,17 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
 
 
   label(): string {
-    return this.activeContext.resolveValue(this.propertyMap.get(UIMeta.KeyLabel));
+    return this.activeContext.resolveValue(this.propertyMap.get(KeyLabel));
   }
 
 
   labelForContext(name: string): string {
     const context: Context = this.contextMap.get(name);
-    return super.aProperties(context, UIMeta.KeyLabel);
+    return super.aProperties(context, KeyLabel);
   }
 
   zones(): string[] {
-    return UIMeta.ZonesTLRMB;
+    return ZonesTLRMB;
   }
 
 

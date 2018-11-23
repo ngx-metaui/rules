@@ -23,6 +23,7 @@
 import * as Collections from 'typescript-collections';
 import {
   assert,
+  beautifyClassName,
   BooleanWrapper,
   className,
   Extensible,
@@ -35,22 +36,35 @@ import {
   objectToName,
   print,
   StringJoiner
-} from '../../core/utils/lang';
-import {FieldPath} from '../../core/utils/field-path';
-import {ListWrapper, MapWrapper} from '../../core/utils/collection';
-
+} from './utils/lang';
+import {FieldPath} from './utils/field-path';
+import {ListWrapper, MapWrapper} from './utils/collection';
 import {MatchResult, UnionMatchResult} from './match';
-import {Meta, OverrideValue, PropertyManager, PropertyMap} from './meta';
-import {ObjectMeta, ObjectMetaPropertyMap} from './object-meta';
-import {UIMeta} from './uimeta';
 import {NestedMap} from './nested-map';
 import {
-  DynamicPropertyValue,
   DynamicSettablePropertyValue,
   Expr,
   isDynamicSettable,
   StaticallyResolvable
 } from './property-value';
+import {
+  KeyAny,
+  KeyClass,
+  KeyDeclare,
+  KeyObject,
+  KeyValue,
+  MetaRules,
+  NullMarker,
+  ScopeKey
+} from './meta-rules';
+
+import {
+  DynamicPropertyValue,
+  ObjectMetaPropertyMap,
+  OverrideValue,
+  PropertyManager,
+  PropertyMap
+} from './policies/merging-policy';
 
 /**
  *
@@ -201,8 +215,8 @@ export class Context extends Extensible {
    *  activation.
    */
 
-  static getActivationTree(meta: Meta): Activation {
-    // todo: check the syntax Actionvation contructor name.
+  static getActivationTree(meta: MetaRules): Activation {
+    // todo: check the syntax Actiovation contructor name.
     const name = objectToName(Activation);
     let root: Activation = meta.identityCache.getValue(name);
     if (isBlank(root)) {
@@ -213,7 +227,7 @@ export class Context extends Extensible {
   }
 
 
-  constructor(private _meta: Meta, private nested: boolean = false) {
+  constructor(public meta: MetaRules, public nested: boolean = false) {
     super();
 
     if (isBlank(Context.EmptyMap)) {
@@ -223,7 +237,7 @@ export class Context extends Extensible {
     Context._Debug_SetsCount = 0;
 
     this._accessor = new PropertyAccessor(this);
-    this._currentActivation = Context.getActivationTree(_meta);
+    this._currentActivation = Context.getActivationTree(meta);
     this._rootNode = this._currentActivation;
 
     this.isNested = nested;
@@ -233,11 +247,6 @@ export class Context extends Extensible {
   push(): void {
     this._frameStarts.push(this._entries.length);
   }
-
-  get meta(): Meta {
-    return this._meta;
-  }
-
 
   pop(): void {
     const size = this._frameStarts.length;
@@ -276,12 +285,12 @@ export class Context extends Extensible {
     this._set(key, value, false, false);
 
     // implement default toString for our object so we can retrieve objectTitle
-    if (key === ObjectMeta.KeyObject) {
-      const toCheck = this._values.get(ObjectMeta.KeyObject);
+    if (key === KeyObject) {
+      const toCheck = this._values.get(KeyObject);
       if (isBlank(toCheck['$toString'])) {
         toCheck['$toString'] = () => {
-          const clazz = this.values.get(ObjectMeta.KeyClass);
-          return UIMeta.beautifyClassName(clazz);
+          const clazz = this.values.get(KeyClass);
+          return beautifyClassName(clazz);
         };
       }
     }
@@ -293,7 +302,7 @@ export class Context extends Extensible {
   }
 
   setScopeKey(key: string) {
-    assert(this._meta.keyData(key).isPropertyScope, key + ' is not a valid context key');
+    assert(this.meta.keyData(key).isPropertyScope, key + ' is not a valid context key');
     const current: string = this._currentPropertyScopeKey();
 
     // Assert.that(current != null, 'Can't set %s as context key when no context key on stack',
@@ -305,7 +314,7 @@ export class Context extends Extensible {
       // Assert.that(val != null, 'Can't set %s as context key when it has no value already
       // on the context', key);
       if (isBlank(val)) {
-        val = Meta.KeyAny;
+        val = KeyAny;
       }
       this.set(key, val);
     }
@@ -359,9 +368,9 @@ export class Context extends Extensible {
       lastValue = value;
 
       const propValue: DynamicPropertyValue = value;
-      if (propValue instanceof Expr) {
-        propValue.addTypeToContext('UIMeta', UIMeta);
-      }
+      // if (propValue instanceof Expr) {
+      //   propValue.addTypeToContext('UIMeta', UIMeta);
+      // }
       value = propValue.evaluate(this);
     }
 
@@ -467,12 +476,11 @@ export class Context extends Extensible {
 
 
   _set(key: string, value: any, merge: boolean, chaining: boolean): void {
-    const sval = this._meta.transformValue(key, value);
+    const sval = this.meta.transformValue(key, value);
     let didSet = false;
 
-    const registry = (<UIMeta>this.meta).componentRegistry;
-    if (key === ObjectMeta.KeyObject && isPresent(registry)) {
-      registry.registerType(className(value), value.constructor);
+    if (key === KeyObject) {
+      this.meta.componentRegistry.registerType(className(value), value.constructor);
     }
 
     const activation: Activation = this._currentActivation.getChildActivation(key, sval,
@@ -564,7 +572,7 @@ export class Context extends Extensible {
 
   _inDeclare(): boolean {
     const match: MatchResult = this.lastMatchWithoutContextProps();
-    return isPresent(match) && (match._keysMatchedMask & this._meta.declareKeyMask) !== 0;
+    return isPresent(match) && (match._keysMatchedMask & this.meta.declareKeyMask) !== 0;
   }
 
 
@@ -644,7 +652,7 @@ export class Context extends Extensible {
       // nested map...)
       const origValues = this._values;
       this._values = new NestedMap<string, any>(propValues);
-      this._applyActivation(propActivation, Meta.NullMarker);
+      this._applyActivation(propActivation, NullMarker);
       this.applyDeferredAssignments(propActivation.deferredAssignments);
 
       rec._propertyLocalValues = this._values;
@@ -670,7 +678,7 @@ export class Context extends Extensible {
 
 
   isDeclare(): boolean {
-    return isPresent(this.propertyForKey(Meta.KeyDeclare));
+    return isPresent(this.propertyForKey(KeyDeclare));
   }
 
 
@@ -735,7 +743,7 @@ export class Context extends Extensible {
     const isNewValue = !hasOldValue || this._isNewValue(oldVal, value);
 
     const matchingPropKeyAssignment = !isNewValue && !isChaining &&
-      ((this._meta.keyData(key).isPropertyScope) &&
+      ((this.meta.keyData(key).isPropertyScope) &&
         key !== this._currentPropertyScopeKey());
     if (isNewValue || matchingPropKeyAssignment) {
       let lastMatch: MatchResult;
@@ -789,7 +797,7 @@ export class Context extends Extensible {
           newMatch = this._rematchForOverride(key, svalue, recIdx, firstAssignmentIdx);
 
           if (merge) {
-            value = Meta.PropertyMerger_List.merge(oldVal, value, this.isDeclare());
+            value = this.meta.PropertyMerger_List.merge(oldVal, value, this.isDeclare());
           }
         }
       }
@@ -807,7 +815,7 @@ export class Context extends Extensible {
       srec.fromChaining = isChaining;
 
       if (isBlank(newMatch)) {
-        newMatch = (isPresent(value)) ? this._meta.match(key, svalue,
+        newMatch = (isPresent(value)) ? this.meta.match(key, svalue,
           lastMatch) : lastMatch;
       }
       srec.match = newMatch;
@@ -835,7 +843,7 @@ export class Context extends Extensible {
 
       // print('Context skipped assignment of matching property value %s = %s (isChaining ==
       // %s, isPropKey == %s)', key, value, isChaining,
-      // (this._meta.keyData(key).isPropertyScope));
+      // (this.meta.keyData(key).isPropertyScope));
 
       if (!isChaining && this.meta.keyData(key).isPropertyScope) {
         // slam down a rec for property context
@@ -910,16 +918,16 @@ export class Context extends Extensible {
       const r: Assignment = this._entries[i];
       // rematch on any unmasked records
       if (r.maskedByIdx === 0) {
-        lastMatch = this._meta.match(r.srec.key, r.srec.val, lastMatch);
+        lastMatch = this.meta.match(r.srec.key, r.srec.val, lastMatch);
       } else {
         // accumulate masked ('_o') match
-        overridesMatch = this._meta.unionOverrideMatch(r.srec.key, r.srec.val,
+        overridesMatch = this.meta.unionOverrideMatch(r.srec.key, r.srec.val,
           overridesMatch);
       }
     }
 
     if (isPresent(svalue) || isBlank(lastMatch)) {
-      lastMatch = this._meta.match(key, svalue, lastMatch);
+      lastMatch = this.meta.match(key, svalue, lastMatch);
     }
     lastMatch.setOverridesMatch(overridesMatch);
     return lastMatch;
@@ -949,7 +957,7 @@ export class Context extends Extensible {
 
 
   _checkMatch(match: MatchResult, key: string, value: any): void {
-    match._checkMatch(this._values, this._meta);
+    match._checkMatch(this._values);
   }
 
   findLastAssignmentOfKey(key: string): number {
@@ -983,7 +991,7 @@ export class Context extends Extensible {
     let didSet = false;
     let numEntries = 0;
     let lastSize = 0;
-    const declareKey: string = this._inDeclare() ? this._values.get(Meta.KeyDeclare) : null;
+    const declareKey: string = this._inDeclare() ? this._values.get(KeyDeclare) : null;
 
     while ((numEntries = this._entries.length) > lastSize) {
       lastSize = numEntries;
@@ -1070,7 +1078,7 @@ export class Context extends Extensible {
       if (isPresent(foundActivation) && rec.srec.activation !== foundActivation) {
         break;
       }
-      if (this._meta.keyData(rec.srec.key).isPropertyScope) {
+      if (this.meta.keyData(rec.srec.key).isPropertyScope) {
         if (!rec.srec.fromChaining) {
           return rec.srec.key;
         }
@@ -1092,7 +1100,7 @@ export class Context extends Extensible {
     assert(this._values instanceof NestedMap, 'Property assignment on base map?');
     const scopeKey: string = this._currentPropertyScopeKey();
     if (isPresent(scopeKey)) {
-      return this._set2(Meta.ScopeKey, scopeKey, scopeKey, false, false);
+      return this._set2(ScopeKey, scopeKey, scopeKey, false, false);
     }
     return false;
   }
@@ -1165,7 +1173,7 @@ export class Context extends Extensible {
 
   private writeProperties(buf: StringJoiner, properties: Map<string, any>, level: number,
                           singleLine: boolean): void {
-    MapWrapper.iterable(properties).forEach((value, key) => {
+    MapWrapper.iterable(properties).forEach((value: any, key: string) => {
       if (!singleLine) {
         while (level-- > 0) {
           buf.add('&nbsp;&nbsp;&nbsp;');
@@ -1193,8 +1201,10 @@ export class Context extends Extensible {
 
         } else if (value instanceof Expr) {
           buf.add(value.toString());
+
         } else if (value instanceof Map) {
           buf.add(MapWrapper.toString(value));
+
         } else if (isArray(value)) {
           ListWrapper.toString(value);
 
@@ -1295,7 +1305,7 @@ export class Activation {
 
   getChildActivation(contextKey: string, value: any, chaining: boolean): Activation {
     if (isBlank(value)) {
-      value = Meta.NullMarker;
+      value = NullMarker;
     }
 
     const byKey: Map<string, Collections.Dictionary<any, any>> = (chaining)
@@ -1312,7 +1322,7 @@ export class Activation {
   cacheChildActivation(contextKey: string, value: any, activation: Activation,
                        chaining: boolean): void {
     if (isBlank(value)) {
-      value = Meta.NullMarker;
+      value = NullMarker;
     }
 
     let byKey: Map<string, Collections.Dictionary<any, any>>;
@@ -1538,7 +1548,7 @@ export class PropertyAccessor {
  */
 export class Snapshot {
 
-  _meta: Meta;
+  _meta: MetaRules;
   _origClass: string;
   _assignments: Array<AssignmentSnapshot>;
   _allAssignments: Array<AssignmentSnapshot>;
@@ -1578,8 +1588,8 @@ export class ObjectMetaContext extends Context {
 
   private _formatters: Map<string, any>;
 
-  constructor(_meta: ObjectMeta, nested: boolean = false) {
-    super(_meta, nested);
+  constructor(public meta: MetaRules, public nested: boolean = false) {
+    super(meta, nested);
 
   }
 
@@ -1601,7 +1611,7 @@ export class ObjectMetaContext extends Context {
       assert(isPresent(this.object), 'Call to setValue() with no current object');
       fieldPath.setFieldValue(this.object, val);
     } else {
-      const value = this.allProperties().get(ObjectMeta.KeyValue);
+      const value = this.allProperties().get(KeyValue);
       assert(isDynamicSettable(value), 'Cant set derived property: ' + value);
 
       const settable: DynamicSettablePropertyValue = value;
@@ -1613,7 +1623,7 @@ export class ObjectMetaContext extends Context {
   }
 
   get object(): any {
-    return this.values.get(ObjectMeta.KeyObject);
+    return this.values.get(KeyObject);
   }
 
   get formatters(): Map<string, any> {
@@ -1643,8 +1653,8 @@ export class ObjectMetaContext extends Context {
 export class UIContext extends ObjectMetaContext {
 
 
-  constructor(_meta: UIMeta, nested: boolean = false) {
-    super(_meta, nested);
+  constructor(public meta: MetaRules, public nested: boolean = false) {
+    super(meta, nested);
   }
 
 

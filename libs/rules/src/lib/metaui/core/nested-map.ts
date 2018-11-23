@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {isBlank, isPresent, unimplemented} from '../../core/utils/lang';
+import {isBlank, isPresent, unimplemented} from './utils/lang';
 
 /**
  A map that masks on top of an (immutable) parent map

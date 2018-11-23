@@ -17,13 +17,12 @@
  *
  */
 import {AfterViewChecked} from '@angular/core';
-import {assert, isPresent} from '../../core/utils/lang';
-import {Environment} from '../../core/config/environment';
-import {BaseFormComponent} from '../../components/core/base-form.component';
+import {assert, isPresent} from '../core/utils/lang';
+import {Environment} from '../core/config/environment';
+import {BaseFormComponent} from './core/base-form.component';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
 import {Context, Snapshot} from '../core/context';
-import {UIMeta} from '../core/uimeta';
-import {ObjectMeta} from '../core/object-meta';
+import {KeyEditing, KeyObject} from '../core/meta-rules';
 
 
 /**
@@ -34,9 +33,16 @@ export abstract class MetaBaseComponent extends BaseFormComponent implements Aft
 
   /**
    * Need to capture current snapshot for edit operation as when we enter editing mode and user
-   * start to change values the detection loop runs out of any push/pop cycle and any order and I
-   * could not find a way how to detect consistent behavior where root compoennt start ngDoCheck,
+   * start to change values the detection loop runs for me in unpredicted order and I
+   * could not find a way how to detect consistent behavior where root component start ngDoCheck,
    * child component trigger ngDoCheck, child finishes, root finishes.
+   *
+   * <Node1> - PUSH
+   *      <Node2> - PUSH
+   *          <Node3> - PUSH
+   *          <Node3> - POP
+   *      <Node2> - POP
+   * <Node1> - POP
    *
    * This only works when view is first time rendered, but not when making changes
    *
@@ -65,9 +71,9 @@ export abstract class MetaBaseComponent extends BaseFormComponent implements Aft
 
 
   protected updateMeta() {
-    this.editing = this.context.booleanPropertyForKey(UIMeta.KeyEditing, false);
+    this.editing = this.context.booleanPropertyForKey(KeyEditing, false);
     if (this.editing) {
-      this.object = this.context.values.get(ObjectMeta.KeyObject);
+      this.object = this.context.values.get(KeyObject);
       this.contextSnapshot = this.context.snapshot();
     }
     this.doUpdate();

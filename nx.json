@@ -19,6 +19,9 @@
     },
     "my-detail-page": {
       "tags": []
+    },
+    "primeng-rules": {
+      "tags": []
     }
   }
 }

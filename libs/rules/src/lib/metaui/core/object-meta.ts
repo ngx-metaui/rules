@@ -17,119 +17,95 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {Injector, Type} from '@angular/core';
+import {Type} from '@angular/core';
 import {
   assert,
   BooleanWrapper,
+  className,
   isArray,
   isBlank,
-  isBoolean,
   isPresent,
   isString
-} from '../../core/utils/lang';
-import {FieldPath} from '../../core/utils/field-path';
-import {ComponentRegistry} from '../../components/core/component-registry.service';
-import {
-  Meta,
-  PropertyMap,
-  PropertyMerger,
-  PropertyMerger_And,
-  PropertyMergerIsChaining,
-  ValueQueriedObserver
-} from './meta';
+} from './utils/lang';
+import {ComponentRegistry} from './component-registry.service';
 import {Context, ObjectMetaContext} from './context';
 import {ItemProperties} from './item-properties';
 import {Rule, Selector} from './rule';
+import {
+  ClassRulePriority,
+  KeyAction,
+  KeyActionCategory,
+  KeyClass,
+  KeyDeclare,
+  KeyEditable,
+  KeyElementType,
+  KeyField,
+  KeyObject,
+  KeyRank,
+  KeyTrait,
+  KeyTraitGroup,
+  KeyType,
+  KeyValid,
+  KeyVisible,
+  MetaRules,
+  ValueQueriedObserver
+} from './meta-rules';
+import {
+  ObjectMetaPropertyMap,
+  OMPropertyMerger_Valid,
+  PropertyMap,
+  PropertyMerger_And
+} from './policies/merging-policy';
+import {RuleLoaderService} from './rule-loader.service';
+import {Meta} from './meta';
 
 /**
- * ObjectMeta is resposible for setting up everything related to class, field, actions
+ * ObjectMeta is responsible for setting up everything related to class, field, actions
  *
  */
-export class ObjectMeta extends Meta {
-  static KeyClass = 'class';
-  static KeyField = 'field';
-  static KeyAction = 'action';
-  static KeyActionCategory = 'actionCategory';
-  static KeyObject = 'object';
-  static KeyValue = 'value';
-  static KeyType = 'type';
-  static KeyElementType = 'elementType';
-  static readonly KeyTraitGroup = 'traitGroup';
-  static KeyVisible = 'visible';
-  static KeyEditable = 'editable';
-  static KeyValid = 'valid';
-  static KeyRank = 'rank';
-  static readonly DefaultActionCategory = 'General';
-
-  static readonly _FieldPathNullMarker = new FieldPath('null');
-
+export abstract class ObjectMeta extends Meta {
 
   _traitToGroup: Map<string, string>;
   _traitToGroupGeneration: number = -1;
 
 
-  /**
-   *  Can inject these directly but want to keep this as much as possible with any angular
-   *  dependecies as we will be using these core rule classes outside of UI code
-   */
-  protected _componentRegistry: ComponentRegistry;
-  protected _injector: Injector;
+  constructor(public componentRegistry: ComponentRegistry, public ruleLoader: RuleLoaderService) {
+    super(componentRegistry, ruleLoader);
 
-
-  static validationError(context: Context): string {
-    const error = context.propertyForKey(ObjectMeta.KeyValid);
-    if (isBlank(error)) {
-      return null;
-    }
-
-    if (isBoolean(error)) {
-      return BooleanWrapper.boleanValue(error) ? null : 'Invalid entry';
-    }
-    return error.toString();
-  }
-
-  // todo: implement new decorators in typescript if we want ot annotate _annotationProcessors
-
-  constructor() {
-    super();
-
-    this.registerKeyInitObserver(ObjectMeta.KeyClass, new IntrospectionMetaProvider());
-    this.registerKeyInitObserver(ObjectMeta.KeyType, new FieldTypeIntrospectionMetaProvider());
+    this.registerKeyInitObserver(KeyClass, new IntrospectionMetaProvider());
+    this.registerKeyInitObserver(KeyType, new FieldTypeIntrospectionMetaProvider());
 
     // These keys define scopes for their properties
-    this.defineKeyAsPropertyScope(ObjectMeta.KeyField);
-    this.defineKeyAsPropertyScope(ObjectMeta.KeyAction);
-    this.defineKeyAsPropertyScope(ObjectMeta.KeyActionCategory);
-    this.defineKeyAsPropertyScope(ObjectMeta.KeyClass);
+    this.defineKeyAsPropertyScope(KeyField);
+    this.defineKeyAsPropertyScope(KeyAction);
+    this.defineKeyAsPropertyScope(KeyActionCategory);
+    this.defineKeyAsPropertyScope(KeyClass);
 
     // policies for chaining certain well known properties
-    this.registerPropertyMerger(ObjectMeta.KeyVisible, new PropertyMerger_And());
-    this.registerPropertyMerger(ObjectMeta.KeyEditable, new PropertyMerger_And());
-    this.registerPropertyMerger(ObjectMeta.KeyValid, new OMPropertyMerger_Valid());
+    this.registerPropertyMerger(KeyVisible, new PropertyMerger_And());
+    this.registerPropertyMerger(KeyEditable, new PropertyMerger_And());
+    this.registerPropertyMerger(KeyValid, new OMPropertyMerger_Valid());
 
-    this.registerPropertyMerger(ObjectMeta.KeyClass, Meta.PropertyMerger_DeclareList);
-    this.registerPropertyMerger(ObjectMeta.KeyField, Meta.PropertyMerger_DeclareList);
-    this.registerPropertyMerger(ObjectMeta.KeyAction, Meta.PropertyMerger_DeclareList);
-    this.registerPropertyMerger(ObjectMeta.KeyActionCategory, Meta.PropertyMerger_DeclareList);
-    this.registerPropertyMerger(ObjectMeta.KeyTraitGroup, Meta.PropertyMerger_DeclareList);
+    this.registerPropertyMerger(KeyClass, this.PropertyMerger_DeclareList);
+    this.registerPropertyMerger(KeyField, this.PropertyMerger_DeclareList);
+    this.registerPropertyMerger(KeyAction, this.PropertyMerger_DeclareList);
+    this.registerPropertyMerger(KeyActionCategory, this.PropertyMerger_DeclareList);
+    this.registerPropertyMerger(KeyTraitGroup, this.PropertyMerger_DeclareList);
 
-    this.mirrorPropertyToContext(ObjectMeta.KeyClass, ObjectMeta.KeyClass);
-    this.mirrorPropertyToContext(ObjectMeta.KeyType, ObjectMeta.KeyType);
-    this.mirrorPropertyToContext(ObjectMeta.KeyElementType, ObjectMeta.KeyElementType);
-    this.mirrorPropertyToContext(ObjectMeta.KeyTrait, Meta.KeyTrait);
-    this.mirrorPropertyToContext(ObjectMeta.KeyEditable, ObjectMeta.KeyEditable);
+    this.mirrorPropertyToContext(KeyClass, KeyClass);
+    this.mirrorPropertyToContext(KeyType, KeyType);
+    this.mirrorPropertyToContext(KeyElementType, KeyElementType);
+    this.mirrorPropertyToContext(KeyTrait, KeyTrait);
+    this.mirrorPropertyToContext(KeyEditable, KeyEditable);
 
-    this.registerValueTransformerForKey(ObjectMeta.KeyObject, Meta.Transformer_KeyPresent);
-
-    // todo: try to support decorators and how we can put meta data into object @Traits,
-    // @Properties, @Action
+    this.registerValueTransformerForKey(KeyObject, this.Transformer_KeyPresent);
   }
 
 
   /*
    *  Provide subclass context with conveniences for getting object field values
    */
-  newContext(): Context {
+  newContext(isNested: boolean = false): Context {
     return new ObjectMetaContext(this, false);
   }
 
@@ -139,9 +115,29 @@ export class ObjectMeta extends Meta {
     return new ObjectMetaPropertyMap();
   }
 
+  groupForTrait(trait: string): string {
+    if (this._traitToGroup == null || this._traitToGroupGeneration < this.ruleSetGeneration) {
+      this._traitToGroupGeneration = this.ruleSetGeneration;
+      this._traitToGroup = new Map<string, string>();
+
+      const context = this.newContext();
+      for (const group of this.itemNames(context, KeyTraitGroup)) {
+        context.push();
+        context.set(KeyTraitGroup, group);
+
+        for (const name of this.itemNames(context, KeyTrait)) {
+          this._traitToGroup.set(name, group);
+        }
+        context.pop();
+      }
+    }
+    return this._traitToGroup.get(trait);
+  }
+
+
   itemNames(context: Context, key: string): Array<string> {
     context.push();
-    context.set(ObjectMeta.KeyDeclare, key);
+    context.set(KeyDeclare, key);
     const itemsNames = context.listPropertyForKey(key);
     context.pop();
 
@@ -149,19 +145,19 @@ export class ObjectMeta extends Meta {
   }
 
 
-  itemProperties(context: Context, key: string, filterHidden: boolean): Array<ItemProperties> {
-    return this.itemPropertiesForNames(context, key, this.itemNames(context, key),
-      filterHidden);
+  itemProperties(context: Context, key: string,
+                 filterHidden: boolean): Array<ItemProperties> {
+    return this.itemPropertiesForNames(context, key, this.itemNames(context, key), filterHidden);
   }
 
-  itemPropertiesForNames(context: Context, key: string, itemNames: string[],
-                         filterHidden: boolean): Array<ItemProperties> {
+  protected itemPropertiesForNames(context: Context, key: string, itemNames: string[],
+                                   filterHidden: boolean): Array<ItemProperties> {
     const result: Array<ItemProperties> = [];
     for (const itemName of itemNames) {
       context.push();
       context.set(key, itemName);
 
-      const isVisible = context.allProperties().get(ObjectMeta.KeyVisible);
+      const isVisible = context.allProperties().get(KeyVisible);
       const visible = context.staticallyResolveValue(isVisible);
 
       const isHidden = (isBlank(visible)) || BooleanWrapper.isFalse(visible);
@@ -175,41 +171,6 @@ export class ObjectMeta extends Meta {
   }
 
 
-  groupForTrait(trait: string): string {
-    if (this._traitToGroup == null || this._traitToGroupGeneration < this.ruleSetGeneration) {
-      this._traitToGroupGeneration = this.ruleSetGeneration;
-      this._traitToGroup = new Map<string, string>();
-
-      const context = this.newContext();
-      for (const group of this.itemNames(context, ObjectMeta.KeyTraitGroup)) {
-        context.push();
-        context.set(ObjectMeta.KeyTraitGroup, group);
-
-        for (const name of this.itemNames(context, ObjectMeta.KeyTrait)) {
-          this._traitToGroup.set(name, group);
-        }
-        context.pop();
-      }
-    }
-    return this._traitToGroup.get(trait);
-  }
-
-  set injector(value: Injector) {
-    this._injector = value;
-  }
-
-
-  get injector(): Injector {
-    return this._injector;
-  }
-
-  get componentRegistry(): ComponentRegistry {
-    return this._componentRegistry;
-  }
-
-  set componentRegistry(value: ComponentRegistry) {
-    this._componentRegistry = value;
-  }
 }
 
 /**
@@ -222,15 +183,15 @@ export class ObjectMeta extends Meta {
  * where Rules will be loaded using Rest API along with the object instance its impossible.
  */
 export class IntrospectionMetaProvider implements ValueQueriedObserver {
-  private _meta: Meta;
+  private _meta: MetaRules;
 
-  notify(meta: Meta, key: string, value: any): void {
+
+  notify(meta: MetaRules, key: string, value: any): void {
     this._meta = meta;
     let myObject;
 
     const componentRegistry: ComponentRegistry = (<ObjectMeta>this._meta).componentRegistry;
-    assert(isPresent(componentRegistry),
-      'Component registry is not initialized');
+    assert(isPresent(componentRegistry), 'Component registry is not initialized');
 
     let clazz: Type<any> = null;
     if (isString(value) && (clazz = componentRegistry.nameToType.get(value))
@@ -240,26 +201,26 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
       return;
     }
 
-    assert(Meta.className(myObject) === value,
+    assert(className(myObject) === value,
       'Trying to process and register a class that does not exists on Context');
     this.registerRulesForClass(myObject, value);
 
   }
 
-  private registerRulesForClass(object: any, className: string): void {
-    this._meta.keyData(ObjectMeta.KeyClass).setParent(className, 'Object');
+  private registerRulesForClass(object: any, clazzName: string): void {
+    this._meta.keyData(KeyClass).setParent(clazzName, 'Object');
 
-    this._meta.beginRuleSet(className);
+    this._meta.beginRuleSet(clazzName);
 
     try {
-      const selectors: Array<Selector> = [new Selector(ObjectMeta.KeyClass, className)];
+      const selectors: Array<Selector> = [new Selector(KeyClass, clazzName)];
       const propertyMap = this._meta.newPropertiesMap();
       selectors[0].isDecl = true;
 
-      const rule: Rule = new Rule(selectors, propertyMap, ObjectMeta.ClassRulePriority);
+      const rule: Rule = new Rule(selectors, propertyMap, ClassRulePriority);
       this._meta.addRule(rule);
 
-      this.registerRulesForFields(object, className);
+      this.registerRulesForFields(object, clazzName);
 
     } finally {
       this._meta.endRuleSet();
@@ -267,11 +228,11 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
   }
 
 
-  private registerRulesForFields(object: any, className: string): void {
+  private registerRulesForFields(object: any, clazzName: string): void {
     // todo: Can we somehow utilize decorators? Maybe for local typescript defined object, but
     // not objects loaded as json from rest API
-    assert(isPresent(object['getTypes']),
-      'Cannot register fields without a getTypes method that will expose all the fields');
+    assert(isPresent(object['getTypes']), 'Cannot register fields without a getTypes method ' +
+      'that will expose all the fields');
     const types: any = object.getTypes();
     const fieldNames = Object.keys(types);
 
@@ -282,10 +243,10 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
 
       const properties = new Map<string, any>();
 
-      properties.set(ObjectMeta.KeyField, name);
-      properties.set(ObjectMeta.KeyType, type);
+      properties.set(KeyField, name);
+      properties.set(KeyType, type);
 
-      properties.set(ObjectMeta.KeyVisible, true);
+      properties.set(KeyVisible, true);
 
       if (isArray(types[name])) {
         assert(types[name].length > 0,
@@ -293,17 +254,17 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
           'prototype');
         const item = types[name][0];
         const collectionElementType = item.name;
-        properties.set(ObjectMeta.KeyElementType, collectionElementType);
+        properties.set(KeyElementType, collectionElementType);
       }
 
       const selectorList: Array<Selector> = [
-        new Selector(ObjectMeta.KeyClass, className),
-        new Selector(ObjectMeta.KeyField, name)
+        new Selector(KeyClass, clazzName),
+        new Selector(KeyField, name)
       ];
       selectorList[1].isDecl = true;
-      properties.set(ObjectMeta.KeyRank, (rank++ + 1) * 10);
+      properties.set(KeyRank, (rank++ + 1) * 10);
 
-      const rule: Rule = new Rule(selectorList, properties, ObjectMeta.ClassRulePriority);
+      const rule: Rule = new Rule(selectorList, properties, ClassRulePriority);
       this._meta.addRule(rule);
     }
   }
@@ -321,44 +282,5 @@ export class FieldTypeIntrospectionMetaProvider implements ValueQueriedObserver 
 }
 
 
-export class ObjectMetaPropertyMap extends PropertyMap {
-  private _fieldPath: FieldPath;
-
-
-  get fieldPath(): FieldPath {
-    if (isBlank(this._fieldPath)) {
-      const value = this.get(ObjectMeta.KeyValue);
-      const fieldName = this.get(ObjectMeta.KeyField);
-
-      this._fieldPath = (isPresent(fieldName) && isBlank(value))
-        ? new FieldPath(fieldName)
-        : ObjectMeta._FieldPathNullMarker;
-    }
-    const isNullPath = this._fieldPath === ObjectMeta._FieldPathNullMarker;
-    return isNullPath ? null : this._fieldPath;
-  }
-
-  isFieldNullMarker(value: FieldPath): boolean {
-    return isPresent(value) && value.path === 'null';
-  }
-}
-
-
-export class OMPropertyMerger_Valid implements PropertyMerger, PropertyMergerIsChaining {
-  _meta: Meta;
-  isPropMergerIsChainingMark: boolean = true;
-
-
-  merge(orig: any, override: any, isDeclare: boolean): any {
-    // if first is error (error message or false, it wins), otherwise second
-    return (isString(override) || (isBoolean(override) && BooleanWrapper.isFalse(
-      override))) ? override : orig;
-  }
-
-
-  toString() {
-    return 'VALIDATE';
-  }
-}
 
 

@@ -22,12 +22,15 @@ import {
   isArray,
   isBlank,
   isPresent,
+  objectEquals,
   print,
   shiftLeft,
   StringJoiner
-} from '../../core/utils/lang';
-import {ListWrapper, MapWrapper} from '../../core/utils/collection';
-import {KeyData, MatchValue, Meta, PropertyManager, PropertyMap, RuleSet} from './meta';
+} from './utils/lang';
+import {ListWrapper, MapWrapper} from './utils/collection';
+import {DeclRule, KeyAny, KeyDeclare, MetaRules, NullMarker, overrideKeyForKey} from './meta-rules';
+import {MatchValue} from './match';
+import {KeyData, PropertyManager, PropertyMap} from './policies/merging-policy';
 
 
 /**
@@ -115,7 +118,7 @@ export class Rule {
   keyIndexedMask: number = 0;
   keyAntiMask: number = 0;
 
-  static merge(meta: Meta, src: Map<string, any>, dest: Map<string, any>,
+  static merge(meta: MetaRules, src: Map<string, any>, dest: Map<string, any>,
                declareKey: string): number {
     let updatedMask = 0;
 
@@ -164,7 +167,7 @@ export class Rule {
   /**
    * returns context keys modified
    */
-  apply(meta: Meta, properties: PropertyMap, declareKey: string): number {
+  apply(meta: MetaRules, properties: PropertyMap, declareKey: string): number {
     if (this._rank === Number.MIN_VALUE) {
       return 0;
     }
@@ -189,7 +192,7 @@ export class Rule {
 
 
   location(): string {
-    const path: string = isPresent(this._ruleSet) ? this._ruleSet.filePath : 'Unknow';
+    const path: string = isPresent(this._ruleSet) ? this._ruleSet.filePath : 'Unknown';
     return (this._lineNumber >= 0) ? (new StringJoiner([
       path, ':', this._lineNumber + ''
     ])).toString() : path;
@@ -265,7 +268,7 @@ export class Rule {
       }
     }
     // Flag the declaring rule as a property
-    this._properties.set(Meta.DeclRule, new RuleWrapper(this));
+    this._properties.set(DeclRule, new RuleWrapper(this));
 
     // check for override scope
     let hasOverrideScope = false;
@@ -277,12 +280,12 @@ export class Rule {
 
     // if decl key isn't scoped, then select on no scope
     if (!hasOverrideScope) {
-      const overrideKey: string = Meta.overrideKeyForKey(declPred.key);
-      prePreds.unshift(new Selector(overrideKey, Meta.NullMarker));
+      const overrideKey: string = overrideKeyForKey(declPred.key);
+      prePreds.unshift(new Selector(overrideKey, NullMarker));
     }
 
     // The decl rule...
-    prePreds.push(new Selector(Meta.KeyDeclare, declPred.key));
+    prePreds.push(new Selector(KeyDeclare, declPred.key));
 
     const m = new Map<string, any>();
     m.set(declPred.key, declPred.value);
@@ -312,7 +315,7 @@ export class Rule {
           if (result === orig) {
             result = orig.slice(0, i);
           }
-          p = new Selector(Meta.overrideKeyForKey(p.key), p.value);
+          p = new Selector(overrideKeyForKey(p.key), p.value);
           break;
         }
       }
@@ -356,7 +359,7 @@ export class Rule {
     return sj.toString();
   }
 
-  _checkRule(values: Map<string, any>, meta: Meta): void {
+  _checkRule(values: Map<string, any>, meta: MetaRules): void {
     ListWrapper.forEachWithIndex<Selector>(this.selectors, (p, i) => {
       let contextValue = values.get(p.key);
       const keyData: KeyData = meta.keyData(p.key);
@@ -366,8 +369,8 @@ export class Rule {
       }
 
       if (isPresent(contextValue) &&
-        ((Meta.KeyAny === p.value && BooleanWrapper.boleanValue(contextValue) ||
-          Meta.objectEquals(contextValue, p.value) ||
+        ((KeyAny === p.value && BooleanWrapper.boleanValue(contextValue) ||
+          objectEquals(contextValue, p.value) ||
           (isArray(p.value) && p.value.indexOf(contextValue) > -1) ||
           (isArray(p.value) && contextValue.indexOf(p.value) > -1)))) {
         // okay
@@ -386,6 +389,61 @@ export class RuleWrapper {
 
 
   constructor(public rule: Rule) {
+  }
+}
+
+
+/**
+ * A group of rules originating from a common source.
+ * All rules must be added to the rule base as part of a RuleSet.
+ */
+export class RuleSet {
+
+  _filePath: string;
+  _start: number = 0;
+  _end: number = 0;
+  _editableStart: number = -1;
+
+  _rank: number = 0;
+
+
+  constructor(private _meta: MetaRules) {
+  }
+
+  disableRules(): void {
+    for (let i = this._start; i < this._end; i++) {
+      this._meta.rules[i].disable();
+    }
+    this._meta.clearCaches();
+
+  }
+
+
+  get filePath(): string {
+    return this._filePath;
+  }
+
+
+  startRank(): number {
+    return (this._start < this._meta.ruleCount)
+      ? this._meta.rules[this._start].rank
+      : this._rank - (this._end - this._start);
+  }
+
+  allocateNextRuleEntry(): number {
+    return (this._meta.ruleCount > this._end) ? this._meta.ruleCount++ : this._end++;
+  }
+
+  get start(): number {
+    return this._start;
+  }
+
+  get end(): number {
+    return this._end;
+  }
+
+  get editableStart(): number {
+    return this._editableStart;
   }
 }
 

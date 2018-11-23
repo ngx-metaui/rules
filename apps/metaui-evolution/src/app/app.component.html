@@ -1,23 +1,43 @@
-<aw-object-page-wrapper
-    [title]="'UI Evolution'"
-    [currentState]="currState"
-    [objectStates]="states"
-    [objectStatusLabel]="'Current page'"
-    [objectStatus]="statusName[currentIndex]">
+<div class="app-header">
 
-    <aw-page-actions>
+  <div class="app-status">
+    <h2>UI Evolution</h2>
+    <b>Current page</b>: {{currState}}
+  </div>
 
-    </aw-page-actions>
 
-    <ng-template #pageActions>
-        <aw-page-actions>
-            <aw-button [style]="'secondary'" (action)="prev()">Previous</aw-button>
-            <aw-button [style]="'primary'" (action)="next()">Next</aw-button>
-        </aw-page-actions>
-    </ng-template>
+  <div class="app-actions">
+    <aw-button [style]="'secondary'" (action)="prev()">Previous</aw-button>
+    <aw-button [style]="'primary'" (action)="next()">Next</aw-button>
+  </div>
 
-    <aw-page-content>
-        <router-outlet></router-outlet>
-    </aw-page-content>
+</div>
 
-</aw-object-page-wrapper>
+<div class="app-content">
+  <router-outlet></router-outlet>
+</div>
+
+
+<!--<aw-object-page-wrapper-->
+<!--[title]="'UI Evolution'"-->
+<!--[currentState]="currState"-->
+<!--[objectStates]="states"-->
+<!--[objectStatusLabel]="'Current page'"-->
+<!--[objectStatus]="statusName[currentIndex]">-->
+
+<!--<aw-page-actions>-->
+
+<!--</aw-page-actions>-->
+
+<!--<ng-template #pageActions>-->
+<!--<aw-page-actions>-->
+<!--<aw-button [style]="'secondary'" (action)="prev()">Previous</aw-button>-->
+<!--<aw-button [style]="'primary'" (action)="next()">Next</aw-button>-->
+<!--</aw-page-actions>-->
+<!--</ng-template>-->
+
+<!--<aw-page-content>-->
+<!---->
+<!--</aw-page-content>-->
+
+<!--</aw-object-page-wrapper>-->

@@ -17,16 +17,12 @@
  *
  */
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {MetaContentPageComponent} from './layout/meta-content-page/meta-content-page.component';
+import {RouterModule} from '@angular/router';
 
-const routes: Routes = [
-  {path: 'context', component: MetaContentPageComponent}
-];
 
 @NgModule({
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild([])
   ],
   exports: [RouterModule],
   providers: []

@@ -21,33 +21,11 @@
  * Public API Surface of core
  */
 
-export {
-  Activation, Assignment, AssignmentSnapshot, Context, DeferredAssignment, ObjectMetaContext,
-  PropertyAccessor, Snapshot, StaticRec, UIContext,
-  ItemProperties, JsonRule, SelectorJson, Match, MatchResult, MatchWithUnion, UnionMatchResult,
-  Meta, KeyValueCount, PropertyManager, OverrideValue, KeyData, PropertyMap,
-  PropertyMergerIsChaining, PropertyMerger, PropertyMergerDynamic, PropertyMerger_Overwrite,
-  PropertyMerger_List, PropertyMergerDeclareList, PropertyMergerDeclareListForTrait,
-  PropertyMerger_And, PropertyMerger_Valid, RuleSet, MatchValue, ValueMatches, MultiMatchValue,
-  ValueQueriedObserver, KeyValueTransformer, KeyValueTransformer_KeyPresent, PropertyMapAwaking,
-  isPropertyMapAwaking, MapEntry, NestedMap, FieldTypeIntrospectionMetaProvider,
-  IntrospectionMetaProvider, ObjectMeta,
-  ObjectMetaPropertyMap, OMPropertyMerger_Valid, SystemPersistenceRules,
-  DynamicPropertyValue, DynamicSettablePropertyValue, StaticallyResolvable, StaticDynamicWrapper,
-  StaticallyResolvableWrapper, ContextFieldPath, isDynamicSettable, Expr, DeferredOperationChain,
-  ValueConverter, Rule, RuleWrapper, Selector, RuleLoader, RuleLoaderService,
-  LocalizedString, UIMeta, SystemRules, ModuleInfo, AWMetaCoreModule, MetaUIActionEvent
 
-} from './core/index';
-export {
-  MetaContentPageComponent, MetaFormComponent, MetaFormRowComponent, MetaFormTableComponent,
-  NoMetaComponent, MetaIncludeComponentDirective, MetaBaseComponent, MetaElementListComponent,
-  MenuItemCommand, MetaHomePageComponent, AWMetaLayoutModule, MetaSectionsComponent,
-  MetaObjectDetailComponent
-} from './layout/index';
-export {MetaContextComponent} from './core/meta-context/meta-context.component';
-export {MetaUIRulesModule, initMetaUI} from './rules.module';
-export {MetaUIRulesRoutingModule} from './rules-routing.module';
+export * from './core/index';
+export * from './layout/index';
+export {MetaUIRulesModule} from './rules.module';
+
 
 
 

@@ -10,7 +10,8 @@ import {
 } from './metaui-way-module/product-content/product-content.component';
 import {SourcesComponent} from './metaui-way-module/sources/sources.component';
 import {MetauiWayNestingComponent} from './metaui-way-nesting/metaui-way-nesting.component';
-import {MetaHomePageComponent} from '../../../../libs/rules/src/lib/metaui/layout';
+import {MetaHomePageComponent} from '@ngx-metaui/primeng-rules';
+
 
 
 export const ModuleRoutes: Routes = [

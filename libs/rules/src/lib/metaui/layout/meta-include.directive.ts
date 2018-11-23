@@ -33,10 +33,9 @@ import {
   Type,
   ViewContainerRef
 } from '@angular/core';
-import {ComponentRegistry} from '../../components/core/component-registry.service';
-import {ComponentReference} from '../../components/core/component-reference';
-import {IncludeComponentDirective} from '../../components/core/include-component.directive';
-import {DomUtilsService} from '../../components/core/dom-utils.service';
+import {ComponentRegistry} from '../core/component-registry.service';
+import {ComponentReference, IncludeDirective} from './core/include.directive';
+import {DomUtilsService} from './core/dom-utils.service';
 
 import {
   equals,
@@ -45,22 +44,32 @@ import {
   isString,
   nonPrivatePrefix,
   StringWrapper
-} from '../../core/utils/lang';
-import {Environment} from '../../core/config/environment';
-import {MapWrapper} from '../../core/utils/collection';
+} from '../core/utils/lang';
+import {Environment} from '../core/config/environment';
+import {MapWrapper} from '../core/utils/collection';
 import {NoMetaComponent} from './no-meta/no-meta.component';
-import {ObjectMeta} from '../core/object-meta';
+import {
+  KeyBindings,
+  KeyComponentName,
+  KeyEditable,
+  KeyEditing,
+  KeyField,
+  KeyLayout,
+  KeyType,
+  KeyWrapperBinding,
+  KeyWrapperComponent
+} from '../core/meta-rules';
 import {Context} from '../core/context';
-import {UIMeta} from '../core/uimeta';
-import {ContextFieldPath, DynamicPropertyValue, ValueConverter} from '../core/property-value';
+import {ContextFieldPath, ValueConverter} from '../core/property-value';
 import {MetaContextComponent, MetaUIActionEvent} from '../core/meta-context/meta-context.component';
+import {DynamicPropertyValue} from '../core/policies/merging-policy';
 
 
 /**
- *  MetaIncludeComponentDirective is (along with MetaContext) the key element for binding MetaUI
- * into AngularJs user interfaces. You can think of it such GLUE.
+ *  MetaIncludeDirective is (along with MetaContext) the key element for binding MetaUI
+ * into Angular user interfaces. You can think of it such GLUE.
  *
- *  MetaIncludeComponentDirective dynamically switches in a Angular's component based on the
+ *  MetaIncludeDirective dynamically switches in a Angular's component based on the
  * current MetaContext's
  * 'component' property and sets its bindings from the 'bindings' property.  This alone enables
  * almost any existing Angular's widget to be specified for use for a particular field or layout
@@ -75,7 +84,7 @@ import {MetaContextComponent, MetaUIActionEvent} from '../core/meta-context/meta
 @Directive({
   selector: 'm-include-component'
 })
-export class MetaIncludeComponentDirective extends IncludeComponentDirective implements DoCheck,
+export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
   AfterViewInit {
 
   /**
@@ -162,12 +171,12 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
 
       // we might not skip component instantiation but we still need to update bindings
       // as properties could change
-      let editable = context.propertyForKey(ObjectMeta.KeyEditable);
+      let editable = context.propertyForKey(KeyEditable);
       if (isBlank(editable)) {
-        editable = context.propertyForKey(UIMeta.KeyEditing);
+        editable = context.propertyForKey(KeyEditing);
       }
-      const metaBindings = context.propertyForKey(UIMeta.KeyBindings);
-      const type = context.propertyForKey(ObjectMeta.KeyType);
+      const metaBindings = context.propertyForKey(KeyBindings);
+      const type = context.propertyForKey(KeyType);
       const inputs: string[] = this.componentReference().metadata.inputs;
 
       // re-apply Inputs
@@ -183,7 +192,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    * Retrieves component Name from the Context.
    */
   protected resolveComponentType(): Type<any> {
-    this.name = this.metaContext.myContext().propertyForKey(UIMeta.KeyComponentName);
+    this.name = this.metaContext.myContext().propertyForKey(KeyComponentName);
 
     if (isBlank(this.name)) {
       return NoMetaComponent;
@@ -206,7 +215,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    *                this.set("action", "Inspect");
    *                 meta.fireAction(this, true)
    *             };
-   *             awcontent: "Click Me";
+   *             ngcontent: "Click Me";
    *         }
    *     }
    *
@@ -214,10 +223,10 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    */
   protected ngContent(): string {
     let cntValue: any;
-    const bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
+    const bindings = this.metaContext.myContext().propertyForKey(KeyBindings);
 
     if (isPresent(bindings) &&
-      isPresent(cntValue = bindings.get(IncludeComponentDirective.NgContent))) {
+      isPresent(cntValue = bindings.get(IncludeDirective.NgContent))) {
       cntValue = isString(cntValue) ? cntValue :
         this.metaContext.myContext().resolveValue(cntValue);
     }
@@ -227,10 +236,10 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
 
   protected ngContentElement(): string {
     let cntValue: any;
-    const bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
+    const bindings = this.metaContext.myContext().propertyForKey(KeyBindings);
 
     if (isPresent(bindings) &&
-      isPresent(cntValue = bindings.get(IncludeComponentDirective.NgContentElement))) {
+      isPresent(cntValue = bindings.get(IncludeDirective.NgContentElement))) {
       cntValue = isString(cntValue) ? cntValue :
         this.metaContext.myContext().resolveValue(cntValue);
     }
@@ -245,16 +254,16 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    */
   protected createContentElementIfAny(): boolean {
     let detectChanges = false;
-    const bindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
+    const bindings = this.metaContext.myContext().propertyForKey(KeyBindings);
 
 
-    if (isPresent(bindings) && bindings.has(MetaIncludeComponentDirective.NgContentLayout)) {
+    if (isPresent(bindings) && bindings.has(MetaIncludeDirective.NgContentLayout)) {
 
-      const layoutName = bindings.get(MetaIncludeComponentDirective.NgContentLayout);
+      const layoutName = bindings.get(MetaIncludeDirective.NgContentLayout);
       const context = this.metaContext.myContext();
 
       context.push();
-      context.set(UIMeta.KeyLayout, layoutName);
+      context.set(KeyLayout, layoutName);
 
       const componentName = context.propertyForKey('component');
       const compType = this.compRegistry.nameToType.get(componentName);
@@ -272,7 +281,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
         componentName: componentName
       };
 
-      this.applyBindings(cReference, ngComponent, context.propertyForKey(UIMeta.KeyBindings),
+      this.applyBindings(cReference, ngComponent, context.propertyForKey(KeyBindings),
         false);
 
       this.domUtils.insertIntoParentNgContent(this.currentComponent.location.nativeElement,
@@ -299,7 +308,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
    * inside the wrapper component.
    */
   protected createWrapperElementIfAny(): void {
-    const wrapperName = this.metaContext.myContext().propertyForKey(UIMeta.KeyWrapperComponent);
+    const wrapperName = this.metaContext.myContext().propertyForKey(KeyWrapperComponent);
     if (isBlank(wrapperName)) {
       return;
     }
@@ -315,7 +324,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
     const wrapperComponent = this.viewContainer.createComponent(componentFactory);
 
     // 2. Add wrapper bindings to wrapper component.
-    const wrapperBindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyWrapperBinding);
+    const wrapperBindings = this.metaContext.myContext().propertyForKey(KeyWrapperBinding);
     (<any> wrapperComponent.instance)['bindings'] = wrapperBindings;
 
     // 3. Apply the bindings. Get the wrapper metadata, look through it's input - output
@@ -345,9 +354,9 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
     const inputs: string[] = cRef.metadata.inputs;
     const outputs: string[] = cRef.metadata.outputs;
 
-    let metaBindings = this.metaContext.myContext().propertyForKey(UIMeta.KeyBindings);
-    const editable = this.metaContext.myContext().propertyForKey(ObjectMeta.KeyEditable);
-    const type = this.metaContext.myContext().propertyForKey(ObjectMeta.KeyType);
+    let metaBindings = this.metaContext.myContext().propertyForKey(KeyBindings);
+    const editable = this.metaContext.myContext().propertyForKey(KeyEditable);
+    const type = this.metaContext.myContext().propertyForKey(KeyType);
 
     // There are cases where we want to use the bindings passed into this function.
     // For example, the wrapperBindings.
@@ -369,7 +378,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
     // propagate a field type to bindings.
     if (isPresent(type) && isPresent(component.instance.canSetType) &&
       component.instance.canSetType()) {
-      bindings.set(ObjectMeta.KeyType, type);
+      bindings.set(KeyType, type);
     }
 
     if (isPresent(editable) && isPresent(component.instance['editable'])) {
@@ -384,7 +393,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
       // name for the component
 
       if (key === 'name' && isBlank(value)) {
-        value = this.metaContext.myContext().propertyForKey(ObjectMeta.KeyField);
+        value = this.metaContext.myContext().propertyForKey(KeyField);
       }
 
       if (this.skipInput(key, value)) {
@@ -416,17 +425,17 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
     }
     // apply Formatter that can be specified in the oss
     // temporary disabled untill angular will support runtime i18n
-    // if (bindings.has(MetaIncludeComponentDirective.FormatterBinding)) {
+    // if (bindings.has(MetaIncludeDirective.FormatterBinding)) {
     //     let transform = this.formatters
-    //         .get(bindings.get(MetaIncludeComponentDirective.FormatterBinding));
-    //     component.instance[MetaIncludeComponentDirective.FormatterBinding] = transform;
+    //         .get(bindings.get(MetaIncludeDirective.FormatterBinding));
+    //     component.instance[MetaIncludeDirective.FormatterBinding] = transform;
     // }
   }
 
 
   private skipInput(key: string, value: any): boolean {
-    return isBlank(value) || key === IncludeComponentDirective.NgContent ||
-      key === MetaIncludeComponentDirective.NgContentLayout;
+    return isBlank(value) || key === IncludeDirective.NgContent ||
+      key === MetaIncludeDirective.NgContentLayout;
   }
 
   private applyOutputs(component: ComponentRef<any>, bindings: any, outputs: string[]) {
@@ -434,7 +443,7 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
       const publicKey = nonPrivatePrefix(key);
       const value = bindings.get(publicKey);
 
-      if (key === IncludeComponentDirective.NgContent) {
+      if (key === IncludeDirective.NgContent) {
         continue;
       }
       const eventEmitter: EventEmitter<any> = component.instance[publicKey];
@@ -489,11 +498,11 @@ export class MetaIncludeComponentDirective extends IncludeComponentDirective imp
 
       set: (val) => {
         const context = this.metaContext.myContext();
-        const editing = context.propertyForKey(ObjectMeta.KeyEditable)
-          || context.propertyForKey(UIMeta.KeyEditing);
+        const editing = context.propertyForKey(KeyEditable)
+          || context.propertyForKey(KeyEditing);
 
         if (editing && !StringWrapper.equals(val, me[publicKey])) {
-          const type = context.propertyForKey(ObjectMeta.KeyType);
+          const type = context.propertyForKey(KeyType);
 
           cnxtPath.evaluateSet(context, ValueConverter.value(type, val));
         }
