@@ -17,46 +17,40 @@
  *
  */
 import {Injectable} from '@angular/core';
-import {isArray, isBlank, isPresent, isStringMap} from '../../core/utils/lang';
-import {ListWrapper, MapWrapper} from '../../core/utils/collection';
-import {LocalizedString, UIMeta} from './uimeta';
+import {isArray, isBlank, isPresent, isStringMap} from './utils/lang';
+import {ListWrapper, MapWrapper} from './utils/collection';
 import {Rule, Selector} from './rule';
 import {JsonRule} from './json-rule';
-import {Meta, OverrideValue} from './meta';
 import {
   ContextFieldPath,
   Expr,
   StaticallyResolvableWrapper,
   StaticDynamicWrapper
 } from './property-value';
+import {MetaRules, NullMarker} from './meta-rules';
+import {OverrideValue} from './policies/merging-policy';
+import {LocalizedString} from './i18n/localized-string';
 
 
 type DynamicValueType = 'Expr' | 'SDW' | 'CFP' | 'OV' | 'i18n';
 
 
 export interface RuleLoader {
-  loadRules(meta: Meta, source: any, module: string, onRule: (rule: Rule) => void): void;
+  loadRules(meta: MetaRules, source: any, module: string, onRule: (rule: Rule) => void): void;
 }
 
 @Injectable()
 export class RuleLoaderService implements RuleLoader {
 
-  private _uiMeta: UIMeta;
+  private _meta: MetaRules;
 
   constructor() {
   }
 
 
-  get uiMeta(): UIMeta {
-    return this._uiMeta;
-  }
+  loadRules(meta: MetaRules, source: any, module: string, onRule: (rule: Rule) => void) {
+    this._meta = meta;
 
-  set uiMeta(value: UIMeta) {
-    this._uiMeta = value;
-  }
-
-  loadRules(meta: Meta, source: any, module: string, onRule: (rule: Rule) => void) {
-    this._uiMeta = <UIMeta>meta;
     source.forEach((val: any, index: any) => {
       const rule = this.readRule(val, module);
       if (isPresent(onRule)) {
@@ -69,7 +63,6 @@ export class RuleLoaderService implements RuleLoader {
   }
 
   loadRulesWithReturn(source: any, module: string): Array<Rule> {
-
     const rules: Array<Rule> = new Array<Rule>();
     source.forEach((val: any, index: any) => {
       const rule = this.readRule(val, module);
@@ -87,7 +80,7 @@ export class RuleLoaderService implements RuleLoader {
 
       if (isPresent(item._value) && item._value.constructor === Object && Object.keys(
         item._value).length === 0) {
-        item._value = Meta.NullMarker;
+        item._value = NullMarker;
       }
 
       const selector = new Selector(item._key, item._value, item._isDecl);
@@ -95,32 +88,18 @@ export class RuleLoaderService implements RuleLoader {
     }
     const properties = MapWrapper.createFromStringMapWithResolve<any>(jsonRule._properties,
       (k, v) => {
-        if (isStringMap(v) &&
-          isPresent(v['t'])) {
-          return this.resoveValue(
-            v['t'], v,
-            module);
-        } else if (isStringMap(
-          v) && !isArray(
-          v)) {
-          // we have some
-          // other sub level
-          // of object
-          // literal - lets
-          // convert this
-          // into Map.
-          return MapWrapper.createFromStringMapWithResolve<any>(
-            v, (key, val) =>
-              this.resoveValue(
-                val['t'],
-                val,
-                module));
+
+        if (isStringMap(v) && isPresent(v['t'])) {
+          return this.resoveValue(v['t'], v, module);
+
+        } else if (isStringMap(v) && !isArray(v)) {
+          // we have some other sub level of object literal - lets convert this into Map.
+          return MapWrapper.createFromStringMapWithResolve<any>(v, (key, val) =>
+            this.resoveValue(val['t'], val, module));
 
         } else if (isArray(v)) {
-          // let convert with
-          // typings as well
-          return ListWrapper.clone<string>(
-            v);
+          // let convert with typings as well
+          return ListWrapper.clone<string>(v);
         }
         return v;
       });
@@ -138,9 +117,9 @@ export class RuleLoaderService implements RuleLoader {
     }
 
     if (type === 'Expr') {
-      return new Expr(value['v']);
+      return new Expr(value['v'], this._meta);
     } else if (type === 'SDW') {
-      const expr = new Expr(value['v']);
+      const expr = new Expr(value['v'], this._meta);
       return new StaticDynamicWrapper(new StaticallyResolvableWrapper(expr));
 
     } else if (type === 'CFP') {
@@ -152,7 +131,7 @@ export class RuleLoaderService implements RuleLoader {
     } else if (type === 'i18n' && value['v']['key']) {
       const locKey = value['v']['key'];
 
-      return isPresent(this._uiMeta) ? this._uiMeta.createLocalizedString(locKey,
+      return isPresent(this._meta) ? this._meta.createLocalizedString(locKey,
         value['v']['defVal'])
         :
         new LocalizedString(null, module, locKey, value['v']['defVal']);

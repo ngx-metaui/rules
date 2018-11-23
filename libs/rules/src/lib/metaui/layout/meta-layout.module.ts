@@ -19,78 +19,33 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {MetaIncludeComponentDirective} from './meta-include.directive';
-import {MetaFormComponent} from './meta-form/meta-form.component';
-import {MetaFormTableComponent} from './meta-form/meta-form-table/meta-form-table.component';
-import {MetaFormRowComponent} from './meta-form/meta-form-row/meta-form-row.component';
+import {MetaIncludeDirective} from './meta-include.directive';
 import {NoMetaComponent} from './no-meta/no-meta.component';
-import {MetaContentPageComponent} from './meta-content-page/meta-content-page.component';
-import {MetaElementListComponent} from './meta-element-list/meta-element-list.component';
-import {MetaActionListComponent} from './meta-action-list/meta-action-list.component';
-import {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
-import {MetaDashboardLayoutComponent} from './meta-dashboard/metadashboard-layout.component';
-import {AWMetaCoreModule} from '../core/meta-core.module';
-import {AribaComponentsModule} from '../../components/ariba.component.module';
-import {MetaSectionsComponent} from './meta-section/meta-sections.component';
-import {AribaCoreModule} from '../../core/ariba.core.module';
-import {MetaObjectDetailComponent} from './meta-object-detail/meta-object-detail.component';
+import {IncludeDirective} from './core/include.directive';
+import {GenericContainerComponent} from './core/generic-container.component';
 
 
 @NgModule({
   declarations: [
-    MetaIncludeComponentDirective,
-    MetaFormComponent,
-    MetaFormTableComponent,
-    MetaFormRowComponent,
+    IncludeDirective,
+    MetaIncludeDirective,
     NoMetaComponent,
-    MetaContentPageComponent,
-    MetaElementListComponent,
-    MetaActionListComponent,
-    MetaHomePageComponent,
-    MetaDashboardLayoutComponent,
-    MetaSectionsComponent,
-    MetaObjectDetailComponent
+    GenericContainerComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    AWMetaCoreModule,
-    AribaCoreModule,
-    AribaComponentsModule
+    ReactiveFormsModule
   ],
   entryComponents: [
-    MetaFormComponent,
-    MetaFormTableComponent,
-    MetaFormRowComponent,
     NoMetaComponent,
-    MetaContentPageComponent,
-    MetaContentPageComponent,
-    MetaElementListComponent,
-    MetaActionListComponent,
-    MetaHomePageComponent,
-    MetaDashboardLayoutComponent,
-    MetaSectionsComponent,
-    MetaObjectDetailComponent
+    GenericContainerComponent
   ],
   exports: [
-    MetaIncludeComponentDirective,
-    MetaFormComponent,
-    MetaFormTableComponent,
-    MetaFormRowComponent,
+    IncludeDirective,
+    MetaIncludeDirective,
     NoMetaComponent,
-    MetaContentPageComponent,
-    MetaContentPageComponent,
-    MetaElementListComponent,
-    MetaActionListComponent,
-    MetaHomePageComponent,
-    MetaDashboardLayoutComponent,
-    MetaSectionsComponent,
-    ReactiveFormsModule,
-    FormsModule,
-    AribaCoreModule,
-    AribaComponentsModule,
-    MetaObjectDetailComponent
+    GenericContainerComponent
   ],
   providers: []
 })

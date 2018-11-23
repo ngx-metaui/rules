@@ -1,13 +1,27 @@
-.title {
-  font-size: 30px;
-  font-weight: bold;
+.app-header, .app-content {
+  padding: 15px;
 }
 
-.nav-buttons {
-  padding-top: 15px;
-  float: right;
-}
+.app-header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: start;
+  align-content: center;
 
+  .app-status, .app-actions {
+    flex: 1 1 100px
+  }
+
+  .app-status {
+    align-self: flex-start;
+  }
+
+  .app-actions {
+    align-self: flex-end;
+    text-align: right;
+  }
+}
 .evoImg {
   position: fixed;
   right: 55px;

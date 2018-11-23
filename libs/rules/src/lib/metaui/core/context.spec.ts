@@ -19,32 +19,3090 @@
 import {Component, DebugElement, Input} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {Expr, NestedMap, ObjectMeta, RuleLoaderService, UIContext, UIMeta} from './index';
-import {ContextFieldPath} from './property-value';
+import {ContextFieldPath, Expr} from './property-value';
 import {Match} from './match';
-import {ComponentRegistry} from '../../components/core/component-registry.service';
-import {Environment} from '../../core/config/environment';
-import {Entity} from '../../core/domain/domain-model';
+import {Entity} from '../core/utils/domain-model';
+import {MetaUIRulesModule} from '../rules.module';
+import {
+  KeyAfter,
+  KeyBindings,
+  KeyComponentName,
+  KeyEditable,
+  KeyLabel,
+  KeyType,
+  KeyValid,
+  KeyValue,
+  KeyVisible,
+  META_RULES,
+  MetaRules,
+  PropFieldsByZone,
+  ZoneLeft
+} from './meta-rules';
+import {NestedMap} from './nested-map';
+import {UIContext} from './context';
+
+// @formatter:off
+/* tslint:disable */
+// temp rules to push some default that are now separated from the rule engine
+export const UILibRules = {
+  oss: [
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'StringComponent',
+        'bindings': {
+          'value': {
+            't': 'CFP',
+            'v': 'value'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'boolean',
+            'Boolean'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'boolean',
+            'Boolean'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'CheckboxComponent',
+        'bindings': {
+          'type': 'form'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'boolean',
+            'Boolean'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Number',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'formatter': {
+            't': 'CFP',
+            'v': 'formatters.integer'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Number',
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'InputFieldComponent'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Number',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Number',
+          '_isDecl': false
+        },
+        {
+          '_key': 'operation',
+          '_value': 'search',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'formatter': {
+            't': 'CFP',
+            'v': 'formatters.blankNull.integer'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Number',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Date',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'DateAndTimeComponent',
+        'bindings': {
+          'formatter': 'shortDate',
+          'showTime': false
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Date',
+          '_isDecl': false
+        },
+        {
+          '_key': 'fiveZoneLayout',
+          '_value': true,
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Date',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Date',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'dateTime',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'formatter': 'dateTime',
+          'showTime': true
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Date',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Enum',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Enum',
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'GenericChooserComponent',
+        'bindings': {
+          'destinationClass': {
+            't': 'Expr',
+            'v': 'type'
+          },
+          'displayKey': 'name',
+          'formatter': {
+            't': 'CFP',
+            'v': 'formatters.identifier'
+          },
+          'key': {
+            't': 'Expr',
+            'v': 'field'
+          },
+          'object': {
+            't': 'Expr',
+            'v': 'object'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Enum',
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'operation',
+          '_value': [
+            'search',
+            'list'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'type': 'Popup'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Enum',
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Enum',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'Array',
+            'Set'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'Array',
+            'Set'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'enum',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'GenericChooserComponent',
+        'bindings': {
+          'multiselect': true,
+          'destinationClass': {
+            't': 'Expr',
+            'v': 'properties.get("enumClass")'
+          },
+          'displayKey': 'name',
+          'formatter': {
+            't': 'CFP',
+            'v': 'formatters.identifier'
+          },
+          'key': {
+            't': 'Expr',
+            'v': 'field'
+          },
+          'object': {
+            't': 'Expr',
+            'v': 'object'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'Array',
+            'Set'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'Array',
+            'Set'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'operation',
+          '_value': [
+            'search',
+            'list'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'visible': false
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'Array',
+            'Set'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'Array',
+            'Set'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ownedToMany',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaDetailTable',
+        'after': 'zDetail'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': [
+            'Array',
+            'Set'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'File',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'File',
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'FileUploadChooser',
+        'bindings': {
+          'file': {
+            't': 'CFP',
+            'v': 'value'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'File',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'File',
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': false,
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'value': {
+            't': 'Expr',
+            'v': 'value ? value.name : "(none)"'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'File',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'InputFieldComponent'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'longtext',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'after': 'zBottom'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'longtext',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'TextAreaComponent',
+        'bindings': {
+          'rows': 10,
+          'cols': 60
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'longtext',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'longtext',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': [
+            'search',
+            'list'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'visible': false
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'longtext',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'richtext',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'escapeUnsafeHtml': true
+        },
+        'after': 'zBottom'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'richtext',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'RichTextAreaComponent',
+        'bindings': {
+          'rows': 10,
+          'cols': 60
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'richtext',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'richtext',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': 'search',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'after': 'zNone'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'richtext',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'richtext',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': 'list',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'editable': false,
+        'after': 'zDetail'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'richtext',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'secret',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'formatter': {
+            't': 'CFP',
+            'v': 'formatters.hiddenPassword'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'secret',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'AWPasswordField',
+        'bindings': {}
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'secret',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'secret',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': [
+            'search',
+            'list'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'visible': false
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'secret',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'truncated',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'TruncateString',
+        'bindings': {
+          'size': 10
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'String',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'type',
+          '_value': 'Money',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'CurrencyComponent',
+        'bindings': {
+          'money': {
+            't': 'CFP',
+            'v': 'value'
+          },
+          'currencies': {
+            't': 'Expr',
+            'v': 'properties.get("currencies")'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'derived',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'editable': false
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'derived',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editing',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'after': 'zNone'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'derived',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'searchable',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'searchable',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': 'search',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'visible': true,
+        'editable': {
+          't': 'OV',
+          'v': 'true'
+        },
+        'after': {
+          't': 'OV',
+          'v': 'null'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'searchable',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'required',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'required',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': [
+            'edit',
+            'create'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'required': true
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'required',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': [
+            'edit',
+            'create'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'object',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'valid': {
+          't': 'Expr',
+          'v': '((value != undefined) && (value != null)) ? true : "Answer required"'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'required',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': [
+            'edit',
+            'create'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'required',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'list',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'list',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'GenericChooserComponent',
+        'bindings': {
+          'list': {
+            't': 'Expr',
+            'v': 'properties.get("choices")'
+          },
+          'type': {
+            't': 'Expr',
+            'v': 'properties.get("chooserStyle")'
+          },
+          'key': {
+            't': 'Expr',
+            'v': 'properties.get("field")'
+          },
+          'object': {
+            't': 'Expr',
+            'v': 'object'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'list',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'asObject',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'asObject',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': false,
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'MetaObjectDetailComponent',
+        'nestedLayout': true,
+        'bindings': {
+          'layout': 'Inspect',
+          'useNoLabelLayout': true,
+          'label': {
+            't': 'Expr',
+            'v': 'properties.get("label")'
+          },
+          'object': {
+            't': 'CFP',
+            'v': 'value'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'asObject',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'asHover',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'asHover',
+          '_isDecl': true
+        },
+        {
+          '_key': 'editable',
+          '_value': false,
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'HoverCardComponent',
+        'bindings': {
+          'linkTitle': {
+            't': 'CFP',
+            'v': 'value'
+          },
+          'appendContentToBody': false,
+          'ngcontentLayout': 'Content'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'asHover',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'layout',
+          '_value': 'Content',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaObjectDetailComponent',
+        'bindings': {
+          'layout': 'Inspect',
+          'object': {
+            't': 'CFP',
+            'v': 'value'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'noCreate',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'noCreate',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': 'create',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'visible': false
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'noCreate',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'noSearch',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'noSearch',
+          '_isDecl': true
+        },
+        {
+          '_key': 'operation',
+          '_value': 'search',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'visible': false
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'noSearch',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'Popup',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'type': 'Dropdown'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'PopupControl',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'type': 'PopupControl'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'Chooser',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'bindings': {
+          'type': 'Chooser'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'PostOnChange',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'bindings': {}
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'GenericChooserComponent',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'bold',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'wrapperComponent': 'GenericContainerComponent',
+        'wrapperBindings': {
+          'tagName': 'b'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'italic',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'wrapperComponent': 'GenericContainerComponent',
+        'wrapperBindings': {
+          'tagName': 'i'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'heading1',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'wrapperComponent': 'GenericContainerComponent',
+        'wrapperBindings': {
+          'tagName': 'h1'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'heading2',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'wrapperComponent': 'GenericContainerComponent',
+        'wrapperBindings': {
+          'tagName': 'h2'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'heading3',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'wrapperComponent': 'GenericContainerComponent',
+        'wrapperBindings': {
+          'tagName': 'h3'
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': [
+            'StringComponent',
+            'AWHyperlink',
+            'PopupMenuLink'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'field',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ActionButtons',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaActionListComponent',
+        'visible': true,
+        'bindings': {
+          'defaultStyle': 'primary',
+          'renderAs': 'buttons',
+          'align': 'right'
+        },
+        'elementClass': 'l-action-buttons'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ActionLinks',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaActionListComponent',
+        'visible': true,
+        'bindings': {
+          'renderAs': 'links',
+          'align': 'none'
+        },
+        'elementClass': 'l-action-buttons'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ActionLinksAligned',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaActionListComponent',
+        'visible': true,
+        'bindings': {
+          'renderAs': 'links',
+          'align': 'right'
+        },
+        'elementClass': 'l-action-buttons'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ActionMenu',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaActionListComponent',
+        'visible': true,
+        'bindings': {
+          'renderAs': 'menu',
+          'align': 'right'
+        },
+        'elementClass': 'l-action-buttons'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'InstanceActionButtons',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaActionListComponent',
+        'visible': true,
+        'bindings': {
+          'filterActions': 'instance',
+          'renderAs': 'buttons',
+          'align': 'right'
+        },
+        'elementClass': 'l-action-buttons'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'StaticActionButtons',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaActionListComponent',
+        'visible': true,
+        'bindings': {
+          'filterActions': 'static',
+          'renderAs': 'buttons',
+          'align': 'right'
+        },
+        'elementClass': 'l-action-buttons'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'Tabs',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaTabs',
+        'visible': true
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'Sections',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaSectionsComponent',
+        'visible': true
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'Form',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaFormComponent',
+        'visible': true
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'Stack',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaElementListComponent',
+        'visible': true
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'component',
+          '_value': 'MetaFormComponent',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'labelsOnTop',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'class',
+          '_value': {},
+          '_isDecl': false
+        },
+        {
+          '_key': 'layout',
+          '_value': [
+            'Inspect',
+            'SearchForm'
+          ],
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'StringComponent',
+        'bindings': {}
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'layout',
+          '_value': 'ListItem',
+          '_isDecl': false
+        },
+        {
+          '_key': 'class',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'component': 'StringComponent',
+        'bindings': {
+          'value': {
+            't': 'Expr',
+            'v': 'properties.get("objectTitle")'
+          }
+        }
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'module',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'pageBindings': {
+          't': 'Expr',
+          'v': '(properties.get("homePage") == "MetaHomePageComponent") ? new Map().set("module", values.get("module")) : null'
+        },
+        'component': 'MetaDashboardLayoutComponent',
+        'visible': {
+          't': 'SDW',
+          'v': '!properties.get("hidden")'
+        },
+        'homePage': 'MetaHomePageComponent'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'module',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'layout',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_properties': {
+        'visible': true
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'module',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'module',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ActionTOC',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'module',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ActionTOC',
+          '_isDecl': true
+        },
+        {
+          '_key': 'layout',
+          '_value': 'Actions',
+          '_isDecl': true
+        }
+      ],
+      '_properties': {
+        'component': 'MetaActionListComponent',
+        'label': 'Actions',
+        'after': 'zToc'
+      },
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'module',
+          '_value': '*',
+          '_isDecl': false
+        },
+        {
+          '_key': 'trait',
+          '_value': 'ActionTOC',
+          '_isDecl': true
+        }
+      ],
+      '_rank': 0
+    },
+    {
+      '_selectors': [
+        {
+          '_key': 'module',
+          '_value': '*',
+          '_isDecl': false
+        }
+      ],
+      '_rank': 0
+    }
+  ]
+};
+
+// @formatter:on
+/* tslint:disable */
 
 
 describe('Meta Context behaivor ', () => {
 
-  describe('how Context Nested map work ', () => {
-    beforeEach(() => {
-      let metaUI = UIMeta.getInstance();
-      metaUI._rules.forEach((v) => {
-        v.disable();
-      });
-
-      metaUI._testRules.clear();
-      UIMeta['_instance'] = undefined;
-
-      metaUI = UIMeta.getInstance();
-
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        TestContainerComponent, SFComponent
+      ],
+      imports: [
+        MetaUIRulesModule.forRoot({'env.test': true})
+      ]
     });
 
+    TestBed.compileComponents();
+    const metaUI: MetaRules = TestBed.get(META_RULES);
 
-    it(' it should instantiate and retrieve entries with out any runtime error and in the ' +
+    metaUI.loadUILibSystemRuleFiles({}, UILibRules, {});
+  });
+
+
+  describe('how Context Nested map work ', () => {
+
+    it('it should instantiate and retrieve entries with out any runtime error and in the ' +
       'correct order ', () => {
 
 
@@ -90,8 +3148,6 @@ describe('Meta Context behaivor ', () => {
           expect(k).toEqual(key);
 
         });
-
-
       }
     );
 
@@ -99,24 +3155,8 @@ describe('Meta Context behaivor ', () => {
 
   describe('Context Layout representing context assignments  ', () => {
 
-    beforeEach(() => {
-      const metaUI = UIMeta.getInstance();
-      metaUI._rules.forEach((v) => {
-        v.disable();
-      });
-      metaUI._testRules.clear();
-      UIMeta['_instance'] = undefined;
-
-
-    });
-
-    it(' It should retrieve Default Empty context with preset letiables ', () => {
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+    it('It should retrieve Default Empty context with preset letiables ', () => {
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -147,14 +3187,10 @@ describe('Meta Context behaivor ', () => {
     );
 
 
-    it(' It should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
+    it('it should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
       'record size of 1 and ' + 'after we pop zero ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -171,14 +3207,10 @@ describe('Meta Context behaivor ', () => {
     );
 
 
-    it(' It should keep consistent push/pop frames so when we push for N-times time we ' +
+    it('it should keep consistent push/pop frames so when we push for N-times time we ' +
       'expect correct framestarts records size as well as internal numbers ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -226,14 +3258,10 @@ describe('Meta Context behaivor ', () => {
     );
 
 
-    it(' It should retrive default exaclty for basic when no user rules are loaded  and no ' +
+    it('it should retrive default exaclty for basic when no user rules are loaded  and no ' +
       'class is specified after we push layout=Inspect', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -259,11 +3287,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map when user rules are not loaded, after we push ' +
       'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -293,11 +3317,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property, after we push layout=Inspect and operation=view. ' +
       'we expect editing false in properties', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -324,27 +3344,12 @@ describe('Meta Context behaivor ', () => {
   });
 
 
-  describe('basic context functinality regarding consistency of pushed stack and simple layout' +
+  describe('basic context functionality regarding consistency of pushed stack and simple layout' +
     ' evaluation', () => {
 
 
-    beforeEach(() => {
-      const metaUI = UIMeta.getInstance();
-      metaUI._rules.forEach((v) => {
-        v.disable();
-      });
-      metaUI._testRules.clear();
-      UIMeta['_instance'] = undefined;
-
-
-    });
-
     it(' It should retrieve Default Empty context with preset letiables ', () => {
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -378,11 +3383,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
       'record size of 1 and after we pop zero ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -402,11 +3403,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for N-times time we ' +
       'expect correct framestarts records size as well as internal numbers ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -457,11 +3454,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrive default exaclty for basic when no user rules are loaded  and no ' +
       'class is specified after we push layout=Inspect', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -486,11 +3479,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map when user rules are not loaded, after we push ' +
       'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         const context = metaUI.newContext();
 
@@ -520,12 +3509,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map after we push layout=Inspect ' +
       'and operation=view. we expect editing false in properties', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         const context = metaUI.newContext();
 
         context.push();
@@ -555,24 +3539,9 @@ describe('Meta Context behaivor ', () => {
   describe('push/pop Meta Context behavior when Object is present and set', () => {
 
 
-    beforeEach(() => {
-      const metaUI = UIMeta.getInstance();
-      metaUI._rules.forEach((v) => {
-        v.disable();
-      });
-      metaUI._testRules.clear();
-      UIMeta['_instance'] = undefined;
-
-    });
-
-
     it('It should retrieve correct Form Component  a MetaForm with fiveZones trait to render ' +
       'all the fields ', () => {
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -596,12 +3565,7 @@ describe('Meta Context behaivor ', () => {
 
     it(' It should switch into different layout component (MetaElementList) in case we push ' +
       'Stack trait ', () => {
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();
@@ -631,12 +3595,8 @@ describe('Meta Context behaivor ', () => {
 
     it('It should change layout to tableZone trait in case I push operation list so that it ' +
       'will have  6 zone layout ', () => {
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
 
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();
@@ -666,11 +3626,7 @@ describe('Meta Context behaivor ', () => {
     it('field: It should retrieve correct component type => TextField for firstName when in ' +
       'editing mode', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -688,12 +3644,12 @@ describe('Meta Context behaivor ', () => {
 
         const props = context.allProperties();
 
-        const componentName = context.propertyForKey(UIMeta.KeyComponentName);
+        const componentName = context.propertyForKey(KeyComponentName);
 
 
         expect(componentName).toEqual('InputFieldComponent');
         expect(context.propertyForKey('layout_trait')).toEqual('Form');
-        expect(context.propertyForKey(ObjectMeta.KeyEditable)).toEqual(true);
+        expect(context.propertyForKey(KeyEditable)).toEqual(true);
         context.pop();
       }
     );
@@ -702,11 +3658,7 @@ describe('Meta Context behaivor ', () => {
     it('field: It should have correct class trait, editability to false as well as change ' +
       'component to String if we change operation from Edit to list ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -724,13 +3676,13 @@ describe('Meta Context behaivor ', () => {
 
         const props = context.allProperties();
 
-        const componentName = context.propertyForKey(UIMeta.KeyComponentName);
+        const componentName = context.propertyForKey(KeyComponentName);
 
         // print(componentName);
 
         expect(componentName).toEqual('StringComponent');
         expect(context.propertyForKey('layout_trait')).toEqual('Form');
-        expect(context.propertyForKey(ObjectMeta.KeyEditable)).toEqual(false);
+        expect(context.propertyForKey(KeyEditable)).toEqual(false);
         context.pop();
       }
     );
@@ -739,11 +3691,7 @@ describe('Meta Context behaivor ', () => {
     it('It should change component name from TextField to StringComponent when in View mode',
       () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -761,13 +3709,13 @@ describe('Meta Context behaivor ', () => {
 
         const props = context.allProperties();
 
-        const componentName = context.propertyForKey(UIMeta.KeyComponentName);
+        const componentName = context.propertyForKey(KeyComponentName);
 
         // print(componentName);
 
         expect(componentName).toEqual('StringComponent');
         expect(context.propertyForKey('layout_trait')).toEqual('Form');
-        expect(context.propertyForKey(ObjectMeta.KeyEditable)).toEqual(false);
+        expect(context.propertyForKey(KeyEditable)).toEqual(false);
         context.pop();
       }
     );
@@ -775,11 +3723,7 @@ describe('Meta Context behaivor ', () => {
 
     it('It should retrieve a label My First Name specified in the rules', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -797,7 +3741,7 @@ describe('Meta Context behaivor ', () => {
 
         const props = context.allProperties();
 
-        const label = context.propertyForKey(UIMeta.KeyLabel);
+        const label = context.propertyForKey(KeyLabel);
 
         expect(label).toEqual('My First Name');
         context.pop();
@@ -806,11 +3750,7 @@ describe('Meta Context behaivor ', () => {
 
     it(' firstName should be required as specified in the rule', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -844,11 +3784,7 @@ describe('Meta Context behaivor ', () => {
     it(' it should layout fields in their rank order so that firstName => lastName ' +
       '=> age => bio ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -864,22 +3800,22 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'firstName');
-        expect(context.propertyForKey(UIMeta.KeyAfter)).toEqual(UIMeta.ZoneLeft);
+        expect(context.propertyForKey(KeyAfter)).toEqual(ZoneLeft);
         context.pop();
 
         context.push();
         context.set('field', 'lastName');
-        expect(context.propertyForKey(UIMeta.KeyAfter)).toEqual('firstName');
+        expect(context.propertyForKey(KeyAfter)).toEqual('firstName');
         context.pop();
 
         context.push();
         context.set('field', 'age');
-        expect(context.propertyForKey(UIMeta.KeyAfter)).toEqual('lastName');
+        expect(context.propertyForKey(KeyAfter)).toEqual('lastName');
         context.pop();
 
         context.push();
         context.set('field', 'bio');
-        expect(context.propertyForKey(UIMeta.KeyAfter)).toEqual('age');
+        expect(context.propertyForKey(KeyAfter)).toEqual('age');
         context.pop();
 
 
@@ -891,11 +3827,7 @@ describe('Meta Context behaivor ', () => {
     it('it should retrive correct component for field Age whcih is a number and it will be ' +
       'rendered as a numer', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -912,10 +3844,10 @@ describe('Meta Context behaivor ', () => {
         context.push();
         context.set('field', 'age');
 
-        expect(context.propertyForKey(UIMeta.KeyComponentName))
+        expect(context.propertyForKey(KeyComponentName))
           .toEqual('InputFieldComponent');
 
-        const type = context.propertyForKey(UIMeta.KeyType);
+        const type = context.propertyForKey(KeyType);
         expect(type).toEqual('Number');
 
 
@@ -928,11 +3860,7 @@ describe('Meta Context behaivor ', () => {
     it('it should render field age which is a number in view only mode as a StringComponent',
       () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -948,7 +3876,7 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'age');
-        expect(context.propertyForKey(UIMeta.KeyComponentName)).toEqual('StringComponent');
+        expect(context.propertyForKey(KeyComponentName)).toEqual('StringComponent');
         context.pop();
 
         context.pop();
@@ -958,12 +3886,7 @@ describe('Meta Context behaivor ', () => {
 
     it('it should render a label for field age as a My age', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();
@@ -978,7 +3901,7 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'age');
-        expect(context.propertyForKey(UIMeta.KeyLabel)).toEqual('My Age');
+        expect(context.propertyForKey(KeyLabel)).toEqual('My Age');
         context.pop();
 
         context.pop();
@@ -988,11 +3911,7 @@ describe('Meta Context behaivor ', () => {
 
     it('age field should have a validity condition ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1010,7 +3929,7 @@ describe('Meta Context behaivor ', () => {
         context.set('field', 'age');
 
         // I do not want to resolve it right away, therefore using directly propertyMap
-        const validity = context.allProperties().get(UIMeta.KeyValid);
+        const validity = context.allProperties().get(KeyValid);
         expect(validity instanceof Expr).toBeTruthy();
         context.pop();
 
@@ -1021,11 +3940,7 @@ describe('Meta Context behaivor ', () => {
 
     it('age bio should have a visibility condition ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1043,7 +3958,7 @@ describe('Meta Context behaivor ', () => {
         context.set('field', 'bio');
 
         // visibilty is deffered value so we need to access directly the expression
-        const visibility = context.allProperties().get(UIMeta.KeyVisible);
+        const visibility = context.allProperties().get(KeyVisible);
         // print('XXXXX:' + visibility);
         expect(visibility._override instanceof Expr).toBeTruthy();
         context.pop();
@@ -1055,11 +3970,7 @@ describe('Meta Context behaivor ', () => {
 
     // Safari issue
     it('it should render correct value when switching operation from edit to view', () => {
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1118,24 +4029,10 @@ describe('Meta Context behaivor ', () => {
     'existing properties for for different situations.  ', () => {
 
 
-      beforeEach(() => {
-        const metaUI = UIMeta.getInstance();
-        metaUI._rules.forEach((v) => {
-          v.disable();
-        });
-        metaUI._testRules.clear();
-        UIMeta['_instance'] = undefined;
-
-      });
-
       it('it should change the label of the age field when switching from editable mode to ' +
         'ready only mode', () => {
 
-          const metaUI = UIMeta.getInstance();
-          metaUI.registerLoader(new RuleLoaderService());
-          metaUI.loadDefaultRuleFiles();
-          const env: Environment = new Environment();
-          metaUI.componentRegistry = new ComponentRegistry(env);
+          const metaUI: MetaRules = TestBed.get(META_RULES);
 
           metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
           const context = metaUI.newContext();
@@ -1151,11 +4048,11 @@ describe('Meta Context behaivor ', () => {
 
           context.push();
           context.set('field', 'age');
-          expect(context.propertyForKey(UIMeta.KeyLabel)).toEqual('My Age');
+          expect(context.propertyForKey(KeyLabel)).toEqual('My Age');
 
           context.push();
           context.set('operation', 'view');
-          expect(context.propertyForKey(UIMeta.KeyLabel)).toEqual('Age Label For View');
+          expect(context.propertyForKey(KeyLabel)).toEqual('Age Label For View');
           context.pop();
 
           context.pop();
@@ -1169,11 +4066,7 @@ describe('Meta Context behaivor ', () => {
       it('it should change the label of the firstName field when switching from editable ' +
         'mode to create  mode', () => {
 
-          const metaUI = UIMeta.getInstance();
-          metaUI.registerLoader(new RuleLoaderService());
-          metaUI.loadDefaultRuleFiles();
-          const env: Environment = new Environment();
-          metaUI.componentRegistry = new ComponentRegistry(env);
+          const metaUI: MetaRules = TestBed.get(META_RULES);
 
           metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
           const context = metaUI.newContext();
@@ -1189,11 +4082,11 @@ describe('Meta Context behaivor ', () => {
 
           context.push();
           context.set('field', 'firstName');
-          expect(context.propertyForKey(UIMeta.KeyLabel)).toEqual('My First Name');
+          expect(context.propertyForKey(KeyLabel)).toEqual('My First Name');
 
           context.push();
           context.set('operation', 'create');
-          expect(context.propertyForKey(UIMeta.KeyLabel))
+          expect(context.propertyForKey(KeyLabel))
             .toEqual('Enter your first Name');
           context.pop();
 
@@ -1266,11 +4159,7 @@ describe('Meta Context behaivor ', () => {
         'that it matches above ' +
         'rule, but once we push it role=admin we should see all the fields', () => {
 
-          const metaUI = UIMeta.getInstance();
-          metaUI.registerLoader(new RuleLoaderService());
-          metaUI.loadDefaultRuleFiles();
-          const env: Environment = new Environment();
-          metaUI.componentRegistry = new ComponentRegistry(env);
+          const metaUI: MetaRules = TestBed.get(META_RULES);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
           let context = metaUI.newContext();
@@ -1284,7 +4173,7 @@ describe('Meta Context behaivor ', () => {
               'From Czech Republic', 'pasw', 'asdf', '11'));
           context.setScopeKey('class');
 
-          let mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          let mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(2);
 
@@ -1307,7 +4196,7 @@ describe('Meta Context behaivor ', () => {
               'pasw', 'asdf', '11'));
           context.setScopeKey('class');
 
-          mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(1);
 
@@ -1329,7 +4218,7 @@ describe('Meta Context behaivor ', () => {
               'pasw', 'asdf', '11'));
           context.setScopeKey('class');
 
-          mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(1);
 
@@ -1351,7 +4240,7 @@ describe('Meta Context behaivor ', () => {
           context.setScopeKey('class');
           context.set('role', 'admin');
 
-          mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(1);
 
@@ -1374,7 +4263,7 @@ describe('Meta Context behaivor ', () => {
           context.setScopeKey('class');
           context.set('role', 'admin');
 
-          mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(1);
 
@@ -1408,11 +4297,7 @@ describe('Meta Context behaivor ', () => {
         'role=admin no earlier ' +
         'then after settings a objects', () => {
 
-          const metaUI = UIMeta.getInstance();
-          metaUI.registerLoader(new RuleLoaderService());
-          metaUI.loadDefaultRuleFiles();
-          const env: Environment = new Environment();
-          metaUI.componentRegistry = new ComponentRegistry(env);
+          const metaUI: MetaRules = TestBed.get(META_RULES);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
           const context = metaUI.newContext();
@@ -1430,7 +4315,7 @@ describe('Meta Context behaivor ', () => {
           context.setScopeKey('class');
 
 
-          const mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          const mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(2);
 
@@ -1463,11 +4348,7 @@ describe('Meta Context behaivor ', () => {
       it('it should match top level selectors extending a class=xxx for class=xxx ' +
         'role=admin ' + 'no earlier then after settings a objects', () => {
 
-          const metaUI = UIMeta.getInstance();
-          metaUI.registerLoader(new RuleLoaderService());
-          metaUI.loadDefaultRuleFiles();
-          const env: Environment = new Environment();
-          metaUI.componentRegistry = new ComponentRegistry(env);
+          const metaUI: MetaRules = TestBed.get(META_RULES);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
           const context = metaUI.newContext();
@@ -1485,7 +4366,7 @@ describe('Meta Context behaivor ', () => {
           context.setScopeKey('class');
 
 
-          const mapp = context.propertyForKey(UIMeta.PropFieldsByZone);
+          const mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(1);
 
@@ -1511,24 +4392,10 @@ describe('Meta Context behaivor ', () => {
     'into different zones', () => {
 
 
-    beforeEach(() => {
-      const metaUI = UIMeta.getInstance();
-      metaUI._rules.forEach((v) => {
-        v.disable();
-      });
-      metaUI._testRules.clear();
-      UIMeta['_instance'] = undefined;
-
-    });
-
     it('It should resolve dynamic validity condition ${ value > 19}  so that it can give ' +
       'info back if the field is valid', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1543,14 +4410,14 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'age');
-        expect(context.propertyForKey(UIMeta.KeyValid)).toBeFalsy();
+        expect(context.propertyForKey(KeyValid)).toBeFalsy();
         context.pop();
 
         context.push();
         context.object.age = 20;
 
         context.set('field', 'age');
-        expect(context.propertyForKey(UIMeta.KeyValid)).toBeTruthy();
+        expect(context.propertyForKey(KeyValid)).toBeTruthy();
         context.pop();
 
 
@@ -1562,12 +4429,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve visiblity condition that depends on the value of other fields so ' +
       'that it check the field AGE ${object.age > 18}', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context: UIContext = <UIContext> metaUI.newContext();
@@ -1581,14 +4443,14 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'bio');
-        expect(context.propertyForKey(UIMeta.KeyVisible)).toBeFalsy();
+        expect(context.propertyForKey(KeyVisible)).toBeFalsy();
         context.pop();
 
         context.push();
         context.object.age = 20;
 
         context.set('field', 'bio');
-        expect(context.propertyForKey(UIMeta.KeyVisible)).toBeTruthy();
+        expect(context.propertyForKey(KeyVisible)).toBeTruthy();
         context.pop();
 
 
@@ -1600,11 +4462,7 @@ describe('Meta Context behaivor ', () => {
     it(' it should be able to translate a className to the page title so it resolve our ' +
       'page title ', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1639,11 +4497,7 @@ describe('Meta Context behaivor ', () => {
       'concatenates result form 2 other fields. value:' +
       ' ${object.bio.substring(0, 10) + ... };', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
@@ -1661,7 +4515,7 @@ describe('Meta Context behaivor ', () => {
         context.push();
         context.set('field', 'bioView');
 
-        expect(context.propertyForKey(ObjectMeta.KeyValue)).toEqual('Country: F...');
+        expect(context.propertyForKey(KeyValue)).toEqual('Country: F...');
         context.pop();
 
 
@@ -1683,11 +4537,7 @@ describe('Meta Context behaivor ', () => {
     it(' a bioView should be visible only if bio field len is more then 15 and only in ' +
       'view mode', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context: UIContext = <UIContext> metaUI.newContext();
@@ -1703,7 +4553,7 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'bioView');
-        expect(context.propertyForKey(ObjectMeta.KeyVisible)).toBeTruthy();
+        expect(context.propertyForKey(KeyVisible)).toBeTruthy();
         context.pop();
 
 
@@ -1711,7 +4561,7 @@ describe('Meta Context behaivor ', () => {
         context.object.bio = 'This short Bio';
 
         context.set('field', 'bioView');
-        expect(context.propertyForKey(ObjectMeta.KeyVisible)).toBeFalsy();
+        expect(context.propertyForKey(KeyVisible)).toBeFalsy();
         context.pop();
 
         context.pop();
@@ -1721,11 +4571,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the field that belongs to current class MyUserTestClass for ' +
       'operation EDIT', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
+        const metaUI: MetaRules = TestBed.get(META_RULES);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
@@ -1755,12 +4601,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the field that belongs to current class MyUserTestClass VIEW ' +
       'so that we will get 5 fields as 1 is derived', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
@@ -1791,12 +4632,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the VISIBILE fields that belongs to current class for view ' +
       'operations VIEW', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
@@ -1809,7 +4645,7 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        const byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
+        const byZone = context.propertyForKey(PropFieldsByZone);
         expect(byZone.has('zLeft')).toBeTruthy();
 
 
@@ -1823,7 +4659,7 @@ describe('Meta Context behaivor ', () => {
         for (const fieldName of fields) {
           context.push();
           context.set('field', fieldName);
-          const visible = context.propertyForKey(UIMeta.KeyVisible);
+          const visible = context.propertyForKey(KeyVisible);
           expect(expResult.get(fieldName)).toEqual(visible);
 
           context.pop();
@@ -1849,12 +4685,7 @@ describe('Meta Context behaivor ', () => {
       'zLeft=lastName,age, bio, zBottom=bioView ignoring their visibility properties', () => {
 
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        metaUI.loadDefaultRuleFiles();
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClasForZonesRule);
         const context = metaUI.newContext();
 
@@ -1867,7 +4698,7 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        const byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
+        const byZone = context.propertyForKey(PropFieldsByZone);
         expect(byZone.has('zLeft')).toBeTruthy();
         expect(byZone.has('zTop')).toBeTruthy();
         expect(byZone.has('zBottom')).toBeTruthy();
@@ -1899,11 +4730,7 @@ describe('Meta Context behaivor ', () => {
       'fields', () => {
 
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-        metaUI.loadDefaultRuleFiles();
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
 
@@ -1917,7 +4744,7 @@ describe('Meta Context behaivor ', () => {
         context.setScopeKey('class');
 
 
-        const byZone = context.propertyForKey(UIMeta.PropFieldsByZone);
+        const byZone = context.propertyForKey(PropFieldsByZone);
         expect(byZone.has('zLeft')).toBeTruthy();
 
         const zLeft = byZone.get('zLeft');
@@ -1932,12 +4759,7 @@ describe('Meta Context behaivor ', () => {
       'userId we expect 123',
       () => {
 
-
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-        metaUI.loadDefaultRuleFiles();
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('UserProfileTeRule', UserProfileTestRule);
 
 
@@ -1955,7 +4777,7 @@ describe('Meta Context behaivor ', () => {
         context.set('field', 'userId');
 
 
-        const bindings = context.propertyForKey(UIMeta.KeyBindings);
+        const bindings = context.propertyForKey(KeyBindings);
         // print(bindings.size);
 
 
@@ -1971,12 +4793,7 @@ describe('Meta Context behaivor ', () => {
     it('it should automatically resolve a field label if not specified. All this by ' +
       'decamelizing its Field', () => {
 
-        const metaUI = UIMeta.getInstance();
-        metaUI.registerLoader(new RuleLoaderService());
-        const env: Environment = new Environment();
-        metaUI.componentRegistry = new ComponentRegistry(env);
-        metaUI.loadDefaultRuleFiles();
-
+        const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
@@ -1992,7 +4809,7 @@ describe('Meta Context behaivor ', () => {
         context.push();
         // bioView does not have any label but check if we can figure out correct one.
         context.set('field', 'bioView');
-        expect(context.propertyForKey(UIMeta.KeyLabel)).toEqual('Bio View');
+        expect(context.propertyForKey(KeyLabel)).toEqual('Bio View');
 
         context.pop();
 
@@ -2014,17 +4831,6 @@ describe('Meta Context behaivor ', () => {
 
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          TestContainerComponent, SFComponent
-        ]
-        // providers: [
-        //     { provide: ComponentFixtureAutoDetect,
-        //         useValue: true }
-        // ]
-      }).compileComponents();
-
-
       Object.defineProperty(SFComponent.prototype, 'title', {
 
         get: () => {
@@ -2051,7 +4857,6 @@ describe('Meta Context behaivor ', () => {
 
     });
 
-
     it('It should display a simple text San Franscisco', () => {
       fixtureWrapper.detectChanges();
       expect(compNativeElement.nativeElement.textContent).toContain('San Francisco');
@@ -2072,27 +4877,10 @@ describe('Meta Context behaivor ', () => {
   describe('=> Concurency of MetaUI ', () => {
 
 
-    beforeEach(() => {
-      let metaUI = UIMeta.getInstance();
-      metaUI._rules.forEach((v) => {
-        v.disable();
-      });
-
-      metaUI._testRules.clear();
-      UIMeta['_instance'] = undefined;
-
-      metaUI = UIMeta.getInstance();
-    });
-
     xit('should process more then 800 000 rule index entries in less than 2 sec', () => {
 
 
-      const metaPefr = UIMeta.getInstance();
-      metaPefr.registerLoader(new RuleLoaderService());
-
-      metaPefr.loadDefaultRuleFiles();
-      const env: Environment = new Environment();
-      metaPefr.componentRegistry = new ComponentRegistry(env);
+      const metaPefr: MetaRules = TestBed.get(META_RULES);
 
       metaPefr.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
 
@@ -2111,11 +4899,11 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'age');
-        expect(context.propertyForKey(UIMeta.KeyLabel)).toEqual('My Age');
+        expect(context.propertyForKey(KeyLabel)).toEqual('My Age');
 
         context.push();
         context.set('operation', 'view');
-        expect(context.propertyForKey(UIMeta.KeyLabel)).toEqual('Age Label For View');
+        expect(context.propertyForKey(KeyLabel)).toEqual('Age Label For View');
         context.pop();
 
         context.pop();
@@ -2148,28 +4936,11 @@ describe('Meta Context behaivor ', () => {
 
   describe('how class can get object details ', () => {
 
-    beforeEach(() => {
-      let metaUI = UIMeta.getInstance();
-      metaUI._rules.forEach((v) => {
-        v.disable();
-      });
-
-      metaUI._testRules.clear();
-      UIMeta['_instance'] = undefined;
-
-      metaUI = UIMeta.getInstance();
-
-    });
 
     it('should retrieve correct component to render when trait asHover is used and' +
       ' overriden by user rules', () => {
 
-      const metaUI = UIMeta.getInstance();
-      metaUI.registerLoader(new RuleLoaderService());
-      const env: Environment = new Environment();
-      metaUI.componentRegistry = new ComponentRegistry(env);
-
-      metaUI.loadDefaultRuleFiles();
+      const metaUI: MetaRules = TestBed.get(META_RULES);
 
       metaUI.addTestUserRule('UserWithDetailRule', UserWithDetailRule);
       const context = metaUI.newContext();

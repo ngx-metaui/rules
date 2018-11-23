@@ -17,43 +17,41 @@
  *
  */
 
-export {AWMetaCoreModule} from './meta-core.module';
-
+export {MetaConfig, MetaConfigToken} from './config/meta-config';
 export {
-  MetaContextComponent, ACTIVE_CNTX, MetaUIActionEvent
+  MetaContextComponent, MetaUIActionEvent
 } from './meta-context/meta-context.component';
+export {
+  CompositeType, Deserializable, Entity, Identity, isEntity, isValue, Value
+}from './utils/domain-model';
+export {
+  beautifyClassName, beautifyFileName,
+  booleanValue, defaultLabelForIdentifier, objectEquals,
+  toList
+} from './utils/lang';
+export {FieldPath} from './utils/field-path';
+export {RoutingService} from './utils/routing.service';
+export {ComponentRegistry} from './component-registry.service';
 export {
   Activation, Assignment, AssignmentSnapshot, Context, DeferredAssignment, ObjectMetaContext,
   PropertyAccessor, Snapshot, StaticRec, UIContext
 } from './context';
+export {
+  MetaRules, MetaRuleBase, LayoutRule, _DebugDoubleCheckMatches, _UsePartialIndexing, ActionZones,
+  addTrait, addTraits, AppConfigRuleFilesParam, AppConfigUserRulesParam, ClassRulePriority,
+  DeclRule, DefaultActionCategory, FieldPathNullMarker, KeyAction,
+  KeyActionCategory, KeyAfter, KeyAny, KeyArea, KeyBindings, KeyClass, KeyComponentName, KeyDeclare,
+  KeyEditable, KeyEditing, KeyElementType, KeyField, KeyHidden, KeyHomePage, KeyLabel, KeyLayout,
+  KeyModule, KeyObject, KeyOperation, KeyRank, KeyTrait, KeyTraitGroup, KeyType, KeyValid, KeyValue,
+  KeyVisible, KeyWrapperBinding, KeyWrapperComponent, KeyZonePath, LowRulePriority, MaxKeyDatas,
+  META_RULES, ModuleActionZones, ModuleInfo, NullMarker, ObjectRule, overrideKeyForKey,
+  PropActionCategories, PropActionsByCategory, PropFieldPropertyList, PropFieldsByZone,
+  PropIsFieldsByZone, PropLayoutsByZone, RootPredecessorKey, ScopeKey, SystemRulePriority,
+  UILibraryRulePriority, ValueQueriedObserver, ZoneBottom, ZoneDetail, ZoneLeft, ZoneMain,
+  ZoneMiddle, ZoneRight, ZonesDetail, ZonesMTLRB, ZonesTLRMB, ZoneTop
+} from './meta-rules';
+export {Environment} from './config/environment';
 export {ItemProperties} from './item-properties';
-export {JsonRule, SelectorJson} from './json-rule';
-export {Match, MatchResult, MatchWithUnion, UnionMatchResult} from './match';
-export {
-  Meta, KeyValueCount, PropertyManager, OverrideValue, KeyData, PropertyMap,
-  PropertyMergerIsChaining, PropertyMerger, PropertyMergerDynamic, PropertyMerger_Overwrite,
-  PropertyMerger_List, PropertyMergerDeclareList, PropertyMergerDeclareListForTrait,
-  PropertyMerger_And, PropertyMerger_Valid, RuleSet, MatchValue, ValueMatches, MultiMatchValue,
-  ValueQueriedObserver, KeyValueTransformer, KeyValueTransformer_KeyPresent, PropertyMapAwaking,
-  isPropertyMapAwaking
-} from './meta';
-export {MapEntry, NestedMap} from './nested-map';
-export {
-  FieldTypeIntrospectionMetaProvider, IntrospectionMetaProvider, ObjectMeta,
-  ObjectMetaPropertyMap, OMPropertyMerger_Valid
-} from './object-meta';
-export {SystemPersistenceRules} from './persistence-rules';
-export {
-  DynamicPropertyValue, DynamicSettablePropertyValue, StaticallyResolvable, StaticDynamicWrapper,
-  StaticallyResolvableWrapper, ContextFieldPath, isDynamicSettable, Expr, DeferredOperationChain,
-  ValueConverter
-} from './property-value';
-export {Rule, RuleWrapper, Selector} from './rule';
-export {RuleLoader, RuleLoaderService} from './rule-loader.service';
-export {LocalizedString, UIMeta, ModuleInfo} from './uimeta';
-export {SystemRules} from './widgets-rules';
-
-
 
 
 

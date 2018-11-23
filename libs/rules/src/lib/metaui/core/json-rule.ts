@@ -26,6 +26,6 @@ export interface JsonRule {
 
 export interface SelectorJson {
   _key: string;
-  _value: string[] | string;
+  _value: string[] | string | {};
   _isDecl: boolean;
 }

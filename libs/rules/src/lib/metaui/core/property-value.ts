@@ -19,6 +19,7 @@
  */
 import {
   BooleanWrapper,
+  defaultLabelForIdentifier,
   evalExpressionWithCntx,
   isBlank,
   isBoolean,
@@ -26,25 +27,19 @@ import {
   isNumber,
   isPresent,
   isString,
-  StringJoiner,
-  unimplemented
-} from '../../core/utils/lang';
-import {FieldPath} from '../../core/utils/field-path';
-import {isPropertyMapAwaking, Meta, PropertyMap, PropertyMapAwaking, PropertyMerger} from './meta';
+  StringJoiner
+} from './utils/lang';
+import {FieldPath} from './utils/field-path';
 import {Context} from './context';
 
+import {KeyField, KeyLayout, MetaRules} from './meta-rules';
+import {
+  DynamicPropertyValue,
+  isPropertyMapAwaking,
+  PropertyMap,
+  PropertyMapAwaking
+} from './policies/merging-policy';
 
-export abstract class DynamicPropertyValue {
-  evaluate(context: Context): any {
-    return unimplemented();
-  }
-
-  bind(context: any): void {
-    return unimplemented();
-  }
-
-
-}
 
 export interface DynamicSettablePropertyValue {
   settable: boolean;
@@ -156,10 +151,8 @@ export function isDynamicSettable(arg: any): arg is DynamicSettablePropertyValue
 export class Expr extends DynamicPropertyValue {
   private _extendedObjects: Map<string, any> = new Map<string, any>();
 
-  constructor(private _expressionString: string) {
+  constructor(private _expressionString: string, private meta: MetaRules) {
     super();
-
-    this.addTypeToContext('Meta', Meta);
     this.addTypeToContext('FieldPath', FieldPath);
   }
 
@@ -204,51 +197,52 @@ export class Expr extends DynamicPropertyValue {
   }
 }
 
-export class DeferredOperationChain extends DynamicPropertyValue implements PropertyMapAwaking {
-  propertyAwaking: boolean = true;
 
-  constructor(private _merger: PropertyMerger, private _orig: any, private _override: any) {
+export class DefaultLabelGenerator extends StaticallyResolvable {
+
+
+  constructor(private _key: string) {
     super();
   }
 
+  evaluate(context: Context): any {
+    const fieldName = context.values.get(this._key);
+
+    return (isPresent(fieldName) && isString(fieldName)) ? defaultLabelForIdentifier(fieldName) :
+      null;
+  }
+}
+
+export class PropFieldsByZoneResolver extends StaticallyResolvable {
+
 
   evaluate(context: Context): any {
-    return this._merger.merge(context.resolveValue(this._override),
-      context.resolveValue(this._orig),
-      context.isDeclare());
-  }
+    let m = context.meta.itemNamesByZones(context, KeyField, context.meta.zones(context));
+    const zonePath = context.meta.zonePath(context);
 
-
-  awakeForPropertyMap(map: PropertyMap): any {
-    let orig = this._orig;
-    let over = this._override;
-
-    if (isPropertyMapAwaking(orig)) {
-      orig = (<PropertyMapAwaking>orig).awakeForPropertyMap(map);
+    if (isPresent(zonePath)) {
+      m = <Map<string, any>> FieldPath.getFieldValue(m, zonePath);
+      if (isBlank(m)) {
+        m = new Map<string, any>();
+      }
     }
-    if (isPropertyMapAwaking(over)) {
-      over = (<PropertyMapAwaking>over).awakeForPropertyMap(map);
-    }
-    if (orig !== this._orig || over !== this._override) {
-      return new DeferredOperationChain(this._merger, orig, over);
-    }
-    return this;
+    return m;
   }
+}
 
+export class PropFieldPropertyListResolver extends StaticallyResolvable {
 
-  toString(): string {
-    const sj = new StringJoiner(['Chain']);
-    sj.add('<');
-    sj.add(this._merger.toString());
-    sj.add('>');
-    sj.add(': ');
-    sj.add(this._override);
-    sj.add(' => ');
-    sj.add(this._orig);
-
-    return sj.toString();
+  evaluate(context: Context): any {
+    return context.meta.fieldList(context);
   }
+}
 
+export class PropLayoutsByZoneResolver extends StaticallyResolvable {
+
+  evaluate(context: Context): any {
+    return context.meta.itemNamesByZones(context, KeyLayout,
+      context.meta.zones(context));
+  }
 }
 
 
@@ -281,4 +275,3 @@ export class ValueConverter {
 
   }
 }
-

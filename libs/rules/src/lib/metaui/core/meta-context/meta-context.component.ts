@@ -33,14 +33,14 @@ import {
   SimpleChange,
   SkipSelf
 } from '@angular/core';
-import {assert, equals, isBlank, isPresent, StringWrapper} from '../../../core/utils/lang';
-import {Environment} from '../../../core/config/environment';
-import {ListWrapper} from '../../../core/utils/collection';
-import {UIMeta} from '../../core/uimeta';
+import {FormControl, FormGroup} from '@angular/forms';
+import {assert, equals, isBlank, isPresent, StringWrapper} from '../utils/lang';
+import {Environment} from '../config/environment';
+import {ListWrapper} from '../utils/collection';
 import {Context} from '../../core/context';
-import {FormControl} from '@angular/forms';
-import {BaseFormComponent} from '../../../components/core/base-form.component';
+import {BaseFormComponent} from '../../layout/core/base-form.component';
 import {UIContext} from '../context';
+import {META_RULES, MetaRules} from '../meta-rules';
 
 
 /**
@@ -188,7 +188,14 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    */
   hasObject: boolean;
 
+
+  /**
+   * Reference to the formGroup so we can access possible form fields
+   */
+  formGroup: FormGroup;
+
   constructor(private elementRef: ElementRef, public env: Environment,
+              @Inject(META_RULES) protected meta: MetaRules,
               @SkipSelf() @Optional() @Inject(forwardRef(() => BaseFormComponent))
               protected parentContainer: BaseFormComponent) {
     super(env, null);
@@ -206,6 +213,8 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
     if (!this.env.hasValue('parent-cnx')) {
       this.env.setValue('parent-cnx', this);
     }
+
+    this.formGroup = this.env.currentForm;
   }
 
 
@@ -291,7 +300,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    * This is our key method that triggers all the interaction inside MetaUI world. Here we
    * push context keys and their values to the stack and this is the thing that triggers
    * rule recalculation which give us updated  properties. Those are then used by
-   * MetaIncludeComponent to render the UI.
+   * MetaIncludeDirective to render the UI.
    *
    * myContext is current context for this MetaContext Component.
    *
@@ -304,8 +313,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
 
     const forceCreate = isPush && (isPresent(this.pushNewContext) && this.pushNewContext);
     if (isBlank(activeContext) || forceCreate) {
-      const metaUI = UIMeta.getInstance();
-      activeContext = metaUI.newContext(forceCreate);
+      activeContext = this.meta.newContext(forceCreate);
 
       this.contextCreated = true;
       this.env.push<Context>(ACTIVE_CNTX, activeContext);
@@ -500,6 +508,9 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    * changes and updates in metaui use object references
    */
   private updateModel() {
+    if (!this.formGroup) {
+      return;
+    }
     const fields = Object.keys(this.object);
     fields.forEach((field: string) => {
       const control: FormControl = <FormControl> this.formGroup.get(field);

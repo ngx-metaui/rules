@@ -16,26 +16,12 @@
  *
  *
  */
-export {AWMetaLayoutModule} from './meta-layout.module';
-
-export {MetaContentPageComponent} from './meta-content-page/meta-content-page.component';
-
-export {MetaFormComponent} from './meta-form/meta-form.component';
-export {MetaFormRowComponent} from './meta-form/meta-form-row/meta-form-row.component';
-export {MetaFormTableComponent} from './meta-form/meta-form-table/meta-form-table.component';
-export {NoMetaComponent} from './no-meta/no-meta.component';
-
-export {MetaIncludeComponentDirective} from './meta-include.directive';
+export {MetaIncludeDirective} from './meta-include.directive';
+export {ComponentReference, IncludeDirective} from './core/include.directive';
+export {BaseComponent} from './core/base.component';
+export {BaseFormComponent, WidgetSize, WidgetSizeColumns} from './core/base-form.component';
 export {MetaBaseComponent} from './meta.base.component';
-export {MetaElementListComponent} from './meta-element-list/meta-element-list.component';
-export {
-  MetaActionListComponent, MenuItemCommand
-} from './meta-action-list/meta-action-list.component';
-
-export {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
-export {MetaDashboardLayoutComponent} from './meta-dashboard/metadashboard-layout.component';
-export {MetaSectionsComponent} from './meta-section/meta-sections.component';
-export {MetaObjectDetailComponent} from './meta-object-detail/meta-object-detail.component';
-
-
+export {GenericContainerComponent} from './core/generic-container.component';
+export {MetaLayout} from './meta-layout';
+export {DomUtilsService} from './core/dom-utils.service';
 

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import * as dynComponents from './dymamic-components';
 import {Router} from '@angular/router';
-import {ComponentRegistry, Notifications} from '@ngx-metaui/rules';
+import {ComponentRegistry} from '@ngx-metaui/rules';
 
 @Component({
   selector: 'app-root',
@@ -24,14 +24,9 @@ export class AppComponent implements OnInit {
   header: any;
 
 
-  constructor(componentRegistry: ComponentRegistry, private router: Router,
-              private notifications: Notifications) {
+  constructor(componentRegistry: ComponentRegistry, private router: Router) {
     componentRegistry.registerTypes(dynComponents);
     this.currRoute = this.evolutions[0];
-
-    this.notifications.subscribe('app:error', (error: any) => {
-      console.log('App Error: ', error);
-    });
   }
 
 

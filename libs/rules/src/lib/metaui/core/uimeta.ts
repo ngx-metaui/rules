@@ -17,39 +17,70 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {Type} from '@angular/core';
-import {
-  assert,
-  decamelize,
-  isArray,
-  isBlank,
-  isPresent,
-  isString,
-  isStringMap,
-  warn
-} from '../../core/utils/lang';
-import {FieldPath} from '../../core/utils/field-path';
-import {Environment} from '../../core/config/environment';
-import {AppConfig} from '../../core/config/app-config';
-import {RoutingService} from '../../core/routing/routing.service';
-import {ListWrapper, MapWrapper} from '../../core/utils/collection';
+import {Injectable, Type} from '@angular/core';
+import {Route} from '@angular/router';
+import {assert, isArray, isBlank, isPresent, isStringMap, toList} from './utils/lang';
+import {FieldPath} from './utils/field-path';
+import {Environment} from './config/environment';
+import {RoutingService} from './utils/routing.service';
+import {ListWrapper, MapWrapper} from './utils/collection';
 import {ObjectMeta} from './object-meta';
-import {ComponentRegistry} from '../../components/core/component-registry.service';
-import {
-  Meta,
-  PropertyMap,
-  PropertyMapAwaking,
-  PropertyMerger_And,
-  ValueQueriedObserver
-} from './meta';
+import {ComponentRegistry} from './component-registry.service';
 import {Context, UIContext} from './context';
 import {SystemRules} from './widgets-rules';
-import {DynamicPropertyValue, StaticallyResolvable, StaticDynamicWrapper} from './property-value';
+import {SystemPersistenceRules} from './persistence-rules';
+import {
+  DefaultLabelGenerator,
+  PropFieldPropertyListResolver,
+  PropFieldsByZoneResolver,
+  PropLayoutsByZoneResolver,
+  StaticallyResolvable,
+  StaticDynamicWrapper
+} from './property-value';
 import {Rule, Selector} from './rule';
 import {JsonRule} from './json-rule';
 import {ItemProperties} from './item-properties';
-import {SystemPersistenceRules} from './persistence-rules';
 import {ACTIVE_CNTX} from './meta-context/meta-context.component';
+import {
+  ActionZones,
+  AppConfigRuleFilesParam,
+  AppConfigUserRulesParam,
+  DefaultActionCategory,
+  KeyAction,
+  KeyActionCategory,
+  KeyAfter,
+  KeyAny,
+  KeyArea,
+  KeyClass,
+  KeyComponentName,
+  KeyEditing,
+  KeyField,
+  KeyHomePage,
+  KeyLabel,
+  KeyLayout,
+  KeyModule,
+  KeyObject,
+  KeyOperation,
+  KeyRank,
+  KeyVisible,
+  KeyZonePath,
+  LowRulePriority,
+  MetaRules,
+  ModuleActionZones,
+  ModuleInfo,
+  PropFieldPropertyList,
+  PropFieldsByZone,
+  PropLayoutsByZone,
+  SystemRulePriority,
+  UILibraryRulePriority,
+  ValueQueriedObserver,
+  ZoneMain,
+  ZonesTLRMB
+} from './meta-rules';
+import {DynamicPropertyValue, PropertyMerger_And} from './policies/merging-policy';
+import {MetaConfig} from './config/meta-config';
+import {RuleLoaderService} from './rule-loader.service';
+import {LocalizedLabelString, LocalizedString} from './i18n/localized-string';
 
 
 /**
@@ -58,145 +89,64 @@ import {ACTIVE_CNTX} from './meta-context/meta-context.component';
  * Right now we use still singleton as we need this class as a library for some other projects
  *
  *
- * todo: Convert to Injectable
+ *
  */
-
-  // @Injectable()
+@Injectable({providedIn: 'root'})
 export class UIMeta extends ObjectMeta {
-  static KeyOperation = 'operation';
-  static KeyModule = 'module';
-  static KeyLayout = 'layout';
-  static KeyArea = 'area';
-  static KeyEditing = 'editing';
-  static KeyAfter = 'after';
-  static KeyHidden = 'hidden';
-  static KeyLabel = 'label';
-  static KeyComponentName = 'component';
-  static KeyBindings = 'bindings';
-  static KeyHomePage = 'homePage';
-  static KeyZonePath = 'zonePath';
-  static PropFieldsByZone = 'fieldsByZone';
-  static PropIsFieldsByZone = 'fiveZoneLayout';
-  static PropActionsByCategory = 'actionsByCategory';
-  static PropActionCategories = 'actionCategories';
-  static PropFieldPropertyList = 'fieldPropertyList';
-  static PropLayoutsByZone = 'layoutsByZone';
-  static KeyWrapperComponent = 'wrapperComponent';
-  static KeyWrapperBinding = 'wrapperBindings';
 
 
-  static RootPredecessorKey = '_root';
-  static readonly ZoneMain = 'zMain';
-  static readonly ZoneTop = 'zTop';
-  static readonly ZoneLeft = 'zLeft';
-  static readonly ZoneMiddle = 'zMiddle';
-  static readonly ZoneRight = 'zRight';
-  static readonly ZoneBottom = 'zBottom';
-  static readonly ZoneDetail = 'zDetail';
-
-  static readonly AppConfigRuleFilesParam = 'metaui.rules.file-names';
-  static readonly AppConfigUserRulesParam = 'metaui.rules.user-rules';
-
-  static ZonesTLRMB = [
-    UIMeta.ZoneTop, UIMeta.ZoneLeft, UIMeta.ZoneMiddle,
-    UIMeta.ZoneRight, UIMeta.ZoneBottom
-  ];
-  static ZonesMTLRB = [
-    UIMeta.ZoneMain, UIMeta.ZoneTop, UIMeta.ZoneLeft, UIMeta.ZoneRight, UIMeta.ZoneBottom
-  ];
-  static ZonesDetail = [UIMeta.ZoneDetail];
-
-  private static _instance: UIMeta = null;
-
-  static ModuleActionZones: string[] = ['zNav', 'zGlobal'];
-  static ActionZones: string[] = ['zGlobal', 'zMain', 'zGeneral'];
-
-
-  static getInstance(): UIMeta {
-    return this._instance || (this._instance = new this());
-  }
-
-  static defaultLabelForIdentifier(fieldName: string) {
-    const lastDot = fieldName.lastIndexOf('.');
-    if (lastDot !== -1 && lastDot !== fieldName.length - 1) {
-      fieldName = fieldName.substring(lastDot + 1);
-    }
-    return decamelize(fieldName);
-  }
-
-  static beautifyClassName(className: string): string {
-    return decamelize(className, ' ');
-  }
-
-  static beautifyFileName(field: string): string {
-    return decamelize(field, ' ');
-  }
-
-
-  private constructor() {
-    super();
-
-    // if (isPresent(loader)) {
-    //     this.registerLoader(loader);
-    // }
+  constructor(public componentRegistry: ComponentRegistry,
+              public env: Environment,
+              public config: MetaConfig,
+              public ruleLoader: RuleLoaderService,
+              public routingService?: RoutingService) {
+    super(componentRegistry, ruleLoader);
 
     try {
+
       this.beginRuleSet('UIMeta');
 
-      this.registerKeyInitObserver(UIMeta.KeyClass, new UserMetaDataProvider());
+      this.registerKeyInitObserver(KeyClass, new AppRuleMetaDataProvider());
 
       // These keys define scopes for their properties
       // defineKeyAsPropertyScope(KeyArea);
-      this.defineKeyAsPropertyScope(UIMeta.KeyLayout);
-      this.defineKeyAsPropertyScope(UIMeta.KeyModule);
+      this.defineKeyAsPropertyScope(KeyLayout);
+      this.defineKeyAsPropertyScope(KeyModule);
 
       // Default rule for converting field name to label
-      this.registerDefaultLabelGeneratorForKey(UIMeta.KeyClass);
-      this.registerDefaultLabelGeneratorForKey(UIMeta.KeyField);
-      this.registerDefaultLabelGeneratorForKey(UIMeta.KeyLayout);
-      this.registerDefaultLabelGeneratorForKey(UIMeta.KeyModule);
-      this.registerDefaultLabelGeneratorForKey(UIMeta.KeyAction);
-      this.registerDefaultLabelGeneratorForKey(UIMeta.KeyActionCategory);
+      this.registerDefaultLabelGeneratorForKey(KeyClass);
+      this.registerDefaultLabelGeneratorForKey(KeyField);
+      this.registerDefaultLabelGeneratorForKey(KeyLayout);
+      this.registerDefaultLabelGeneratorForKey(KeyModule);
+      this.registerDefaultLabelGeneratorForKey(KeyAction);
+      this.registerDefaultLabelGeneratorForKey(KeyActionCategory);
 
       // policies for chaining certain well known properties
-      this.registerPropertyMerger(UIMeta.KeyArea, Meta.PropertyMerger_DeclareList);
-      this.registerPropertyMerger(UIMeta.KeyLayout, Meta.PropertyMerger_DeclareList);
-      this.registerPropertyMerger(UIMeta.KeyModule, Meta.PropertyMerger_DeclareList);
+      this.registerPropertyMerger(KeyArea, this.PropertyMerger_DeclareList);
+      this.registerPropertyMerger(KeyLayout, this.PropertyMerger_DeclareList);
+      this.registerPropertyMerger(KeyModule, this.PropertyMerger_DeclareList);
 
-      this.mirrorPropertyToContext(UIMeta.KeyEditing, UIMeta.KeyEditing);
-      this.mirrorPropertyToContext(UIMeta.KeyLayout, UIMeta.KeyLayout);
-      this.mirrorPropertyToContext(UIMeta.KeyComponentName, UIMeta.KeyComponentName);
+      this.mirrorPropertyToContext(KeyEditing, KeyEditing);
+      this.mirrorPropertyToContext(KeyLayout, KeyLayout);
+      this.mirrorPropertyToContext(KeyComponentName, KeyComponentName);
 
-      this.registerPropertyMerger(UIMeta.KeyEditing, new PropertyMerger_And());
-
-      // this.registerValueTransformerForKey('requestContext', UIMeta.Transformer_KeyPresent);
-      // this.registerValueTransformerForKey('displayGroup', UIMeta.Transformer_KeyPresent);
+      this.registerPropertyMerger(KeyEditing, new PropertyMerger_And());
 
       // define operation hierarchy
-      this.keyData(UIMeta.KeyOperation).setParent('view', 'inspect');
-      this.keyData(UIMeta.KeyOperation).setParent('print', 'view');
-      this.keyData(UIMeta.KeyOperation).setParent('edit', 'inspect');
-      this.keyData(UIMeta.KeyOperation).setParent('search', 'inspect');
-      this.keyData(UIMeta.KeyOperation).setParent('keywordSearch', 'search');
-      this.keyData(UIMeta.KeyOperation).setParent('textSearch', 'keywordSearch');
+      this.keyData(KeyOperation).setParent('view', 'inspect');
+      this.keyData(KeyOperation).setParent('print', 'view');
+      this.keyData(KeyOperation).setParent('edit', 'inspect');
+      this.keyData(KeyOperation).setParent('search', 'inspect');
+      this.keyData(KeyOperation).setParent('keywordSearch', 'search');
+      this.keyData(KeyOperation).setParent('textSearch', 'keywordSearch');
 
-      this.registerStaticallyResolvable(UIMeta.PropFieldsByZone,
-        new PropFieldsByZoneResolver(),
-        UIMeta.KeyClass);
-      this.registerStaticallyResolvable(UIMeta.PropFieldPropertyList,
-        new PropFieldPropertyListResolver(),
-        UIMeta.KeyClass);
-      this.registerStaticallyResolvable(UIMeta.PropLayoutsByZone,
-        new PropLayoutsByZoneResolver(),
-        UIMeta.KeyLayout);
+      this.registerStaticallyResolvable(PropFieldsByZone, new PropFieldsByZoneResolver(), KeyClass);
+      this.registerStaticallyResolvable(PropFieldPropertyList, new PropFieldPropertyListResolver(),
+        KeyClass);
+      this.registerStaticallyResolvable(PropLayoutsByZone, new PropLayoutsByZoneResolver(),
+        KeyLayout);
 
 
-      // this.registerStaticallyResolvable(UIMeta.PropLayoutsByZone , new
-      // PropLayoutsByZoneResolver() , UIMeta.KeyLayout);
-      // registerStaticallyResolvable('bindingsDictionary' , dyn , KeyField);
-      // registerStaticallyResolvable('bindingsDictionary' , dyn , KeyLayout);
-      // registerStaticallyResolvable('bindingsDictionary' , dyn , KeyClass);
-      // registerStaticallyResolvable('bindingsDictionary' , dyn , KeyModule);
     } finally {
       this.endRuleSet();
     }
@@ -206,16 +156,16 @@ export class UIMeta extends ObjectMeta {
 
   zones(context: Context): Array<string> {
     const zones: Array<string> = context.propertyForKey('zones');
-    return (isBlank(zones)) ? Meta.toList(UIMeta.ZoneMain) : zones;
+    return (isBlank(zones)) ? toList(ZoneMain) : zones;
   }
 
 
   zonePath(context: Context): string {
     let zonePath: any;
-    if (isPresent(context.values.get(UIMeta.KeyLayout))) {
+    if (isPresent(context.values.get(KeyLayout))) {
       context.push();
-      context.setScopeKey(UIMeta.KeyLayout);
-      zonePath = context.propertyForKey(UIMeta.KeyZonePath);
+      context.setScopeKey(KeyLayout);
+      zonePath = context.propertyForKey(KeyZonePath);
       context.pop();
     }
     return zonePath;
@@ -227,43 +177,216 @@ export class UIMeta extends ObjectMeta {
   }
 
   // Load system rules
-  loadDefaultRuleFiles(references?: any): boolean {
+  loadSystemRuleFiles(entryComponentTypes?: any,
+                      rank: number = SystemRulePriority,
+                      widgets: any = SystemRules,
+                      persistence: any = SystemPersistenceRules): boolean {
 
-    if (isPresent(SystemRules.oss)) {
-      this.beginRuleSetWithRank(Meta.SystemRulePriority, 'system');
+    assert(rank === SystemRulePriority || rank === UILibraryRulePriority,
+      'Invalid System rule rank number');
+
+
+    if (this.sysRulesLoaded && rank === SystemRulePriority) {
+      throw new Error('System rules already loaded!');
+    }
+
+    if (this.uiLibSysRulesLoaded && rank === UILibraryRulePriority) {
+      throw new Error('UI Lib system rules already loaded!');
+    }
+
+    if (isPresent(widgets.oss)) {
+      this.beginRuleSetWithRank(rank, 'system');
       try {
-        this._loadRules(SystemRules.oss, 'system', false);
+        this.loadRulesWithModule(widgets.oss, 'system', false);
       } finally {
         this.endRuleSet();
       }
     }
 
-    if (isPresent(SystemPersistenceRules.oss)) {
-      this.beginRuleSetWithRank(Meta.SystemRulePriority + 2000, 'system-persistence');
+    if (isPresent(persistence.oss)) {
+      this.beginRuleSetWithRank(rank + 2000, 'system-persistence');
       try {
-        this._loadRules(SystemPersistenceRules.oss, 'system-persistence', false);
+        this.loadRulesWithModule(persistence.oss, 'system-persistence', false);
       } finally {
         this.endRuleSet();
       }
     }
-    if (isPresent(references)) {
-      this.registerComponents(references);
+    if (isPresent(entryComponentTypes)) {
+      this.registerComponents(entryComponentTypes);
+
+      // load app rules after we finish with UI library rules
+      if (!this.env.inTest && rank === UILibraryRulePriority) {
+        this.loadApplicationRule();
+      }
+    }
+    if (rank === UILibraryRulePriority) {
+      this.uiLibSysRulesLoaded = true;
+    } else {
+      this.sysRulesLoaded = true;
+    }
+    return false;
+  }
+
+  loadAppRulesOnDemand(source: any, userClass: string): boolean {
+
+    if (isPresent(source)) {
+      this.beginRuleSetWithRank(this.ruleCount, 'app:' + userClass);
+      try {
+        this.loadRulesWithModule(source, 'app', false);
+      } finally {
+        this.endRuleSet();
+      }
     }
     return false;
   }
 
 
+  itemList(context: Context, key: string, zones: string[]): Array<ItemProperties> {
+    const predecessors: Map<string, Array<ItemProperties>> = this.predecessorMap(context, key,
+      zones[0]);
+    const result: Array<ItemProperties> = [];
+
+    for (const zone of zones) {
+      this.accumulatePrecessors(predecessors, zone, result);
+    }
+    return result;
+  }
+
+  itemsByZones(context: Context, property: string, zones: string[]): Map<string, any> {
+    const predecessors = this.predecessorMap(context, property, zones[0]);
+    const byZone = new Map<string, any>();
+
+
+    MapWrapper.iterable(predecessors).forEach((value, zone) => {
+      if (this.isZoneReference(zone)) {
+        const list: any[] = [];
+        this.accumulatePrecessors(predecessors, zone, list);
+
+        FieldPath.setFieldValue(byZone, zone, list);
+      }
+    });
+
+    return byZone;
+  }
+
   /**
-   * loads application level rules. Application level rules are global rules
+   *
+   * Not used by will be used by Meta Datatable
    */
-  loadApplicationRules(): void {
+  flattenVisible(fieldsByZones: Map<string, Array<string>>, zoneList: string[], key: string,
+                 context: Context): string[] {
+    const result: string[] = [];
+
+    if (isPresent(fieldsByZones)) {
+
+      for (const zone of  zoneList) {
+        const fields: string[] = fieldsByZones.get(zone);
+
+        if (isBlank(fields)) {
+          continue;
+        }
+
+        for (const field of fields) {
+          context.push();
+          context.set(key, field);
+          if (context.booleanPropertyForKey(KeyVisible, false)) {
+            result.push(field);
+          }
+          context.pop();
+        }
+      }
+    }
+    return result;
+  }
+
+
+  displayLabel(className: string, useInstead?: string): string {
+
+    if (isPresent(useInstead)) {
+      return useInstead;
+    }
+    return this.displayKeyForClass(className);
+  }
+
+
+  createLocalizedString(key: string, defaultValue: string): LocalizedString {
+    assert(isPresent(this._currentRuleSet),
+      'Attempt to create localized string without currentRuleSet in place');
+
+    return new LocalizedString(this, this._currentRuleSet.filePath, key, defaultValue);
+  }
+
+
+  fireAction(context: Context, action?: ItemProperties | Route,
+             withBackAction: boolean = false): void {
+
+    if (isPresent(action)) {
+
+      if (action instanceof ItemProperties) {
+        context.push();
+        let actionCategory = action.properties.get(KeyActionCategory);
+        if (isBlank(actionCategory)) {
+          actionCategory = DefaultActionCategory;
+        }
+        context.set(KeyActionCategory, actionCategory);
+        context.set(KeyAction, action.name);
+
+        this._fireAction(context, false);
+        context.pop();
+      } else {
+        this.naviateToPage(context, action, withBackAction);
+      }
+    } else {
+      context.push();
+      this._fireAction(context, withBackAction);
+      context.pop();
+    }
+  }
+
+  gotoModule(module: ItemProperties, activatedPath?: string): void {
+
+    this.env.deleteValue(ACTIVE_CNTX);
+    const context = this.newContext();
+
+    context.push();
+    context.set(KeyModule, module.name);
+    const pageName = context.propertyForKey(KeyHomePage);
+
+
+    const route = this.routingService.routeForPage(pageName, module.name.toLowerCase(),
+      activatedPath);
+    if (activatedPath === '/') {
+      activatedPath = '';
+    }
+    const path = `${activatedPath}/${route.path}`;
+
+    const params = this.prepareRoute(context, null);
+    context.pop();
+
+    this.routingService.navigate([path, params], {skipLocationChange: true});
+  }
+
+  fieldList(context: Context): Array<ItemProperties> {
+    return this.itemList(context, KeyField, ZonesTLRMB);
+  }
+
+  itemNamesByZones(context: Context, key: string, zones: string[]): Map<string, any> {
+    const itemsByZones: Map<string, any> = this.itemsByZones(context, key, zones);
+    return this.mapItemPropsToNames(itemsByZones);
+  }
+
+
+  /**
+   * Loads application level rules. Application level rules are global rules
+   */
+  loadApplicationRule(): void {
     let aRules: Array<JsonRule>;
-    let userReferences: any[];
+    let registeredAppRules: any[];
     let appRuleFiles: string[] = ['Application'];
 
-    if (isPresent(this.appConfig)) {
-      appRuleFiles = this.appConfig.get(UIMeta.AppConfigRuleFilesParam) || ['Application'];
-      userReferences = this.appConfig.get(UIMeta.AppConfigUserRulesParam);
+    if (isPresent(this.config)) {
+      appRuleFiles = this.config.get(AppConfigRuleFilesParam) || ['Application'];
+      registeredAppRules = this.config.get(AppConfigUserRulesParam);
 
       // make sure we have always Application and make it more additive.
       if (!ListWrapper.contains<string>(appRuleFiles, 'Application')) {
@@ -284,17 +407,17 @@ export class UIMeta extends ObjectMeta {
           aRules = this._testRules.get(rule).oss;
 
           if (isPresent(aRules)) {
-            this.beginRuleSetWithRank(Meta.LowRulePriority, ruleFile.toLowerCase());
+            this.beginRuleSetWithRank(LowRulePriority, ruleFile.toLowerCase());
             try {
-              this._loadRules(aRules, ruleFile.toLowerCase(), false);
+              this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
             } finally {
               this.endRuleSet();
             }
           }
         }
       } else {
-        for (const i in userReferences) {
-          const userRule = userReferences[i];
+        for (const i in registeredAppRules) {
+          const userRule = registeredAppRules[i];
 
           if (isPresent(userRule)) {
 
@@ -303,9 +426,9 @@ export class UIMeta extends ObjectMeta {
             }
           }
           if (isPresent(aRules)) {
-            this.beginRuleSetWithRank(Meta.LowRulePriority, ruleFile.toLowerCase());
+            this.beginRuleSetWithRank(LowRulePriority, ruleFile.toLowerCase());
             try {
-              this._loadRules(aRules, ruleFile.toLowerCase(), false);
+              this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
             } finally {
               this.endRuleSet();
             }
@@ -316,60 +439,44 @@ export class UIMeta extends ObjectMeta {
     }
   }
 
-  loadUserRule(source: any, userClass: string): boolean {
-
-    if (isPresent(source)) {
-      this.beginRuleSetWithRank(this._ruleCount, 'user:' + userClass);
-      try {
-        this._loadRules(source, 'user', false);
-      } finally {
-        this.endRuleSet();
-      }
+  private _fireAction(context: Context, withBackAction: boolean): void {
+    const actionResults = context.propertyForKey('actionResults');
+    if (isBlank(actionResults) || !this.isRoute(actionResults)) {
+      return;
     }
-    return false;
+    this.naviateToPage(context, actionResults, withBackAction);
+  }
+
+  private defaultLabelGeneratorForKey(key: string): DynamicPropertyValue {
+    return new DefaultLabelGenerator(key);
   }
 
 
-  defaultLabelGeneratorForKey(key: string): DynamicPropertyValue {
-    return new _DefaultLabelGenerator(key);
-  }
-
-
-  registerDerivedValue(propKey: string, dynamicValue: DynamicPropertyValue,
-                       contextKey: string,
-                       contextValue: string): void {
+  private registerDerivedValue(propKey: string, dynamicValue: DynamicPropertyValue,
+                               contextKey: string,
+                               contextValue: string): void {
     const m = new Map<string, any>();
     m.set(propKey, dynamicValue);
-    this.addRule(new Rule(Meta.toList(
-      new Selector(contextKey, contextValue)), m, Meta.SystemRulePriority));
+    this.addRule(new Rule(toList(new Selector(contextKey, contextValue)), m, SystemRulePriority));
   }
 
 
-  registerStaticallyResolvable(propKey: string, dynamicValue: StaticallyResolvable,
-                               contextKey: string): void {
-    this.registerDerivedValue(propKey, new StaticDynamicWrapper(dynamicValue), contextKey,
-      Meta.KeyAny);
+  private registerStaticallyResolvable(propKey: string, dynamicValue: StaticallyResolvable,
+                                       contextKey: string): void {
+    this.registerDerivedValue(propKey, new StaticDynamicWrapper(dynamicValue), contextKey, KeyAny);
   }
 
-  registerDefaultLabelGeneratorForKey(key: string): void {
-    this.registerDerivedValue(UIMeta.KeyLabel, new LocalizedLabelString(this), key,
-      UIMeta.KeyAny);
+  private registerDefaultLabelGeneratorForKey(key: string): void {
+    this.registerDerivedValue(KeyLabel, new LocalizedLabelString(this), key, KeyAny);
   }
 
-  fieldList(context: Context): Array<ItemProperties> {
-    return this.itemList(context, UIMeta.KeyField, UIMeta.ZonesTLRMB);
+
+  private fieldsByZones(context: Context): Map<string, any> {
+    return this.itemsByZones(context, KeyField, ZonesTLRMB);
   }
 
-  fieldsByZones(context: Context): Map<string, any> {
-    return this.itemsByZones(context, UIMeta.KeyField, UIMeta.ZonesTLRMB);
-  }
 
-  itemNamesByZones(context: Context, key: string, zones: string[]): Map<string, any> {
-    const itemsByZones: Map<string, any> = this.itemsByZones(context, key, zones);
-    return this.mapItemPropsToNames(itemsByZones);
-  }
-
-  mapItemPropsToNames(itemsByZones: Map<string, any>): Map<string, any> {
+  private mapItemPropsToNames(itemsByZones: Map<string, any>): Map<string, any> {
     const namesByZones: Map<string, any> = new Map<string, any>();
 
     MapWrapper.iterable(itemsByZones).forEach((value, key) => {
@@ -392,30 +499,21 @@ export class UIMeta extends ObjectMeta {
     return namesByZones;
   }
 
-  predecessorMap(context: Context, key: string,
-                 defaultPredecessor: string): Map<string, Array<ItemProperties>> {
+  private predecessorMap(context: Context, key: string,
+                         defaultPredecessor: string): Map<string, Array<ItemProperties>> {
     const fieldInfos: Array<ItemProperties> = this.itemProperties(context, key, false);
+
     const predecessors: Map<string, Array<ItemProperties>> = MapWrapper.groupBy<ItemProperties>(
       fieldInfos, (item: ItemProperties) => {
-        const pred = item.properties.get(UIMeta.KeyAfter);
+        const pred = item.properties.get(KeyAfter);
         return isPresent(pred) ? pred : defaultPredecessor;
       });
 
     return predecessors;
   }
 
-  itemList(context: Context, key: string, zones: string[]): Array<ItemProperties> {
-    const predecessors: Map<string, Array<ItemProperties>> = this.predecessorMap(context, key,
-      zones[0]);
-    const result: Array<ItemProperties> = [];
 
-    for (const zone of zones) {
-      this.accumulatePrecessors(predecessors, zone, result);
-    }
-    return result;
-  }
-
-  isZoneReference(key: string): boolean {
+  private isZoneReference(key: string): boolean {
     // keys of the form 'z<Name>' and 'foo.bar.z<Name>' are considered zone keys
     const lastDot = key.lastIndexOf('.');
     const suffix = (lastDot === -1) ? key : key.substring(lastDot + 1);
@@ -424,35 +522,18 @@ export class UIMeta extends ObjectMeta {
     );
   }
 
-  itemsByZones(context: Context, property: string, zones: string[]): Map<string, any> {
-    const predecessors = this.predecessorMap(context, property, zones[0]);
-    const byZone = new Map<string, any>();
-
-
-    MapWrapper.iterable(predecessors).forEach((value, zone) => {
-      if (this.isZoneReference(zone)) {
-        const list: any[] = [];
-        this.accumulatePrecessors(predecessors,
-          zone, list);
-
-        FieldPath.setFieldValue(byZone, zone, list);
-      }
-    });
-
-    return byZone;
-  }
 
   // recursive decent of predecessor tree...
-  accumulatePrecessors(predecessors: Map<string, Array<ItemProperties>>, key: string,
-                       result: any): void {
+  private accumulatePrecessors(predecessors: Map<string, Array<ItemProperties>>, key: string,
+                               result: any): void {
     const items: Array<ItemProperties> = predecessors.get(key);
     if (isBlank(items)) {
       return;
     }
 
     ListWrapper.sort<ItemProperties>(items, (o1, o2) => {
-      let r1 = o1.properties.get(UIMeta.KeyRank);
-      let r2 = o2.properties.get(UIMeta.KeyRank);
+      let r1 = o1.properties.get(KeyRank);
+      let r2 = o2.properties.get(KeyRank);
 
       if (r1 === null) {
         r1 = 100;
@@ -472,178 +553,40 @@ export class UIMeta extends ObjectMeta {
     }
   }
 
-  /**
-   * Called by Parser to handle decls like 'zLeft => lastName#required'
-   *
-   */
-  addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
-                     traits: any,
-                     lineNumber: number): Rule {
-    if (isBlank(predecessor) && isBlank(traits)) {
-      return null;
-    }
 
-    let key: string = this.scopeKeyForSelector(contextPreds);
-    if (isBlank(key) || key === UIMeta.KeyClass) {
-      key = UIMeta.KeyField;
-    }
-    const selector: Array<Selector> = new Array<Selector>();
-    ListWrapper.addAll<Selector>(selector, contextPreds);
-
-    selector.push(new Selector(key, itemName));
-    const props: Map<string, any> = new Map<string, any>();
-
-    if (isPresent(predecessor)) {
-      props.set(UIMeta.KeyAfter, predecessor);
-    }
-
-    if (isPresent(traits)) {
-      props.set(UIMeta.KeyTrait, traits);
-    }
-    const rule = new Rule(selector, props, 0, lineNumber);
-    this.addRule(rule);
-    return rule;
-  }
-
-  flattenVisible(fieldsByZones: Map<string, Array<string>>, zoneList: string[], key: string,
-                 context: Context): string[] {
-    const result: string[] = [];
-
-    if (isPresent(fieldsByZones)) {
-
-      for (const zone of  zoneList) {
-        const fields: string[] = fieldsByZones.get(zone);
-
-        if (isBlank(fields)) {
-          continue;
-        }
-
-        for (const field of fields) {
-          context.push();
-          context.set(key, field);
-          if (context.booleanPropertyForKey(UIMeta.KeyVisible, false)) {
-            result.push(field);
-          }
-          context.pop();
-        }
-      }
-    }
-    return result;
-  }
-
-  displayKeyForClass(className: string): string {
+  private displayKeyForClass(className: string): string {
     // performance: should use registerDerivedValue('...', new Context.StaticDynamicWrapper
     // to get cached resolution here...
     const context = this.newContext();
-    context.set(UIMeta.KeyLayout, 'LabelField');
-    context.set(UIMeta.KeyClass, className);
-    const fields: Array<ItemProperties> = this.itemProperties(context, UIMeta.KeyField, true);
+    context.set(KeyLayout, 'LabelField');
+    context.set(KeyClass, className);
+    const fields: Array<ItemProperties> = this.itemProperties(context, KeyField, true);
 
     return ListWrapper.isEmpty(fields) ? '$toString' : fields[0].name;
   }
 
-
-  displayLabel(className: string, propertiesValue: string): string {
-
-    if (isPresent(propertiesValue)) {
-      return propertiesValue;
-    }
-    return this.displayKeyForClass(className);
-  }
-
-
-  createLocalizedString(key: string, defaultValue: string): LocalizedString {
-    assert(isPresent(this._currentRuleSet),
-      'Attempt to create localized string without currentRuleSet in place');
-
-    return new LocalizedString(this, this._currentRuleSet.filePath, key, defaultValue);
-  }
-
-
-  get routingService(): RoutingService {
-    return (isPresent(this._injector)) ? this._injector.get<RoutingService>(RoutingService)
-      : null;
-  }
-
-  get env(): Environment {
-    return (isPresent(this._injector)) ? this._injector.get(Environment) : new Environment();
-  }
-
-
-  get appConfig(): AppConfig {
-    return (isPresent(this._injector)) ? this._injector.get(AppConfig) : null;
-  }
-
   /**
-   * Registers framework level components and listen for user level rules to be registered.
-   * After we register user level rules it will load application.oss.
-   *
+   * Registers framework level components in order to be instantiated when needed.
    *
    */
   private registerComponents(sysReferences: any): void {
-    assert(isPresent(this.injector), 'Cannot register components without Injector in order' +
-      ' to get access to ComponentRegistry Service');
 
-    assert(this.env.inTest || isPresent(this.appConfig.get(UIMeta.AppConfigUserRulesParam)),
+    assert(this.env.inTest || isPresent(this.config.get(AppConfigUserRulesParam)),
       'Unable to initialize MetaUI as user rules are missing. please use:' +
       ' metaui.rules.user-rules configuration param');
 
-    this.componentRegistry = this.injector.get(ComponentRegistry);
-    if (isPresent(this.componentRegistry)) {
+    this.componentRegistry.registerTypes(sysReferences);
 
-      this.componentRegistry.registerTypes(sysReferences);
-
-      if (!this.env.inTest) {
-        const userReferences: any[] = this.appConfig.get(UIMeta.AppConfigUserRulesParam);
-        for (const uRule of userReferences) {
-          this.componentRegistry.registerTypes(uRule);
-        }
-        this.loadApplicationRules();
+    if (!this.env.inTest) {
+      const userReferences: any[] = this.config.get(AppConfigUserRulesParam);
+      for (const uRule of userReferences) {
+        this.componentRegistry.registerTypes(uRule);
       }
-
-    } else if (!this.env.inTest) {
-      warn('UIMeta.registerComponents() No components were registered !');
     }
-
   }
 
 
-  /**
-   *
-   * Just need to call it different than the other fireAction as I can not do any method
-   * overloading here.
-   *
-   */
-  fireActionFromProps(action: ItemProperties, context: Context): void {
-    context.push();
-    let actionCategory = action.properties.get(ObjectMeta.KeyActionCategory);
-    if (isBlank(actionCategory)) {
-      actionCategory = ObjectMeta.DefaultActionCategory;
-    }
-    context.set(ObjectMeta.KeyActionCategory, actionCategory);
-    context.set(ObjectMeta.KeyAction, action.name);
-
-    this._fireAction(context, false);
-    context.pop();
-
-  }
-
-  fireAction(context: UIContext, withBackAction: boolean = false): void {
-    context.push();
-    this._fireAction(context, withBackAction);
-    context.pop();
-
-  }
-
-  private _fireAction(context: Context, withBackAction: boolean): void {
-    const actionResults = context.propertyForKey('actionResults');
-    if (isBlank(actionResults) || !this.isRoute(actionResults)) {
-      return;
-    }
-    this.naviateToPage(context, actionResults, withBackAction);
-  }
-
-  naviateToPage(context: Context, route: any, withBackAction: boolean): void {
+  private naviateToPage(context: Context, route: Route, withBackAction: boolean): void {
     const params = this.prepareRoute(context, withBackAction);
 
     const uiContex: UIContext = <UIContext> context;
@@ -651,12 +594,12 @@ export class UIMeta extends ObjectMeta {
   }
 
 
-  prepareRoute(context: Context, withBackAction: boolean): any {
+  private prepareRoute(context: Context, withBackAction: boolean): any {
     const params = {};
     const pageBindings = context.propertyForKey('pageBindings');
     if (isPresent(pageBindings)) {
       pageBindings.forEach((v: any, k: any) => {
-        if (k !== ObjectMeta.KeyObject) {
+        if (k !== KeyObject) {
           (<any>params)[k] = context.resolveValue(v);
         }
       });
@@ -669,43 +612,6 @@ export class UIMeta extends ObjectMeta {
     return params;
   }
 
-
-  prepareRouteForComponent(component: any, context: Context, withBackAction: boolean): any {
-    const params = {};
-    const pageBindings = context.propertyForKey('pageBindings');
-    if (isPresent(pageBindings)) {
-      pageBindings.forEach((v: any, k: any) => {
-        component[k] = v;
-      });
-    }
-
-    return params;
-  }
-
-
-  gotoModule(module: ItemProperties, activatedPath?: string): void {
-
-    this.env.deleteValue(ACTIVE_CNTX);
-    const context = this.newContext();
-
-
-    context.push();
-    context.set(UIMeta.KeyModule, module.name);
-    const pageName = context.propertyForKey(UIMeta.KeyHomePage);
-
-
-    const route = this.routingService.routeForPage(pageName, module.name.toLowerCase(),
-      activatedPath);
-    if (activatedPath === '/') {
-      activatedPath = '';
-    }
-    const path = `${activatedPath}/${route.path}`;
-
-    const params = this.prepareRoute(context, null);
-    context.pop();
-
-    this.routingService.navigate([path, params], {skipLocationChange: true});
-  }
 
   private isRoute(actionResult: any): boolean {
     return isStringMap(actionResult) && isPresent(actionResult['path']);
@@ -727,7 +633,7 @@ export class UIMeta extends ObjectMeta {
   actionsByCategory(context: Context, result: Map<string, Array<ItemProperties>>,
                     zones: string[]): Array<ItemProperties> {
     const catNames: string[] = [];
-    const actionCategories = this.itemList(context, ObjectMeta.KeyActionCategory, zones);
+    const actionCategories = this.itemList(context, KeyActionCategory, zones);
 
     if (isPresent(actionCategories)) {
       actionCategories.forEach((item: ItemProperties) => catNames.push(item.name));
@@ -737,12 +643,12 @@ export class UIMeta extends ObjectMeta {
     return actionCategories;
   }
 
-  addActionsForCategories(context: Context, result: Map<string, Array<ItemProperties>>,
-                          catNames: string[]): void {
+  private addActionsForCategories(context: Context, result: Map<string, Array<ItemProperties>>,
+                                  catNames: string[]): void {
     for (const cat of catNames) {
       context.push();
-      if (cat !== ObjectMeta.DefaultActionCategory) {
-        context.set(ObjectMeta.KeyActionCategory, cat);
+      if (cat !== DefaultActionCategory) {
+        context.set(KeyActionCategory, cat);
       }
 
       this.collectActionsByCategory(context, result, cat);
@@ -752,22 +658,21 @@ export class UIMeta extends ObjectMeta {
   }
 
 
-  collectActionsByCategory(context: Context, result: Map<string, Array<ItemProperties>>,
-                           targetCat: string): void {
-    const actionInfos: ItemProperties[] = this.itemProperties(context, ObjectMeta.KeyAction,
-      true);
+  private collectActionsByCategory(context: Context, result: Map<string, Array<ItemProperties>>,
+                                   targetCat: string): void {
+    const actionInfos: ItemProperties[] = this.itemProperties(context, KeyAction, true);
     for (const actionInfo of actionInfos) {
       context.push();
-      context.set(ObjectMeta.KeyAction, actionInfo.name);
+      context.set(KeyAction, actionInfo.name);
 
-      const visible = context.booleanPropertyForKey(ObjectMeta.KeyVisible, true);
+      const visible = context.booleanPropertyForKey(KeyVisible, true);
       context.pop();
 
       if (visible) {
-        let category = actionInfo.properties.get(ObjectMeta.KeyActionCategory);
+        let category = actionInfo.properties.get(KeyActionCategory);
 
         if (category == null) {
-          category = ObjectMeta.DefaultActionCategory;
+          category = DefaultActionCategory;
         }
         if (targetCat !== category) {
           continue;
@@ -784,36 +689,31 @@ export class UIMeta extends ObjectMeta {
   }
 
 
-  computeModuleInfo(context: Context = this.newContext(),
-                    checkVisibility: boolean = true): ModuleInfo {
+  computeModuleInfo(context?: Context, checkVisibility: boolean = true): ModuleInfo {
 
     const moduleInfo: ModuleInfo = new ModuleInfo();
     moduleInfo.modules = [];
 
-    const allModuleProps: Array<ItemProperties> = this.itemList(context, UIMeta.KeyModule,
-      UIMeta.ActionZones);
+
+    if (isBlank(context)) {
+      context = this.newContext();
+    }
+
+    const allModuleProps: Array<ItemProperties> = this.itemList(context, KeyModule, ActionZones);
     moduleInfo.moduleNames = [];
     moduleInfo.moduleByNames = new Map<string, ItemProperties>();
 
     for (const module of allModuleProps) {
 
       context.push();
-      context.set(UIMeta.KeyModule, module.name);
+      context.set(KeyModule, module.name);
 
-      if (checkVisibility && !context.booleanPropertyForKey(UIMeta.KeyVisible, true)) {
+      if (checkVisibility && !context.booleanPropertyForKey(KeyVisible, true)) {
         context.pop();
         continue;
       }
 
       moduleInfo.moduleNames.push(module.name);
-
-      // // todo: create typescript anotation
-      // context.push();
-      // context.set("homeForClasses", true);
-      // let homeClasses: Array<string> = this.itemNames(context, UIMeta.KeyClass);
-      // context.pop();
-
-
       const modProperties = new ItemProperties(module.name, context.allProperties(), false);
       moduleInfo.modules.push(modProperties);
 
@@ -823,20 +723,24 @@ export class UIMeta extends ObjectMeta {
     }
 
     context.push();
-    context.set(UIMeta.KeyModule, moduleInfo.moduleNames);
+    context.set(KeyModule, moduleInfo.moduleNames);
     moduleInfo.actionsByCategory = new Map<string, Array<ItemProperties>>();
     moduleInfo.actionCategories = this.actionsByCategory(context, moduleInfo.actionsByCategory,
-      UIMeta.ModuleActionZones);
+      ModuleActionZones);
     context.pop();
 
     return moduleInfo;
   }
 
 
-  currentModuleLabel(moduleName: string, context: Context = this.newContext()): string {
+  currentModuleLabel(moduleName: string, context?: Context): string {
+    if (isBlank(context)) {
+      context = this.newContext();
+    }
+
     context.push();
-    context.set(UIMeta.KeyModule, moduleName);
-    const label: string = context.propertyForKey(UIMeta.KeyLabel);
+    context.set(KeyModule, moduleName);
+    const label: string = context.propertyForKey(KeyLabel);
     context.pop();
 
     return label;
@@ -844,122 +748,6 @@ export class UIMeta extends ObjectMeta {
 
 }
 
-export class ModuleInfo {
-  modules: Array<ItemProperties>;
-  moduleNames: Array<string>;
-  moduleByNames: Map<string, ItemProperties>;
-  actionCategories: Array<ItemProperties>;
-  actionsByCategory: Map<string, Array<ItemProperties>>;
-}
-
-
-export class LocalizedString extends DynamicPropertyValue {
-
-  constructor(protected meta: UIMeta, protected _module: string, protected  _key: string,
-              protected _defaultValue: string) {
-    super();
-  }
-
-  evaluate(context: Context): any {
-
-    // const localizedString: any;
-    // let clazz = context.values.get('class');
-    // if (isPresent(this._key) && isPresent(this.meta.i18nService)) {
-    //     let i18nKey = clazz + '.' + this._key;
-    //     localizedString = this.meta.i18nService.instant(i18nKey);
-    //
-    //     // when it return the same string most likely it means there is no
-    //     // translation so default it to null
-    //     localizedString = (localizedString === i18nKey) ? null : localizedString;
-    // }
-
-    // if (isBlank(localizedString) || this._key === ObjectMeta.KeyField) {
-    //     return this._defaultValue;
-    // }
-    return this._defaultValue;
-  }
-
-  toString(): string {
-    return 'LocaledString: {' + this._key + ' - ' + this._defaultValue + ' }';
-  }
-}
-
-class LocalizedLabelString extends LocalizedString implements PropertyMapAwaking {
-  static DefaultModule = 'default';
-  propertyAwaking: boolean = true;
-
-  constructor(protected meta: UIMeta) {
-    super(meta, LocalizedLabelString.DefaultModule, null, null);
-  }
-
-  evaluate(context: Context): any {
-    if (isBlank(this._key)) {
-      const scopeKey: string = context.values.get(Meta.ScopeKey);
-      const scopeVal: string = context.values.get(scopeKey);
-
-      this._defaultValue = UIMeta.defaultLabelForIdentifier(scopeVal);
-
-      this._key = scopeKey;
-    }
-    return super.evaluate(context);
-  }
-
-  awakeForPropertyMap(map: PropertyMap): any {
-    return new LocalizedLabelString(this.meta);
-  }
-
-}
-
-
-class PropFieldsByZoneResolver extends StaticallyResolvable {
-
-
-  evaluate(context: Context): any {
-    let m = (<UIMeta>context.meta).itemNamesByZones(context, UIMeta.KeyField,
-      (<UIMeta>context.meta).zones(context));
-    const zonePath = (<UIMeta>context.meta).zonePath(context);
-    if (isPresent(zonePath)) {
-
-
-      m = <Map<string, any>> FieldPath.getFieldValue(m, zonePath);
-      if (isBlank(m)) {
-        m = new Map<string, any>();
-      }
-    }
-    return m;
-  }
-}
-
-class PropFieldPropertyListResolver extends StaticallyResolvable {
-
-  evaluate(context: Context): any {
-    return (<UIMeta>context.meta).fieldList(context);
-  }
-}
-
-class PropLayoutsByZoneResolver extends StaticallyResolvable {
-
-  evaluate(context: Context): any {
-    return (<UIMeta>context.meta).itemNamesByZones(context, UIMeta.KeyLayout,
-      (<UIMeta>context.meta).zones(context));
-  }
-}
-
-
-class _DefaultLabelGenerator extends StaticallyResolvable {
-
-
-  constructor(private _key: string) {
-    super();
-  }
-
-  evaluate(context: Context): any {
-    const fieldName = context.values.get(this._key);
-
-    return (isPresent(fieldName) && isString(fieldName)) ?
-      UIMeta.defaultLabelForIdentifier(fieldName) : null;
-  }
-}
 
 /**
  * Load User defined meta data. This class is triggered as soon as we create a context and
@@ -967,9 +755,9 @@ class _DefaultLabelGenerator extends StaticallyResolvable {
  * of the class and here we search if we have any Rules available for current className and
  * try to load the Rule.
  */
-class UserMetaDataProvider implements ValueQueriedObserver {
+class AppRuleMetaDataProvider implements ValueQueriedObserver {
 
-  notify(meta: Meta, key: string, value: any): void {
+  notify(meta: MetaRules, key: string, value: any): void {
     let aRules: Array<JsonRule>;
     const uiMeta: UIMeta = <UIMeta> meta;
 
@@ -982,12 +770,12 @@ class UserMetaDataProvider implements ValueQueriedObserver {
         isPresent(uiMeta._testRules.get(value + 'Rule').oss)) {
         aRules = uiMeta._testRules.get(value + 'Rule').oss;
       }
-      meta.loadUserRule(aRules, value);
+      meta.loadAppRulesOnDemand(aRules, value);
 
-    } else if (isPresent(uiMeta.appConfig) &&
-      uiMeta.appConfig.get(UIMeta.AppConfigUserRulesParam)) {
+    } else if (isPresent(uiMeta.config) &&
+      uiMeta.config.get(AppConfigUserRulesParam)) {
 
-      const userReferences: any[] = uiMeta.appConfig.get(UIMeta.AppConfigUserRulesParam);
+      const userReferences: any[] = uiMeta.config.get(AppConfigUserRulesParam);
 
       for (const i in userReferences) {
         if (isPresent(userReferences[i][value + 'Rule']) &&
@@ -995,7 +783,7 @@ class UserMetaDataProvider implements ValueQueriedObserver {
           aRules = userReferences[i][value + 'Rule'].oss;
         }
       }
-      meta.loadUserRule(aRules, value);
+      meta.loadAppRulesOnDemand(aRules, value);
     }
   }
 

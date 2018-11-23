@@ -27,9 +27,11 @@ import {
   print,
   shiftLeft,
   StringJoiner
-} from '../../core/utils/lang';
+} from './utils/lang';
 import {Rule} from './rule';
-import {KeyData, MatchValue, Meta, PropertyMap} from './meta';
+import {ListWrapper} from './utils/collection';
+import {_DebugDoubleCheckMatches, _UsePartialIndexing, MetaRules} from './meta-rules';
+import {KeyData, PropertyMap} from './policies/merging-policy';
 
 
 /**
@@ -256,14 +258,14 @@ export class Match {
           ||
           (isPresent(matchArray) && rule.matches(matchArray)))) {
 
-        if (Meta._DebugDoubleCheckMatches && !(matchArray != null && rule.matches(
+        if (_DebugDoubleCheckMatches && !(matchArray != null && rule.matches(
           matchArray))) {
           assert(false, 'Inconsistent (negative) match on rule: ' + rule);
         }
 
 
         result = Match.addInt(result, r);
-      } else if (Meta._DebugDoubleCheckMatches && (matchArray != null && rule.matches(
+      } else if (_DebugDoubleCheckMatches && (matchArray != null && rule.matches(
         matchArray))) {
         // Assert.that(false, 'Inconsistent (positive) match on rule: %s', rule);
 
@@ -369,7 +371,8 @@ export class MatchResult extends MatchWithUnion {
   private _properties: PropertyMap;
 
   // Meta meta, Meta.KeyData keyData, Object value, MatchResult prev)
-  constructor(private _meta: Meta, private  _keyData: KeyData, private _value: any,
+  constructor(private _meta: MetaRules, private  _keyData: KeyData,
+              private _value: any,
               private _prevMatch: MatchResult) {
     super(null, null, 0, (_prevMatch != null) ? _prevMatch._overUnionMatch : null);
     this._initMatch();
@@ -389,7 +392,7 @@ export class MatchResult extends MatchWithUnion {
   }
 
   filterResult(): number[] {
-    return this.filter(this._meta._rules, this._meta._ruleCount, this.matches(),
+    return this.filter(this._meta.rules, this._meta.ruleCount, this.matches(),
       this._keysMatchedMask, null);
   }
 
@@ -422,19 +425,19 @@ export class MatchResult extends MatchWithUnion {
         matches = overrideMatches;
 
       } else {
-        matches = Match.intersect(this._meta._rules, matches, overrideMatches,
+        matches = Match.intersect(this._meta.rules, matches, overrideMatches,
           this._keysMatchedMask,
           this._overUnionMatch._keysMatchedMask);
       }
     }
 
     let matchArray: MatchValue[];
-    if (Meta._UsePartialIndexing) {
+    if (_UsePartialIndexing) {
       matchArray = this._meta.newMatchArray();
       this.initMatchValues(matchArray);
     }
 
-    return this.filter(this._meta._rules, this._meta._ruleCount, matches, keysMatchedMask,
+    return this.filter(this._meta.rules, this._meta.ruleCount, matches, keysMatchedMask,
       matchArray);
   }
 
@@ -457,7 +460,7 @@ export class MatchResult extends MatchWithUnion {
   }
 
   protected join(a: number[], b: number[], aMask: number, bMask: number): number[] {
-    return Match.intersect(this._meta._rules, a, b, aMask, bMask);
+    return Match.intersect(this._meta.rules, a, b, aMask, bMask);
   }
 
 
@@ -484,7 +487,7 @@ export class MatchResult extends MatchWithUnion {
       this._matches = newArr;
       // Todo: not clear why this is needed, but without it we end up failing to filter
       // certain matches that should be filtered (resulting in bad matches)
-      if (!Meta._UsePartialIndexing) {
+      if (!_UsePartialIndexing) {
         this._keysMatchedMask = keyMask;
       }
 
@@ -526,10 +529,10 @@ export class MatchResult extends MatchWithUnion {
         iB++;
       } else if (c < 0) {
         // If A not in B, but A doesn't filter on B's mask, then add it
-        print('  -- Only in A: ' + this._meta._rules[a[iA]]);
+        print('  -- Only in A: ' + this._meta.rules[a[iA]]);
         iA++;
       } else {
-        print('  -- Only in B: ' + this._meta._rules[b[iB]]);
+        print('  -- Only in B: ' + this._meta.rules[b[iB]]);
         iB++;
       }
     }
@@ -565,7 +568,7 @@ export class MatchResult extends MatchWithUnion {
     buf.add(this._value);
   }
 
-  _checkMatch(values: Map<string, any>, meta: Meta): void {
+  _checkMatch(values: Map<string, any>): void {
     const arr: number[] = this.filterResult();
     if (isBlank(arr)) {
       return;
@@ -573,8 +576,8 @@ export class MatchResult extends MatchWithUnion {
     // first entry is count
     const count: number = arr[0];
     for (let i = 0; i < count; i++) {
-      const r = this._meta._rules[arr[i + 1]];
-      r._checkRule(values, meta);
+      const r = this._meta.rules[arr[i + 1]];
+      r._checkRule(values, this._meta);
     }
 
   }
@@ -589,7 +592,7 @@ export class MatchResult extends MatchWithUnion {
 
 export class UnionMatchResult extends MatchResult {
 
-  constructor(meta: Meta, keyData: KeyData, value: any, prevMatch: MatchResult) {
+  constructor(meta: MetaRules, keyData: KeyData, value: any, prevMatch: MatchResult) {
     super(meta, keyData, value, prevMatch);
   }
 
@@ -597,6 +600,123 @@ export class UnionMatchResult extends MatchResult {
   protected join(a: number[], b: number[], aMask: number, bMask: number): number[] {
     return Match.union(a, b);
 
+  }
+}
+
+
+/**
+ * Abstraction for values (or sets of values) that can be matched against others
+ * (in the context of Selector key/value) matching.  Subtypes take advantage of
+ * the fact that ValueMatches instances globally uniquely represent key/value pairs
+ * to enable efficient matching entirely through identity comparison.
+ */
+
+export interface MatchValue {
+  matches(other: MatchValue): boolean;
+
+  updateByAdding(other: MatchValue): MatchValue;
+}
+
+
+/**
+ *
+ * Uniquely represents a particular key/value in the Meta scope, and indexes all rules
+ * with (indexed) Selectors matching that key/value.
+
+ * ValueMatches also models *inheritance* by allowing one key/value to have another
+ * as its 'parent' and thereby match on any Selector (and rule) that its parent would.
+ *
+ * For instance, this enables a rule on class=Number to apply to class=Integer and
+ * class=BigDecimal, and one on class=* to apply to any.
+ *
+ * The utility of 'parent' is not limited, of course, to the key 'class': all keys
+ * take advantage of the parent '*' to support unqualified matches on that key, and
+ * keys like 'operation' define a value hierarchy ( 'inspect' -> {'view', 'search'},
+ * 'search' -> {'keywordSearch', 'textSearch'})
+ */
+
+export class ValueMatches implements MatchValue {
+
+  _value: any;
+  _read: boolean = false;
+  _arr: number[];
+
+  _parent: ValueMatches;
+  _parentSize: number = 0;
+
+
+  constructor(value: any) {
+    this._value = value;
+  }
+
+  checkParent() {
+    // todo: performance: keep a rule set version # and only do this when the rule set has
+    // reloaded
+
+    if (isPresent(this._parent)) {
+      this._parent.checkParent();
+
+      const parentArr: number[] = this._parent._arr;
+
+      if (isPresent(parentArr) && parentArr[0] !== this._parentSize) {
+        this._arr = Match.union(this._arr, parentArr);
+        this._parentSize = parentArr[0];
+      }
+
+    }
+  }
+
+  matches(other: MatchValue): boolean {
+    if (!(other instanceof ValueMatches)) {
+      return other.matches(this);
+    }
+
+    // we recurse up parent chain to do superclass matches
+    return (other === this) || (isPresent(this._parent) && this._parent.matches(other));
+  }
+
+  updateByAdding(other: MatchValue): MatchValue {
+    const multi: MultiMatchValue = new MultiMatchValue();
+    multi.data.push(this);
+    return multi.updateByAdding(other);
+  }
+
+}
+
+// https://github.com/Microsoft/TypeScript/wiki/FAQ#why-doesnt-extending-built-ins-like-error-
+//  array-and-map-work
+export class MultiMatchValue implements MatchValue {
+
+  data: Array<MatchValue> = [];
+
+
+  matches(other: MatchValue): boolean {
+    if (other instanceof MultiMatchValue) {
+      // list / list comparison: any combo can match
+      for (let i = 0; i < this.data.length; i++) {
+        if (other.matches(this.data[i])) {
+          return true;
+        }
+      }
+    } else {
+      // single value against array: one must match
+      for (let i = 0; i < this.data.length; i++) {
+        if (this.data[i].matches(other)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  updateByAdding(other: MatchValue): MatchValue {
+    if (other instanceof MultiMatchValue) {
+      const matchValue: MultiMatchValue = <MultiMatchValue> other;
+      ListWrapper.addAll(this.data, matchValue.data);
+    } else {
+      this.data.push(other);
+    }
+    return this;
   }
 }
 
