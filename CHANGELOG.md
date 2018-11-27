@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.4"></a>
+## [7.0.4](https://github.com/ngx-meta/rules/compare/v7.0.3...v7.0.4) (2018-11-27)
+
+
+### Features
+
+* **metaui:** Make rule independent from its UI layer ([8e401ed](https://github.com/ngx-meta/rules/commit/8e401ed))
+* **metaui:** Updated schematics and documentation ([3f43f86](https://github.com/ngx-meta/rules/commit/3f43f86))
+
+
+
 <a name="7.0.3"></a>
 ## [7.0.3](https://github.com/ngx-meta/rules/compare/v7.0.2...v7.0.3) (2018-11-06)
 
