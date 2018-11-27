@@ -242,8 +242,7 @@ export class RoutingService {
     if (isPresent(pathName) && isPresent(currentRoute) && currentRoute.children.length > 0) {
 
       nextRoute = currentRoute.children.find((r: Route) => {
-        const componentName = r.component.prototype.constructor.name;
-        return pathName === r.path && pageName === componentName;
+        return pathName === r.path;
       });
     } else if (isPresent(pageName)) {
 

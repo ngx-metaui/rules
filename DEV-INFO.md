@@ -30,7 +30,7 @@ Since we are using `standard-version` the process is pretty straight forward sin
 ``` 
 
 
-* Double check _github_ for if tag was reallly and you are done!
+* Double check _github_ for if tag was really and you are done!
 
 
 ### If something goes wrong

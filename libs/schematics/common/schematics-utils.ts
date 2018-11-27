@@ -40,12 +40,12 @@ import {WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
  */
 
 const RegisterBody =
-  `\n// mandatory - you need to register user's defined rules and types since there is no
+  `\n   // mandatory - you need to register app defined rules and types since there is no
    // introspection in js
 
-    const rules: any[] = appConfig.get('metaui.rules.user-rules') || [];
+    const rules: any[] = config.get('metaui.rules.user-rules') || [];
     rules.push(userRules);
-    appConfig.set('metaui.rules.user-rules', rules);
+    config.set('metaui.rules.user-rules', rules);
 `;
 
 export function addDependenciesToPackageJson(dependencies: NodeDependency[],
@@ -247,7 +247,7 @@ export function getWorkspaceProject(host: Tree, options: Schema) {
   return workspace.projects[projectName];
 }
 
-export function registerUserRulesWithAppConfig(options: Schema): Rule {
+export function registerUserRulesWithMetaConfig(options: Schema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
     const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
@@ -261,7 +261,7 @@ export function registerUserRulesWithAppConfig(options: Schema): Rule {
     }
     host.commitUpdate(declarationRecorder);
 
-    context.logger.log('info', '✅️ App module class updated with AppConfig ' +
+    context.logger.log('info', '✅️ App module class updated with MetaConfig ' +
       'injection');
     return host;
   };
@@ -306,9 +306,7 @@ function createConstructorForInjection(modulePath: string, nodes: ts.Node[]): Ch
     throw new SchematicsException(`expected class in ${modulePath} to have an identifier`);
   }
 
-
   const curlyNodeIndex = siblings.findIndex(n => n.kind === ts.SyntaxKind.FirstPunctuation);
-
   siblings = siblings.slice(curlyNodeIndex);
 
   const listNode = siblings.find(n => n.kind === ts.SyntaxKind.SyntaxList);
@@ -319,7 +317,7 @@ function createConstructorForInjection(modulePath: string, nodes: ts.Node[]): Ch
 
   const toAdd = `
 
-  constructor(private appConfig: AppConfig) {
+  constructor(private config: MetaConfig) {
     ${RegisterBody}
   }
 `;
@@ -347,16 +345,16 @@ function addInjectionToExistingConstructor(modulePath: string, ctorNode: ts.Node
     if (!typeNode) {
       return false;
     }
-    return typeNode.getText() === 'AppConfig';
+    return typeNode.getText() === 'MetaConfig';
   });
 
   if (!paramNode && parameterNodes.length === 0) {
-    const toAdd = `private appConfig: AppConfig`;
+    const toAdd = `private config: MetaConfig`;
     return [new InsertChange(modulePath, parameterListNode.pos, toAdd)];
 
   } else if (!paramNode && parameterNodes.length > 0) {
 
-    const toAdd = `, private appConfig: AppConfig`;
+    const toAdd = `, private config: MetaConfig`;
     const lastParameter = parameterNodes[parameterNodes.length - 1];
 
     const ctorBlock = siblings.find(n => n.kind === ts.SyntaxKind.Block);

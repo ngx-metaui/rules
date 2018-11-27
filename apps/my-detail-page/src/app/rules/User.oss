@@ -22,53 +22,38 @@ class=User {
            }
       }
 
-       field=age  editable=false {
-        component:AgeRatingComponent;
-        bindings: {
-          value:$value;
+      field=luckyNumbers {
+         trait:list;
+         choices:[1, 2, 4, 5, 6, 9, 10];
+         chooserStyle:Chooser;
+          bindings:{
+            multiselect:true;
+          }
+      }
+
+      field=favColors {
+         trait:list;
+         choices:['red', 'blue', 'orangle', 'purple', 'yellow', 'black'];
+         chooserStyle:Checkbox;
+      }
+
+       field=status {
+         trait:list,required;
+         choices:['New', 'In Progress', 'Reviewing', 'Checked'];
+         chooserStyle:Dropdown;
+       }
+
+        field=drivingSkill {
+          trait:list,required;
+          choices:['Bad', 'Good', 'Excellent'];
+          chooserStyle:Radio;
         }
-       }
 
 
-       field=created {
-         valid:${ object.isValidCreateDate() ? true : "The date cannot be in the future" };
-       }
-
-       zNone => *;
-       zLeft => uniqueName => name => description => created => age => isAngularDeveloper;
-}
-
-/*
-  Sample definition for operations edit and create
-
-*/
- class= User {
-   operation=edit {
       zNone => *;
-      zLeft  => name => description => age;
-   }
-
-  operation=create {
-      zNone => *;
-      zLeft => name => description => created => isAngularDeveloper;
-   }
-
-   @action=Save  {
-        label: "Save";
-        actionResults:${ alert("Record saved !") };
-        visible: ${properties.get("editing")};
-        buttonStyle:info;
-   }
-
-   @action=Discard  {
-         label: "Discard Changes";
-         actionResults:${ alert("All cleared !") };
-         visible: ${properties.get("editing")};
-         buttonStyle:info;
-   }
+      zLeft => uniqueName => name => description => created => drivingSkill;
+      zRight => age => luckyNumbers => favColors => status  => isAngularDeveloper;
 }
-
-
 
 
 

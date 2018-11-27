@@ -24,8 +24,8 @@ import {Component, ViewChild} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {CheckBoxListComponent} from './check-box-list.component';
 import {AWCheckBoxListModule} from './check-box-list.module';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
-import {MetaUIRulesModule, Environment} from '@ngx-metaui/rules';
+import {Environment, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Checkbox List ', () => {
 
@@ -37,7 +37,7 @@ describe('Checkbox List ', () => {
       ],
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWCheckBoxListModule
       ]
     });
@@ -98,34 +98,6 @@ describe('Checkbox List ', () => {
     }
 
     expect(checkedCount).toEqual(fixtureWrapper.componentInstance.selectedValues.length);
-  }));
-
-  it('when a checkbox is clicked it should update a global FormGroup model to result 5' +
-    ' selected', fakeAsync(() => {
-
-
-    const fixtureWrapper = TestBed.createComponent(TestCBListBasicBehaviorComponent);
-    fixtureWrapper.detectChanges();
-
-    tick();
-    fixtureWrapper.detectChanges();
-    tick();
-    fixtureWrapper.detectChanges();
-
-    expect(fixtureWrapper.componentInstance.checkboxList.formGroup.value['myColors'].length)
-      .toEqual(fixtureWrapper.componentInstance.selectedValues.length);
-
-    const items = fixtureWrapper.nativeElement.querySelectorAll('.ui-chkbox input');
-    items[2].click();  // lets click on 3th item since we know this one is not selected
-
-    tick();
-    fixtureWrapper.detectChanges();
-    tick();
-    fixtureWrapper.detectChanges();
-
-    expect(fixtureWrapper.componentInstance.checkboxList.formGroup.value['myColors'].length)
-      .toEqual(5);
-
   }));
 
 

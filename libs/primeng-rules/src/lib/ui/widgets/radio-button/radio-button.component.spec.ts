@@ -23,8 +23,8 @@ import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {RadioButtonComponent} from './/radio-button.component';
 import {AWRadioButtonModule} from './radio-button.module';
 import {FormControl, FormGroup} from '@angular/forms';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule, Environment} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('Component: Radiobutton', () => {
@@ -39,7 +39,7 @@ describe('Component: Radiobutton', () => {
       ],
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWRadioButtonModule
       ]
     });

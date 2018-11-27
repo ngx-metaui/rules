@@ -25,8 +25,8 @@ import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
 import {AWButtonModule} from '../../widgets/button/button.module';
 import {SectionComponent} from '../../widgets/section/section.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('Section component', () => {
@@ -43,7 +43,7 @@ describe('Section component', () => {
       ],
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWSectionModule,
         AWFormTableModule,
         NoopAnimationsModule,

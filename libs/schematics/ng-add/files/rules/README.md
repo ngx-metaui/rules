@@ -16,10 +16,10 @@ ex:
     })
     export class AppModule {
     
-      constructor(private appConfig: AppConfig) {
-        let rules: any[] = appConfig.get('metaui.rules.user-rules') || [];
+      constructor(private config: MetaConfig) {
+        let rules: any[] = config.get('metaui.rules.user-rules') || [];
         rules.push(userRules);
-        appConfig.set('metaui.rules.user-rules', rules);
+        config.set('metaui.rules.user-rules', rules);
       }
     }
 ```
@@ -33,7 +33,7 @@ and use it once its needed.
 
 Please check out [High Level Architecture][1].
 
-_Note: The Dummy.oss can be removed once you have some read OSS rules. It is only as a place holder_
+_Note: The Dummy.oss can be removed once you have some rel OSS rules. It is only as a place holder_
 
 
 

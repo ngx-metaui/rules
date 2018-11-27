@@ -21,11 +21,10 @@
 /* tslint:disable:no-unused-variable */
 import {inject, TestBed} from '@angular/core/testing';
 import {isPresent} from '../../core/utils/lang';
-import {AWCoreComponentModule} from '../../core/core.module';
 import {DataFinders, FullTextArrayDataFinder, QueryType} from '../../core/data/data-finders';
 import {DataProviders} from '../../core/data/data-providers';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('Data Finders', () => {
@@ -34,8 +33,8 @@ describe('Data Finders', () => {
     TestBed.configureTestingModule({
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
-        AWCoreComponentModule
+        PrimeNgRulesModule.forRoot()
+
       ]
     });
 

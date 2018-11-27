@@ -28,8 +28,8 @@ import {DataProviders} from './data-providers';
 import {DataFinder, DataFinders, FullTextArrayDataFinder, QueryType} from './data-finders';
 import {DataProvider, DataTypeProviderRegistry} from './datatype-registry.service';
 import {ArrayDataProvider} from './array-data-provider';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('DataSource core with the', () => {
@@ -41,7 +41,7 @@ describe('DataSource core with the', () => {
       TestBed.configureTestingModule({
         imports: [
           MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-          AribaComponentsTestProviderModule.forRoot()
+          PrimeNgRulesModule.forRoot()
         ],
         providers: [
           DataTypeProviderRegistry,
@@ -118,7 +118,7 @@ describe('DataSource core with the', () => {
       TestBed.configureTestingModule({
         imports: [
           MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-          AribaComponentsTestProviderModule.forRoot(),
+          PrimeNgRulesModule.forRoot(),
           AWCoreComponentModule
         ],
         providers: [
@@ -213,7 +213,7 @@ describe('DataSource core with the', () => {
       TestBed.configureTestingModule({
         imports: [
           MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-          AribaComponentsTestProviderModule.forRoot(),
+          PrimeNgRulesModule.forRoot(),
           AWCoreComponentModule
         ],
         providers: [

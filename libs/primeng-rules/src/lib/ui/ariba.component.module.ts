@@ -48,7 +48,6 @@ import {
 import {EmbeddedItemDirective} from './core/embedded-item';
 import {AWCoreComponentModule} from './core/core.module';
 import {AWCheckBoxListModule} from './widgets/check-box-list/check-box-list.module';
-import {AWCheckBoxModule} from './widgets/checkbox/check-box.module';
 import {AWChooserModule} from './widgets/chooser/chooser.module';
 import {AWCurrencyModule} from './widgets/currency/currency.module';
 import {AWDateAndTimeModule} from './widgets/date-and-time/data-and-time.module';
@@ -66,7 +65,6 @@ import {AWStringFieldModule} from './widgets/string/string.module';
 import {AWTextAreaModule} from './widgets/text-area/text-area.module';
 import {AWButtonModule} from './widgets/button/button.module';
 import {AWFormTableModule} from './layouts/form-table/form-table.module';
-import {AWListModule} from './widgets/list/list.module';
 import {DomUtilsService} from './core/dom-utils.service';
 import {DataProviders} from './core/data/data-providers';
 import {DataFinders} from './core/data/data-finders';
@@ -90,7 +88,6 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
 
     AWCoreComponentModule,
     AWCheckBoxListModule,
-    AWCheckBoxModule,
     AWChooserModule,
     AWCurrencyModule,
     AWDateAndTimeModule,
@@ -108,7 +105,6 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
     AWFormTableModule,
     AWButtonModule,
     AWHoverCardModule,
-    AWListModule,
     ToggleSwitchModule,
 
     // PrimeNG remove when all AW are imported
@@ -149,7 +145,6 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
     FormsModule,
     AWCoreComponentModule,
     AWCheckBoxListModule,
-    AWCheckBoxModule,
     AWChooserModule,
     AWCurrencyModule,
     AWDateAndTimeModule,
@@ -168,7 +163,6 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
     EmbeddedItemDirective,
     AWButtonModule,
     AWHoverCardModule,
-    AWListModule,
     ToggleSwitchModule,
 
     // PrimeNG

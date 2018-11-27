@@ -23,8 +23,8 @@ import {InputFieldComponent} from './input-field.component';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AWInputFieldModule} from './input-field.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe(' Input field', () => {
@@ -34,7 +34,7 @@ describe(' Input field', () => {
     TestBed.configureTestingModule({
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWInputFieldModule,
         AWFormTableModule
       ],

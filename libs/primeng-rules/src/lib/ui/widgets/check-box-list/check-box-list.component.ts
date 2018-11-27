@@ -30,7 +30,7 @@ import {
   Output,
   SkipSelf
 } from '@angular/core';
-import {equals, isBlank, isPresent} from '../../core/utils/lang';
+import {isPresent} from '../../core/utils/lang';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 import {FormRowComponent} from '../../layouts/form-table/form-row/form-row.component';
 import {BaseFormComponent, Environment} from '@ngx-metaui/rules';
@@ -100,7 +100,7 @@ export const CB_LIST_CONTROL_VALUE_ACCESSOR: any = {
     {provide: BaseFormComponent, useExisting: forwardRef(() => CheckBoxListComponent)}
   ]
 })
-export class CheckBoxListComponent extends BaseFormComponent implements AfterContentInit {
+export class CheckBoxListComponent extends BaseFormComponent {
   /**
    * List of values used to render checkboxes. Even we have here type as ANY we internally
    * support only string at the moment
@@ -115,7 +115,7 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
    * be rendered as check and yellow unchecked
    */
   @Input()
-  selections: any[];
+  selections: any[] = [];
 
   /**
    * Fires event when checkbox is selected/clicked. Emits current clicked checkboxed. not the
@@ -132,42 +132,11 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
   labelFormatter: (value: any) => string;
 
 
-  /**
-   * Internal model
-   */
-  model: any = [];
-
   constructor(public env: Environment,
               private cd: ChangeDetectorRef,
               @SkipSelf() @Optional() @Inject(forwardRef(() => FormRowComponent))
               protected parentContainer: BaseFormComponent) {
     super(env, parentContainer);
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
-
-    if (isBlank(this.selections)) {
-      this.selections = [];
-    }
-
-    this.registerFormControl(this.selections);
-
-    this.updateModel(this.selections);
-    this.onModelChanged(this.selections);
-  }
-
-
-  ngAfterContentInit(): void {
-    const updatedModel: any[] = [];
-
-    this.model.forEach((index: number) => updatedModel.push(this.list[index]));
-    this.formControl.setValue(updatedModel, {
-      emitEvent: true,
-      emitViewToModelChange: false
-    });
-    this.cd.detectChanges();
-
   }
 
 
@@ -186,44 +155,12 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
 
 
   /**
-   * In this version of checkboxes we still expect only primitive types. Keep this functionality
-   * in extra method so we can work with it even now we just return the same value back
-   */
-  value(item: any): any {
-    return item;
-  }
-
-  /**
    * Delegate event outside of this component and convert indexed model to original objects
    *
    */
-  onChange(event: any): void {
-    const updatedModel: any[] = [];
-
-    this.model.forEach((index: number) => {
-      updatedModel.push(this.list[index]);
-    });
-
-    this.onSelection.emit(updatedModel);
-    this.onModelChanged(updatedModel);
-    this.formControl.setValue(updatedModel, {
-      emitEvent: true,
-      emitViewToModelChange: false
-    });
-  }
-
-
-  /**
-   * Since we might be dealing with complex object store only INDEXes number in the model.
-   *
-   */
-  updateModel(sourceList: any[]): void {
-    sourceList.forEach((item: any) => {
-      const index = this.list.findIndex((elem: any) => {
-        return equals(item, elem);
-      });
-      this.model.push(index);
-    });
+  onChange(): void {
+    this.onSelection.emit(this.selections);
+    this.onModelChanged(this.selections);
   }
 
 
@@ -232,11 +169,7 @@ export class CheckBoxListComponent extends BaseFormComponent implements AfterCon
    *
    */
   writeValue(value: any) {
-    if (isPresent(this.model) && isPresent(value)) {
-      const newModel = value;
-      this.updateModel(newModel);
-
-      // this.cd.markForCheck();
-    }
+    this.selections = value;
+    this.cd.markForCheck();
   }
 }

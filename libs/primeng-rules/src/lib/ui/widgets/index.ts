@@ -21,7 +21,6 @@
 export {AWInputFieldModule} from './input-field/input-field.module';
 export {AWStringFieldModule} from './string/string.module';
 export {AWButtonModule} from './button/button.module';
-export {AWCheckBoxModule} from './checkbox/check-box.module';
 export {AWCheckBoxListModule} from './check-box-list/check-box-list.module';
 export {AWHyperlinkModule} from './hyperlink/hyperlink.module';
 export {AWChooserModule} from './chooser/chooser.module';
@@ -78,9 +77,7 @@ export {
 export {
   SectionComponent, SubSectionComponent, SectionActionsComponent, EditMode
 } from './section/section.component';
-export {CheckboxComponent} from './checkbox/checkbox.component';
 export {RadioButtonComponent} from './radio-button/radio-button.component';
 
 export {HoverCardComponent} from './hover-card/hover-card.component';
-export {ListComponent} from './list/list.component';
 

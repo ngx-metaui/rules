@@ -29,9 +29,9 @@ import {ChooserDataSource} from './chooser-data-source';
 import {DataFinders, QueryType} from '../../core/data/data-finders';
 import {DataProviders} from '../../core/data/data-providers';
 import {ArrayDataProvider} from '../../core/data/array-data-provider';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('Component: Chooser ', () => {
@@ -52,7 +52,7 @@ describe('Component: Chooser ', () => {
         ],
         imports: [
           MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-          AribaComponentsTestProviderModule.forRoot(),
+          PrimeNgRulesModule.forRoot(),
           NoopAnimationsModule,
           AWChooserModule
         ]

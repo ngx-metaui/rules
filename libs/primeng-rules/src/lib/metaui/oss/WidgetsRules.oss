@@ -23,12 +23,16 @@ field {
     type  {
       component:StringComponent;
       bindings:{
-        value:$value}
+        value:$value
+      }
     }
     type=(boolean, Boolean) {
         editable {
-            component:CheckboxComponent;
-            bindings:{ type:"form"};
+            component:Checkbox;
+            bindings:{
+              ngModel: $value;
+              binary: true;
+            };
         }
     }
     type=(Number) {

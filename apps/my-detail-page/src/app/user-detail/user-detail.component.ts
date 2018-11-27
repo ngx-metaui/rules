@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../model/user';
-import {UIMeta} from '@ngx-metaui/rules';
 
 
 @Component({
@@ -11,7 +10,13 @@ import {UIMeta} from '@ngx-metaui/rules';
 export class UserDetailComponent implements OnInit {
 
   object: User;
-  operation = 'view';
+  operation = 'edit';
+
+  cities = ['New York', 'Prague', 'Brno', 'San Franscico', 'Los Angeles'];
+  selections: string[] = [];
+
+
+  checked = true;
 
   constructor() {
   }
@@ -20,7 +25,8 @@ export class UserDetailComponent implements OnInit {
 
     this.object = new User('R0001', 'Frank Kolar',
       'This is my ' +
-      'user record', new Date(), 20, true);
+      'user record', new Date(), 20, [1, 2],
+      ['blue', 'red'], 'Checked', 'Good', true);
   }
 }
 

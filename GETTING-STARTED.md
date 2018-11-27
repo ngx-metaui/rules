@@ -6,7 +6,7 @@ In this section we'll cover basics of the MetaUI rules framework `@ngx-metaui/ru
 ### Prerequisites
 + Knowledge of typescript 
 + Basic Web development
-+ Angular 6.x
++ Angular 7.x
 
 _Continuing without prior knowledge of all above is not recomended_ and result is unknown.
 
@@ -29,10 +29,13 @@ Create new angular application (unless you are integrating it with existing one)
 Add `@ngx-metaui/rules` to your app
 ```
   cd MyDetailPage/
-  ng add @ngx-metaui/rules
+  ng add @ngx-metaui/rules --uiLib="prime-ng"
 ```
 
 Once finished you are fully configured to start some rule driven development but we skip ahead generate some ready to use page!
+The `--uiLib="prime-ng"`  switch pre-configures UI Library to be used with the MetaUI. Even we currently support only `PrimeNg`
+the `Material 2` library is somethign we are working on right now...
+
 
 
 #### Step 3

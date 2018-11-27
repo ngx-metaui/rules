@@ -54,122 +54,6 @@
         }
       }
     },
-    "playground": {
-      "root": "apps/playground/",
-      "sourceRoot": "apps/playground/src",
-      "projectType": "application",
-      "prefix": "ngx-meta",
-      "schematics": {
-        "@schematics/angular:component": {
-          "styleext": "scss"
-        }
-      },
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "showCircularDependencies": false,
-            "outputPath": "dist/apps/playground",
-            "index": "apps/playground/src/index.html",
-            "main": "apps/playground/src/main.ts",
-            "polyfills": "apps/playground/src/polyfills.ts",
-            "tsConfig": "apps/playground/tsconfig.app.json",
-            "assets": [
-              "apps/playground/src/favicon.ico",
-              "apps/playground/src/assets",
-              {
-                "glob": "**/*",
-                "input": "libs/rules/src/lib/resources",
-                "output": "/assets"
-              }
-            ],
-            "styles": [
-              "libs/primeng-rules/src/lib/resources/themes/_normalize.scss",
-              "node_modules/prismjs/themes/prism.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/quill/dist/quill.core.css",
-              "node_modules/quill/dist/quill.snow.css",
-              "libs/primeng-rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
-              "libs/primeng-rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
-              "node_modules/primeicons/primeicons.css",
-              "libs/primeng-rules/src/lib/resources/themes/ariba/theme.scss",
-              "libs/primeng-rules/src/lib/resources/styles/aribaui.scss",
-              "apps/playground/src/styles.scss"
-            ],
-            "scripts": [
-              "node_modules/prismjs/prism.js",
-              "node_modules/quill/dist/quill.js"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/playground/src/environments/environment.ts",
-                  "with": "apps/playground/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "playground:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "playground:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "playground:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "apps/playground/src/test.ts",
-            "polyfills": "apps/playground/src/polyfills.ts",
-            "tsConfig": "apps/playground/tsconfig.spec.json",
-            "karmaConfig": "apps/playground/karma.conf.js",
-            "styles": [
-              "apps/playground/src/styles.scss"
-            ],
-            "scripts": [],
-            "assets": [
-              "apps/playground/src/favicon.ico",
-              "apps/playground/src/assets"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/playground/tsconfig.app.json",
-              "apps/playground/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
     "metaui-evolution": {
       "root": "apps/metaui-evolution/",
       "sourceRoot": "apps/metaui-evolution/src",
@@ -344,17 +228,17 @@
               "apps/my-detail-page/src/assets"
             ],
             "styles": [
-              "libs/rules/src/lib/resources/themes/_normalize.scss",
+              "libs/primeng-rules/src/lib/resources/themes/_normalize.scss",
               "node_modules/prismjs/themes/prism.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "libs/rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
-              "libs/rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
+              "libs/primeng-rules/src/lib/resources/fonts/sap-ariba-icon-fonts/sap-ariba-icon-fonts.css",
+              "libs/primeng-rules/src/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css",
               "node_modules/primeicons/primeicons.css",
-              "libs/rules/src/lib/resources/themes/ariba/theme.scss",
-              "libs/rules/src/lib/resources/styles/aribaui.scss",
+              "libs/primeng-rules/src/lib/resources/themes/ariba/theme.scss",
+              "libs/primeng-rules/src/lib/resources/styles/aribaui.scss",
               "apps/my-detail-page/src/styles.css"
             ],
             "scripts": [
@@ -440,6 +324,11 @@
           "options": {
             "tsConfig": "libs/primeng-rules/tsconfig.lib.json",
             "project": "libs/primeng-rules/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "libs/primeng-rules/ng-package.prod.json"
+            }
           }
         },
         "test": {

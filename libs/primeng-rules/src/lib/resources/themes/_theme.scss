@@ -652,19 +652,4 @@ p-togglebutton.ng-dirty.ng-invalid .ui-button {
   border-radius: $borderRadius;
 }
 
-/* Icons */
-.fa:not(.ui-radiobutton-icon), .pi:not(.ui-radiobutton-icon) {
-  font-family: "SAP icon fonts";
 
-  &.pi-times {
-    font-size: .8em;
-    top: .8em;
-    left: .1em;
-    color: #767676;
-    margin-top: 0px;
-
-    &:before {
-      content: "\e03e";
-    }
-  }
-}

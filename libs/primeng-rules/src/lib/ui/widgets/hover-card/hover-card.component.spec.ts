@@ -24,8 +24,8 @@ import {HoverCardComponent} from './hover-card.component';
 import {AWHoverCardModule} from './hover-card.module';
 import {AWStringFieldModule} from '../../widgets/string/string.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('Component: Hover card', () => {
@@ -38,7 +38,7 @@ describe('Component: Hover card', () => {
       ],
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWHoverCardModule,
         AWStringFieldModule,
         NoopAnimationsModule
@@ -124,7 +124,7 @@ describe('Component: Hover card', () => {
       const target = fixtureWrapper.nativeElement.querySelector('.placeholder');
 
       fixtureWrapper.componentInstance.hover.awOverlay.overlay
-        .show(newEvent('mouseover'), target );
+        .show(newEvent('mouseover'), target);
       fixtureWrapper.componentInstance.hover.awOverlay.onOpened(null);
 
       tick();

@@ -5,10 +5,6 @@ import {Order} from '../model/order';
 import {Money} from '@ngx-metaui/primeng-rules';
 
 
-/**
- * This is 1:1 copy from the playground as I though it might be good to place it as a next
- * next to show besides rendering flat object structure as can also do this.
- */
 @Component({
   selector: 'app-metaui-way-nesting',
   templateUrl: './metaui-way-nesting.component.html',

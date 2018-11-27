@@ -351,15 +351,12 @@ export class UIMeta extends ObjectMeta {
     context.push();
     context.set(KeyModule, module.name);
     const pageName = context.propertyForKey(KeyHomePage);
-
-
-    const route = this.routingService.routeForPage(pageName, module.name.toLowerCase(),
+const route = this.routingService.routeForPage(pageName, module.name.toLowerCase(),
       activatedPath);
     if (activatedPath === '/') {
       activatedPath = '';
     }
     const path = `${activatedPath}/${route.path}`;
-
     const params = this.prepareRoute(context, null);
     context.pop();
 

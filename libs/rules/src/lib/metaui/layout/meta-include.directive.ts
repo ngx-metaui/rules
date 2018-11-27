@@ -30,6 +30,7 @@ import {
   forwardRef,
   Inject,
   Input,
+  SimpleChange,
   Type,
   ViewContainerRef
 } from '@angular/core';
@@ -38,6 +39,7 @@ import {ComponentReference, IncludeDirective} from './core/include.directive';
 import {DomUtilsService} from './core/dom-utils.service';
 
 import {
+  assert,
   equals,
   isBlank,
   isPresent,
@@ -63,6 +65,7 @@ import {Context} from '../core/context';
 import {ContextFieldPath, ValueConverter} from '../core/property-value';
 import {MetaContextComponent, MetaUIActionEvent} from '../core/meta-context/meta-context.component';
 import {DynamicPropertyValue} from '../core/policies/merging-policy';
+import {NgModel} from '@angular/forms';
 
 
 /**
@@ -371,6 +374,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     const currenBindings = MapWrapper.clone(metaBindings);
     this.applyInputs(component, type, currenBindings, inputs, editable);
     this.applyOutputs(component, currenBindings, outputs);
+
   }
 
   private applyInputs(component: ComponentRef<any>, type: any, bindings: any,
@@ -416,20 +420,60 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
          * types
          *
          * set it only if it changes so it will not trigger necessary `value changed
-         * aftter check`
+         * after ngDoCheck`
          */
         if (!equals(component.instance[publicKey], value)) {
           component.instance[publicKey] = value;
         }
       }
     }
+    if (bindings && bindings.has('ngModel') && !component['context']) {
+      const ngModelValue = bindings.get('ngModel');
+      assert(ngModelValue instanceof ContextFieldPath,
+        'You cant assign non expression value to [ngModel]');
+      this.applyNgModel(component, ngModelValue);
+    }
     // apply Formatter that can be specified in the oss
-    // temporary disabled untill angular will support runtime i18n
+    // temporary disabled until angular will support runtime i18n
     // if (bindings.has(MetaIncludeDirective.FormatterBinding)) {
     //     let transform = this.formatters
     //         .get(bindings.get(MetaIncludeDirective.FormatterBinding));
     //     component.instance[MetaIncludeDirective.FormatterBinding] = transform;
     // }
+  }
+
+  /**
+   * I am not sure how to do this properly since angular does not let me instantiate a directive.
+   *
+   * Now it works in the way if find there is a ngModel context property, I need to setup
+   * ControlValueAccessor to point to a context and to get updated when value changes.
+   *
+   *
+   */
+  private applyNgModel(component: ComponentRef<any>, cntxPath: ContextFieldPath): void {
+    const ngModel: NgModel = new NgModel(null, null, null,
+      [component.instance]);
+
+    const subscription = ngModel.update.subscribe((value: any) => {
+      const context = this.metaContext.myContext();
+
+      this.mSetValue(component.instance, null, value, this.metaContext, cntxPath);
+    });
+    const unsubscribe = subscription.unsubscribe.bind(subscription);
+
+    // todo: confirm if this even work
+    (<any>component['_view']).disposables =
+      ((<any>component['_view']).disposables) ?
+        ([...(<any>component['_view']).disposables, unsubscribe]) : [unsubscribe];
+
+    ngModel.model = this.mGetValue(component.instance, this.metaContext, cntxPath);
+    ngModel.name = this.metaContext.myContext().propertyForKey(KeyField);
+
+    ngModel.control.setValue(ngModel.model);
+    ngModel.ngOnChanges({
+      'model': new SimpleChange(undefined, ngModel.model, true)
+    });
+    component['context'] = ngModel;
   }
 
 
@@ -438,6 +482,18 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       key === MetaIncludeDirective.NgContentLayout;
   }
 
+  /**
+   * Currently used only within the MetaSections to emit all the events happening on the
+   * component. This methods takes all the @Outputs found in the component and subscribe to them.
+   *
+   * I plan to refactor this functionality as now you listen for these events with:
+   *
+   * ```
+   *  <m-context.... (onAction)='myHandler(..)'
+   * ```
+   *  implementing your handler that consumes all kinds of events.  It needs to be more typed.
+   *
+   */
   private applyOutputs(component: ComponentRef<any>, bindings: any, outputs: string[]) {
     for (const key of outputs) {
       const publicKey = nonPrivatePrefix(key);
@@ -477,12 +533,16 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     });
   }
 
+  /**
+   * Any Context property that is defined as expression is represented by ContextFieldPath and
+   * therefore we need to proxy all the calls to our context.
+   *
+   */
   private applyDynamicInputBindings(me: any, bindings: any, inputs: string[], key: string,
                                     value: any, editable: boolean) {
 
     const publicKey = nonPrivatePrefix(key);
     const cnxtPath: ContextFieldPath = value;
-    const metaContext = this.metaContext;
     /**
      * captured also current context snapshot so we can replay ContextFieldPath.evaluate() if
      * called outside of push/pop cycle.
@@ -491,24 +551,40 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
      */
     Object.defineProperty(me, publicKey, {
       get: () => {
-
-        const context = this.metaContext.myContext();
-        return cnxtPath.evaluate(context);
+        return this.mGetValue(me, this.metaContext, cnxtPath);
       },
 
       set: (val) => {
-        const context = this.metaContext.myContext();
-        const editing = context.propertyForKey(KeyEditable)
-          || context.propertyForKey(KeyEditing);
 
-        if (editing && !StringWrapper.equals(val, me[publicKey])) {
-          const type = context.propertyForKey(KeyType);
-
-          cnxtPath.evaluateSet(context, ValueConverter.value(type, val));
-        }
+        this.mSetValue(me, key, val, this.metaContext, cnxtPath);
       },
       enumerable: true,
       configurable: true
     });
   }
+
+  private mGetValue(instance: any, metaContext: MetaContextComponent,
+                    cnxtPath: ContextFieldPath): any {
+    const context = metaContext.myContext();
+    return cnxtPath.evaluate(context);
+  }
+
+
+  private mSetValue(instance: any, key: string, val: any, metaContext: MetaContextComponent,
+                    cnxtPath: ContextFieldPath): any {
+
+    const context = metaContext.myContext();
+
+    if (isPresent(key)) {
+      const editing = context.propertyForKey(KeyEditable) || context.propertyForKey(KeyEditing);
+      if (editing && !StringWrapper.equals(val, instance[nonPrivatePrefix(key)])) {
+        const type = context.propertyForKey(KeyType);
+        cnxtPath.evaluateSet(context, ValueConverter.value(type, val));
+      }
+    } else {
+      const type = context.propertyForKey(KeyType);
+      cnxtPath.evaluateSet(context, ValueConverter.value(type, val));
+    }
+  }
+
 }
