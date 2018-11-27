@@ -23,149 +23,149 @@ import {inject, TestBed} from '@angular/core/testing';
 import {DataTypeProviderRegistry} from './datatype-registry.service';
 import {ArrayDataProvider} from './array-data-provider';
 import {DataProviders} from './data-providers';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('Data Providers', () => {
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-                AribaComponentsTestProviderModule.forRoot()
-            ]
-        });
-
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        PrimeNgRulesModule.forRoot()
+      ]
     });
 
-
-    describe('Data Provider Registry', () => {
-        it('should have registered DataTypeProviderRegistry service',
-            inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
-
-                expect(registry).toBeDefined();
-                expect(registry).not.toBeNull();
-
-            }));
+  });
 
 
-        it('can register different providers per class type',
-            inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
+  describe('Data Provider Registry', () => {
+    it('should have registered DataTypeProviderRegistry service',
+      inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
 
-                registry.registerProvider(Car, new MyCoolProvider<Car>([]));
-                registry.registerProvider(Motorcycle, new MyCoolProvider<Motorcycle>([]));
+        expect(registry).toBeDefined();
+        expect(registry).not.toBeNull();
 
-
-                expect(registry.bestMatchForClass('Car')).not.toBeNull();
-                expect(registry.bestMatchForClass('Motorcycle')).not.toBeNull();
-                expect(registry.bestMatchForClass('Place')).toBeNull();
-
-            }));
+      }));
 
 
-        it('should throw error when we try to register a string or null',
-            inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
+    it('can register different providers per class type',
+      inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
 
-                expect(() => registry.registerProvider('Car', new MyCoolProvider<Car>([])))
-                    .toThrowError(/Cannot register non-object/);
-
-
-                expect(() => registry.registerProvider(null, new MyCoolProvider<Car>([])))
-                    .toThrowError(/Cannot register non-object/);
+        registry.registerProvider(Car, new MyCoolProvider<Car>([]));
+        registry.registerProvider(Motorcycle, new MyCoolProvider<Motorcycle>([]));
 
 
-                expect(() => registry.registerProvider(undefined, new MyCoolProvider<Car>([])))
-                    .toThrowError(/Cannot register non-object/);
+        expect(registry.bestMatchForClass('Car')).not.toBeNull();
+        expect(registry.bestMatchForClass('Motorcycle')).not.toBeNull();
+        expect(registry.bestMatchForClass('Place')).toBeNull();
 
-            }));
-
-
-        it('should find registered provider for parent class Person if none is registered for ' +
-            'Agent class',
-            inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
-
-                registry.registerProvider(Car, new MyCoolProvider<Car>([]));
-                registry.registerProvider(Motorcycle, new MyCoolProvider<Motorcycle>([]));
-                registry.registerProvider(Person, new MyCoolProvider<Person>([]));
+      }));
 
 
-                expect(registry.bestMatchForType(Person)).not.toBeNull();
-                expect(registry.bestMatchForType(Agent)).not.toBeNull();
+    it('should throw error when we try to register a string or null',
+      inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
 
-            }));
-    });
-
-
-    describe('DataProviders Factory', () => {
-        it('should have registered DataProviders',
-            inject([DataTypeProviderRegistry, DataProviders],
-                (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
-                    expect(dataProviders).toBeDefined();
-                    expect(dataProviders).not.toBeNull();
-
-                }));
+        expect(() => registry.registerProvider('Car', new MyCoolProvider<Car>([])))
+          .toThrowError(/Cannot register non-object/);
 
 
-        it('should fine registered Provider Car by string',
-            inject([DataTypeProviderRegistry, DataProviders],
-                (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
-
-                    registry.registerProvider(Car, new MyCoolProvider<Car>([]));
-
-                    expect(dataProviders.find('Car')).toBeDefined();
-                    expect(dataProviders.find('Car')).not.toBeNull();
+        expect(() => registry.registerProvider(null, new MyCoolProvider<Car>([])))
+          .toThrowError(/Cannot register non-object/);
 
 
-                }));
+        expect(() => registry.registerProvider(undefined, new MyCoolProvider<Car>([])))
+          .toThrowError(/Cannot register non-object/);
+
+      }));
 
 
-        it('should fine registered Provider Car by Type',
-            inject([DataTypeProviderRegistry, DataProviders],
-                (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
+    it('should find registered provider for parent class Person if none is registered for ' +
+      'Agent class',
+      inject([DataTypeProviderRegistry], (registry: DataTypeProviderRegistry) => {
 
-                    registry.registerProvider(Car, new MyCoolProvider<Car>([]));
-
-                    expect(dataProviders.find(Car)).toBeDefined();
-                    expect(dataProviders.find(Car)).not.toBeNull();
-
-
-                }));
+        registry.registerProvider(Car, new MyCoolProvider<Car>([]));
+        registry.registerProvider(Motorcycle, new MyCoolProvider<Motorcycle>([]));
+        registry.registerProvider(Person, new MyCoolProvider<Person>([]));
 
 
-        it('should create new provider if we are dealing with Array type',
-            inject([DataTypeProviderRegistry, DataProviders],
-                (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
-                    const arrProvider = dataProviders.find(['aa']);
-                    expect(arrProvider instanceof ArrayDataProvider).toBeTruthy();
+        expect(registry.bestMatchForType(Person)).not.toBeNull();
+        expect(registry.bestMatchForType(Agent)).not.toBeNull();
 
-                }));
+      }));
+  });
 
 
-        it('should throw Error when we pass null or undefined',
-            inject([DataTypeProviderRegistry, DataProviders],
-                (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
+  describe('DataProviders Factory', () => {
+    it('should have registered DataProviders',
+      inject([DataTypeProviderRegistry, DataProviders],
+        (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
+          expect(dataProviders).toBeDefined();
+          expect(dataProviders).not.toBeNull();
 
-                    expect(() => dataProviders.find(null))
-                        .toThrowError(/Cannot convert. Uknown object/);
-
-                    expect(() => dataProviders.find(undefined))
-                        .toThrowError(/Cannot convert. Uknown object/);
-
-                }));
+        }));
 
 
-        it('should be able to register new providers using DataProviders',
-            inject([DataProviders], (dataProviders: DataProviders) => {
+    it('should fine registered Provider Car by string',
+      inject([DataTypeProviderRegistry, DataProviders],
+        (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
 
-                dataProviders.register(Car, new MyCoolProvider<Car>([]));
+          registry.registerProvider(Car, new MyCoolProvider<Car>([]));
 
-                const arrProvider = dataProviders.find(['aa']);
-                expect(arrProvider instanceof ArrayDataProvider).toBeTruthy();
+          expect(dataProviders.find('Car')).toBeDefined();
+          expect(dataProviders.find('Car')).not.toBeNull();
 
-            }));
 
-    });
+        }));
+
+
+    it('should fine registered Provider Car by Type',
+      inject([DataTypeProviderRegistry, DataProviders],
+        (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
+
+          registry.registerProvider(Car, new MyCoolProvider<Car>([]));
+
+          expect(dataProviders.find(Car)).toBeDefined();
+          expect(dataProviders.find(Car)).not.toBeNull();
+
+
+        }));
+
+
+    it('should create new provider if we are dealing with Array type',
+      inject([DataTypeProviderRegistry, DataProviders],
+        (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
+          const arrProvider = dataProviders.find(['aa']);
+          expect(arrProvider instanceof ArrayDataProvider).toBeTruthy();
+
+        }));
+
+
+    it('should throw Error when we pass null or undefined',
+      inject([DataTypeProviderRegistry, DataProviders],
+        (registry: DataTypeProviderRegistry, dataProviders: DataProviders) => {
+
+          expect(() => dataProviders.find(null))
+            .toThrowError(/Cannot convert. Uknown object/);
+
+          expect(() => dataProviders.find(undefined))
+            .toThrowError(/Cannot convert. Uknown object/);
+
+        }));
+
+
+    it('should be able to register new providers using DataProviders',
+      inject([DataProviders], (dataProviders: DataProviders) => {
+
+        dataProviders.register(Car, new MyCoolProvider<Car>([]));
+
+        const arrProvider = dataProviders.find(['aa']);
+        expect(arrProvider instanceof ArrayDataProvider).toBeTruthy();
+
+      }));
+
+  });
 
 });
 
@@ -190,12 +190,12 @@ class Motorcycle {
 class MyCoolProvider<T> extends ArrayDataProvider<T> {
 
 
-    constructor(protected  values: Array<T>) {
-        super(values);
-    }
+  constructor(protected  values: Array<T>) {
+    super(values);
+  }
 
-    expectedCount(params?: Map<string, any>): number {
-        return 10;
-    }
+  expectedCount(params?: Map<string, any>): number {
+    return 10;
+  }
 
 }

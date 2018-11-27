@@ -91,9 +91,13 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'CheckboxComponent',
+			      'component': 'Checkbox',
 			      'bindings': {
-			        'type': 'form'
+			        'ngModel': {
+			          't': 'CFP',
+			          'v': 'value'
+			        },
+			        'binary': true
 			      }
 			    },
 			    '_rank': 0

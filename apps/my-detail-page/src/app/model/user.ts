@@ -6,9 +6,25 @@ import {Entity} from '@ngx-metaui/rules';
 export class User implements Entity {
 
 
-  constructor(public uniqueName?: string, public name?: string,
-              public description?: string, public created?: Date,
-              public age?: number, public isAngularDeveloper: boolean = false) {
+  constructor(
+    // strings
+    public uniqueName?: string,
+    public name?: string,
+    public description?: string,
+    // Date
+    public created?: Date,
+    // number
+    public age?: number,
+    // Chooser
+    public luckyNumbers?: number[],
+    // Checkboxess
+    public favColors?: string[],
+    // Dropdown
+    public status?: string,
+    // Radio
+    public drivingSkill?: string,
+    // boolean
+    public isAngularDeveloper: boolean = false) {
   }
 
   identity(): string {
@@ -23,6 +39,10 @@ export class User implements Entity {
       description: String,
       created: Date,
       age: Number,
+      luckyNumbers: Array(Number),
+      favColors: Array(String),
+      status: String,
+      drivingSkill: String,
       isAngularDeveloper: Boolean
     };
   }
@@ -38,7 +58,6 @@ export class User implements Entity {
   className(): string {
     return 'User';
   }
-
 
   toString(): string {
     return this.name;

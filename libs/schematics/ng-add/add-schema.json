@@ -35,6 +35,16 @@
     "path": {
       "type": "string",
       "description": "Root path to the selected project  - a place where template files will be copied"
+    },
+    "uiLib": {
+      "type": "string",
+      "x-prompt": "Choose UI library implementation",
+      "description": "UI library rules implementation name",
+      "enum": [
+        "prime-ng",
+        "none"
+      ],
+      "default": "none"
     }
   },
   "required": []

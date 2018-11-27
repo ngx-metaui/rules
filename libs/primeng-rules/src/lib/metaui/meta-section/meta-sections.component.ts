@@ -26,7 +26,7 @@ import {
   MetaLayout,
   MetaUIActionEvent
 } from '@ngx-metaui/rules';
-import {SectionComponent} from '../../ui/widgets';
+import {SectionComponent} from '../../ui/widgets/section/section.component';
 import {isBlank, isPresent} from '../../ui/core/utils/lang';
 
 /**

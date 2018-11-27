@@ -48,7 +48,7 @@ import {
   addStylesToAngularJson,
   getMainProjectPath,
   getSourceFile,
-  registerUserRulesWithAppConfig,
+  registerUserRulesWithMetaConfig,
   setupOptions
 } from '../common/schematics-utils';
 
@@ -68,7 +68,6 @@ export default function (options: AddSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     setupOptions(tree, options);
 
-    console.log('options.skipDependencies', options.skipDependencies)
 
     return chain([
       options.skipDependencies ? noop() : addDependencies(options),
@@ -76,9 +75,11 @@ export default function (options: AddSchema): Rule {
       options.skipStyles ? noop() : addStyles(options),
       addRulesSubsystem(options),
       addNgModuleImports(options),
-      addFileImports(options),
-      registerUserRulesWithAppConfig(options),
+      addFileImportsCore(options),
+      addFileImportsUILib(options),
+      registerUserRulesWithMetaConfig(options),
       addOssCompilerScriptsToPackageJson(options)
+
     ]);
   };
 }
@@ -86,7 +87,8 @@ export default function (options: AddSchema): Rule {
 
 function addDependencies(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
-    const dependencies: NodeDependency[] = [
+    let uiLibs: NodeDependency[] = [];
+    const core: NodeDependency[] = [
       {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/rules'},
       {type: NodeDependencyType.Default, version: '1.6.36', name: 'big-integer'},
       {type: NodeDependencyType.Default, version: '1.3.0', name: 'object-hash'},
@@ -99,17 +101,28 @@ function addDependencies(options: AddSchema): Rule {
       {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
     ];
 
-    return addDependenciesToPackageJson(dependencies, options.skipNpmInstall);
+    if (options.uiLib === 'prime-ng') {
+      uiLibs = [
+        {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/primeng-rules'},
+        {type: NodeDependencyType.Default, version: '7.0.0-beta.1', name: 'primeng'},
+        {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
+        {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
+        {type: NodeDependencyType.Default, version: '^1.0.0', name: 'primeicons'}
+      ];
+    }
+    return addDependenciesToPackageJson([...core, ...uiLibs], options.skipNpmInstall);
   };
 }
 
 
 function addScripts(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
+    if (options.uiLib === 'none') {
+      return host;
+    }
     const scriptsPaths: string[] = [
       'node_modules/quill/dist/quill.js'
     ];
-
     return addScriptsToAngularJson(scriptsPaths, options);
   };
 }
@@ -117,18 +130,24 @@ function addScripts(options: AddSchema): Rule {
 
 function addStyles(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
+    if (options.uiLib === 'none') {
+      return host;
+    }
+
+    // we have only one ui implementations right now
     const styleEntries: string[] = [
-      'node_modules/@ngx-metaui/rules/lib/resources/themes/_normalize.scss',
+      'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/_normalize.scss',
       'node_modules/primeng/resources/primeng.min.css',
       'node_modules/font-awesome/css/font-awesome.min.css',
       'node_modules/quill/dist/quill.core.css',
       'node_modules/quill/dist/quill.snow.css',
-      'node_modules/@ngx-metaui/rules/lib/resources/fonts/sap-ariba-icon-fonts/' +
+      'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-ariba-icon-fonts/' +
       'sap-ariba-icon-fonts.css',
-      'node_modules/@ngx-metaui/rules/lib/resources/fonts/sap-icon-fonts/sap-icon-fonts.css',
+      'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-icon-fonts/' +
+      'sap-icon-fonts.css',
       'node_modules/primeicons/primeicons.css',
-      'node_modules/@ngx-metaui/rules/lib/resources/themes/ariba/theme.scss',
-      'node_modules/@ngx-metaui/rules/lib/resources/styles/aribaui.scss'
+      'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/ariba/theme.scss',
+      'node_modules/@ngx-metaui/primeng-rules/lib/resources/styles/aribaui.scss'
     ];
 
     return addStylesToAngularJson(styleEntries, options);
@@ -138,22 +157,25 @@ function addStyles(options: AddSchema): Rule {
 
 function addNgModuleImports(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
+    const animImport = ['BrowserAnimationsModule', '@angular/platform-browser/animations'];
 
     try {
-      let modulePath = getAppModulePath(host, getMainProjectPath(host, options));
-      let srcPath = getSourceFile(host, modulePath);
+      const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
+      const srcPath = getSourceFile(host, modulePath);
 
-      if (!isImported(srcPath, 'AppConfig, MetaUIRulesModule',
+      if (!isImported(srcPath, 'MetaConfig, MetaUIRulesModule',
         '@ngx-metaui/rules')) {
 
-        let changes = addImportToModule(srcPath, modulePath,
-          'BrowserAnimationsModule',
-          '@angular/platform-browser/animations');
+        let changes = [
+          ...addImportToModule(srcPath, modulePath, animImport[0], animImport[1]),
+          ...addSymbolToNgModuleMetadata(srcPath, modulePath, 'imports',
+            'MetaUIRulesModule.forRoot({})')];
 
-
-        changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
-          'imports',
-          'MetaUIRulesModule.forRoot({})')];
+        if (options.uiLib === 'prime-ng') {
+          changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
+            'imports',
+            'PrimeNgRulesModule.forRoot()')];
+        }
 
         const recorder = host.beginUpdate(modulePath);
         changes.forEach((change) => {
@@ -206,11 +228,11 @@ function addRulesSubsystem(options: AddSchema): Rule {
 }
 
 
-function addFileImports(options: AddSchema): Rule {
+function addFileImportsCore(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
     return chain([
-      addFileHeaderImports(options, 'AppConfig, MetaUIRulesModule',
+      addFileHeaderImports(options, 'MetaConfig, MetaUIRulesModule',
         '@ngx-metaui/rules'),
 
       addFileHeaderImports(options, '* as userRules',
@@ -220,3 +242,16 @@ function addFileImports(options: AddSchema): Rule {
 }
 
 
+function addFileImportsUILib(options: AddSchema): Rule {
+  return (host: Tree, context: SchematicContext) => {
+
+    if (options.uiLib === 'prime-ng') {
+      return chain([
+        addFileHeaderImports(options, 'PrimeNgRulesModule',
+          '@ngx-metaui/primeng-rules')
+      ]);
+    } else {
+      return host;
+    }
+  };
+}

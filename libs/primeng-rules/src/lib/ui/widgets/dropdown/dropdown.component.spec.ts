@@ -24,8 +24,8 @@ import {DropdownComponent} from './dropdown.component';
 import {isPresent, readGlobalParam} from '../../core/utils/lang';
 import {AWDropdownModule} from './dropdown.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('Describe dropdown menu behavior', () => {
@@ -40,7 +40,7 @@ describe('Describe dropdown menu behavior', () => {
       ],
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWDropdownModule,
         NoopAnimationsModule
       ]

@@ -22,7 +22,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CheckBoxListComponent} from '../check-box-list/check-box-list.component';
-import {AWCheckBoxModule} from '../checkbox/check-box.module';
+import {CheckboxModule} from 'primeng/primeng';
 
 
 @NgModule({
@@ -33,7 +33,7 @@ import {AWCheckBoxModule} from '../checkbox/check-box.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AWCheckBoxModule
+    CheckboxModule
   ],
 
 

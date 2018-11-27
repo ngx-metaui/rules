@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {defaultLabelForIdentifier, RoutingService} from '@ngx-metaui/rules';
 import {BooleanWrapper, isPresent} from '../../ui/core/utils/lang';
@@ -44,6 +44,12 @@ export class MetaContentPageComponent implements OnInit {
   isInspectAction: boolean = false;
 
   okLabel = 'Back';
+
+  /**
+   * Rendered object detail can have a section label
+   */
+  @Input()
+  label: string;
 
   constructor(private route: ActivatedRoute, private routingService: RoutingService) {
   }

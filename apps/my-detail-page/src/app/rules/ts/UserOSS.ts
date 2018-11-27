@@ -156,23 +156,25 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'age',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': false,
+			        '_value': 'luckyNumbers',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'AgeRatingComponent',
 			      'bindings': {
-			        'value': {
-			          't': 'CFP',
-			          'v': 'value'
-			        }
-			      }
+			        'multiselect': true
+			      },
+			      'trait': 'list',
+			      'chooserStyle': 'Chooser',
+			      'choices': [
+			        1,
+			        2,
+			        4,
+			        5,
+			        6,
+			        9,
+			        10
+			      ]
 			    },
 			    '_rank': 0
 			  },
@@ -195,15 +197,96 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'created',
+			        '_value': 'favColors',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'valid': {
-			        't': 'Expr',
-			        'v': 'object.isValidCreateDate() ? true : "The date cannot be in the future"'
+			      'trait': 'list',
+			      'chooserStyle': 'Checkbox',
+			      'choices': [
+			        'red',
+			        'blue',
+			        'orangle',
+			        'purple',
+			        'yellow',
+			        'black'
+			      ]
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
 			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'status',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': [
+			        'list',
+			        'required'
+			      ],
+			      'chooserStyle': 'Dropdown',
+			      'choices': [
+			        'New',
+			        'In Progress',
+			        'Reviewing',
+			        'Checked'
+			      ]
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'drivingSkill',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': [
+			        'list',
+			        'required'
+			      ],
+			      'chooserStyle': 'Radio',
+			      'choices': [
+			        'Bad',
+			        'Good',
+			        'Excellent'
+			      ]
 			    },
 			    '_rank': 0
 			  },
@@ -326,7 +409,7 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'age',
+			        '_value': 'drivingSkill',
 			        '_isDecl': false
 			      }
 			    ],
@@ -341,10 +424,38 @@ export const UserRule = {
 			        '_key': 'class',
 			        '_value': 'User',
 			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'isAngularDeveloper',
+			        '_value': 'age',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zRight'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'luckyNumbers',
 			        '_isDecl': false
 			      }
 			    ],
@@ -359,55 +470,15 @@ export const UserRule = {
 			        '_key': 'class',
 			        '_value': 'User',
 			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'edit',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'edit',
-			        '_isDecl': false
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': '*',
+			        '_value': 'favColors',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'after': 'zNone'
+			      'after': 'luckyNumbers'
 			    },
 			    '_rank': 0
 			  },
@@ -419,33 +490,13 @@ export const UserRule = {
 			        '_isDecl': false
 			      },
 			      {
-			        '_key': 'operation',
-			        '_value': 'edit',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'edit',
-			        '_isDecl': false
-			      },
-			      {
 			        '_key': 'field',
-			        '_value': 'name',
+			        '_value': 'status',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'after': 'zLeft'
+			      'after': 'favColors'
 			    },
 			    '_rank': 0
 			  },
@@ -454,204 +505,6 @@ export const UserRule = {
 			      {
 			        '_key': 'class',
 			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'edit',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'description',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'name'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'edit',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'age',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'description'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'edit',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'zNone'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'name',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'zLeft'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'description',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'name'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'created',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'description'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
 			        '_isDecl': false
 			      },
 			      {
@@ -661,96 +514,7 @@ export const UserRule = {
 			      }
 			    ],
 			    '_properties': {
-			      'after': 'created'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'create',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'action',
-			        '_value': 'Save',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_properties': {
-			      'visible': {
-			        't': 'Expr',
-			        'v': 'properties.get("editing")'
-			      },
-			      'buttonStyle': 'info',
-			      'actionResults': {
-			        't': 'Expr',
-			        'v': 'alert("Record saved !")'
-			      },
-			      'label': 'Save'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'action',
-			        '_value': 'Discard',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_properties': {
-			      'visible': {
-			        't': 'Expr',
-			        'v': 'properties.get("editing")'
-			      },
-			      'buttonStyle': 'info',
-			      'actionResults': {
-			        't': 'Expr',
-			        'v': 'alert("All cleared !")'
-			      },
-			      'label': 'Discard Changes'
+			      'after': 'status'
 			    },
 			    '_rank': 0
 			  },

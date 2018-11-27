@@ -63,9 +63,8 @@ export class User implements Entity
 
 
 But to load rules from the files we use different method. OSS files are compiled to the 
-TS class and then are packaged along with the application. This is why we have in the `playground` or 
-in the `metaui-evolution` app file called `user-rules.ts` which references all the available rules and then 
-inside our module we have this line:
+TS class and then are packaged along with the application. This is why we have in the `metaui-evolution` app file called 
+`user-rules.ts` which references all the available rules and then inside our module we have this line:
 
 ```ts
     import * as userRules from './user-rules';

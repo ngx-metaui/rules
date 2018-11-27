@@ -436,6 +436,14 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     return compMeta;
   }
 
+  private initOnDestroy(): void {
+    if (isPresent(this.currentComponent)) {
+      this.currentComponent.onDestroy(() => {
+        this.destroy();
+      });
+    }
+  }
+
 
   ngOnDestroy(): void {
     if (isPresent(this.currentComponent)) {
@@ -449,7 +457,7 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
 
   }
 
-  private destroy(): void {
+  protected destroy(): void {
     if (isPresent(this.currentComponent)) {
       this.currentComponent = null;
       this.resolvedComponentRef = null;

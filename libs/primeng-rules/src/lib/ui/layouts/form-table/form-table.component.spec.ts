@@ -27,8 +27,8 @@ import {AWFormTableModule} from './form-table.module';
 import {AWInputFieldModule} from '../../widgets/input-field/input-field.module';
 import {AbstractControl, ValidatorFn} from '@angular/forms';
 import {InputFieldComponent} from '../../widgets//input-field/input-field.component';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Form Table behavior ', () => {
 
@@ -43,7 +43,7 @@ describe('Form Table behavior ', () => {
       ],
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWFormTableModule,
         AWInputFieldModule
       ]

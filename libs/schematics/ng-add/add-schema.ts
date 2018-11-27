@@ -45,4 +45,9 @@ export interface AddSchema {
    */
   moduleName: string;
 
+  /**
+   * Works with specific module within the project
+   */
+  uiLib: 'none' | 'prime-ng';
+
 }

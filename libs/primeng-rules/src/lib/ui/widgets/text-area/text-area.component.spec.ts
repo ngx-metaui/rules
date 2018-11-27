@@ -26,8 +26,8 @@ import {FormGroup} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {AWTextAreaModule} from './text-area.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
-import {AribaComponentsTestProviderModule} from '../../ariba.component.provider.module';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe('TextArea component behavior', () => {
@@ -42,7 +42,7 @@ describe('TextArea component behavior', () => {
       ],
       imports: [
         MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
-        AribaComponentsTestProviderModule.forRoot(),
+        PrimeNgRulesModule.forRoot(),
         AWTextAreaModule,
         AWFormTableModule
       ]
