@@ -24,8 +24,6 @@ import {MapWrapper} from '../utils/collection';
 import {Environment} from './environment';
 
 
-export const MetaConfigToken = new InjectionToken<string>('Meta.Config');
-
 /**
  * This is now absolute as i18n was removed
  */

@@ -11,13 +11,17 @@ import {DataTypeProviderRegistry} from './ui/core/data/datatype-registry.service
 import {DataProviders} from './ui/core/data/data-providers';
 import {DataFinders} from './ui/core/data/data-finders';
 import {MetaUILibLayoutModule} from './metaui/meta-ui-layout.module';
+import {AribaComponentsModule} from './ui/ariba.component.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    AribaComponentsModule,
     MetaUILibLayoutModule
   ],
-  exports: []
+  exports: [
+    AribaComponentsModule
+  ]
 })
 export class PrimeNgRulesModule {
 

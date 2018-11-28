@@ -3,4 +3,4 @@
  */
 
 export * from './lib/metaui/index';
-export * from './lib/metaui/rules.module';
+export {MetaUIRulesModule} from './lib/metaui/rules.module';

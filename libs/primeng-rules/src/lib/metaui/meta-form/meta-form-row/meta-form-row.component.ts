@@ -19,8 +19,8 @@
  */
 import {Component, forwardRef, Host, Input} from '@angular/core';
 import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
-import {FormRowComponent} from '../../../ui/layouts';
 import {Environment, KeyBindings, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
+import {FormRowComponent} from '../../../ui/layouts/form-table/form-row/form-row.component';
 import {BooleanWrapper, isPresent} from '../../../ui/core/utils/lang';
 
 /**

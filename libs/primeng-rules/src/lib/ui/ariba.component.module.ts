@@ -18,7 +18,7 @@
  *
  *
  */
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
@@ -65,11 +65,6 @@ import {AWStringFieldModule} from './widgets/string/string.module';
 import {AWTextAreaModule} from './widgets/text-area/text-area.module';
 import {AWButtonModule} from './widgets/button/button.module';
 import {AWFormTableModule} from './layouts/form-table/form-table.module';
-import {DomUtilsService} from './core/dom-utils.service';
-import {DataProviders} from './core/data/data-providers';
-import {DataFinders} from './core/data/data-finders';
-import {ErrorManagerService} from './core/error-manager.service';
-import {DataTypeProviderRegistry} from './core/data/datatype-registry.service';
 import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
 
 /**
@@ -187,19 +182,5 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
   ]
 })
 export class AribaComponentsModule {
-
-
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: AribaComponentsModule,
-      providers: [
-        ErrorManagerService,
-        DomUtilsService,
-        DataTypeProviderRegistry,
-        DataProviders,
-        DataFinders
-      ]
-    };
-  }
 }
 

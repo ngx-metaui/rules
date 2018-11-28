@@ -39,36 +39,28 @@ export {ToggleSwitchModule} from './toggle-switch/toggle-switch.module';
 export {ButtonComponent, ButtonStyle} from './button/button.component';
 export {CheckBoxListComponent} from './check-box-list/check-box-list.component';
 
-export {CHOOSER_CONTROL_VALUE_ACCESSOR, ChooserComponent} from './chooser/chooser.component';
+export {ChooserComponent} from './chooser/chooser.component';
 export {ChooserState, DefaultSelectionState} from './chooser/chooser-state';
 export {ChooserSelectionState} from './chooser/chooser-selection-state';
 export {
   ChooserDataSource, DSChooserInitParams, isDSChooserInitParams
 } from './chooser/chooser-data-source';
 
+export {CurrencyComponent, Money} from './currency/currency.component';
 
-export {
-  CURRENCY_CONTROL_VALUE_ACCESSOR, CurrencyComponent, Money
-} from './currency/currency.component';
-
-export {
-  DateAndTimeComponent, DATETIME_CONTROL_VALUE_ACCESSOR
-} from './date-and-time/date-and-time.component';
+export {DateAndTimeComponent} from './date-and-time/date-and-time.component';
 
 
 export {OverlayComponent} from './overlay/overlay.component';
-export {DD_CONTROL_VALUE_ACCESSOR, DropdownComponent} from './dropdown/dropdown.component';
+export {DropdownComponent} from './dropdown/dropdown.component';
 export {GCChooserState, GenericChooserComponent} from './generic-chooser/generic-chooser.component';
 export {HyperlinkComponent, LinkSize} from './hyperlink/hyperlink.component';
-export {
-  INPUT_CONTROL_VALUE_ACCESSOR, InputFieldComponent
-} from './input-field/input-field.component';
+export {InputFieldComponent} from './input-field/input-field.component';
 
 export {RadioButtonListComponent} from './radio-button-list/radio-button-list.component';
 
 export {StringComponent} from './string/string.component';
-export {TEXTAREA_CONTROL_VALUE_ACCESSOR, TextAreaComponent} from './text-area/text-area.component';
-
+export {TextAreaComponent} from './text-area/text-area.component';
 
 export {
   OutlineForComponent, OutlineControlComponent, OutlineState, OutlineNode, isOutlineNode
@@ -78,6 +70,5 @@ export {
   SectionComponent, SubSectionComponent, SectionActionsComponent, EditMode
 } from './section/section.component';
 export {RadioButtonComponent} from './radio-button/radio-button.component';
-
 export {HoverCardComponent} from './hover-card/hover-card.component';
 

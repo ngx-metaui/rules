@@ -24,7 +24,6 @@
 
 export * from './core/index';
 export * from './layout/index';
-export {MetaUIRulesModule} from './rules.module';
 
 
 

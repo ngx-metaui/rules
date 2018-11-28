@@ -19,16 +19,18 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import {MetaUIRulesModule} from '@ngx-metaui/rules';
 import {MetaActionListComponent} from './meta-action-list/meta-action-list.component';
 import {MetaContentPageComponent} from './meta-content-page/meta-content-page.component';
 import {MetaDashboardLayoutComponent} from './meta-dashboard/metadashboard-layout.component';
 import {MetaElementListComponent} from './meta-element-list/meta-element-list.component';
-import {MetaFormComponent, MetaFormRowComponent, MetaFormTableComponent} from './meta-form';
 import {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
 import {MetaObjectDetailComponent} from './meta-object-detail/meta-object-detail.component';
 import {MetaSectionsComponent} from './meta-section/meta-sections.component';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
 import {AribaComponentsModule} from '../ui/ariba.component.module';
+import {MetaFormTableComponent} from './meta-form/meta-form-table/meta-form-table.component';
+import {MetaFormComponent} from './meta-form/meta-form.component';
+import {MetaFormRowComponent} from './meta-form/meta-form-row/meta-form-row.component';
 
 
 @NgModule({
@@ -50,6 +52,7 @@ import {AribaComponentsModule} from '../ui/ariba.component.module';
     ReactiveFormsModule,
     MetaUIRulesModule,
     AribaComponentsModule
+
   ],
   entryComponents: [
     MetaActionListComponent,
@@ -73,7 +76,8 @@ import {AribaComponentsModule} from '../ui/ariba.component.module';
     MetaFormRowComponent,
     MetaHomePageComponent,
     MetaObjectDetailComponent,
-    MetaSectionsComponent
+    MetaSectionsComponent,
+    AribaComponentsModule
   ],
   providers: []
 })

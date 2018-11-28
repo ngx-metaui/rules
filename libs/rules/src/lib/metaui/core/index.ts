@@ -17,7 +17,7 @@
  *
  */
 
-export {MetaConfig, MetaConfigToken} from './config/meta-config';
+export {MetaConfig} from './config/meta-config';
 export {
   MetaContextComponent, MetaUIActionEvent
 } from './meta-context/meta-context.component';
@@ -25,8 +25,11 @@ export {
   CompositeType, Deserializable, Entity, Identity, isEntity, isValue, Value
 }from './utils/domain-model';
 export {
-  beautifyClassName, beautifyFileName,
-  booleanValue, defaultLabelForIdentifier, objectEquals,
+  beautifyClassName,
+  beautifyFileName,
+  booleanValue,
+  defaultLabelForIdentifier,
+  objectEquals,
   toList
 } from './utils/lang';
 export {FieldPath} from './utils/field-path';
@@ -52,6 +55,7 @@ export {
 } from './meta-rules';
 export {Environment} from './config/environment';
 export {ItemProperties} from './item-properties';
+export {AWMetaCoreModule} from './meta-core.module';
 
 
 

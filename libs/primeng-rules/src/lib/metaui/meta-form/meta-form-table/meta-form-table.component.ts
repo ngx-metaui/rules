@@ -32,7 +32,7 @@ import {
   ZoneRight,
   ZoneTop
 } from '@ngx-metaui/rules';
-import {FormTableComponent} from '../../../ui/layouts';
+import {FormTableComponent} from '../../../ui/layouts/form-table/form-table.component';
 import {isBlank, isPresent} from '../../../ui/core/utils/lang';
 
 /**
