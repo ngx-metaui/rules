@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.5"></a>
+## [7.0.5](https://github.com/ngx-meta/rules/compare/v7.0.4...v7.0.5) (2018-11-28)
+
+
+### Bug Fixes
+
+* **primeng:** Fix module references that we not exported ([ce6f355](https://github.com/ngx-meta/rules/commit/ce6f355))
+
+
+
 <a name="7.0.4"></a>
 ## [7.0.4](https://github.com/ngx-meta/rules/compare/v7.0.3...v7.0.4) (2018-11-27)
 
