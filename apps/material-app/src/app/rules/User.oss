@@ -1,0 +1,25 @@
+/*
+    User rules.oss -- Meta-data rules. Generated file
+
+    Default definition
+*/
+class=User {
+
+    field=description {
+      trait:fluid;
+      hint: ${"You can type some long text here: " + value.length};
+    }
+
+    field=uniqueName {
+      hint: "This is generated field.";
+
+    }
+
+    zNone => *;
+    zLeft => uniqueName  => firstName#required => description;
+    zRight => title => lastName#required;
+}
+
+
+
+

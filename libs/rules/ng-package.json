@@ -4,11 +4,10 @@
   "deleteDestPath": false,
   "lib": {
     "entryFile": "src/index.ts",
-
     "umdModuleIds": {
-      "object-path" : "objectPath",
-      "typescript-collections" : "Collections",
-      "big-integer" : "bigIntImported"
+      "object-path": "objectPath",
+      "typescript-collections": "Collections",
+      "big-integer": "bigIntImported"
     }
   }
 }

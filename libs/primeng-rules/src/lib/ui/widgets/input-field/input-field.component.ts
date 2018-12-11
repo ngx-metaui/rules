@@ -167,10 +167,6 @@ export class InputFieldComponent extends BaseFormComponent {
     }
   }
 
-  canSetType(): boolean {
-    return true;
-  }
-
   onKeyDown(el: any): void {
     if (this._type === 'number') {
       this.displayValue = el.value;

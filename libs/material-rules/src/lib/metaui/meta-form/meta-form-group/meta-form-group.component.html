@@ -1,0 +1,52 @@
+<!--
+   List top zones fields
+-->
+<div class="row around-xs" *ngIf="canShowZone('zTop')">
+  <div class="col-xs-12">
+    <mat-form-field #fField class="form-field" [floatLabel]="'always'">
+      <input #xxx matInput type="text" placeholder="First Name" [value]="value" tabindex="1">
+    </mat-form-field>
+
+    <div *ngFor="let field of zTop()" class="col-xs-12">
+      <m-context [field]="field">
+        <m-form-field [field]=field [editable]="editing"></m-form-field>
+      </m-context>
+    </div>
+  </div>
+</div>
+
+<!--
+  List Left and right fields. Material is done little bit simpler than primeNg in terms of
+  layout
+
+-->
+<div class="row around-xs" *ngIf="canShowMainZone()">
+  <div *ngFor="let field of mainZones;trackBy: trackByFieldName"
+       class="col-xs-12"
+       [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFullWidth }"
+       [style.order]="field.orderNum">
+
+    <m-context [field]="field.name">
+      <m-form-field [field]=field.name [editable]="editing"></m-form-field>
+    </m-context>
+  </div>
+</div>
+
+
+<!--
+   List bottom zones fields
+-->
+<div class="row around-xs" *ngIf="canShowZone('zBottom')">
+  <div class="col-xs-12">
+    <mat-form-field #fField class="form-field" [floatLabel]="'always'">
+      <input #xxx matInput type="text" placeholder="First Name" [value]="value" tabindex="1">
+    </mat-form-field>
+
+    <div *ngFor="let field of zBottom()" class="col-xs-12">
+      <m-context [field]="field">
+        <m-form-field [field]=field [editable]="editing"></m-form-field>
+      </m-context>
+    </div>
+  </div>
+</div>
+

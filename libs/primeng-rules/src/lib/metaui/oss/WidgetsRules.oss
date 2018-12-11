@@ -311,6 +311,10 @@ layout {
     @trait=Stack { visible:true; component:MetaElementListComponent }
 
     component=MetaFormComponent @trait=labelsOnTop;
+
+    layout_trait=labelsOnTop class {
+        bindings:{showLabelsAboveControls:true}
+    }
 }
 
 ~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null}; }

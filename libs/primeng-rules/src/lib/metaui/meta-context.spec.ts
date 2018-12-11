@@ -22,7 +22,7 @@ import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
 import {Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import {MetaUIRulesModule, Entity, META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {Entity, META_RULES, MetaRules, MetaUIRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../primeng-rules.module';
 
 /**
