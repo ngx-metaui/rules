@@ -42,7 +42,9 @@
       "description": "Name of the folder where domain objects are stored",
       "default": "model"
     }
-
   },
-  "required": ["modelClass", "name"]
+  "required": [
+    "modelClass",
+    "name"
+  ]
 }

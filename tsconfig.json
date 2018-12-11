@@ -22,6 +22,9 @@
       ],
       "@ngx-metaui/primeng-rules": [
         "libs/primeng-rules/src/index.ts"
+      ],
+      "@ngx-metaui/material-rules": [
+        "libs/material-rules/src/index.ts"
       ]
     }
   },

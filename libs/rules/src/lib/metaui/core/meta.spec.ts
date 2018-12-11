@@ -284,7 +284,7 @@ describe('Loading rules functionality', () => {
         const metaUI: MetaRules = TestBed.get(META_RULES);
 
         expect(metaUI).toBeDefined();
-        expect(metaUI.rules.length).toEqual(205); // commented out toOneRelationShip
+        expect(metaUI.rules.length).toEqual(204); // commented out toOneRelationShip
 
       } catch (e) {
         fail(e);

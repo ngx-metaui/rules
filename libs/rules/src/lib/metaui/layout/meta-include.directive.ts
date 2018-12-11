@@ -203,7 +203,6 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     return super.resolveComponentType();
   }
 
-
   /*
    * If there is a NG content as part of the bindings apply it and remove it from the list. In
    * the MetaUI world it can appear if we want to insert a text content into the element:
@@ -389,6 +388,15 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       component.instance['editable'] = editable;
     }
 
+    if (bindings.has('ngModel') && !component['ngModelCtx']) {
+      const ngModelValue = bindings.get('ngModel');
+      assert(ngModelValue instanceof ContextFieldPath,
+        'You cant assign non expression value to [ngModel]');
+      this.applyNgModel(component, ngModelValue);
+
+      bindings.delete('value');
+    }
+
     for (const key of inputs) {
       const publicKey = nonPrivatePrefix(key);
       let value = bindings.get(publicKey);
@@ -426,12 +434,6 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
           component.instance[publicKey] = value;
         }
       }
-    }
-    if (bindings && bindings.has('ngModel') && !component['context']) {
-      const ngModelValue = bindings.get('ngModel');
-      assert(ngModelValue instanceof ContextFieldPath,
-        'You cant assign non expression value to [ngModel]');
-      this.applyNgModel(component, ngModelValue);
     }
     // apply Formatter that can be specified in the oss
     // temporary disabled until angular will support runtime i18n
@@ -473,7 +475,8 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     ngModel.ngOnChanges({
       'model': new SimpleChange(undefined, ngModel.model, true)
     });
-    component['context'] = ngModel;
+    component.instance['ngControl'] = ngModel;
+    component['ngModelCtx'] = ngModel;
   }
 
 

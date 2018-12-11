@@ -1315,41 +1315,6 @@ export const SystemRules = {
 			  {
 			    '_selectors': [
 			      {
-			        '_key': 'layout',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'layout_trait',
-			        '_value': 'labelsOnTop',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'class',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'bindings': {
-			        'showLabelsAboveControls': true
-			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'layout',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
 			        '_key': 'traitGroup',
 			        '_value': 'LayoutGrouping',
 			        '_isDecl': true

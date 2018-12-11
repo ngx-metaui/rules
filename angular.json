@@ -363,6 +363,149 @@
           }
         }
       }
+    },
+    "material-rules": {
+      "root": "libs/material-rules",
+      "sourceRoot": "libs/material-rules/src",
+      "projectType": "library",
+      "prefix": "ngx-metaui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/material-rules/tsconfig.lib.json",
+            "project": "libs/material-rules/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "libs/material-rules/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/material-rules/src/test.ts",
+            "tsConfig": "libs/material-rules/tsconfig.spec.json",
+            "karmaConfig": "libs/material-rules/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/material-rules/tsconfig.lib.json",
+              "libs/material-rules/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "material-app": {
+      "root": "apps/material-app/",
+      "sourceRoot": "apps/material-app/src",
+      "projectType": "application",
+      "prefix": "ngx-metaui",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/material-app",
+            "index": "apps/material-app/src/index.html",
+            "main": "apps/material-app/src/main.ts",
+            "polyfills": "apps/material-app/src/polyfills.ts",
+            "tsConfig": "apps/material-app/tsconfig.app.json",
+            "assets": [
+              "apps/material-app/src/favicon.ico",
+              "apps/material-app/src/assets"
+            ],
+            "styles": [
+              "apps/material-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/material-app/src/environments/environment.ts",
+                  "with": "apps/material-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "material-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "material-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "material-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/material-app/src/test.ts",
+            "polyfills": "apps/material-app/src/polyfills.ts",
+            "tsConfig": "apps/material-app/tsconfig.spec.json",
+            "karmaConfig": "apps/material-app/karma.conf.js",
+            "styles": [
+              "apps/material-app/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/material-app/src/favicon.ico",
+              "apps/material-app/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/material-app/tsconfig.app.json",
+              "apps/material-app/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

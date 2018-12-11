@@ -68,7 +68,7 @@ import {META_RULES, MetaRules} from '../meta-rules';
  * on the context (i.e. the bindings above on 'object', 'layout', 'operation', and 'field'
  * are not predefined by MetaContext).
  *
- * Although we treat some bindings in special way as we expect them to be passed in as expression
+ * Although we treat some bindings in special way as we expect them to be passed in as an expression
  * therefore they need be defined as @Input(). The rest we tread is pure keys/values strings
  *
  * First time when component is created we use ngOnInit() to push values and ngAfterViewInit() to
@@ -84,6 +84,17 @@ import {META_RULES, MetaRules} from '../meta-rules';
  *
  * After component is fully initialized and rendered  then we use ngDoCheck() to push() and
  * ngAfterViewChecked() to pop() values.
+ *
+ * This works well in case of views where angular is pretty consistent in terms of order of
+ * these calls but when I tried to do the same in one template I cant really rely on some
+ * consistency as I think there is none. Therefore some of the components needs to be defined
+ * as a separate views.
+ *
+ * Ideally we want to pop() property that was pushed so we keep the stack clean but due to the
+ * nature of Angular's lifecycle hooks we can not or I could not find a way how to make it
+ * consistent. If I use m-context within one view hooks are called randomly and I cannot find the
+ * right spot that is called before rendering and after rendering.
+ *
  *
  */
 
@@ -188,6 +199,8 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    */
   hasObject: boolean;
 
+  hasActiveContext: boolean;
+
 
   /**
    * Reference to the formGroup so we can access possible form fields
@@ -214,6 +227,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
       this.env.setValue('parent-cnx', this);
     }
 
+    this.hasActiveContext = isPresent(this.activeContext());
     this.formGroup = this.env.currentForm;
   }
 
@@ -250,7 +264,6 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
 
     if (this.viewInitialized) {
       this.hasObject = this._hasObject();
-
       // MetaContextComponent.stackDepth++;
 
       this.pushPop(true);
@@ -285,14 +298,13 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
     }
   }
 
-  // private indent(): string
-  // {
-  //     let ind = '';
-  //     for (let i = 0; i < MetaContextComponent.stackDepth; i++) {
-  //         ind += '\t\t\t ';
-  //     }
+  // private indent(): string {
+  //   let ind = '';
+  //   for (let i = 0; i < MetaContextComponent.stackDepth; i++) {
+  //     ind += '\t\t\t ';
+  //   }
   //
-  //     return ind;
+  //   return ind;
   // }
 
   /**
@@ -360,27 +372,25 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
     }
   }
 
-  /**
-   * For debugging to identify current key
-   */
-  // contextKey(): string
-  // {
-  //     let cnxKey = '';
-  //     if (isPresent(this.bindingKeys) && this.bindingKeys.length > 0) {
-  //         this.bindingKeys.forEach((name) =>
-  //         {
-  //             if (name === 'object') {
-  //                 cnxKey += name;
-  //             } else {
-  //                 cnxKey += name + this.bindingsMap.get(name);
-  //             }
+  // /**
+  //  * For debugging to identify current key
+  //  */
+  // contextKey(): string {
+  //   let cnxKey = '';
+  //   if (isPresent(this.bindingKeys) && this.bindingKeys.length > 0) {
+  //     this.bindingKeys.forEach((name) => {
+  //       if (name === 'object') {
+  //         cnxKey += name;
+  //       } else {
+  //         cnxKey += name + this.bindingsMap.get(name);
+  //       }
   //
   //
-  //         });
-  //     } else if (isPresent(this._scopeBinding)) {
-  //         cnxKey += this._scopeBinding;
-  //     }
-  //     return cnxKey;
+  //     });
+  //   } else if (isPresent(this._scopeBinding)) {
+  //     cnxKey += this._scopeBinding;
+  //   }
+  //   return cnxKey;
   // }
 
 

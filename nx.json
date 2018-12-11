@@ -19,6 +19,12 @@
     },
     "primeng-rules": {
       "tags": []
+    },
+    "material-rules": {
+      "tags": []
+    },
+    "material-app": {
+      "tags": []
     }
   }
 }

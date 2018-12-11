@@ -176,7 +176,7 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
    * Current created component reference using ComponentFactoryResolver. We use this to access
    * the actual component instance and Element Reference
    */
-  protected currentComponent: ComponentRef<any>;
+  currentComponent: ComponentRef<any>;
 
   /**
    * I use this flag to identify that component is rendering for first time or its updated during
@@ -243,6 +243,11 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
 
 
   ngAfterContentInit(): void {
+  }
+
+
+  public get component(): any {
+    return this.currentComponent.instance;
   }
 
   /**

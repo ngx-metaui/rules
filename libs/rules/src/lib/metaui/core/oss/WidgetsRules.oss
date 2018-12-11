@@ -152,10 +152,6 @@ layout {
         wrapperComponent:GenericContainerComponent;
         wrapperBindings:{ tagName:div; style:"padding:8px" }
     }
-
-    layout_trait=labelsOnTop class {
-        bindings:{showLabelsAboveControls:true}
-    }
 }
 
 @traitGroup=LayoutGrouping {
