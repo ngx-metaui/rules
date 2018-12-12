@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
 import {ChangeDetectorRef, Directive} from '@angular/core';
