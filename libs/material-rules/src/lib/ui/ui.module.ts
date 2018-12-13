@@ -21,11 +21,13 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MatInputModule} from '@angular/material';
 import {InputField} from './input/input.component';
+import {TextArea} from './text-area/text-area.component';
 
 
 @NgModule({
   declarations: [
-    InputField
+    InputField,
+    TextArea
   ],
   imports: [
     CommonModule,
@@ -33,11 +35,13 @@ import {InputField} from './input/input.component';
     MatInputModule
   ],
   entryComponents: [
-    InputField
+    InputField,
+    TextArea
   ],
   exports: [
     MatInputModule,
-    InputField
+    InputField,
+    TextArea
   ],
   providers: []
 })

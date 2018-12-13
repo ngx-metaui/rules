@@ -6,8 +6,9 @@
 class=User {
 
     field=description {
-      trait:fluid;
+      trait:fluid,longtext;
       hint: ${"You can type some long text here: " + value.length};
+
     }
 
     field=uniqueName {
@@ -16,8 +17,9 @@ class=User {
     }
 
     zNone => *;
-    zLeft => uniqueName  => firstName#required => description;
+    zLeft => uniqueName  => firstName#required;
     zRight => title => lastName#required;
+    zBottom => description;
 }
 
 

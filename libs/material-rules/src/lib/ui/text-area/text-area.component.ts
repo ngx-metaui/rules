@@ -60,17 +60,17 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
 
 
 @Component({
-  selector: 'md-input-field',
-  templateUrl: 'input.component.html',
+  selector: 'md-text-area',
+  templateUrl: 'text-area.component.html',
   providers: [
     {
       provide: MatFormFieldControl,
-      useExisting: forwardRef(() => InputField),
+      useExisting: forwardRef(() => TextArea),
       multi: true
     }
   ]
 })
-export class InputField extends MatInput implements ControlValueAccessor {
+export class TextArea extends MatInput implements ControlValueAccessor {
 
 
   /**
@@ -84,10 +84,8 @@ export class InputField extends MatInput implements ControlValueAccessor {
   private _composing = false;
   private _compositionMode = false;
 
-  onChange = (_: any) => {
-  };
-  onTouched = () => {
-  };
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
   /** Whether the user is creating a composition string (IME events). */
 

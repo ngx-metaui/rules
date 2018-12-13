@@ -90,8 +90,6 @@ export class MetaFormGroup extends MetaBaseComponent {
    */
   mainZones: ZoneField[];
 
-  value = 'This is value';
-
 
   constructor(@Host() protected _context: MetaContextComponent, public env: Environment) {
     super(env, _context);

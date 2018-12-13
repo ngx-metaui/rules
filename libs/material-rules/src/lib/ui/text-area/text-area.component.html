@@ -1,0 +1,23 @@
+<textarea
+  #inputField
+  matInput
+  class="mat-input-element mat-form-field-autofill-control"
+  [class.mat-input-server]="_isServer"
+  [attr.id]="id"
+  [attr.placeholder]="placeholder"
+  [disabled]="disabled"
+  [readonly]="readonly"
+  [required]="required"
+  [attr.readonly]="readonly && !_isNativeSelect || null"
+  [attr.aria-describedby]="_ariaDescribedby || null"
+  [attr.aria-invalid]="errorState"
+  [attr.aria-required]="required.toString()"
+  [(ngModel)]="value"
+  (blur)="_focusChanged(false)"
+  (focus)="_focusChanged(true)"
+  (input)="onInput($event.target.value)"
+  (compositionstart)="_compositionStart()"
+  (compositionend)="_compositionEnd($event.target.value)"
+></textarea>
+
+

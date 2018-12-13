@@ -35,7 +35,10 @@ export const UserRule = {
 			        't': 'Expr',
 			        'v': '"You can type some long text here: " + value.length'
 			      },
-			      'trait': 'fluid'
+			      'trait': [
+			        'fluid',
+			        'longtext'
+			      ]
 			    },
 			    '_rank': 0
 			  },
@@ -148,24 +151,6 @@ export const UserRule = {
 			        '_key': 'class',
 			        '_value': 'User',
 			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'description',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'firstName'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
 			      }
 			    ],
 			    '_rank': 0
@@ -204,6 +189,34 @@ export const UserRule = {
 			    '_properties': {
 			      'trait': 'required',
 			      'after': 'title'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'description',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zBottom'
 			    },
 			    '_rank': 0
 			  },
