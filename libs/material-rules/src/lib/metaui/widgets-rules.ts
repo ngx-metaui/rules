@@ -919,10 +919,18 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'TextAreaComponent',
+			      'component': 'TextArea',
 			      'bindings': {
-			        'rows': 10,
-			        'cols': 60
+			        'ngModel': {
+			          't': 'CFP',
+			          'v': 'value'
+			        },
+			        'readonly': false,
+			        'disabled': false,
+			        'required': {
+			          't': 'Expr',
+			          'v': 'properties.get("required")'
+			        }
 			      }
 			    },
 			    '_rank': 0
@@ -993,196 +1001,6 @@ export const SystemRules = {
 			      {
 			        '_key': 'trait',
 			        '_value': 'longtext',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'richtext',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_properties': {
-			      'bindings': {
-			        'escapeUnsafeHtml': true
-			      },
-			      'after': 'zBottom'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'richtext',
-			        '_isDecl': true
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'component': 'RichTextAreaComponent',
-			      'bindings': {
-			        'rows': 10,
-			        'cols': 60
-			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'richtext',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'richtext',
-			        '_isDecl': true
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'search',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'zNone'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'richtext',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'richtext',
-			        '_isDecl': true
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': 'list',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'editable': false,
-			      'after': 'zDetail'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'richtext',
 			        '_isDecl': true
 			      }
 			    ],

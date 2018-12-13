@@ -125,18 +125,18 @@ field {
         }
         @trait=longtext {
             after:zBottom;
-            editable            { component:TextAreaComponent;
-                                  bindings:{cols:60; rows:10} }
+            editable {
+                component:TextArea;
+                bindings:{
+                  ngModel: $value;
+                  readonly:false;
+                  disabled:false;
+                  required:${properties.get("required")};
+                }
+            }
             operation=(search, list)  { visible:false }
         }
-        @trait=richtext {
-            after:zBottom;
-            bindings:{escapeUnsafeHtml:true}
-            editable            { component:RichTextAreaComponent;
-                                  bindings:{cols:60; rows:10} }
-            operation=(search)  { after:zNone }
-            operation=(list)  { editable:false; after:zDetail; }
-        }
+
         @trait=secret {
             bindings:{formatter:$formatters.hiddenPassword};
             editable   { component:AWPasswordField; bindings:{formatter:null} }
