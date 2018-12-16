@@ -34,7 +34,6 @@ export const SystemRules = {
 			      'component': 'InputField',
 			      'bindings': {
 			        'readonly': true,
-			        'disabled': true,
 			        'id': {
 			          't': 'Expr',
 			          'v': 'properties.get("field")'
@@ -46,7 +45,8 @@ export const SystemRules = {
 			        'value': {
 			          't': 'CFP',
 			          'v': 'value'
-			        }
+			        },
+			        'required': false
 			      }
 			    },
 			    '_rank': 0
@@ -181,7 +181,6 @@ export const SystemRules = {
 			          'v': 'value'
 			        },
 			        'readonly': false,
-			        'disabled': false,
 			        'required': {
 			          't': 'Expr',
 			          'v': 'properties.get("required")'
@@ -380,141 +379,6 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'type',
-			        '_value': 'Enum',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'Enum',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'component': 'GenericChooserComponent',
-			      'bindings': {
-			        'destinationClass': {
-			          't': 'Expr',
-			          'v': 'type'
-			        },
-			        'displayKey': 'name',
-			        'formatter': {
-			          't': 'CFP',
-			          'v': 'formatters.identifier'
-			        },
-			        'key': {
-			          't': 'Expr',
-			          'v': 'field'
-			        },
-			        'object': {
-			          't': 'Expr',
-			          'v': 'object'
-			        }
-			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'Enum',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': [
-			          'search',
-			          'list'
-			        ],
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'bindings': {
-			        'type': 'Popup'
-			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'Enum',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'Enum',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
 			        '_value': [
 			          'Array',
 			          'Set'
@@ -559,10 +423,6 @@ export const SystemRules = {
 			          'v': 'properties.get("enumClass")'
 			        },
 			        'displayKey': 'name',
-			        'formatter': {
-			          't': 'CFP',
-			          'v': 'formatters.identifier'
-			        },
 			        'key': {
 			          't': 'Expr',
 			          'v': 'field'
@@ -704,118 +564,6 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'type',
-			        '_value': 'File',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'File',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'component': 'FileUploadChooser',
-			      'bindings': {
-			        'file': {
-			          't': 'CFP',
-			          'v': 'value'
-			        }
-			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'File',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'File',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': false,
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'bindings': {
-			        'value': {
-			          't': 'Expr',
-			          'v': 'value ? value.name : "(none)"'
-			        }
-			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'File',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
 			        '_value': 'String',
 			        '_isDecl': false
 			      }
@@ -848,7 +596,14 @@ export const SystemRules = {
 			          'v': 'value'
 			        },
 			        'readonly': false,
-			        'disabled': false,
+			        'id': {
+			          't': 'Expr',
+			          'v': 'properties.get("field")'
+			        },
+			        'placeholder': {
+			          't': 'Expr',
+			          'v': 'properties.get("label")'
+			        },
 			        'required': {
 			          't': 'Expr',
 			          'v': 'properties.get("required")'
@@ -1575,23 +1330,25 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'GenericChooserComponent',
+			      'component': 'Select',
 			      'bindings': {
+			        'displayKey': {
+			          't': 'Expr',
+			          'v': 'meta.displayLabel(type, properties.get("labelField"))'
+			        },
+			        'ngModel': {
+			          't': 'CFP',
+			          'v': 'value'
+			        },
+			        'readonly': false,
+			        'disabled': false,
 			        'list': {
 			          't': 'Expr',
 			          'v': 'properties.get("choices")'
 			        },
-			        'type': {
+			        'required': {
 			          't': 'Expr',
-			          'v': 'properties.get("chooserStyle")'
-			        },
-			        'key': {
-			          't': 'Expr',
-			          'v': 'properties.get("field")'
-			        },
-			        'object': {
-			          't': 'Expr',
-			          'v': 'object'
+			          'v': 'properties.get("required")'
 			        }
 			      }
 			    },

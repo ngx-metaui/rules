@@ -17,6 +17,7 @@
  *
  */
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   forwardRef,
@@ -68,7 +69,8 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
       useExisting: forwardRef(() => TextArea),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TextArea extends MatInput implements ControlValueAccessor {
 

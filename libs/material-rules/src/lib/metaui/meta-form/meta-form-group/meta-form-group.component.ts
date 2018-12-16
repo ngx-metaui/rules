@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {Component, Host} from '@angular/core';
+import {ChangeDetectorRef, Component, Host, ViewEncapsulation} from '@angular/core';
 
 import {
   Environment,
@@ -64,7 +64,8 @@ import {
 @Component({
   selector: 'm-form-group',
   templateUrl: 'meta-form-group.component.html',
-  styleUrls: ['meta-form-group.component.scss']
+  styleUrls: ['meta-form-group.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MetaFormGroup extends MetaBaseComponent {
   /**
@@ -91,7 +92,8 @@ export class MetaFormGroup extends MetaBaseComponent {
   mainZones: ZoneField[];
 
 
-  constructor(@Host() protected _context: MetaContextComponent, public env: Environment) {
+  constructor(@Host() protected _context: MetaContextComponent,
+              public env: Environment, private cd: ChangeDetectorRef) {
     super(env, _context);
   }
 
@@ -103,6 +105,7 @@ export class MetaFormGroup extends MetaBaseComponent {
   canShowMainZone(): boolean {
     return this.canShowZone('zLeft') || this.canShowZone('zRight');
   }
+
 
   /**
    * Todo: revisit this part as this is called after each ngDoCheck might want to move into

@@ -17,6 +17,7 @@
  *
  */
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   forwardRef,
@@ -68,11 +69,10 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
       useExisting: forwardRef(() => InputField),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputField extends MatInput implements ControlValueAccessor {
-
-
   /**
    * Reference to internal INPUT element having MatInput directive so we can set this reference
    * back to the MatInput
@@ -84,10 +84,8 @@ export class InputField extends MatInput implements ControlValueAccessor {
   private _composing = false;
   private _compositionMode = false;
 
-  onChange = (_: any) => {
-  };
-  onTouched = () => {
-  };
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
   /** Whether the user is creating a composition string (IME events). */
 
@@ -114,10 +112,8 @@ export class InputField extends MatInput implements ControlValueAccessor {
 
   ngOnInit(): void {
     this.reInit();
-
     super.ngOnInit();
   }
-
 
   registerOnChange(fn: (_: any) => void): void {
     if (this.type === 'number') {
