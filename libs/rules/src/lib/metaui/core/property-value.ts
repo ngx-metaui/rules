@@ -27,6 +27,7 @@ import {
   isNumber,
   isPresent,
   isString,
+  isStringMap,
   StringJoiner
 } from './utils/lang';
 import {FieldPath} from './utils/field-path';
@@ -153,12 +154,18 @@ export class Expr extends DynamicPropertyValue {
 
   constructor(private _expressionString: string, private meta: MetaRules) {
     super();
-    this.addTypeToContext('FieldPath', FieldPath);
+    this.addDepencyToContext('FieldPath', FieldPath);
+
+    if (meta && meta.contextDependencies().size > 0) {
+      meta.contextDependencies().forEach((v, k) => {
+        this.addDepencyToContext(k, v);
+      });
+    }
   }
 
 
-  addTypeToContext(name: string, context: any): void {
-    if (isFunction(context)) {
+  addDepencyToContext(name: string, context: any): void {
+    if (isFunction(context) || isStringMap(context)) {
       this._extendedObjects.set(name, context);
     }
   }
@@ -221,7 +228,7 @@ export class PropFieldsByZoneResolver extends StaticallyResolvable {
     const zonePath = context.meta.zonePath(context);
 
     if (isPresent(zonePath)) {
-      m = <Map<string, any>> FieldPath.getFieldValue(m, zonePath);
+      m = <Map<string, any>>FieldPath.getFieldValue(m, zonePath);
       if (isBlank(m)) {
         m = new Map<string, any>();
       }

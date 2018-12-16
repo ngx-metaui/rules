@@ -162,6 +162,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       return;
     }
 
+    // create new component
     const newComponent = context.propertyForKey('component');
     if (isPresent(newComponent) && isPresent(this.name) && (this.name !== newComponent)) {
       this.viewContainer.clear();
@@ -171,9 +172,9 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       this.createWrapperElementIfAny();
       this.createContentElementIfAny();
     } else {
-
       // we might not skip component instantiation but we still need to update bindings
       // as properties could change
+
       let editable = context.propertyForKey(KeyEditable);
       if (isBlank(editable)) {
         editable = context.propertyForKey(KeyEditing);
@@ -327,7 +328,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
 
     // 2. Add wrapper bindings to wrapper component.
     const wrapperBindings = this.metaContext.myContext().propertyForKey(KeyWrapperBinding);
-    (<any> wrapperComponent.instance)['bindings'] = wrapperBindings;
+    (<any>wrapperComponent.instance)['bindings'] = wrapperBindings;
 
     // 3. Apply the bindings. Get the wrapper metadata, look through it's input - output
     // bindings. and apply the wrapperBindings to these bindings.
@@ -377,7 +378,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
   }
 
   private applyInputs(component: ComponentRef<any>, type: any, bindings: any,
-                      inputs: string[], editable: any, compToBeRendered: boolean = true) {
+                      inputs: string[], editable: any, initialApplyInputs: boolean = true) {
     // propagate a field type to bindings.
     if (isPresent(type) && isPresent(component.instance.canSetType) &&
       component.instance.canSetType()) {
@@ -397,12 +398,10 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       bindings.delete('value');
     }
 
+    let updateComponent = false;
     for (const key of inputs) {
       const publicKey = nonPrivatePrefix(key);
       let value = bindings.get(publicKey);
-
-      // Handle special case where we do not pass explicitly or inherit from parent @Input
-      // name for the component
 
       if (key === 'name' && isBlank(value)) {
         value = this.metaContext.myContext().propertyForKey(KeyField);
@@ -412,29 +411,49 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
         continue;
       }
 
-      // compToBeRendered = only first time
-      if (compToBeRendered && value instanceof ContextFieldPath) {
+      // initialApplyInputs = only first time
+      if (initialApplyInputs && value instanceof ContextFieldPath) {
         this.applyDynamicInputBindings(component.instance, bindings, inputs, key, value,
           editable);
 
-      } else if (compToBeRendered && value instanceof DynamicPropertyValue) {
+      } else if (initialApplyInputs && value instanceof DynamicPropertyValue) {
         const dynval: DynamicPropertyValue = value;
         const newValue = dynval.evaluate(this.metaContext.myContext());
         component.instance[publicKey] = newValue;
 
       } else {
         /**
-         * when re-applying Inputs skip all expressions above and only work with regular
-         * types
-         *
-         * set it only if it changes so it will not trigger necessary `value changed
-         * after ngDoCheck`
+         * when re-applying primitives
          */
         if (!equals(component.instance[publicKey], value)) {
           component.instance[publicKey] = value;
+          updateComponent = true;
+
+          /*** If created NgModel update setDisabled as this is controled by FormControl
+           * property
+           */
+          if (component['ngModelCtx'] && publicKey === 'disabled') {
+            if (value) {
+              component['ngModelCtx'].control.disable();
+            } else {
+              component['ngModelCtx'].control.enable();
+            }
+          }
         }
       }
     }
+
+    if (updateComponent) {
+      if (component.instance.cd) {
+        component.instance.cd.markForCheck();
+      } else {
+        component.changeDetectorRef.markForCheck();
+      }
+      if (component.instance.ngOnChanges) {
+        component.instance.ngOnChanges({});
+      }
+    }
+
     // apply Formatter that can be specified in the oss
     // temporary disabled until angular will support runtime i18n
     // if (bindings.has(MetaIncludeDirective.FormatterBinding)) {
@@ -455,6 +474,12 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
   private applyNgModel(component: ComponentRef<any>, cntxPath: ContextFieldPath): void {
     const ngModel: NgModel = new NgModel(null, null, null,
       [component.instance]);
+
+    if (!!component.instance['disabled']) {
+      ngModel.control.disable();
+    } else {
+      ngModel.control.enable();
+    }
 
     const subscription = ngModel.update.subscribe((value: any) => {
       const context = this.metaContext.myContext();

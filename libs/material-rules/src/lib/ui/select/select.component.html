@@ -1,0 +1,24 @@
+<mat-select #matSelect
+            [placeholder]="placeholder"
+            [id]="id"
+            [required]="required"
+            [disabled]="disabled"
+            [(ngModel)]="value"
+            [compareWith]="compareWithFn"
+            (openedChange)="_onBlur()"
+            (selectionChange)="_onSelection($event);">
+
+  <mat-option [value]="null" *ngIf="hasNoSelection">{{noSelectionString}}</mat-option>
+  <ng-template [ngIf]="!isAsync">
+    <mat-option *ngFor="let item of list" [value]="item">
+      {{displayKey ? item[displayKey] : item}}
+    </mat-option>
+  </ng-template>
+
+  <ng-template [ngIf]="isAsync">
+    <mat-option *ngFor="let item of list | async" [value]="item">
+      {{displayKey ? item[displayKey] : item}}
+    </mat-option>
+  </ng-template>
+</mat-select>
+

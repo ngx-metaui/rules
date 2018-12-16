@@ -61,6 +61,75 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
+			        '_value': 'favColor',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': [
+			        'list',
+			        'required'
+			      ],
+			      'choices': [
+			        'Blue',
+			        'Red',
+			        'Yellow'
+			      ]
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'prefAirline',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': 'list',
+			      'label': 'My airlines',
+			      'choices': {
+			        't': 'Expr',
+			        'v': 'controller.airlines'
+			      }
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
 			        '_value': 'uniqueName',
 			        '_isDecl': false
 			      }
@@ -151,6 +220,24 @@ export const UserRule = {
 			        '_key': 'class',
 			        '_value': 'User',
 			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'prefAirline',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'firstName'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
 			      }
 			    ],
 			    '_rank': 0
@@ -189,6 +276,24 @@ export const UserRule = {
 			    '_properties': {
 			      'trait': 'required',
 			      'after': 'title'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'favColor',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'lastName'
 			    },
 			    '_rank': 0
 			  },

@@ -1,4 +1,5 @@
 import {Entity} from '@ngx-metaui/rules';
+import {Airline} from './airline';
 
 /**
  * This is generated class
@@ -11,6 +12,8 @@ export class User implements Entity {
     public uniqueName?: string,
     public firstName?: string,
     public lastName?: string,
+    public favColor?: string,
+    public prefAirline?: Airline,
     public description?: string) {
   }
 
@@ -25,6 +28,8 @@ export class User implements Entity {
       uniqueName: String,
       firstName: String,
       lastName: String,
+      favColor: String,
+      prefAirline: Airline,
       description: String
     };
   }

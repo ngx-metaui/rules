@@ -25,9 +25,10 @@ field {
         bindings:{
           value:$value;
           readonly:true;
-          disabled:true;
+          required:false;
           id: ${properties.get("field")};
           placeholder:${properties.get("label")};
+
         }
     }
     type=(boolean, Boolean) {
@@ -45,7 +46,6 @@ field {
           bindings:{
              ngModel: $value;
              readonly:false;
-             disabled:false;
              required:${properties.get("required")};
           }
         }
@@ -64,23 +64,6 @@ field {
 
     }
 
-    type=Enum   {
-        editable                {
-            component:GenericChooserComponent;
-            bindings:{
-                object:${object};
-                key:${field};
-                destinationClass:${type};
-                displayKey:"name";
-                formatter:$formatters.identifier;
-            };
-
-            operation=(search, list) {
-                bindings: { type:Popup; }
-            }
-        }
-    }
-
     type=(Array, Set) {
         @trait=enum editable {
             component:GenericChooserComponent;
@@ -90,7 +73,6 @@ field {
                 multiselect:true;
                 destinationClass:${properties.get("enumClass")};
                 displayKey:"name";
-                formatter:$formatters.identifier;
             };
         }
 
@@ -103,23 +85,14 @@ field {
     }
 
 
-    type="File" {
-        editable {
-            component:FileUploadChooser; bindings:{ file:$value };
-        }
-        editable=false {
-            bindings: {value:${value ? value.name : "(none)"}}
-        }
-    }
-
-
     type=String {
         editable  {
             component:InputField;
             bindings:{
                ngModel: $value;
                readonly:false;
-               disabled:false;
+               id: ${properties.get("field")};
+               placeholder:${properties.get("label")};
                required:${properties.get("required")};
             }
         }
@@ -179,12 +152,14 @@ field {
 
     @trait=list {
         editable {
-            component:GenericChooserComponent;
+            component:Select;
             bindings:{
-                object:${object};
-                key:${properties.get("field")};
+                ngModel:$value;
+                readonly:false;
+                disabled:false;
+                required:${properties.get("required")};
+                displayKey:${ meta.displayLabel(type, properties.get("labelField") )};
                 list:${properties.get("choices")};
-                type:${properties.get("chooserStyle")};
             }
         }
     }

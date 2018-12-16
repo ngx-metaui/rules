@@ -19,7 +19,6 @@
  */
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -48,8 +47,7 @@ import {MatFormField} from '@angular/material';
 @Component({
   selector: 'm-form-field',
   templateUrl: 'meta-form-field.component.html',
-  styleUrls: ['meta-form-field.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['meta-form-field.component.scss']
 
 })
 export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
@@ -89,12 +87,19 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
   }
 
 
+  ngDoCheck(): void {
+    super.ngDoCheck();
+
+    if (this.control && !this.control.validator) {
+      this.registerValidators(this.control);
+    }
+  }
+
   ngAfterViewInit(): void {
     const ngControl: NgModel = <NgModel>this.mdFormField._control.ngControl;
     if (ngControl) {
       this.registerValidators(ngControl.control);
     }
-
   }
 
 
@@ -147,23 +152,9 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
   private registerValidators(control: FormControl) {
     let validators: ValidatorFn[] = [];
 
-    // if (isPresent(this.maxLength)) {
-    //   validators.push(Validators.maxLength(this.maxLength));
-    // }
-    //
-    // if (isPresent(this.minLength)) {
-    //   validators.push(Validators.minLength(this.minLength));
-    // }
-
-    if (this.isRequired()) {
-      // validators.push(Validators.required);
-    }
-
     if (this.validators && this.validators.length > 0) {
       validators = [...validators, ...this.validators];
-
     }
-
 
     if (validators.length === 1) {
       control.setValidators(validators[0]);
@@ -173,7 +164,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
   }
 
   hasErrors(): boolean {
-    if (this.mdFormField && this.mdFormField._control.ngControl.control.invalid) {
+    if (this.editing && this.mdFormField && this.mdFormField._control.ngControl.control.invalid) {
       this.errorMessage = this.control.errors['metavalid'] ? this.control.errors['metavalid'].msg
         : '';
       return true;
@@ -181,9 +172,9 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     return false;
   }
 
-  get control() {
-    if (this.mdFormField) {
-      return this.mdFormField._control.ngControl.control;
+  get control(): FormControl {
+    if (this.mdFormField && this.mdFormField._control.ngControl) {
+      return <FormControl> this.mdFormField._control.ngControl.control;
     }
     return null;
   }

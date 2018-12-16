@@ -24,4 +24,5 @@
 
 export * from './ui/input/input.component';
 export * from './ui/text-area/text-area.component';
+export * from './ui/select/select.component';
 export {MetaForm} from './metaui/index';

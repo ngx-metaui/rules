@@ -8,17 +8,27 @@ class=User {
     field=description {
       trait:fluid,longtext;
       hint: ${"You can type some long text here: " + value.length};
+    }
 
+    field=favColor {
+        trait:list,required;
+        choices:['Blue', 'Red', 'Yellow'];
+    }
+
+
+    field=prefAirline {
+        label:"My airlines";
+        trait:list;
+        choices:${controller.airlines};
     }
 
     field=uniqueName {
       hint: "This is generated field.";
-
     }
 
     zNone => *;
-    zLeft => uniqueName  => firstName#required;
-    zRight => title => lastName#required;
+    zLeft => uniqueName => firstName#required => prefAirline;
+    zRight => title => lastName#required => favColor;
     zBottom => description;
 }
 

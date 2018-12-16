@@ -119,6 +119,12 @@ export abstract class Meta implements MetaRules, OnDestroy {
     new Collections.Dictionary<PropertyMap, PropertyMap>();
 
 
+  /**
+   * Stores objects that can be referenced from OSS while evaluating expression
+   */
+  private contextInjectables: Map<string, any> = new Map<string, any>();
+
+
   private _managerForProperty: Map<string, PropertyManager> = new Map<string, PropertyManager>();
 
   protected sysRulesLoaded = false;
@@ -183,6 +189,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
     this._MatchToPropsCache = new Collections.Dictionary<Match, PropertyMap>();
     this._PropertyMapUniquer = new Collections.Dictionary<PropertyMap, PropertyMap>();
     this.identityCache = new Collections.Dictionary<any, any>();
+    this.contextInjectables.clear();
   }
 
   invalidateRules(): void {
@@ -387,6 +394,15 @@ export abstract class Meta implements MetaRules, OnDestroy {
   abstract zones(context: Context): Array<string>;
 
   abstract loadApplicationRule(): void;
+
+  contextDependencies(): Map<string, any> {
+    return this.contextInjectables;
+  }
+
+  registerDependency(name: string, dependency: any): void {
+    this.contextInjectables.set(name, dependency);
+  }
+
 
   protected scopeKeyForSelector(preds: Array<Selector>): string {
     for (let i = preds.length - 1; i >= 0; i--) {

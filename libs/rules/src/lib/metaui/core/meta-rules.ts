@@ -485,6 +485,18 @@ export interface MetaRules extends MetaRuleBase, ObjectRule, LayoutRule {
 
 
   /**
+   *  List all dependencies that can be accessed from the OSS expression
+   */
+  contextDependencies(): Map<string, any>;
+
+  /**
+   *  Registers any type instance that are later on injected to the Context so you can
+   *  reference it from the OSS
+   */
+  registerDependency(name: string, dependency: any): void;
+
+
+  /**
    * Nessesary utility methods exposed to OSS
    *
    */
@@ -493,7 +505,6 @@ export interface MetaRules extends MetaRuleBase, ObjectRule, LayoutRule {
   beautifyClassName(name: string): string;
 
   toClassName(object: any): string;
-
 }
 
 

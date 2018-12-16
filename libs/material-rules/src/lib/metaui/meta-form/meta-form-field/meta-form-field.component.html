@@ -1,11 +1,10 @@
-
 <mat-form-field #formField *ngIf="properties('visible')" class="form-field"
                 [hideRequiredMarker]="false"
                 [floatLabel]="properties('floatingLabel')">
 
   <m-include-component mdFormFieldAdapter></m-include-component>
 
-  <mat-hint align="end">{{properties('hint')}}</mat-hint>
+  <mat-hint *ngIf="editing" align="end">{{properties('hint')}}</mat-hint>
 
   <mat-error *ngIf="hasErrors()">{{errorMessage}}</mat-error>
 </mat-form-field>

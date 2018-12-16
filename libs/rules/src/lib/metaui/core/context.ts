@@ -369,7 +369,7 @@ export class Context extends Extensible {
 
       const propValue: DynamicPropertyValue = value;
       // if (propValue instanceof Expr) {
-      //   propValue.addTypeToContext('UIMeta', UIMeta);
+      //   propValue.addDepencyToContext('UIMeta', UIMeta);
       // }
       value = propValue.evaluate(this);
     }

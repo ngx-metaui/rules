@@ -19,29 +19,36 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {MatInputModule} from '@angular/material';
+import {MatInputModule, MatSelectModule} from '@angular/material';
 import {InputField} from './input/input.component';
 import {TextArea} from './text-area/text-area.component';
+import {Select} from './select/select.component';
 
 
 @NgModule({
   declarations: [
     InputField,
-    TextArea
+    TextArea,
+    Select
   ],
   imports: [
     CommonModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   entryComponents: [
     InputField,
-    TextArea
+    TextArea,
+    Select
+
   ],
   exports: [
     MatInputModule,
+    MatSelectModule,
     InputField,
-    TextArea
+    TextArea,
+    Select
   ],
   providers: []
 })

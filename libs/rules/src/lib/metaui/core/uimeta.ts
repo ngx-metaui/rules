@@ -302,7 +302,7 @@ export class UIMeta extends ObjectMeta {
 
   displayLabel(className: string, useInstead?: string): string {
 
-    if (isPresent(useInstead)) {
+    if (isPresent(useInstead) || className === 'String') {
       return useInstead;
     }
     return this.displayKeyForClass(className);
