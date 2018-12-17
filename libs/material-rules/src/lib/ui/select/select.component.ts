@@ -33,7 +33,7 @@ import {
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {MatFormFieldControl, MatSelect, MatSelectChange} from '@angular/material';
-import {isObservable, Observable, Subject} from 'rxjs';
+import {isObservable, Subject} from 'rxjs';
 
 
 /**
