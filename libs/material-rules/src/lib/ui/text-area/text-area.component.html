@@ -1,6 +1,8 @@
 <textarea
   #inputField
   matInput
+  cdkTextareaAutosize
+
   class="mat-input-element mat-form-field-autofill-control"
   [class.mat-input-server]="_isServer"
   [attr.id]="id"
@@ -13,6 +15,7 @@
   [attr.aria-invalid]="errorState"
   [attr.aria-required]="required.toString()"
   [(ngModel)]="value"
+  [matTextareaAutosize]="true"
   (blur)="_focusChanged(false)"
   (focus)="_focusChanged(true)"
   (input)="onInput($event.target.value)"

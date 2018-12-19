@@ -36,8 +36,18 @@ field {
             component:Checkbox;
             bindings:{
               ngModel: $value;
-              binary: true;
+              required:${properties.get("required")};
+              disabled:false;
+              label:${properties.get("label")};
+              valueLabel:"Yes/No";
+              labelPosition:${properties.get("labelPosition")};
             };
+        }
+
+        editable=false {
+           bindings:{
+              value: ${value ? "Yes" : "No"};
+           };
         }
     }
     type=(Number) {
@@ -65,22 +75,17 @@ field {
     }
 
     type=(Array, Set) {
-        @trait=enum editable {
-            component:GenericChooserComponent;
+        editable {
+            component:Select;
             bindings:{
-                object:${object};
-                key:${field};
-                multiselect:true;
-                destinationClass:${properties.get("enumClass")};
-                displayKey:"name";
-            };
-        }
-
-        operation=(search, list)        { visible:false }
-
-        @trait=ownedToMany {
-            after:zDetail;
-            component:MetaDetailTable;
+                ngModel:$value;
+                readonly:false;
+                disabled:false;
+                multiple:true;
+                required:${properties.get("required")};
+                displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
+                list:${properties.get("choices")};
+            }
         }
     }
 
@@ -141,7 +146,7 @@ field {
         operation=(edit, create) {
             required:true;
             object {
-                valid: ${( value != undefined && value != null && value.length  > 0) ? true : "Required field"}
+                valid: ${( value == null || value.length  == 0) ? "Required field": true}
             }
         }
     }
@@ -150,7 +155,7 @@ field {
         fluid:true;
     }
 
-    @trait=list {
+    @trait=asSelect {
         editable {
             component:Select;
             bindings:{
@@ -158,12 +163,26 @@ field {
                 readonly:false;
                 disabled:false;
                 required:${properties.get("required")};
-                displayKey:${ meta.displayLabel(type, properties.get("labelField") )};
+                displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
                 list:${properties.get("choices")};
             }
         }
     }
 
+    @trait=asRadio {
+          editable {
+              component:RadioGroup;
+              bindings:{
+                  ngModel:$value;
+                  readonly:false;
+                  disabled:false;
+                  required:${properties.get("required")};
+                  label:${properties.get("label")};
+                  displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
+                  list:${properties.get("choices")};
+              }
+          }
+     }
 
     @trait=asObject {
         editable=false {
@@ -178,7 +197,6 @@ field {
         }
     }
 
-
     @trait=asHover {
         editable=false {
             component:HoverCardComponent;
@@ -190,7 +208,7 @@ field {
         }
     }
 
-     @layout=Content {
+    @layout=Content {
         component:MetaObjectDetailComponent;
         bindings: {
             object:$value;
@@ -205,8 +223,6 @@ field {
         @trait=Popup        { bindings:{type:Dropdown} }
         @trait=PopupControl { bindings:{type:PopupControl} }
         @trait=Chooser      { bindings:{type:Chooser} }
-
-        @trait=PostOnChange { bindings:{action:null} }
     }
 
     component=(StringComponent,AWHyperlink,PopupMenuLink) {

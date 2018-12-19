@@ -386,7 +386,7 @@ export interface LayoutRule {
    *  trait:LabelField
    *
    */
-  displayLabel(className: string, propertiesValue: string): string;
+  displayLabel(className: string, propertiesValue: string, usedByField?: boolean): string;
 
 
   /***

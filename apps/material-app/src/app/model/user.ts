@@ -1,5 +1,6 @@
 import {Entity} from '@ngx-metaui/rules';
 import {Airline} from './airline';
+import {Animal} from './animal';
 
 /**
  * This is generated class
@@ -14,6 +15,9 @@ export class User implements Entity {
     public lastName?: string,
     public favColor?: string,
     public prefAirline?: Airline,
+    public favAnimal?: Animal,
+    public toppings?: string[],
+    public isChecked: boolean = false,
     public description?: string) {
   }
 
@@ -29,6 +33,9 @@ export class User implements Entity {
       firstName: String,
       lastName: String,
       favColor: String,
+      favAnimal: Animal,
+      toppings: Array(String),
+      isChecked: Boolean,
       prefAirline: Airline,
       description: String
     };

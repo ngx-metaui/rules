@@ -11,14 +11,14 @@ class=User {
     }
 
     field=favColor {
-        trait:list,required;
+        trait:asSelect,required;
         choices:['Blue', 'Red', 'Yellow'];
     }
 
 
     field=prefAirline {
         label:"My airlines";
-        trait:list;
+        trait:asSelect;
         choices:${controller.airlines};
     }
 
@@ -26,9 +26,24 @@ class=User {
       hint: "This is generated field.";
     }
 
+    field=isChecked {
+      label: "Do I live in cave?";
+    }
+
+    field=favAnimal {
+       label: "My Animal";
+       hint: ${"Animal says: " + value};
+       trait:asRadio,required;
+       choices:${controller.animals};
+    }
+
+    field=toppings {
+       choices:['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+    }
+
     zNone => *;
-    zLeft => uniqueName => firstName#required => prefAirline;
-    zRight => title => lastName#required => favColor;
+    zLeft => uniqueName => firstName#required => prefAirline => favAnimal => toppings;
+    zRight => title => lastName#required => favColor => isChecked;
     zBottom => description;
 }
 

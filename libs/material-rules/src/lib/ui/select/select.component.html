@@ -3,12 +3,13 @@
             [id]="id"
             [required]="required"
             [disabled]="disabled"
+            [multiple]="multiple"
             [(ngModel)]="value"
             [compareWith]="compareWithFn"
             (openedChange)="_onBlur()"
             (selectionChange)="_onSelection($event);">
 
-  <mat-option [value]="null" *ngIf="hasNoSelection">{{noSelectionString}}</mat-option>
+  <mat-option [value]="null" *ngIf="hasNoSelection && !multiple">{{noSelectionString}}</mat-option>
   <ng-template [ngIf]="!isAsync">
     <mat-option *ngFor="let item of list" [value]="item">
       {{displayKey ? item[displayKey] : item}}

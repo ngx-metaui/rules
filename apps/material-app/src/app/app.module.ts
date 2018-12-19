@@ -2,10 +2,17 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {MatButtonModule, MatCardModule, MatGridListModule, MatIconModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatGridListModule,
+  MatIconModule,
+  MatRadioModule,
+  MatSelectModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule} from '@angular/forms';
-import {MaterialRulesModule, UILibModule} from '@ngx-metaui/material-rules';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MaterialRulesModule} from '@ngx-metaui/material-rules';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
 import * as userRules from './rules/user-rules';
 import {NestedComponentComponent} from './nested-component/nested-component.component';
@@ -18,8 +25,11 @@ import {RenderComponentComponent} from './render-component/render-component.comp
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
+    MatRadioModule,
+    MatSelectModule,
 
     MatCardModule,
     MatGridListModule,
