@@ -134,10 +134,8 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
    *
    * Methods used by ControlValueAccessor
    */
-  onChange = (_: any) => {
-  };
-  onTouched = () => {
-  };
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
 
   constructor(@Optional() @Self() public ngControl: NgControl,
