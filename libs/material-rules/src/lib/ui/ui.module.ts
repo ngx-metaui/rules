@@ -19,36 +19,53 @@
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {MatInputModule, MatSelectModule} from '@angular/material';
+import {
+  MatCheckboxModule,
+  MatInputModule,
+  MatRadioModule,
+  MatSelectModule
+} from '@angular/material';
 import {InputField} from './input/input.component';
 import {TextArea} from './text-area/text-area.component';
 import {Select} from './select/select.component';
+import {Checkbox} from './checkbox/checkbox.component';
+import {RadioGroup} from './radio-group/radio-group.component';
 
 
 @NgModule({
   declarations: [
     InputField,
     TextArea,
-    Select
+    Select,
+    Checkbox,
+    RadioGroup
   ],
   imports: [
     CommonModule,
     FormsModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule
   ],
   entryComponents: [
     InputField,
     TextArea,
-    Select
+    Select,
+    Checkbox,
+    RadioGroup
 
   ],
   exports: [
     MatInputModule,
     MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule,
     InputField,
     TextArea,
-    Select
+    Select,
+    Checkbox,
+    RadioGroup
   ],
   providers: []
 })

@@ -371,7 +371,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
 
   abstract currentModuleLabel(moduleName: string, context?: Context): string;
 
-  abstract displayLabel(className: string, propertiesValue: string): string;
+  abstract displayLabel(className: string, propertiesValue: string, usedByField?: boolean): string;
 
   abstract fieldList(context: Context): Array<ItemProperties>;
 

@@ -1,7 +1,7 @@
 /*
     Default definition
 */
-class=Airline {
+class=Animal {
 
     field=name {
       trait:labelField;

@@ -300,12 +300,12 @@ export class UIMeta extends ObjectMeta {
   }
 
 
-  displayLabel(className: string, useInstead?: string): string {
+  displayLabel(className: string, useInstead?: string, usedByField: boolean = false): string {
 
     if (isPresent(useInstead) || className === 'String') {
       return useInstead;
     }
-    return this.displayKeyForClass(className);
+    return this.displayKeyForClass(className, usedByField);
   }
 
 
@@ -551,7 +551,7 @@ export class UIMeta extends ObjectMeta {
   }
 
 
-  private displayKeyForClass(className: string): string {
+  private displayKeyForClass(className: string, usedByField: boolean = false): string {
     // performance: should use registerDerivedValue('...', new Context.StaticDynamicWrapper
     // to get cached resolution here...
     const context = this.newContext();
@@ -559,7 +559,11 @@ export class UIMeta extends ObjectMeta {
     context.set(KeyClass, className);
     const fields: Array<ItemProperties> = this.itemProperties(context, KeyField, true);
 
-    return ListWrapper.isEmpty(fields) ? '$toString' : fields[0].name;
+    if (usedByField) {
+      return ListWrapper.isEmpty(fields) ? null : fields[0].name;
+    } else {
+      return ListWrapper.isEmpty(fields) ? '$toString' : fields[0].name;
+    }
   }
 
   /**
@@ -586,7 +590,7 @@ export class UIMeta extends ObjectMeta {
   private naviateToPage(context: Context, route: Route, withBackAction: boolean): void {
     const params = this.prepareRoute(context, withBackAction);
 
-    const uiContex: UIContext = <UIContext> context;
+    const uiContex: UIContext = <UIContext>context;
     this.routingService.navigateWithRoute(route, params, uiContex.object);
   }
 
@@ -756,7 +760,7 @@ class AppRuleMetaDataProvider implements ValueQueriedObserver {
 
   notify(meta: MetaRules, key: string, value: any): void {
     let aRules: Array<JsonRule>;
-    const uiMeta: UIMeta = <UIMeta> meta;
+    const uiMeta: UIMeta = <UIMeta>meta;
 
     if (uiMeta._testRules.has(value + 'Rule')) {
       // since we are in development mode and test mode is on we can check extra repository

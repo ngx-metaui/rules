@@ -136,6 +136,9 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
   @Input()
   id: string;
 
+  @Input()
+  multiple: boolean = false;
+
   /**
    * Directly sets value to the component that at the ends up at writeValue as well fires
    * change detections
@@ -183,8 +186,10 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
    *
    * Methods used by ControlValueAccessor
    */
-  onChange = (_: any) => {};
-  onTouched = () => {};
+  onChange = (_: any) => {
+  };
+  onTouched = () => {
+  };
 
 
   constructor(@Optional() @Self() public ngControl: NgControl) {

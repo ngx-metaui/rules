@@ -107,7 +107,69 @@ export const SystemRules = {
 			          't': 'CFP',
 			          'v': 'value'
 			        },
-			        'binary': true
+			        'valueLabel': 'Yes/No',
+			        'labelPosition': {
+			          't': 'Expr',
+			          'v': 'properties.get("labelPosition")'
+			        },
+			        'disabled': false,
+			        'label': {
+			          't': 'Expr',
+			          'v': 'properties.get("label")'
+			        },
+			        'required': {
+			          't': 'Expr',
+			          'v': 'properties.get("required")'
+			        }
+			      }
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'type',
+			        '_value': [
+			          'boolean',
+			          'Boolean'
+			        ],
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'type',
+			        '_value': [
+			          'boolean',
+			          'Boolean'
+			        ],
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'editable',
+			        '_value': false,
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'bindings': {
+			        'value': {
+			          't': 'Expr',
+			          'v': 'value ? "Yes" : "No"'
+			        }
 			      }
 			    },
 			    '_rank': 0
@@ -404,126 +466,34 @@ export const SystemRules = {
 			        '_isDecl': false
 			      },
 			      {
-			        '_key': 'trait',
-			        '_value': 'enum',
-			        '_isDecl': true
-			      },
-			      {
 			        '_key': 'editable',
 			        '_value': '*',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'GenericChooserComponent',
+			      'component': 'Select',
 			      'bindings': {
-			        'multiselect': true,
-			        'destinationClass': {
+			        'displayKey': {
 			          't': 'Expr',
-			          'v': 'properties.get("enumClass")'
+			          'v': 'meta.displayLabel(type, properties.get("labelField"), true)'
 			        },
-			        'displayKey': 'name',
-			        'key': {
-			          't': 'Expr',
-			          'v': 'field'
+			        'ngModel': {
+			          't': 'CFP',
+			          'v': 'value'
 			        },
-			        'object': {
+			        'readonly': false,
+			        'multiple': true,
+			        'disabled': false,
+			        'list': {
 			          't': 'Expr',
-			          'v': 'object'
+			          'v': 'properties.get("choices")'
+			        },
+			        'required': {
+			          't': 'Expr',
+			          'v': 'properties.get("required")'
 			        }
 			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': [
-			          'Array',
-			          'Set'
-			        ],
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': [
-			          'Array',
-			          'Set'
-			        ],
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'operation',
-			        '_value': [
-			          'search',
-			          'list'
-			        ],
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'visible': false
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': [
-			          'Array',
-			          'Set'
-			        ],
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': [
-			          'Array',
-			          'Set'
-			        ],
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'ownedToMany',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_properties': {
-			      'component': 'MetaDetailTable',
-			      'after': 'zDetail'
 			    },
 			    '_rank': 0
 			  },
@@ -1215,7 +1185,7 @@ export const SystemRules = {
 			    '_properties': {
 			      'valid': {
 			        't': 'Expr',
-			        'v': '((value != undefined) && (value != null) && (value.length \u003e 0)) ? true : "Required field"'
+			        'v': '((value == null) || (value.length == 0)) ? "Required field" : true'
 			      }
 			    },
 			    '_rank': 0
@@ -1305,7 +1275,7 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'list',
+			        '_value': 'asSelect',
 			        '_isDecl': true
 			      }
 			    ],
@@ -1320,7 +1290,7 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'list',
+			        '_value': 'asSelect',
 			        '_isDecl': true
 			      },
 			      {
@@ -1334,7 +1304,7 @@ export const SystemRules = {
 			      'bindings': {
 			        'displayKey': {
 			          't': 'Expr',
-			          'v': 'meta.displayLabel(type, properties.get("labelField"))'
+			          'v': 'meta.displayLabel(type, properties.get("labelField"), true)'
 			        },
 			        'ngModel': {
 			          't': 'CFP',
@@ -1363,7 +1333,94 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'list',
+			        '_value': 'asSelect',
+			        '_isDecl': true
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'trait',
+			        '_value': 'asRadio',
+			        '_isDecl': true
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'trait',
+			        '_value': 'asRadio',
+			        '_isDecl': true
+			      },
+			      {
+			        '_key': 'editable',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'component': 'RadioGroup',
+			      'bindings': {
+			        'displayKey': {
+			          't': 'Expr',
+			          'v': 'meta.displayLabel(type, properties.get("labelField"), true)'
+			        },
+			        'ngModel': {
+			          't': 'CFP',
+			          'v': 'value'
+			        },
+			        'readonly': false,
+			        'disabled': false,
+			        'label': {
+			          't': 'Expr',
+			          'v': 'properties.get("label")'
+			        },
+			        'list': {
+			          't': 'Expr',
+			          'v': 'properties.get("choices")'
+			        },
+			        'required': {
+			          't': 'Expr',
+			          'v': 'properties.get("required")'
+			        }
+			      }
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'trait',
+			        '_value': 'asRadio',
 			        '_isDecl': true
 			      }
 			    ],
@@ -1804,44 +1861,6 @@ export const SystemRules = {
 			      'bindings': {
 			        'type': 'Chooser'
 			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'component',
-			        '_value': 'GenericChooserComponent',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'component',
-			        '_value': 'GenericChooserComponent',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'PostOnChange',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_properties': {
-			      'bindings': {}
 			    },
 			    '_rank': 0
 			  },

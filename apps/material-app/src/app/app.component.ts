@@ -1,8 +1,9 @@
-import {ChangeDetectorRef, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {User} from './model/user';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 import {Airline} from './model/airline';
-import {InputField} from '../../../../libs/material-rules/src/lib/ui/input/input.component';
+import {Animal} from './model/animal';
+import {FormControl} from '@angular/forms';
 
 
 export interface Animal {
@@ -19,26 +20,30 @@ export interface Animal {
 export class AppComponent implements OnInit {
   object: User;
 
-  @ViewChild('aaa')
-  mdInput: InputField;
-
   operation = 'edit';
-
   airlines: Airline[];
+  airline: Airline;
+  animals: Animal[];
+  animal: Animal;
+
 
 
   constructor(@Inject(META_RULES) protected meta: MetaRules, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
+    this.airlines = new AirlineDataService().fetch();
+    this.animals = new AnimalDataService().fetch();
+    this.meta.registerDependency('controller', this);
+
+    this.airline = this.airlines[2];
+    this.animal = this.animals[2];
+
     this.object = new User('R0001', 'FK0001',
       'Fred', 'Flinstone', 'Blue',
       new Airline('OK', 'Czech Airlines', 'SkyTeam', 'Czechia'),
-      'Some short description');
+      this.animal, [], false, 'Some short description');
 
-
-    this.airlines = new AirlineDataService().fetch();
-    this.meta.registerDependency('controller', this);
   }
 
 
@@ -59,3 +64,16 @@ export class AirlineDataService {
 
   }
 }
+
+export class AnimalDataService {
+  fetch(): Animal[] {
+    return [
+      new Animal('Dog', 'Woof'),
+      new Animal('Cat', 'Meow'),
+      new Animal('Cow', 'Moo'),
+      new Animal('Fox', 'Wa-pa-pa-pa-pa-pa-pow')
+    ];
+
+  }
+}
+
