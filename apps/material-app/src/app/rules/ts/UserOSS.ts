@@ -26,19 +26,13 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'description',
+			        '_value': 'uniqueName',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'hint': {
-			        't': 'Expr',
-			        'v': '"You can type some long text here: " + value.length'
-			      },
-			      'trait': [
-			        'fluid',
-			        'longtext'
-			      ]
+			      'hint': 'This is generated field.',
+			      'label': 'Id'
 			    },
 			    '_rank': 0
 			  },
@@ -61,20 +55,15 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'favColor',
+			        '_value': [
+			          'firstName',
+			          'lastName'
+			        ],
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'trait': [
-			        'asSelect',
-			        'required'
-			      ],
-			      'choices': [
-			        'Blue',
-			        'Red',
-			        'Yellow'
-			      ]
+			      'trait': 'required'
 			    },
 			    '_rank': 0
 			  },
@@ -130,40 +119,20 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'uniqueName',
+			        '_value': 'favColor',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'hint': 'This is generated field.'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'isChecked',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'label': 'Do I live in cave?'
+			      'trait': [
+			        'asSelect',
+			        'required'
+			      ],
+			      'choices': [
+			        'Blue',
+			        'Red',
+			        'Yellow'
+			      ]
 			    },
 			    '_rank': 0
 			  },
@@ -226,11 +195,40 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
+			        '_value': 'isChecked',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'label': 'Do I live in cave?'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
 			        '_value': 'toppings',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
+			      'label': 'Preferred toppings',
 			      'choices': [
 			        'Extra cheese',
 			        'Mushroom',
@@ -238,6 +236,41 @@ export const UserRule = {
 			        'Pepperoni',
 			        'Sausage',
 			        'Tomato'
+			      ]
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'description',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'hint': {
+			        't': 'Expr',
+			        'v': '"You can type some long text here: " + value.length'
+			      },
+			      'trait': [
+			        'fluid',
+			        'longtext'
 			      ]
 			    },
 			    '_rank': 0
@@ -312,7 +345,6 @@ export const UserRule = {
 			      }
 			    ],
 			    '_properties': {
-			      'trait': 'required',
 			      'after': 'uniqueName'
 			    },
 			    '_rank': 0
@@ -413,7 +445,6 @@ export const UserRule = {
 			      }
 			    ],
 			    '_properties': {
-			      'trait': 'required',
 			      'after': 'title'
 			    },
 			    '_rank': 0

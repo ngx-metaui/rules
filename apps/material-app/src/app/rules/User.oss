@@ -4,17 +4,14 @@
     Default definition
 */
 class=User {
-
-    field=description {
-      trait:fluid,longtext;
-      hint: ${"You can type some long text here: " + value.length};
+    field=uniqueName {
+      label: "Id";
+      hint: "This is generated field.";
     }
 
-    field=favColor {
-        trait:asSelect,required;
-        choices:['Blue', 'Red', 'Yellow'];
+    field=(firstName, lastName) {
+      trait:required;
     }
-
 
     field=prefAirline {
         label:"My airlines";
@@ -22,28 +19,36 @@ class=User {
         choices:${controller.airlines};
     }
 
-    field=uniqueName {
-      hint: "This is generated field.";
+    field=favColor {
+        trait:asSelect,required;
+        choices:['Blue', 'Red', 'Yellow'];
+    }
+
+    field=favAnimal {
+       label: "My Animal";
+       hint: ${"Animal says: " + value };
+       trait:asRadio,required;
+       choices:${controller.animals};
     }
 
     field=isChecked {
       label: "Do I live in cave?";
     }
 
-    field=favAnimal {
-       label: "My Animal";
-       hint: ${"Animal says: " + value};
-       trait:asRadio,required;
-       choices:${controller.animals};
-    }
-
     field=toppings {
+       label:"Preferred toppings";
        choices:['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
     }
 
+    field=description {
+      trait:fluid,longtext;
+      hint: ${"You can type some long text here: " + value.length};
+    }
+
+
     zNone => *;
-    zLeft => uniqueName => firstName#required => prefAirline => favAnimal => toppings;
-    zRight => title => lastName#required => favColor => birthDate => isChecked;
+    zLeft => uniqueName => firstName => prefAirline => favAnimal => toppings;
+    zRight => title => lastName => favColor => birthDate => isChecked;
     zBottom => description;
 }
 
