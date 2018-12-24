@@ -332,13 +332,110 @@ export const SystemRules = {
 			        '_isDecl': false
 			      }
 			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'type',
+			        '_value': 'Date',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'editable',
+			        '_value': '*',
+			        '_isDecl': false
+			      }
+			    ],
 			    '_properties': {
-			      'component': 'DateAndTimeComponent',
+			      'component': 'DatePicker',
 			      'bindings': {
-			        'formatter': 'shortDate',
-			        'showTime': false
+			        'ngModel': {
+			          't': 'CFP',
+			          'v': 'value'
+			        },
+			        'inputDisabled': false,
+			        'readonly': false,
+			        'editable': true,
+			        'disabled': false,
+			        'id': {
+			          't': 'Expr',
+			          'v': 'properties.get("field")'
+			        }
 			      }
 			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'type',
+			        '_value': 'Date',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'type',
+			        '_value': 'Date',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'editable',
+			        '_value': false,
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'component': 'DatePicker',
+			      'bindings': {
+			        'inputDisabled': true,
+			        'readonly': true,
+			        'editable': false,
+			        'disabled': false,
+			        'id': {
+			          't': 'Expr',
+			          'v': 'properties.get("field")'
+			        },
+			        'value': {
+			          't': 'CFP',
+			          'v': 'value'
+			        }
+			      }
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'field',
+			        '_value': '*',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'type',
+			        '_value': 'Date',
+			        '_isDecl': false
+			      }
+			    ],
 			    '_rank': 0
 			  },
 			  {
@@ -359,52 +456,6 @@ export const SystemRules = {
 			        '_isDecl': false
 			      }
 			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'Date',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'Date',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'dateTime',
-			        '_isDecl': true
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'bindings': {
-			        'formatter': 'dateTime',
-			        'showTime': true
-			      }
-			    },
 			    '_rank': 0
 			  },
 			  {

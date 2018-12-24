@@ -27,4 +27,6 @@ export * from './ui/text-area/text-area.component';
 export * from './ui/select/select.component';
 export * from './ui/checkbox/checkbox.component';
 export * from './ui/radio-group/radio-group.component';
+export * from './ui/date-picker/date-picker.component';
+
 export {MetaForm} from './metaui/index';

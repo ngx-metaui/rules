@@ -445,12 +445,30 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
-			        '_value': 'isChecked',
+			        '_value': 'birthDate',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
 			      'after': 'favColor'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'isChecked',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'birthDate'
 			    },
 			    '_rank': 0
 			  },

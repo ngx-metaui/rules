@@ -4,9 +4,9 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatDatepickerModule, MatFormFieldModule,
   MatGridListModule,
-  MatIconModule,
+  MatIconModule, MatNativeDateModule,
   MatRadioModule,
   MatSelectModule
 } from '@angular/material';
@@ -28,8 +28,10 @@ import {RenderComponentComponent} from './render-component/render-component.comp
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
-    MatRadioModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
 
     MatCardModule,
     MatGridListModule,

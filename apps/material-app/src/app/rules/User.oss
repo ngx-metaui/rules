@@ -43,7 +43,7 @@ class=User {
 
     zNone => *;
     zLeft => uniqueName => firstName#required => prefAirline => favAnimal => toppings;
-    zRight => title => lastName#required => favColor => isChecked;
+    zRight => title => lastName#required => favColor => birthDate => isChecked;
     zBottom => description;
 }
 

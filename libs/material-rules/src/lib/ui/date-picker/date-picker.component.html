@@ -1,0 +1,21 @@
+<input #input matInput
+       [attr.id]="id"
+       [attr.placeholder]="placeholder"
+       [disabled]="disabled"
+       [readonly]="readonly"
+       [required]="required"
+       [attr.readonly]="readonly || null"
+       [attr.aria-describedby]="input?._ariaDescribedby || null"
+       [attr.aria-invalid]="input?.errorState"
+       [attr.aria-required]="required.toString()"
+       [matDatepicker]="picker"
+       (blur)="_onBlur($event)"
+       (dateChange)="_onChange($event)"
+       (ngModelChange)="_ngModelChange($event)"
+       [(ngModel)]="value">
+<mat-datepicker-toggle matSuffix [for]="picker" *ngIf="editable"></mat-datepicker-toggle>
+<mat-datepicker #picker [disabled]="inputDisabled"></mat-datepicker>
+
+
+
+
