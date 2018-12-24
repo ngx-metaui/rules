@@ -30,6 +30,6 @@ export class Animal implements Entity {
   }
 
   toString(): string {
-    return this.name;
+    return this.sound;
   }
 }

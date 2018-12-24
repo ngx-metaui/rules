@@ -3,7 +3,6 @@ import {User} from './model/user';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 import {Airline} from './model/airline';
 import {Animal} from './model/animal';
-import {FormControl} from '@angular/forms';
 
 
 export interface Animal {
@@ -43,11 +42,6 @@ export class AppComponent implements OnInit {
       'Fred', 'Flinstone', 'Blue', new Date(),
       new Airline('OK', 'Czech Airlines', 'SkyTeam', 'Czechia'),
       this.animal, [], false, 'Some short description');
-
-  }
-
-
-  selectionChange() {
 
   }
 
