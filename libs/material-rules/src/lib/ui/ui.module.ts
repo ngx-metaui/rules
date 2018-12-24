@@ -20,7 +20,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {
-  MatCheckboxModule,
+  MatCheckboxModule, MatDatepickerModule, MatFormFieldModule,
   MatInputModule,
   MatRadioModule,
   MatSelectModule
@@ -30,6 +30,7 @@ import {TextArea} from './text-area/text-area.component';
 import {Select} from './select/select.component';
 import {Checkbox} from './checkbox/checkbox.component';
 import {RadioGroup} from './radio-group/radio-group.component';
+import {DatePicker} from './date-picker/date-picker.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import {RadioGroup} from './radio-group/radio-group.component';
     TextArea,
     Select,
     Checkbox,
-    RadioGroup
+    RadioGroup,
+    DatePicker
   ],
   imports: [
     CommonModule,
@@ -46,14 +48,17 @@ import {RadioGroup} from './radio-group/radio-group.component';
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDatepickerModule,
+    MatFormFieldModule
   ],
   entryComponents: [
     InputField,
     TextArea,
     Select,
     Checkbox,
-    RadioGroup
+    RadioGroup,
+    DatePicker
 
   ],
   exports: [
@@ -61,11 +66,14 @@ import {RadioGroup} from './radio-group/radio-group.component';
     MatSelectModule,
     MatCheckboxModule,
     MatRadioModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
     InputField,
     TextArea,
     Select,
     Checkbox,
-    RadioGroup
+    RadioGroup,
+    DatePicker
   ],
   providers: []
 })

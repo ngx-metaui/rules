@@ -63,15 +63,30 @@ field {
     }
 
     type=Date   {
-        component:DateAndTimeComponent;
-        bindings:{ showTime:false; formatter:shortDate};
+        editable {
+          component:DatePicker;
+            bindings:{
+              ngModel:$value;
+              readonly:false;
+              disabled:false;
+              id: ${properties.get("field")};
+              inputDisabled: false;
+              editable:true;
+          };
+        }
 
-        fiveZoneLayout = true {}
-
-         @trait=dateTime editable {
-            bindings:{formatter:dateTime; showTime:true};
+        editable=false {
+            component:DatePicker;
+              bindings:{
+                value:$value;
+                readonly:true;
+                disabled:false;
+                id: ${properties.get("field")};
+                inputDisabled: true;
+                editable:false;
+            };
          }
-
+        fiveZoneLayout = true {}
     }
 
     type=(Array, Set) {

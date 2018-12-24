@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     this.animal = this.animals[2];
 
     this.object = new User('R0001', 'FK0001',
-      'Fred', 'Flinstone', 'Blue',
+      'Fred', 'Flinstone', 'Blue', new Date(),
       new Airline('OK', 'Czech Airlines', 'SkyTeam', 'Czechia'),
       this.animal, [], false, 'Some short description');
 
