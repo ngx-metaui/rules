@@ -16,12 +16,10 @@
  *
  *
  */
+import {Schema} from '../common/schema';
 
 
-export interface AddSchema {
-
-  /** Name of the project to target. */
-  project: string;
+export interface AddSchema extends Schema {
 
   /** Dont add package.json dependencies. */
   skipDependencies: boolean;
@@ -37,9 +35,6 @@ export interface AddSchema {
   /** Dont add anything to angular.json style section. */
   skipStyles: boolean;
 
-  /** Root path to the selected project  - a place where template files will be copied */
-  path: string;
-
   /**
    * Works with specific module within the project
    */
@@ -48,6 +43,6 @@ export interface AddSchema {
   /**
    * Works with specific module within the project
    */
-  uiLib: 'none' | 'prime-ng';
+  uiLib: 'none' | 'prime-ng' | 'material2';
 
 }

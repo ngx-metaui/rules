@@ -19,7 +19,7 @@ export interface Animal {
 export class AppComponent implements OnInit {
   object: User;
 
-  operation = 'edit';
+  operation = 'view';
   airlines: Airline[];
   airline: Airline;
   animals: Animal[];

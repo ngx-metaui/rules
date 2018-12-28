@@ -16,9 +16,14 @@
  *
  *
  */
-import {Schema} from '../../common/schema';
 
-export interface MetaPageSchema extends Schema {
+export interface MetaPageSchema {
+
+  /** Name of the project to target. */
+  project: string;
+
+  /** Root path to the selected project  - a place where template files will be copied */
+  path: string;
 
   /**
    * Name of the domain class that will be generated along with rule file with the same name
@@ -46,5 +51,10 @@ export interface MetaPageSchema extends Schema {
    * Flag to indicate if a directory is created.
    */
   flat: boolean;
+
+  /**
+   * Works with specific module within the project
+   */
+  uiLib: 'prime-ng' | 'material2';
 
 }

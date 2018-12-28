@@ -20,8 +20,11 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {
-  MatCheckboxModule, MatDatepickerModule, MatFormFieldModule,
+  MatCheckboxModule,
+  MatDatepickerModule,
+  MatFormFieldModule,
   MatInputModule,
+  MatNativeDateModule,
   MatRadioModule,
   MatSelectModule
 } from '@angular/material';
@@ -50,7 +53,8 @@ import {DatePicker} from './date-picker/date-picker.component';
     MatCheckboxModule,
     MatRadioModule,
     MatDatepickerModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatNativeDateModule
   ],
   entryComponents: [
     InputField,
@@ -73,7 +77,8 @@ import {DatePicker} from './date-picker/date-picker.component';
     Select,
     Checkbox,
     RadioGroup,
-    DatePicker
+    DatePicker,
+    MatNativeDateModule
   ],
   providers: []
 })

@@ -43,14 +43,15 @@ import {InsertChange} from '@schematics/angular/utility/change';
 import {
   addDependenciesToPackageJson,
   addFileHeaderImports,
-  addOssCompilerScriptsToPackageJson,
-  addScriptsToAngularJson,
-  addStylesToAngularJson,
   getMainProjectPath,
   getSourceFile,
+  readPackageJson,
   registerUserRulesWithMetaConfig,
   setupOptions
 } from '../common/schematics-utils';
+import {WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
+import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
+import {WorkspaceProject} from '@angular-devkit/core/src/workspace';
 
 const stringUtils = {dasherize, classify};
 
@@ -93,8 +94,6 @@ function addDependencies(options: AddSchema): Rule {
       {type: NodeDependencyType.Default, version: '1.6.36', name: 'big-integer'},
       {type: NodeDependencyType.Default, version: '1.3.0', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
-      {type: NodeDependencyType.Default, version: '^1.0.0', name: 'primeicons'},
-      {type: NodeDependencyType.Default, version: '7.0.0-beta.1', name: 'primeng'},
       {type: NodeDependencyType.Default, version: '1.3.2', name: 'typescript-collections'},
       {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
       {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
@@ -109,6 +108,14 @@ function addDependencies(options: AddSchema): Rule {
         {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
         {type: NodeDependencyType.Default, version: '^1.0.0', name: 'primeicons'}
       ];
+
+    } else if (options.uiLib === 'material2') {
+      uiLibs = [
+        {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/material-rules'},
+        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@angular/cdk'},
+        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@angular/material'},
+        {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
+      ];
     }
     return addDependenciesToPackageJson([...core, ...uiLibs], options.skipNpmInstall);
   };
@@ -117,7 +124,7 @@ function addDependencies(options: AddSchema): Rule {
 
 function addScripts(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
-    if (options.uiLib === 'none') {
+    if (options.uiLib === 'none' || options.uiLib === 'material2') {
       return host;
     }
     const scriptsPaths: string[] = [
@@ -134,23 +141,32 @@ function addStyles(options: AddSchema): Rule {
       return host;
     }
 
-    // we have only one ui implementations right now
-    const styleEntries: string[] = [
-      'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/_normalize.scss',
-      'node_modules/primeng/resources/primeng.min.css',
-      'node_modules/font-awesome/css/font-awesome.min.css',
-      'node_modules/quill/dist/quill.core.css',
-      'node_modules/quill/dist/quill.snow.css',
-      'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-ariba-icon-fonts/' +
-      'sap-ariba-icon-fonts.css',
-      'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-icon-fonts/' +
-      'sap-icon-fonts.css',
-      'node_modules/primeicons/primeicons.css',
-      'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/ariba/theme.scss',
-      'node_modules/@ngx-metaui/primeng-rules/lib/resources/styles/aribaui.scss'
-    ];
+    if (options.uiLib === 'prime-ng') {
+      const styleEntries: string[] = [
+        'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/_normalize.scss',
+        'node_modules/primeng/resources/primeng.min.css',
+        'node_modules/font-awesome/css/font-awesome.min.css',
+        'node_modules/quill/dist/quill.core.css',
+        'node_modules/quill/dist/quill.snow.css',
+        'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-ariba-icon-fonts/' +
+        'sap-ariba-icon-fonts.css',
+        'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-icon-fonts/' +
+        'sap-icon-fonts.css',
+        'node_modules/primeicons/primeicons.css',
+        'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/ariba/theme.scss',
+        'node_modules/@ngx-metaui/primeng-rules/lib/resources/styles/aribaui.scss'
+      ];
 
-    return addStylesToAngularJson(styleEntries, options);
+      return addStylesToAngularJson(styleEntries, options);
+
+    } else if (options.uiLib === 'material2') {
+      const styleEntries: string[] = [
+        'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css',
+        'node_modules/flexboxgrid/css/flexboxgrid.css'
+      ];
+
+      return addStylesToAngularJson(styleEntries, options);
+    }
   };
 }
 
@@ -175,6 +191,11 @@ function addNgModuleImports(options: AddSchema): Rule {
           changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
             'imports',
             'PrimeNgRulesModule.forRoot()')];
+
+        } else if (options.uiLib === 'material2') {
+          changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
+            'imports',
+            'MaterialRulesModule.forRoot()')];
         }
 
         const recorder = host.beginUpdate(modulePath);
@@ -250,8 +271,92 @@ function addFileImportsUILib(options: AddSchema): Rule {
         addFileHeaderImports(options, 'PrimeNgRulesModule',
           '@ngx-metaui/primeng-rules')
       ]);
+    } else if (options.uiLib === 'material2') {
+      return chain([
+        addFileHeaderImports(options, 'MaterialRulesModule',
+          '@ngx-metaui/material-rules')
+      ]);
     } else {
       return host;
     }
+  };
+}
+
+function addOssCompilerScriptsToPackageJson(options: AddSchema): Rule {
+  return (host: Tree, context: SchematicContext) => {
+
+    const content = readPackageJson(host);
+    if (!content['scripts']) {
+      content['scripts'] = {};
+    }
+
+    const cmd = 'java -jar node_modules/@ngx-metaui/rules/lib/resources/tools/oss/' +
+      'meta-ui-parser.jar --gen --user ./node_modules/@ngx-metaui/rules/lib/metaui/core';
+    const srcPath = normalize(`./${options.path}/rules`);
+    content['scripts']['compile:oss'] = `${cmd} ${srcPath}`;
+    content['scripts']['watch:oss'] = `watch --wait=8 'npm run compile:oss' ${srcPath} `;
+
+    host.overwrite('package.json', JSON.stringify(content, null, 2));
+    context.logger.log('info', '✅️ Added script into package.json');
+    return host;
+  };
+}
+
+
+function addScriptsToAngularJson(scriptsPaths: string[], options: AddSchema): Rule {
+  return (host: Tree, context: SchematicContext) => {
+    try {
+      const workspace: WorkspaceSchema = getWorkspace(host);
+      const projectName = options.project || workspace.defaultProject;
+
+      if (!projectName) {
+        throw Error(`Cant Find project by name ${projectName}`);
+      }
+      const project: WorkspaceProject = workspace.projects[projectName];
+      const scripts: any[] = (<any>project.architect)['build']['options']['scripts'];
+      scriptsPaths.forEach(path => {
+        if (scripts.indexOf(path) === -1) {
+          scripts.push(path);
+        }
+      });
+      context.logger.log('info', `✅️ Added scripts into angular.json`);
+      host.overwrite(getWorkspacePath(host), JSON.stringify(workspace, null, 2));
+
+    } catch (e) {
+      context.logger.log('warn',
+        `✅️ Failed to add scripts into angular.json`);
+    }
+    return host;
+  };
+}
+
+
+function addStylesToAngularJson(styleEntries: string[], options: AddSchema): Rule {
+  return (host: Tree, context: SchematicContext) => {
+    try {
+      const workspace = getWorkspace(host);
+      const projectName = options.project || workspace.defaultProject;
+
+      if (!projectName) {
+        throw Error(`Cant Find project by name ${projectName}`);
+      }
+      const project: WorkspaceProject = workspace.projects[projectName];
+      const styles: any[] = (<any>project.architect)['build']['options']['styles'];
+
+      styleEntries.reverse().forEach(path => {
+        if (styles.indexOf(path) === -1) {
+          styles.unshift(path);
+        }
+      });
+
+
+      context.logger.log('info', `✅️ Added styles into angular.json`);
+      host.overwrite(getWorkspacePath(host), JSON.stringify(workspace, null, 2));
+
+    } catch (e) {
+      context.logger.log('warn',
+        `✅️ Failed to add scripts into angular.json`);
+    }
+    return host;
   };
 }

@@ -158,12 +158,15 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
 
 
   ngDoCheck(): void {
-    if (!this.suffixElem && this.viewInit) {
+    if (!this.suffixElem && this.viewInit && this.editable) {
       const ffParentWrapper = this.domUtils.closest(this.elementRef.nativeElement,
         '.mat-form-field-flex');
       const toggleElem = ffParentWrapper.querySelector('mat-datepicker-toggle');
-      this.suffixElem = ffParentWrapper.querySelector('.mat-form-field-suffix');
+      if (!toggleElem) {
+        return;
+      }
 
+      this.suffixElem = ffParentWrapper.querySelector('.mat-form-field-suffix');
       const infixDiv = this.renderer.createElement('div');
       this.renderer.addClass(infixDiv, 'mat-form-field-suffix');
       this.renderer.appendChild(ffParentWrapper, infixDiv);

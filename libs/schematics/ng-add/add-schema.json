@@ -38,9 +38,10 @@
     },
     "uiLib": {
       "type": "string",
-      "x-prompt": "Choose UI library implementation",
+      "x-prompt": "Would you like to use material2, prime-ng or none?",
       "description": "UI library rules implementation name",
       "enum": [
+        "material2",
         "prime-ng",
         "none"
       ],

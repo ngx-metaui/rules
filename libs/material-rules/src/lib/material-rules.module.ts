@@ -27,7 +27,7 @@ import {MetaUILibLayoutModule} from './metaui/meta-ui-layout.module';
 import * as entryComponents from './entry-components';
 import {SystemRules} from './metaui/widgets-rules';
 import {SystemPersistenceRules} from './metaui/persistence-rules';
-import {MetaRules, META_RULES} from '@ngx-metaui/rules';
+import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 
 @NgModule({
   imports: [

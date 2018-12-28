@@ -2,16 +2,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {
-  MatButtonModule,
-  MatCardModule, MatDatepickerModule, MatFormFieldModule,
-  MatGridListModule,
-  MatIconModule, MatNativeDateModule,
-  MatRadioModule,
-  MatSelectModule
-} from '@angular/material';
+import {MatButtonModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MaterialRulesModule} from '@ngx-metaui/material-rules';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
 import * as userRules from './rules/user-rules';
@@ -24,17 +16,7 @@ import {RenderComponentComponent} from './render-component/render-component.comp
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatButtonModule,
-    MatIconModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatNativeDateModule,
-
-    MatCardModule,
-    MatGridListModule,
 
     MetaUIRulesModule.forRoot(),
     MaterialRulesModule.forRoot()

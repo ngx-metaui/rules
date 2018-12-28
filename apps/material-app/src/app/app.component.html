@@ -1,9 +1,5 @@
-<mat-form-field >
-  <mat-select placeholder="Operation" [(value)]="operation" (selectionChange)="selectionChange()">
-    <mat-option value="view">view</mat-option>
-    <mat-option value="edit">edit</mat-option>
-  </mat-select>
-</mat-form-field>
+<a mat-button (click)="operation='edit'">Edit</a> |
+<a mat-button (click)="operation='view'">View</a>
 
 <h2>MetaUI with Material design</h2>
 <m-context [object]="object" [operation]="operation" layout="Inspect">
