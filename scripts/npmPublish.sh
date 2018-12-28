@@ -9,7 +9,7 @@ cd ${scriptDir}
 cd ..
 
 
-PACKAGES=(rules primeng-rules)
+PACKAGES=(rules primeng-rules material-rules)
 
 rm -Rf ./dist
 
@@ -22,6 +22,7 @@ echo "##### Building packages to dist"
 echo "##### Testing packages"
 ng test rules --source-map=false --watch=false --progress=false
 ng test primeng-rules --source-map=false --watch=false --progress=false
+
 
 
 
