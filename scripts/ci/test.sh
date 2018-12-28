@@ -15,8 +15,8 @@ echo "################ Testing @ngx-meta/primeng-rules ################ "
 ng test primeng-rules --browsers=ChromeHeadlessCI --karma-config=./libs/primeng-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
 
 
-echo "################ Testing @ngx-meta/material-rules ################ "
-ng test material-rules --browsers=ChromeHeadlessCI --karma-config=./libs/material-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
+## echo "################ Testing @ngx-meta/material-rules ################ "
+#ng test material-rules --browsers=ChromeHeadlessCI --karma-config=./libs/material-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
 
 
 
