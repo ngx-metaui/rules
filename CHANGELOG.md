@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.1.0"></a>
+# [7.1.0](https://github.com/ngx-meta/rules/compare/v7.0.5...v7.1.0) (2018-12-28)
+
+
+### Bug Fixes
+
+* **app.component:** Add highlight css class ([1a6ebe3](https://github.com/ngx-meta/rules/commit/1a6ebe3))
+* **demo:** Updated demo app ([ef9b70f](https://github.com/ngx-meta/rules/commit/ef9b70f))
+* **lint:** fix formatting issues ([c5bdb22](https://github.com/ngx-meta/rules/commit/c5bdb22))
+* **npm:** Regenerate package-lock to fix travis problem ([4544d53](https://github.com/ngx-meta/rules/commit/4544d53))
+* **npm:** Regenerate package-lock to fix travis problem [#2](https://github.com/ngx-meta/rules/issues/2) ([3fc13e7](https://github.com/ngx-meta/rules/commit/3fc13e7))
+* **schematics:** Updated schematics to support material2 ([9386114](https://github.com/ngx-meta/rules/commit/9386114))
+* **select:** Removed unused import ([a5aa5dc](https://github.com/ngx-meta/rules/commit/a5aa5dc))
+
+
+### Features
+
+* **md:components:** Added radio and multi-select ([f75beb0](https://github.com/ngx-meta/rules/commit/f75beb0))
+* **md:datepicker:** Added date picker ([a85ab51](https://github.com/ngx-meta/rules/commit/a85ab51))
+* **material:** Initial commit to support material design. ([1900cf0](https://github.com/ngx-meta/rules/commit/1900cf0))
+* **md:metaui:** select support ([ff7ba71](https://github.com/ngx-meta/rules/commit/ff7ba71))
+* **md:textarea:** TextArea support ([fed46bc](https://github.com/ngx-meta/rules/commit/fed46bc))
+
+
+
 <a name="7.0.5"></a>
 ## [7.0.5](https://github.com/ngx-meta/rules/compare/v7.0.4...v7.0.5) (2018-11-28)
 
