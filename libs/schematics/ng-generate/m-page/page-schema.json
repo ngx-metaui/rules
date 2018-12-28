@@ -41,6 +41,16 @@
       "type": "string",
       "description": "Name of the folder where domain objects are stored",
       "default": "model"
+    },
+    "uiLib": {
+      "type": "string",
+      "x-prompt": "Would you like to use material2 or prime-ng?",
+      "description": "UI library rules implementation name",
+      "enum": [
+        "material2",
+        "prime-ng"
+      ],
+      "default": "material2"
     }
   },
   "required": [

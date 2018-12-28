@@ -428,6 +428,8 @@
               "apps/material-app/src/assets"
             ],
             "styles": [
+              "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "node_modules/flexboxgrid/css/flexboxgrid.css",
               "apps/material-app/src/styles.scss"
             ],
             "scripts": []
@@ -515,5 +517,5 @@
     },
     "defaultCollection": "@nrwl/schematics"
   },
-  "defaultProject": "rules"
+  "defaultProject": "material-app"
 }

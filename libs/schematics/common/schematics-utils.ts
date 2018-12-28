@@ -19,16 +19,15 @@
 import {Rule, SchematicContext, SchematicsException, Tree} from '@angular-devkit/schematics';
 import {addPackageJsonDependency, NodeDependency} from '@schematics/angular/utility/dependencies';
 import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
-import {Schema} from './schema';
-import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
+import {getWorkspace} from '@schematics/angular/utility/config';
 import {WorkspaceProject} from '@angular-devkit/core/src/workspace/workspace-schema';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {getSourceNodes, insertImport, isImported} from '@schematics/angular/utility/ast-utils';
 import {Change, InsertChange, NoopChange} from '@schematics/angular/utility/change';
 import * as ts from 'typescript';
 import {buildDefaultPath, getProject} from '@schematics/angular/utility/project';
-import {normalize} from '@angular-devkit/core';
 import {WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
+import {Schema} from './schema';
 
 
 /**
@@ -67,84 +66,6 @@ export function addDependenciesToPackageJson(dependencies: NodeDependency[],
   };
 }
 
-
-export function addOssCompilerScriptsToPackageJson(options: Schema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-
-    const content = readPackageJson(host);
-    if (!content['scripts']) {
-      content['scripts'] = {};
-    }
-
-    const cmd = 'java -jar node_modules/@ngx-metaui/rules/lib/resources/tools/oss/' +
-      'meta-ui-parser.jar --gen --user ./node_modules/@ngx-metaui/rules/lib/metaui/core';
-    const srcPath = normalize(`./${options.path}/rules`);
-    content['scripts']['compile:oss'] = `${cmd} ${srcPath}`;
-    content['scripts']['watch:oss'] = `watch --wait=8 'npm run compile:oss' ${srcPath} `;
-
-    host.overwrite('package.json', JSON.stringify(content, null, 2));
-    context.logger.log('info', '✅️ Added script into package.json');
-    return host;
-  };
-}
-
-export function addScriptsToAngularJson(scriptsPaths: string[], options: Schema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    try {
-      const workspace: WorkspaceSchema = getWorkspace(host);
-      const projectName = options.project || workspace.defaultProject;
-
-      if (!projectName) {
-        throw Error(`Cant Find project by name ${projectName}`);
-      }
-      const project: WorkspaceProject = workspace.projects[projectName];
-      const scripts: any[] = (<any>project.architect)['build']['options']['scripts'];
-      scriptsPaths.forEach(path => {
-        if (scripts.indexOf(path) === -1) {
-          scripts.push(path);
-        }
-      });
-      context.logger.log('info', `✅️ Added scripts into angular.json`);
-      host.overwrite(getWorkspacePath(host), JSON.stringify(workspace, null, 2));
-
-    } catch (e) {
-      context.logger.log('warn',
-        `✅️ Failed to add scripts into angular.json`);
-    }
-    return host;
-  };
-}
-
-
-export function addStylesToAngularJson(styleEntries: string[], options: Schema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    try {
-      const workspace = getWorkspace(host);
-      const projectName = options.project || workspace.defaultProject;
-
-      if (!projectName) {
-        throw Error(`Cant Find project by name ${projectName}`);
-      }
-      const project: WorkspaceProject = workspace.projects[projectName];
-      const styles: any[] = (<any>project.architect)['build']['options']['styles'];
-
-      styleEntries.reverse().forEach(path => {
-        if (styles.indexOf(path) === -1) {
-          styles.unshift(path);
-        }
-      });
-
-
-      context.logger.log('info', `✅️ Added styles into angular.json`);
-      host.overwrite(getWorkspacePath(host), JSON.stringify(workspace, null, 2));
-
-    } catch (e) {
-      context.logger.log('warn',
-        `✅️ Failed to add scripts into angular.json`);
-    }
-    return host;
-  };
-}
 
 
 export function addFileHeaderImports(options: Schema, importSymbol: string,
@@ -409,7 +330,7 @@ export function showTree(node?: ts.Node, indent: string = '    '): void {
 }
 
 
-function readPackageJson(host: Tree) {
+export function readPackageJson(host: Tree) {
   if (host.exists('package.json')) {
     const jsonStr = host.read('package.json') !.toString('utf-8');
     const json = JSON.parse(jsonStr);

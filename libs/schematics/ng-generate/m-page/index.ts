@@ -33,6 +33,7 @@ import {getMainProjectPath, getSourceFile, setupOptions} from '../../common/sche
 import {normalize, strings} from '@angular-devkit/core';
 import {
   addDeclarationToModule,
+  addImportToModule,
   getSourceNodes,
   isImported
 } from '@schematics/angular/utility/ast-utils';
@@ -194,20 +195,20 @@ function addRecordToUserRules(options: MetaPageSchema): Rule {
 
     try {
       const pathToUserRules = normalize(options.path + '/rules/user-rules.ts');
-      let path = getSourceFile(host, pathToUserRules);
+      const path = getSourceFile(host, pathToUserRules);
       const tsClass = strings.classify(options.modelClass);
 
-      let exportList = getSourceNodes(path)
+      const exportList = getSourceNodes(path)
         .find(n => n.kind === ts.SyntaxKind.SyntaxList);
 
       if (exportList) {
-        let exports = exportList.getChildren();
+        const exports = exportList.getChildren();
 
-        let lastExport = exports[exports.length - 1];
+        const lastExport = exports[exports.length - 1];
 
 
-        let rec = `\n\n/** Auto generated  export */\nexport * from './ts/${tsClass}OSS';`;
-        let change = new InsertChange(pathToUserRules, lastExport.getEnd(), rec);
+        const rec = `\n\n/** Auto generated  export */\nexport * from './ts/${tsClass}OSS';`;
+        const change = new InsertChange(pathToUserRules, lastExport.getEnd(), rec);
 
         const declarationRecorder = host.beginUpdate(pathToUserRules);
         declarationRecorder.insertLeft(change.pos, change.toAdd);
@@ -228,17 +229,20 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
   return (host: Tree, context: SchematicContext) => {
 
     try {
-      let modulePath = getAppModulePath(host, getMainProjectPath(host, options));
-      let relativePath = buildRelativePath(modulePath, componentPath);
+      const matButton = ['MatButtonModule', '@angular/material'];
+      const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
+      const relativePath = buildRelativePath(modulePath, componentPath);
 
-      let srcPath = getSourceFile(host, modulePath);
-      let compName = strings.classify(`${options.name}Component`);
-
+      const srcPath = getSourceFile(host, modulePath);
+      const compName = strings.classify(`${options.name}Component`);
 
       if (!isImported(srcPath, compName, relativePath)) {
+        let changes = addDeclarationToModule(srcPath, modulePath, compName, relativePath);
 
-        const changes = addDeclarationToModule(srcPath, modulePath, compName, relativePath);
-
+        if (options.uiLib === 'material2') {
+          changes = [...changes, ...addImportToModule(srcPath, modulePath, matButton[0],
+            matButton[1])];
+        }
 
         const recorder = host.beginUpdate(modulePath);
         changes.forEach((change) => {
@@ -265,10 +269,10 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
 function printHowTo(options: MetaPageSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
-    let header = black('Your MetaUI is ready');
-    let body = black('Your MetaUI is ready');
+    const header = black('Your MetaUI is ready');
+    const body = black('Your MetaUI is ready');
 
-    let hint = `
+    const hint = `
     \n############ Your MetaUI is ready '######################
 
     \nThe next step is to run following commands to see all in action:\n

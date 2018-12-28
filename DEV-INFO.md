@@ -106,6 +106,9 @@ If you need to update schematics and the same time you need to test it the easie
 It will create a symlink and every time you do a change and run `./scripts/ci/build.sh link` again you will see it in your
 new project.
 
+In the target angular project `<ngx-meta project home>`  add new option into the angular.json `"preserveSymlinks": true` under 
+the `projects/<project-name>/architect/build/options`
+
 Then while you are in the directory of `myTestApp` project you can execute schematics command like this:
 
 ```
