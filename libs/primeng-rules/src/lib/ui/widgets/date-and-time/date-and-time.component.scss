@@ -10,10 +10,6 @@
       border: 0;
       width: 0;
     }
-
-    &.ui-calendar-w-btn .ui-inputtext {
-      width: 100%;
-    }
   }
 }
 
@@ -95,14 +91,6 @@
 
   .pi {
     font-size: 1em;
-
-    &.pi-chevron-left:before {
-      content: '\e1ee';
-    }
-
-    &.pi-chevron-right:before {
-      content: '\e1ed';
-    }
   }
 }
 

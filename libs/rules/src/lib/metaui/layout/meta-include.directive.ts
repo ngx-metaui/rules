@@ -389,15 +389,6 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       component.instance['editable'] = editable;
     }
 
-    if (bindings.has('ngModel') && !component['ngModelCtx']) {
-      const ngModelValue = bindings.get('ngModel');
-      assert(ngModelValue instanceof ContextFieldPath,
-        'You cant assign non expression value to [ngModel]');
-      this.applyNgModel(component, ngModelValue);
-
-      bindings.delete('value');
-    }
-
     let updateComponent = false;
     for (const key of inputs) {
       const publicKey = nonPrivatePrefix(key);
@@ -441,6 +432,15 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
           }
         }
       }
+    }
+
+    if (bindings.has('ngModel') && !component['ngModelCtx']) {
+      const ngModelValue = bindings.get('ngModel');
+      assert(ngModelValue instanceof ContextFieldPath,
+        'You cant assign non expression value to [ngModel]');
+      this.applyNgModel(component, ngModelValue);
+
+      bindings.delete('value');
     }
 
     if (updateComponent) {
