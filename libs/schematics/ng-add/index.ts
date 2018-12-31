@@ -91,8 +91,8 @@ function addDependencies(options: AddSchema): Rule {
     let uiLibs: NodeDependency[] = [];
     const core: NodeDependency[] = [
       {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/rules'},
-      {type: NodeDependencyType.Default, version: '1.6.36', name: 'big-integer'},
-      {type: NodeDependencyType.Default, version: '1.3.0', name: 'object-hash'},
+      {type: NodeDependencyType.Default, version: '1.6.40', name: 'big-integer'},
+      {type: NodeDependencyType.Default, version: '1.3.1', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
       {type: NodeDependencyType.Default, version: '1.3.2', name: 'typescript-collections'},
       {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
