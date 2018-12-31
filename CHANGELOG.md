@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.1.2"></a>
+## [7.1.2](https://github.com/ngx-meta/rules/compare/v7.1.1...v7.1.2) (2018-12-31)
+
+
+### Bug Fixes
+
+* **dependencies:** Update dependencies to be in sync with main package.json ([600a46f](https://github.com/ngx-meta/rules/commit/600a46f))
+
+
+
 <a name="7.1.1"></a>
 ## [7.1.1](https://github.com/ngx-meta/rules/compare/v7.1.0...v7.1.1) (2018-12-30)
 
