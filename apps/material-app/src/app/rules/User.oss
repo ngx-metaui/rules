@@ -15,7 +15,7 @@ class=User {
 
     field=prefAirline {
         label:"My airlines";
-        trait:asSelect;
+        trait:required,asSelect;
         choices:${controller.airlines};
     }
 
@@ -55,3 +55,12 @@ class=User {
 
 
 
+/**
+  .User .prefAirline {
+     trait:toOneRelationship;
+  }
+
+*/
+class=User field=prefAirline {
+   trait:toOneRelationship;
+}

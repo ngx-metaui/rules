@@ -20,6 +20,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {
+  MatButtonModule,
   MatCheckboxModule,
   MatDatepickerModule,
   MatFormFieldModule,
@@ -34,6 +35,7 @@ import {Select} from './select/select.component';
 import {Checkbox} from './checkbox/checkbox.component';
 import {RadioGroup} from './radio-group/radio-group.component';
 import {DatePicker} from './date-picker/date-picker.component';
+import {Button} from './button/button.component';
 
 
 @NgModule({
@@ -43,7 +45,8 @@ import {DatePicker} from './date-picker/date-picker.component';
     Select,
     Checkbox,
     RadioGroup,
-    DatePicker
+    DatePicker,
+    Button
   ],
   imports: [
     CommonModule,
@@ -54,7 +57,8 @@ import {DatePicker} from './date-picker/date-picker.component';
     MatRadioModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatButtonModule
   ],
   entryComponents: [
     InputField,
@@ -62,7 +66,8 @@ import {DatePicker} from './date-picker/date-picker.component';
     Select,
     Checkbox,
     RadioGroup,
-    DatePicker
+    DatePicker,
+    Button
 
   ],
   exports: [
@@ -78,7 +83,9 @@ import {DatePicker} from './date-picker/date-picker.component';
     Checkbox,
     RadioGroup,
     DatePicker,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatButtonModule,
+    Button
   ],
   providers: []
 })

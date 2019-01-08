@@ -1,0 +1,49 @@
+<ng-container [ngSwitch]="type">
+
+  <ng-template [ngSwitchCase]="'basic'">
+    <button mat-button
+            [disabled]="disabled" [color]="color" (click)="onClick($event)"
+            [attr.id]="id"
+            [attr.value]="value"
+    >
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </button>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'raised'">
+    <button mat-raised-button [disabled]="disabled" [color]="color" (click)="onClick($event)"
+            [attr.id]="id"
+            [attr.value]="value">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </button>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'flat'">
+    <button mat-flat-button [disabled]="disabled" [color]="color" (click)="onClick($event)"
+            [attr.id]="id"
+            [attr.value]="value">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </button>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'stroked'">
+    <button mat-stroked-button [disabled]="disabled" [color]="color" (click)="onClick($event)"
+            [attr.id]="id"
+            [attr.value]="value">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </button>
+  </ng-template>
+
+
+</ng-container>
+
+<!--
+  Need to have this as a ng-template as having ng-content inside a ngswitch does not really
+  work
+-->
+<ng-template #content>
+  <span class="u-ngcontent">
+    <ng-content></ng-content>
+  </span>
+</ng-template>
+

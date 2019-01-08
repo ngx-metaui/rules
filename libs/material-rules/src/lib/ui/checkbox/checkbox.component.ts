@@ -67,8 +67,7 @@ import {DomUtilsService} from '@ngx-metaui/rules';
     `
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation:
-  ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 
 })
 

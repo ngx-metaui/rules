@@ -133,6 +133,7 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
 
 
   private suffixElem: any;
+  private flexFieldElem: any;
 
   private viewInit = false;
 
@@ -158,20 +159,21 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
 
 
   ngDoCheck(): void {
-    if (!this.suffixElem && this.viewInit && this.editable) {
-      const ffParentWrapper = this.domUtils.closest(this.elementRef.nativeElement,
+    const isFirstTime = !this.suffixElem && this.viewInit && this.editable;
+
+    if (isFirstTime || !this.hasToggleInSuffix()) {
+      this.flexFieldElem = this.domUtils.closest(this.elementRef.nativeElement,
         '.mat-form-field-flex');
-      const toggleElem = ffParentWrapper.querySelector('mat-datepicker-toggle');
+      const toggleElem = this.flexFieldElem.querySelector('mat-datepicker-toggle');
       if (!toggleElem) {
         return;
       }
-
-      this.suffixElem = ffParentWrapper.querySelector('.mat-form-field-suffix');
+      this.suffixElem = this.flexFieldElem.querySelector('.mat-form-field-suffix');
       const infixDiv = this.renderer.createElement('div');
       this.renderer.addClass(infixDiv, 'mat-form-field-suffix');
-      this.renderer.appendChild(ffParentWrapper, infixDiv);
+      this.renderer.appendChild(this.flexFieldElem, infixDiv);
 
-      const suffix = ffParentWrapper.querySelector('.mat-form-field-suffix');
+      const suffix = this.flexFieldElem.querySelector('.mat-form-field-suffix');
       suffix.appendChild(toggleElem);
     }
   }
@@ -315,6 +317,11 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
   _onInput(event: MatDatepickerInputEvent<Date>): void {
     this.onChange(event.value);
     this.dateInput.emit(event);
+  }
+
+  private hasToggleInSuffix(): boolean {
+    return this.flexFieldElem &&
+      this.flexFieldElem.querySelector('.mat-form-field-suffix .mat-datepicker-toggle');
   }
 
 }

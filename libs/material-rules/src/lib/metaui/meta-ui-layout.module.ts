@@ -27,14 +27,21 @@ import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.compone
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MetaFormField} from './meta-form/meta-form-field/meta-form-field.component';
 import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapter.directive';
+import {MetaContentPageComponent} from './meta-content-page/meta-content-page.component';
+import {RouterModule, Routes} from '@angular/router';
 
+
+const routes: Routes = [
+  {path: 'object-detail', component: MetaContentPageComponent}
+];
 
 @NgModule({
   declarations: [
     MetaForm,
     MetaFormGroup,
     MetaFormField,
-    MetaFormFieldAdapter
+    MetaFormFieldAdapter,
+    MetaContentPageComponent
   ],
   imports: [
     CommonModule,
@@ -43,17 +50,20 @@ import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapt
     MatIconModule,
     MatCardModule,
     MetaUIRulesModule,
-    UILibModule
+    UILibModule,
+    RouterModule.forChild(routes)
   ],
   entryComponents: [
     MetaForm,
     MetaFormGroup,
-    MetaFormField
+    MetaFormField,
+    MetaContentPageComponent
   ],
   exports: [
     MetaForm,
     MetaFormGroup,
     MetaFormField,
+    MetaContentPageComponent,
     UILibModule
   ]
 })

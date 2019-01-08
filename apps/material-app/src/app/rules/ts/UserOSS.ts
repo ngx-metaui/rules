@@ -91,7 +91,10 @@ export const UserRule = {
 			      }
 			    ],
 			    '_properties': {
-			      'trait': 'asSelect',
+			      'trait': [
+			        'required',
+			        'asSelect'
+			      ],
 			      'label': 'My airlines',
 			      'choices': {
 			        't': 'Expr',
@@ -539,6 +542,24 @@ export const UserRule = {
 			        '_isDecl': false
 			      }
 			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': 'prefAirline',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': 'toOneRelationship'
+			    },
 			    '_rank': 0
 			  }
 			]

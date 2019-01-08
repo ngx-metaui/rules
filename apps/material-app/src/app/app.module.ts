@@ -2,21 +2,29 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {MatButtonModule} from '@angular/material';
+import {MatButtonModule, MatIconModule, MatToolbarModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialRulesModule} from '@ngx-metaui/material-rules';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
 import * as userRules from './rules/user-rules';
-import {NestedComponentComponent} from './nested-component/nested-component.component';
-import {RenderComponentComponent} from './render-component/render-component.component';
+import {UserDetailComponent} from './user-detail/user-detail.component';
+import {AppRoutingModule} from './app-routing.module';
+import {HomeComponent} from './home/home.component';
 
 
 @NgModule({
-  declarations: [AppComponent, NestedComponentComponent, RenderComponentComponent],
+  declarations: [
+    AppComponent,
+    UserDetailComponent,
+    HomeComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatToolbarModule,
     MatButtonModule,
+    MatIconModule,
+    AppRoutingModule,
 
     MetaUIRulesModule.forRoot(),
     MaterialRulesModule.forRoot()

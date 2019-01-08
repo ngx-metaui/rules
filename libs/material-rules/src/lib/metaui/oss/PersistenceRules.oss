@@ -21,30 +21,18 @@
 
 field {
     trait=toOneRelationship {
-        editable {
-            component:GenericChooserComponent;
-            bindings:{
-                object:${object};
-                key:${field};
-                destinationClass:${elementType};
-                multiselect:false;
-                type:Dropdown;
-                displayKey:${ meta.displayLabel(type, properties.get("labelField") )};
-            }
-        }
-        /*editable=false {
-            component:HyperlinkComponent;
+        editable=false {
+            component:Button;
             bindings: {
-                action: ${
+                click: ${
                     this.set("object", value);
                     this.set("actionCategory", "General");
                     this.set("action", "Inspect");
-                    meta.fireAction(this, true)
+                    meta.fireAction(this, '', true)
                 };
-                ngcontent: $value;
+                ngcontent: ${value ? FieldPath.getFieldValue(value, meta.displayLabel(type, properties.get("labelField") )) : null};
             }
-        }*/
-
+        }
     }
 
     trait=toManyChooser {
@@ -86,6 +74,5 @@ action=Inspect {
         object:${object};
         operation:view;
         layout:Inspect;
-        clientPanel:true;
     }
 }

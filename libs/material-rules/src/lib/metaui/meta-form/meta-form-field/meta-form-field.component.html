@@ -3,7 +3,7 @@
                 [hideRequiredMarker]="false"
                 [floatLabel]="properties('floatingLabel')">
 
-  <m-include-component mdFormFieldAdapter></m-include-component>
+  <m-include-component mdFormFieldAdapter [wrapNgContent]="false"></m-include-component>
 
   <mat-hint *ngIf="editing" align="end">{{properties('hint')}}</mat-hint>
 

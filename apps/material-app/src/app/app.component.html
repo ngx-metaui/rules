@@ -1,14 +1,16 @@
-<a mat-button (click)="operation='edit'">Edit</a> |
-<a mat-button (click)="operation='view'">View</a>
+<mat-toolbar color="primary" class="mat-elevation-z4">
 
-<h2>MetaUI with Material design</h2>
-<m-context [object]="object" [operation]="operation" layout="Inspect">
-  <m-include-component></m-include-component>
-</m-context>
+  <!--<button *ngFor="let route of routingService.appRouting | keyvalue"-->
+          <!--mat-button [routerLink]="route.value.path" (click)="route.value.action($event)">-->
+    <!--<mat-icon *ngIf="route.value.icon">{{route.value.icon}}</mat-icon> {{route.value.label}}-->
+  <!--</button>-->
 
-<pre class="highlight-code">
-  <code>
-{{object | json}}
-  </code>
-</pre>
+  <button [routerLink]="['/home'] " mat-button>Home</button>
+  <button [routerLink]="['/user'] " mat-button>User Detail</button>
+
+</mat-toolbar>
+
+
+
+<router-outlet></router-outlet>
 
