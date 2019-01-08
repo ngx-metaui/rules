@@ -46,30 +46,20 @@ export const SystemPersistenceRules = {
 			      },
 			      {
 			        '_key': 'editable',
-			        '_value': '*',
+			        '_value': false,
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'GenericChooserComponent',
+			      'component': 'Button',
 			      'bindings': {
-			        'destinationClass': {
+			        'ngcontent': {
 			          't': 'Expr',
-			          'v': 'elementType'
+			          'v': 'value ? FieldPath.getFieldValue(value, meta.displayLabel(type, properties.get("labelField"))) : null'
 			        },
-			        'multiselect': false,
-			        'displayKey': {
+			        'click': {
 			          't': 'Expr',
-			          'v': 'meta.displayLabel(type, properties.get("labelField"))'
-			        },
-			        'type': 'Dropdown',
-			        'key': {
-			          't': 'Expr',
-			          'v': 'field'
-			        },
-			        'object': {
-			          't': 'Expr',
-			          'v': 'object'
+			          'v': 'this.set("object", value), this.set("actionCategory", "General"), this.set("action", "Inspect"), meta.fireAction(this, null, true)'
 			        }
 			      }
 			    },
@@ -236,7 +226,6 @@ export const SystemPersistenceRules = {
 			    '_properties': {
 			      'pageBindings': {
 			        'layout': 'Inspect',
-			        'clientPanel': true,
 			        'operation': 'view',
 			        'object': {
 			          't': 'Expr',

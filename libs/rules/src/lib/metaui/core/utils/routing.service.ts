@@ -39,9 +39,6 @@ import {ListWrapper} from '../utils/collection';
  * if yes then we save it into the stateCacheHistory which maps final URL to the actual STATE
  * object, and when we are navigate back to the same URL We check if there is any saved state.
  *
- * This service was originally created as a response that angular always destroyes and recreates
- * components when navigating aways and then back to it. By a of angular 4.2.0+ this might be
- * obsolete.
  *
  * Todo: Replace this as this is already absolete !!
  *
@@ -82,6 +79,7 @@ export class RoutingService {
    */
   stateCacheHistory: Map<string, any> = new Map<string, any>();
 
+  appRouting: Map<string, AppRoute> = new Map<string, AppRoute>();
 
   constructor(public router: Router) {
     if (router) {
@@ -176,6 +174,10 @@ export class RoutingService {
       throw new Error('Please import RouterModule to use this functionality!');
     }
     this.currentStateTo = state;
+    if (!route.data) {
+      route.data = {};
+    }
+    route.data['object'] = state;
     this.router.navigate([route.path, params], extras);
   }
 
@@ -219,7 +221,7 @@ export class RoutingService {
    *
    *
    */
-  routeForPage(pageName: string, pathName?: string, activatedPath?: string): Route {
+  routeForPage(pageName: string, pathName: string = '', activatedPath: string = ''): Route {
     if (isBlank(this.router)) {
       throw new Error('Please import RouterModule to use this functionality!');
     }
@@ -239,7 +241,8 @@ export class RoutingService {
     );
 
     // try to match the path and expected pageName
-    if (isPresent(pathName) && isPresent(currentRoute) && currentRoute.children.length > 0) {
+    if (isPresent(pathName) && isPresent(currentRoute) && currentRoute.children &&
+      currentRoute.children.length > 0) {
 
       nextRoute = currentRoute.children.find((r: Route) => {
         return pathName === r.path;
@@ -247,8 +250,12 @@ export class RoutingService {
     } else if (isPresent(pageName)) {
 
       nextRoute = this.router.config.find((r: Route) => {
-        const componentName = r.component.prototype.constructor.name;
-        return pathName === r.path && pageName === componentName;
+        if (r.component) {
+          const componentName = r.component.prototype.constructor.name;
+          return pathName === r.path && pageName === componentName;
+        } else {
+          return false;
+        }
       });
     }
     // path not found then check only if we find anywhere in the path pageNae
@@ -265,6 +272,15 @@ export class RoutingService {
     return nextRoute;
   }
 
+}
+
+export interface AppRoute {
+  id: string;
+  label: string;
+  path?: string;
+  action?: (event: any) => void;
+  icon?: string;
+  showBefore?: boolean;
 }
 
 

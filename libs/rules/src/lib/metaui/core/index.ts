@@ -33,7 +33,7 @@ export {
   toList
 } from './utils/lang';
 export {FieldPath} from './utils/field-path';
-export {RoutingService} from './utils/routing.service';
+export {RoutingService, AppRoute} from './utils/routing.service';
 export {ComponentRegistry} from './component-registry.service';
 export {
   Activation, Assignment, AssignmentSnapshot, Context, DeferredAssignment, ObjectMetaContext,

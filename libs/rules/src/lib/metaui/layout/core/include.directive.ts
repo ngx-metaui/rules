@@ -164,13 +164,20 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
    *
    */
   @Input()
-  protected name: string;
+  name: string;
 
   /**
    * Provides bindings which will be passed into the component when instantiated
    */
   @Input()
-  protected bindings: Map<string, any>;
+  bindings: Map<string, any>;
+
+  /**
+   *  Used by ngContent if we need to wrap readonly content
+   */
+  @Input()
+  wrapNgContent: boolean = true;
+
 
   /**
    * Current created component reference using ComponentFactoryResolver. We use this to access
@@ -231,6 +238,8 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
 
   ngAfterViewChecked(): void {
     this.initRenderInProgress = false;
+
+    this.createContentElementIfAny();
   }
 
 
@@ -310,19 +319,32 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
    * @return need to run detect changes ? default is false
    */
   protected createContentElementIfAny(): boolean {
+    if (!this.currentComponent) {
+      return false;
+    }
 
     let detectChanges = false;
     const ngContent = this.ngContent();
-    const ngContentElement = this.ngContentElement();
-    if (isPresent(ngContent)) {
-      this.viewContainer.element.nativeElement.append(
-        `<span class="m-string-field"> ${ngContent}</span>`
-      );
-      detectChanges = true;
-    } else if (isPresent(ngContentElement)) {
-      // console.log('content Element: ', ngContentElement);
-    }
 
+    const ngContentPlaceHolder = this.currentComponent.location.nativeElement
+      .querySelector('.u-ngcontent');
+
+
+    if (isPresent(ngContent)) {
+      const content = (this.wrapNgContent ? `<span class="m-string-field"> ${ngContent}</span>`
+        : `${ngContent}`);
+
+      this.viewContainer.element.nativeElement.innerHTML = '';
+
+      if (ngContentPlaceHolder) {
+        ngContentPlaceHolder.innerHTML = '';
+        ngContentPlaceHolder.append(content);
+      } else {
+        this.viewContainer.element.nativeElement.append(content);
+      }
+
+      detectChanges = true;
+    }
     return detectChanges;
   }
 

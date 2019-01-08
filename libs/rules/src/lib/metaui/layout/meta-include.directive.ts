@@ -296,7 +296,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     } else {
       detectChanges = super.createContentElementIfAny();
     }
-    if (detectChanges) {
+    if (detectChanges && this.initRenderInProgress) {
       // console.log('MetaInclude(createContentElementIfAny):', this.name);
       this.cd.detectChanges();
     }
