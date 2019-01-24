@@ -26,7 +26,7 @@ import {AWDateAndTimeModule} from './data-and-time.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {isPresent, readGlobalParam} from '../../core/utils/lang';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Component: DateAndTime', () => {
@@ -38,7 +38,7 @@ describe('Component: DateAndTime', () => {
         TestDateTimeBasicBehaviorComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWDateAndTimeModule,
         NoopAnimationsModule,

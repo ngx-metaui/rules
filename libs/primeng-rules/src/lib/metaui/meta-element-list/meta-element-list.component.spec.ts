@@ -20,7 +20,13 @@ import {Component} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
-import {Entity, META_RULES, MetaRules, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {
+  Entity,
+  META_RULES,
+  MetaRules,
+  MetaUIRulesModule,
+  MetaUITestRulesModule
+} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../primeng-rules.module';
 
 
@@ -95,7 +101,7 @@ describe('How  Stack layout can render two different content stacked', () => {
         TestContainerEditComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true}),
+        MetaUITestRulesModule.forRoot({'env.test': true}),
         PrimeNgRulesModule.forRoot()
       ],
       providers: [{provide: APP_BASE_HREF, useValue: '/'}]

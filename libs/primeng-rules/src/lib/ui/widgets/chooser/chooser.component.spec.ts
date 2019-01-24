@@ -30,7 +30,7 @@ import {DataFinders, QueryType} from '../../core/data/data-finders';
 import {DataProviders} from '../../core/data/data-providers';
 import {ArrayDataProvider} from '../../core/data/array-data-provider';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -51,7 +51,7 @@ describe('Component: Chooser ', () => {
           TestChooserWithDetachedSelectionComponent
         ],
         imports: [
-          MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+          MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
           PrimeNgRulesModule.forRoot(),
           NoopAnimationsModule,
           AWChooserModule

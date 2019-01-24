@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {RoutingService} from '@ngx-metaui/rules';
+import {AppRoute, RoutingService} from '@ngx-metaui/rules';
+import {Observable} from 'rxjs';
 
 
 export interface Animal {
@@ -14,12 +15,13 @@ export interface Animal {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  contextMenu$: Observable<AppRoute[]>;
 
   constructor(public routingService: RoutingService) {
   }
 
   ngOnInit(): void {
-
+    this.contextMenu$ = this.routingService.contextualCommands();
   }
 
 }

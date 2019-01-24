@@ -21,7 +21,13 @@ import {TestBed} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
 import {PrimeNgRulesModule} from '../../primeng-rules.module';
-import {Entity, META_RULES, MetaRules, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {
+  Entity,
+  META_RULES,
+  MetaRules,
+  MetaUIRulesModule,
+  MetaUITestRulesModule
+} from '@ngx-metaui/rules';
 
 /**
  *
@@ -333,7 +339,7 @@ describe('3 different layouts formed into Stack', () => {
         TestContainerEditPopupComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true}),
+        MetaUITestRulesModule.forRoot({'env.test': true}),
         PrimeNgRulesModule.forRoot()
 
       ],

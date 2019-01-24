@@ -19,25 +19,14 @@
  *
  */
 import {Injectable} from '@angular/core';
-import {
-  ActivatedRoute,
-  Event,
-  NavigationEnd,
-  NavigationExtras,
-  NavigationStart,
-  Route,
-  Router
-} from '@angular/router';
-import {Subject} from 'rxjs';
+import {ActivatedRoute, NavigationExtras, Route, Router} from '@angular/router';
+import { Location } from '@angular/common';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {isBlank, isPresent} from '../utils/lang';
-import {ListWrapper} from '../utils/collection';
+import {delay, distinctUntilChanged, shareReplay, startWith, tap} from 'rxjs/operators';
 
 /**
- * Basic wrapper around Angular's ROUTE service to simplify temporary state caching as well
- * navigation. This service listen for Routing events such as NavigationStart as well,
- * NavigationEnds and when the routing Enters, We check if there any state which needs to be cached
- * if yes then we save it into the stateCacheHistory which maps final URL to the actual STATE
- * object, and when we are navigate back to the same URL We check if there is any saved state.
+ * Basic wrapper around Angular's ROUTE service for use of MetaUI.
  *
  *
  * Todo: Replace this as this is already absolete !!
@@ -45,80 +34,15 @@ import {ListWrapper} from '../utils/collection';
  */
 @Injectable()
 export class RoutingService {
-  /**
-   * Stack keeping active Routes so we can go back/redirect back
-   *
-   */
-  private routingState: Event[] = [];
 
   /**
-   * Temporary field holding a state Object of type T before its saved into stateCacheHistory,
-   * and retrieved when getting back from State
+   * This is just a temporary until we refactor this into its own class
    */
-  private currentStateFrom: any;
+  appRouting: BehaviorSubject<AppRoute[]> = new BehaviorSubject<AppRoute[]>(null);
 
-
-  /**
-   * Temporary field holding a state Object of type T before its saved into stateCacheHistory,
-   * and retrieved when getting to State
-   */
-  private currentStateTo: any;
-
-  /*
-   * Event object for registering listeners to save a certain state as well as broadcasting back
-   * when state needs to be retrieved back to the Page
-   *
-   */
-  stateCache: Subject<any> = new Subject<any>();
-
-  /**
-   *
-   * This is our cache which maps URL => to = >STATE. Any page can save any state using
-   * observable object which will be retrieved back.
-   *
-   */
-  stateCacheHistory: Map<string, any> = new Map<string, any>();
-
-  appRouting: Map<string, AppRoute> = new Map<string, AppRoute>();
-
-  constructor(public router: Router) {
+  constructor(public router: Router, public location: Location) {
     if (router) {
-      this.router.events.subscribe((event: Event) => this.subscribeToRoutingEvents(event));
-    }
-  }
 
-  /**
-   *
-   * Here is the main routing logic that proceses every routing events.
-   *
-   */
-  subscribeToRoutingEvents(event: Event): void {
-
-    if (event instanceof NavigationEnd) {
-      const url = event.url;
-      if (this.stateCacheHistory.has(url)) {
-        this.stateCache.next(this.stateCacheHistory.get(url));
-        this.stateCacheHistory.delete(url);
-      }
-      this.routingState.push(event);
-    }
-
-    if (event instanceof NavigationStart) {
-
-      const itemBeforeRoute = ListWrapper.last<Event>(this.routingState);
-
-
-      if (isPresent(this.currentStateFrom) && isPresent(itemBeforeRoute) && isPresent(
-        this.currentStateFrom) && itemBeforeRoute instanceof NavigationEnd ||
-        itemBeforeRoute instanceof NavigationStart) {
-
-        this.stateCacheHistory.set(itemBeforeRoute.url, this.currentStateFrom);
-        this.currentStateFrom = null;
-
-      } else if (isPresent(this.currentStateTo)) {
-        this.stateCacheHistory.set(event.url, this.currentStateTo);
-        this.currentStateTo = null;
-      }
     }
   }
 
@@ -127,22 +51,12 @@ export class RoutingService {
    *
    *
    */
-  goBack(numOfSteps: number = 1): void {
+  goBack(): void {
     if (isBlank(this.router)) {
       throw new Error('Please import RouterModule to use this functionality!');
     }
-    // we are starting from -1 as we need to also remove current route
-    let steps = -1;
-    let navigateUrl = '/404';
-    while (steps !== numOfSteps) {
-      const popState = this.routingState.pop();
-      if (popState instanceof NavigationEnd || popState instanceof NavigationStart) {
-        navigateUrl = popState.url;
-        steps++;
-      }
-    }
 
-    this.router.navigateByUrl(navigateUrl);
+    this.location.back();
   }
 
   /**
@@ -155,10 +69,7 @@ export class RoutingService {
     if (isBlank(this.router)) {
       throw new Error('Please import RouterModule to use this functionality!');
     }
-
-    this.currentStateFrom = state;
     this.router.navigate(commands, extras);
-
 
   }
 
@@ -173,22 +84,11 @@ export class RoutingService {
     if (isBlank(this.router)) {
       throw new Error('Please import RouterModule to use this functionality!');
     }
-    this.currentStateTo = state;
     if (!route.data) {
       route.data = {};
     }
     route.data['object'] = state;
     this.router.navigate([route.path, params], extras);
-  }
-
-  /**
-   *
-   * Entry method for broadcasting stateCache and sending saved State back to the page
-   *
-   *
-   */
-  bindStateCache<T>(listener: (item: T) => void): void {
-    this.stateCache.asObservable().subscribe((stateItem: T) => listener(stateItem));
   }
 
   /**
@@ -272,15 +172,25 @@ export class RoutingService {
     return nextRoute;
   }
 
+  contextualCommands(): Observable<AppRoute[]> {
+    return this.appRouting.pipe(
+      startWith(null),
+      distinctUntilChanged(),
+      delay(0),
+      tap((config) => config),
+      shareReplay()
+    );
+  }
 }
 
 export interface AppRoute {
-  id: string;
-  label: string;
+  id?: string;
+  label?: string;
   path?: string;
   action?: (event: any) => void;
   icon?: string;
   showBefore?: boolean;
+  executionContext?: any;
 }
 
 

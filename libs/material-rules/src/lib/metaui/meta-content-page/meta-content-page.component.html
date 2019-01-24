@@ -1,7 +1,7 @@
 <!-- TODO: impplement dynamic title based on the operation and object as well as updates buttons-->
 
 <div class="form-card m-obj-detail-lbl" *ngIf="label">
-  <a mat-button (click)="onBack($event)"> Back</a> {{label}} Detail
+  {{label}} Detail
 </div>
 
 <m-context *ngIf="object" [pushNewContext]="true" [object]="object" [operation]="operation"

@@ -189,6 +189,8 @@ export class RadioGroup implements ControlValueAccessor, MatFormFieldControl<any
     //     ff.classList.add('no-underline');
     //   }
     // }
+
+    this.cd.markForCheck();
   }
 
   ngDoCheck(): void {
@@ -213,7 +215,6 @@ export class RadioGroup implements ControlValueAccessor, MatFormFieldControl<any
 
   writeValue(value: any): void {
     this.value = value;
-    this.onChange(value);
   }
 
 

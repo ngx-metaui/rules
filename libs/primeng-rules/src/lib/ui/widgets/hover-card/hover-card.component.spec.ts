@@ -24,7 +24,7 @@ import {HoverCardComponent} from './hover-card.component';
 import {AWHoverCardModule} from './hover-card.module';
 import {AWStringFieldModule} from '../../widgets/string/string.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -37,7 +37,7 @@ describe('Component: Hover card', () => {
         TestHCSimpleComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWHoverCardModule,
         AWStringFieldModule,

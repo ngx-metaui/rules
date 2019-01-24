@@ -28,7 +28,7 @@ import {
   META_RULES,
   MetaRules,
   MetaUIActionEvent,
-  MetaUIRulesModule
+  MetaUIRulesModule, MetaUITestRulesModule
 } from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../primeng-rules.module';
 
@@ -212,7 +212,7 @@ describe('Meta Sections', () => {
         TestMetaSectionDeferredComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true}),
+        MetaUITestRulesModule.forRoot({'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         NoopAnimationsModule
       ],

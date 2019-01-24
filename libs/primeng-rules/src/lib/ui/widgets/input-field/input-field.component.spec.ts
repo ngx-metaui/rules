@@ -23,7 +23,7 @@ import {InputFieldComponent} from './input-field.component';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AWInputFieldModule} from './input-field.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -33,7 +33,7 @@ describe(' Input field', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWInputFieldModule,
         AWFormTableModule

@@ -15,12 +15,16 @@
 
 
     <ng-template let-internalChooserModel pTemplate="item">
+
       <ng-template [ngIf]="!hasMenuTemplate()">
         {{ displayItem(internalChooserModel) }}
       </ng-template>
-      <ng-template [embeddedItem]="menuTemplate" [item]="internalChooserModel"
-                   *ngIf="hasMenuTemplate()"></ng-template>
+      <ng-template [ngIf]="hasMenuTemplate()">
+        <ng-container *ngTemplateOutlet="menuTemplate; context: {$implicit: internalChooserModel}">
+        </ng-container>
+      </ng-template>
     </ng-template>
+
   </p-autoComplete>
 
   <!--
@@ -51,8 +55,11 @@
 
           <!--Yes there is selection template let's iterate and push each item to be rendered-->
         <ng-template ngFor [ngForOf]="dataSource.state.recentSelectedObjects" let-item>
-            <ng-template [embeddedItem]="selectionTemplate" [item]="item"
-                         *ngIf="hasSelectionTemplate()"></ng-template>
+            <ng-template [ngIf]="hasSelectionTemplate()">
+            <ng-container *ngTemplateOutlet="selectionTemplate; context: {$implicit: item}">
+            </ng-container>
+        </ng-template>
+
         </ng-template>
 
         <ng-template [ngIf]="dataSource.showMoreSelected()">

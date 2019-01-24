@@ -23,7 +23,7 @@ import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {Component, ViewChild} from '@angular/core';
 import {RadioButtonListComponent} from './radio-button-list.component';
 import {AWRadioButtonListModule} from './radio-button-list.module';
-import {Environment, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {Environment, MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('RadioButton LIST   behavior', () => {
@@ -37,7 +37,7 @@ describe('RadioButton LIST   behavior', () => {
 
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWRadioButtonListModule
       ]

@@ -27,7 +27,7 @@ import {AWOverlayModule} from '../../widgets/overlay/overlay.module';
 import {AWButtonModule} from '../../widgets/button/button.module';
 import {AWCoreComponentModule} from '../../core/core.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Component: overlay', () => {
@@ -37,7 +37,7 @@ describe('Component: overlay', () => {
         TestOverlayDefaultComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         NoopAnimationsModule,
         AWCoreComponentModule,

@@ -25,7 +25,7 @@ import {
   KeyModule,
   META_RULES,
   MetaRules,
-  MetaUIRulesModule
+  MetaUIRulesModule, MetaUITestRulesModule
 } from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../primeng-rules.module';
 
@@ -34,7 +34,7 @@ describe('How we can retrieve homepage from module', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true}),
+        MetaUITestRulesModule.forRoot({'env.test': true}),
         PrimeNgRulesModule.forRoot()
       ]
     });

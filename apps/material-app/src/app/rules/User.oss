@@ -64,3 +64,5 @@ class=User {
 class=User field=prefAirline {
    trait:toOneRelationship;
 }
+
+
