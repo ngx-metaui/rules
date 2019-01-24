@@ -12,10 +12,9 @@
         <ng-template [ngIf]="!hasEmbeddedTemplate() && itemExist(item)">
           {{item.label }}
         </ng-template>
-
-        <ng-template [embeddedItem]="itemTemplate" [item]="item"
-                     *ngIf="hasEmbeddedTemplate() && itemExist(item)">
-
+        <ng-template [ngIf]="hasEmbeddedTemplate() && itemExist(item)">
+          <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: item}">
+          </ng-container>
         </ng-template>
       </ng-template>
 
@@ -40,8 +39,9 @@
         <ng-template [ngIf]="!hasEmbeddedTemplate() && itemExist(item)">
           {{item.label }}
         </ng-template>
-        <ng-template [embeddedItem]="itemTemplate" [item]="item"
-                     *ngIf="hasEmbeddedTemplate() && itemExist(item)">
+        <ng-template [ngIf]="hasEmbeddedTemplate() && itemExist(item)">
+          <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: item}">
+          </ng-container>
         </ng-template>
       </ng-template>
     </p-dropdown>

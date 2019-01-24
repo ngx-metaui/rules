@@ -23,7 +23,7 @@ import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {RadioButtonComponent} from './/radio-button.component';
 import {AWRadioButtonModule} from './radio-button.module';
 import {FormControl, FormGroup} from '@angular/forms';
-import {MetaUIRulesModule, Environment} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, Environment, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -38,7 +38,7 @@ describe('Component: Radiobutton', () => {
         TestRBDisabledWithNgModelComponent,
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWRadioButtonModule
       ]

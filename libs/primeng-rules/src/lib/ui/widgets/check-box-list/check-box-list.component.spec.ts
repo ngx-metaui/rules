@@ -24,7 +24,7 @@ import {Component, ViewChild} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {CheckBoxListComponent} from './check-box-list.component';
 import {AWCheckBoxListModule} from './check-box-list.module';
-import {Environment, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {Environment, MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Checkbox List ', () => {
@@ -36,7 +36,7 @@ describe('Checkbox List ', () => {
         TestCBListBasicBehaviorComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWCheckBoxListModule
       ]

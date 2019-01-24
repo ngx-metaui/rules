@@ -45,7 +45,6 @@ import {
   ToolbarModule,
   TreeModule
 } from 'primeng/primeng';
-import {EmbeddedItemDirective} from './core/embedded-item';
 import {AWCoreComponentModule} from './core/core.module';
 import {AWCheckBoxListModule} from './widgets/check-box-list/check-box-list.module';
 import {AWChooserModule} from './widgets/chooser/chooser.module';
@@ -155,7 +154,6 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
     AWStringFieldModule,
     AWTextAreaModule,
     AWFormTableModule,
-    EmbeddedItemDirective,
     AWButtonModule,
     AWHoverCardModule,
     ToggleSwitchModule,

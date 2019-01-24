@@ -26,7 +26,7 @@ import {isPresent, readGlobalParam} from '../../core/utils/lang';
 import {AWCurrencyModule} from './currency.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Component: Currency', () => {
@@ -41,7 +41,7 @@ describe('Component: Currency', () => {
         TestReadonlyCurrencyCodeComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         NoopAnimationsModule,
         AWCurrencyModule, AWFormTableModule

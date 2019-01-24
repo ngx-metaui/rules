@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RoutingService} from '@ngx-metaui/rules';
 
@@ -58,12 +58,15 @@ export class MetaContentPageComponent implements OnInit, OnDestroy {
     }
 
 
-    // this.routingService.appRouting.set('MetaContentPageComponent.back', {
-    //   label: '',
-    //   icon: 'keyboard_arrow_left',
-    //   action: this.onBack,
-    //   showBefore: true
-    // });
+    this.routingService.appRouting.next([
+      {
+        action: this.onBack,
+        label: '',
+        icon: 'keyboard_arrow_left',
+        showBefore: true,
+        executionContext: this
+      }
+    ]);
   }
 
 
@@ -72,7 +75,7 @@ export class MetaContentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.routingService.appRouting.delete('MetaContentPageComponent.back');
+    this.routingService.appRouting.next(null);
   }
 
 

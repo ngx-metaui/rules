@@ -19,6 +19,7 @@
 import {evalExpression} from './utils/lang';
 import {MapWrapper} from './utils/collection';
 import {TestBed} from '@angular/core/testing';
+import {Location, LocationStrategy} from '@angular/common';
 import {MetaUIRulesModule} from '../rules.module';
 import {JsonRule} from './json-rule';
 import {Rule, Selector} from './rule';
@@ -29,6 +30,8 @@ import {ClassRulePriority, KeyClass, KeyField, META_RULES, MetaRules} from './me
 import {MatchResult} from './match';
 import {Context} from './context';
 import {OverrideValue} from './policies/merging-policy';
+import {MockLocationStrategy, SpyLocation} from '@angular/common/testing';
+import {MetaUITestRulesModule} from '../test.rules.module';
 
 
 type DynamicValueType = 'Expr' | 'SDW' | 'CFP' | 'OV' | 'i18n';
@@ -40,7 +43,7 @@ describe('Loading rules functionality', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true})
+        MetaUITestRulesModule.forRoot({'env.test': true})
       ]
     });
   });
@@ -129,7 +132,7 @@ describe('Loading rules functionality', () => {
       const rules: Array<Rule> = [];
 
       jsonRules.forEach((val, index) => {
-        const jsonRule: JsonRule = <JsonRule> val;
+        const jsonRule: JsonRule = <JsonRule>val;
 
         const selectors: Array<Selector> = new Array<Selector>();
         for (const item of jsonRule._selectors) {

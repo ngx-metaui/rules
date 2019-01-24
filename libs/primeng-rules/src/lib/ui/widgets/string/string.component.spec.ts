@@ -24,7 +24,7 @@ import {TestBed} from '@angular/core/testing';
 import {StringComponent} from './string.component';
 import {AWStringFieldModule} from './string.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -42,7 +42,7 @@ describe(
           TestStringCompComponent
         ],
         imports: [
-          MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+          MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
           PrimeNgRulesModule.forRoot(),
           AWStringFieldModule,
           AWFormTableModule

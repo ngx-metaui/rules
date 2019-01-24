@@ -23,7 +23,7 @@ import {Component, ViewChild} from '@angular/core';
 import {ButtonComponent} from './button.component';
 import {AWButtonModule} from './button.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -38,7 +38,7 @@ describe('Component: Button', () => {
         TestDTContainerBehaviorComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWButtonModule,
         AWFormTableModule

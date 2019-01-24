@@ -28,7 +28,7 @@ import {DataProviders} from './data-providers';
 import {DataFinder, DataFinders, FullTextArrayDataFinder, QueryType} from './data-finders';
 import {DataProvider, DataTypeProviderRegistry} from './datatype-registry.service';
 import {ArrayDataProvider} from './array-data-provider';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -40,7 +40,7 @@ describe('DataSource core with the', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+          MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
           PrimeNgRulesModule.forRoot()
         ],
         providers: [
@@ -117,7 +117,7 @@ describe('DataSource core with the', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+          MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
           PrimeNgRulesModule.forRoot(),
           AWCoreComponentModule
         ],
@@ -212,7 +212,7 @@ describe('DataSource core with the', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
-          MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+          MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
           PrimeNgRulesModule.forRoot(),
           AWCoreComponentModule
         ],

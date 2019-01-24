@@ -22,7 +22,7 @@ import {Component, ViewChild} from '@angular/core';
 import {HyperlinkComponent} from './hyperlink.component';
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {AWHyperlinkModule} from '../../widgets/hyperlink/hyperlink.module';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Component: Hyperlink', () => {
@@ -35,7 +35,7 @@ describe('Component: Hyperlink', () => {
         TestHyperlinkActionBehaviorComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWHyperlinkModule
       ]

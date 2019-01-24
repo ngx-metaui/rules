@@ -23,7 +23,7 @@ import {inject, TestBed} from '@angular/core/testing';
 import {DataTypeProviderRegistry} from './datatype-registry.service';
 import {ArrayDataProvider} from './array-data-provider';
 import {DataProviders} from './data-providers';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -32,7 +32,7 @@ describe('Data Providers', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot()
       ]
     });

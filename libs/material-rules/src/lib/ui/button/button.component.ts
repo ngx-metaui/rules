@@ -23,7 +23,7 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Input, Output,
+  Input, OnDestroy, Output,
   ViewEncapsulation
 } from '@angular/core';
 import {MatFormFieldControl, ThemePalette} from '@angular/material';
@@ -78,7 +78,7 @@ export type ButtonType = 'basic' | 'raised' | 'flat' | 'stroked';
     `
   ]
 })
-export class Button implements MatFormFieldControl<any>, AfterViewInit {
+export class Button implements MatFormFieldControl<any>, AfterViewInit, OnDestroy {
 
 
   @Input()
@@ -130,10 +130,20 @@ export class Button implements MatFormFieldControl<any>, AfterViewInit {
       '.mat-form-field-wrapper');
 
     if (ff) {
-      ff.classList.add('no-underline');
-      ff.classList.add('button-with-ff'); // has form field
+      ff.classList.add('no-underline', 'button-with-ff');
     }
   }
+
+  ngOnDestroy(): void {
+    const ff = this.domUtils.closest(this.elementRef.nativeElement,
+      '.no-underline');
+
+    if (ff) {
+      ff.classList.remove('no-underline', 'button-with-ff');
+    }
+  }
+
+
 
 
   onClick(event: any): void {

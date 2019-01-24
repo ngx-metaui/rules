@@ -23,7 +23,7 @@ import {inject, TestBed} from '@angular/core/testing';
 import {isPresent} from '../../core/utils/lang';
 import {DataFinders, FullTextArrayDataFinder, QueryType} from '../../core/data/data-finders';
 import {DataProviders} from '../../core/data/data-providers';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -32,7 +32,7 @@ describe('Data Finders', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot()
 
       ]

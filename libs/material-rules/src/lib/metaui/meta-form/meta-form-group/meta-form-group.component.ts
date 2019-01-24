@@ -183,7 +183,8 @@ export class MetaFormGroup extends MetaBaseComponent {
         }
       }
       return merged;
-    } else if (this.zLeft().length > 0) {
+
+    } else if (left.length > 0) {
       return this.zLeft().map<ZoneField>((item: string, index: number) =>
         new ZoneField(item, (index + 1), true));
     }

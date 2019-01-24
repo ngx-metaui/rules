@@ -26,7 +26,7 @@ import {FormGroup} from '@angular/forms';
 import {isPresent, readGlobalParam} from '../../core/utils/lang';
 import {AWGenericChooserModule} from './generic-chooser.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {Environment, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {Environment, MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -41,7 +41,7 @@ describe('Component: GenericChooser', () => {
         TestGCDDComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWGenericChooserModule,
         NoopAnimationsModule

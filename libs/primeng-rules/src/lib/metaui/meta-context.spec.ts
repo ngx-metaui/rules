@@ -22,7 +22,13 @@ import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
 import {Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import {Entity, META_RULES, MetaRules, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {
+  Entity,
+  META_RULES,
+  MetaRules,
+  MetaUIRulesModule,
+  MetaUITestRulesModule
+} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../primeng-rules.module';
 
 /**
@@ -52,7 +58,7 @@ describe('Meta Context Component', () => {
       ],
       imports: [
         RouterTestingModule.withRoutes(routes),
-        MetaUIRulesModule.forRoot({'env.test': true}),
+        MetaUITestRulesModule.forRoot({'env.test': true}),
         PrimeNgRulesModule.forRoot()
       ],
       providers: [{provide: APP_BASE_HREF, useValue: '/'}]

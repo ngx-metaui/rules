@@ -26,7 +26,7 @@ import {FormGroup} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {AWTextAreaModule} from './text-area.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
@@ -41,7 +41,7 @@ describe('TextArea component behavior', () => {
         TextAreaReadOnlyComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
+        MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot(),
         AWTextAreaModule,
         AWFormTableModule
