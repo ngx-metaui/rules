@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.1.3"></a>
+## [7.1.3](https://github.com/ngx-meta/rules/compare/v7.1.2...v7.1.3) (2019-02-12)
+
+
+### Bug Fixes
+
+* **ng-add:** Updated dependencies ([2adaf0e](https://github.com/ngx-meta/rules/commit/2adaf0e))
+
+
+### Features
+
+* **routing:** Added routing and created toOneRelationship trait ([4696298](https://github.com/ngx-meta/rules/commit/4696298))
+* **routing:** Initial version to showcase routing in metaui ([dd889bc](https://github.com/ngx-meta/rules/commit/dd889bc))
+* **widgets:** Added new autocomplete widgets ([cf57ac5](https://github.com/ngx-meta/rules/commit/cf57ac5))
+
+
+
 <a name="7.1.2"></a>
 ## [7.1.2](https://github.com/ngx-meta/rules/compare/v7.1.1...v7.1.2) (2018-12-31)
 
