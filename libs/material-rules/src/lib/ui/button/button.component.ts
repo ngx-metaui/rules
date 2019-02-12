@@ -70,6 +70,7 @@ export type ButtonType = 'basic' | 'raised' | 'flat' | 'stroked';
         text-align: left;
         font-weight: 400;
         font-size: 14px;
+        color: rgba(0,0,0,.68);
       }
 
       .button-with-ff .mat-form-field-infix {

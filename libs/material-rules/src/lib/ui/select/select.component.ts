@@ -131,7 +131,7 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
    */
 
   @Input()
-  disabled: boolean;
+  disabled: boolean  = false;
 
   @Input()
   id: string;
@@ -164,7 +164,7 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
   placeholder: string;
 
   @Input()
-  required: boolean;
+  required: boolean = false;
 
 
   /**

@@ -17,9 +17,10 @@
  *
  */
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCheckboxModule,
   MatDatepickerModule,
@@ -36,21 +37,26 @@ import {Checkbox} from './checkbox/checkbox.component';
 import {RadioGroup} from './radio-group/radio-group.component';
 import {DatePicker} from './date-picker/date-picker.component';
 import {Button} from './button/button.component';
+import {StringField} from './string/string.component';
+import {AutoComplete} from './autocomplete/autocomplete.component';
 
 
 @NgModule({
   declarations: [
     InputField,
+    StringField,
     TextArea,
     Select,
     Checkbox,
     RadioGroup,
     DatePicker,
-    Button
+    Button,
+    AutoComplete
   ],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
@@ -58,16 +64,19 @@ import {Button} from './button/button.component';
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    MatButtonModule
+    MatButtonModule,
+    MatAutocompleteModule
   ],
   entryComponents: [
     InputField,
     TextArea,
     Select,
+    StringField,
     Checkbox,
     RadioGroup,
     DatePicker,
-    Button
+    Button,
+    AutoComplete
 
   ],
   exports: [
@@ -78,16 +87,18 @@ import {Button} from './button/button.component';
     MatDatepickerModule,
     MatFormFieldModule,
     InputField,
+    StringField,
     TextArea,
     Select,
     Checkbox,
     RadioGroup,
     DatePicker,
+    AutoComplete,
     MatNativeDateModule,
     MatButtonModule,
+    MatAutocompleteModule,
     Button
-  ],
-  providers: []
+  ]
 })
 export class UILibModule {
 }

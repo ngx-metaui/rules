@@ -4,6 +4,19 @@
     Default definition
 */
 class=User {
+    field=title {
+      after:zTop;
+      trait:bold;
+    }
+
+    field=(uniqueName , firstName , prefAirline , favAnimal , toppings) {
+      after: zLeft;
+    }
+
+    field=(lastName , favColor , birthDate , isChecked) {
+          after: zRight;
+    }
+
     field=uniqueName {
       label: "Id";
       hint: "This is generated field.";
@@ -26,8 +39,8 @@ class=User {
 
     field=favAnimal {
        label: "My Animal";
-       hint: ${"Animal says: " + value };
-       trait:asRadio,required;
+       hint: ${"Animal says: " + value.sound};
+       trait:asAutoComplete,required;
        choices:${controller.animals};
     }
 
@@ -41,15 +54,10 @@ class=User {
     }
 
     field=description {
+      after:zBottom
       trait:fluid,longtext;
       hint: ${"You can type some long text here: " + value.length};
     }
-
-
-    zNone => *;
-    zLeft => uniqueName => firstName => prefAirline => favAnimal => toppings;
-    zRight => title => lastName => favColor => birthDate => isChecked;
-    zBottom => description;
 }
 
 

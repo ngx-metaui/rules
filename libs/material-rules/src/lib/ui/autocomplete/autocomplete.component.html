@@ -1,0 +1,24 @@
+<input
+  type="text"
+  matInput
+  [attr.id]="id"
+  [required]="required"
+  [placeholder]="placeholder"
+  [attr.aria-label]="placeholder"
+  [formControl]="inputControl"
+  [matAutocomplete]="auto">
+
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWith"
+                  (optionSelected)="onSelection($event)">
+
+  <mat-option *ngFor="let item of filteredStates | async" [value]="item">
+    <ng-template [ngIf]="itemTemplate">
+      <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: item}">
+      </ng-container>
+    </ng-template>
+
+    <ng-template [ngIf]="!itemTemplate">
+      {{displayKey ? item[displayKey] : item}}
+    </ng-template>
+  </mat-option>
+</mat-autocomplete>
