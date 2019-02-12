@@ -19,9 +19,13 @@
  *
  */
 /**
- * Used by IncludeComponent directive in order to convert string to type
+ * Used by IncludeComponent directive in order to convert string to type. Ideally you dont want this
+ * here where right now we need this to import this file:
+ *
+ *  `import * as entryComponents from './entry-components';`
+ *
+ *  Then iterate thru the content to register each TYPE that needs to be instantiated.
  */
-
 export * from './ui/input/input.component';
 export * from './ui/text-area/text-area.component';
 export * from './ui/select/select.component';
@@ -29,5 +33,7 @@ export * from './ui/checkbox/checkbox.component';
 export * from './ui/radio-group/radio-group.component';
 export * from './ui/date-picker/date-picker.component';
 export * from './ui/button/button.component';
+export * from './ui/string/string.component';
+export * from './ui/autocomplete/autocomplete.component';
 
-export {MetaForm} from './metaui/index';
+export {MetaForm, MetaContentPageComponent} from './metaui/index';

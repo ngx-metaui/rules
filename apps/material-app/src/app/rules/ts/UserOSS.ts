@@ -26,6 +26,102 @@ export const UserRule = {
 			      },
 			      {
 			        '_key': 'field',
+			        '_value': 'title',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'trait': 'bold',
+			      'after': 'zTop'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': [
+			          'uniqueName',
+			          'firstName',
+			          'prefAirline',
+			          'favAnimal',
+			          'toppings'
+			        ],
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zLeft'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
+			        '_value': [
+			          'lastName',
+			          'favColor',
+			          'birthDate',
+			          'isChecked'
+			        ],
+			        '_isDecl': false
+			      }
+			    ],
+			    '_properties': {
+			      'after': 'zRight'
+			    },
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      }
+			    ],
+			    '_rank': 0
+			  },
+			  {
+			    '_selectors': [
+			      {
+			        '_key': 'class',
+			        '_value': 'User',
+			        '_isDecl': false
+			      },
+			      {
+			        '_key': 'field',
 			        '_value': 'uniqueName',
 			        '_isDecl': false
 			      }
@@ -165,10 +261,10 @@ export const UserRule = {
 			    '_properties': {
 			      'hint': {
 			        't': 'Expr',
-			        'v': '"Animal says: " + value'
+			        'v': '"Animal says: " + value.sound'
 			      },
 			      'trait': [
-			        'asRadio',
+			        'asAutoComplete',
 			        'required'
 			      ],
 			      'label': 'My Animal',
@@ -274,262 +370,7 @@ export const UserRule = {
 			      'trait': [
 			        'fluid',
 			        'longtext'
-			      ]
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'zNone'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'uniqueName',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'zLeft'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'firstName',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'uniqueName'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'prefAirline',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'firstName'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'favAnimal',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'prefAirline'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'toppings',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'favAnimal'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'title',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'zRight'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'lastName',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'title'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'favColor',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'lastName'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'birthDate',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'favColor'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'isChecked',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'after': 'birthDate'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'class',
-			        '_value': 'User',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'field',
-			        '_value': 'description',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
+			      ],
 			      'after': 'zBottom'
 			    },
 			    '_rank': 0

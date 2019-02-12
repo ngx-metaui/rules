@@ -31,9 +31,8 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'InputField',
+			      'component': 'StringField',
 			      'bindings': {
-			        'readonly': true,
 			        'id': {
 			          't': 'Expr',
 			          'v': 'properties.get("field")'
@@ -45,8 +44,7 @@ export const SystemRules = {
 			        'value': {
 			          't': 'CFP',
 			          'v': 'value'
-			        },
-			        'required': false
+			        }
 			      }
 			    },
 			    '_rank': 0
@@ -523,28 +521,10 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'Select',
 			      'bindings': {
-			        'displayKey': {
-			          't': 'Expr',
-			          'v': 'meta.displayLabel(type, properties.get("labelField"), true)'
-			        },
-			        'ngModel': {
-			          't': 'CFP',
-			          'v': 'value'
-			        },
-			        'readonly': false,
-			        'multiple': true,
-			        'disabled': false,
-			        'list': {
-			          't': 'Expr',
-			          'v': 'properties.get("choices")'
-			        },
-			        'required': {
-			          't': 'Expr',
-			          'v': 'properties.get("required")'
-			        }
-			      }
+			        'multiple': true
+			      },
+			      'trait': 'asSelect'
 			    },
 			    '_rank': 0
 			  },
@@ -1361,8 +1341,6 @@ export const SystemRules = {
 			          't': 'CFP',
 			          'v': 'value'
 			        },
-			        'readonly': false,
-			        'disabled': false,
 			        'list': {
 			          't': 'Expr',
 			          'v': 'properties.get("choices")'
@@ -1444,8 +1422,6 @@ export const SystemRules = {
 			          't': 'CFP',
 			          'v': 'value'
 			        },
-			        'readonly': false,
-			        'disabled': false,
 			        'label': {
 			          't': 'Expr',
 			          'v': 'properties.get("label")'
@@ -1496,7 +1472,7 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'asObject',
+			        '_value': 'asAutoComplete',
 			        '_isDecl': true
 			      }
 			    ],
@@ -1511,28 +1487,33 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'asObject',
+			        '_value': 'asAutoComplete',
 			        '_isDecl': true
 			      },
 			      {
 			        '_key': 'editable',
-			        '_value': false,
+			        '_value': '*',
 			        '_isDecl': false
 			      }
 			    ],
 			    '_properties': {
-			      'component': 'MetaObjectDetailComponent',
-			      'nestedLayout': true,
+			      'component': 'AutoComplete',
 			      'bindings': {
-			        'layout': 'Inspect',
-			        'useNoLabelLayout': true,
-			        'label': {
+			        'displayKey': {
 			          't': 'Expr',
-			          'v': 'properties.get("label")'
+			          'v': 'meta.displayLabel(type, properties.get("labelField"), true)'
 			        },
-			        'object': {
+			        'ngModel': {
 			          't': 'CFP',
 			          'v': 'value'
+			        },
+			        'list': {
+			          't': 'Expr',
+			          'v': 'properties.get("choices")'
+			        },
+			        'required': {
+			          't': 'Expr',
+			          'v': 'properties.get("required")'
 			        }
 			      }
 			    },
@@ -1547,78 +1528,7 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'asObject',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'asHover',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'asHover',
-			        '_isDecl': true
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': false,
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
-			      'component': 'HoverCardComponent',
-			      'bindings': {
-			        'linkTitle': {
-			          't': 'CFP',
-			          'v': 'value'
-			        },
-			        'appendContentToBody': false,
-			        'ngcontentLayout': 'Content'
-			      }
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'asHover',
+			        '_value': 'asAutoComplete',
 			        '_isDecl': true
 			      }
 			    ],
@@ -1950,7 +1860,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -1969,7 +1879,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -1999,7 +1909,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2018,7 +1928,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2048,7 +1958,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2067,7 +1977,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2097,7 +2007,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2116,7 +2026,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2146,7 +2056,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2165,7 +2075,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],
@@ -2195,7 +2105,7 @@ export const SystemRules = {
 			      {
 			        '_key': 'component',
 			        '_value': [
-			          'StringComponent',
+			          'StringField',
 			          'AWHyperlink',
 			          'PopupMenuLink'
 			        ],

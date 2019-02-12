@@ -20,4 +20,5 @@
  */
 
 export * from './meta-form/meta-form.component';
+export * from './meta-content-page/meta-content-page.component';
 

@@ -17,16 +17,8 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Host,
-  Input,
-  ViewChild
-} from '@angular/core';
-import {AbstractControl, FormControl, NgModel, ValidatorFn, Validators} from '@angular/forms';
+import {AfterViewInit, ChangeDetectorRef, Component, Host, Input, ViewChild} from '@angular/core';
+import {AbstractControl, FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {Environment, KeyBindings, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
 import {MatFormField} from '@angular/material';
 
@@ -73,7 +65,6 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
 
 
   constructor(@Host() protected _metaContext: MetaContextComponent,
-              private elem: ElementRef,
               private cd: ChangeDetectorRef,
               public env: Environment) {
     super(env, _metaContext);
@@ -96,9 +87,8 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const ngControl: NgModel = <NgModel>this.mdFormField._control.ngControl;
-    if (ngControl) {
-      this.registerValidators(ngControl.control);
+    if (this.control) {
+      this.registerValidators(this.control);
     }
   }
 
@@ -164,7 +154,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
   }
 
   hasErrors(): boolean {
-    if (this.editing && this.mdFormField && this.mdFormField._control.ngControl.control.invalid) {
+    if (this.editing && this.control && this.mdFormField._control.ngControl.control.invalid) {
       this.errorMessage = this.control.errors['metavalid'] ? this.control.errors['metavalid'].msg
         : '';
       return true;
@@ -174,7 +164,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
 
   get control(): FormControl {
     if (this.mdFormField && this.mdFormField._control.ngControl) {
-      return <FormControl> this.mdFormField._control.ngControl.control;
+      return <FormControl>this.mdFormField._control.ngControl.control;
     }
     return null;
   }
