@@ -75,7 +75,7 @@ export class MetaObjectDetailComponent extends BaseComponent {
    * Rendered object detail can have a section label
    */
   @Input()
-  label: string;
+  label: string = null;
 
   constructor(public env: Environment) {
     super(env);

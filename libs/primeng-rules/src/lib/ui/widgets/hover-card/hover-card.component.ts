@@ -23,6 +23,7 @@ import {AnimationEvent} from '@angular/animations';
 import {assert, isBlank, isPresent} from '../../core/utils/lang';
 import {OverlayComponent} from '../overlay/overlay.component';
 import {BaseComponent, Environment} from '@ngx-metaui/rules';
+import {DomHandler} from 'primeng/api';
 
 
 /**
@@ -313,7 +314,7 @@ export class HoverCardComponent extends BaseComponent {
     this.injectDynamicContent();
 
     // pre-run positioning so we can calculate new coordinates
-    this.awOverlay.overlay.domHandler.absolutePosition(container, target);
+    DomHandler.absolutePosition(container, target);
     const cntRect = container.getBoundingClientRect();
     this.currrentPosition = this.positionForCard(container, cntRect);
 
@@ -369,7 +370,7 @@ export class HoverCardComponent extends BaseComponent {
    */
   adjustCard(container: any, containerRect: any, modalContainer: any): void {
     const diff = (this.currrentPosition === HCCardPosition.bottom) ? 1 : -1;
-    const scrollTop = modalContainer.domHandler.getWindowScrollTop();
+    const scrollTop = DomHandler.getWindowScrollTop();
     const posWithScroll = containerRect.top + scrollTop;
     container.style.top = (posWithScroll + (HoverCardComponent.ArrowPad * diff)) + 'px';
 
@@ -420,7 +421,7 @@ export class HoverCardComponent extends BaseComponent {
    */
   private alignmentForCard(boundingRect: any, modalContainer: any): HCCardAlignment {
     let alignment = HCCardAlignment.left;
-    const viewPort = modalContainer.domHandler.getViewport();
+    const viewPort = DomHandler.getViewport();
 
     if (this.trigRect.left.toFixed(0) === boundingRect.left.toFixed(0) &&
       boundingRect.left > HoverCardComponent.SpacingLimit) {

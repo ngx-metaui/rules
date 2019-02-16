@@ -60,7 +60,7 @@ export const AddressRule = {
 			    ],
 			    '_properties': {
 			      'trait': 'derived',
-			      'label': 'Zip, City',
+			      'label': 'Zip,',
 			      'type': 'String',
 			      'value': {
 			        't': 'Expr',

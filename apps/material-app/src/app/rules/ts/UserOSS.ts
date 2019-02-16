@@ -127,8 +127,7 @@ export const UserRule = {
 			      }
 			    ],
 			    '_properties': {
-			      'hint': 'This is generated field.',
-			      'label': 'Id'
+			      'label': 'SSN #'
 			    },
 			    '_rank': 0
 			  },

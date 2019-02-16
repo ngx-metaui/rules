@@ -90,20 +90,18 @@ function addDependencies(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     let uiLibs: NodeDependency[] = [];
     const core: NodeDependency[] = [
-      {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/rules'},
-      {type: NodeDependencyType.Default, version: '1.6.40', name: 'big-integer'},
+      {type: NodeDependencyType.Default, version: '^7.1.0', name: '@ngx-metaui/rules'},
+      {type: NodeDependencyType.Default, version: '1.6.41', name: 'big-integer'},
       {type: NodeDependencyType.Default, version: '1.3.1', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
       {type: NodeDependencyType.Default, version: '1.3.2', name: 'typescript-collections'},
-      {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
-      {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
       {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
     ];
 
     if (options.uiLib === 'prime-ng') {
       uiLibs = [
-        {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/primeng-rules'},
-        {type: NodeDependencyType.Default, version: '7.0.0-beta.1', name: 'primeng'},
+        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@ngx-metaui/primeng-rules'},
+        {type: NodeDependencyType.Default, version: '7.0.5', name: 'primeng'},
         {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
         {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
         {type: NodeDependencyType.Default, version: '^1.0.0', name: 'primeicons'}
@@ -111,9 +109,9 @@ function addDependencies(options: AddSchema): Rule {
 
     } else if (options.uiLib === 'material2') {
       uiLibs = [
-        {type: NodeDependencyType.Default, version: '^7.0.0', name: '@ngx-metaui/material-rules'},
-        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@angular/cdk'},
-        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@angular/material'},
+        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@ngx-metaui/material-rules'},
+        {type: NodeDependencyType.Default, version: '^7.3.2', name: '@angular/cdk'},
+        {type: NodeDependencyType.Default, version: '^7.3.2', name: '@angular/material'},
         {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
       ];
     }

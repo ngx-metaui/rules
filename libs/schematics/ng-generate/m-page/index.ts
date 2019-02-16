@@ -41,7 +41,7 @@ import * as ts from 'typescript';
 import {InsertChange} from '@schematics/angular/utility/change';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {buildRelativePath} from '@schematics/angular/utility/find-module';
-import {black, bold, green} from '@angular-devkit/core/src/terminal/colors';
+import {black, bold, green} from '@angular-devkit/core/src/terminal';
 
 
 /**

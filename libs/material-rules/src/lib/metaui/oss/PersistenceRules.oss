@@ -28,7 +28,7 @@ field {
                     this.set("object", value);
                     this.set("actionCategory", "General");
                     this.set("action", "Inspect");
-                    meta.fireAction(this, '', true)
+                    meta.fireAction(this, null, true)
                 };
                 ngcontent: ${value ? FieldPath.getFieldValue(value, meta.displayLabel(type, properties.get("labelField") )) : null};
             }

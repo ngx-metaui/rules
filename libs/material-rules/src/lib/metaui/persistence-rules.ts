@@ -59,7 +59,7 @@ export const SystemPersistenceRules = {
 			        },
 			        'click': {
 			          't': 'Expr',
-			          'v': 'this.set("object", value), this.set("actionCategory", "General"), this.set("action", "Inspect"), meta.fireAction(this, "", true)'
+			          'v': 'this.set("object", value), this.set("actionCategory", "General"), this.set("action", "Inspect"), meta.fireAction(this, null, true)'
 			        }
 			      }
 			    },
