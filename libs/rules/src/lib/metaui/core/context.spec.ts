@@ -40,6 +40,10 @@ import {
 } from './meta-rules';
 import {NestedMap} from './nested-map';
 import {UIContext} from './context';
+import {RouterTestingModule} from '@angular/router/testing';
+import {Routes} from '@angular/router';
+import {APP_BASE_HREF} from '@angular/common';
+import {MetaUITestRulesModule} from '@ngx-metaui/rules';
 
 // @formatter:off
 /* tslint:disable */
@@ -3079,6 +3083,14 @@ export const UILibRules = {
 
 // @formatter:on
 /* tslint:disable */
+
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/test',
+    pathMatch: 'full'
+  }
+];
 
 
 describe('Meta Context behaivor ', () => {

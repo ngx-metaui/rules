@@ -255,12 +255,13 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
    * is defined)
    *
    */
-  protected createContentElementIfAny(): boolean {
+  protected createContentElementIfAny(inAfterViewCheck: boolean = false): boolean {
     let detectChanges = false;
     const bindings = this.metaContext.myContext().propertyForKey(KeyBindings);
 
 
-    if (isPresent(bindings) && bindings.has(MetaIncludeDirective.NgContentLayout)) {
+    if (!inAfterViewCheck && isPresent(bindings)
+      && bindings.has(MetaIncludeDirective.NgContentLayout)) {
 
       const layoutName = bindings.get(MetaIncludeDirective.NgContentLayout);
       const context = this.metaContext.myContext();
@@ -296,7 +297,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     } else {
       detectChanges = super.createContentElementIfAny();
     }
-    if (detectChanges && this.initRenderInProgress) {
+    if (detectChanges && this.initRenderInProgress && !inAfterViewCheck) {
       // console.log('MetaInclude(createContentElementIfAny):', this.name);
       this.cd.detectChanges();
     }

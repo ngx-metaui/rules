@@ -57,7 +57,6 @@ describe('Meta Context Component', () => {
         TestContainerViewDefferedComponent
       ],
       imports: [
-        RouterTestingModule.withRoutes(routes),
         MetaUITestRulesModule.forRoot({'env.test': true}),
         PrimeNgRulesModule.forRoot()
       ],

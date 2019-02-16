@@ -239,7 +239,9 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
   ngAfterViewChecked(): void {
     this.initRenderInProgress = false;
 
-    this.createContentElementIfAny();
+    // Need to run this as last thing since I want to move around DOM elements and some 3th-party
+    // components assemble things in ngAfterViewInit
+    this.createContentElementIfAny(true);
   }
 
 
@@ -318,7 +320,7 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
    *
    * @return need to run detect changes ? default is false
    */
-  protected createContentElementIfAny(): boolean {
+  protected createContentElementIfAny(inAfterViewCheck: boolean = false): boolean {
     if (!this.currentComponent) {
       return false;
     }

@@ -52,7 +52,7 @@ export class RoutingService {
    *
    */
   goBack(): void {
-    if (isBlank(this.router)) {
+    if (isBlank(this.router) || isBlank(this.location)) {
       throw new Error('Please import RouterModule to use this functionality!');
     }
 

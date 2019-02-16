@@ -18,9 +18,14 @@ class=User {
     }
 
     field=uniqueName {
+      label: "SSN #";
+    }
+
+
+   /* field=uniqueName {
       label: "Id";
       hint: "This is generated field.";
-    }
+    }*/
 
     field=(firstName, lastName) {
       trait:required;
@@ -72,5 +77,15 @@ class=User {
 class=User field=prefAirline {
    trait:toOneRelationship;
 }
+
+
+
+
+
+
+
+
+
+
 
 

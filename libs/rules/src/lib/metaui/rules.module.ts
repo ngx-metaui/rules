@@ -25,7 +25,7 @@ import {
   Optional
 } from '@angular/core';
 import {Router} from '@angular/router';
-import {CommonModule} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {UIMeta} from './core/uimeta';
 import {RuleLoaderService} from './core/rule-loader.service';
 import * as sysMetaComponents from './entry-components';
@@ -76,7 +76,11 @@ export class MetaUIRulesModule {
           provide: MetaConfig, useFactory: makeConfig,
           deps: [AppMetaConfig, Environment]
         },
-        {provide: RoutingService, useClass: RoutingService, deps: [[new Optional(), Router]]},
+        {
+          provide: RoutingService,
+          useClass: RoutingService,
+          deps: [[new Optional(), Router], [new Optional(), Location]]
+        },
 
         ComponentRegistry,
         DomUtilsService,
