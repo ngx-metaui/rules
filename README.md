@@ -2,7 +2,7 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.org/ngx-meta/rules.svg?branch=master)](https://travis-ci.org/ngx-meta/rules)
-[![npm version](https://badge.fury.io/js/%40ngx-metaui%2Frules.svg)](https://www.npmjs.com/@angular/core)
+[![npm version](https://badge.fury.io/js/%40ngx-metaui%2Frules.svg)](https://www.npmjs.com/@ngx-meta/rules)
 
 [![Dependency Status](https://david-dm.org/ngx-meta/rules.svg)](https://david-dm.org/ngx-meta/rules)
  [![devDependency Status](https://david-dm.org/ngx-meta/rules/dev-status.svg)](https://david-dm.org/ngx-meta/rules?type=dev) 
