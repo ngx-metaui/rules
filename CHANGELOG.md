@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.2.1"></a>
+## [7.2.1](https://github.com/ngx-meta/rules/compare/v7.2.0...v7.2.1) (2019-04-24)
+
+### Features
+
+* **platform:** Updated to latest Angular 7.2.14, CLI 7.3.1, Material 7.3.7, PrimeNg 7.1.2 
+
+
 <a name="7.2.0"></a>
 # [7.2.0](https://github.com/ngx-meta/rules/compare/v7.1.3...v7.2.0) (2019-02-18)
 

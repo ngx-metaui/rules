@@ -520,5 +520,18 @@
     },
     "defaultCollection": "@nrwl/schematics"
   },
-  "defaultProject": "material-app"
+  "defaultProject": "material-app",
+  "schematics": {
+    "@nrwl/schematics:library": {
+      "unitTestRunner": "karma",
+      "framework": "angular"
+    },
+    "@nrwl/schematics:application": {
+      "unitTestRunner": "karma",
+      "e2eTestRunner": "protractor"
+    },
+    "@nrwl/schematics:node-application": {
+      "framework": "express"
+    }
+  }
 }
