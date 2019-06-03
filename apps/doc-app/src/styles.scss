@@ -1,0 +1,86 @@
+@import "./variables";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-size: 16px;
+  color: $color-black;
+  font-family: 'Source Sans Pro', sans-serif;
+  background: $color-grey-05;
+}
+
+app-markdown {
+  img {
+    max-width: 100%;
+  }
+
+  ul {
+    li {
+      padding: 4px 0;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $color-black;
+    font-weight: 600;
+    margin: 20px 0;
+  }
+
+  h1 {
+    font-size: 34px;
+    line-height: 40px;
+    margin-top: 32px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: 28px;
+    line-height: 34px;
+    margin-top: 32px;
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    font-size: 24px;
+    line-height: 32px;
+    margin-top: 32px;
+    margin-bottom: 20px;
+  }
+
+  h4 {
+    font-size: 20px;
+    line-height: 28px;
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
+
+  h5 {
+    font-size: 18px;
+    line-height: 24px;
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
+
+  h6 {
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
+}
+
+a {
+  color: $color-blue;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+p {
+  line-height: 1.6;
+}

@@ -17,15 +17,15 @@
  *
  */
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
-  Inject,
-  NgZone,
+  Inject, Input,
+  NgZone, OnChanges,
   Optional,
   Renderer2,
-  Self,
+  Self, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
@@ -71,6 +71,7 @@ export class StringField extends MatInput implements ControlValueAccessor {
   constructor(
     protected _elementRef: ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     protected _platform: Platform,
+    private _cd: ChangeDetectorRef,
     @Optional() @Self() public _ngControl: NgControl,
     @Optional() protected parentForm: NgForm,
     @Optional() protected parentFormGroup: FormGroupDirective,
@@ -93,6 +94,13 @@ export class StringField extends MatInput implements ControlValueAccessor {
     this._elementRef = this.inputControl;
     super.ngOnInit();
   }
+
+
+  ngDoCheck(): void {
+    super.ngDoCheck();
+    this._cd.markForCheck();
+  }
+
 
   registerOnChange(fn: (_: any) => void): void {
     this.onChange = fn;

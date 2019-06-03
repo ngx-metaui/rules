@@ -17,11 +17,12 @@
  *
  */
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
   Inject,
+  Input,
   NgZone,
   Optional,
   Renderer2,
@@ -73,6 +74,44 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputField extends MatInput implements ControlValueAccessor {
+
+  private _xType = 'text';
+
+  @Input()
+  set type(value: string) {
+    this._xType = value;
+  }
+
+
+  get type(): string {
+    return this._xType ? this._xType.toLowerCase() : 'text';
+  }
+
+  private _readonlyx = false;
+  private _disabledx = false;
+  @Input()
+  get readonly(): boolean {
+    return this._readonlyx;
+  }
+
+  set readonly(value: boolean) {
+    this._readonlyx = value;
+
+    this._cd.markForCheck();
+  }
+
+  @Input()
+  get disabled(): boolean {
+    return this._disabledx;
+  }
+
+  set disabled(value: boolean) {
+    this._disabledx = value;
+
+    this._cd.markForCheck();
+  }
+
+
   /**
    * Reference to internal INPUT element having MatInput directive so we can set this reference
    * back to the MatInput
@@ -92,6 +131,7 @@ export class InputField extends MatInput implements ControlValueAccessor {
   constructor(
     protected _elementRef: ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     protected _platform: Platform,
+    private _cd: ChangeDetectorRef,
     @Optional() @Self() public _ngControl: NgControl,
     @Optional() protected parentForm: NgForm,
     @Optional() protected parentFormGroup: FormGroupDirective,
@@ -116,7 +156,7 @@ export class InputField extends MatInput implements ControlValueAccessor {
   }
 
   registerOnChange(fn: (_: any) => void): void {
-    if (this.type === 'number') {
+    if (this._type === 'number') {
       this.onChange = (value) => {
         fn(value === '' ? null : parseFloat(value));
       };

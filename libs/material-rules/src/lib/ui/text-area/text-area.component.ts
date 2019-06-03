@@ -17,11 +17,12 @@
  *
  */
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
   Inject,
+  Input,
   NgZone,
   Optional,
   Renderer2,
@@ -74,6 +75,39 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
 })
 export class TextArea extends MatInput implements ControlValueAccessor {
 
+  @Input()
+  autoSizeEnabled = true;
+
+  @Input()
+  minRows = 1;
+
+  @Input()
+  maxRows = -1;
+
+  private _readonlyx = false;
+  private _disabledx = false;
+  @Input()
+  get readonly(): boolean {
+    return this._readonlyx;
+  }
+
+  set readonly(value: boolean) {
+    this._readonlyx = value;
+
+    this._cd.markForCheck();
+  }
+
+  @Input()
+  get disabled(): boolean {
+    return this._disabledx;
+  }
+
+  set disabled(value: boolean) {
+    this._disabledx = value;
+
+    this._cd.markForCheck();
+  }
+
 
   /**
    * Reference to internal INPUT element having MatInput directive so we can set this reference
@@ -94,6 +128,7 @@ export class TextArea extends MatInput implements ControlValueAccessor {
   constructor(
     protected _elementRef: ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     protected _platform: Platform,
+    private _cd: ChangeDetectorRef,
     @Optional() @Self() public _ngControl: NgControl,
     @Optional() protected parentForm: NgForm,
     @Optional() protected parentFormGroup: FormGroupDirective,
@@ -135,6 +170,7 @@ export class TextArea extends MatInput implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this._renderer.setProperty(this.nativeElement, 'disabled', isDisabled);
+    console.log('isDisabledisDisabled', isDisabled);
   }
 
   writeValue(value: any): void {

@@ -1,0 +1,58 @@
+@import "../../../variables";
+
+:host {
+  display: block;
+  padding-bottom: 30px;
+}
+.mat-list-base {
+
+  .mat-list-item {
+    height: auto;
+
+    /deep/ .mat-list-item-content {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    a {
+      display: block;
+      width: 100%;
+      padding: 0 16px;
+      line-height: 42px;
+      box-sizing: border-box;
+      font-size: 15px;
+      font-weight: 600;
+
+      &.active {
+        color: $color-blue;
+      }
+    }
+
+    /deep/ .mat-list-item-content {
+      flex-direction: column;
+    }
+  }
+}
+
+.sub-nav {
+  margin: 0;
+  padding: 0 0 10px 16px;
+  list-style: none;
+  border-bottom: 1px solid $border-color;
+
+  a {
+    display: block;
+    font-size: 14px;
+    padding: 6px 10px;
+    transition: color 250ms ease, background-color 250ms ease;
+
+    &:hover {
+      color: $color-blue;
+      background-color: $color-grey-04;
+    }
+
+    &.active {
+      color: $color-blue;
+    }
+  }
+}

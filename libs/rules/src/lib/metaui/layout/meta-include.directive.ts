@@ -381,8 +381,12 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
   private applyInputs(component: ComponentRef<any>, type: any, bindings: any,
                       inputs: string[], editable: any, initialApplyInputs: boolean = true) {
     // propagate a field type to bindings.
-    if (isPresent(type) && isPresent(component.instance.canSetType) &&
-      component.instance.canSetType()) {
+
+    const setType = this.metaContext.myContext().booleanPropertyForKey('canSetType',
+      false);
+
+    if (isPresent(type) && ((isPresent(component.instance.canSetType) &&
+      component.instance.canSetType()) || setType)) {
       bindings.set(KeyType, type);
     }
 

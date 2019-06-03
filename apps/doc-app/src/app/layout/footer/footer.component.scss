@@ -1,0 +1,23 @@
+@import "../../../variables";
+
+:host {
+  display: block;
+}
+
+#footer {
+  padding: 20px;
+  border-top: 1px solid $border-color;
+  color: $text-color;
+  text-align: center;
+
+  a {
+    color: currentColor;
+    text-decoration: none;
+    transition: color 250ms ease;
+
+    &:hover {
+      text-decoration: none;
+      color: $color-black;
+    }
+  }
+}

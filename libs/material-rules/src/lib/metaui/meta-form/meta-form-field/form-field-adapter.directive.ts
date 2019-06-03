@@ -87,7 +87,14 @@ export class MetaFormFieldAdapter implements MatFormFieldControl<any> {
 
   get disabled(): boolean {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).disabled;
+      const editable = this.metaInclude.metaContext.myContext()
+        .booleanPropertyForKey('editable', false);
+
+      const edit = this.metaInclude.metaContext.myContext()
+        .booleanPropertyForKey('editing', false);
+
+      return (<MatFormFieldControl<any>>this.metaInclude.component).disabled ||
+        (edit && !editable);
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }

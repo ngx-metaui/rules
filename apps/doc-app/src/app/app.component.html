@@ -1,0 +1,28 @@
+<section id="wrapper" [class.tablet]="tabletQuery.matches && !mobileQuery.matches">
+  <app-header (navBtnClick)="sidenav.toggle()"></app-header>
+
+  <mat-sidenav-container id="main">
+    <mat-sidenav
+      [opened]="!tabletQuery.matches"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      #sidenav
+      class="sidenav">
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content id="mat-content">
+      <section id="content">
+        <div class="content-holder">
+          <router-outlet></router-outlet>
+        </div>
+
+        <aside [hidden]="mobileQuery.matches" class="aside-nav">
+          <app-aside-nav></app-aside-nav>
+        </aside>
+      </section>
+
+      <app-footer></app-footer>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</section>
