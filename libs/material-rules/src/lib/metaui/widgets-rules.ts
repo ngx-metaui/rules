@@ -235,6 +235,7 @@ export const SystemRules = {
 			    ],
 			    '_properties': {
 			      'component': 'InputField',
+			      'canSetType': true,
 			      'bindings': {
 			        'ngModel': {
 			          't': 'CFP',
@@ -596,7 +597,10 @@ export const SystemRules = {
 			          't': 'CFP',
 			          'v': 'value'
 			        },
-			        'readonly': false,
+			        'readonly': {
+			          't': 'Expr',
+			          'v': 'properties.get("editing") && !properties.get("editable")'
+			        },
 			        'id': {
 			          't': 'Expr',
 			          'v': 'properties.get("field")'
@@ -647,68 +651,21 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'after': 'zBottom'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'longtext',
-			        '_isDecl': true
-			      },
-			      {
-			        '_key': 'editable',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_properties': {
 			      'component': 'TextArea',
 			      'bindings': {
-			        'ngModel': {
-			          't': 'CFP',
-			          'v': 'value'
+			        'minRows': 4,
+			        'readonly': {
+			          't': 'Expr',
+			          'v': 'properties.get("editing") && !properties.get("editable")'
 			        },
-			        'readonly': false,
-			        'disabled': false,
+			        'autoSizeEnabled': true,
 			        'required': {
 			          't': 'Expr',
 			          'v': 'properties.get("required")'
 			        }
-			      }
+			      },
+			      'after': 'zBottom'
 			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'field',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'type',
-			        '_value': 'String',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
-			        '_value': 'longtext',
-			        '_isDecl': true
-			      }
-			    ],
 			    '_rank': 0
 			  },
 			  {
@@ -1023,7 +980,9 @@ export const SystemRules = {
 			      }
 			    ],
 			    '_properties': {
-			      'editable': false
+			      'editable': false,
+			      'hideUnderline': true,
+			      'noLabelLayout': true
 			    },
 			    '_rank': 0
 			  },

@@ -52,6 +52,7 @@ field {
     type=(Number) {
         editable {
           component:InputField;
+          canSetType:true;
           bindings:{
              ngModel: $value;
              readonly:false;
@@ -102,23 +103,23 @@ field {
             component:InputField;
             bindings:{
                ngModel: $value;
-               readonly:false;
                id: ${properties.get("field")};
                placeholder:${properties.get("label")};
                required:${properties.get("required")};
+               readonly: ${ properties.get("editing") && !properties.get("editable") };
+
             }
         }
         @trait=longtext {
             after:zBottom;
-            editable {
-                component:TextArea;
-                bindings:{
-                  ngModel: $value;
-                  readonly:false;
-                  disabled:false;
-                  required:${properties.get("required")};
-                }
+            component:TextArea;
+            bindings:{
+              required:${properties.get("required")};
+              readonly: ${ properties.get("editing") && !properties.get("editable") };
+              autoSizeEnabled:true;
+              minRows: 4;
             }
+
             operation=(search, list)  { visible:false }
         }
 
@@ -140,6 +141,8 @@ field {
 
     @trait=derived {
         editable:false;
+        hideUnderline:true;
+        noLabelLayout:true;
         editing { after:zNone; }
     }
 

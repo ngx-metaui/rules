@@ -25,6 +25,9 @@
     },
     "material-app": {
       "tags": []
+    },
+    "doc-app": {
+      "tags": []
     }
   }
 }

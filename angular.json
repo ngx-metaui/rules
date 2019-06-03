@@ -511,6 +511,112 @@
           }
         }
       }
+    },
+    "doc-app": {
+      "root": "apps/doc-app/",
+      "sourceRoot": "apps/doc-app/src",
+      "projectType": "application",
+      "prefix": "ngx-metaui",
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/doc-app",
+            "index": "apps/doc-app/src/index.html",
+            "main": "apps/doc-app/src/main.ts",
+            "polyfills": "apps/doc-app/src/polyfills.ts",
+            "tsConfig": "apps/doc-app/tsconfig.app.json",
+            "assets": [
+              "apps/doc-app/src/favicon.ico",
+              "apps/doc-app/src/assets"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "./node_modules/prismjs/themes/prism-okaidia.css",
+              "apps/doc-app/src/styles.scss"
+            ],
+            "scripts": [
+              "node_modules/marked/lib/marked.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-typescript.min.js",
+              "node_modules/prismjs/components/prism-javascript.min.js"
+            ],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/doc-app/src/environments/environment.ts",
+                  "with": "apps/doc-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "doc-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "doc-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "doc-app:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/doc-app/tsconfig.app.json",
+              "apps/doc-app/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/doc-app/src/test.ts",
+            "tsConfig": "apps/doc-app/tsconfig.spec.json",
+            "karmaConfig": "apps/doc-app/karma.conf.js",
+            "polyfills": "apps/doc-app/src/polyfills.ts",
+            "styles": [],
+            "scripts": [],
+            "assets": []
+          }
+        }
+      }
     }
   },
   "cli": {

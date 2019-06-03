@@ -1,0 +1,57 @@
+@import "../../../variables";
+
+:host {
+  width: $aside-nav-width;
+  position: fixed;
+  top: $header-height;
+  background: $color-grey-05;
+}
+.aside-nav {
+  margin: 15px 0 0;
+  padding: 0;
+  border-left: 1px solid $border-color;
+  list-style: none;
+
+  li {
+    font-size: 13px;
+    margin-left: 6px;
+
+    a {
+      display: block;
+      line-height: 1.1;
+      color: $color-grey-02;
+      text-decoration: none;
+      padding: 6px 14px 6px 15px;
+      position: relative;
+      transition: color 250ms ease, background-color 250ms ease;
+
+      &:hover {
+        background-color: $color-grey-04;
+        color: $color-black;
+      }
+
+      &.active {
+        color: $color-black;
+        font-weight: 600;
+
+        &:before {
+          content: '';
+          display: block;
+          width: 0;
+          height: 0;
+          border: 5px solid transparent;
+          border-right: 0;
+          border-left-color: $color-blue;
+          position: absolute;
+          left: 0;
+          top: 50%;
+          margin-top: -5px;
+        }
+      }
+    }
+
+    &:first-child {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+}

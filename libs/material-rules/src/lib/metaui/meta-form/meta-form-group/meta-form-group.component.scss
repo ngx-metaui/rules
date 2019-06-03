@@ -1,6 +1,7 @@
-.meta-fg-readonly {
+.meta-fg-readonly,  .meta-fg-readonly.mat-form-field-appearance-legacy  {
   .mat-form-field-underline {
     background-color: transparent;
+    background-image: none;
   }
 
   .mat-input-element {

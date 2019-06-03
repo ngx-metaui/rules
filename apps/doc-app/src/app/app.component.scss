@@ -1,0 +1,52 @@
+@import "../variables";
+
+#wrapper {
+  display: flex;
+  height: calc(100vh - #{$header-height});
+  flex-flow: column nowrap;
+  min-width: 320px;
+  padding-top: $header-height;
+}
+#main {
+  flex: 1;
+
+  .sidenav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    top: $header-height;
+    width: $sidenav-width;
+    overflow-y: auto;
+  }
+}
+/* mat-sidenav-container */
+.mat-sidenav-container {
+  height: 100%;
+}
+/* aside-nav */
+.aside-nav {
+  flex: 0 0 $aside-nav-width;
+}
+/* content */
+#content {
+  flex: 1;
+  flex-flow: row nowrap;
+  display: flex;
+}
+/* content-holder */
+.content-holder {
+  padding: 0 30px 50px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/* tablet styles */
+.tablet {
+  app-aside-nav {
+    bottom: 0;
+    overflow: auto;
+  }
+
+  app-footer {
+    margin-right: $aside-nav-width;
+  }
+}

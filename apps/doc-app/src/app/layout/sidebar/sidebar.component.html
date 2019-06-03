@@ -1,0 +1,18 @@
+<mat-nav-list>
+  <ng-container *ngFor="let item of menuList">
+    <mat-list-item>
+      <a [routerLink]="item.path" routerLinkActive="active">{{ item.data.title }}</a>
+    </mat-list-item>
+    <ul class="sub-nav" *ngIf="activeRoute === item.path">
+      <li *ngFor="let item of navItems">
+        <a
+          [routerLink]="activeRoute"
+          [fragment]="item.id"
+          [class.active]="item.id === activeFragment"
+        >
+          {{ item.textContent }}
+        </a>
+      </li>
+    </ul>
+  </ng-container>
+</mat-nav-list>

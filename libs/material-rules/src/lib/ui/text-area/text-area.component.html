@@ -1,9 +1,10 @@
 <textarea
   #inputField
   matInput
-  cdkTextareaAutosize
-
   class="mat-input-element mat-form-field-autofill-control"
+  [mat-autosize]="autoSizeEnabled"
+  [matAutosizeMinRows]="minRows"
+  [matAutosizeMaxRows]="maxRows"
   [class.mat-input-server]="_isServer"
   [attr.id]="id"
   [attr.placeholder]="placeholder"
