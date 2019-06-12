@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.3.0"></a>
+# [7.3.0](https://github.com/ngx-meta/rules/compare/v7.2.2...v7.3.0) (2019-06-12)
+
+
+### Bug Fixes
+
+* **docs:** Refactored docs initialization into single component ([5749e28](https://github.com/ngx-meta/rules/commit/5749e28))
+* **docsapp:** Update broken libs ([655cd41](https://github.com/ngx-meta/rules/commit/655cd41))
+* **readme.md:** Update link to npmjs repository ([3b06b1a](https://github.com/ngx-meta/rules/commit/3b06b1a))
+
+
+### Features
+
+* **docsapp:** Create documentation app ([c8c4214](https://github.com/ngx-meta/rules/commit/c8c4214))
+
+
+
 <a name="7.2.2"></a>
 ## [7.2.2](https://github.com/ngx-meta/rules/compare/v7.2.1...v7.2.2) (2019-04-24)
 
