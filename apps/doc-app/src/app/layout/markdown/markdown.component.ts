@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit} from '@angular/core';
 import * as marked from 'marked';
-import { HeadingsListService } from '../../services/headings-list.service';
-import { NavigationEnd, Router, RouterEvent } from '@angular/router';
-import { AnchorScrollService } from '../../services/anchor-scroll.service';
-import { filter } from 'rxjs/operators';
+import {HeadingsListService} from '../../services/headings-list.service';
+import {NavigationEnd, Router, RouterEvent} from '@angular/router';
+import {AnchorScrollService} from '../../services/anchor-scroll.service';
+import {filter} from 'rxjs/operators';
 
 declare var Prism: {
   highlightAll: (async: boolean) => void;
@@ -12,10 +12,21 @@ declare var Prism: {
 
 @Component({
   selector: 'app-markdown',
-  template: '<ng-content></ng-content>',
+  template: '<ng-content></ng-content>'
 })
 export class MarkdownComponent implements OnInit, AfterViewInit {
-  @Input() mdFile: string;
+  private _mdFile: string;
+  @Input()
+  get mdFile(): string {
+    return this._mdFile;
+  }
+
+  set mdFile(value: string) {
+
+    console.log(value)
+    this._mdFile = require(`!!raw-loader!../../../${value}`);
+  }
+
   activeRoute: string;
   activeFragment: string;
 

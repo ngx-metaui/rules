@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { OssRulesRoutingModule } from './oss-rules-routing.module';
-import { OssRulesComponent } from './oss-rules.component';
+import { DocPageRoutingModule } from './doc-page-routing.module';
+import { DocPageComponent } from './doc-page.component';
 import { MarkdownModule } from '../../layout/markdown/markdown.module';
 
 @NgModule({
   declarations: [
-    OssRulesComponent
+    DocPageComponent
   ],
   imports: [
     CommonModule,
-    OssRulesRoutingModule,
+    DocPageRoutingModule,
     MarkdownModule
   ],
 })
-export class OssRulesModule { }
+export class DocPageModule { }

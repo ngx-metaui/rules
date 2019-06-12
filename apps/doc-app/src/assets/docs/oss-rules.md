@@ -1123,4 +1123,4 @@ to give it a chance and try it out and also look at the following:
 [3]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/core/meta-context/meta-context.component.ts
 [4]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/layout/meta-include.directive.ts
 [5]: https://github.com/ngx-meta/rules/blob/master/libs/rules/src/lib/metaui/core/meta.ts
-[6]: /oss-syntax
+[6]: #/oss-syntax
