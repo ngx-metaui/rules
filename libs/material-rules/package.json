@@ -12,6 +12,6 @@
     "@angular/platform-browser": "^7.2.14",
     "@angular/platform-browser-dynamic": "^7.2.14",
     "@angular/router": "^7.2.14",
-    "@ngx-metaui/rules": "^7.2.1"
+    "@ngx-metaui/rules": "^VERSION_PLACEHOLDER"
   }
 }
