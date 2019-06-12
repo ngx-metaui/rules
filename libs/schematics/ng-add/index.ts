@@ -90,7 +90,11 @@ function addDependencies(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     let uiLibs: NodeDependency[] = [];
     const core: NodeDependency[] = [
-      {type: NodeDependencyType.Default, version: '^7.1.0', name: '@ngx-metaui/rules'},
+      {
+        type: NodeDependencyType.Default,
+        version: '^VERSION_PLACEHOLDER',
+        name: '@ngx-metaui/rules'
+      },
       {type: NodeDependencyType.Default, version: '1.6.41', name: 'big-integer'},
       {type: NodeDependencyType.Default, version: '1.3.1', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
@@ -100,7 +104,11 @@ function addDependencies(options: AddSchema): Rule {
 
     if (options.uiLib === 'prime-ng') {
       uiLibs = [
-        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@ngx-metaui/primeng-rules'},
+        {
+          type: NodeDependencyType.Default,
+          version: '^VERSION_PLACEHOLDER',
+          name: '@ngx-metaui/primeng-rules'
+        },
         {type: NodeDependencyType.Default, version: '7.0.5', name: 'primeng'},
         {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
         {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
@@ -109,7 +117,11 @@ function addDependencies(options: AddSchema): Rule {
 
     } else if (options.uiLib === 'material2') {
       uiLibs = [
-        {type: NodeDependencyType.Default, version: '^7.1.0', name: '@ngx-metaui/material-rules'},
+        {
+          type: NodeDependencyType.Default,
+          version: '^VERSION_PLACEHOLDER',
+          name: '@ngx-metaui/material-rules'
+        },
         {type: NodeDependencyType.Default, version: '^7.3.2', name: '@angular/cdk'},
         {type: NodeDependencyType.Default, version: '^7.3.2', name: '@angular/material'},
         {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
