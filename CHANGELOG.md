@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.3.1"></a>
+## [7.3.1](https://github.com/ngx-meta/rules/compare/v7.3.0...v7.3.1) (2019-06-13)
+
+
+### Bug Fixes
+
+* **doc:** Make `code` font size small ([476740e](https://github.com/ngx-meta/rules/commit/476740e))
+* **system:** Minor refactoring and removed obsolete dependencies ([116a62b](https://github.com/ngx-meta/rules/commit/116a62b))
+
+
+
 <a name="7.3.0"></a>
 # [7.3.0](https://github.com/ngx-meta/rules/compare/v7.2.2...v7.3.0) (2019-06-12)
 
