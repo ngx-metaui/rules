@@ -9,12 +9,7 @@
     "@angular/core": "^7.2.14",
     "@angular/platform-browser": "^7.2.14",
     "@angular/platform-browser-dynamic": "^7.2.14",
-    "@angular/router": "^7.2.14",
-    "@angular/http": "^7.2.14",
-    "big-integer": "1.6.43",
-    "object-hash": "1.3.1",
-    "object-path": "^0.11.4",
-    "typescript-collections": "1.3.2"
+    "@angular/router": "^7.2.14"
   },
   "schematics": "./lib/schematics/collection.json",
   "standard-version": {
