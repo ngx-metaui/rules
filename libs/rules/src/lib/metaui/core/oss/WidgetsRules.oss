@@ -116,7 +116,7 @@ action {
             clientPanel:true;
         }
     }
-
+`/*
     @trait=messageResults {
         message:"Action Performed: %s";
         actionResults:${
@@ -126,7 +126,7 @@ action {
             ariba.ui.widgets.AribaPageContent.setMessage(m, requestContext.session());
             null};
     }
-
+*/
     @trait=instance {
     	enabled:${object != null};
     	isInstanceAction:true;

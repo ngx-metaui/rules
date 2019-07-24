@@ -1117,38 +1117,6 @@ export const SystemRules = {
 			      },
 			      {
 			        '_key': 'trait',
-			        '_value': 'messageResults',
-			        '_isDecl': true
-			      }
-			    ],
-			    '_properties': {
-			      'actionResults': {
-			        't': 'Expr',
-			        'v': 'var o = (properties.isInstanceAction ? object : ariba.ui.aribaweb.util.AWUtil.classForName(properties.class)), var v = ariba.util.fieldvalue.FieldValue.getFieldValue(o, properties.action), var m = ariba.util.core.Fmt.S(properties.message, v), ariba.ui.widgets.AribaPageContent.setMessage(m, requestContext.session()), null'
-			      },
-			      'message': 'Action Performed: %s'
-			    },
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'action',
-			        '_value': '*',
-			        '_isDecl': false
-			      }
-			    ],
-			    '_rank': 0
-			  },
-			  {
-			    '_selectors': [
-			      {
-			        '_key': 'action',
-			        '_value': '*',
-			        '_isDecl': false
-			      },
-			      {
-			        '_key': 'trait',
 			        '_value': 'instance',
 			        '_isDecl': true
 			      }
