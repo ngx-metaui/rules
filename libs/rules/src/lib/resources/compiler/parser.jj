@@ -1,0 +1,635 @@
+/*
+    Copyright 2008 Craig Federighi
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+    file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    $Id:  $
+*/
+
+/*
+    Parser for OSS - object style sheets
+*/
+
+options {
+      // Parser options
+    LOOKAHEAD = 2;
+    // FORCE_LA_CHECK      = true;
+    STATIC              = false;
+    JAVA_UNICODE_ESCAPE = true;
+    UNICODE_INPUT       = true;
+}
+
+PARSER_BEGIN(Parser)
+
+package ariba.ui.meta.core;
+
+import ariba.util.core.Fmt;
+import ariba.util.core.ListUtil;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.io.BufferedReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Parser
+{
+    Meta _meta;
+
+    public Parser (Meta meta, Reader reader)
+    {
+        this(reader);
+        _meta = meta;
+    }
+
+    public Parser (Meta meta, String str)
+    {
+        this(meta, new BufferedReader(new StringReader(str)));
+    }
+}
+
+PARSER_END(Parser)
+
+/* Parse the whole rule file and add it to the Meta */
+void addRules () : {
+    Rule r;
+}
+{
+    addRulesWithSelector(null)
+}
+
+void addRulesWithSelector (List contextPreds) : {
+    Rule r;
+}
+{
+    (rule(contextPreds))*<EOF>
+}
+
+/* one rule */
+void rule (List contextPreds) : {
+    List preds = null;
+    Object traits;
+    Map props = null;
+}
+{
+    preds=selectorList() { if (contextPreds != null) preds.addAll(0, contextPreds); }
+    [ ("#" traits=traitList())
+        {
+            props = new HashMap();
+            props.put("trait", traits);
+            Rule.Selector p = (Rule.Selector)ListUtil.lastElement(preds);
+            if (p._value == Meta.KeyAny) p._value = (traits instanceof List) ? ((List)traits).get(0) : traits;
+        }
+    ]
+    (
+        (
+            "{" processRuleBody(preds, props) "}"
+        )
+      |
+        (
+            ";" {  _meta.addRule( new Rule(preds, props, 0, token.beginLine)); }
+        )
+    )
+}
+
+void processRuleBody(List preds, Map props) : {
+    Object k, v;
+    boolean isOverride = false;
+}
+{
+    (
+        (
+            k=key() ":" v=value() ["!" { isOverride = true; }]
+            { if (props == null) props = new HashMap();
+              if (isOverride) {v = new Meta.OverrideValue(v); isOverride=false; }
+              props.put(k, v); }
+            [ ";" ]
+        )
+      |
+        /* flush any current rule to preserve rank */
+        { _meta.addRule( new Rule(preds, props, 0, token.beginLine)); props = null; }
+        rule(preds)
+      |
+        /* flush any current rule to preserve rank */
+        { _meta.addRule( new Rule(preds, props, 0, token.beginLine)); props = null; }
+        precedenceChain(preds)
+    )*
+    { _meta.addRule(new Rule(preds, props, 0, token.beginLine)); }
+}
+
+String predecessorChainNode (List contextPreds, String predecessor) : {
+    List preds = null;
+    Token k, t;
+    Object traits = null;
+}
+{
+    (k=<KEYPATH> | k=<IDENT> | k="*") [ ("#" traits=traitList()) ]
+    {
+        if (predecessor != null || traits != null) {
+            ((UIMeta)_meta).addPredecessorRule(k.image, contextPreds, predecessor, traits, token.beginLine);
+        }
+        return k.image;
+    }
+}
+
+void precedenceChain (List contextPreds) : {
+    List preds = null;
+    Token t;
+    Map props = null;
+    String predKey;
+}
+{
+    predKey=predecessorChainNode(contextPreds, null) ( "=>" predKey=predecessorChainNode(contextPreds, predKey))+ ";"
+}
+
+void processProperty (Map props) : {
+    Object k, v;
+    boolean isOverride = false;
+}
+{
+    k=key() ":" v=value() ["!" { isOverride = true; }]
+    { if (props == null) props = new HashMap();
+      if (isOverride) v = new Meta.OverrideValue(v);
+      props.put(k, v); }
+    [ ";" ]
+}
+
+List selectorList () : {
+    List preds = new ArrayList();
+    Rule.Selector p;
+}
+{
+    (
+        p=selector()
+        {
+            preds.add(p);
+        }
+    )+
+    { return preds; }
+}
+
+Rule.Selector selector () : {
+    Token t;
+    Object value = Meta.KeyAny;
+    boolean isDecl = false;
+}
+{
+    ["@" { isDecl = true; }]
+    (
+        t=<IDENT> ["=" (value=simpleValue() | ( "(" value=valueOrList() ")") )]
+        {
+            return new Rule.Selector(t.image, value, isDecl);
+        }
+      |
+        "~" t=<IDENT>
+        {
+            return new Rule.Selector(t.image, Meta.NullMarker, isDecl);
+        }
+    )
+}
+Object traitList() : {
+    Token t;
+    Object traits = null;
+}
+{
+    t=<IDENT> { traits = t.image; }
+    (","  t=<IDENT> {
+        if (!(traits instanceof List)) traits = ListUtil.list(traits);
+        ((List)traits).add(t.image);
+    })*
+    {
+        return traits;
+    }
+}
+
+/* Should add support for Lists and sub-maps */
+
+Object value() : {
+    Object v;
+}
+{
+    (
+        v=valueOrList()
+     |
+        v=wrappedList()
+     |
+        v=map()
+     |
+        v=bindingValue()
+     |
+        v=localizedString()
+     |
+        v=exprValue()
+    )
+    { return v; }
+}
+
+Object valueOrList() : {
+    List list = null;
+    Object first, next;
+}
+{
+    (
+        first=listValue()
+    )
+    (
+        ","
+        next=listValue()
+        { if (list == null) { list = new ArrayList(); list.add(first); }
+          list.add(next); }
+    )*
+    { return (list != null) ? list : first; }
+}
+
+List wrappedList() : {
+    List list = new ArrayList();
+    Object v;
+}
+{
+    "["
+        (
+            v=listValue()
+            { list.add(v); }
+        )
+        (
+            ","
+            v=listValue()
+            { list.add(v); }
+        )*
+    "]"
+    { return list; }
+}
+
+Object listValue() : {
+    Object v;
+}
+{
+    (
+        v=simpleValue()
+     |
+        v=wrappedList()
+     |
+        v=map()
+     |
+        v = bindingValue()
+     |
+        v = exprValue()
+    )
+    { return v; }
+}
+
+Map map () : {
+    Map m = new HashMap();
+    Object k;
+    Object v;
+}
+{
+    "{"
+        [
+            (
+                k=key() ":" v=value()
+                { m.put(k, v); }
+            )
+
+            (
+                ";"
+                k=key() ":" v=value()
+                { m.put(k, v); }
+            )*
+            [ ";" ]
+        ]
+    "}"
+    { return m; }
+}
+
+Object key() : {
+    Token t;
+}
+{
+    (
+        (<STRING_LITERAL>)
+                                                { return token_source.literalValue; }
+     |
+        t=<IDENT>
+                                                { return t.image; }
+    )
+}
+
+Object simpleValue() : {
+    Token t;
+    Object v;
+}
+{
+    (
+        (<STRING_LITERAL> | <SQ_STRING_LITERAL> | <INT_LITERAL> | <FLT_LITERAL>)
+                                                { return token_source.literalValue; }
+     |
+        t=<IDENT>
+                                                { return t.image; }
+     |
+        t=<KEYPATH>
+                                                { return t.image; }
+     |
+        "true"                                  { return Boolean.TRUE; }
+     |
+        "false"                                 { return Boolean.FALSE; }
+     |
+        "null"                                  { return null; }
+    )
+}
+
+Object bindingValue() : {
+    Token t;
+}
+{
+    t=<FIELDPATHBINDING>
+        {
+            return new PropertyValue.ContextFieldPath(t.image.substring(1));
+        }
+}
+
+Object localizedString() : {
+    Token t;
+    Object v;
+}
+{
+    t=<LOCALIZATION_KEY> v=key()
+    {
+        return ((UIMeta)_meta).createLocalizedString(t.image.substring(2, t.image.length()-1), (String)v);
+    }
+}
+
+Object exprValue() : {
+    Token t;
+}
+{
+    t=<EXPR_LITERAL>
+        {
+            String exprString = (String)token_source.literalValue;
+            try {
+                final PropertyValue.Dynamic exprVal = new PropertyValue.Expr(exprString);
+                return (token_source.isStaticDynamicExpr)
+                    ? new PropertyValue.StaticDynamicWrapper(
+                            new PropertyValue.StaticallyResolvableWrapper(exprVal))
+                    : exprVal;
+            } catch (Exception e) {
+                ParseException pe = new ParseException(
+                    Fmt.S("Expression parsing embedded expression, line: %s:\nExpr Message - %s",
+                    Integer.toString(t.beginLine),
+                    e.getMessage()));
+                pe.currentToken = t;
+                throw pe;
+            }
+        }
+}
+
+// LEXER PRODUCTIONS
+
+TOKEN_MGR_DECLS:
+{
+      /** Holds the last value computed by a constant token. */
+    Object literalValue;
+      /** Holds the last character escaped or in a character literal. */
+    private char charValue;
+      /** Holds char literal start token. */
+    private char charLiteralStartQuote;
+      /** Holds the last string literal parsed. */
+    private StringBuffer stringBuffer;
+      /** Indicates whether last EXPR_LITERAL is of the "$${" variety **/
+    boolean isStaticDynamicExpr;
+
+    int braceNestingDepth;
+
+      /** Converts an escape sequence into a character value. */
+    private char escapeChar()
+    {
+        int ofs = image.length() - 1;
+        switch ( image.charAt(ofs) ) {
+            case 'n':   return '\n';
+            case 'r':   return '\r';
+            case 't':   return '\t';
+            case 'b':   return '\b';
+            case 'f':   return '\f';
+            case '\\':  return '\\';
+            case '\'':  return '\'';
+            case '\"':  return '\"';
+        }
+
+          // Otherwise, it's an octal number.  Find the backslash and convert.
+        while ( image.charAt(--ofs) != '\\' )
+          {}
+        int value = 0;
+        while ( ++ofs < image.length() )
+            value = (value << 3) | (image.charAt(ofs) - '0');
+        return (char) value;
+    }
+
+    private Object makeInt()
+    {
+        Object  result;
+        String  s = image.toString();
+        int     base = 10;
+
+        if ( s.charAt(0) == '0' )
+            base = (s.length() > 1 && (s.charAt(1) == 'x' || s.charAt(1) == 'X'))? 16 : 8;
+        if ( base == 16 )
+            s = s.substring(2); // Trim the 0x off the front
+        switch ( s.charAt(s.length()-1) ) {
+            case 'l': case 'L':
+                result = Long.valueOf( s.substring(0,s.length()-1), base );
+                break;
+
+            case 'h': case 'H':
+                result = new BigInteger( s.substring(0,s.length()-1), base );
+                break;
+
+            default:
+                result = Integer.valueOf( s, base );
+                break;
+        }
+        return result;
+    }
+
+    private Object makeFloat()
+    {
+        String s = image.toString();
+        switch ( s.charAt(s.length()-1) ) {
+            case 'f': case 'F':
+                return Float.valueOf( s );
+
+            case 'b': case 'B':
+                return new BigDecimal( s.substring(0,s.length()-1) );
+
+            case 'd': case 'D':
+            default:
+                return Double.valueOf( s );
+        }
+    }
+}
+
+// Whitespace -- ignored
+SKIP:
+{  " " | "\t" | "\f" | "\r" | "\n" }
+
+<DEFAULT>
+MORE : /* Comments */
+{
+    < "/*" > : IN_COMMENT
+}
+
+<IN_COMMENT>
+SKIP :
+{
+    < "*/" > : DEFAULT
+}
+
+<IN_COMMENT>
+MORE :
+{
+    < ~[] > : IN_COMMENT
+}
+
+// An identifier.
+TOKEN:
+{
+  < IDENT: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9"] )* >
+}
+
+// Key path string.
+TOKEN:
+{
+  < KEYPATH: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9", ".", "$"] )* >
+}
+
+// Dynamic field path binding.
+TOKEN:
+{
+  < FIELDPATHBINDING: "$" ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9", "."] )* >
+}
+
+// Localized string key.
+TOKEN:
+{
+  < LOCALIZATION_KEY: "$" "[" ( ["a"-"z","A"-"Z","_","0"-"9"] )* "]" >
+}
+
+/**
+ * Character and string literals, whose object value is stored in the token manager's
+ * "literalValue" field.
+ */
+MORE:
+{
+    "\""    { stringBuffer = new StringBuffer(); }: WithinStringLiteral
+  |
+    "\'"    { stringBuffer = new StringBuffer(); }: WithinSQStringLiteral
+}
+
+<WithinStringLiteral> MORE:
+{
+    < ESC: "\\" ( ["n","r","t","b","f","\\","'","`","\""]
+                | (["0"-"3"])? ["0"-"7"] (["0"-"7"])?
+                )
+    >
+        { charValue = escapeChar(); stringBuffer.append(charValue); }
+ |
+    < STRING_ESC: <ESC> >
+        { stringBuffer.append( escapeChar() ); }
+ |
+    < (~["\"","\\"]) >
+        { stringBuffer.append( image.charAt(image.length()-1) ); }
+}
+
+<WithinStringLiteral> TOKEN:
+{
+    <STRING_LITERAL: "\"">
+        { literalValue = new String( stringBuffer ); }
+        : DEFAULT
+}
+<WithinSQStringLiteral> MORE:
+{
+    < (~["\'","\\"]) >
+        { stringBuffer.append( image.charAt(image.length()-1) ); }
+}
+
+<WithinSQStringLiteral> TOKEN:
+{
+    <SQ_STRING_LITERAL: "\'">
+        { literalValue = new String( stringBuffer ); }
+        : DEFAULT
+}
+
+/**
+ * Integer or real Numeric literal, whose object value is stored in the token manager's
+ * "literalValue" field.
+ */
+TOKEN:
+{
+    < INT_LITERAL:
+        ( "0" (["0"-"7"])* | ["1"-"9"] (["0"-"9"])* | "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ )
+        (["l","L","h","H"])?
+    >
+        { literalValue =
+        makeInt(); }
+ |
+    < FLT_LITERAL:
+        ( <DEC_FLT> (<EXPONENT>)? (<FLT_SUFF>)?
+        | <DEC_DIGITS> <EXPONENT> (<FLT_SUFF>)?
+        | <DEC_DIGITS> <FLT_SUFF>
+        )
+    >
+        { literalValue = makeFloat(); }
+
+ |  < #DEC_FLT: (["0"-"9"])+ "." (["0"-"9"])* | "." (["0"-"9"])+ >
+ |  < #DEC_DIGITS: (["0"-"9"])+ >
+ |  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+ |  < #FLT_SUFF: ["d","D","f","F","b","B"] >
+}
+
+/* Parsing of AribaExpr literal in ${ ... } form -- fancy because of nested {} */
+MORE: { "${"
+    { isStaticDynamicExpr = false; stringBuffer = new StringBuffer(); }: WithinExprLiteral
+}
+
+MORE: { "$${"
+    { isStaticDynamicExpr = true; stringBuffer = new StringBuffer(); }: WithinExprLiteral
+}
+
+<WithinExprLiteral> MORE: {
+    < "{" >
+        { braceNestingDepth++; stringBuffer.append("{"); } : WithinExprLiteralNested
+  | < (~["{","}"]) >
+        { stringBuffer.append( image.charAt(image.length()-1) ); }
+}
+<WithinExprLiteralNested> MORE: {
+    < "{" >
+        { braceNestingDepth++; stringBuffer.append("{"); }
+  | < (~["{","}"]) >
+        { stringBuffer.append( image.charAt(image.length()-1) ); }
+  | < "}" >
+        {
+          stringBuffer.append("}");
+          braceNestingDepth--;
+          SwitchTo( braceNestingDepth==0 ? WithinExprLiteral : WithinExprLiteralNested );
+        }
+}
+<WithinExprLiteral> TOKEN: { <EXPR_LITERAL : "}" >
+    {
+        literalValue = new String( stringBuffer );
+    }
+    : DEFAULT
+}
+
+/* Try to avoid TokenMgrErrors */
+< * > TOKEN : { < UNEXPECTED_CHAR : ~[] > }

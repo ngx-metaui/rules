@@ -2,8 +2,8 @@ import {APP_INITIALIZER, Injector, ModuleWithProviders, NgModule} from '@angular
 import {CommonModule} from '@angular/common';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 
-import {SystemRules} from './metaui/widgets-rules';
-import {SystemPersistenceRules} from './metaui/persistence-rules';
+import {WidgetsRulesRule} from './metaui/ts/WidgetsRules.oss';
+import {PersistenceRulesRule} from './metaui/ts/PersistenceRules.oss';
 import * as entryComponents from './entry-components';
 import {ErrorManagerService} from './ui/core/error-manager.service';
 import {DomUtilsService} from './ui/core/dom-utils.service';
@@ -63,7 +63,8 @@ export function initLibMetaUI(injector: Injector) {
 
     const promise: Promise<any> = new Promise((resolve: any) => {
       const metaRules: MetaRules = injector.get(META_RULES);
-      metaRules.loadUILibSystemRuleFiles(entryComponents, SystemRules, SystemPersistenceRules);
+      metaRules.loadUILibSystemRuleFiles(entryComponents, WidgetsRulesRule,
+        PersistenceRulesRule);
 
       resolve(true);
     });

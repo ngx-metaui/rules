@@ -11,11 +11,12 @@
     "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
     "@angular/router": "ANGULAR_PLACEHOLDER",
     "@angular/cdk": "MATERIAL_PLACEHOLDER",
-    "@ngx-metaui/rules": "^VERSION_PLACEHOLDER",
     "primeicons": "PRIMENG_ICONS_PLACEHOLDER",
     "primeng": "PRIMENG_PLACEHOLDER",
-
     "font-awesome": "4.7.0"
+  },
+  "dependencies": {
+    "@ngx-metaui/rules": "^VERSION_PLACEHOLDER"
   },
   "standard-version": {
     "skip": {

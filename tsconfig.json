@@ -13,7 +13,8 @@
     "paths": {
       "@ngx-metaui/rules": ["dist/libs/rules", "libs/rules/src/index.ts"],
       "@ngx-metaui/primeng-rules": ["libs/primeng-rules/src/index.ts"],
-      "@ngx-metaui/material-rules": ["libs/material-rules/src/index.ts"]
+      "@ngx-metaui/material-rules": ["libs/material-rules/src/index.ts"],
+      "@ngx-metaui/compiler": ["libs/compiler/src/index.ts"]
     },
     "rootDir": "."
   },

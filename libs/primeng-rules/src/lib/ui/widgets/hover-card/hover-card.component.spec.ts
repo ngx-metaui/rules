@@ -31,7 +31,8 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 describe('Component: Hover card', () => {
 
 
-  beforeEach(() => {
+  beforeEach((done) => {
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       declarations: [
         TestHCSimpleComponent
@@ -47,6 +48,9 @@ describe('Component: Hover card', () => {
     });
 
     TestBed.compileComponents();
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

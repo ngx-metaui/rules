@@ -32,7 +32,7 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Form Table behavior ', () => {
 
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       declarations: [
         OneColLayoutTestComponent,
@@ -51,6 +51,10 @@ describe('Form Table behavior ', () => {
     });
 
     TestBed.compileComponents();
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

@@ -1,0 +1,97 @@
+
+/**
+ * @license
+ * Copyright 2017 SAP Ariba
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Based on original work: MetaUI: Craig Federighi (2008)
+ *
+ * {_selectors:[{_key:operation,_value:[edit,create,search],_isDecl:false}],_properties:null,_rank:0}
+ */
+
+
+class=User {
+    field=title {
+      after:zTop;
+      trait:bold;
+    }
+
+    field=(uniqueName , firstName , prefAirline , favAnimal , toppings) {
+      after: zLeft;
+    }
+
+    field=(lastName , favColor , birthDate , isChecked) {
+          after: zRight;
+    }
+
+    field=uniqueName {
+      label: "SSN #";
+    }
+
+
+   /* field=uniqueName {
+      label: "Id";
+      hint: "This is generated field.";
+    }*/
+
+    field=(firstName, lastName) {
+      trait:required;
+    }
+
+    field=prefAirline {
+        label:"My airlines";
+        trait:required,asSelect;
+        choices:${controller.airlines};
+    }
+
+    field=favColor {
+        trait:asSelect,required;
+        choices:['Blue', 'Red', 'Yellow'];
+    }
+
+    field=favAnimal {
+       label: "My Animal";
+       hint: ${"Animal says: " + value.sound};
+       trait:asAutoComplete,required;
+       choices:${controller.animals};
+    }
+
+    field=isChecked {
+      label: "Do I live in cave?";
+    }
+
+    field=toppings {
+       label:"Preferred toppings";
+       choices:['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+    }
+
+    field=description {
+      after:zBottom;
+      trait:fluid,longtext;
+      hint: ${"You can type some long text here: " + value.length};
+    }
+}
+
+
+
+
+/**
+  .User .prefAirline {
+     trait:toOneRelationship;
+  }
+
+*/
+class=User field=prefAirline {
+   trait:toOneRelationship;
+}

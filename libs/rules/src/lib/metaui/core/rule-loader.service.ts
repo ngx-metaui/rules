@@ -39,6 +39,10 @@ export interface RuleLoader {
   loadRules(meta: MetaRules, source: any, module: string, onRule: (rule: Rule) => void): void;
 }
 
+/**
+ *
+ * @deprecated
+ */
 @Injectable()
 export class RuleLoaderService implements RuleLoader {
 

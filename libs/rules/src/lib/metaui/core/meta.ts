@@ -67,6 +67,7 @@ import {OnDestroy, Type} from '@angular/core';
 import {Route} from '@angular/router';
 import {LocalizedString} from './i18n/localized-string';
 import {RuleLoaderService} from './rule-loader.service';
+import {RuntimeParser} from './compiler/runtime-parser.visitor';
 
 
 /**
@@ -130,7 +131,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
   protected sysRulesLoaded = false;
   protected uiLibSysRulesLoaded = false;
 
-  constructor(public componentRegistry: ComponentRegistry, public ruleLoader: RuleLoaderService) {
+  constructor(public componentRegistry: ComponentRegistry) {
 
     this.PropertyMerger_DeclareList = new PropertyMergerDeclareList();
     this.PropertyMerger_Traits = new PropertyMergerDeclareListForTrait();
@@ -395,6 +396,9 @@ export abstract class Meta implements MetaRules, OnDestroy {
 
   abstract loadApplicationRule(): void;
 
+  abstract addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
+                              traits: Array<string>, lineNumber: number): Rule;
+
   contextDependencies(): Map<string, any> {
     return this.contextInjectables;
   }
@@ -421,9 +425,9 @@ export abstract class Meta implements MetaRules, OnDestroy {
                                 editable: boolean = true): void {
     try {
 
-      if (isPresent(this.ruleLoader)) {
-        this.ruleLoader.loadRules(this, ruleText, module, (rule) => this.addRule(rule));
-      }
+
+      const parser = new RuntimeParser(ruleText, this);
+      parser.registerRules();
     } catch (e) {
       this.endRuleSet().disableRules();
       throw new Error('Error loading rule: ' + e);
@@ -433,13 +437,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
 
   protected loadRulesWithRuleSet(filename: string, ruleText: any, rank: number): void {
     this.beginRuleSetWithRank(rank, filename);
-    try {
-      this.loadRulesWithModule(ruleText);
-
-    } catch (e) {
-      this.endRuleSet().disableRules();
-      throw new Error('Error loading rule: ' + e);
-    }
+    this.loadRulesWithModule(ruleText);
   }
 
 
@@ -625,6 +623,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
     }
     return error.toString();
   }
+
 
   private selectivityRank(selector: Selector): number {
     // Score selectors: good if property scope, key !== '*' or bool

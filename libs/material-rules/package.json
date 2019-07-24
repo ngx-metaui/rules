@@ -4,14 +4,16 @@
   "version": "VERSION_PLACEHOLDER",
   "peerDependencies": {
     "@angular/animations": "ANGULAR_PLACEHOLDER",
-    "@angular/cdk": "MATERIAL_PLACEHOLDER",
     "@angular/common": "ANGULAR_PLACEHOLDER",
     "@angular/core": "ANGULAR_PLACEHOLDER",
     "@angular/forms": "ANGULAR_PLACEHOLDER",
-    "@angular/material": "MATERIAL_PLACEHOLDER",
     "@angular/platform-browser": "ANGULAR_PLACEHOLDER",
     "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
     "@angular/router": "ANGULAR_PLACEHOLDER",
+    "@angular/material": "MATERIAL_PLACEHOLDER",
+    "@angular/cdk": "MATERIAL_PLACEHOLDER"
+  },
+  "dependencies": {
     "@ngx-metaui/rules": "^VERSION_PLACEHOLDER"
   }
 }

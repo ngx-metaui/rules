@@ -21,317 +21,110 @@ import {TestBed} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
 import {PrimeNgRulesModule} from '../../primeng-rules.module';
-import {
-  Entity,
-  META_RULES,
-  MetaRules,
-  MetaUIRulesModule,
-  MetaUITestRulesModule
-} from '@ngx-metaui/rules';
+import {Entity, META_RULES, MetaRules, MetaUITestRulesModule} from '@ngx-metaui/rules';
 
-/**
- *
- *
- *     layout=Inspect2#Stack {
- *            @layout=MenuTop#ActionButtons {
- *           }
- *
- *           @layout=First#Form {
- *            }
- *           @layout=Second#Form { zonePath:Second; }
- *       }
- *
- *
- *    class=UserStackA {
- *           @action=update  {
- *                actionResults:${ object.firstName = "Mr." +  object.firstName };
- *               visible: ${ properties.editing };
- *            }
- *
- *
- *           @action=Save  {
- *                label: "My Save";
- *               actionResults:${ object.firstName = "Ms." +  object.firstName };
- *                 visible: ${ properties.editing };
- *                 buttonStyle:info;
- *            }
- *
- *
- *           zNone => *;
- *            zLeft => firstName => lastName => age => department;
- *            Second.zLeft => email;
- *     }
- */
-// @formatter:off
-/* tslint:disable */
-export const UserStackARule = {
-  oss: [
-    {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest2', '_isDecl': false}],
-      '_properties': {'trait': 'Stack'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest2', '_isDecl': false},
-        {'_key': 'layout', '_value': 'MenuTop', '_isDecl': true}
-      ], '_properties': {'trait': 'ActionButtons'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest2', '_isDecl': false}],
-      '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest2', '_isDecl': false},
-        {'_key': 'layout', '_value': 'First', '_isDecl': true}
-      ], '_properties': {'trait': 'Form'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest2', '_isDecl': false}],
-      '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest2', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Second', '_isDecl': true}
-      ], '_properties': {'trait': 'Form', 'zonePath': 'Second'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest2', '_isDecl': false}],
-      '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'action', '_value': 'update', '_isDecl': true}
-      ], '_properties': {
-        'visible': {'t': 'Expr', 'v': 'properties.editing'},
-        'actionResults': {'t': 'Expr', 'v': 'object.firstName = ("Mr." + object.firstName)'}
-      }, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'action', '_value': 'Save', '_isDecl': true}
-      ], '_properties': {
-        'visible': {'t': 'Expr', 'v': 'properties.editing'}, 'buttonStyle': 'info',
-        'actionResults': {
-          't': 'Expr', 'v': 'object.firstName = ("Ms." + object.firstName)'
-        }, 'label': 'My Save'
-      }, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': '*', '_isDecl': false}
-      ], '_properties': {'after': 'zNone'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'firstName', '_isDecl': false}
-      ], '_properties': {'after': 'zLeft'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'lastName', '_isDecl': false}
-      ], '_properties': {'after': 'firstName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'age', '_isDecl': false}
-      ], '_properties': {'after': 'lastName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'department', '_isDecl': false}
-      ], '_properties': {'after': 'age'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'email', '_isDecl': false}
-      ], '_properties': {'after': 'Second.zLeft'}, '_rank': 0
-    }, {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}
-  ]
-};
 
-export const LinksUserStackARule = {
-  oss: [
-    {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest3', '_isDecl': false}],
-      '_properties': {'trait': 'Stack'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest3', '_isDecl': false},
-        {'_key': 'layout', '_value': 'MenuTop', '_isDecl': true}
-      ], '_properties': {'trait': 'ActionLinks'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest3', '_isDecl': false}],
-      '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest3', '_isDecl': false},
-        {'_key': 'layout', '_value': 'First', '_isDecl': true}
-      ], '_properties': {'trait': 'Form'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest3', '_isDecl': false}],
-      '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest3', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Second', '_isDecl': true}
-      ], '_properties': {'trait': 'Form', 'zonePath': 'Second'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest3', '_isDecl': false}],
-      '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'action', '_value': 'update', '_isDecl': true}
-      ], '_properties': {
-        'visible': {'t': 'Expr', 'v': 'properties.editing'},
-        'actionResults': {'t': 'Expr', 'v': 'object.firstName = ("Mr." + object.firstName)'}
-      }, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'action', '_value': 'Save', '_isDecl': true}
-      ], '_properties': {
-        'visible': {'t': 'Expr', 'v': 'properties.editing'}, 'buttonStyle': 'info',
-        'actionResults': {
-          't': 'Expr', 'v': 'object.firstName = ("Ms." + object.firstName)'
-        }, 'label': 'My Save'
-      }, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': '*', '_isDecl': false}
-      ], '_properties': {'after': 'zNone'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'firstName', '_isDecl': false}
-      ], '_properties': {'after': 'zLeft'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'lastName', '_isDecl': false}
-      ], '_properties': {'after': 'firstName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'age', '_isDecl': false}
-      ], '_properties': {'after': 'lastName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'department', '_isDecl': false}
-      ], '_properties': {'after': 'age'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'email', '_isDecl': false}
-      ], '_properties': {'after': 'Second.zLeft'}, '_rank': 0
-    }, {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}
-  ]
-};
 
-export const PopupUserStackARule = {
-  oss: [
-    {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest4', '_isDecl': false}],
-      '_properties': {'trait': 'Stack'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest4', '_isDecl': false},
-        {'_key': 'layout', '_value': 'MenuTop', '_isDecl': true}
-      ], '_properties': {'trait': 'ActionMenu'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest4', '_isDecl': false}],
-      '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest4', '_isDecl': false},
-        {'_key': 'layout', '_value': 'First', '_isDecl': true}
-      ], '_properties': {'trait': 'Form'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest4', '_isDecl': false}],
-      '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectAcctionsTest4', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Second', '_isDecl': true}
-      ], '_properties': {'trait': 'Form', 'zonePath': 'Second'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectAcctionsTest4', '_isDecl': false}],
-      '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'action', '_value': 'update', '_isDecl': true}
-      ], '_properties': {
-        'visible': {'t': 'Expr', 'v': 'properties.editing'},
-        'actionResults': {'t': 'Expr', 'v': 'object.firstName = ("Mr." + object.firstName)'}
-      }, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'action', '_value': 'Save', '_isDecl': true}
-      ], '_properties': {
-        'visible': {'t': 'Expr', 'v': 'properties.editing'}, 'buttonStyle': 'info',
-        'actionResults': {
-          't': 'Expr', 'v': 'object.firstName = ("Ms." + object.firstName)'
-        }, 'label': 'My Save'
-      }, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': '*', '_isDecl': false}
-      ], '_properties': {'after': 'zNone'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'firstName', '_isDecl': false}
-      ], '_properties': {'after': 'zLeft'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'lastName', '_isDecl': false}
-      ], '_properties': {'after': 'firstName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'age', '_isDecl': false}
-      ], '_properties': {'after': 'lastName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'department', '_isDecl': false}
-      ], '_properties': {'after': 'age'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStackA', '_isDecl': false},
-        {'_key': 'field', '_value': 'email', '_isDecl': false}
-      ], '_properties': {'after': 'Second.zLeft'}, '_rank': 0
-    }, {'_selectors': [{'_key': 'class', '_value': 'UserStackA', '_isDecl': false}], '_rank': 0}
-  ]
-};
+export const PopupUserStackARule =
+  'layout=Inspect4#Stack {\n' +
+  '           @layout=MenuTop#ActionMenu {\n' +
+  '             }\n' +
+  '\n' +
+  '           @layout=First#Form {\n' +
+  '              }\n' +
+  '           @layout=Second#Form { zonePath:Second; }\n' +
+  '       }\n' +
+  '\n' +
+  '\n' +
+  '    class=UserStackA {\n' +
+  '           @action=update  {\n' +
+  '                 actionResults:${ object.firstName = "Mr." +  object.firstName };\n' +
+  '                 visible: ${ properties.get("editing") };\n' +
+  '           }\n' +
+  '\n' +
+  '\n' +
+  '           @action=Save  {\n' +
+  '                  label: "My Save";\n' +
+  '                 actionResults:${ object.firstName = "Ms." +  object.firstName };\n' +
+  '                   visible: ${ properties.get("editing") };\n' +
+  '                   buttonStyle:info;\n' +
+  '            }\n' +
+  '\n' +
+  '           zNone => *;\n' +
+  '           zLeft => firstName => lastName => age => department;\n' +
+  '           Second.zLeft => email;\n' +
+  '     }'
+
+;
+
+export const LinksUserStackARule =
+  'layout=Inspect3#Stack {\n' +
+  '           @layout=MenuTop#ActionLinks {\n' +
+  '             }\n' +
+  '\n' +
+  '           @layout=First#Form {\n' +
+  '              }\n' +
+  '           @layout=Second#Form { zonePath:Second; }\n' +
+  '       }\n' +
+  '\n' +
+  '\n' +
+  '    class=UserStackA {\n' +
+  '           @action=update  {\n' +
+  '                 actionResults:${ object.firstName = "Mr." +  object.firstName };\n' +
+  '                 visible: ${ properties.get("editing") };\n' +
+  '           }\n' +
+  '\n' +
+  '\n' +
+  '           @action=Save  {\n' +
+  '                  label: "My Save";\n' +
+  '                 actionResults:${ object.firstName = "Ms." +  object.firstName };\n' +
+  '                   visible: ${ properties.get("editing") };\n' +
+  '                   buttonStyle:info;\n' +
+  '            }\n' +
+  '\n' +
+  '           zNone => *;\n' +
+  '           zLeft => firstName => lastName => age => department;\n' +
+  '           Second.zLeft => email;\n' +
+  '     }'
+
+;
+
+export const UserStackARule =
+  'layout=Inspect2#Stack {\n' +
+  '           @layout=MenuTop#ActionButtons {\n' +
+  '             }\n' +
+  '\n' +
+  '           @layout=First#Form {\n' +
+  '              }\n' +
+  '           @layout=Second#Form { zonePath:Second; }\n' +
+  '       }\n' +
+  '\n' +
+  '\n' +
+  '    class=UserStackA {\n' +
+  '           @action=update  {\n' +
+  '                 actionResults:${ object.firstName = "Mr." +  object.firstName };\n' +
+  '                 visible: ${ properties.get("editing") };\n' +
+  '           }\n' +
+  '\n' +
+  '\n' +
+  '           @action=Save  {\n' +
+  '                  label: "My Save";\n' +
+  '                 actionResults:${ object.firstName = "Ms." +  object.firstName };\n' +
+  '                   visible: ${ properties.get("editing") };\n' +
+  '                   buttonStyle:info;\n' +
+  '            }\n' +
+  '\n' +
+  '           zNone => *;\n' +
+  '           zLeft => firstName => lastName => age => department;\n' +
+  '           Second.zLeft => email;\n' +
+  '     }'
+
+;
 // @formatter:on
-/* tslint:disable */
+/* tslint:enable */
 
 describe('3 different layouts formed into Stack', () => {
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       declarations: [
         TestContainerEditComponent,
@@ -348,6 +141,10 @@ describe('3 different layouts formed into Stack', () => {
     });
     TestBed.compileComponents();
 
+    window.setTimeout(function () {
+      done();
+    }, 0);
+
   });
 
 
@@ -356,10 +153,10 @@ describe('3 different layouts formed into Stack', () => {
     const metaUI: MetaRules = TestBed.get(META_RULES);
     metaUI.addTestUserRule('UserStackARule', UserStackARule);
 
-    let fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
+    const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
     fixtureWrapper.detectChanges();
 
-    let formTables = fixtureWrapper.debugElement.queryAllNodes(By.css('.w-form-table'));
+    const formTables = fixtureWrapper.debugElement.queryAllNodes(By.css('.w-form-table'));
 
     fixtureWrapper.detectChanges();
     expect(formTables).toBeDefined();
@@ -370,10 +167,10 @@ describe('3 different layouts formed into Stack', () => {
     const metaUI: MetaRules = TestBed.get(META_RULES);
     metaUI.addTestUserRule('UserStackARule', UserStackARule);
 
-    let fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
+    const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
     fixtureWrapper.detectChanges();
 
-    let actionButtons = fixtureWrapper.debugElement.queryAllNodes(By.css('.l-action-buttons' +
+    const actionButtons = fixtureWrapper.debugElement.queryAllNodes(By.css('.l-action-buttons' +
       ' button'));
 
     fixtureWrapper.detectChanges();
@@ -385,10 +182,10 @@ describe('3 different layouts formed into Stack', () => {
     const metaUI: MetaRules = TestBed.get(META_RULES);
     metaUI.addTestUserRule('UserStackARule', LinksUserStackARule);
 
-    let fixtureWrapper = TestBed.createComponent(TestContainerEditLinksComponent);
+    const fixtureWrapper = TestBed.createComponent(TestContainerEditLinksComponent);
     fixtureWrapper.detectChanges();
 
-    let actionButtons = fixtureWrapper.debugElement.queryAllNodes(By.css('.l-action-buttons' +
+    const actionButtons = fixtureWrapper.debugElement.queryAllNodes(By.css('.l-action-buttons' +
       ' .ui-button-link'));
 
     fixtureWrapper.detectChanges();
@@ -402,10 +199,10 @@ describe('3 different layouts formed into Stack', () => {
     metaUI.addTestUserRule('UserStackARule', PopupUserStackARule);
 
 
-    let fixtureWrapper = TestBed.createComponent(TestContainerEditPopupComponent);
+    const fixtureWrapper = TestBed.createComponent(TestContainerEditPopupComponent);
     fixtureWrapper.detectChanges();
 
-    let menu = fixtureWrapper.debugElement.queryAllNodes(By.css('p-menu'));
+    const menu = fixtureWrapper.debugElement.queryAllNodes(By.css('p-menu'));
 
     fixtureWrapper.detectChanges();
     expect(menu).toBeDefined();
@@ -446,18 +243,19 @@ class UserStackA implements Entity {
 
 @Component({
   selector: 'wrapper-comp',
-  template: '<m-context [object]="user" operation="edit" layout="InspectAcctionsTest2">' +
+  template: '<m-context [object]="user" operation="edit" layout="Inspect2">' +
     '<m-include-component >' +
     '</m-include-component></m-context>'
 })
 class TestContainerEditComponent {
-  user: UserStackA = new UserStackA('Frank', 'Kolar', 1000, 'aa.', 'fkolar@gmail.com');
+  user: UserStackA = new UserStackA('Frank', 'Kolar',
+    1000, 'aa.', 'fkolar@gmail.com');
 }
 
 
 @Component({
   selector: 'wrapper-comp',
-  template: '<m-context [object]="user" operation="edit" layout="InspectAcctionsTest3">' +
+  template: '<m-context [object]="user" operation="edit" layout="Inspect3">' +
     '<m-include-component >' +
     '</m-include-component></m-context>'
 })
@@ -468,7 +266,7 @@ class TestContainerEditLinksComponent {
 
 @Component({
   selector: 'wrapper-comp',
-  template: '<m-context [object]="user" operation="edit" layout="InspectAcctionsTest4">' +
+  template: '<m-context [object]="user" operation="edit" layout="Inspect4">' +
     '<m-include-component >' +
     '</m-include-component></m-context>'
 })

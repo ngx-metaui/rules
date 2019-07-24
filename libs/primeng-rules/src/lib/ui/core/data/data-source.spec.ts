@@ -37,7 +37,7 @@ describe('DataSource core with the', () => {
   // Simulates common cases where we just pass list of values into the component and we need to
   // wrap this list with a DataSource to work with the data unified way
   describe('case where we have plain array wrapped by DS ', () => {
-    beforeEach(() => {
+    beforeEach((done) => {
       TestBed.configureTestingModule({
         imports: [
           MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
@@ -53,6 +53,10 @@ describe('DataSource core with the', () => {
           }
         ]
       });
+
+      window.setTimeout(function() {
+        done();
+      }, 0);
 
     });
 

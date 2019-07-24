@@ -333,7 +333,10 @@ export class Rule {
     if (isBlank(this.selectors)) {
       sj.add('null, null --> null >');
     } else {
-      sj.add(ListWrapper.toString<Selector>(this._selectors));
+      this._selectors.forEach((selector: Selector) => {
+        sj.add(selector.key).add('=').add(selector.value).add(', ');
+
+      });
 
       sj.add(' -> ');
 
@@ -346,13 +349,6 @@ export class Rule {
 
         sj.add(MapWrapper.toString(this._properties) + ' >');
       }
-
-      sj.add('[ ');
-      sj.add(this.keyIndexedMask + ', ');
-      sj.add(this.keyAntiMask + ', ');
-      sj.add(this.keyMatchesMask + '');
-      sj.add(' ]');
-
     }
 
 

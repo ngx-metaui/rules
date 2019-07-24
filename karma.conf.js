@@ -33,7 +33,7 @@ module.exports = () => {
     captureTimeout: 180000,
     browserDisconnectTimeout: 180000,
     browserDisconnectTolerance: 3,
-    browserNoActivityTimeout: 300000,
+    browserNoActivityTimeout: 999999999,
     reportSlowerThan: 1000
   };
 };

@@ -182,6 +182,13 @@ export interface MetaRuleBase {
    */
   endRuleSet(): RuleSet;
 
+  /**
+   *
+   * Called by RuntimeParser to handle decls like "zLeft => lastName#required"
+   */
+  addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
+                     traits: Array<string>, lineNumber: number): Rule;
+
 
   /**
    *

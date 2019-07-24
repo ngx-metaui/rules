@@ -94,7 +94,7 @@ function addDependencies(options: AddSchema): Rule {
         version: '^VERSION_PLACEHOLDER',
         name: '@ngx-metaui/rules'
       },
-      {type: NodeDependencyType.Default, version: '1.6.44', name: 'big-integer'},
+      {type: NodeDependencyType.Default, version: '1.6.48', name: 'big-integer'},
       {type: NodeDependencyType.Default, version: '1.3.1', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
       {type: NodeDependencyType.Default, version: '1.3.2', name: 'typescript-collections'},
@@ -115,7 +115,7 @@ function addDependencies(options: AddSchema): Rule {
         {type: NodeDependencyType.Default, version: 'PRIMENG_ICONS_PLACEHOLDER', name: 'primeicons'}
       ];
 
-    } else if (options.uiLib === 'material2') {
+    } else if (options.uiLib === 'material') {
       uiLibs = [
         {
           type: NodeDependencyType.Default,
@@ -138,7 +138,7 @@ function addDependencies(options: AddSchema): Rule {
 
 function addScripts(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
-    if (options.uiLib === 'none' || options.uiLib === 'material2') {
+    if (options.uiLib === 'none' || options.uiLib === 'material') {
       return host;
     }
     const scriptsPaths: string[] = [
@@ -173,7 +173,7 @@ function addStyles(options: AddSchema): Rule {
 
       return addStylesToAngularJson(styleEntries, options);
 
-    } else if (options.uiLib === 'material2') {
+    } else if (options.uiLib === 'material') {
       const styleEntries: string[] = [
         'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css',
         'node_modules/flexboxgrid/css/flexboxgrid.css'
@@ -206,7 +206,7 @@ function addNgModuleImports(options: AddSchema): Rule {
             'imports',
             'PrimeNgRulesModule.forRoot()')];
 
-        } else if (options.uiLib === 'material2') {
+        } else if (options.uiLib === 'material') {
           changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
             'imports',
             'MaterialRulesModule.forRoot()')];
@@ -285,7 +285,7 @@ function addFileImportsUILib(options: AddSchema): Rule {
         addFileHeaderImports(options, 'PrimeNgRulesModule',
           '@ngx-metaui/primeng-rules')
       ]);
-    } else if (options.uiLib === 'material2') {
+    } else if (options.uiLib === 'material') {
       return chain([
         addFileHeaderImports(options, 'MaterialRulesModule',
           '@ngx-metaui/material-rules')
@@ -303,11 +303,8 @@ function addOssCompilerScriptsToPackageJson(options: AddSchema): Rule {
     if (!content['scripts']) {
       content['scripts'] = {};
     }
-
-    const cmd = 'java -jar node_modules/@ngx-metaui/rules/lib/resources/tools/oss/' +
-      'meta-ui-parser.jar --gen --user ./node_modules/@ngx-metaui/rules/lib/metaui/core';
     const srcPath = normalize(`./${options.path}/rules`);
-    content['scripts']['compile:oss'] = `${cmd} ${srcPath}`;
+    content['scripts']['compile:oss'] = `oss -i ${srcPath} -u -n user-rules`;
     content['scripts']['watch:oss'] = `watch --wait=8 'npm run compile:oss' ${srcPath} `;
 
     host.overwrite('package.json', JSON.stringify(content, null, 2));

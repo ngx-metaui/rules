@@ -30,7 +30,7 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 describe('Checkbox List ', () => {
 
 
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       declarations: [
         TestCBListBasicBehaviorComponent
@@ -41,6 +41,10 @@ describe('Checkbox List ', () => {
         AWCheckBoxListModule
       ]
     });
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

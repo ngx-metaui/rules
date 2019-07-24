@@ -6,7 +6,7 @@ import {MatButtonModule, MatIconModule, MatToolbarModule} from '@angular/materia
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialRulesModule} from '@ngx-metaui/material-rules';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
-import * as userRules from './rules/user-rules';
+import * as userRules from './user-rules';
 import {UserDetailComponent} from './user-detail/user-detail.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HomeComponent} from './home/home.component';

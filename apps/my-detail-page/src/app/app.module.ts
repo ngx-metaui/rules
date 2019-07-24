@@ -4,7 +4,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
-import * as userRules from './rules/user-rules';
+import * as userRules from './user-rules';
 import {UserDetailComponent} from './user-detail/user-detail.component';
 import {AgeRatingComponent} from './age-rating/user-detail.component';
 import {AribaComponentsModule, PrimeNgRulesModule} from '@ngx-metaui/primeng-rules';

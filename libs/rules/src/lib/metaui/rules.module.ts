@@ -84,11 +84,10 @@ export class MetaUIRulesModule {
 
         ComponentRegistry,
         DomUtilsService,
-        RuleLoaderService,
         {
           provide: META_RULES,
           useClass: UIMeta,
-          deps: [ComponentRegistry, Environment, MetaConfig, RuleLoaderService, RoutingService]
+          deps: [ComponentRegistry, Environment, MetaConfig, RoutingService]
         },
         {
           'provide': APP_INITIALIZER,

@@ -1,6 +1,6 @@
 class=User {
     field=uniqueName{
-        label:"User Id"
+        label:"User Id";
     }
 
     zNone => *;
@@ -20,14 +20,14 @@ layout=Inspect2#Stack {
 
 object @action=update  {
      actionResults:${ object.firstName = "Mr." +  object.firstName };
-     visible: ${ properties.editing };
+     visible: ${ properties.get("editing"); };
 }
 
 
 object @action=Save  {
      label: "My Save";
      actionResults:${ object.firstName = "Ms." +  object.firstName };
-     visible: ${ properties.editing };
+     visible: ${ properties.get("editing"); };
      buttonStyle:info;
 }
 

@@ -59,7 +59,7 @@ class=User {
     }
 
     field=description {
-      after:zBottom
+      after:zBottom;
       trait:fluid,longtext;
       hint: ${"You can type some long text here: " + value.length};
     }

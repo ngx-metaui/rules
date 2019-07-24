@@ -11,38 +11,20 @@ fi
 rm -Rf ./dist/libs
 rm -Rf ./dist/apps
 
-if [ ${args[0]} == "prod" ]; then
-   echo "################ Building @ngx-meta/rules ################"
-   ng build rules --prod
+echo "################ Building @ngx-meta/rules ################"
+ng build rules
 
-   echo "################ Building @ngx-meta/primeng-rules ################"
-   ng build primeng-rules --prod
+echo "################ Building @ngx-meta/primeng-rules ################"
+ng build primeng-rules
 
-   echo "################ Building @ngx-meta/material-rules ################"
-   ng build material-rules --prod
+echo "################ Building @ngx-meta/material-rules ################"
+ng build material-rules
 
-   echo "################ Building apps ################"
-   ng build doc-app --prod
-   ng build material-app --prod
-   ng build metaui-evolution --prod
-   ng build my-detail-page --prod
-
-else
-      echo "################ Building @ngx-meta/rules ################"
-      ng build rules
-
-      echo "################ Building @ngx-meta/primeng-rules ################"
-      ng build primeng-rules
-
-      echo "################ Building @ngx-meta/material-rules ################"
-      ng build material-rules
-
-    echo "################ Building apps ################"
-      ng build doc-app
-      ng build material-app
-      ng build metaui-evolution
-      ng build my-detail-page
-fi
+echo "################ Building apps ################"
+ng build doc-app
+ng build material-app
+ng build metaui-evolution
+ng build my-detail-page
 
 # Build schematics
 echo "Building schematics"
@@ -81,18 +63,19 @@ rm -Rf ./dist/apps
 
 # Copy resources for rules
 echo "Building resources for rules"
-rm -Rf ./dist/libs/rules/lib/resources && cp -R libs/rules/src/lib/resources ./dist/libs/rules/lib/resources
-cp -R libs/rules/src/lib/metaui/core/oss ./dist/libs/rules/lib/metaui/core/oss
+rm -Rf ./dist/libs/rules/lib/resources
+cp -R libs/rules/src/lib/metaui/core/*.oss ./dist/libs/rules/lib/metaui/core
+cp -R libs/rules/src/lib/resources/bin ./dist/libs/rules/lib/bin
 
 
 # Copy resources for primeng rules
 echo "Building resources for primeng"
 rm -Rf ./dist/libs/primeng-rules/lib/resources && cp -R libs/primeng-rules/src/lib/resources ./dist/libs/primeng-rules/lib/resources && ./node_modules/.bin/scss-bundle -e  ./dist/libs/primeng-rules/lib/resources/styles/aribaui.scss -d ./dist/libs/primeng-rules/lib/resources/styles/aribaui.css
-cp -R libs/primeng-rules/src/lib/metaui/oss ./dist/libs/primeng-rules/lib/metaui/oss
+cp -R libs/primeng-rules/src/lib/metaui/*.oss ./dist/libs/primeng-rules/lib/metaui
 
 # Copy resources for material rules
 echo "Building resources for material"
-cp -R libs/material-rules/src/lib/metaui/oss ./dist/libs/material-rules/lib/metaui/oss
+cp -R libs/material-rules/src/lib/metaui/*.oss ./dist/libs/material-rules/lib/metaui
 
 
 

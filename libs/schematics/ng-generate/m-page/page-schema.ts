@@ -55,6 +55,6 @@ export interface MetaPageSchema {
   /**
    * Works with specific module within the project
    */
-  uiLib: 'prime-ng' | 'material2';
+  uiLib: 'prime-ng' | 'material';
 
 }
