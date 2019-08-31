@@ -41,7 +41,7 @@ const PortletSizes: { [k: string]: string } = {
   'wide': 'ui-md-6',
   'large': 'ui-md-12'
 };
-
+/* tslint:disable */
 /**
  * Simple Dashboard implementation for the homePage. Just like we support inside MetaFormTable
  * different zones and distribute fields to them, we do the same with defined layouts.
@@ -54,6 +54,7 @@ const PortletSizes: { [k: string]: string } = {
  *
  * To distribute layouts to different zones :
  *
+ *  tslint:disable
  * ```
  *       @module=Home {
  *           label:"My Home";
@@ -108,6 +109,7 @@ const PortletSizes: { [k: string]: string } = {
  *
  *
  */
+/* tslint:enable */
 @Component({
   templateUrl: 'metadashboard-layout.component.html',
   styleUrls: ['metadashboard-layout.component.scss']

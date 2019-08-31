@@ -22,7 +22,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DropdownComponent} from './dropdown.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {DropdownModule} from 'primeng/primeng';
+import {DropdownModule} from 'primeng/dropdown';
 import {AWCoreComponentModule} from '../../core/core.module';
 
 

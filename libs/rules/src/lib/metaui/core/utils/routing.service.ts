@@ -174,7 +174,7 @@ export class RoutingService {
 
   contextualCommands(): Observable<AppRoute[]> {
     return this.appRouting.pipe(
-      startWith(null),
+      startWith(<AppRoute[]>null),
       distinctUntilChanged(),
       delay(0),
       tap((config) => config),

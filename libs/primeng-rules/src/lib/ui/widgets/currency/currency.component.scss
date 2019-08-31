@@ -17,7 +17,7 @@
 .w-currency-field {
   margin-top: 0px;
 
-  /deep/ .ui-dropdown {
+  ::ng-deep .ui-dropdown {
     min-width: 80px;
   }
 }

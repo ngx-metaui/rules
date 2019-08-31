@@ -32,7 +32,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {MatCheckbox, MatCheckboxChange, MatFormFieldControl} from '@angular/material';
+import {MatCheckbox, MatCheckboxChange, MatFormFieldControl, MatInput} from '@angular/material';
 import {Subject} from 'rxjs';
 import {DomUtilsService} from '@ngx-metaui/rules';
 
@@ -77,7 +77,7 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
   /**
    * Reference to internal Material select component so comunicate with it.
    */
-  @ViewChild('matCheck')
+  @ViewChild('matCheck', {static: true})
   protected checkbox: MatCheckbox;
 
   /**

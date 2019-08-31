@@ -3,15 +3,15 @@
   "description": "MetaUI rule implementation based on Material2 design",
   "version": "VERSION_PLACEHOLDER",
   "peerDependencies": {
-    "@angular/animations": "^7.2.14",
-    "@angular/cdk": "^7.3.7",
-    "@angular/common": "^7.2.14",
-    "@angular/core": "^7.2.14",
-    "@angular/forms": "^7.2.14",
-    "@angular/material": "^7.3.7",
-    "@angular/platform-browser": "^7.2.14",
-    "@angular/platform-browser-dynamic": "^7.2.14",
-    "@angular/router": "^7.2.14",
+    "@angular/animations": "ANGULAR_PLACEHOLDER",
+    "@angular/cdk": "MATERIAL_PLACEHOLDER",
+    "@angular/common": "ANGULAR_PLACEHOLDER",
+    "@angular/core": "ANGULAR_PLACEHOLDER",
+    "@angular/forms": "ANGULAR_PLACEHOLDER",
+    "@angular/material": "MATERIAL_PLACEHOLDER",
+    "@angular/platform-browser": "ANGULAR_PLACEHOLDER",
+    "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
+    "@angular/router": "ANGULAR_PLACEHOLDER",
     "@ngx-metaui/rules": "^VERSION_PLACEHOLDER"
   }
 }

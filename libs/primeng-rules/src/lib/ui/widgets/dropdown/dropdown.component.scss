@@ -1,5 +1,5 @@
 
-/deep/ .ui-dropdown-panel {
+::ng-deep .ui-dropdown-panel {
   z-index: 10010 !important; // need to get over inline style
   top: 35px !important;
 
@@ -26,7 +26,7 @@
   }
 }
 
-/deep/ .w-dropdown {
+::ng-deep .w-dropdown {
   // color for default placeholder
   &:not(.ng-dirty) {
     label {

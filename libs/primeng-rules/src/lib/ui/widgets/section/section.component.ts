@@ -28,7 +28,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {isPresent} from '../../core/utils/lang';
-import {AccordionTab} from 'primeng/primeng';
+import {AccordionTab} from 'primeng/accordion';
 import {BaseComponent, Environment} from '@ngx-metaui/rules';
 
 
@@ -268,14 +268,14 @@ export class SectionComponent extends BaseComponent {
   /**
    * internal accordionTab
    */
-  @ViewChild('accordionTab')
+  @ViewChild('accordionTab', {static: false})
   private accordionTab: AccordionTab;
 
 
   /**
    * Save reference to developer's defined actions so if we can hide default ones
    */
-  @ContentChild(SectionActionsComponent)
+  @ContentChild(SectionActionsComponent, {static: false})
   customActions: SectionActionsComponent;
 
   constructor(protected element: ElementRef, public env: Environment) {
@@ -333,7 +333,7 @@ export class SectionComponent extends BaseComponent {
       const state: string = (this.editState) ? 'inEdit' : 'notInEdit';
 
       this.onEdit.emit(state);
-      this.open(event);
+      this.open($event.event || $event);
     }
 
     // prevent the original event from bubbling up. Because the edit icon is inside

@@ -21,7 +21,7 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {InputTextareaModule} from 'primeng/primeng';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 import {TextAreaComponent} from './text-area.component';
 import {AWStringFieldModule} from '../string/string.module';
 

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CalendarModule} from 'primeng/primeng';
+import {CalendarModule} from 'primeng/calendar';
 import {DateAndTimeComponent} from './date-and-time.component';
 import {AWStringFieldModule} from '../string/string.module';
 

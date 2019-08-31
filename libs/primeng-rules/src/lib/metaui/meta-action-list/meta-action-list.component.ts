@@ -19,7 +19,7 @@
  */
 import {Component, Input} from '@angular/core';
 import {isBlank, isPresent} from '../../ui/core/utils/lang';
-import {MenuItem} from 'primeng/primeng';
+import {MenuItem} from 'primeng/api';
 import {
   ActionZones,
   Context,

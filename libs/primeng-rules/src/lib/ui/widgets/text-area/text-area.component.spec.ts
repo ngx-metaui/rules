@@ -119,7 +119,7 @@ describe('TextArea component behavior', () => {
   template: '<aw-text-area [value]="inputValue" [autoResize]="autoResize" ></aw-text-area>'
 })
 class TextAreaInstantiationComponent {
-  @ViewChild(TextAreaComponent)
+  @ViewChild(TextAreaComponent, {static: false})
   textAreaComponent: TextAreaComponent;
   inputValue: string = 'Some text';
 
@@ -137,7 +137,7 @@ class TextAreaInstantiationComponent {
   template: '<aw-text-area [value]="inputValue" [editable]="editable"  ></aw-text-area>'
 })
 class TextAreaReadOnlyComponent {
-  @ViewChild(TextAreaComponent)
+  @ViewChild(TextAreaComponent, {static: false})
   textAreaComponent: TextAreaComponent;
   inputValue: string = 'Some text-ReadOnly';
 
@@ -165,7 +165,7 @@ class TextAreaReadOnlyComponent {
 })
 class TextAreaInsideParentContainerComponent {
 
-  @ViewChild(TextAreaComponent)
+  @ViewChild(TextAreaComponent, {static: false})
   textAreaComponent: TextAreaComponent;
   inputValue: string = 'Some text';
 

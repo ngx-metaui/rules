@@ -47,9 +47,7 @@
               "libs/rules/tsconfig.lib.json",
               "libs/rules/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/rules/**"]
           }
         }
       }
@@ -161,9 +159,7 @@
             "polyfills": "apps/metaui-evolution/src/polyfills.ts",
             "tsConfig": "apps/metaui-evolution/tsconfig.spec.json",
             "karmaConfig": "apps/metaui-evolution/karma.conf.js",
-            "styles": [
-              "apps/metaui-evolution/src/styles.scss"
-            ],
+            "styles": ["apps/metaui-evolution/src/styles.scss"],
             "scripts": [],
             "assets": [
               "apps/metaui-evolution/src/favicon.ico",
@@ -178,9 +174,7 @@
               "apps/metaui-evolution/tsconfig.app.json",
               "apps/metaui-evolution/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/metaui-evolution/**"]
           }
         }
       }
@@ -242,9 +236,7 @@
               "libs/primeng-rules/src/lib/resources/styles/aribaui.scss",
               "apps/my-detail-page/src/styles.css"
             ],
-            "scripts": [
-              "node_modules/quill/dist/quill.js"
-            ],
+            "scripts": ["node_modules/quill/dist/quill.js"],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -291,9 +283,7 @@
             "polyfills": "apps/my-detail-page/src/polyfills.ts",
             "tsConfig": "apps/my-detail-page/tsconfig.spec.json",
             "karmaConfig": "apps/my-detail-page/karma.conf.js",
-            "styles": [
-              "apps/my-detail-page/src/styles.css"
-            ],
+            "styles": ["apps/my-detail-page/src/styles.css"],
             "scripts": [],
             "assets": [
               "apps/my-detail-page/src/favicon.ico",
@@ -308,9 +298,7 @@
               "apps/my-detail-page/tsconfig.app.json",
               "apps/my-detail-page/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/my-detail-page/**"]
           }
         }
       }
@@ -359,9 +347,7 @@
               "libs/primeng-rules/tsconfig.lib.json",
               "libs/primeng-rules/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/primeng-rules/**"]
           }
         }
       }
@@ -399,9 +385,7 @@
               "libs/material-rules/tsconfig.lib.json",
               "libs/material-rules/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**", "!libs/material-rules/**"]
           }
         }
       }
@@ -488,9 +472,7 @@
             "polyfills": "apps/material-app/src/polyfills.ts",
             "tsConfig": "apps/material-app/tsconfig.spec.json",
             "karmaConfig": "apps/material-app/karma.conf.js",
-            "styles": [
-              "apps/material-app/src/styles.scss"
-            ],
+            "styles": ["apps/material-app/src/styles.scss"],
             "scripts": [],
             "assets": [
               "apps/material-app/src/favicon.ico",
@@ -505,9 +487,7 @@
               "apps/material-app/tsconfig.app.json",
               "apps/material-app/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/material-app/**"]
           }
         }
       }
@@ -599,9 +579,7 @@
               "apps/doc-app/tsconfig.app.json",
               "apps/doc-app/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**", "!apps/doc-app/**"]
           }
         },
         "test": {
@@ -624,7 +602,7 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/schematics"
+    "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "material-app",
   "schematics": {

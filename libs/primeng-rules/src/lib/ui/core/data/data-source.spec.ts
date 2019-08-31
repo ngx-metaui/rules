@@ -232,7 +232,7 @@ describe('DataSource core with the', () => {
       inject([DATA_SOURCE], (ds: ChooserDataSourcePlainArrayWithFinder) => {
         ds.init(['aa', 'bb'], QueryType.FullText);
 
-        expect(ds.dataFinder instanceof FullTextArrayDataFinder);
+        expect(ds.dataFinder instanceof FullTextArrayDataFinder).toBeTruthy();
 
       }));
 

@@ -118,7 +118,7 @@ describe('Component: overlay', () => {
    * Class that will only draw a overlay.
    */
 class TestOverlayDefaultComponent {
-  @ViewChild(OverlayComponent)
+  @ViewChild(OverlayComponent, {static: false})
   overlay: OverlayComponent;
 
   constructor() {
@@ -156,9 +156,9 @@ class TestOverlayServiceBehaviorComponent {
 
     tick();
 
-    // delay the opening after ng lifecycle has been initalized.
+    // delay the opening after ng lifecycle has been initialized.
     setTimeout(() => {
-      overlay.instance.open(event);
+      overlay.instance.open(null);
     }, 1);
   }
 }

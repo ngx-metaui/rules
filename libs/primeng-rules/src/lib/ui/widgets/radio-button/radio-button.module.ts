@@ -22,7 +22,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RadioButtonComponent} from './radio-button.component';
-import {RadioButtonModule} from 'primeng/primeng';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 
 @NgModule({

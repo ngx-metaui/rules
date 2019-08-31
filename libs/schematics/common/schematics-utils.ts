@@ -20,13 +20,12 @@ import {Rule, SchematicContext, SchematicsException, Tree} from '@angular-devkit
 import {addPackageJsonDependency, NodeDependency} from '@schematics/angular/utility/dependencies';
 import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
 import {getWorkspace} from '@schematics/angular/utility/config';
-import {WorkspaceProject} from '@angular-devkit/core/src/workspace/workspace-schema';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {getSourceNodes, insertImport, isImported} from '@schematics/angular/utility/ast-utils';
 import {Change, InsertChange, NoopChange} from '@schematics/angular/utility/change';
 import * as ts from 'typescript';
 import {buildDefaultPath, getProject} from '@schematics/angular/utility/project';
-import {WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
+import {WorkspaceProject, WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
 import {Schema} from './schema';
 
 

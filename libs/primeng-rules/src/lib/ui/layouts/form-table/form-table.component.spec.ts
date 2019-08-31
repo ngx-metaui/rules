@@ -367,7 +367,7 @@ describe('Form Table behavior ', () => {
   `
 })
 class OneColLayoutTestComponent {
-  @ViewChild(FormTableComponent)
+  @ViewChild(FormTableComponent, {static: false})
   formTable: FormTableComponent;
 
   value1: string = 'value1';
@@ -400,7 +400,7 @@ class OneColLayoutTestComponent {
   `
 })
 class TwoColLayoutTestComponent {
-  @ViewChild(FormTableComponent)
+  @ViewChild(FormTableComponent, {static: false})
   formTable: FormTableComponent;
 
   value1: string = 'value1';
@@ -439,7 +439,7 @@ class TwoColLayoutTestComponent {
   `
 })
 class TwoColAndTopLayoutTestComponent {
-  @ViewChild(FormTableComponent)
+  @ViewChild(FormTableComponent, {static: false})
   formTable: FormTableComponent;
 
   value1: string = 'value1';
@@ -471,7 +471,7 @@ class TwoColAndTopLayoutTestComponent {
   `
 })
 class TopBottomTestComponent {
-  @ViewChild(FormTableComponent)
+  @ViewChild(FormTableComponent, {static: false})
   formTable: FormTableComponent;
 
   value1: string = 'value1';
@@ -500,10 +500,10 @@ class TopBottomTestComponent {
   `
 })
 class RowValidationWithInputFieldTestComponent {
-  @ViewChild(InputFieldComponent)
+  @ViewChild(InputFieldComponent, {static: false})
   inputComponent: InputFieldComponent;
 
-  @ViewChild(FormRowComponent)
+  @ViewChild(FormRowComponent, {static: false})
   formRowComponent: FormRowComponent;
 
   inputValue: string = 'my-event-title';

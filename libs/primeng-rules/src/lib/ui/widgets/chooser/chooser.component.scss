@@ -1,14 +1,14 @@
 // GLOBAL Styles to override default PRIMENG
 
 // Change default behavior for chooser we can not have calc 100% - 2em
-/deep/ .ui-fluid {
+::ng-deep .ui-fluid {
   .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-input,
   .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-multiple-container {
     width: 100%;
   }
 }
 
-/deep/ .w-chooser {
+::ng-deep .w-chooser {
   .ui-autocomplete-multiple {
     line-height: normal;
   }
@@ -90,7 +90,7 @@
   }
 }
 
-/deep/ body .ui-autocomplete.ui-autocomplete-multiple .ui-autocomplete-multiple-container {
+::ng-deep body .ui-autocomplete.ui-autocomplete-multiple .ui-autocomplete-multiple-container {
   padding: 0.4em 0.5em 0.4em 1em;
 }
 

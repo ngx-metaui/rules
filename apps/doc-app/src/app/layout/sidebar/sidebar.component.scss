@@ -9,7 +9,7 @@
   .mat-list-item {
     height: auto;
 
-    /deep/ .mat-list-item-content {
+    ::ng-deep  .mat-list-item-content {
       padding-left: 0;
       padding-right: 0;
     }
@@ -28,7 +28,7 @@
       }
     }
 
-    /deep/ .mat-list-item-content {
+    ::ng-deep  .mat-list-item-content {
       flex-direction: column;
     }
   }

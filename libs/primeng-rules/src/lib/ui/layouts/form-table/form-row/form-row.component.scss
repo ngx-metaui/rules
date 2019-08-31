@@ -4,7 +4,7 @@
   color: red;
 }
 
-/deep/ .highlight-row {
+::ng-deep .highlight-row {
   background-color: #f7f8fa;
 }
 

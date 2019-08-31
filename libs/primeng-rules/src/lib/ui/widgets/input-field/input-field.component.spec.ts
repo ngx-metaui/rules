@@ -18,19 +18,19 @@
  */
 import {Component, ViewChild} from '@angular/core';
 import {By} from '@angular/platform-browser';
-import {TestBed} from '@angular/core/testing';
+import {async, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {InputFieldComponent} from './input-field.component';
 import {FormControl, FormGroup} from '@angular/forms';
 import {AWInputFieldModule} from './input-field.module';
 import {AWFormTableModule} from '../../layouts/form-table/form-table.module';
-import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
+import {MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 
 describe(' Input field', () => {
 
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
@@ -49,7 +49,7 @@ describe(' Input field', () => {
     });
 
     TestBed.compileComponents();
-  });
+  }));
 
   describe(' instantiation of the InputFieldComponent so it have correct values ' +
     'under certain considered situation', () => {
@@ -252,21 +252,18 @@ describe(' Input field', () => {
 
 
     it('should get initialized using ControlValueAccessor so we know writeValue is triggered',
-      () => {
+      fakeAsync(() => {
         const fixtureWrapper = TestBed.createComponent(TestInputInitWithNgModelComponent);
         fixtureWrapper.detectChanges();
 
         fixtureWrapper.componentInstance.inputValue = 'xxxx';
         fixtureWrapper.detectChanges();
 
-        fixtureWrapper.whenStable().then(() => {
-          expect(
-            fixtureWrapper.componentInstance.inputComponent.value)
-            .toBe('xxxx');
-        });
+        tick();
+        fixtureWrapper.detectChanges();
 
-
-      });
+        expect(fixtureWrapper.componentInstance.inputComponent.value).toBe('xxxx');
+      }));
 
 
   });
@@ -279,7 +276,7 @@ describe(' Input field', () => {
   template: '<aw-input-field name="asdf" [value]="inputValue" ></aw-input-field>'
 })
 class TestInputInstantiationComponent {
-  @ViewChild(InputFieldComponent)
+  @ViewChild(InputFieldComponent, {static: false})
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
 }
@@ -290,7 +287,7 @@ class TestInputInstantiationComponent {
   template: '<aw-input-field [value]="inputValue" [type]="inputType"></aw-input-field>'
 })
 class TestInputTypenComponent {
-  @ViewChild(InputFieldComponent)
+  @ViewChild(InputFieldComponent, {static: false})
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
   inputType: string = 'string';
@@ -309,10 +306,10 @@ class TestInputTypenComponent {
   `
 })
 class TestInputSizeComponent {
-  @ViewChild(InputFieldComponent)
-  editing: boolean = true;
-
+  @ViewChild(InputFieldComponent, {static: false})
   inputComponent: InputFieldComponent;
+
+  editing: boolean = true;
   inputValue: string = 'Some text';
   inputType: string = 'string';
   fieldName: string = 'firstName';
@@ -337,7 +334,7 @@ class TestInputSizeComponent {
   `
 })
 class TestInputWithImplicitValuesComponent {
-  @ViewChild(InputFieldComponent)
+  @ViewChild(InputFieldComponent, {static: false})
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
   inputType: string = 'string';
@@ -356,7 +353,7 @@ class TestInputWithImplicitValuesComponent {
   template: '<aw-input-field [formControl]="myControl"></aw-input-field>'
 })
 class TestInputExposeNGModelComponent {
-  @ViewChild(InputFieldComponent)
+  @ViewChild(InputFieldComponent, {static: false})
   inputComponent: InputFieldComponent;
   initialValue: string = 'Some text';
   myValue: string = 'Some text';
@@ -378,7 +375,7 @@ class TestInputExposeNGModelComponent {
   `
 })
 class TestInputInitWithNgModelComponent {
-  @ViewChild(InputFieldComponent)
+  @ViewChild(InputFieldComponent, {static: false})
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
   inputType: string = 'string';

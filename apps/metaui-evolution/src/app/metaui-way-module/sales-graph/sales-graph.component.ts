@@ -6,13 +6,11 @@ import {BaseComponent, Environment} from '@ngx-metaui/rules';
     template: `<img src="assets/images/sales.png" width="100%"/> `,
     styleUrls: ['./sales-graph.component.scss']
 })
-export class SalesGraphComponent extends BaseComponent
-{
+export class SalesGraphComponent extends BaseComponent {
 
-    constructor(public env: Environment)
-    {
-        super(env);
+  constructor(public env: Environment) {
+    super(env);
 
-    }
+  }
 }
 

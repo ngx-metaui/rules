@@ -6,20 +6,17 @@ import {User} from '../model/user';
     templateUrl: './metaui-way-form.component.html',
     styleUrls: ['./metaui-way-form.component.scss']
 })
-export class MetauiWayFormComponent implements OnInit
-{
+export class MetauiWayFormComponent implements OnInit {
 
-    userObject: User;
+  userObject: User;
 
 
-    constructor()
-    {
-    }
+  constructor() {
+  }
 
-    ngOnInit()
-    {
-        this.userObject = new User('ppan', 'Peter', 'Pan', 8,
-            new Date());
-    }
+  ngOnInit() {
+    this.userObject = new User('ppan', 'Peter', 'Pan', 8,
+      new Date());
+  }
 
 }

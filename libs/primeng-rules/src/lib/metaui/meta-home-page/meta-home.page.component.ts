@@ -22,7 +22,7 @@ import {ActivatedRoute} from '@angular/router';
 import {BaseComponent, Environment, KeyModule} from '@ngx-metaui/rules';
 import {isPresent} from '../../ui/core/utils/lang';
 
-
+/* tslint:disable */
 /**
  * Default homePage implementation for a Module. Just like on the example bellow when we define a
  * module without a homePage this MetaHomePageComponent will be used.
@@ -54,6 +54,7 @@ import {isPresent} from '../../ui/core/utils/lang';
  *
  *
  */
+/* tslint:enable */
 @Component({
   selector: 'm-home-page',
   templateUrl: 'meta-home.page.component.html',

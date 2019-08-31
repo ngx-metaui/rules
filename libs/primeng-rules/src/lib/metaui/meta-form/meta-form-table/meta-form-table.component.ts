@@ -34,6 +34,7 @@ import {
 } from '@ngx-metaui/rules';
 import {FormTableComponent} from '../../../ui/layouts/form-table/form-table.component';
 import {isBlank, isPresent} from '../../../ui/core/utils/lang';
+import {MatInput} from '@angular/material';
 
 /**
  * This is a wrapper around FormtTable to render data based on current MetaContext.
@@ -64,7 +65,7 @@ export class MetaFormTableComponent extends MetaBaseComponent {
   /**
    * Reference to current rendered FormTable
    */
-  @ViewChild('metaFormTable')
+  @ViewChild('metaFormTable', {static: false})
   private form: FormTableComponent;
 
   /**

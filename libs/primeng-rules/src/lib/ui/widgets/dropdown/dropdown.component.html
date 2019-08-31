@@ -4,7 +4,6 @@
     <p-dropdown [options]="internalList"
                 [formControlName]="name"
                 [placeholder]="noSelectionString"
-                [autoWidth]="false"
                 [filter]="showFilter()"
                 (onChange)="onItemSelection($event)">
 
@@ -30,7 +29,6 @@
     <p-dropdown [options]="internalList"
                 [(ngModel)]="selection"
                 [placeholder]="noSelectionString"
-                [autoWidth]="false"
                 [filter]="showFilter()"
                 (onChange)="onItemSelection($event)">
 

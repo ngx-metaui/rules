@@ -40,7 +40,9 @@
 
             <!-- no selection template render it as it is from CORE-->
             <ul class="ui-autocomplete-multiple-container ui-widget ui-state-default "
-                [ngClass]="{'ui-state-disabled':disabled,'ui-state-focus':autoCompleteComponent.focus}">
+                [ngClass]="{
+                          'ui-state-disabled':disabled,
+                          'ui-state-focus': autoCompleteComponent ? autoCompleteComponent.focus : false}">
 
                 <li #token *ngFor="let item of dataSource.state.recentSelectedObjects"
                     class="ui-autocomplete-token ui-state-highlight ui-corner-all" tabindex="0"
@@ -63,11 +65,11 @@
         </ng-template>
 
         <ng-template [ngIf]="dataSource.showMoreSelected()">
-			<span class="more-selected">
-				<aw-hyperlink [size]="'small'" (action)="dataSource.state.toggleAllSelected()">
-					{{moreSelectString()}}
-				</aw-hyperlink>
-			</span>
+          <span class="more-selected">
+            <aw-hyperlink [size]="'small'" (action)="dataSource.state.toggleAllSelected()">
+              {{moreSelectString()}}
+            </aw-hyperlink>
+          </span>
         </ng-template>
     </div>
     </span>

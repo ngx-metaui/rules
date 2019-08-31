@@ -32,7 +32,7 @@
 
 }
 
-.section-container /deep/ .ui-accordion-header.ui-state-disabled {
+.section-container ::ng-deep .ui-accordion-header.ui-state-disabled {
   opacity: 1;
 }
 
@@ -64,8 +64,8 @@
   z-index: 1;
 }
 
-.section-actions /deep/ a.link,
-.section-actions /deep/ a.link:hover {
+.section-actions ::ng-deep a.link,
+.section-actions ::ng-deep a.link:hover {
   padding: 0px;
   text-decoration: none;
 }
@@ -82,34 +82,34 @@
   }
 }
 
-.section-container /deep/ .ui-accordion-header {
+.section-container ::ng-deep .ui-accordion-header {
   color: #363636;
   border: none;
   background: #ffffff !important;
   padding: 0 1em;
 }
 
-.section-container /deep/ .ui-accordion-content {
+.section-container ::ng-deep .ui-accordion-content {
   border: none;
   padding: 1em 2em;
 }
 
-.section-container /deep/ .ui-accordion-header /deep/ a[role="tab"] {
+.section-container ::ng-deep .ui-accordion-header ::ng-deep a[role="tab"] {
   padding: .75em 0em .75em 0em;
   text-decoration: none;
 }
 
-.section-container /deep/ .ui-accordion-header.ui-state-active /deep/ a[role="tab"] {
+.section-container ::ng-deep .ui-accordion-header.ui-state-active ::ng-deep a[role="tab"] {
   border-bottom: 1px solid #d7d7d7;
   color: #363636;
 }
 
 // section with no header. Remove the border and collapse the height.
-.section-container /deep/ .section-no-header /deep/ .ui-accordion-header {
+.section-container ::ng-deep .section-no-header ::ng-deep .ui-accordion-header {
 
   height: 1px;
 
-  &.ui-state-active /deep/ a[role="tab"] {
+  &.ui-state-active ::ng-deep a[role="tab"] {
     border-bottom: none;
   }
 
@@ -121,8 +121,8 @@
 }
 
 /** accordion open and close icon **/
-:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-right,
-:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-down {
+:host ::ng-deep .ui-accordion-header ::ng-deep .pi.pi-caret-right,
+:host ::ng-deep .ui-accordion-header ::ng-deep .pi.pi-caret-down {
   font-family: "SAP icon fonts";
   font-size: 1.1em;
   top: .8em;
@@ -131,15 +131,15 @@
   margin-top: 0px;
 }
 
-:host /deep/ .ui-accordion-header.ui-state-disabled /deep/ .fa,
-:host /deep/ .ui-accordion-header.ui-state-disabled /deep/ .pi {
+:host ::ng-deep .ui-accordion-header.ui-state-disabled ::ng-deep .fa,
+:host ::ng-deep .ui-accordion-header.ui-state-disabled ::ng-deep .pi {
   display: none;
 }
 
-:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-right:before {
+:host ::ng-deep .ui-accordion-header ::ng-deep .pi.pi-caret-right:before {
   content: "\e1ed";
 }
 
-:host /deep/ .ui-accordion-header /deep/ .pi.pi-caret-down:before {
+:host ::ng-deep .ui-accordion-header ::ng-deep .pi.pi-caret-down:before {
   content: "\e1ef";
 }

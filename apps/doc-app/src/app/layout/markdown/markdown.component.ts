@@ -22,9 +22,12 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
   }
 
   set mdFile(value: string) {
-
-    console.log(value)
-    this._mdFile = require(`!!raw-loader!../../../${value}`);
+    const mdFile: any = require(`!!raw-loader!../../../${value}`);
+    if (mdFile.default) {
+      this._mdFile = mdFile.default;
+    } else {
+      this._mdFile = mdFile;
+    }
   }
 
   activeRoute: string;
