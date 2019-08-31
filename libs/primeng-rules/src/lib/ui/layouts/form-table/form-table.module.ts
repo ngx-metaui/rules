@@ -19,7 +19,7 @@
  *
  */
 import {NgModule} from '@angular/core';
-import {InputTextModule} from 'primeng/primeng';
+import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {FormTableComponent} from './form-table.component';

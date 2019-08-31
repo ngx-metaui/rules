@@ -24,6 +24,7 @@ import {assert, isBlank, isPresent} from '../../core/utils/lang';
 import {OverlayComponent} from '../overlay/overlay.component';
 import {BaseComponent, Environment} from '@ngx-metaui/rules';
 import {DomHandler} from 'primeng/api';
+import {MatInput} from '@angular/material';
 
 
 /**
@@ -167,7 +168,7 @@ export class HoverCardComponent extends BaseComponent {
   /**
    * Reference to OverlayComponent to can access PrimeNG component as well
    */
-  @ViewChild('overlay')
+  @ViewChild('overlay', {static: true})
   awOverlay: OverlayComponent;
 
 

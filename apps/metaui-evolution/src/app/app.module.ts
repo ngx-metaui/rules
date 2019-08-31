@@ -9,12 +9,14 @@ import {MetauiWayForm2Component} from './metaui-way-form2/metaui-way-form2.compo
 import {AppRoutingModule} from './app-routing.module';
 import {MetauiWayModuleComponent} from './metaui-way-module/metaui-way-module.component';
 import {SalesGraphComponent} from './metaui-way-module/sales-graph/sales-graph.component';
-import {ProductContentComponent} from './metaui-way-module/product-content/product-content.component';
+import {
+  ProductContentComponent
+} from './metaui-way-module/product-content/product-content.component';
 import {SourcesComponent} from './metaui-way-module/sources/sources.component';
 import * as userRules from './user-rules';
 
 import {PanelModule} from 'primeng/panel';
-import {CodeHighlighterModule} from 'primeng/primeng';
+import {CodeHighlighterModule} from 'primeng/codehighlighter';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MetauiWayNestingComponent} from './metaui-way-nesting/metaui-way-nesting.component';
 import {AribaComponentsModule, PrimeNgRulesModule} from '@ngx-metaui/primeng-rules';

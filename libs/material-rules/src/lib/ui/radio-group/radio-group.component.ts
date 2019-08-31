@@ -34,7 +34,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {MatFormFieldControl, MatRadioChange, MatRadioGroup} from '@angular/material';
+import {MatFormFieldControl, MatInput, MatRadioChange, MatRadioGroup} from '@angular/material';
 import {Subject} from 'rxjs';
 import {DomUtilsService} from '@ngx-metaui/rules';
 
@@ -89,7 +89,7 @@ export class RadioGroup implements ControlValueAccessor, MatFormFieldControl<any
   /**
    * Reference to internal Material select component so communicate with it.
    */
-  @ViewChild(MatRadioGroup)
+  @ViewChild(MatRadioGroup, {static: true})
   radioGroup: MatRadioGroup;
 
   @Input()

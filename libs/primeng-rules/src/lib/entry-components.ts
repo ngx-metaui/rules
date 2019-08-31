@@ -37,4 +37,24 @@ export * from './metaui/meta-section/meta-sections.component';
 
 
 // 3th lib - > prime NG
-export * from 'primeng/primeng';
+// todo: use dynamic imports just provide a mapping
+
+export {AccordionModule} from 'primeng/accordion';
+export {AutoCompleteModule} from 'primeng/autocomplete';
+export {ButtonModule} from 'primeng/button';
+export {CalendarModule} from 'primeng/calendar';
+export {Checkbox} from 'primeng/checkbox';
+export {Dialog, DialogModule} from 'primeng/dialog';
+export {DropdownModule} from 'primeng/dropdown';
+export {EditorModule} from 'primeng/editor';
+export {InputTextareaModule} from 'primeng/inputtextarea';
+export {InputTextModule} from 'primeng/inputtext';
+export {MenuModule} from 'primeng/menu';
+export {OverlayPanelModule} from 'primeng/overlaypanel';
+export {PaginatorModule} from 'primeng/paginator';
+export {PanelModule} from 'primeng/panel';
+export {RadioButtonModule} from 'primeng/radiobutton';
+export {SharedModule} from 'primeng/shared';
+export {TabMenuModule} from 'primeng/tabmenu';
+export {ToolbarModule} from 'primeng/toolbar';
+export {TreeModule} from 'primeng/tree';

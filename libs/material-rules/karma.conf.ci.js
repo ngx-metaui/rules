@@ -12,16 +12,13 @@ module.exports = function (config) {
       ...baseConfig.coverageIstanbulReporter,
       dir: join(__dirname, '../../coverage/libs/material-rules')
     },
-    browsers: ['Chrome', 'ChromeHeadlessCI'],
-    customLaunchers: {
-      "ChromeHeadlessCI": {
-        "base": "ChromeHeadless",
-        "flags": [
-          "--window-size=1024,768",
-          "--no-sandbox"
-        ]
-      }
-    },
+    browsers: ['Chrome', 'ChromeHeadless'],
+    flags: [
+      '--window-size=1024,768',
+      '--disable-web-security',
+      '--disable-gpu',
+      '--no-sandbox'
+    ],
     singleRun: true
 
   });

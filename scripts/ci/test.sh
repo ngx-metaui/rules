@@ -9,10 +9,10 @@ if [[ ${TRAVIS_TEST_RESULT=0} == 1 ]]; then
 fi
 
 echo "################ Testing @ngx-meta/rules ################ "
- ng test rules --browsers=ChromeHeadlessCI --karma-config=./libs/rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
+ng test rules --browsers=ChromeHeadless --karma-config=./libs/rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
 
 echo "################ Testing @ngx-meta/primeng-rules ################ "
-ng test primeng-rules --browsers=ChromeHeadlessCI --karma-config=./libs/primeng-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
+ng test primeng-rules --browsers=ChromeHeadless --karma-config=./libs/primeng-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
 
 
 ## echo "################ Testing @ngx-meta/material-rules ################ "

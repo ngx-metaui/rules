@@ -1,7 +1,7 @@
 {
   "rulesDirectory": [
     "node_modules/codelyzer",
-    "node_modules/@nrwl/schematics/src/tslint"
+    "node_modules/@nrwl/workspace/src/tslint"
   ],
   "rules": {
     "arrow-return-shorthand": true,
@@ -88,8 +88,8 @@
       "check-type"
     ],
     "no-output-on-prefix": false,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
+    "no-inputs-metadata-property": false,
+    "no-outputs-metadata-property": true,
     "use-host-property-decorator": false,
     "no-input-rename": true,
     "no-output-rename": true,

@@ -32,6 +32,7 @@ import {ArrayDataProvider} from '../../core/data/array-data-provider';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MetaUIRulesModule, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../../primeng-rules.module';
+import {getTestScheduler} from 'jasmine-marbles';
 
 
 describe('Component: Chooser ', () => {
@@ -198,6 +199,8 @@ describe('Component: Chooser ', () => {
       const fixtureWrapper = TestBed.createComponent(TestChooserRenderComponent);
       fixtureWrapper.detectChanges();
 
+
+
       const hasShowMore = fixtureWrapper.nativeElement
         .querySelector('.ui-autocomplete-list-item');
 
@@ -328,7 +331,7 @@ function flushPendingTimers() {
   `
 })
 class TestChooserErrorComponent implements OnInit {
-  @ViewChild(ChooserComponent)
+  @ViewChild(ChooserComponent, {static: false})
   chooser: ChooserComponent;
 
   formGroup: FormGroup = new FormGroup({});
@@ -353,7 +356,7 @@ class TestChooserErrorComponent implements OnInit {
   `
 })
 class TestChooserBasicComponent implements OnInit {
-  @ViewChild(ChooserComponent)
+  @ViewChild(ChooserComponent, {static: false})
   chooser: ChooserComponent;
 
   initValue: any[] = [];
@@ -403,7 +406,7 @@ class TestChooserBasicComponent implements OnInit {
   `
 })
 class TestChooserBasicSingleComponent implements OnInit {
-  @ViewChild(ChooserComponent)
+  @ViewChild(ChooserComponent, {static: false})
   chooser: ChooserComponent;
 
   list = [
@@ -448,7 +451,7 @@ class TestChooserBasicSingleComponent implements OnInit {
   `
 })
 class TestChooserRenderComponent implements OnInit {
-  @ViewChild(ChooserComponent)
+  @ViewChild(ChooserComponent, {static: false})
   chooser: ChooserComponent;
 
 
@@ -510,7 +513,7 @@ class TestChooserRenderComponent implements OnInit {
   `
 })
 class TestChooserWCustomTemplComponent implements OnInit {
-  @ViewChild(ChooserComponent)
+  @ViewChild(ChooserComponent, {static: false})
   chooser: ChooserComponent;
 
   list = [
@@ -561,7 +564,7 @@ class TestChooserWCustomTemplComponent implements OnInit {
   `
 })
 class TestChooserWithDestinationClassComponent implements OnInit {
-  @ViewChild(ChooserComponent)
+  @ViewChild(ChooserComponent, {static: false})
   chooser: ChooserComponent;
 
   list = [
@@ -609,7 +612,7 @@ class TestChooserWithDestinationClassComponent implements OnInit {
   `
 })
 class TestChooserWithDetachedSelectionComponent implements OnInit {
-  @ViewChild(ChooserComponent)
+  @ViewChild(ChooserComponent, {static: false})
   chooser: ChooserComponent;
 
   list = [

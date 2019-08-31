@@ -20,7 +20,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Host, Input, ViewChild} from '@angular/core';
 import {AbstractControl, FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {Environment, KeyBindings, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
-import {MatFormField} from '@angular/material';
+import {MatFormField, MatInput} from '@angular/material';
 
 
 /**
@@ -52,7 +52,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
    * Reference to parent component the MatFormField that we used to get hold of the control so
    * some validation rules can be registered
    */
-  @ViewChild('formField')
+  @ViewChild('formField', {static: true})
   mdFormField: MatFormField;
 
 

@@ -22,7 +22,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AWCoreComponentModule} from '../../core/core.module';
 import {OverlayComponent} from './overlay.component';
-import {OverlayPanelModule} from 'primeng/primeng';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [

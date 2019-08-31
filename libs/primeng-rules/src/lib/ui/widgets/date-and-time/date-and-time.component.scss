@@ -4,7 +4,7 @@
 
 /* For Fluid Layout */
 
-/deep/ .w-datetime {
+::ng-deep .w-datetime {
   .ui-calendar {
     button {
       border: 0;
@@ -14,7 +14,7 @@
 }
 
 /* change font family for primeng icons and awsome icons*/
-/deep/ .ui-calendar .ui-calendar-button .ui-button-icon-left {
+::ng-deep .ui-calendar .ui-calendar-button .ui-button-icon-left {
   font-family: "SAP icon fonts";
   color: #199de0;
   cursor: pointer;
@@ -28,7 +28,7 @@
   }
 }
 
-/deep/ .ui-datepicker {
+::ng-deep .ui-datepicker {
   width: 24.28em;
   line-height: 25px;
   padding: 0;
@@ -94,7 +94,7 @@
   }
 }
 
-/deep/ .ui-datepicker .ui-datepicker-calendar td:not(.ui-state-disabled) a:hover {
+::ng-deep .ui-datepicker .ui-datepicker-calendar td:not(.ui-state-disabled) a:hover {
   border-color: transparent;
   background-color: rgba(25, 157, 224, 0.7);
   opacity: 0.75;
@@ -102,11 +102,11 @@
 }
 
 /* In case we show time picker set with to 100% to be aligned with input field */
-/deep/ .ui-datepicker-timeonly {
+::ng-deep .ui-datepicker-timeonly {
   width: 100%;
 }
 
-/deep/ .ui-timepicker {
+::ng-deep .ui-timepicker {
   font-size: 1.14em;
   color: #767676;
   font-weight: normal;
@@ -137,7 +137,7 @@
   }
 }
 
-/deep/ .ui-datepicker-trigger {
+::ng-deep .ui-datepicker-trigger {
   background-color: transparent;
 
   &.ui-button:focus, &.ui-button:enabled:hover {
@@ -148,7 +148,7 @@
 
 /* shows both date picker and time picker so make sure they are on the same line.*/
 
-/deep/ .has-time {
+::ng-deep .has-time {
   display: flex;
   flex-wrap: nowrap;
 

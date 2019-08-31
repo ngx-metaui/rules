@@ -72,14 +72,14 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
   /**
    * Reference to internal Material Inputfield
    */
-  @ViewChild(MatInput)
+  @ViewChild(MatInput, {static: true})
   protected input: MatInput;
 
 
   /**
    * Reference to internal Material Inputfield
    */
-  @ViewChild(MatDatepicker)
+  @ViewChild(MatDatepicker, {static: true})
   protected datePicker: MatDatepicker<Date>;
 
 

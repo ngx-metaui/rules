@@ -160,7 +160,7 @@ describe('Component: Currency', () => {
 })
   /* jshint ignore:end */
 class TestCurrencyDefaultBehaviorComponent {
-  @ViewChild(CurrencyComponent)
+  @ViewChild(CurrencyComponent, {static: false})
   currency: CurrencyComponent;
 
   constructor() {
@@ -179,7 +179,7 @@ class TestCurrencyDefaultBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestCurrencyBasicBehaviorComponent {
-  @ViewChild(CurrencyComponent)
+  @ViewChild(CurrencyComponent, {static: false})
   currency: CurrencyComponent;
 
   editable = true;
@@ -207,7 +207,7 @@ class TestCurrencyBasicBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestDTContainerBehaviorComponent {
-  @ViewChild(CurrencyComponent)
+  @ViewChild(CurrencyComponent, {static: false})
   currency: CurrencyComponent;
 
   currencies: string[] = ['USD', 'CNY', 'AUD', 'EUR', 'GBP'];
@@ -229,7 +229,7 @@ class TestDTContainerBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestReadonlyCurrencyCodeComponent {
-  @ViewChild(CurrencyComponent)
+  @ViewChild(CurrencyComponent, {static: false})
   currency: CurrencyComponent;
 
   editable = true;

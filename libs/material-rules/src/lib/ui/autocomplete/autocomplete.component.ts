@@ -70,17 +70,17 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
   /**
    * Reference to internal Material select component so comunicate with it.
    */
-  @ViewChild(MatAutocomplete)
+  @ViewChild(MatAutocomplete, {static: true})
   protected autocompleteComponent: MatAutocomplete;
 
 
-  @ViewChild(MatInput)
+  @ViewChild(MatInput, {static: true})
   protected matInput: MatInput;
 
   /**
    * Used by application to have a full control how the option item is rendered
    */
-  @ContentChild('optionTemplate')
+  @ContentChild('optionTemplate', {static: false})
   itemTemplate: TemplateRef<any>;
 
   @Input()
@@ -100,7 +100,7 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
    */
 
   @Input()
-  disabled: boolean  = false;
+  disabled: boolean = false;
 
 
   /**

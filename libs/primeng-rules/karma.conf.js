@@ -11,6 +11,13 @@ module.exports = function (config) {
     coverageIstanbulReporter: {
       ...baseConfig.coverageIstanbulReporter,
       dir: join(__dirname, '../../coverage/libs/primeng-rules')
-    }
+    },
+    browsers: ['ChromeHeadless'],
+    flags: [
+      '--disable-web-security',
+      '--disable-gpu',
+      '--no-sandbox'
+    ],
+    singleRun: true
   });
 };

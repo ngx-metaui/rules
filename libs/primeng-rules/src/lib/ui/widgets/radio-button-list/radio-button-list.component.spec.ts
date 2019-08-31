@@ -104,8 +104,6 @@ describe('RadioButton LIST   behavior', () => {
 
     fixtureWrapper.detectChanges();
     tick();
-
-
     const items = fixtureWrapper.nativeElement.querySelectorAll('.w-radiobutton label');
 
     items[0].click();
@@ -114,12 +112,8 @@ describe('RadioButton LIST   behavior', () => {
     fixtureWrapper.detectChanges();
     tick();
     fixtureWrapper.detectChanges();
-
-
-    // let futureValue = items[0].value;
-    //
-    // expect(fixtureWrapper.componentInstance.env.currentForm.value['gender'])
-    //     .toEqual(futureValue);
+    expect(fixtureWrapper.componentInstance.rbList.env.currentForm.value['gender'])
+      .toEqual('male');
 
   }));
 
@@ -162,7 +156,7 @@ describe('RadioButton LIST   behavior', () => {
   `
 })
 class TestRBListBasicBehaviorComponent {
-  @ViewChild(RadioButtonListComponent)
+  @ViewChild(RadioButtonListComponent, {static: false})
   rbList: RadioButtonListComponent;
 
   rbListValues: string[] = ['male', 'female', 'other'];

@@ -4,15 +4,15 @@
   "version": "VERSION_PLACEHOLDER",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "@angular/animations": "^7.2.14",
-    "@angular/common": "^7.2.14",
-    "@angular/core": "^7.2.14",
-    "@angular/platform-browser": "^7.2.14",
-    "@angular/platform-browser-dynamic": "^7.2.14",
-    "@angular/router": "^7.2.14",
+    "@angular/animations": "ANGULAR_PLACEHOLDER",
+    "@angular/common": "ANGULAR_PLACEHOLDER",
+    "@angular/core": "ANGULAR_PLACEHOLDER",
+    "@angular/platform-browser": "ANGULAR_PLACEHOLDER",
+    "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
+    "@angular/router": "ANGULAR_PLACEHOLDER",
     "@ngx-metaui/rules": "^VERSION_PLACEHOLDER",
-    "primeicons": "^1.0.0",
-    "primeng": "7.1.2",
+    "primeicons": "PRIMENG_ICONS_PLACEHOLDER",
+    "primeng": "PRIMENG_PLACEHOLDER",
     "font-awesome": "4.7.0"
   },
   "standard-version": {

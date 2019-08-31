@@ -24,7 +24,6 @@ import {Component} from '@angular/core';
 
     `
 })
-export class ProductContentComponent
-{
+export class ProductContentComponent {
 
 }

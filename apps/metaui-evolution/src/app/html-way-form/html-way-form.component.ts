@@ -6,26 +6,22 @@ import {User} from '../model/user';
     templateUrl: './html-way-form.component.html',
     styleUrls: ['./html-way-form.component.scss']
 })
-export class HtmlWayFormComponent implements OnInit
-{
+export class HtmlWayFormComponent implements OnInit {
 
-    errorMsg = '';
-    userObject: User;
+  errorMsg = '';
+  userObject: User;
 
-    constructor()
-    {
-    }
+  constructor() {
+  }
 
-    ngOnInit()
-    {
-        this.userObject = new User('ppan', 'Peter', 'Pan', 8,
-            new Date());
-    }
+  ngOnInit() {
+    this.userObject = new User('ppan', 'Peter', 'Pan', 8,
+      new Date());
+  }
 
 
-    hasErrors(): boolean
-    {
-        return false;
-    }
+  hasErrors(): boolean {
+    return false;
+  }
 
 }

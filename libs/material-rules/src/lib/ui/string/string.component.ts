@@ -62,7 +62,7 @@ export class StringField extends MatInput implements ControlValueAccessor {
    * Reference to internal INPUT element having MatInput directive so we can set this reference
    * back to the MatInput
    */
-  @ViewChild('inputField')
+  @ViewChild('inputField', {static: true})
   protected inputControl: ElementRef;
 
   onChange = (_: any) => {};

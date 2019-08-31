@@ -212,7 +212,7 @@ export type ModelFormat = 'free' | 'tree';
       })),
       transition('* => void', animate('200ms ease-out')),
       transition('void => *', animate('200ms ease-in'))
-    ]),
+    ])
   ]
 })
 export class OutlineForComponent extends BaseComponent {
@@ -330,11 +330,11 @@ export class OutlineForComponent extends BaseComponent {
   /**
    * A template to use on application level to render individual items
    */
-  @ContentChild('outline')
+  @ContentChild('outline', {static: false})
   controlTemplate: TemplateRef<any>;
 
 
-  @ViewChild('renderedItem')
+  @ViewChild('renderedItem', {static: false})
   outlineItem: ElementRef;
 
 

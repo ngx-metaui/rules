@@ -19,6 +19,10 @@
         "aw"
       ],
       "kebab-case"
+    ],
+    "import-blacklist": [
+        true,
+      "primeng/primeng"
     ]
   }
 }

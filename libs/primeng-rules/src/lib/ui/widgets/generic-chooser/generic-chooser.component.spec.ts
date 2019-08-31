@@ -272,7 +272,7 @@ describe('Component: GenericChooser', () => {
   `
 })
 class TestGCCheckBoxComponent {
-  @ViewChild(GenericChooserComponent)
+  @ViewChild(GenericChooserComponent, {static: false})
   genericChooser: GenericChooserComponent;
 
   list: string[] = ['Yesterday', 'Monday', 'Tuesday', 'BMW R1200 GS'];
@@ -298,7 +298,7 @@ class TestGCCheckBoxComponent {
   `
 })
 class TestGCRadioComponent {
-  @ViewChild(GenericChooserComponent)
+  @ViewChild(GenericChooserComponent, {static: false})
   genericChooser: GenericChooserComponent;
 
   list: string[] = ['Yesterday', 'Monday', 'Tuesday', 'BMW R1200 GS'];
@@ -325,7 +325,7 @@ class TestGCRadioComponent {
   `
 })
 class TestGCDDComponent {
-  @ViewChild(GenericChooserComponent)
+  @ViewChild(GenericChooserComponent, {static: false})
   genericChooser: GenericChooserComponent;
   list: string[] = ['Yesterday', 'Monday', 'Tuesday', 'BMW R1200 GS'];
   selection: any;

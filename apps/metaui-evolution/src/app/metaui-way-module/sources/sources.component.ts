@@ -6,13 +6,11 @@ import {BaseComponent, Environment} from '@ngx-metaui/rules';
     templateUrl: './sources.component.html',
     styleUrls: ['./sources.component.scss']
 })
-export class SourcesComponent extends BaseComponent
-{
+export class SourcesComponent extends BaseComponent {
 
-    constructor(public env: Environment)
-    {
-        super(env);
+  constructor(public env: Environment) {
+    super(env);
 
-    }
+  }
 }
 

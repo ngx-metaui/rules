@@ -40,6 +40,7 @@ import {
   TopZoneComponent
 } from '../five-zone-layout.component';
 import {BaseFormComponent, Environment} from '@ngx-metaui/rules';
+import {MatInput} from '@angular/material';
 
 
 /**
@@ -226,15 +227,15 @@ export class FormTableComponent extends BaseFormComponent implements AfterConten
    * These properties represent individual zones and we use them to adjust our column grid
    * layout
    */
-  @ContentChild(LeftZoneComponent) leftZone: LeftZoneComponent;
+  @ContentChild(LeftZoneComponent, {static: false}) leftZone: LeftZoneComponent;
 
-  @ContentChild(MiddleZoneComponent) middleZone: MiddleZoneComponent;
+  @ContentChild(MiddleZoneComponent, {static: false}) middleZone: MiddleZoneComponent;
 
-  @ContentChild(RightZoneComponent) rightZone: RightZoneComponent;
+  @ContentChild(RightZoneComponent, {static: false}) rightZone: RightZoneComponent;
 
-  @ContentChild(TopZoneComponent) topZone: TopZoneComponent;
+  @ContentChild(TopZoneComponent, {static: false}) topZone: TopZoneComponent;
 
-  @ContentChild(BottomZoneComponent) bottomZone: BottomZoneComponent;
+  @ContentChild(BottomZoneComponent, {static: false}) bottomZone: BottomZoneComponent;
 
 
   @ContentChildren(BaseFormComponent, {descendants: true})

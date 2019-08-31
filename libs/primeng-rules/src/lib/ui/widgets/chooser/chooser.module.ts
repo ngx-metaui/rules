@@ -22,7 +22,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChooserComponent} from './chooser.component';
-import {AutoCompleteModule} from 'primeng/primeng';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AWHyperlinkModule} from '../hyperlink/hyperlink.module';
 import {AWCoreComponentModule} from '../../core/core.module';
 

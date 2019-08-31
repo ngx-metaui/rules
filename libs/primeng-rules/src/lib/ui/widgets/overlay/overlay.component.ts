@@ -29,7 +29,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {ModalContainer} from '../../core/modal-service/modal-container';
-import {OverlayPanel} from 'primeng/primeng';
+import {OverlayPanel} from 'primeng/overlaypanel';
 import {Environment} from '@ngx-metaui/rules';
 
 /**
@@ -134,7 +134,7 @@ export class OverlayComponent extends ModalContainer implements OnInit, AfterCon
   /**
    * The internal overlay panel.
    */
-  @ViewChild(OverlayPanel)
+  @ViewChild(OverlayPanel, {static: true})
   overlay: OverlayPanel;
 
   constructor(public env: Environment) {

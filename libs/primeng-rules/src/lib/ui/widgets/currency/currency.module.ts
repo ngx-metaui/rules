@@ -21,7 +21,8 @@
 import {NgModule} from '@angular/core';
 import {CommonModule, CurrencyPipe} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {DropdownModule, InputTextModule} from 'primeng/primeng';
+import {DropdownModule} from 'primeng/dropdown';
+import {InputTextModule} from 'primeng/inputtext';
 import {CurrencyComponent} from './currency.component';
 import {AWStringFieldModule} from '../string/string.module';
 import {AWDropdownModule} from '../dropdown/dropdown.module';

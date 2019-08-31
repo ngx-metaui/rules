@@ -105,7 +105,7 @@ describe('Component: Hyperlink', () => {
 })
   /* jshint ignore:end */
 class TestHyperlinkDefaultBehaviorComponent {
-  @ViewChild(HyperlinkComponent)
+  @ViewChild(HyperlinkComponent, {static: false})
   link: HyperlinkComponent;
 
   constructor() {
@@ -123,7 +123,7 @@ class TestHyperlinkDefaultBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestHyperlinkBasicBehaviorComponent {
-  @ViewChild(HyperlinkComponent)
+  @ViewChild(HyperlinkComponent, {static: false})
   link: HyperlinkComponent;
 
   linkName: string = 'link';
@@ -142,7 +142,7 @@ class TestHyperlinkBasicBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestHyperlinkActionBehaviorComponent {
-  @ViewChild(HyperlinkComponent)
+  @ViewChild(HyperlinkComponent, {static: false})
   link: HyperlinkComponent;
 
   editable = true;
@@ -171,6 +171,6 @@ class TestHyperlinkActionBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestDTContainerBehaviorComponent {
-  @ViewChild(HyperlinkComponent)
+  @ViewChild(HyperlinkComponent, {static: false})
   link: HyperlinkComponent;
 }

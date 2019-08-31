@@ -119,7 +119,7 @@ describe('Component: Button', () => {
 })
   /* jshint ignore:end */
 class TestButtonDefaultBehaviorComponent {
-  @ViewChild(ButtonComponent)
+  @ViewChild(ButtonComponent, {static: false})
   button: ButtonComponent;
 
   constructor() {
@@ -137,7 +137,7 @@ class TestButtonDefaultBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestButtonBasicBehaviorComponent {
-  @ViewChild(ButtonComponent)
+  @ViewChild(ButtonComponent, {static: false})
   button: ButtonComponent;
 
   buttonType: string = 'button';
@@ -160,7 +160,7 @@ class TestButtonBasicBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestButtonActionBehaviorComponent {
-  @ViewChild(ButtonComponent)
+  @ViewChild(ButtonComponent, {static: false})
   button: ButtonComponent;
 
   editable = true;
@@ -190,6 +190,6 @@ class TestButtonActionBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestDTContainerBehaviorComponent {
-  @ViewChild(ButtonComponent)
+  @ViewChild(ButtonComponent, {static: false})
   button: ButtonComponent;
 }

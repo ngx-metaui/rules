@@ -49,9 +49,8 @@ import {
   registerUserRulesWithMetaConfig,
   setupOptions
 } from '../common/schematics-utils';
-import {WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
+import {WorkspaceSchema, WorkspaceProject} from '@schematics/angular/utility/workspace-models';
 import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
-import {WorkspaceProject} from '@angular-devkit/core/src/workspace';
 
 const stringUtils = {dasherize, classify};
 
@@ -95,7 +94,7 @@ function addDependencies(options: AddSchema): Rule {
         version: '^VERSION_PLACEHOLDER',
         name: '@ngx-metaui/rules'
       },
-      {type: NodeDependencyType.Default, version: '1.6.41', name: 'big-integer'},
+      {type: NodeDependencyType.Default, version: '1.6.44', name: 'big-integer'},
       {type: NodeDependencyType.Default, version: '1.3.1', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
       {type: NodeDependencyType.Default, version: '1.3.2', name: 'typescript-collections'},
@@ -109,10 +108,10 @@ function addDependencies(options: AddSchema): Rule {
           version: '^VERSION_PLACEHOLDER',
           name: '@ngx-metaui/primeng-rules'
         },
-        {type: NodeDependencyType.Default, version: '7.0.5', name: 'primeng'},
+        {type: NodeDependencyType.Default, version: 'PRIMENG_PLACEHOLDER', name: 'primeng'},
         {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
         {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
-        {type: NodeDependencyType.Default, version: '^1.0.0', name: 'primeicons'}
+        {type: NodeDependencyType.Default, version: 'PRIMENG_ICONS_PLACEHOLDER', name: 'primeicons'}
       ];
 
     } else if (options.uiLib === 'material2') {
@@ -122,8 +121,8 @@ function addDependencies(options: AddSchema): Rule {
           version: '^VERSION_PLACEHOLDER',
           name: '@ngx-metaui/material-rules'
         },
-        {type: NodeDependencyType.Default, version: '^7.3.2', name: '@angular/cdk'},
-        {type: NodeDependencyType.Default, version: '^7.3.2', name: '@angular/material'},
+        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
+        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/material'},
         {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
       ];
     }

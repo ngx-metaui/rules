@@ -35,7 +35,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {AutoComplete} from 'primeng/primeng';
+import {AutoComplete} from 'primeng/autocomplete';
 import {assert, isBlank, isPresent} from '../../core/utils/lang';
 import {DATA_SOURCE} from '../../core/data/data-source';
 import {ChooserDataSource} from './chooser-data-source';
@@ -43,6 +43,7 @@ import {DataProviders} from '../../core/data/data-providers';
 import {DataFinders, QueryType} from '../../core/data/data-finders';
 import {ChooserState, DefaultSelectionState} from './chooser-state';
 import {BaseFormComponent, Environment} from '@ngx-metaui/rules';
+import {MatInput} from '@angular/material';
 
 
 /**
@@ -244,17 +245,17 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
    * Each object can provide its own toString implementation.
    *
    */
-  @ContentChild('menuItem')
+  @ContentChild('menuItem', {static: false})
   menuTemplate: TemplateRef<any>;
 
 
-  @ContentChild('selectionItem')
+  @ContentChild('selectionItem', {static: false})
   selectionTemplate: TemplateRef<any>;
 
-  @ViewChild('autoCompplete')
+  @ViewChild('autoCompplete', {static: false})
   autoCompleteComponent: AutoComplete;
 
-  @ViewChild('selectionView')
+  @ViewChild('selectionView', {static: false})
   selectionViewElem: ElementRef;
 
 

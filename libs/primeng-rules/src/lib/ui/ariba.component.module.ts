@@ -21,30 +21,26 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {
-  AccordionModule,
-  AutoCompleteModule,
-  ButtonModule,
-  CalendarModule,
-  Checkbox,
-  CheckboxModule,
-  DataTableModule,
-  Dialog,
-  DialogModule,
-  DropdownModule,
-  EditorModule,
-  InputTextareaModule,
-  InputTextModule,
-  MenuModule,
-  OverlayPanelModule,
-  PaginatorModule,
-  PanelModule,
-  RadioButtonModule,
-  SharedModule,
-  TabMenuModule,
-  ToolbarModule,
-  TreeModule
-} from 'primeng/primeng';
+
+import {AccordionModule} from 'primeng/accordion';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {ButtonModule} from 'primeng/button';
+import {CalendarModule} from 'primeng/calendar';
+import {Checkbox, CheckboxModule} from 'primeng/checkbox';
+import {Dialog, DialogModule} from 'primeng/dialog';
+import {DropdownModule} from 'primeng/dropdown';
+import {EditorModule} from 'primeng/editor';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import {InputTextModule} from 'primeng/inputtext';
+import {MenuModule} from 'primeng/menu';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {PaginatorModule} from 'primeng/paginator';
+import {PanelModule} from 'primeng/panel';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {SharedModule} from 'primeng/shared';
+import {TabMenuModule} from 'primeng/tabmenu';
+import {ToolbarModule} from 'primeng/toolbar';
+import {TreeModule} from 'primeng/tree';
 import {AWCoreComponentModule} from './core/core.module';
 import {AWCheckBoxListModule} from './widgets/check-box-list/check-box-list.module';
 import {AWChooserModule} from './widgets/chooser/chooser.module';
@@ -118,7 +114,6 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
     TabMenuModule,
     AccordionModule,
     EditorModule,
-    DataTableModule,
     PaginatorModule,
     OverlayPanelModule,
     TreeModule
@@ -174,7 +169,6 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
     MenuModule,
     TabMenuModule,
     EditorModule,
-    DataTableModule,
     PaginatorModule,
     OverlayPanelModule
   ]

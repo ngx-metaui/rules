@@ -14,7 +14,8 @@ export class AppComponent implements OnInit, OnDestroy {
   tabletQuery: MediaQueryList;
   mobileQuery: MediaQueryList;
 
-  @ViewChild('sidenav') private sidenav: MatSidenav;
+  @ViewChild('sidenav', {static: false})
+  private sidenav: MatSidenav;
 
   readonly tabletQueryListener: () => void;
   readonly mobileQueryListener: () => void;

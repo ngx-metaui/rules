@@ -1,4 +1,4 @@
-/deep/ .u-description {
+::ng-deep .u-description {
   background-color: #f9f9f9;
   border: 1px solid #f2f2f2;
   padding: 5px;
@@ -16,6 +16,6 @@
 }
 
 
-/deep/ .section-label .control-value {
+::ng-deep.section-label .control-value {
   background-color: #e9e9e9;
 }

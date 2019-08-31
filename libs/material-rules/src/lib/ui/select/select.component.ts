@@ -96,9 +96,9 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
   OnChanges, AfterViewInit {
 
   /**
-   * Reference to internal Material select component so comunicate with it.
+   * Reference to internal Material select component so communicate with it.
    */
-  @ViewChild('matSelect')
+  @ViewChild('matSelect', {static: true})
   protected selectComponent: MatSelect;
 
   @Input()

@@ -23,47 +23,41 @@ import {Entity} from '@ngx-metaui/rules';
 import {Money} from '@ngx-metaui/primeng-rules';
 
 
-export class Order implements Entity
-{
+export class Order implements Entity {
 
-    constructor(public uniqueName?: string,
-                public name?: string,
-                public orderDate?: Date,
-                public state?: String,
-                public requestor?: User,
-                public totalAmount?: Money,
-                public billingAddress?: Address,
-                public shippingAddress?: Address,
-                public description?: string)
-    {
-        this.uniqueName = 'PO20180001';
-    }
+  constructor(public uniqueName?: string,
+              public name?: string,
+              public orderDate?: Date,
+              public state?: String,
+              public requestor?: User,
+              public totalAmount?: Money,
+              public billingAddress?: Address,
+              public shippingAddress?: Address,
+              public description?: string) {
+    this.uniqueName = 'PO20180001';
+  }
 
 
-    identity(): string
-    {
-        return this.uniqueName;
-    }
+  identity(): string {
+    return this.uniqueName;
+  }
 
 
-    getTypes(): any
-    {
-        return {
-            uniqueName: String,
-            name: String,
-            requestor: User,
-            totalAmount: Money,
-            billingAddress: Address,
-            shippingAddress: Address,
-            description: String
+  getTypes(): any {
+    return {
+      uniqueName: String,
+      name: String,
+      requestor: User,
+      totalAmount: Money,
+      billingAddress: Address,
+      shippingAddress: Address,
+      description: String
 
-        };
-    }
-    
+    };
+  }
 
 
-    className(): string
-    {
-        return 'Order';
-    }
+  className(): string {
+    return 'Order';
+  }
 }

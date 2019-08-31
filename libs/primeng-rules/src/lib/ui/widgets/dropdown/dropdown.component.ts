@@ -31,7 +31,7 @@ import {
   TemplateRef
 } from '@angular/core';
 import {FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {SelectItem} from 'primeng/primeng';
+import {SelectItem} from 'primeng/api';
 import {equals, isPresent} from '../../core/utils/lang';
 import {BaseFormComponent, Environment} from '@ngx-metaui/rules';
 
@@ -145,7 +145,7 @@ export class DropdownComponent extends BaseFormComponent {
    * each item should be handled
    *
    */
-  @ContentChild('itemTemplate')
+  @ContentChild('itemTemplate', {static: false})
   itemTemplate: TemplateRef<any>;
 
 
