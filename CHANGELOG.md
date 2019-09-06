@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.1](https://github.com/ngx-meta/rules/compare/v8.0.0...v8.0.1) (2019-09-06)
+
+
+### Bug Fixes
+
+* **oss:** Syntax error to pass oss validation ([b1ddbaa](https://github.com/ngx-meta/rules/commit/b1ddbaa))
+
+
+
 # [8.0.0](https://github.com/ngx-meta/rules/compare/v7.4.0...v8.0.0) (2019-09-06)
 
 
