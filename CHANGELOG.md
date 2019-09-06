@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [8.0.0](https://github.com/ngx-meta/rules/compare/v7.4.0...v8.0.0) (2019-09-06)
+
+
+### Features
+
+* **angular:** Updated to angular 8 ([11b712f](https://github.com/ngx-meta/rules/commit/11b712f))
+
+
+
 <a name="7.4.0"></a>
 # [7.4.0](https://github.com/ngx-meta/rules/compare/v7.3.1...v7.4.0) (2019-07-24)
 
