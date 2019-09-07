@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.2](https://github.com/ngx-meta/rules/compare/v8.0.1...v8.0.2) (2019-09-07)
+
+
+### Bug Fixes
+
+* **rules:** Updated eval expression functionality to work with es2015 ([d8c1698](https://github.com/ngx-meta/rules/commit/d8c1698))
+* **schematics:** Extended script to replace dependencies in schematics ([06bb303](https://github.com/ngx-meta/rules/commit/06bb303))
+* **schematics:** Updated imports paths for WorkspaceSchema ([96f7a97](https://github.com/ngx-meta/rules/commit/96f7a97))
+
+
+
 ## [8.0.1](https://github.com/ngx-meta/rules/compare/v8.0.0...v8.0.1) (2019-09-06)
 
 
