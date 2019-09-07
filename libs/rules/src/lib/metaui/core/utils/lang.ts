@@ -318,34 +318,12 @@ export function evalExpressionWithCntx(expr: string, declarations: string,
   const fnBody = `${declarations}\n\treturn ${expr}\n//# sourceURL=MetaExpr`;
   const fnArgNames: string[] = [];
   const fnArgValues: any[] = [];
-
-  if (lets['iterableFields']) {
-
-    const fields: string[] = lets['iterableFields']();
-    for (const name of fields) {
-      if (StringWrapper.contains(expr, name)) {
-        fnArgNames.push(name);
-        fnArgValues.push(lets[name]);
-      }
-    }
-
-  } else {
-    for (const name in lets) {
-      if (StringWrapper.contains(expr, name)) {
-        fnArgNames.push(name);
-        fnArgValues.push(lets[name]);
-      }
+  for (const argName in lets) {
+    if (StringWrapper.contains(expr, argName)) {
+      fnArgNames.push(argName);
+      fnArgValues.push(lets[argName]);
     }
   }
-
-  Object.keys(lets).forEach(key => {
-    const value = lets[key];
-    if (StringWrapper.contains(expr, key)) {
-      fnArgNames.push(key);
-      fnArgValues.push(lets[key]);
-    }
-  });
-
   if (lets instanceof Extensible) {
     const extValues: Extensible = lets;
 

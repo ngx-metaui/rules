@@ -1267,7 +1267,7 @@ export class Context extends Extensible {
 
 
   // Little hack untill I find better way to interate over object properties. starting es2015
-  // for..in has different behavior.
+  // for..in has different behavior..
   public iterableFields(): String[] {
     return [
       'nested', '_values', '_entries', '_frameStarts', '_recPool', '_accessor',
