@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.3](https://github.com/ngx-meta/rules/compare/v8.0.2...v8.0.3) (2019-09-07)
+
+
+### Bug Fixes
+
+* **context:** Extended list of iterable properties for dynamic expressions ([67876aa](https://github.com/ngx-meta/rules/commit/67876aa))
+
+
+
 ## [8.0.2](https://github.com/ngx-meta/rules/compare/v8.0.1...v8.0.2) (2019-09-07)
 
 
