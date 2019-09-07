@@ -44,6 +44,16 @@ else
       ng build my-detail-page
 fi
 
+# Build schematics
+echo "Building schematics"
+npm run build:schematics
+
+
+
+
+echo "################ Finished  builds ################"
+
+
 if [ ${args[0]} == "link" ]; then
    echo "################ Updating package.json with version ################"
    NEW_VERSION=$(node -p "require('./package.json').version")
@@ -56,14 +66,15 @@ if [ ${args[0]} == "link" ]; then
    echo "Updating packages.json under dist/libs with version ${NEW_VERSION}"
 
    cd ./dist/
-   perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g" $(grep -ril VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
-   perl -p -i -e "s/ANGULAR_VERSION_PLACEHOLDER/${ANGULAR_VERSION}/g" $(grep -ril ANGULAR_VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
-   perl -p -i -e "s/PRIMENG_ICONS_VERSION_PLACEHOLDER/${PRIMENG_ICONS_VERSION}/g" $(grep -ril PRIMENG_ICONS_VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
-   perl -p -i -e "s/PRIMENG_VERSION_PLACEHOLDER/${PRIMENG_VERSION}/g" $(grep -ril PRIMENG_VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
-   perl -p -i -e "s/MATERIAL_VERSION_PLACEHOLDER/${MATERIAL_VERSION}/g" $(grep -ril MATERIAL_VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
+   grep -rl 'VERSION_PLACEHOLDER' . | xargs  perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g"
+   grep -rl 'ANGULAR_PLACEHOLDER' . | xargs  perl -p -i -e "s/ANGULAR_PLACEHOLDER/${ANGULAR_VERSION}/g"
+   grep -rl 'PRIMENG_ICONS_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_ICONS_PLACEHOLDER/${PRIMENG_ICONS_VERSION}/g"
+   grep -rl 'PRIMENG_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_PLACEHOLDER/${PRIMENG_VERSION}/g"
+   grep -rl 'MATERIAL_PLACEHOLDER' . | xargs  perl -p -i -e "s/MATERIAL_PLACEHOLDER/${MATERIAL_VERSION}/g"
 
    cd ..
 fi
+
 
 rm -Rf ./dist/apps
 
@@ -85,9 +96,6 @@ cp -R libs/material-rules/src/lib/metaui/oss ./dist/libs/material-rules/lib/meta
 
 
 
-# Build schematics
-echo "Building schematics"
-npm run build:schematics
 
 
 

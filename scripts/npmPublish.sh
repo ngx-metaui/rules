@@ -36,11 +36,13 @@ PRIMENG_VERSION=$(node -p "require('./package.json').dependencies['primeng']")
 MATERIAL_VERSION=$(node -p "require('./package.json').dependencies['@angular/material']")
 
 cd ./dist/
-perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g" $(grep -ril VERSION_PLACEHOLDER .) < /dev/null 2> /dev/null
-perl -p -i -e "s/ANGULAR_PLACEHOLDER/${ANGULAR_VERSION}/g" $(grep -ril ANGULAR_PLACEHOLDER .) < /dev/null 2> /dev/null
-perl -p -i -e "s/PRIMENG_ICONS_PLACEHOLDER/${PRIMENG_ICONS_VERSION}/g" $(grep -ril PRIMENG_ICONS_PLACEHOLDER .) < /dev/null 2> /dev/null
-perl -p -i -e "s/PRIMENG_PLACEHOLDER/${PRIMENG_VERSION}/g" $(grep -ril PRIMENG_PLACEHOLDER .) < /dev/null 2> /dev/null
-perl -p -i -e "s/MATERIAL_PLACEHOLDER/${MATERIAL_VERSION}/g" $(grep -ril MATERIAL_PLACEHOLDER .) < /dev/null 2> /dev/null
+
+grep -rl 'VERSION_PLACEHOLDER' . | xargs  perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g"
+grep -rl 'ANGULAR_PLACEHOLDER' . | xargs  perl -p -i -e "s/ANGULAR_PLACEHOLDER/${ANGULAR_VERSION}/g"
+grep -rl 'PRIMENG_ICONS_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_ICONS_PLACEHOLDER/${PRIMENG_ICONS_VERSION}/g"
+grep -rl 'PRIMENG_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_PLACEHOLDER/${PRIMENG_VERSION}/g"
+grep -rl 'MATERIAL_PLACEHOLDER' . | xargs  perl -p -i -e "s/MATERIAL_PLACEHOLDER/${MATERIAL_VERSION}/g"
+
 
 cd "libs"
 

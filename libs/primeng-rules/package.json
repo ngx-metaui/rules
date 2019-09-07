@@ -10,9 +10,11 @@
     "@angular/platform-browser": "ANGULAR_PLACEHOLDER",
     "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
     "@angular/router": "ANGULAR_PLACEHOLDER",
+    "@angular/cdk": "MATERIAL_PLACEHOLDER",
     "@ngx-metaui/rules": "^VERSION_PLACEHOLDER",
     "primeicons": "PRIMENG_ICONS_PLACEHOLDER",
     "primeng": "PRIMENG_PLACEHOLDER",
+
     "font-awesome": "4.7.0"
   },
   "standard-version": {
