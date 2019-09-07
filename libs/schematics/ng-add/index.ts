@@ -49,7 +49,7 @@ import {
   registerUserRulesWithMetaConfig,
   setupOptions
 } from '../common/schematics-utils';
-import {WorkspaceSchema, WorkspaceProject} from '@schematics/angular/utility/workspace-models';
+import {WorkspaceProject, WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
 import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
 
 const stringUtils = {dasherize, classify};
@@ -108,6 +108,7 @@ function addDependencies(options: AddSchema): Rule {
           version: '^VERSION_PLACEHOLDER',
           name: '@ngx-metaui/primeng-rules'
         },
+        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
         {type: NodeDependencyType.Default, version: 'PRIMENG_PLACEHOLDER', name: 'primeng'},
         {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
         {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
@@ -122,7 +123,11 @@ function addDependencies(options: AddSchema): Rule {
           name: '@ngx-metaui/material-rules'
         },
         {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
-        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/material'},
+        {
+          type: NodeDependencyType.Default,
+          version: 'MATERIAL_PLACEHOLDER',
+          name: '@angular/material'
+        },
         {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
       ];
     }
