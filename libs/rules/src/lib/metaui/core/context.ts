@@ -1264,6 +1264,21 @@ export class Context extends Extensible {
   extendedFields(): Map<string, any> {
     return this.values;
   }
+
+
+  // Little hack untill I find better way to interate over object properties. starting es2015
+  // for..in has different behavior.
+  public iterableFields(): String[] {
+    return [
+      'nested', '_values', '_entries', '_frameStarts', '_recPool', '_accessor',
+      '_currentActivation', '_rootNode', 'isNested', '_currentProperties', 'DynObj0',
+      'constructor', 'locale', 'timezone', 'value', 'object', 'formatters', 'fieldPath',
+      'values', 'properties', 'propertyForKey', 'listPropertyForKey', 'booleanPropertyForKey',
+      'allProperties', 'resolveValue', 'staticallyResolveValue', 'snapshot', 'activeAssignments',
+      'allAssignments', 'currentActivation', 'extendedFields'
+    ];
+  }
+
 }
 
 
@@ -1634,7 +1649,7 @@ export class ObjectMetaContext extends Context {
   }
 
   fieldPath(): FieldPath {
-    const propMap: ObjectMetaPropertyMap = <ObjectMetaPropertyMap> this.allProperties();
+    const propMap: ObjectMetaPropertyMap = <ObjectMetaPropertyMap>this.allProperties();
     return propMap.fieldPath;
   }
 
