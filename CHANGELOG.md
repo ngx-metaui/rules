@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.4](https://github.com/ngx-meta/rules/compare/v8.0.3...v8.0.4) (2019-09-12)
+
+
+### Bug Fixes
+
+* **compiler:** Patch offline compile for java 12 ([8f98e97](https://github.com/ngx-meta/rules/commit/8f98e97))
+
+
+
 ## [8.0.3](https://github.com/ngx-meta/rules/compare/v8.0.2...v8.0.3) (2019-09-07)
 
 
