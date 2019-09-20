@@ -11,6 +11,7 @@ fi
 
 mkdir dist/
 
+perl --version
 
 grep -rl 'VERSION_PLACEHOLDER' . | xargs  perl -p -i -e "s/VERSION_PLACEHOLDER/0.0.0/g"
 
