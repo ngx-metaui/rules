@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [8.1.0](https://github.com/ngx-meta/rules/compare/v8.0.4...v8.1.0) (2019-11-14)
+
+
+### Features
+
+* **compiler:** Runtime oss compilation support ([#42](https://github.com/ngx-meta/rules/issues/42)) ([860860d](https://github.com/ngx-meta/rules/commit/860860d))
+
+
+
 ## [8.0.4](https://github.com/ngx-meta/rules/compare/v8.0.3...v8.0.4) (2019-09-12)
 
 
