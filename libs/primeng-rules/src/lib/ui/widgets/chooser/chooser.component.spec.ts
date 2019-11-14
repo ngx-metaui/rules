@@ -38,7 +38,7 @@ import {getTestScheduler} from 'jasmine-marbles';
 describe('Component: Chooser ', () => {
 
 
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule(
       {
@@ -60,6 +60,9 @@ describe('Component: Chooser ', () => {
       });
 
     TestBed.compileComponents();
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

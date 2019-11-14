@@ -33,7 +33,8 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 describe('Component: GenericChooser', () => {
 
 
-  beforeEach(() => {
+  beforeEach((done) => {
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       declarations: [
         TestGCCheckBoxComponent,
@@ -49,6 +50,9 @@ describe('Component: GenericChooser', () => {
     });
 
     TestBed.compileComponents();
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

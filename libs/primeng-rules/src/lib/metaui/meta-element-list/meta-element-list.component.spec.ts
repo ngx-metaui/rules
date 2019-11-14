@@ -32,70 +32,28 @@ import {PrimeNgRulesModule} from '../../primeng-rules.module';
 
 // @formatter:off
 /* tslint:disable */
-export const UserStackRule = {
-  oss: [
-    {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectTest2', '_isDecl': false}],
-      '_properties': {'trait': 'Stack'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectTest2', '_isDecl': false},
-        {'_key': 'layout', '_value': 'First', '_isDecl': true}
-      ], '_properties': {'elementStyle': 'padding-bottom:100px', 'trait': 'Form'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectTest2', '_isDecl': false}],
-      '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InspectTest2', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Second', '_isDecl': true}
-      ], '_properties': {'trait': 'Form', 'zonePath': 'Second'}, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InspectTest2', '_isDecl': false}],
-      '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'UserStack', '_isDecl': false}], '_rank': 0}, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStack', '_isDecl': false},
-        {'_key': 'field', '_value': '*', '_isDecl': false}
-      ], '_properties': {'after': 'zNone'}, '_rank': 0
-    }, {'_selectors': [{'_key': 'class', '_value': 'UserStack', '_isDecl': false}], '_rank': 0},
-    {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStack', '_isDecl': false},
-        {'_key': 'field', '_value': 'firstName', '_isDecl': false}
-      ], '_properties': {'after': 'zLeft'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStack', '_isDecl': false},
-        {'_key': 'field', '_value': 'lastName', '_isDecl': false}
-      ], '_properties': {'after': 'firstName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStack', '_isDecl': false},
-        {'_key': 'field', '_value': 'age', '_isDecl': false}
-      ], '_properties': {'after': 'lastName'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStack', '_isDecl': false},
-        {'_key': 'field', '_value': 'department', '_isDecl': false}
-      ], '_properties': {'after': 'age'}, '_rank': 0
-    }, {'_selectors': [{'_key': 'class', '_value': 'UserStack', '_isDecl': false}], '_rank': 0},
-    {
-      '_selectors': [
-        {'_key': 'class', '_value': 'UserStack', '_isDecl': false},
-        {'_key': 'field', '_value': 'email', '_isDecl': false}
-      ], '_properties': {'after': 'Second.zLeft'}, '_rank': 0
-    }, {'_selectors': [{'_key': 'class', '_value': 'UserStack', '_isDecl': false}], '_rank': 0}
-  ]
-};
+export const UserStackRule =
+ 'layout=InspectTest2#Stack {' +
+  '       @layout=First#Form {' +
+  '           elementStyle:"padding-bottom:100px";' +
+  '       }' +
+  '       @layout=Second#Form { zonePath:Second; }' +
+  '   }' +
+  '' +
+  '' +
+  '' +
+  '    class=User {' +
+  '       zNone => *;' +
+  '       zLeft => firstName => lastName => age => department;' +
+  '       Second.zLeft => email;'  +
+
+  '   }';
 // @formatter:on
 /* tslint:disable */
 
 describe('How  Stack layout can render two different content stacked', () => {
 
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       declarations: [
         TestContainerEditComponent
@@ -108,6 +66,10 @@ describe('How  Stack layout can render two different content stacked', () => {
     });
 
     TestBed.compileComponents();
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
   });
 
 

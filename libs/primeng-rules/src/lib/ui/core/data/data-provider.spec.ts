@@ -29,13 +29,17 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Data Providers', () => {
 
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       imports: [
         MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
         PrimeNgRulesModule.forRoot()
       ]
     });
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

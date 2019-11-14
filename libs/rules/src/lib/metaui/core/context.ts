@@ -282,7 +282,11 @@ export class Context extends Extensible {
 
   set(key: string, value: any): void {
 
-    this._set(key, value, false, false);
+    try {
+      this._set(key, value, false, false);
+    } catch (e) {
+      console.log('e = ', e);
+    }
 
     // implement default toString for our object so we can retrieve objectTitle
     if (key === KeyObject) {
@@ -480,7 +484,7 @@ export class Context extends Extensible {
     let didSet = false;
 
     if (key === KeyObject) {
-      this.meta.componentRegistry.registerType(className(value), value.constructor);
+      this.registerTypes(value);
     }
 
     const activation: Activation = this._currentActivation.getChildActivation(key, sval,
@@ -1239,7 +1243,24 @@ export class Context extends Extensible {
     const match: MatchResult = ListWrapper.last<Assignment>(this._entries)
       .propertyLocalMatches(this);
     return (isPresent(match)) ? match : this.lastMatchWithoutContextProps();
+  }
 
+
+  private registerTypes(object: any): void {
+    if (isArray(object)) {
+      if (object.length > 0 && isStringMap(object[0])) {
+        this.registerTypes(object[0]);
+      }
+    } else {
+
+      this.meta.componentRegistry.registerType(className(object), object.constructor);
+
+      for (const property in object) {
+        if (object.hasOwnProperty(property) && isStringMap(object[property])) {
+          this.registerTypes(object[property]);
+        }
+      }
+    }
   }
 
   lastStaticRec(): StaticRec {

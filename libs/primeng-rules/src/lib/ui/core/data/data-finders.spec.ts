@@ -29,7 +29,7 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Data Finders', () => {
 
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       imports: [
         MetaUITestRulesModule.forRoot({'i18n.enabled': false, 'env.test': true}),
@@ -37,6 +37,10 @@ describe('Data Finders', () => {
 
       ]
     });
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

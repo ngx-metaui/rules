@@ -69,8 +69,8 @@ export abstract class ObjectMeta extends Meta {
   _traitToGroupGeneration: number = -1;
 
 
-  constructor(public componentRegistry: ComponentRegistry, public ruleLoader: RuleLoaderService) {
-    super(componentRegistry, ruleLoader);
+  constructor(public componentRegistry: ComponentRegistry) {
+    super(componentRegistry);
 
     this.registerKeyInitObserver(KeyClass, new IntrospectionMetaProvider());
     this.registerKeyInitObserver(KeyType, new FieldTypeIntrospectionMetaProvider());

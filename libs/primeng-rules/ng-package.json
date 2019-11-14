@@ -3,5 +3,9 @@
   "dest": "../../dist/libs/primeng-rules",
   "lib": {
     "entryFile": "src/index.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "@angular/cdk",
+    "@ngx-metaui/rules"
+  ]
 }

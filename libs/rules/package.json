@@ -11,6 +11,9 @@
     "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
     "@angular/router": "ANGULAR_PLACEHOLDER"
   },
+  "bin": {
+    "oss": "./lib/bin/oss.js"
+  },
   "schematics": "./lib/schematics/collection.json",
   "standard-version": {
     "skip": {

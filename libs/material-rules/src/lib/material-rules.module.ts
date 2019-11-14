@@ -25,8 +25,8 @@ import {UILibModule} from './ui/ui.module';
 import {MetaUILibLayoutModule} from './metaui/meta-ui-layout.module';
 
 import * as entryComponents from './entry-components';
-import {SystemRules} from './metaui/widgets-rules';
-import {SystemPersistenceRules} from './metaui/persistence-rules';
+import {WidgetsRulesRule} from './metaui/ts/WidgetsRules.oss';
+import {PersistenceRulesRule} from './metaui/ts/PersistenceRules.oss';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 
 @NgModule({
@@ -73,7 +73,7 @@ export function initLibMetaUI(injector: Injector) {
 
     const promise: Promise<any> = new Promise((resolve: any) => {
       const metaRules: MetaRules = injector.get(META_RULES);
-      metaRules.loadUILibSystemRuleFiles(entryComponents, SystemRules, SystemPersistenceRules);
+      metaRules.loadUILibSystemRuleFiles(entryComponents, WidgetsRulesRule, PersistenceRulesRule);
 
       resolve(true);
     });

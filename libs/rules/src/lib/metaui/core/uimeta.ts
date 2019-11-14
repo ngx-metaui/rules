@@ -19,7 +19,7 @@
  */
 import {Injectable, Type} from '@angular/core';
 import {Route} from '@angular/router';
-import {assert, isArray, isBlank, isPresent, isStringMap, toList} from './utils/lang';
+import {assert, isArray, isBlank, isPresent, isString, isStringMap, toList} from './utils/lang';
 import {FieldPath} from './utils/field-path';
 import {Environment} from './config/environment';
 import {RoutingService} from './utils/routing.service';
@@ -27,8 +27,8 @@ import {ListWrapper, MapWrapper} from './utils/collection';
 import {ObjectMeta} from './object-meta';
 import {ComponentRegistry} from './component-registry.service';
 import {Context, UIContext} from './context';
-import {SystemRules} from './widgets-rules';
-import {SystemPersistenceRules} from './persistence-rules';
+import {WidgetsRulesRule} from './ts/WidgetsRules.oss';
+import {PersistenceRulesRule} from './ts/PersistenceRules.oss';
 import {
   DefaultLabelGenerator,
   PropFieldPropertyListResolver,
@@ -62,6 +62,7 @@ import {
   KeyObject,
   KeyOperation,
   KeyRank,
+  KeyTrait,
   KeyVisible,
   KeyZonePath,
   LowRulePriority,
@@ -98,9 +99,8 @@ export class UIMeta extends ObjectMeta {
   constructor(public componentRegistry: ComponentRegistry,
               public env: Environment,
               public config: MetaConfig,
-              public ruleLoader: RuleLoaderService,
               public routingService?: RoutingService) {
-    super(componentRegistry, ruleLoader);
+    super(componentRegistry);
 
     try {
 
@@ -179,8 +179,8 @@ export class UIMeta extends ObjectMeta {
   // Load system rules
   loadSystemRuleFiles(entryComponentTypes?: any,
                       rank: number = SystemRulePriority,
-                      widgets: any = SystemRules,
-                      persistence: any = SystemPersistenceRules): boolean {
+                      widgets: any = WidgetsRulesRule,
+                      persistence: any = PersistenceRulesRule): boolean {
 
     assert(rank === SystemRulePriority || rank === UILibraryRulePriority,
       'Invalid System rule rank number');
@@ -194,19 +194,19 @@ export class UIMeta extends ObjectMeta {
       throw new Error('UI Lib system rules already loaded!');
     }
 
-    if (isPresent(widgets.oss)) {
+    if (widgets && isString(widgets)) {
       this.beginRuleSetWithRank(rank, 'system');
       try {
-        this.loadRulesWithModule(widgets.oss, 'system', false);
+        this.loadRulesWithModule(widgets, 'system', false);
       } finally {
         this.endRuleSet();
       }
     }
 
-    if (isPresent(persistence.oss)) {
+    if (persistence && isString(persistence)) {
       this.beginRuleSetWithRank(rank + 2000, 'system-persistence');
       try {
-        this.loadRulesWithModule(persistence.oss, 'system-persistence', false);
+        this.loadRulesWithModule(persistence, 'system-persistence', false);
       } finally {
         this.endRuleSet();
       }
@@ -233,8 +233,9 @@ export class UIMeta extends ObjectMeta {
       this.beginRuleSetWithRank(this.ruleCount, 'app:' + userClass);
       try {
         this.loadRulesWithModule(source, 'app', false);
-      } finally {
         this.endRuleSet();
+      } catch (e) {
+        throw e;
       }
     }
     return false;
@@ -399,42 +400,65 @@ export class UIMeta extends ObjectMeta {
         // repository used by tests, we need to check if we are not running unittest
         // and a class is not defined but unittest
 
-        if (this._testRules.has(rule) &&
-          isPresent(this._testRules.get(rule).oss)) {
-          aRules = this._testRules.get(rule).oss;
+        if (this._testRules.has(rule) && isPresent(this._testRules.get(rule))) {
+          aRules = this._testRules.get(rule);
 
-          if (isPresent(aRules)) {
+          if (aRules) {
             this.beginRuleSetWithRank(LowRulePriority, ruleFile.toLowerCase());
-            try {
-              this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
-            } finally {
-              this.endRuleSet();
-            }
+            this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
+            this.endRuleSet();
           }
         }
       } else {
         for (const i in registeredAppRules) {
           const userRule = registeredAppRules[i];
 
-          if (isPresent(userRule)) {
+          if (userRule) {
 
-            if (isPresent(userRule[rule]) && isPresent(userRule[rule].oss)) {
-              aRules = userRule[rule].oss;
+            if (userRule[rule] && userRule[rule]) {
+              aRules = userRule[rule];
             }
           }
-          if (isPresent(aRules)) {
+          if (aRules) {
             this.beginRuleSetWithRank(LowRulePriority, ruleFile.toLowerCase());
-            try {
-              this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
-            } finally {
-              this.endRuleSet();
-            }
+            this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
+            this.endRuleSet();
           }
         }
       }
 
     }
   }
+
+  addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
+                     traits: Array<string>, lineNumber: number): Rule {
+
+    if (!predecessor && !traits) {
+      return;
+    }
+
+    // Determine key being used.  If selector scope key is "class" use "field"
+    let key = this.scopeKeyForSelector(contextPreds);
+    if (!key == null || key === KeyClass) {
+      key = KeyField;
+    }
+    const selectors = [...contextPreds];
+    selectors.push(new Selector(key, itemName));
+    const props = new Map<string, any>();
+
+    if (predecessor) {
+      props.set(KeyAfter, predecessor);
+    }
+
+    if (traits != null) {
+      props.set(KeyTrait, traits);
+    }
+
+    const rule = new Rule(selectors, props, 0, lineNumber);
+    this.addRule(rule);
+    return rule;
+  }
+
 
   private _fireAction(context: Context, withBackAction: boolean): void {
     const actionResults = context.propertyForKey('actionResults');
@@ -767,9 +791,8 @@ class AppRuleMetaDataProvider implements ValueQueriedObserver {
       // used by tests, we need to check if we are not running unittest and a class is not
       // application defined but unittest defined rule
 
-      if (uiMeta._testRules.has(value + 'Rule') &&
-        isPresent(uiMeta._testRules.get(value + 'Rule').oss)) {
-        aRules = uiMeta._testRules.get(value + 'Rule').oss;
+      if (uiMeta._testRules.has(value + 'Rule') && uiMeta._testRules.get(value + 'Rule')) {
+        aRules = uiMeta._testRules.get(value + 'Rule');
       }
       meta.loadAppRulesOnDemand(aRules, value);
 
@@ -779,9 +802,8 @@ class AppRuleMetaDataProvider implements ValueQueriedObserver {
       const userReferences: any[] = uiMeta.config.get(AppConfigUserRulesParam);
 
       for (const i in userReferences) {
-        if (isPresent(userReferences[i][value + 'Rule']) &&
-          isPresent(userReferences[i][value + 'Rule'].oss)) {
-          aRules = userReferences[i][value + 'Rule'].oss;
+        if (isPresent(userReferences[i][value + 'Rule']) && userReferences[i][value + 'Rule']) {
+          aRules = userReferences[i][value + 'Rule'];
         }
       }
       meta.loadAppRulesOnDemand(aRules, value);

@@ -25,25 +25,29 @@ import {
   KeyModule,
   META_RULES,
   MetaRules,
-  MetaUIRulesModule, MetaUITestRulesModule
+  MetaUITestRulesModule
 } from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../../primeng-rules.module';
 
 
 describe('How we can retrieve homepage from module', () => {
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       imports: [
         MetaUITestRulesModule.forRoot({'env.test': true}),
         PrimeNgRulesModule.forRoot()
       ]
     });
+
+    window.setTimeout(function () {
+      done();
+    }, 0);
   });
 
 
   it('should retrieve generic module homepage called MetaHomePageComponent', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
 
+    const metaUI: MetaRules = TestBed.get(META_RULES);
     const context: Context = metaUI.newContext();
     context.push();
     context.set(KeyModule, KeyAny);
@@ -78,44 +82,26 @@ describe('How we can retrieve homepage from module', () => {
 
   // @formatter:off
   /* tslint:disable */
-  const ApplicationRule: { oss: any } = {
-    oss: [
-      {
-        '_selectors': [
-          {
-            '_key': 'module',
-            '_value': 'Home',
-            '_isDecl': true
-          }
-        ],
-        '_properties': {
-          'pageTitle': 'My Home Title',
-          'homePage': 'TestMetaHomePage'
-        },
-        '_rank': 0
-      },
-      {
-        '_selectors': [
-          {
-            '_key': 'module',
-            '_value': 'Product',
-            '_isDecl': true
-          }
-        ],
-        '_properties': {
-          'pageTitle': 'My Product Title',
-          'homePage': 'Test2MetaHomePage'
-        },
-        '_rank': 0
+  const ApplicationRule = `
+      
+      @module=Home {
+        pageTitle: 'My Home Title';
+        homePage: 'TestMetaHomePage';
       }
-    ]
-  };
+      
+      
+      @module=Product {
+          pageTitle: 'My Product Title';
+         homePage: 'Test2MetaHomePage';
+      }  
+ `;
   // @formatter:on
   /* tslint:disable */
   it('should retrieve application based module and its homePage TestMetaHomePage', () => {
     const metaUI: MetaRules = TestBed.get(META_RULES);
     metaUI.addTestUserRule('ApplicationRule', ApplicationRule);
 
+    debugger;
     metaUI.loadApplicationRule();
 
     let context: Context = metaUI.newContext();

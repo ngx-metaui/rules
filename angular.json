@@ -14,11 +14,6 @@
           "options": {
             "tsConfig": "libs/rules/tsconfig.lib.json",
             "project": "libs/rules/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "libs/rules/ng-package.prod.json"
-            }
           }
         },
         "test": {
@@ -314,11 +309,6 @@
           "options": {
             "tsConfig": "libs/primeng-rules/tsconfig.lib.json",
             "project": "libs/primeng-rules/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "libs/primeng-rules/ng-package.prod.json"
-            }
           }
         },
         "test": {
@@ -363,11 +353,6 @@
           "options": {
             "tsConfig": "libs/material-rules/tsconfig.lib.json",
             "project": "libs/material-rules/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "libs/material-rules/ng-package.prod.json"
-            }
           }
         },
         "test": {

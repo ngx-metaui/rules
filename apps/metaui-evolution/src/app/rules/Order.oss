@@ -7,19 +7,19 @@ class=Order {
         value:${"Purchase Order: " + object.name };
         bindings:{
             useNoLabelLayout:true;
-        }
+        };
         wrapperComponent:GenericContainerComponent;
-        wrapperBindings: { tagName:h2; }
+        wrapperBindings: { tagName:h2; };
     }
 
     field=uniqueName {
-        label:"PO #"
+        label:"PO #";
     }
 
     field=description {
         bindings: {
             styleClass: 'u-description';
-        }
+        };
     }
 
     field=requestor#asHover {

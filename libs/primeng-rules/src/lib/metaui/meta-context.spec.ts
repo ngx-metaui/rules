@@ -21,14 +21,7 @@ import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {By} from '@angular/platform-browser';
 import {Routes} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
-import {
-  Entity,
-  META_RULES,
-  MetaRules,
-  MetaUIRulesModule,
-  MetaUITestRulesModule
-} from '@ngx-metaui/rules';
+import {Entity, META_RULES, MetaRules, MetaUITestRulesModule} from '@ngx-metaui/rules';
 import {PrimeNgRulesModule} from '../primeng-rules.module';
 
 /**
@@ -228,115 +221,30 @@ class TestContainerViewDefferedComponent implements OnInit {
 
 
 // @formatter:off
-/**
- *
- *
- *
- *       class=MyUserTestClass {
- *
- *            field=firstName#required {
- *                label:'My First Name';
- *            }
- *
- *            field=lastName#required {
- *                label:'My Last Name';
- *           }
- *
- *            field=age#required {
- *                label:'My Age';
- *               valid: ${value > 19};
- *          }
- *
- *            field=bio {
- *                label:'This is my biography';
- *                visible:${object.age > 18};
- *            }
- *
- *            zNone => *;
- *            zLeft => firstName => lastName => age => bio;
- *        }
- *
- *
- */
 /* tslint:disable */
-export const MyUserTestClassDynBindingRule = {
-  oss: [
-    {
-      '_rank': 0,
-      '_selectors': [{'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'}]
-    }, {
-      '_properties': {'trait': 'required', 'label': 'My First Name'}, '_rank': 0,
-      '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'firstName', '_key': 'field'}
-      ]
-    }, {
-      '_rank': 0,
-      '_selectors': [{'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'}]
-    }, {
-      '_properties': {'trait': 'required', 'label': 'My Last Name'}, '_rank': 0,
-      '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'lastName', '_key': 'field'}
-      ]
-    }, {
-      '_rank': 0,
-      '_selectors': [{'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'}]
-    }, {
-      '_properties': {
-        'valid': {'t': 'Expr', 'v': 'value > 19'}, 'trait': 'required', 'label': 'My Age'
-      },
-      '_rank': 0, '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'age', '_key': 'field'}
-      ]
-    }, {
-      '_rank': 0,
-      '_selectors': [{'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'}]
-    }, {
-      '_properties': {
-        'visible': {'t': 'Expr', 'v': 'object.age > 18'}, 'label': 'This is my biography'
-      },
-      '_rank': 0, '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'bio', '_key': 'field'}
-      ]
-    }, {
-      '_rank': 0,
-      '_selectors': [{'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'}]
-    }, {
-      '_properties': {'after': 'zNone'}, '_rank': 0, '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': '*', '_key': 'field'}
-      ]
-    }, {
-      '_rank': 0,
-      '_selectors': [{'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'}]
-    }, {
-      '_properties': {'after': 'zLeft'}, '_rank': 0, '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'firstName', '_key': 'field'}
-      ]
-    }, {
-      '_properties': {'after': 'firstName'}, '_rank': 0, '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'lastName', '_key': 'field'}
-      ]
-    }, {
-      '_properties': {'after': 'lastName'}, '_rank': 0, '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'age', '_key': 'field'}
-      ]
-    }, {
-      '_properties': {'after': 'age'}, '_rank': 0, '_selectors': [
-        {'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'},
-        {'_isDecl': false, '_value': 'bio', '_key': 'field'}
-      ]
-    }, {
-      '_rank': 0,
-      '_selectors': [{'_isDecl': false, '_value': 'UserTestDynClass', '_key': 'class'}]
-    }
-  ]
-};
+export const MyUserTestClassDynBindingRule =
+  'class=MyUserTestClass {' +
+  '             field=firstName#required {' +
+  '                 label:\'My First Name\';' +
+  '             }' +
+  ' ' +
+  '             field=lastName#required {' +
+  '                 label:\'My Last Name\';' +
+  '            }' +
+  ' ' +
+  '             field=age#required {' +
+  '                 label:\'My Age\';' +
+  '                valid: ${value > 19;};' +
+  '           }' +
+  ' ' +
+  '             field=bio {' +
+  '                 label:\'This is my biography\';' +
+  '                 visible:${object.age > 18;};' +
+  '             }' +
+  ' ' +
+  '             zNone =>*;' +
+  '             zLeft => firstName => lastName => age => bio;' +
+  '         }';
+
 // @formatter:on
 /* tslint:disable */

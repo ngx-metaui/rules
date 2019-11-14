@@ -239,7 +239,7 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
       if (!isImported(srcPath, compName, relativePath)) {
         let changes = addDeclarationToModule(srcPath, modulePath, compName, relativePath);
 
-        if (options.uiLib === 'material2') {
+        if (options.uiLib === 'material') {
           changes = [...changes, ...addImportToModule(srcPath, modulePath, matButton[0],
             matButton[1])];
         }

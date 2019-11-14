@@ -32,7 +32,8 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 describe('Component: DateAndTime', () => {
 
 
-  beforeEach(() => {
+  beforeEach((done) => {
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       declarations: [
         TestDateTimeBasicBehaviorComponent
@@ -47,6 +48,11 @@ describe('Component: DateAndTime', () => {
     });
 
     TestBed.compileComponents();
+
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
 
   });
 

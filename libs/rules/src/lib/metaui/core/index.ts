@@ -57,6 +57,10 @@ export {Environment} from './config/environment';
 export {ItemProperties} from './item-properties';
 export {AWMetaCoreModule} from './meta-core.module';
 
+export * from './compiler/oss-lexer';
+export * from './compiler/oss-parser';
+export * from './compiler/rules-visitor';
+export * from './compiler/metaui-ast';
 
 
 

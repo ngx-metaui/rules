@@ -28,7 +28,7 @@ class=User {
          chooserStyle:Chooser;
           bindings:{
             multiselect:true;
-          }
+          };
       }
 
       field=favColors {

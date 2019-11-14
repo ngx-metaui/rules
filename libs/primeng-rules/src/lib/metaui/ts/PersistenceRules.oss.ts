@@ -1,0 +1,14 @@
+/**
+ *  This is generated file. Do not edit !!
+ *
+ *  @formatter:off
+ *
+ */
+/* tslint:disable */
+export const PersistenceRulesRule = '/**  * @license  * Copyright 2017 SAP Ariba  *  * Licensed under the Apache License, Version 2.0 (the "License");  * you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  * Based on original work: MetaUI: Craig Federighi (2008)  *  */   field {     trait=toOneRelationship {         editable {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${field};                 destinationClass:${elementType};                 multiselect:false;                 type:Dropdown;                 displayKey:${ meta.displayLabel(type, properties.get("labelField") )};             };         }         /*editable=false {             component:HyperlinkComponent;             bindings: {                 action: ${                     this.set("object", value);                     this.set("actionCategory", "General");                     this.set("action", "Inspect");                     meta.fireAction(this, true)                 };                 ngcontent: $value;             }         }*/      }      trait=toManyChooser {         editable {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${field};                 destinationClass:${elementType};                 multiselect:true;                 type:Chooser;                 displayKey:${ meta.displayLabel(type, properties.get("labelField") )};             };         }     }       trait=toManyLink {         component:AWHyperlink;         bindings: {             action: ${                 set("object", value);                 set("actionCategory", "General");                 set("action", "Inspect");                 meta.fireAction(this, requestContext)             };             omitTags:${!value || value.size() ==0};             ngcontent: ${value ? ("" + value.size() + " items") : "(none)"};         };     } }   action=Inspect {     visible:true;     trait:pageAction;     pageName:MetaContentPageComponent;     pageBindings: {         object:${object};         operation:view;         layout:Inspect;         clientPanel:true;     }; } ';
+/* tslint:disable */
+/**
+ *  @formatter:on
+ *
+ */
+ 

@@ -25,11 +25,8 @@ ex:
 ```
 
 
-The reason for this is that our rule engine needs a way how to lazily pre-load some dynamic 
-content fast depending on certain path or name. We could probably use
-`HttpClient` and it would solve the same problem maybe even better but at the time of writing this
-loading offline/local content was not performing as fast as this. Meaning register and cache rules by key,
-and use it once its needed.
+The reason for this is that our rule engine need a way how to lazily pre-load some dynamic 
+content fast depending on certain path or name. 
 
 Please check out [High Level Architecture][1].
 

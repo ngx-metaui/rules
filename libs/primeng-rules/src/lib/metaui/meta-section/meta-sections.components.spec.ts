@@ -35,177 +35,60 @@ import {PrimeNgRulesModule} from '../../primeng-rules.module';
 
 // @formatter:off
 /* tslint:disable */
-export const InvoiceSectionRule = {
-  oss: [
-    {
-      '_selectors': [{'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false}],
-      '_rank': 0
-    }, {
-      '_selectors': [
-        {
-          '_key': 'class', '_value': 'InvoiceTest',
-          '_isDecl': false
-        }, {'_key': 'layout', '_value': '*', '_isDecl': false}
-      ],
-      '_properties': {'trait': 'labelsOnTop'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false}
-      ], '_rank': 0
-    },
-    {
-      '_selectors': [
-        {'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false},
-        {'_key': 'field', '_value': '*', '_isDecl': false}
-      ], '_properties': {'after': 'zNone'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {
-          '_key': 'class', '_value': 'InvoiceTest', '_isDecl': false
-        }
-      ], '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false},
-        {'_key': 'field', '_value': 'uniqueName', '_isDecl': false}
-      ], '_properties': {'after': 'Header.zLeft'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false},
-        {'_key': 'field', '_value': 'itemPrice', '_isDecl': false}
-      ], '_properties': {'after': 'uniqueName'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false}], '_rank': 0},
-    {
-      '_selectors': [
-        {'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false},
-        {'_key': 'field', '_value': 'supplier', '_isDecl': false}
-      ], '_properties': {'after': 'Header.zRight'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false},
-        {'_key': 'field', '_value': 'requestor', '_isDecl': false}
-      ], '_properties': {'after': 'supplier'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false}], '_rank': 0},
-    {
-      '_selectors': [
-        {'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false},
-        {'_key': 'field', '_value': 'itemDescription', '_isDecl': false}
-      ], '_properties': {'after': 'Footer.zBottom'}, '_rank': 0
-    },
-    {'_selectors': [{'_key': 'class', '_value': 'InvoiceTest', '_isDecl': false}], '_rank': 0},
-    {
-      '_selectors': [{'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false}],
-      '_properties': {'trait': 'Sections'}, '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Header', '_isDecl': true}
-      ], '_properties': {
-        'trait': 'Form', 'description': {'t': 'CFP', 'v': 'object.itemDescription'},
-        'opened': false, 'label': 'Label for header section', 'zonePath': 'Header'
-      }, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false}],
-      '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Participant', '_isDecl': true}
-      ], '_properties': {
-        'component': 'StringComponent', 'visible': true, 'canEdit': true,
-        'bindings': {'value': ' Section Content Participant'},
-        'label': 'Label for Participant section'
-      }, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false}],
-      '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Lines', '_isDecl': true}
-      ], '_properties': {
-        'component': 'StringComponent', 'visible': true, 'actionIcon': 'icon-positive',
-        'canEdit': true, 'editMode': 'external',
-        'bindings': {'value': ' Section Content Participant'},
-        'label': 'Label for Line Item section'
-      }, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false}],
-      '_rank': 0
-    }, {
-      '_selectors': [
-        {'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false},
-        {'_key': 'layout', '_value': 'Footer', '_isDecl': true}
-      ], '_properties': {
-        'trait': 'Form', 'label': 'Label for footer section', 'zonePath': 'Footer'
-      }, '_rank': 0
-    }, {
-      '_selectors': [{'_key': 'layout', '_value': 'InvoiceTestPage', '_isDecl': false}],
-      '_rank': 0
-    }
-  ]
-};
+export const InvoiceSectionRule =
+  'class=InvoiceTest {\n' +
+  '      layout {\n' +
+  '          trait:labelsOnTop;\n' +
+  '      }\n' +
+  ' \n' +
+  '      zNone => *;\n' +
+  '      Header.zLeft => uniqueName => itemPrice;\n' +
+  '      Header.zRight => supplier => requestor;\n' +
+  '      Footer.zBottom => itemDescription;\n' +
+  ' \n' +
+  '  }\n' +
+  ' \n' +
+  ' \n' +
+  '  layout=InvoiceTestPage#Sections {\n' +
+  '      @layout=Header#Form {\n' +
+  '          zonePath:Header;\n' +
+  '          label:"Label for header section";\n' +
+  '          description:$object.itemDescription;\n' +
+  '          opened:false;\n' +
+  '      }\n' +
+  ' \n' +
+  '      @layout=Participant {\n' +
+  '          label:"Label for Participant section";\n' +
+  '          visible:true;\n' +
+  '          canEdit:true;\n' +
+  '          component:StringComponent;\n' +
+  '          bindings:{value:" Section Content Participant"; };\n' +
+  ' \n' +
+  '      }\n' +
+  ' \n' +
+  '       @layout=Lines {\n' +
+  '          label:"Label for Line Item section";\n' +
+  '          visible:true;\n' +
+  '          canEdit:true;\n' +
+  '          editMode:"external";\n' +
+  '          actionIcon:"icon-positive";\n' +
+  '          component:StringComponent;\n' +
+  '          bindings:{value:" Section Content Participant"; };\n' +
+  '      }\n' +
+  ' \n' +
+  '      @layout=Footer#Form {\n' +
+  '         label:"Label for footer section";\n' +
+  '         zonePath:Footer;\n' +
+  '      }\n' +
+  '  }';
+
 // @formatter:on
 /* tslint:disable */
 
-/**
- *
- * Testing uses following oss layout:
- *
- * class=InvoiceTest {
- *     layout {
- *         trait:labelsOnTop;
- *     }
- *
- *     zNone => *;
- *     Header.zLeft => uniqueName => itemPrice;
- *     Header.zRight => supplier => requestor;
- *     Footer.zBottom => itemDescription;
- *
- * }
- *
- *
- * layout=InvoiceTestPage#Sections {
- *     @layout=Header#Form {
- *         zonePath:Header;
- *         label:"Label for header section";
- *         description:$object.itemDescription;
- *         opened:false;
- *     }
- *
- *     @layout=Participant {
- *         label:"Label for Participant section";
- *         visible:true;
- *         canEdit:true;
- *         component:StringComponent;
- *         bindings:{value:" Section Content Participant" };
- *
- *     }
- *
- *      @layout=Lines {
- *         label:"Label for Line Item section";
- *         visible:true;
- *         canEdit:true;
- *         editMode:"external";
- *         actionIcon:"icon-positive";
- *         component:StringComponent;
- *         bindings:{value:" Section Content Participant" };
- *     }
- *
- *     @layout=Footer#Form {
- *        label:"Label for footer section";
- *        zonePath:Footer;
- *     }
- * }
- *
- *
- *
- *
- */
 describe('Meta Sections', () => {
-  beforeEach(() => {
+  beforeEach((done) => {
+
+
     TestBed.configureTestingModule({
       declarations: [
         TestMetaSectionComponent,
@@ -221,11 +104,14 @@ describe('Meta Sections', () => {
     });
 
     TestBed.compileComponents();
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
   });
 
 
   it('It should render 4 section 1. forms, 2. string, 3. string, 4.form', () => {
-
 
     const metaUI: MetaRules = TestBed.get(META_RULES);
     metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
@@ -236,6 +122,7 @@ describe('Meta Sections', () => {
 
     let sections = fixtureWrapper.nativeElement.querySelectorAll('.section-container ');
     let formTables = fixtureWrapper.debugElement.queryAllNodes(By.css('.w-form-table'));
+
 
     let stringComponents = fixtureWrapper.nativeElement
       .querySelectorAll('.section-container .ui-accordion-content > aw-string');

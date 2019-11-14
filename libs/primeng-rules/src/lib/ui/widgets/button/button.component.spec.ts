@@ -29,7 +29,7 @@ import {PrimeNgRulesModule} from '../../../primeng-rules.module';
 
 describe('Component: Button', () => {
 
-  beforeEach(() => {
+  beforeEach((done) => {
     TestBed.configureTestingModule({
       declarations: [
         TestButtonDefaultBehaviorComponent,
@@ -46,6 +46,10 @@ describe('Component: Button', () => {
     });
 
     TestBed.compileComponents();
+
+    window.setTimeout(function() {
+      done();
+    }, 0);
   });
 
   it('should instantiate and have default values for value, Button type, class, disabled, ' +
