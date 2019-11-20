@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.1](https://github.com/ngx-meta/rules/compare/v8.1.0...v8.1.1) (2019-11-20)
+
+
+### Bug Fixes
+
+* **decorators:** Add decorators to the demo app to showcase its usage ([05d5d24](https://github.com/ngx-meta/rules/commit/05d5d24))
+* **decorators:** Updated decorators and connected with IntrospectionProvider ([7c81b44](https://github.com/ngx-meta/rules/commit/7c81b44))
+
+
+
 # [8.1.0](https://github.com/ngx-meta/rules/compare/v8.0.4...v8.1.0) (2019-11-14)
 
 
