@@ -38,7 +38,7 @@ class=User {
     }
 
     field=favColor {
-        trait:asSelect,required;
+        trait:asSelect;
         choices:['Blue', 'Red', 'Yellow'];
     }
 
@@ -60,11 +60,9 @@ class=User {
 
     field=description {
       after:zBottom;
-      trait:fluid,longtext;
       hint: ${"You can type some long text here: " + value.length};
     }
 }
-
 
 
 
