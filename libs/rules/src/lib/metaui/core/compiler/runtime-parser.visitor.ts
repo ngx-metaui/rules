@@ -20,7 +20,7 @@
 
 import {OSSBindingValueAst, OSSLocalizedStringValueAst, OSSRuleBodyPropertyAst} from './metaui-ast';
 import {OSSLexer, OSSTokenType} from './oss-lexer';
-import {InputRule, RulesVisitor} from './rules-visitor';
+import {InputRule, InputSelector, RulesVisitor} from './rules-visitor';
 import {
   ContextFieldPath,
   Expr,
@@ -37,17 +37,33 @@ import {OSSParser} from './oss-parser';
  * Registers current rule with the Rule engine using method addRule()
  */
 export class RuntimeParser extends RulesVisitor {
+  parser: OSSParser;
 
   constructor(ossRule: any, private _meta: MetaRules, private module: string = 'system') {
     super();
 
     const lexer = new OSSLexer(ossRule.default || ossRule);
-    const parser = new OSSParser(lexer);
-    this.ossFile = parser.parse();
+    this.parser = new OSSParser(lexer);
+
   }
 
   registerRules(): void {
+    this.ossFile = this.parser.parse();
     this.visit();
+  }
+
+
+  registerRuleBody(selectorList: Array<Selector>): void {
+    const context = {};
+    const inputRule = new InputRule();
+    this.push(inputRule);
+
+    const ruleBodyAst = this.parser.parseRuleBody();
+    inputRule._selectors = selectorList.map<InputSelector>((s: Selector) => {
+      return new InputSelector(s.key, s.value, s.isDecl);
+    });
+    ruleBodyAst.visit(this, context);
+    this.pop();
   }
 
   protected addRule(rule: InputRule): void {

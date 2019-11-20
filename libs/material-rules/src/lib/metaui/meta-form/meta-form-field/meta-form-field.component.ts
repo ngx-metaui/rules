@@ -52,7 +52,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
    * Reference to parent component the MatFormField that we used to get hold of the control so
    * some validation rules can be registered
    */
-  @ViewChild('formField', {static: true})
+  @ViewChild('formField', {static: false})
   mdFormField: MatFormField;
 
 
@@ -127,7 +127,6 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
       if (!control.touched) {
         return null;
       }
-
       const errorMsg = that.context.meta.validationError(that.context);
       return errorMsg ? {'metavalid': {'msg': errorMsg}} : null;
     };

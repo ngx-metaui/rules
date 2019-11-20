@@ -19,6 +19,8 @@
 import {TestBed} from '@angular/core/testing';
 import {MetaUITestRulesModule} from '../../test.rules.module';
 import {META_RULES, MetaRules} from '../meta-rules';
+import {RuntimeParser} from './runtime-parser.visitor';
+import {Selector} from '../rule';
 
 
 describe('Parsing rules on the fly and registering them with the rule engine',
@@ -64,6 +66,36 @@ describe('Parsing rules on the fly and registering them with the rule engine',
           metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
         } catch (e) {
           console.log(e);
+        }
+        expect(true).toBeTruthy();
+      });
+
+
+    it('It should parse rule body',
+      () => {
+        /* tslint:disable: no-trailing-whitespace */
+
+        try {
+          const metaUI: MetaRules = TestBed.get(META_RULES);
+
+          metaUI.beginRuleSet('User');
+          const parser = new RuntimeParser('label:Hahaha;', metaUI);
+
+          const sels: Array<Selector> = [new Selector('class', 'User'),
+            new Selector('field', 'firstName', true)];
+
+          parser.registerRuleBody(sels);
+          metaUI.endRuleSet();
+
+          const rule = metaUI.rules[metaUI.ruleCount - 1];
+
+          expect(rule._selectors.length).toBe(3);
+          expect(rule._selectors[1].value).toBe('firstName');
+          expect(rule.properties.has('label')).toBeTruthy();
+          expect(rule.properties.get('label')).toBe('Hahaha');
+
+        } catch (e) {
+          fail(e);
         }
         expect(true).toBeTruthy();
       });

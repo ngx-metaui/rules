@@ -80,6 +80,10 @@ export class OSSParser {
     return ossFile;
   }
 
+  parseRuleBody(): OSSRuleBodyAst {
+    return this.ruleBody(new OSSRuleAst());
+  }
+
 
   ruleList(): OSSRuleAst[] {
     const rules: OSSRuleAst[] = [];

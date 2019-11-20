@@ -56,8 +56,9 @@ import {
   PropertyMap,
   PropertyMerger_And
 } from './policies/merging-policy';
-import {RuleLoaderService} from './rule-loader.service';
 import {Meta} from './meta';
+import {CLASS_META, PropertyDef} from './decorators/utils';
+import {RuntimeParser} from './compiler/runtime-parser.visitor';
 
 /**
  * ObjectMeta is responsible for setting up everything related to class, field, actions
@@ -229,8 +230,6 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
 
 
   private registerRulesForFields(object: any, clazzName: string): void {
-    // todo: Can we somehow utilize decorators? Maybe for local typescript defined object, but
-    // not objects loaded as json from rest API
     assert(isPresent(object['getTypes']), 'Cannot register fields without a getTypes method ' +
       'that will expose all the fields');
     const types: any = object.getTypes();
@@ -264,8 +263,50 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
       selectorList[1].isDecl = true;
       properties.set(KeyRank, (rank++ + 1) * 10);
 
+      this.processPropDecorators(object, name, selectorList, properties);
+      this.processTraitDecorators(object, name, properties);
+
       const rule: Rule = new Rule(selectorList, properties, ClassRulePriority);
       this._meta.addRule(rule);
+    }
+  }
+
+  private processPropDecorators(object: any, field: string, selectorList: Array<Selector>,
+                                properties: Map<string, any>): void {
+
+    const meta = object.constructor[CLASS_META];
+    if (meta && meta.fields[field]) {
+      const props: Array<PropertyDef> = meta.fields[field].props;
+      for (const p in props) {
+        let rule = '';
+        if (props[p].key) {
+          rule = `${props[p].key.toLowerCase()}:"${props[p].value}";`;
+        } else {
+          rule = `${props[p].value};`;
+        }
+
+        console.log(rule);
+
+        const parser = new RuntimeParser(rule, this._meta);
+        parser.registerRuleBody(selectorList);
+      }
+    }
+  }
+
+  private processTraitDecorators(object: any, field: string, properties: Map<string, any>): void {
+    const meta = object.constructor[CLASS_META];
+    if (meta && meta.fields[field]) {
+      const traits: Array<string> = meta.fields[field].traits;
+      if (!traits || traits.length === 0) {
+        return;
+      }
+
+      const existingTraits: string[] = properties.get(KeyTrait);
+      if (existingTraits) {
+        properties.set(KeyTrait, [...existingTraits, ...traits]);
+      } else {
+        properties.set(KeyTrait, traits);
+      }
     }
   }
 }

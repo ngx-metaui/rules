@@ -63,6 +63,11 @@ export * from './compiler/rules-visitor';
 export * from './compiler/metaui-ast';
 
 
+export * from './decorators/action';
+export * from './decorators/property';
+export * from './decorators/traits';
+export * from './decorators/utils';
+
 
 
 

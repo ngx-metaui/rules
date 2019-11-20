@@ -50,7 +50,7 @@ export abstract class RulesVisitor implements OssAstVisitor {
   protected ruleCheck: Array<number> = [];
   protected ruleStack: Array<InputRule> = [];
 
-  constructor(protected ossFile?: OSSFileAst, private context: any = {}) {
+  constructor(protected ossFile?: OSSFileAst, protected context: any = {}) {
   }
 
   visit(): void {
