@@ -21,4 +21,6 @@
 
 export * from './meta-form/meta-form.component';
 export * from './meta-content-page/meta-content-page.component';
+export * from './meta-action-list/meta-action-list.component';
+export * from './meta-element-list/meta-element-list.component';
 

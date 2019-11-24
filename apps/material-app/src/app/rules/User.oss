@@ -78,7 +78,19 @@ class=User field=prefAirline {
 
 
 
+class=User {
+  object {
+      action=assignRole {
+          buttonStyle:"primary";
+       }
+       action=deactivateAccount {
+        buttonStyle:"warn";
+        visible: ${properties.get('editing')};
 
+       }
+  }
+
+}
 
 
 

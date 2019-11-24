@@ -32,9 +32,12 @@ import {Context, ObjectMetaContext} from './context';
 import {ItemProperties} from './item-properties';
 import {Rule, Selector} from './rule';
 import {
+  addTrait,
   ClassRulePriority,
+  DefaultActionCategory,
   KeyAction,
   KeyActionCategory,
+  KeyAny,
   KeyClass,
   KeyDeclare,
   KeyEditable,
@@ -57,7 +60,7 @@ import {
   PropertyMerger_And
 } from './policies/merging-policy';
 import {Meta} from './meta';
-import {CLASS_META, PropertyDef} from './decorators/utils';
+import {CLASS_META, MetaActiondDef, PropertyDef} from './decorators/utils';
 import {RuntimeParser} from './compiler/runtime-parser.visitor';
 
 /**
@@ -217,10 +220,10 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
       const selectors: Array<Selector> = [new Selector(KeyClass, clazzName)];
       const propertyMap = this._meta.newPropertiesMap();
       selectors[0].isDecl = true;
-
       const rule: Rule = new Rule(selectors, propertyMap, ClassRulePriority);
       this._meta.addRule(rule);
 
+      this.processActions(object, clazzName);
       this.registerRulesForFields(object, clazzName);
 
     } finally {
@@ -285,8 +288,6 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
           rule = `${props[p].value};`;
         }
 
-        console.log(rule);
-
         const parser = new RuntimeParser(rule, this._meta);
         parser.registerRuleBody(selectorList);
       }
@@ -306,6 +307,57 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
         properties.set(KeyTrait, [...existingTraits, ...traits]);
       } else {
         properties.set(KeyTrait, traits);
+      }
+    }
+  }
+
+  private processActionDecorators(action: MetaActiondDef, actionName: string,
+                                  selectorList: Array<Selector>): void {
+
+    const props = this._meta.newPropertiesMap();
+    const selectors: Array<Selector> = selectorList.slice(0, selectorList.length - 1)
+      .map((s) => new Selector(s.key, s.value));
+
+    if (DefaultActionCategory !== action.category) {
+      selectors.push(new Selector(KeyActionCategory, action.category));
+    }
+    if (!action.static) {
+      selectors.push(new Selector(KeyObject, KeyAny));
+    }
+    const origSelector: Selector = selectorList[selectorList.length - 1];
+    selectors.push(new Selector(origSelector.key, origSelector.value, true));
+
+    if (!action.static) {
+      addTrait('instance', props);
+    }
+    addTrait(action.type, props);
+
+    if (action.value && action.type === 'messageResults') {
+      props.set('message', action.value);
+      props.set('mRef', action.methodRef);
+    }
+
+    if (action.value && action.type === 'pageAction') {
+      props.set('message', action.value);
+    }
+    this._meta.addRule(new Rule(selectors, props, ClassRulePriority));
+  }
+
+
+  private processActions(object: any, name: string): void {
+    const meta = object.constructor[CLASS_META];
+    if (meta && meta.actions) {
+      for (const actionKey in meta.actions) {
+        const value: MetaActiondDef = meta.actions[actionKey];
+        if (meta.actions.hasOwnProperty(actionKey)) {
+          const properties = this._meta.newPropertiesMap();
+          const selectors: Array<Selector> = [new Selector(KeyClass, name),
+            new Selector(KeyAction, actionKey)];
+
+          this.processActionDecorators(value, actionKey, selectors);
+          const r = new Rule(selectors, properties, ClassRulePriority);
+          this._meta.addRule(r);
+        }
       }
     }
   }

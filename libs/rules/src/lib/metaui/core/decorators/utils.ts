@@ -21,7 +21,7 @@ import {Type} from '@angular/core';
 
 
 export const CLASS_META = '__meta:rules__';
-export type ActionRespType = 'messageResult' | 'pageAction';
+export type ActionRespType = 'messageResults' | 'pageAction';
 
 export enum PropertyType {
   label,
@@ -59,7 +59,9 @@ export interface MetaFieldDef {
 export interface MetaActiondDef {
   methodRef: any;
   type: ActionRespType;
+  static: boolean;
   value: string;
+  category: string;
 }
 
 
@@ -78,8 +80,10 @@ export function cArgs(fn: any, index: number): string {
 
 
 export function addMetaAction<T>(bindTo: Type<T>, responseType: ActionRespType, methodName: string,
-                                 value: string, actionRef: any) {
-  addMeta(bindTo, methodName, null, value, 'action', actionRef, responseType);
+                                 value: string, actionRef: any, isStatic: boolean,
+                                 actionCat: string) {
+  addMeta(bindTo, methodName, null, value, 'action', actionRef, responseType,
+    isStatic, actionCat);
 }
 
 export function addMetaProperty<T>(classType: Type<T>, fieldName: string,
@@ -94,7 +98,7 @@ export function addMetaTrait<T>(classType: Type<T>, fieldName: string, pType: Tr
 
 function addMeta<T>(classType: Type<T>, fieldName: string, type: PropertyType | TraitType, val: any,
                     metaType: 'trait' | 'props' | 'action' = 'trait', actionRef?: any,
-                    actionType?: ActionRespType) {
+                    actionType?: ActionRespType, isStatic?: boolean, actionCategory?: string) {
 
   let classMeta: MetaClassDef = classType[CLASS_META];
   if (!classMeta) {
@@ -128,7 +132,9 @@ function addMeta<T>(classType: Type<T>, fieldName: string, type: PropertyType | 
       classMeta.actions[fieldName] = {
         methodRef: actionRef,
         type: actionType,
-        value: val
+        static: isStatic,
+        value: val,
+        category: actionCategory
       };
       break;
   }

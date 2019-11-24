@@ -20,24 +20,29 @@
  */
 import {Type} from '@angular/core';
 import {ActionRespType, addMetaAction} from './utils';
+import {isFunction} from '../utils/lang';
 
 
 export interface ActionDef {
-  bindTo?: Type<any>;
+  applyTo?: Type<any>;
   responseType?: ActionRespType;
-  actionRef?: any;
   message?: string;
   route?: string;
+  category?: string;
 }
 
 export function Action(def: ActionDef) {
   return (target: any, propertyKey: string, mDescriptor: PropertyDescriptor) => {
     if (!def.responseType) {
-      def.responseType = 'messageResult';
+      def.responseType = 'messageResults';
+    }
+    if (!def.category) {
+      def.category = 'General';
     }
 
-    addMetaAction(def.bindTo, def.responseType, propertyKey,
-      def.responseType === 'messageResult' ? def.message : def.responseType, target[propertyKey]);
+    addMetaAction(def.applyTo, def.responseType, propertyKey,
+      def.responseType === 'messageResults' ? def.message : def.responseType,
+      target[propertyKey], isFunction(target), def.category);
   };
 
 }

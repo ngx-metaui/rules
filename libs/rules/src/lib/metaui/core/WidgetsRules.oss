@@ -116,17 +116,7 @@ action {
             clientPanel:true;
         };
     }
-/*
-    @trait=messageResults {
-        message:"Action Performed: %s";
-        actionResults:${
-            def o = (properties.isInstanceAction) ? object : ariba.ui.aribaweb.util.AWUtil.classForName(properties.class);
-            def v = ariba.util.fieldvalue.FieldValue.getFieldValue(o, properties.action);
-            def m = ariba.util.core.Fmt.S(properties.message, v);
-            ariba.ui.widgets.AribaPageContent.setMessage(m, requestContext.session());
-            null};
-    }
-*/
+
     @trait=instance {
     	enabled:${object != null};
     	isInstanceAction:true;
@@ -169,7 +159,7 @@ class layout=(Inspect, SearchForm) { trait:Form; label:${meta.beautifyClassName(
 
 layout=InspectWithActions {
     trait:Stack;
-    @layout=Actions#ActionMenu;
+    @layout=Actions#ActionButtons;
     @layout=Inspect#Form;
 }
 

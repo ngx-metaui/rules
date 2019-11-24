@@ -16,10 +16,11 @@
  *
  *
  */
-import {NgModule} from '@angular/core';
+import {Inject, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatAutocompleteModule,
   MatButtonModule,
   MatCheckboxModule,
@@ -28,7 +29,8 @@ import {
   MatInputModule,
   MatNativeDateModule,
   MatRadioModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBar
 } from '@angular/material';
 import {InputField} from './input/input.component';
 import {TextArea} from './text-area/text-area.component';
@@ -39,7 +41,8 @@ import {DatePicker} from './date-picker/date-picker.component';
 import {Button} from './button/button.component';
 import {StringField} from './string/string.component';
 import {AutoComplete} from './autocomplete/autocomplete.component';
-
+import {META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -65,7 +68,8 @@ import {AutoComplete} from './autocomplete/autocomplete.component';
     MatFormFieldModule,
     MatNativeDateModule,
     MatButtonModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSnackBarModule
   ],
   entryComponents: [
     InputField,
@@ -98,9 +102,16 @@ import {AutoComplete} from './autocomplete/autocomplete.component';
     MatButtonModule,
     MatAutocompleteModule,
     Button
+  ],
+  providers: [
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000, verticalPosition: 'top'}}
   ]
 })
 export class UILibModule {
+
+  constructor(@Inject(META_RULES) protected meta: MetaRules, private sf: MatSnackBar) {
+    this.meta.registerDependency('matSnackBar', sf);
+  }
 }
 
 

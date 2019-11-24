@@ -245,87 +245,36 @@ field {
     floatingLabel:auto;
 }
 
+action {
+  @trait=messageResults {
+      actionResults:${
+          m = properties.get('mRef');
+          m(object);
+          matSnackBar.open(properties.get('message'))
+      };
+  }
+}
+
 
 layout {
     @trait=ActionButtons {
         visible:true;
         component:MetaActionListComponent;
-        bindings:{
-            renderAs:buttons;
-            align:right;
-            defaultStyle:primary;
-         };
-         elementClass:"l-action-buttons";
     }
-
-    @trait=ActionLinks {
-        visible:true;
-        component:MetaActionListComponent;
-        bindings:{
-            renderAs:links;
-            align:none;
-         };
-         elementClass:"l-action-buttons";
-    }
-
-    @trait=ActionLinksAligned {
-        visible:true;
-        component:MetaActionListComponent;
-        bindings:{
-            renderAs:links;
-            align:right;
-         };
-         elementClass:"l-action-buttons";
-    }
-
-    @trait=ActionMenu {
-        visible:true;
-        component:MetaActionListComponent;
-        bindings:{
-            renderAs:menu;
-            align:right;
-         };
-         elementClass:"l-action-buttons";
-    }
-
-    @trait=InstanceActionButtons {
-        visible:true;
-        component:MetaActionListComponent;
-        bindings:{
-            renderAs:buttons;
-            align:right;
-            filterActions:instance;
-         };
-         elementClass:"l-action-buttons";
-    }
-
-    @trait=StaticActionButtons {
-        visible:true;
-        component:MetaActionListComponent;
-        bindings:{
-            renderAs:buttons;
-            align:right;
-            filterActions:static;
-         };
-         elementClass:"l-action-buttons";
-    }
-
-    @trait=Tabs { visible:true; component:MetaTabs;}
-
-    @trait=Sections { visible:true; component:MetaSectionsComponent; }
-
     @trait=Form { visible:true; component:MetaForm; }
 
     @trait=Stack { visible:true; component:MetaElementListComponent; }
 
-    component=MetaForm @trait=floatingLabels;
+    component=MetaForm @trait=labelsOnTop;
 
     layout_trait=labelsOnTop class {
-        bindings:{showFloatingLabels:true; };
+        bindings:{showLabelsOnTop:true; };
     }
 }
 
 ~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null; }; }
+
+
 
 
 layout=ListItem class {

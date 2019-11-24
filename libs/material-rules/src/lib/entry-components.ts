@@ -36,4 +36,4 @@ export * from './ui/button/button.component';
 export * from './ui/string/string.component';
 export * from './ui/autocomplete/autocomplete.component';
 
-export {MetaForm, MetaContentPageComponent} from './metaui/index';
+export * from './metaui/index';

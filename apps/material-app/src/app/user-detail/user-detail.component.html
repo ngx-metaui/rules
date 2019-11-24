@@ -1,7 +1,7 @@
 <a mat-button (click)="operation='edit'">Edit</a> |
 <a mat-button (click)="operation='view'">View</a>
 
-<m-context [object]="object" [operation]="operation" layout="Inspect">
+<m-context [object]="object" [operation]="operation" layout="InspectWithActions">
   <m-include-component></m-include-component>
 </m-context>
 

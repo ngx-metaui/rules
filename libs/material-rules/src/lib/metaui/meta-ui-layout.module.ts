@@ -20,7 +20,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
-import {MatCardModule, MatIconModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatIconModule} from '@angular/material';
 import {UILibModule} from '../ui/ui.module';
 import {MetaForm} from './meta-form/meta-form.component';
 import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.component';
@@ -29,6 +29,8 @@ import {MetaFormField} from './meta-form/meta-form-field/meta-form-field.compone
 import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapter.directive';
 import {MetaContentPageComponent} from './meta-content-page/meta-content-page.component';
 import {RouterModule, Routes} from '@angular/router';
+import {MetaActionListComponent} from './meta-action-list/meta-action-list.component';
+import {MetaElementListComponent} from './meta-element-list/meta-element-list.component';
 
 
 const routes: Routes = [
@@ -41,7 +43,9 @@ const routes: Routes = [
     MetaFormGroup,
     MetaFormField,
     MetaFormFieldAdapter,
-    MetaContentPageComponent
+    MetaContentPageComponent,
+    MetaActionListComponent,
+    MetaElementListComponent
   ],
   imports: [
     CommonModule,
@@ -49,6 +53,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     MatIconModule,
     MatCardModule,
+    MatButtonModule,
     MetaUIRulesModule,
     UILibModule,
     RouterModule.forChild(routes)
@@ -57,7 +62,9 @@ const routes: Routes = [
     MetaForm,
     MetaFormGroup,
     MetaFormField,
-    MetaContentPageComponent
+    MetaContentPageComponent,
+    MetaActionListComponent,
+    MetaElementListComponent
   ],
   exports: [
     MetaForm,

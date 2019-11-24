@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
-import {META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {Action, META_RULES, MetaRules} from '@ngx-metaui/rules';
 import {User} from '../model/user';
 import {Airline} from '../model/airline';
 import {Animal} from '../model/animal';
@@ -37,6 +37,17 @@ export class UserDetailComponent implements OnInit {
       this.animal, [], false, 'Some short description');
   }
 
+
+  @Action({applyTo: User, message: 'Role was assigned'})
+  assignRole($event: any) {
+    console.log('onDynamicAction(): Method called');
+  }
+
+
+  @Action({applyTo: User, message: 'Account is active'})
+  deactivateAccount($event: any) {
+    console.log('onDynamicAction(): Method called');
+  }
 
 }
 
