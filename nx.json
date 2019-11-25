@@ -28,6 +28,9 @@
     },
     "doc-app": {
       "tags": []
+    },
+    "fiori-rules": {
+      "tags": []
     }
   }
 }

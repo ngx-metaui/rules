@@ -580,6 +580,44 @@
           }
         }
       }
+    },
+    "fiori-rules": {
+      "projectType": "library",
+      "root": "libs/fiori-rules",
+      "sourceRoot": "libs/fiori-rules/src",
+      "prefix": "ngx-metaui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/fiori-rules/tsconfig.lib.json",
+            "project": "libs/fiori-rules/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/fiori-rules/tsconfig.lib.json",
+              "libs/fiori-rules/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/fiori-rules/**"]
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/fiori-rules/src/test.ts",
+            "tsConfig": "libs/fiori-rules/tsconfig.spec.json",
+            "karmaConfig": "libs/fiori-rules/karma.conf.js"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

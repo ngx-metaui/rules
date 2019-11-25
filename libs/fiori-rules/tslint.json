@@ -1,0 +1,7 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [true, "attribute", "ngxMetaui", "camelCase"],
+    "component-selector": [true, "element", "ngx-metaui", "kebab-case"]
+  }
+}
