@@ -1,0 +1,28 @@
+ - Create untill inside fundamental-ngx it will be fully ready following components
+    - input
+    - Text area
+    - String component
+    - import button
+    - Select
+    - Radio-group
+    - Checkbox Group
+    - Import date picker
+    - Combobox.
+
+
+- Create Page component with ability to go back
+- Create dymamic action by action decorators or by OSS
+- Meta Action List
+  - ShowCase buttons, links
+- Meta Content Page (detail)
+- Traits to also embed object to the page
+- Traits to show detail as hover
+- Forms
+- Application.oss -> DashboardPage, DashbaordLayout
+  - ShellBar, that will accepts actions to the product menu
+
+
+- It would be cool if I am able to do datatable.
+- Investigate option to be able to switch into the FormControls instead of ngModels.
+
+
