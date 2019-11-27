@@ -1,1 +1,1 @@
-export * from "./lib/fiori-rules.module";
+export * from './lib/fiori-rules.module';

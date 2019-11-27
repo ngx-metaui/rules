@@ -10,7 +10,8 @@ import * as userRules from './user-rules';
 import {UserDetailComponent} from './user-detail/user-detail.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HomeComponent} from './home/home.component';
-
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,9 @@ import {HomeComponent} from './home/home.component';
     MatButtonModule,
     MatIconModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
 
     MetaUIRulesModule.forRoot(),
     MaterialRulesModule.forRoot()
