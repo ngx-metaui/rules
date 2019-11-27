@@ -8,6 +8,7 @@
     ]
   },
   "whitelistedNonPeerDependencies": [
-    "flexboxgrid"
+    "flexboxgrid",
+    "fundamental-styles"
   ]
 }
