@@ -1,0 +1,46 @@
+<!-- -->
+<form *ngIf="useForm; else body"
+      [id]="id"
+      [formGroup]="formGroup"
+      [name]="name"
+      (ngSubmit)="onSubmit.emit($event)">
+
+  <ng-container *ngTemplateOutlet="body"></ng-container>
+</form>
+
+
+<ng-template #body>
+  <!--
+   List top zones fields
+-->
+  <div class="row around-xs" *ngIf="tZone">
+    <div *ngFor="let field of tZone"
+         class="col-xs-12">
+      <ng-container *ngTemplateOutlet="field.renderer"></ng-container>
+    </div>
+  </div>
+
+  <!--
+    List Left and right fields. Material is done little bit simpler than primeNg in terms of
+    layout
+  -->
+  <div class="row between-xs" *ngIf="mZone">
+    <div *ngFor="let field of mZone;trackBy: trackByFieldName"
+         class="col-xs-12"
+         [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFluid }"
+         [style.order]="field.rank">
+      <ng-container *ngTemplateOutlet="field?.renderer"></ng-container>
+    </div>
+  </div>
+
+
+  <!--
+     List bottom zones fields
+  -->
+  <div class="row between-xs" *ngIf="bZone">
+    <div *ngFor="let field of bZone"
+         class="col-xs-12">
+      <ng-container *ngTemplateOutlet="field.renderer"></ng-container>
+    </div>
+  </div>
+</ng-template>

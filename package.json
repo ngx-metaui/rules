@@ -100,7 +100,9 @@
     "ts-node": "~8.5.2",
     "tsickle": "^0.37.0",
     "tslint": "~5.20.1",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "cypress": "3.4.1",
+    "@nrwl/cypress": "8.7.1"
   },
   "standard-version": {
     "skip": {

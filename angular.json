@@ -42,7 +42,10 @@
               "libs/rules/tsconfig.lib.json",
               "libs/rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/rules/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/rules/**"
+            ]
           }
         }
       }
@@ -154,7 +157,9 @@
             "polyfills": "apps/metaui-evolution/src/polyfills.ts",
             "tsConfig": "apps/metaui-evolution/tsconfig.spec.json",
             "karmaConfig": "apps/metaui-evolution/karma.conf.js",
-            "styles": ["apps/metaui-evolution/src/styles.scss"],
+            "styles": [
+              "apps/metaui-evolution/src/styles.scss"
+            ],
             "scripts": [],
             "assets": [
               "apps/metaui-evolution/src/favicon.ico",
@@ -169,7 +174,10 @@
               "apps/metaui-evolution/tsconfig.app.json",
               "apps/metaui-evolution/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/metaui-evolution/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/metaui-evolution/**"
+            ]
           }
         }
       }
@@ -231,7 +239,9 @@
               "libs/primeng-rules/src/lib/resources/styles/aribaui.scss",
               "apps/my-detail-page/src/styles.css"
             ],
-            "scripts": ["node_modules/quill/dist/quill.js"],
+            "scripts": [
+              "node_modules/quill/dist/quill.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -278,7 +288,9 @@
             "polyfills": "apps/my-detail-page/src/polyfills.ts",
             "tsConfig": "apps/my-detail-page/tsconfig.spec.json",
             "karmaConfig": "apps/my-detail-page/karma.conf.js",
-            "styles": ["apps/my-detail-page/src/styles.css"],
+            "styles": [
+              "apps/my-detail-page/src/styles.css"
+            ],
             "scripts": [],
             "assets": [
               "apps/my-detail-page/src/favicon.ico",
@@ -293,7 +305,10 @@
               "apps/my-detail-page/tsconfig.app.json",
               "apps/my-detail-page/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/my-detail-page/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/my-detail-page/**"
+            ]
           }
         }
       }
@@ -337,7 +352,10 @@
               "libs/primeng-rules/tsconfig.lib.json",
               "libs/primeng-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/primeng-rules/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/primeng-rules/**"
+            ]
           }
         }
       }
@@ -370,7 +388,10 @@
               "libs/material-rules/tsconfig.lib.json",
               "libs/material-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/material-rules/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/material-rules/**"
+            ]
           }
         }
       }
@@ -457,7 +478,9 @@
             "polyfills": "apps/material-app/src/polyfills.ts",
             "tsConfig": "apps/material-app/tsconfig.spec.json",
             "karmaConfig": "apps/material-app/karma.conf.js",
-            "styles": ["apps/material-app/src/styles.scss"],
+            "styles": [
+              "apps/material-app/src/styles.scss"
+            ],
             "scripts": [],
             "assets": [
               "apps/material-app/src/favicon.ico",
@@ -472,7 +495,10 @@
               "apps/material-app/tsconfig.app.json",
               "apps/material-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/material-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/material-app/**"
+            ]
           }
         }
       }
@@ -564,7 +590,10 @@
               "apps/doc-app/tsconfig.app.json",
               "apps/doc-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/doc-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/doc-app/**"
+            ]
           }
         },
         "test": {
@@ -601,7 +630,10 @@
               "libs/fiori-rules/tsconfig.lib.json",
               "libs/fiori-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/fiori-rules/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/fiori-rules/**"
+            ]
           }
         },
         "test": {
@@ -616,6 +648,111 @@
       "schematics": {
         "@nrwl/angular:component": {
           "styleext": "scss"
+        }
+      }
+    },
+    "fiori-app": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/fiori-app",
+      "sourceRoot": "apps/fiori-app/src",
+      "prefix": "ngx-metaui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/fiori-app",
+            "index": "apps/fiori-app/src/index.html",
+            "main": "apps/fiori-app/src/main.ts",
+            "polyfills": "apps/fiori-app/src/polyfills.ts",
+            "tsConfig": "apps/fiori-app/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/fiori-app/src/favicon.ico",
+              "apps/fiori-app/src/assets"
+            ],
+            "styles": [
+              "apps/fiori-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/fiori-app/src/environments/environment.ts",
+                  "with": "apps/fiori-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "fiori-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "fiori-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "fiori-app:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/fiori-app/tsconfig.app.json",
+              "apps/fiori-app/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/fiori-app/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/fiori-app/src/test.ts",
+            "tsConfig": "apps/fiori-app/tsconfig.spec.json",
+            "karmaConfig": "apps/fiori-app/karma.conf.js",
+            "polyfills": "apps/fiori-app/src/polyfills.ts",
+            "styles": [],
+            "scripts": [],
+            "assets": []
+          }
         }
       }
     }
@@ -639,6 +776,13 @@
     },
     "@nrwl/schematics:node-application": {
       "framework": "express"
+    },
+    "@nrwl/angular:application": {
+      "unitTestRunner": "karma",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "karma"
     }
   }
 }
