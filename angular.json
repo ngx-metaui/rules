@@ -676,6 +676,7 @@
               "apps/fiori-app/src/assets"
             ],
             "styles": [
+              "node_modules/fundamental-styles/dist/fundamental-styles.css",
               "apps/fiori-app/src/styles.scss"
             ],
             "scripts": []

@@ -1,4 +1,3 @@
-<!-- -->
 <form *ngIf="useForm; else body"
       [id]="id"
       [formGroup]="formGroup"
@@ -10,37 +9,32 @@
 
 
 <ng-template #body>
-  <!--
-   List top zones fields
--->
-  <div class="row around-xs" *ngIf="tZone">
-    <div *ngFor="let field of tZone"
-         class="col-xs-12">
-      <ng-container *ngTemplateOutlet="field.renderer"></ng-container>
+  <ng-container *ngTemplateOutlet="zone;context: {$implicit: tZone, title:topTitle}">
+  </ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="zone;context: {$implicit:mZone , title:mainTitle, multiColumn:true}">
+  </ng-container>
+
+  <ng-container *ngTemplateOutlet="zone;context: {$implicit:bZone , title:bottomTitle}">
+  </ng-container>
+</ng-template>
+
+
+<ng-template #zone let-fields let-title="title" let-multiColumn="multiColumn">
+
+  <div class="fd-section fd-section--no-border fd-has-margin-tiny">
+    <div class="fd-section__header" *ngIf="title">
+      <h3 class="fd-section__title">{{title}}</h3>
     </div>
-  </div>
 
-  <!--
-    List Left and right fields. Material is done little bit simpler than primeNg in terms of
-    layout
-  -->
-  <div class="row between-xs" *ngIf="mZone">
-    <div *ngFor="let field of mZone;trackBy: trackByFieldName"
-         class="col-xs-12"
-         [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFluid }"
-         [style.order]="field.rank">
-      <ng-container *ngTemplateOutlet="field?.renderer"></ng-container>
-    </div>
-  </div>
-
-
-  <!--
-     List bottom zones fields
-  -->
-  <div class="row between-xs" *ngIf="bZone">
-    <div *ngFor="let field of bZone"
-         class="col-xs-12">
-      <ng-container *ngTemplateOutlet="field.renderer"></ng-container>
+    <div class="row start-xs" *ngIf="mZone">
+      <div *ngFor="let field of fields;trackBy: trackByFieldName"
+           class="col-xs-12"
+           [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': multiColumn && !field.isFluid }"
+           [style.order]="field.rank">
+        <ng-container *ngTemplateOutlet="field?.renderer"></ng-container>
+      </div>
     </div>
   </div>
 </ng-template>

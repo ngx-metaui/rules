@@ -134,6 +134,19 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   @Input()
   useForm: boolean = false;
 
+  /**
+   * This is rather simple for now just to have some Section Title if needed
+   */
+  @Input()
+  topTitle: string;
+
+  @Input()
+  mainTitle: string;
+
+  @Input()
+  bottomTitle: string;
+
+
   @Input()
   get hintLayout(): 'inline' | 'popover' {
     return this._hintLayout;
