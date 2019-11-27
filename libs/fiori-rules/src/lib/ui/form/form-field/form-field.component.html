@@ -1,7 +1,12 @@
 <ng-template #renderer>
-  FormField: {{id}} - {{rank}} - {{zone}}
-
-  <ng-content></ng-content>
+  <div class="fd-form-item">
+    <label class="fd-form-label" for="input-45">{{id}}:</label>
+    <input class="fd-input" type="text" id="input-45">
+    <span class="fd-form-message fd-form-message--help" *ngIf="hint">
+            {{hint}}
+        </span>
+  </div>
+  <!--  <ng-content></ng-content>-->
 </ng-template>
 
 
