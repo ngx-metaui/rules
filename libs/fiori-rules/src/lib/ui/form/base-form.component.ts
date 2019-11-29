@@ -16,28 +16,29 @@
  *
  *
  */
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {FormGroupComponent} from './form-group/form-group.component';
-import {FormFieldComponent} from './form-field/form-field.component';
+import {ChangeDetectorRef, OnInit} from '@angular/core';
 
-@NgModule({
-  declarations: [
-    FormGroupComponent,
-    FormFieldComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    FormGroupComponent,
-    FormFieldComponent
-  ]
-})
-export class FdpFormModule {
+
+export type FormZone = 'zTop' | 'zBottom' | 'zLeft' | 'zRight';
+
+/**
+ * All form components share the same information (value, name, placeholder,.. ) as well as
+ * the same behavior given by ControlValueAccessor.
+ *
+ *
+ *
+ */
+export class BaseFormComponent implements OnInit {
+
+
+  constructor(private cd: ChangeDetectorRef) {
+
+  }
+
+  ngOnInit(): void {
+
+  }
+
+
 }
-
 

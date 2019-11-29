@@ -5,8 +5,11 @@
     "@angular/common": "^8.2.13",
     "@angular/core": "^8.2.13"
   },
+  "peerDependencies": {
+    "@angular/cdk": "MATERIAL_PLACEHOLDER"
+  },
   "dependencies": {
     "flexboxgrid": "^6.3.1",
-    "fundamental-styles": "~0.3.0"
+    "@fundamental-ngx/core": "^0.12.0"
   }
 }

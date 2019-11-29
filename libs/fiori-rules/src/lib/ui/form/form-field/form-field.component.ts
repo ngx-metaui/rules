@@ -31,11 +31,7 @@ import {
 export type FormZone = 'zTop' | 'zBottom' | 'zLeft' | 'zRight';
 
 /**
- *
- *  We need to be able to instantiate sa button or link programmatically. Just like the other
- *  components where angular does not support any directive manipulation or to work with native
- *  components we need to create a component out from mat button directive
- *
+ * Form Field wraps the whole input field
  *
  */
 @Component({

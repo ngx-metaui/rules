@@ -42,7 +42,11 @@ import {Subject} from 'rxjs';
 /**
  *
  * FormGroup represent high order container aggregating FormFields and ability to distribute these
- * fields into columns. Well behaved form that has information side by side in multiple
+ * fields into columns. It mainly hides implementation details that we need to deal with every
+ * time we are building a form. We have input fields , error managements, different states,
+ * hints and many more.
+ *
+ * Well behaved form that has information side by side in multiple
  * columns needs to also know how to merge properly.
  *
  * Just to get the idea about the structure without actual input components inside
