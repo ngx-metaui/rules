@@ -29,12 +29,15 @@
     </div>
 
     <div class="row start-xs" *ngIf="mZone">
-      <div *ngFor="let field of fields;trackBy: trackByFieldName"
+      <div fd-form-set
+           *ngFor="let field of fields;trackBy: trackByFieldName"
            class="col-xs-12"
            [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': multiColumn && !field.isFluid }"
            [style.order]="field.rank">
+
         <ng-container *ngTemplateOutlet="field?.renderer"></ng-container>
       </div>
     </div>
   </div>
 </ng-template>
+

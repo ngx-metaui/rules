@@ -17,24 +17,35 @@
  *
  */
 import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {FormModule} from './form/form.module';
-
+import {FormModule as FdFormModule} from '@fundamental-ngx/core';
+import {FormGroupComponent} from './form-group/form-group.component';
+import {FormFieldComponent} from './form-field/form-field.component';
+import {InputComponent} from './input/input.component';
 
 @NgModule({
+  declarations: [
+    FormGroupComponent,
+    FormFieldComponent,
+    InputComponent
+  ],
   imports: [
     CommonModule,
-    FormModule
-  ],
-  declarations: [
+    FormsModule,
+    FdFormModule,
+    ReactiveFormsModule
   ],
   entryComponents: [
+    InputComponent
   ],
   exports: [
-    FormModule
+    FormGroupComponent,
+    FormFieldComponent,
+    InputComponent
   ]
 })
-export class UILibModule {
+export class FormModule {
 }
 
 

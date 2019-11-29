@@ -1,0 +1,12 @@
+<input fd-form-control
+       [(ngModel)]="value"
+       [attr.id]="id"
+       [attr.type]="type"
+       [attr.placeholder]="placeholder"
+       [disabled]="disabled"
+       [readOnly]="readonly"
+       (blur)="_onFocusChanged(false)"
+       (focus)="_onFocusChanged(true)"
+/>
+
+

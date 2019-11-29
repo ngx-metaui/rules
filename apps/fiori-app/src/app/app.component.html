@@ -1,7 +1,18 @@
 <main class="fd-page">
-  <div class="fd-page__content fd-has-background-color-neutral-2">
-    <fdp-form-group [hintLayout]="'inline'" [multiLayout]="true">
 
+  {{control.status}} - {{control.errors | json}}
+  <div class="fd-page__content fd-has-background-color-neutral-2">
+
+
+    <div fd-form-item>
+      <label fd-form-label for="t1">
+        Normal Input
+      </label>
+      <fdp-input id="t1" [placeholder]="'placeholder for uh uh. .'"
+                 [formControl]="control"></fdp-input>
+    </div>
+
+    <fdp-form-group [hintLayout]="'inline'" [multiLayout]="true">
       <fdp-form-field [id]="'Title'" [hint]="'hint for name'" [rank]="1" zone="zTop">
       </fdp-form-field>
 
@@ -28,7 +39,6 @@
 
       <fdp-form-field [id]="'Supplier Location'" [hint]="'hint for age'" [rank]="10" zone="zRight">
       </fdp-form-field>
-
 
       <fdp-form-field [id]="'Accounting Detail'" [hint]="'hint for age'" [rank]="11" zone="zRight">
       </fdp-form-field>
