@@ -1,6 +1,27 @@
-@import "~fundamental-styles/dist/form-group.css";
-@import "~fundamental-styles/dist/form-item.css";
-@import "~fundamental-styles/dist/form-label.css";
-@import "~fundamental-styles/dist/form-message.css";
+.fd-form-message {
 
+  &.fd-form-message--error {
+    position: absolute;
+    padding-top: 2px;
+    margin-top: 0px;
+    padding-left: 20px;
 
+    &:before {
+      top: 1px;
+      width: 15px;
+      height: 15px;
+      font-size: 0.75rem;
+      line-height: 15px;
+    }
+  }
+}
+
+.fd-form-item {
+  .fd-popover-custom {
+    padding-left: 5px;
+  }
+
+  .fdp-required-mark {
+    font-weight: 600;
+  }
+}

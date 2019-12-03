@@ -23,6 +23,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   ContentChildren,
   EventEmitter,
   Input,
@@ -37,6 +38,7 @@ import {FormGroup} from '@angular/forms';
 import {FormFieldComponent} from '../form-field/form-field.component';
 import {startWith, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
 
 /**
@@ -52,7 +54,7 @@ import {Subject} from 'rxjs';
  * Just to get the idea about the structure without actual input components inside
  *
  * ```html
- * <fdp-form-group [hintLayout]="'inline'" [multiLayout]="true">
+ * <fdp-form-group [hintPlacement]="'inline'" [multiLayout]="true">
  *    <fdp-form-field [id]="'Field A'" [rank]="10" zone="zLeft">
  *    </fdp-form-field>
  *
@@ -130,13 +132,25 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   name: string;
 
   @Input()
-  multiLayout: boolean = false;
+  get multiLayout(): boolean {
+    return this._multiLayout;
+  }
+
+  set multiLayout(value: boolean) {
+    this._multiLayout = coerceBooleanProperty(value);
+  }
 
   @Input()
   formGroup: FormGroup;
 
   @Input()
-  useForm: boolean = false;
+  get useForm(): boolean {
+    return this._useForm;
+  }
+
+  set useForm(value: boolean) {
+    this._useForm = coerceBooleanProperty(value);
+  }
 
   /**
    * This is rather simple for now just to have some Section Title if needed
@@ -152,20 +166,37 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
 
   @Input()
-  get hintLayout(): 'inline' | 'popover' {
-    return this._hintLayout;
+  get hintPlacement(): 'left' | 'right' {
+    return this._hintPlacement;
   }
 
-  set hintLayout(value: 'inline' | 'popover') {
-    this._hintLayout = value;
+  set hintPlacement(value: 'left' | 'right') {
+    this._hintPlacement = value;
     this._cd.markForCheck();
   }
 
-  private _hintLayout: 'inline' | 'popover' = 'popover';
+
+  /**
+   * This is just here to support several ways to pass in translation for the possible error
+   * messages
+   *
+   * One way is to provide ng-template #i18n inside the formgroup tag and the other one
+   * some global one as binding
+   */
+  @Input()
+  i18Strings: TemplateRef<any>;
+
+  @ContentChild('i18n', {static: true})
+  i18Template: TemplateRef<any>;
 
 
   @Output()
   onSubmit: EventEmitter<any> = new EventEmitter<any>();
+
+  private _hintPlacement: 'left' | 'right' = 'right';
+  private _multiLayout: boolean = false;
+  private _useForm: boolean = false;
+
 
   protected _destroyed = new Subject<void>();
 
@@ -205,6 +236,8 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
 
   ngAfterContentInit(): void {
+    this.i18Strings = (this.i18Strings) ? this.i18Strings : this.i18Template;
+
     this._fieldChildren.changes
       .pipe(startWith(null), takeUntil(this._destroyed))
       .subscribe(() => {
@@ -240,7 +273,7 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
    * This reads FormFieldComponent from the QueyList and break all down into individual zones.
    * Right now I support only 5 zones, but it could be easily extended to support any number of
    * columns.
-   * Since I want to have cached I know zones ahead of time, but you can have this generic and
+   * Since I want to have it cached I know zones ahead of time, but you can have this generic and
    * store everything in Map. Since here we have OnPush CD strategy it should not be a big deal.
    */
   private updateFieldByZone() {
@@ -248,8 +281,8 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
     const zRight: Array<GroupField> = [];
 
     this._fieldChildren.forEach((item, index) => {
-      item.hintLayout = this._hintLayout;
-      const zone = (this.multiLayout) ? item.zone || 'zLeft' : 'zLeft';
+      this.updateFormProperties(item);
+      const zone = (this._multiLayout) ? item.zone || 'zLeft' : 'zLeft';
       const field = new GroupField(zone, item.id, item.rank || index, item.renderer,
         item.fluid);
 
@@ -279,6 +312,12 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
     this.mZone = this.calculateMainZone(zLeft, zRight);
   }
 
+
+  private updateFormProperties(item) {
+    item.hintPlacement = this._hintPlacement;
+    item.i18Strings = this.i18Strings;
+    item.formGroup = this.formGroup;
+  }
 
   /**
    * To achieve LEFT and RIGHT layout we need to iterate and merge LEFT and RIGHT zones together
@@ -312,7 +351,6 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
    */
   private calculateMainZone(left: GroupField[], right: GroupField[]): GroupField[] {
 
-    console.log('calculateMainZone');
     if (left.length > 0 && right.length > 0) {
 
       const merged: GroupField[] = [];
@@ -349,7 +387,7 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
   /**
    * This is just the temp solution until I can figure better way of doing this. If I want
-   * e.g. 3 fields on the left and 1 field on the right. It will not work wiht current 6 column
+   * e.g. 3 fields on the left and 1 field on the right. It will not work with current 6 column
    * layout as left and right side is not even. Even the array with empty content
    */
   private evenFields(zLeft: GroupField[], zRight: GroupField[]) {
