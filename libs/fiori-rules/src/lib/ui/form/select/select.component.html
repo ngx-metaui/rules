@@ -1,0 +1,35 @@
+<fd-select #elementRef
+  class="fd-select-custom fd-dropdown"
+  [(value)]="value"
+  [attr.id]="id"
+  [placeholder]="placeholder"
+  [disabled]="disabled"
+  [maxHeight]="maxHeight"
+  [compact]="compact"
+  [fillControlMode]="fillControlMode"
+  [triggerTemplate]="triggerValueTemplate"
+  [appendTo]="appendTo"
+  (isOpenChange)="isOpenChange.emit($event)"
+>
+
+  <fd-option *ngIf="noSelectionString" [disabled]="false" [value]="null" (selectedChange)="onSelection($event)">
+    {{noSelectionString}}
+  </fd-option>
+
+
+  <fd-option *ngFor="let item of list; index as index"
+             [disabled]="item.disabled ? true : false"
+             (selectedChange)="onSelection($event)"
+             [viewValue]="item.triggerValue"
+             [value]="item">
+
+    <ng-template [ngIf]="!optionValueTemplate">{{item.label ? item.label : item }}</ng-template>
+
+    <ng-template [ngIf]="optionValueTemplate">
+      <ng-container
+        *ngTemplateOutlet="optionValueTemplate; context: {$implicit: item, index: index}"></ng-container>
+    </ng-template>
+  </fd-option>
+
+</fd-select>
+

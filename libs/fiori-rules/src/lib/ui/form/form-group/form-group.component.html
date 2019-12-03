@@ -1,6 +1,5 @@
 <form *ngIf="useForm; else body"
       [id]="id"
-      [formGroup]="formGroup"
       [name]="name"
       (ngSubmit)="onSubmit.emit($event)">
 
@@ -23,7 +22,9 @@
 
 <ng-template #zone let-fields let-title="title" let-multiColumn="multiColumn">
 
-  <div class="fd-section fd-section--no-border fd-has-margin-regular">
+  <div *ngIf="fields"
+       [formGroup]="formGroup"
+       class="fd-section fd-section--no-border fd-has-margin-regular">
     <div class="fd-section__header" *ngIf="title">
       <h3 class="fd-section__title">{{title}}</h3>
     </div>

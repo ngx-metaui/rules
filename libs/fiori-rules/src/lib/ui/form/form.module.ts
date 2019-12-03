@@ -19,30 +19,37 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {FormModule as FdFormModule} from '@fundamental-ngx/core';
+import {FormModule as FdFormModule, InlineHelpModule, SelectModule} from '@fundamental-ngx/core';
 import {FormGroupComponent} from './form-group/form-group.component';
 import {FormFieldComponent} from './form-field/form-field.component';
 import {InputComponent} from './input/input.component';
+import {SelectComponent} from './select/select.component';
 
 @NgModule({
   declarations: [
     FormGroupComponent,
     FormFieldComponent,
-    InputComponent
+    InputComponent,
+    SelectComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     FdFormModule,
-    ReactiveFormsModule
+    InlineHelpModule,
+    SelectModule
+
   ],
   entryComponents: [
-    InputComponent
+    InputComponent,
+    SelectComponent
   ],
   exports: [
     FormGroupComponent,
     FormFieldComponent,
-    InputComponent
+    InputComponent,
+    SelectComponent
   ]
 })
 export class FormModule {

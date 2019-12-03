@@ -1,13 +1,26 @@
 <ng-template #renderer>
-  <div class="fd-form-item">
-    <label class="fd-form-label" for="input-45">{{id}}:</label>
-    <input class="fd-input" type="text" id="input-45">
-    <span class="fd-form-message fd-form-message--help" *ngIf="hint">
-            {{hint}}
-        </span>
+  <div fd-form-item (click)="_control.onContainerClick($event)">
+    <label fd-form-label [attr.for]="id">
+      {{label}}<span class="fdp-required-mark" *ngIf="required">*</span>
+      <fd-inline-help *ngIf="hint" [placement]="hintPlacement">
+        {{hint}}
+      </fd-inline-help>
+    </label>
+
+    <ng-content></ng-content>
+
+    <!--
+      I have set this to type 'error' this is the place to extend errors to show also warning.
+      Also I expect that application error messages needs to be translated on
+    -->
+    <fd-form-message *ngIf="hasErrors()" [type]="'error'"  plac>
+      <ng-container *ngIf="i18Strings">
+        <ng-container
+          *ngTemplateOutlet="i18Strings;context: {$implicit:_control?.ngControl.errors}">
+        </ng-container>
+      </ng-container>
+    </fd-form-message>
   </div>
-  <!--  <ng-content></ng-content>-->
+
 </ng-template>
-
-
 

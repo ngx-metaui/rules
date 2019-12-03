@@ -1,50 +1,60 @@
 <main class="fd-page">
+  <pre>
+    {{form.getRawValue() | json}}
+  </pre>
 
-  {{control.status}} - {{control.errors | json}}
+
   <div class="fd-page__content fd-has-background-color-neutral-2">
 
-
-    <div fd-form-item>
-      <label fd-form-label for="t1">
-        Normal Input
-      </label>
-      <fdp-input id="t1" [placeholder]="'placeholder for uh uh. .'"
-                 [formControl]="control"></fdp-input>
-    </div>
-
-    <fdp-form-group [hintLayout]="'inline'" [multiLayout]="true">
-      <fdp-form-field [id]="'Title'" [hint]="'hint for name'" [rank]="1" zone="zTop">
+    <fdp-form-group #fg [multiLayout]="true" [formGroup]="form">
+      <fdp-form-field #ff [id]="'firstName'" hint="Hint for one "
+                      zone="zLeft" [validators]="validators">
+        <fdp-input [formControl]="ff.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field [id]="'On Behalf Of'" [hint]="'hint for description'" [rank]="30" zone="zTop">
+      <fdp-form-field #ff2 [id]="'address'" required="true" hint="Hint for two " zone="zLeft">
+        <fdp-input [formControl]="ff2.formControl"></fdp-input>
+      </fdp-form-field>
+      <fdp-form-field #ff3 [id]="'name'" hint="Hint for two " zone="zRight">
+        <fdp-input [formControl]="ff3.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field [id]="'Est. Shipping Date'" [rank]="10" zone="zLeft">
+      <fdp-form-field #ff4 [id]="'Last'" hint="Last for two " zone="zRight">
+        <fdp-input [formControl]="ff4.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field [id]="'Est. Delivery Date'" [rank]="10" zone="zLeft">
+      <fdp-form-field #ff5 [id]="'email'" label="E-mail" hint="Last for two " zone="zLeft" fluid="true">
+        <fdp-input [formControl]="ff5.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field [id]="'Cost Center'" [rank]="10" zone="zLeft">
+      <fdp-form-field #ff6 [id]="'amount'" [placeholder]="'Select cost amount'" hint="Hint for two "
+                      zone="zLeft">
+        <fdp-input [formControl]="ff6.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field [id]="'Asset Details'" [rank]="10" zone="zLeft">
+      <fdp-form-field #ff7 [id]="'costCenter'" [required]="true"
+                      [placeholder]="'Select cost center'"
+                      hint="Last for two " zone="zRight">
+
+        <fdp-select [formControl]="ff7.formControl" [list]="colors"
+                    [noSelectionString]="'(no value)'">
+        </fdp-select>
       </fdp-form-field>
 
-      <fdp-form-field [id]="'Website'" [rank]="10" zone="zRight">
-      </fdp-form-field>
 
-      <fdp-form-field [id]="'Supplier'" [hint]="'hint for age'" [rank]="10" zone="zRight">
-      </fdp-form-field>
+      <ng-template #i18n let-errros>
+        <span *ngIf="errros.required">
+            Value is required
+        </span>
+        <span *ngIf="errros.maxlength">
+            You reached maxium allowed length. Required is {{errros.maxlength.requiredLength}}
+          current is
+          {{errros.maxlength.actualLength}}
+        </span>
+      </ng-template>
 
-      <fdp-form-field [id]="'Supplier Location'" [hint]="'hint for age'" [rank]="10" zone="zRight">
-      </fdp-form-field>
-
-      <fdp-form-field [id]="'Accounting Detail'" [hint]="'hint for age'" [rank]="11" zone="zRight">
-      </fdp-form-field>
-
-      <fdp-form-field [id]="'Comments'" [hint]="'hint for age'" [rank]="11" zone="zBottom">
-      </fdp-form-field>
     </fdp-form-group>
   </div>
 </main>
+
+

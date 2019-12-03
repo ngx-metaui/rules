@@ -1,12 +1,12 @@
-<input fd-form-control
+<input #elemRef fd-form-control
        [(ngModel)]="value"
+       [ngModelOptions]="{standalone: true}"
        [attr.id]="id"
        [attr.type]="type"
        [attr.placeholder]="placeholder"
        [disabled]="disabled"
        [readOnly]="readonly"
+       [state]="inErrorState ? 'invalid' : '' "
        (blur)="_onFocusChanged(false)"
        (focus)="_onFocusChanged(true)"
 />
-
-

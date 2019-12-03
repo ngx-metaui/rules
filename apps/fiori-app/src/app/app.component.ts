@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
 @Component({
   selector: 'ngx-metaui-root',
@@ -9,14 +9,21 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 export class AppComponent {
   title = 'fiori-app';
   control: FormControl;
+  control2: FormControl;
+  form: FormGroup;
+  private validators: ValidatorFn[];
+
+  colors = ['blue', 'green', 'red'];
 
 
   constructor() {
 
-    this.control = new FormControl('Some Text', [
-      Validators.required,
-      Validators.maxLength(10),
-    ]);
+    this.form = new FormGroup({});
 
+    this.control = new FormControl('blue');
+
+
+    this.validators = [
+      Validators.maxLength(10)];
   }
 }
