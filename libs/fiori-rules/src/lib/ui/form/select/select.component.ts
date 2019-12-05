@@ -169,7 +169,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   /**
    * Reference to internal Input element
    */
-  @ViewChild('elemRef', {static: true})
+  @ViewChild(FdSelect, {static: true, read: ElementRef})
   protected _elementRef: ElementRef;
 
   /**
@@ -224,6 +224,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   }
 
   ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
     this._cd.detectChanges();
   }
 
@@ -259,6 +260,13 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
    * control
    */
   onContainerClick(event: MouseEvent): void {
+    if (this._elementRef) {
+      console.log(this._elementRef);
+      const btn = this._elementRef.nativeElement.querySelector('button');
+      if (btn) {
+        btn.focus();
+      }
+    }
   }
 
   /**
