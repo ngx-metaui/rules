@@ -24,13 +24,17 @@ import {FormGroupComponent} from './form-group/form-group.component';
 import {FormFieldComponent} from './form-field/form-field.component';
 import {InputComponent} from './input/input.component';
 import {SelectComponent} from './select/select.component';
+import {RadioGroupComponent} from './radio-group/radio-group.component';
+import {CheckboxComponent} from './checkbox/checkbox.component';
 
 @NgModule({
   declarations: [
     FormGroupComponent,
     FormFieldComponent,
     InputComponent,
-    SelectComponent
+    SelectComponent,
+    RadioGroupComponent,
+    CheckboxComponent
   ],
   imports: [
     CommonModule,
@@ -39,17 +43,20 @@ import {SelectComponent} from './select/select.component';
     FdFormModule,
     InlineHelpModule,
     SelectModule
-
   ],
   entryComponents: [
     InputComponent,
-    SelectComponent
+    SelectComponent,
+    RadioGroupComponent,
+    CheckboxComponent
   ],
   exports: [
     FormGroupComponent,
     FormFieldComponent,
     InputComponent,
-    SelectComponent
+    SelectComponent,
+    RadioGroupComponent,
+    CheckboxComponent
   ]
 })
 export class FormModule {

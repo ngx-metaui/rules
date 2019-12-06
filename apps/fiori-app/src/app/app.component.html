@@ -3,7 +3,8 @@
 <!--      {{form.errors() | json}}-->
     </pre>
 
-  <div class="fd-page__content fd-has-background-color-neutral-2">
+
+  <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
 
     <fdp-form-group #fg [multiLayout]="true" [formGroup]="form">
       <fdp-form-field #ff [id]="'firstName'" hint="Hint for one "
@@ -22,7 +23,8 @@
         <fdp-input [formControl]="ff4.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field #ff5 [id]="'email'" label="E-mail" hint="Last for two " zone="zLeft" fluid="true">
+      <fdp-form-field #ff5 [id]="'email'" label="E-mail" hint="Last for two " zone="zLeft"
+                      fluid="true">
         <fdp-input [formControl]="ff5.formControl"></fdp-input>
       </fdp-form-field>
 
@@ -38,6 +40,24 @@
         <fdp-select [formControl]="ff7.formControl" [list]="colors"
                     [noSelectionString]="'(no value)'">
         </fdp-select>
+      </fdp-form-field>
+
+
+      <fdp-form-field #ff8 [id]="'loc'" label="Preferred location" zone="zLeft">
+        <fdp-radio-group [list]="locations"
+                         [id]="'loc'"
+                         [formControl]="ff7.formControl"
+                         hasNoValue="true"
+                         noValueLabel="none"
+                         name="location">
+        </fdp-radio-group>
+      </fdp-form-field>
+
+      <fdp-form-field #ff9 [id]="'loc'" zone="zRight" [noLabelLayout]="true">
+        <fdp-checkbox id="In" [formControl]="ff9.formControl"
+                      isBinary="true"
+                      value="are you in?">
+        </fdp-checkbox>
       </fdp-form-field>
 
 

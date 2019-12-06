@@ -56,9 +56,6 @@ export class RadioGroupComponent extends BaseInput {
   @Input()
   list: Array<SelectItem | string>;
 
-  @Input()
-  labelPosition: 'before' | 'after' = 'after';
-
   /**
    * When the radio is required show None value to let user know to select something
    */

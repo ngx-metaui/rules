@@ -64,7 +64,6 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
 
   set placeholder(value: string) {
     this._placeholder = value;
-    console.log('set placeholder');
   }
 
   private _placeholder: string;
@@ -82,17 +81,17 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   }
 
   set disabled(value: boolean) {
-    this._disabled = coerceBooleanProperty(value);
-    this.stateChanges.next('disabled');
+    this.setDisabledState(value);
   }
 
 
   @Input()
-  get value(): string {
+  get value(): any {
     return this._value;
   }
 
-  set value(value: string) {
+  set value(value: any) {
+    console.log('value');
     if (value !== this.value) {
       this.writeValue(value);
     }
@@ -175,9 +174,11 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this._disabled = isDisabled;
-    this._cd.markForCheck();
-    this.stateChanges.next('setDisabledState');
+    const newState = this.boolProperty(isDisabled);
+    if (newState !== this._disabled) {
+      this._disabled = isDisabled;
+      this.stateChanges.next('setDisabledState');
+    }
   }
 
   writeValue(value: any): void {
@@ -228,6 +229,10 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
       this._inErrorState = newState;
       this.stateChanges.next('updateErrorState');
     }
+  }
+
+  protected boolProperty(value: boolean): boolean {
+    return coerceBooleanProperty(value);
   }
 }
 
