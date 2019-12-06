@@ -91,9 +91,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   }
 
   set value(value: any) {
-    console.log('value');
     if (value !== this.value) {
       this.writeValue(value);
+      this._cd.markForCheck();
     }
   }
 
@@ -136,9 +136,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   }
 
   ngOnInit(): void {
-    if (!this.id) {
-      throw new Error('form input must have [id] attribute.');
-    }
+    // if (!this.id) {
+    //   throw new Error('form input must have [id] attribute.');
+    // }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

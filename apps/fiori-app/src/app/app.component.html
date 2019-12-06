@@ -3,7 +3,6 @@
 <!--      {{form.errors() | json}}-->
     </pre>
 
-
   <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
 
     <fdp-form-group #fg [multiLayout]="true" [formGroup]="form">
@@ -45,7 +44,6 @@
 
       <fdp-form-field #ff8 [id]="'loc'" label="Preferred location" zone="zLeft">
         <fdp-radio-group [list]="locations"
-                         [id]="'loc'"
                          [formControl]="ff7.formControl"
                          hasNoValue="true"
                          noValueLabel="none"
@@ -53,11 +51,17 @@
         </fdp-radio-group>
       </fdp-form-field>
 
-      <fdp-form-field #ff9 [id]="'loc'" zone="zRight" [noLabelLayout]="true">
-        <fdp-checkbox id="In" [formControl]="ff9.formControl"
+
+      <fdp-form-field #ff9 [id]="'in'" zone="zRight" [noLabelLayout]="true">
+        <fdp-checkbox  [formControl]="ff9.formControl"
                       isBinary="true"
                       value="are you in?">
         </fdp-checkbox>
+      </fdp-form-field>
+
+      <fdp-form-field #ff10 [id]="'topings'" label="Your favorite topings" zone="zLeft">
+        <fdp-checkbox-group [list]="topings" [formControl]="ff10.formControl">
+        </fdp-checkbox-group>
       </fdp-form-field>
 
 
