@@ -26,6 +26,7 @@ import {InputComponent} from './input/input.component';
 import {SelectComponent} from './select/select.component';
 import {RadioGroupComponent} from './radio-group/radio-group.component';
 import {CheckboxComponent} from './checkbox/checkbox.component';
+import {CheckboxGroupComponent} from './checkbox-group/checkbox-group.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {CheckboxComponent} from './checkbox/checkbox.component';
     InputComponent,
     SelectComponent,
     RadioGroupComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    CheckboxGroupComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,8 @@ import {CheckboxComponent} from './checkbox/checkbox.component';
     InputComponent,
     SelectComponent,
     RadioGroupComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    CheckboxGroupComponent
   ],
   exports: [
     FormGroupComponent,
@@ -56,7 +59,8 @@ import {CheckboxComponent} from './checkbox/checkbox.component';
     InputComponent,
     SelectComponent,
     RadioGroupComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    CheckboxGroupComponent
   ]
 })
 export class FormModule {

@@ -52,10 +52,11 @@ export class CheckboxComponent extends BaseInput {
     this._isInline = this.boolProperty(value);
   }
 
-
+  @Input()
   get value(): any {
     return this._value;
   }
+
   set value(value: any) {
     this._value = value;
   }
@@ -111,7 +112,9 @@ export class CheckboxComponent extends BaseInput {
       }
       this.onChange(this.multiSelectModel);
     }
+    this.stateChanges.next('onCheckClick');
     this.change.emit(this.value);
+    this._cd.markForCheck();
   }
 
   onCheckChange(event: Event) {
@@ -124,12 +127,13 @@ export class CheckboxComponent extends BaseInput {
       this._isBinary = true;
       return this.multiSelectModel;
     } else {
-      return this.multiSelectModel && this.multiSelectModel.indexOf(this.value);
+      return this.multiSelectModel && this.multiSelectModel.indexOf(this.value) > -1;
     }
   }
 
 
   writeValue(val: any): void {
+    console.log('write');
     this.multiSelectModel = val;
     this.checked = this.isChecked();
     if (this.isBinary) {

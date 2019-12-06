@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {SelectItem} from '@ngx-metaui/fiori-rules';
 
 @Component({
@@ -18,8 +18,10 @@ export class AppComponent {
   private radio1: FormControl;
   private radio2: FormControl;
   locations: Array<SelectItem> = [];
+  topings: Array<SelectItem> = [];
 
   model: FormControl = new FormControl(true);
+  model2: FormControl;
 
 
   constructor() {
@@ -48,10 +50,38 @@ export class AppComponent {
 
     this.validators = [
       Validators.maxLength(10)];
+
+    this.topings = [new Topings('aa', 'Tomatos'),
+      new Topings('bb', 'Blueberries'),
+      new Topings('cc', 'Ketchup')].map((item: Topings) => {
+        return {
+          label: item.name,
+          disabled: false,
+          value: item
+        };
+      }
+    );
+
+
+    const checkRequired: ValidatorFn = (control: FormControl): ValidationErrors | null => {
+
+      console.log('contr');
+      const val = control.value;
+      return !val || val.length ? {'sssssss': true} : null;
+    };
+
+    this.model2 = new FormControl([this.topings[1]], checkRequired);
+
   }
 }
 
 class SupplierLocation {
   constructor(public id: string, public name: string, public descriptin: string) {
+  }
+}
+
+
+class Topings {
+  constructor(public id: string, public name: string) {
   }
 }

@@ -1,6 +1,6 @@
 <div fd-form-item [isCheck]="true">
   <label fd-form-label [id]="id">
-    <input fd-form-control type="checkbox"
+    <input fd-form-control type="checkbox" tabindex="-1"
            [attr.id]="id"
            [checked]="checked"
            [disabled]="disabled"
@@ -10,7 +10,7 @@
            (click)="onCheckClick($event)"
     >
     {{
-      (isBinary ? value : (value.label ? value.label : value))
+      ((isBinary && value) ? value : (value.label ? value.label : value))
     }}
   </label>
 </div>
