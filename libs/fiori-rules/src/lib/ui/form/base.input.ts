@@ -48,7 +48,14 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   id: string;
 
   @Input()
-  name: string;
+  get name(): string {
+    return this._name ? this._name : this.id;
+  }
+
+  set name(value: string) {
+    this._name = value;
+    this.stateChanges.next('rb set name');
+  }
 
   @Input()
   get placeholder(): string {
@@ -110,6 +117,7 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
 
   protected _disabled: boolean;
   protected _value: string;
+  protected _name: string;
   protected _inErrorState: boolean;
   protected _destroyed = new Subject<void>();
 
@@ -128,10 +136,14 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
 
   }
 
-  abstract ngOnInit(): void;
+  ngOnInit(): void {
+    if (!this.id) {
+      throw new Error('form input must have [id] attribute.');
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.stateChanges.next(' ngOnChanges');
+    this.stateChanges.next('rb: ngOnChanges');
   }
 
   /**

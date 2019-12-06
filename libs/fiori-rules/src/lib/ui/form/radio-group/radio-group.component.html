@@ -1,0 +1,34 @@
+<fd-form-group>
+  <div fd-form-item [isCheck]="true" [isInline]="isInline" *ngIf="hasNoValue">
+    <label fd-form-label [attr.for]="id + '0'">
+      <input fd-form-control type="radio" tabindex="-1"
+             [attr.id]="id + '0'"
+             [checked]="value === undefined || value === null"
+             [disabled]="disabled"
+             [attr.name]="name"
+             (change)="onRadioChange(undefined, $event)"
+             (click)="onRadioClick($event)"
+      >
+      {{noValueLabel}}
+    </label>
+  </div>
+
+  <div fd-form-item [isCheck]="true" [isInline]="isInline" *ngFor="let item of list; let i=index">
+    <label fd-form-label [attr.for]="id+ (i + 1)">
+      <input fd-form-control type="radio" tabindex="-1"
+             [attr.id]="id+ (i + 1)"
+             [checked]="value === item"
+             [disabled]="disabled"
+             [attr.name]="name"
+             [attr.value]="item"
+             (change)="onRadioChange(item, $event)"
+             (click)="onRadioClick($event)"
+      >
+      {{(item.label ? item.label : item) }}
+    </label>
+  </div>
+</fd-form-group>
+
+
+<!--(change)="onRBChange($event)"
+             (click)="onClick($event)"-->
