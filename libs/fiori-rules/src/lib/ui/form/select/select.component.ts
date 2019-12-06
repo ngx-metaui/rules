@@ -25,29 +25,8 @@ import {FormFieldControl} from '../form-control';
 import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
+import {SelectItem} from '../data-model';
 
-
-/**
- * Interface SelectItem is used to deal with complex object in order to be able to format
- * custom label that is shown in the options.
- */
-export interface SelectItem {
-  /**
-   * Item text shown in the popup
-   */
-  label: string;
-
-  /**
-   * References to the object instance
-   */
-  value: any;
-  disabled?: boolean;
-
-  /**
-   * Trigger values is a text for selected item
-   */
-  triggerValue?: string;
-}
 
 /**
  * Renders a `<select ...>...[<option>...</option>]*...</select>` popup menu in the html.
@@ -119,7 +98,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
    * directly but for this you need to provide custom template or SelectItem[]
    */
   @Input()
-  list: Array<any>;
+  list: Array<SelectItem | string>;
 
   /**
    * String rendered as first value in the popup which let the user to make 'no selection' from
