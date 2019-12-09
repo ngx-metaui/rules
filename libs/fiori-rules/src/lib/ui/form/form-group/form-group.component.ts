@@ -284,19 +284,21 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
       this.updateFormProperties(item);
       const zone = (this._multiLayout) ? item.zone || 'zLeft' : 'zLeft';
       const field = new GroupField(zone, item.id, item.rank || index, item.renderer,
-        item.fluid);
+        item.columns, item.fluid);
 
       switch (zone) {
         case 'zTop':
           if (!this.tZone) {
             this.tZone = [];
           }
+          field.columns = 12;
           this.tZone.push(field);
           break;
         case 'zBottom':
           if (!this.bZone) {
             this.bZone = [];
           }
+          field.columns = 12;
           this.bZone.push(field);
           break;
         case 'zLeft':
@@ -358,18 +360,27 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
       while (current < (left.length + right.length)) {
         if (indexL < left.length) {
-          const field = new GroupField(left[indexL].zone, left[indexL].name, current,
-            left[indexL].renderer, left[indexL].isFluid);
-          merged[current++] = field;
+          const f = new GroupField(left[indexL].zone, left[indexL].name, current,
+            left[indexL].renderer, left[indexL].columns, left[indexL].isFluid);
+          f.styleClass = `col-sm-${f.columns} col-md-${f.columns} col-lg-${f.columns}`;
+
+          merged[current++] = f;
           indexL++;
 
-          if (field.isFluid) {
+          if (f.isFluid) {
             continue;
           }
         }
+
         if (indexR < right.length) {
-          merged[current++] = new GroupField(right[indexR].zone, right[indexR].name, current,
-            right[indexR].renderer);
+          if ((right[indexR].columns + left[indexL - 1].columns) !== 12) {
+            right[indexR].columns = 12 - left[indexL - 1].columns;
+          }
+          const f = new GroupField(right[indexR].zone, right[indexR].name, current,
+            right[indexR].renderer, right[indexR].columns);
+
+          f.styleClass = `col-sm-${f.columns} col-md-${f.columns} col-lg-${f.columns}`;
+          merged[current++] = f;
           indexR++;
         }
       }
@@ -402,7 +413,8 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
       const toEven = zLeft.length > zRight.length ? zRight : zLeft;
       for (let i = 0; i <= Math.abs(zLeft.length - zRight.length); i++) {
         const zone = toEven[0].zone;
-        toEven.push(new GroupField(zone, `${zone}-${i}`, (toEven.length + 1)));
+        toEven.push(new GroupField(zone, `${zone}-${i}`, (toEven.length + 1), null,
+          6));
       }
     }
     return;
@@ -414,6 +426,8 @@ export class GroupField {
 
   constructor(public zone: string, public name: string, public rank: number,
               public renderer?: TemplateRef<any>,
-              public isFluid: boolean = false) {
+              public columns: number = 6,
+              public isFluid: boolean = false,
+              public styleClass?: string) {
   }
 }

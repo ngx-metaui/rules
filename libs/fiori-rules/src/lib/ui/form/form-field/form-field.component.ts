@@ -41,7 +41,7 @@ import {defaultLabelForIdentifier} from '@ngx-metaui/rules';
 
 
 export type FormZone = 'zTop' | 'zBottom' | 'zLeft' | 'zRight';
-export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11| 12;
 
 /**
  * Form Field wraps the whole input field
@@ -143,7 +143,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   protected _formGroup: FormGroup;
   protected _required: boolean = false;
   protected _destroyed = new Subject<void>();
-  protected _columns: Column;
+  protected _columns: Column = 6;
 
   formControl: FormControl;
 
@@ -159,6 +159,10 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
 
     if (this.columns && (this.columns < 1 || this.columns > 12)) {
       throw new Error('[columns] accepts numbers between 1 - 12');
+    }
+
+    if (this.fluid) {
+      this.columns = 12;
     }
   }
 
