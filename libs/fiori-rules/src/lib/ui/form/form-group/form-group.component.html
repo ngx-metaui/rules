@@ -19,7 +19,6 @@
   </ng-container>
 </ng-template>
 
-
 <ng-template #zone let-fields let-title="title" let-multiColumn="multiColumn">
 
   <div *ngIf="fields"
@@ -29,14 +28,16 @@
       <h3 class="fd-section__title">{{title}}</h3>
     </div>
 
+
     <div class="row start-xs" *ngIf="mZone">
       <div fd-form-set
-           *ngFor="let field of fields;trackBy: trackByFieldName"
+           *ngFor="let f of fields;trackBy: trackByFieldName"
            class="col-xs-12"
-           [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': multiColumn && !field.isFluid }"
-           [style.order]="field.rank">
+           [ngClass]="f.styleClass"
+           [style.order]="f.rank">
 
-        <ng-container *ngTemplateOutlet="field?.renderer"></ng-container>
+
+        <ng-container *ngTemplateOutlet="f?.renderer"></ng-container>
       </div>
     </div>
   </div>

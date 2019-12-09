@@ -4,7 +4,6 @@
     </pre>
 
 
-
   <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
 
     <fdp-form-group #fg [multiLayout]="true" [formGroup]="form">
@@ -13,7 +12,8 @@
         <fdp-input [formControl]="ff.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field #ff2  [columns]="2"  [id]="'address'" required="true" hint="Hint for two " zone="zLeft">
+      <fdp-form-field #ff2 [columns]="2" [id]="'address'" required="true" hint="Hint for two "
+                      zone="zLeft">
         <fdp-input [formControl]="ff2.formControl"></fdp-input>
       </fdp-form-field>
       <fdp-form-field #ff3 [id]="'name'" hint="Hint for two " zone="zRight">
@@ -43,7 +43,6 @@
         </fdp-select>
       </fdp-form-field>
 
-
       <fdp-form-field #ff8 [id]="'loc'" label="Preferred location" zone="zLeft">
         <fdp-radio-group [list]="locations"
                          [formControl]="ff7.formControl"
@@ -55,7 +54,7 @@
 
 
       <fdp-form-field #ff9 [id]="'in'" zone="zRight" [noLabelLayout]="true">
-        <fdp-checkbox  [formControl]="ff9.formControl"
+        <fdp-checkbox [formControl]="ff9.formControl"
                       isBinary="true"
                       value="are you in?">
         </fdp-checkbox>
