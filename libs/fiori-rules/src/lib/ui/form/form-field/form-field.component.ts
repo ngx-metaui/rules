@@ -33,7 +33,7 @@ import {
 } from '@angular/core';
 import {InlineHelpComponent} from '@fundamental-ngx/core';
 import {FormFieldControl} from '../form-control';
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {coerceBooleanProperty, coerceNumberProperty} from '@angular/cdk/coercion';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {startWith, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -41,6 +41,7 @@ import {defaultLabelForIdentifier} from '@ngx-metaui/rules';
 
 
 export type FormZone = 'zTop' | 'zBottom' | 'zLeft' | 'zRight';
+export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 /**
  * Form Field wraps the whole input field
@@ -74,6 +75,17 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   @Input()
   noLabelLayout: boolean = false;
 
+  /**
+   * custom width in columns must be between 1 - 12
+   */
+  @Input()
+  get columns(): Column {
+    return this._columns;
+  }
+
+  set columns(value: Column) {
+    this._columns = <Column>coerceNumberProperty(value);
+  }
 
   @Input()
   get required(): boolean {
@@ -128,9 +140,10 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   @ContentChild(FormFieldControl, {static: false})
   _control: FormFieldControl<any>;
 
-  private _formGroup: FormGroup;
-  private _required: boolean = false;
-  private _destroyed = new Subject<void>();
+  protected _formGroup: FormGroup;
+  protected _required: boolean = false;
+  protected _destroyed = new Subject<void>();
+  protected _columns: Column;
 
   formControl: FormControl;
 
@@ -142,6 +155,10 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   ngOnInit(): void {
     if (!this.noLabelLayout && this.id && !this.label) {
       this.label = defaultLabelForIdentifier(this.id);
+    }
+
+    if (this.columns && (this.columns < 1 || this.columns > 12)) {
+      throw new Error('[columns] accepts numbers between 1 - 12');
     }
   }
 

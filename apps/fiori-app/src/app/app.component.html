@@ -1,7 +1,9 @@
 <main class="fd-page">
     <pre>
-<!--      {{form.errors() | json}}-->
+      {{form.value | json}}
     </pre>
+
+
 
   <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
 
@@ -11,7 +13,7 @@
         <fdp-input [formControl]="ff.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field #ff2 [id]="'address'" required="true" hint="Hint for two " zone="zLeft">
+      <fdp-form-field #ff2  [columns]="2"  [id]="'address'" required="true" hint="Hint for two " zone="zLeft">
         <fdp-input [formControl]="ff2.formControl"></fdp-input>
       </fdp-form-field>
       <fdp-form-field #ff3 [id]="'name'" hint="Hint for two " zone="zRight">
@@ -64,6 +66,11 @@
         </fdp-checkbox-group>
       </fdp-form-field>
 
+      <fdp-form-field #ff11 [id]="'description'" label="Notes" zone="zBottom">
+        <fdp-text-area [formControl]="ff11.formControl">
+        </fdp-text-area>
+      </fdp-form-field>
+
 
       <ng-template #i18n let-errros>
         <span *ngIf="errros.required">
@@ -75,7 +82,6 @@
           {{errros.maxlength.actualLength}}
         </span>
       </ng-template>
-
     </fdp-form-group>
   </div>
 </main>
