@@ -20,46 +20,31 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   Optional,
-  Output,
-  Self
+  Self,
+  ViewEncapsulation
 } from '@angular/core';
 import {FormFieldControl} from '../form-control';
 import {NgControl, NgForm} from '@angular/forms';
 import {BaseInput} from '../base.input';
-import {SelectItem} from '../../domain/data-model';
 
 
+/**
+ * Textarea field implementation to be compliant with our FormGroup/FormField design
+ *
+ */
 @Component({
-  selector: 'fdp-checkbox-group',
-  templateUrl: 'checkbox-group.component.html',
-  styleUrls: ['./checkbox-group.component.scss'],
+  selector: 'fdp-text-area',
+  templateUrl: 'text-area.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   providers: [
-    {provide: FormFieldControl, useExisting: CheckboxGroupComponent, multi: true}
+    {provide: FormFieldControl, useExisting: TextAreaComponent, multi: true}
   ]
 })
-export class CheckboxGroupComponent extends BaseInput {
+export class TextAreaComponent extends BaseInput {
 
-  @Input()
-  get isInline(): boolean {
-    return this._isInline;
-  }
-
-  set isInline(value: boolean) {
-    this._isInline = this.boolProperty(value);
-  }
-
-  @Input()
-  list: Array<SelectItem | string>;
-
-
-  @Output()
-  readonly change: EventEmitter<SelectItem | string> = new EventEmitter<SelectItem | string>();
-
-  protected _isInline: boolean = false;
 
   constructor(protected _cd: ChangeDetectorRef,
               @Optional() @Self() public ngControl: NgControl,
@@ -68,7 +53,6 @@ export class CheckboxGroupComponent extends BaseInput {
 
     super(_cd, ngControl, ngForm);
   }
-
 
 }
 

@@ -29,7 +29,7 @@ import {
 import {FormFieldControl} from '../form-control';
 import {NgControl, NgForm} from '@angular/forms';
 import {BaseInput} from '../base.input';
-import {SelectItem} from '../data-model';
+import {SelectItem} from '../../domain/data-model';
 
 
 @Component({
@@ -133,7 +133,6 @@ export class CheckboxComponent extends BaseInput {
 
 
   writeValue(val: any): void {
-    console.log('write');
     this.multiSelectModel = val;
     this.checked = this.isChecked();
     if (this.isBinary) {

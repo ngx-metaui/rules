@@ -65,7 +65,6 @@ export class AppComponent {
 
     const checkRequired: ValidatorFn = (control: FormControl): ValidationErrors | null => {
 
-      console.log('contr');
       const val = control.value;
       return !val || val.length ? {'sssssss': true} : null;
     };

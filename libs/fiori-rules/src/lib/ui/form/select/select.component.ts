@@ -25,7 +25,7 @@ import {FormFieldControl} from '../form-control';
 import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
-import {SelectItem} from '../data-model';
+import {SelectItem} from '../../domain/data-model';
 
 
 /**
@@ -203,7 +203,6 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   }
 
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
     this._cd.detectChanges();
   }
 

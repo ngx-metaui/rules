@@ -18,20 +18,20 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormModule} from './form/form.module';
+import {FdpFormModule} from './form/fdp-form.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    FormModule
+    FdpFormModule
   ],
   declarations: [
   ],
   entryComponents: [
   ],
   exports: [
-    FormModule
+    FdpFormModule
   ]
 })
 export class UILibModule {
