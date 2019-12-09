@@ -19,7 +19,12 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {FormModule as FdFormModule, InlineHelpModule, SelectModule} from '@fundamental-ngx/core';
+import {
+  DatePickerModule as FdDatePickerModule,
+  FormModule as FdFormModule,
+  InlineHelpModule,
+  SelectModule
+} from '@fundamental-ngx/core';
 import {FormGroupComponent} from './form-group/form-group.component';
 import {FormFieldComponent} from './form-field/form-field.component';
 import {InputComponent} from './input/input.component';
@@ -28,6 +33,7 @@ import {RadioGroupComponent} from './radio-group/radio-group.component';
 import {CheckboxComponent} from './checkbox/checkbox.component';
 import {CheckboxGroupComponent} from './checkbox-group/checkbox-group.component';
 import {TextAreaComponent} from './text-area/text-area.component';
+import {DatePickerComponent} from './date-picker/date-picker.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +44,8 @@ import {TextAreaComponent} from './text-area/text-area.component';
     RadioGroupComponent,
     CheckboxComponent,
     CheckboxGroupComponent,
-    TextAreaComponent
+    TextAreaComponent,
+    DatePickerComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +53,8 @@ import {TextAreaComponent} from './text-area/text-area.component';
     ReactiveFormsModule,
     FdFormModule,
     InlineHelpModule,
-    SelectModule
+    SelectModule,
+    FdDatePickerModule
   ],
   entryComponents: [
     InputComponent,
@@ -54,7 +62,8 @@ import {TextAreaComponent} from './text-area/text-area.component';
     RadioGroupComponent,
     CheckboxComponent,
     CheckboxGroupComponent,
-    TextAreaComponent
+    TextAreaComponent,
+    DatePickerComponent
   ],
   exports: [
     FormGroupComponent,
@@ -64,7 +73,8 @@ import {TextAreaComponent} from './text-area/text-area.component';
     RadioGroupComponent,
     CheckboxComponent,
     CheckboxGroupComponent,
-    TextAreaComponent
+    TextAreaComponent,
+    DatePickerComponent
   ]
 })
 export class FdpFormModule {

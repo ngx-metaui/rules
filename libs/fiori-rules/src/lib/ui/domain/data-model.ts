@@ -1,4 +1,3 @@
-
 /**
  * Interface SelectItem is used to deal with complex object in order to be able to format
  * custom label that is shown in the options.
@@ -19,4 +18,8 @@ export interface SelectItem {
    * Trigger values is a text for selected item
    */
   triggerValue?: string;
+}
+
+export function isSelectItem(item: SelectItem): item is SelectItem {
+  return item.label !== undefined && item.value !== undefined;
 }

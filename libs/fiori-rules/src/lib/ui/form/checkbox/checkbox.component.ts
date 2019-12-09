@@ -108,7 +108,7 @@ export class CheckboxComponent extends BaseInput {
           this.multiSelectModel = [this.value];
         }
       } else {
-        this.multiSelectModel = this.multiSelectModel.filter(val => val !== this.value);
+        this.multiSelectModel = this.multiSelectModel.filter(this.filterOut.bind(this));
       }
       this.onChange(this.multiSelectModel);
     }
@@ -126,11 +126,13 @@ export class CheckboxComponent extends BaseInput {
     if (this.isBinary || typeof this.multiSelectModel === 'boolean') {
       this._isBinary = true;
       return this.multiSelectModel;
+    } else if (this.multiSelectModel && this.multiSelectModel.length > 0) {
+      return this.multiSelectModel.findIndex(this.containsPredicate.bind(this)) > -1;
+
     } else {
-      return this.multiSelectModel && this.multiSelectModel.indexOf(this.value) > -1;
+      return false;
     }
   }
-
 
   writeValue(val: any): void {
     this.multiSelectModel = val;
@@ -142,6 +144,15 @@ export class CheckboxComponent extends BaseInput {
     }
 
     this.stateChanges.next('writeValue');
+  }
+
+
+  private containsPredicate(item: any): boolean {
+    return this.lookupValue(item) === this.lookupValue(this.value);
+  }
+
+  private filterOut(item: any): boolean {
+    return this.lookupValue(item) !== this.lookupValue(this.value);
   }
 }
 

@@ -17,7 +17,7 @@
     <label fd-form-label [attr.for]="id+ (i + 1)">
       <input fd-form-control type="radio" tabindex="-1"
              [attr.id]="id+ (i + 1)"
-             [checked]="value === item"
+             [checked]="validateChecked(item)"
              [disabled]="disabled"
              [attr.name]="name"
              [attr.value]="item"

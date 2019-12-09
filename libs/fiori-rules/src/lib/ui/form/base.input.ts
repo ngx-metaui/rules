@@ -34,6 +34,7 @@ import {FormFieldControl} from './form-control';
 import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
+import {isSelectItem} from '../domain/data-model';
 
 
 /**
@@ -97,6 +98,14 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     }
   }
 
+  @Input()
+  compact: boolean = false;
+
+
+  @Input()
+  lookupKey: string;
+
+
   /**
    * Reference to internal Input element
    */
@@ -115,7 +124,7 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   readonly stateChanges: Subject<any> = new Subject<any>();
 
   protected _disabled: boolean;
-  protected _value: string;
+  protected _value: any;
   protected _name: string;
   protected _inErrorState: boolean;
   protected _destroyed = new Subject<void>();
@@ -218,7 +227,7 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
    *  Need re-validates errors on every CD iteration to make sure we are also
    *  covering non-control errors, errors that happens outside of this control
    */
-  private updateErrorState() {
+  protected updateErrorState() {
     const oldState = this._inErrorState;
     const parent = this.ngForm;
     const control = this.ngControl ? this.ngControl.control as FormControl : null;
@@ -233,6 +242,14 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
 
   protected boolProperty(value: boolean): boolean {
     return coerceBooleanProperty(value);
+  }
+
+  protected lookupValue(item: any): string {
+    if (isSelectItem(item)) {
+      return (this.lookupKey) ? item.value[this.lookupKey] : item.value;
+    } else {
+      return (this.lookupKey) ? item[this.lookupKey] : item;
+    }
   }
 }
 

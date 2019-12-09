@@ -177,6 +177,12 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
 
   /**
+   * Convinient way to initialize internal FormControls
+   */
+  @Input()
+  object: any;
+
+  /**
    * This is just here to support several ways to pass in translation for the possible error
    * messages
    *
@@ -315,10 +321,14 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   }
 
 
-  private updateFormProperties(item) {
+  private updateFormProperties(item: FormFieldComponent) {
     item.hintPlacement = this._hintPlacement;
     item.i18Strings = this.i18Strings;
     item.formGroup = this.formGroup;
+
+    if (this.object && this.object[item.id]) {
+      item.formControl.patchValue(this.object[item.id]);
+    }
   }
 
   /**
