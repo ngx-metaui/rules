@@ -6,6 +6,7 @@
                     [id]="id + (i + 1)"
                     [value]="item"
                     [name]="name"
+                    [lookupKey]="lookupKey"
                     (change)="change.emit(item)"
                     [disabled]="item.disabled ? item.disabled : disabled">
 

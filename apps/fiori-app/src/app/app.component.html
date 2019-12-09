@@ -1,72 +1,93 @@
 <main class="fd-page">
-    <pre>
-      {{form.value | json}}
-    </pre>
-
-
   <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
 
-    <fdp-form-group #fg [multiLayout]="true" [formGroup]="form">
-      <fdp-form-field #ff [id]="'firstName'" hint="Hint for one "
-                      zone="zLeft" [validators]="validators">
-        <fdp-input [formControl]="ff.formControl"></fdp-input>
+    <fdp-form-group #fg [multiLayout]="true" [formGroup]="form"
+      [object]="data"
+    >
+
+      <!--
+    Left side
+      -->
+      <fdp-form-field #ffl1 [id]="'firstName'" hint="Hint for one " zone="zLeft"
+                      [validators]="validators" rank="10">
+        <fdp-input [formControl]="ffl1.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field #ff2 [columns]="2" [id]="'address'" required="true" hint="Hint for two "
-                      zone="zLeft">
-        <fdp-input [formControl]="ff2.formControl"></fdp-input>
-      </fdp-form-field>
-      <fdp-form-field #ff3 [id]="'name'" hint="Hint for two " zone="zRight">
-        <fdp-input [formControl]="ff3.formControl"></fdp-input>
+      <fdp-form-field #ffl2 [columns]="8" [id]="'address'" required="true" hint="Hint for two "
+                      zone="zLeft" rank="20">
+        <fdp-input [formControl]="ffl2.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field #ff4 [id]="'Last'" hint="Last for two " zone="zRight">
-        <fdp-input [formControl]="ff4.formControl"></fdp-input>
+      <fdp-form-field #ffl3 [id]="'email'" label="E-mail" hint="Last for two " zone="zLeft"
+                      rank="30">
+        <fdp-input [formControl]="ffl3.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field #ff5 [id]="'email'" label="E-mail" hint="Last for two " zone="zLeft"
-                      fluid="true">
-        <fdp-input [formControl]="ff5.formControl"></fdp-input>
-      </fdp-form-field>
 
-      <fdp-form-field #ff6 [id]="'amount'" [placeholder]="'Select cost amount'" hint="Hint for two "
-                      zone="zLeft">
-        <fdp-input [formControl]="ff6.formControl"></fdp-input>
-      </fdp-form-field>
+      <fdp-form-field #ffl5 [id]="'color'" [required]="true"
+                      [placeholder]="'Select color'"
+                      hint="Last for two " zone="zLeft" rank="40">
 
-      <fdp-form-field #ff7 [id]="'costCenter'" [required]="true"
-                      [placeholder]="'Select cost center'"
-                      hint="Last for two " zone="zRight">
-
-        <fdp-select [formControl]="ff7.formControl" [list]="colors"
+        <fdp-select [formControl]="ffl5.formControl" [list]="colors"
                     [noSelectionString]="'(no value)'">
         </fdp-select>
       </fdp-form-field>
 
-      <fdp-form-field #ff8 [id]="'loc'" label="Preferred location" zone="zLeft">
+      <fdp-form-field #ffl6 [id]="'location'" label="Preferred location" zone="zLeft" rank="60">
         <fdp-radio-group [list]="locations"
-                         [formControl]="ff7.formControl"
+                         [formControl]="ffl6.formControl"
                          hasNoValue="true"
+                         lookupKey="id"
                          noValueLabel="none"
                          name="location">
         </fdp-radio-group>
       </fdp-form-field>
 
 
-      <fdp-form-field #ff9 [id]="'in'" zone="zRight" [noLabelLayout]="true">
-        <fdp-checkbox [formControl]="ff9.formControl"
+      <fdp-form-field #ffl8 [id]="'userConfirmation'" zone="zLeft" [noLabelLayout]="true" rank="80">
+        <fdp-checkbox [formControl]="ffl8.formControl"
                       isBinary="true"
                       value="are you in?">
         </fdp-checkbox>
       </fdp-form-field>
 
-      <fdp-form-field #ff10 [id]="'topings'" label="Your favorite topings" zone="zLeft">
-        <fdp-checkbox-group [list]="topings" [formControl]="ff10.formControl">
+
+      <!--
+      Right side
+      -->
+
+      <fdp-form-field #ffr5 [id]="'lastName'" hint="Enter your last name" zone="zRight" rank="10">
+        <fdp-input [formControl]="ffr5.formControl"></fdp-input>
+      </fdp-form-field>
+
+
+      <fdp-form-field #ffr2 [id]="'amount'" [placeholder]="'Select cost amount'" rank="20"
+                      hint="Hint for amount "
+                      zone="zRight">
+        <fdp-input type="number" [formControl]="ffr2.formControl"></fdp-input>
+      </fdp-form-field>
+
+      <fdp-form-field #ffr4 [id]="'accInfo'" hint="hint to enter account info " zone="zRight"
+                      rank="30">
+        <fdp-input [formControl]="ffr4.formControl"></fdp-input>
+      </fdp-form-field>
+
+
+      <fdp-form-field #ffr6 [id]="'startDate'" label="Start Date" zone="zRight" rank="40"
+                      hint="Enter start date">
+        <fdp-date-picker [formControl]="ffr6.formControl">
+        </fdp-date-picker>
+      </fdp-form-field>
+
+      <fdp-form-field #ffr9 [id]="'topings'" label="Your favorite topings" zone="zRight" rank="70">
+        <fdp-checkbox-group [list]="topings" [formControl]="ffr9.formControl"
+                            lookupKey="id">
         </fdp-checkbox-group>
       </fdp-form-field>
 
-      <fdp-form-field #ff11 [id]="'description'" label="Notes" zone="zBottom">
-        <fdp-text-area [formControl]="ff11.formControl">
+
+      <fdp-form-field #ffb1 [id]="'description'" label="Notes" zone="zBottom">
+        <fdp-text-area [formControl]="ffb1.formControl">
         </fdp-text-area>
       </fdp-form-field>
 

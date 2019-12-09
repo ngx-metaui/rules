@@ -9,28 +9,19 @@ import {SelectItem} from '@ngx-metaui/fiori-rules';
 })
 export class AppComponent {
   title = 'fiori-app';
-  control: FormControl;
-  control2: FormControl;
   form: FormGroup;
   private validators: ValidatorFn[];
 
   colors = ['blue', 'green', 'red'];
-  private radio1: FormControl;
-  private radio2: FormControl;
   locations: Array<SelectItem> = [];
   topings: Array<SelectItem> = [];
 
-  model: FormControl = new FormControl(true);
-  model2: FormControl;
 
+  data: SomeObject;
 
   constructor() {
 
     this.form = new FormGroup({});
-    this.control = new FormControl('blue');
-
-    this.radio2 = new FormControl('blue');
-
     const o = [];
     o.push(new SupplierLocation('123', 'Palo Alto', 'asdfasfd'));
     o.push(new SupplierLocation('12443', 'Prague', 'asdfasfd'));
@@ -45,9 +36,6 @@ export class AppComponent {
         };
       }
     );
-
-    this.radio1 = new FormControl(this.locations[2], Validators.required);
-
     this.validators = [
       Validators.maxLength(10)];
 
@@ -61,16 +49,31 @@ export class AppComponent {
         };
       }
     );
-
-
     const checkRequired: ValidatorFn = (control: FormControl): ValidationErrors | null => {
-
       const val = control.value;
       return !val || val.length ? {'sssssss': true} : null;
     };
 
-    this.model2 = new FormControl([this.topings[1]], checkRequired);
+    this.data = new SomeObject('Fred', '3420 Hills View, Palo Alto',
+      'ariba@sap.com', 'blue', o[1], true,
+      'Flinstone', 123, 'A123-11', new Date(2019, 11, 3),
+      [new Topings('aa', 'Tomatos')], 'xx');
+  }
+}
 
+class SomeObject {
+  constructor(public firstName: string,
+              public address: string,
+              public email: string,
+              public color: string,
+              public location: SupplierLocation,
+              public userConfirmation: boolean,
+              public lastName: string,
+              public amount: number,
+              public accInfo: string,
+              public startDate: Date,
+              public topings: Array<Topings>,
+              public description: string) {
   }
 }
 

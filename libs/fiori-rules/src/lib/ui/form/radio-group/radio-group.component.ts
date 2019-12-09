@@ -32,7 +32,6 @@ import {BaseInput} from '../base.input';
 import {SelectItem} from '../../domain/data-model';
 
 
-
 @Component({
   selector: 'fdp-radio-group',
   templateUrl: 'radio-group.component.html',
@@ -70,6 +69,8 @@ export class RadioGroupComponent extends BaseInput {
 
   protected _isInline: boolean = false;
 
+  isChecked: boolean = false;
+
   constructor(protected _cd: ChangeDetectorRef,
               @Optional() @Self() public ngControl: NgControl,
               @Optional() @Self() public ngForm: NgForm) {
@@ -79,6 +80,10 @@ export class RadioGroupComponent extends BaseInput {
   }
 
 
+  validateChecked(item: any): boolean {
+    return this.lookupValue(item) === this.lookupValue(this.value);
+  }
+
   onRadioClick(event: MouseEvent) {
     event.stopPropagation();
   }
@@ -87,7 +92,6 @@ export class RadioGroupComponent extends BaseInput {
     event.stopPropagation();
     this.value = item;
 
-    console.log(this.value);
     this.change.emit(this.value);
   }
 }
