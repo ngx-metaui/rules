@@ -41,7 +41,7 @@ import {defaultLabelForIdentifier} from '@ngx-metaui/rules';
 
 
 export type FormZone = 'zTop' | 'zBottom' | 'zLeft' | 'zRight';
-export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11| 12;
+export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 /**
  * Form Field wraps the whole input field
@@ -220,7 +220,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
       throw new Error('fdp-form-field must contain component implemented FormFieldControl.');
     }
 
-    if (!this.id) {
+    if (this._control.ngControl && !this.id) {
       throw new Error('fdp-form-field must contain [id] binding.');
     }
   }
@@ -237,7 +237,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   }
 
   private initFormControl() {
-    if (this._control.ngControl.control) {
+    if (this._control.ngControl && this._control.ngControl.control) {
       if (this.required) {
         this.validators.push(Validators.required);
       }

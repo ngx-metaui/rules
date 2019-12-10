@@ -1,9 +1,13 @@
+
 <main class="fd-page">
+
+  <fdp-link  icon="slim-arrow-right"  type="iconleft" (click)="onclick('clicked')">
+    This is my Link
+  </fdp-link>
+
   <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
 
-    <fdp-form-group #fg [multiLayout]="true" [formGroup]="form"
-      [object]="data"
-    >
+    <fdp-form-group #fg [multiLayout]="true" [formGroup]="form" [object]="data">
 
       <!--
     Left side
@@ -85,10 +89,17 @@
         </fdp-checkbox-group>
       </fdp-form-field>
 
+      <fdp-form-field  zone="zRight" rank="90">
+        <fdp-link  icon="slim-arrow-right"  type="iconleft" (click)="onclick('clicked')">
+          This is my Link
+        </fdp-link>
+      </fdp-form-field>
+
 
       <fdp-form-field #ffb1 [id]="'description'" label="Notes" zone="zBottom">
         <fdp-text-area [formControl]="ffb1.formControl">
         </fdp-text-area>
+
       </fdp-form-field>
 
 

@@ -11,7 +11,7 @@
  *
  *
  */
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {NgControl} from '@angular/forms';
 
 export abstract class FormFieldControl<T> {
@@ -58,4 +58,60 @@ export abstract class FormFieldControl<T> {
 
   abstract onContainerClick(event: MouseEvent): void;
 
+}
+
+
+export abstract class CanBeInForm implements FormFieldControl<any> {
+  protected _id: string;
+  protected _placeholder: string;
+  protected _value: any;
+  readonly _stateChanges: Subject<any> = new Subject<any>();
+
+  get id(): string {
+    return this._id;
+  }
+
+  set id(value: string) {
+    this._id = value;
+  }
+
+  get placeholder(): string {
+    return this._placeholder;
+  }
+
+  set placeholder(value: string) {
+    this._placeholder = value;
+  }
+
+  get value(): any | null {
+    return this._value;
+  }
+
+  set value(value: any | null) {
+    this._value = value;
+  }
+
+
+  get disabled(): boolean {
+    return false;
+  }
+
+  get focused(): boolean {
+    return false;
+  }
+
+  get inErrorState(): boolean {
+    return false;
+  }
+
+  get ngControl(): NgControl | null {
+    return null;
+  }
+
+  get stateChanges(): Observable<void> {
+    return this._stateChanges;
+  }
+
+  onContainerClick(event: MouseEvent): void {
+  }
 }

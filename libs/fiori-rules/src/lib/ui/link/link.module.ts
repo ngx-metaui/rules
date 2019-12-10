@@ -1,6 +1,7 @@
 /**
+ *
  * @license
- * F. Kolar
+ * Copyright 2017 SAP Ariba
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +16,29 @@
  * limitations under the License.
  *
  *
+ *
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FdpFormModule} from './form/fdp-form.module';
-import {FdpLinkModule} from './link/link.module';
+import {LinkComponent} from './link.component';
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FdpFormModule,
-    FdpLinkModule
+  declarations: [
+    LinkComponent
   ],
-  declarations: [],
-  entryComponents: [],
+  imports: [
+    CommonModule
+  ],
+  entryComponents: [
+    LinkComponent
+  ],
   exports: [
-    FdpFormModule,
-    FdpLinkModule
-  ]
+    LinkComponent
+  ],
+  providers: []
 })
-export class UILibModule {
+export class FdpLinkModule {
 }
 
 
