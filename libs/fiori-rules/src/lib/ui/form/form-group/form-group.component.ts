@@ -407,9 +407,10 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   }
 
   /**
-   * This is just the temp solution until I can figure better way of doing this. If I want
-   * e.g. 3 fields on the left and 1 field on the right. It will not work with current 6 column
-   * layout as left and right side is not even. Even the array with empty content
+   * This is just the temp solution until I can figure out better way of doing this. If I want
+   * to have e.g. 3 fields on the left and 1 field on the right. It will not work with current
+   * 6-column width layout as left and right side are not even.
+   *
    */
   private evenFields(zLeft: GroupField[], zRight: GroupField[]) {
     zLeft.sort((a, b) => a.rank - b.rank);
@@ -420,6 +421,8 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
     zRight.sort((a, b) => a.rank - b.rank);
     if (zLeft.length !== zRight.length) {
+
+      // retrieve the smallest from both
       const toEven = zLeft.length > zRight.length ? zRight : zLeft;
       for (let i = 0; i <= Math.abs(zLeft.length - zRight.length); i++) {
         const zone = toEven[0].zone;

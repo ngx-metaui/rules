@@ -8,13 +8,16 @@
 
 
 <ng-template #body>
+  <!--  Render TOP Zone-->
   <ng-container *ngTemplateOutlet="zone;context: {$implicit: tZone, title:topTitle}">
   </ng-container>
 
+  <!--  Render MAIN Zone in which we usually support LEFT and RIGHT column -->
   <ng-container
     *ngTemplateOutlet="zone;context: {$implicit:mZone , title:mainTitle, multiColumn:true}">
   </ng-container>
 
+  <!--  Render BOTTOM Zone-->
   <ng-container *ngTemplateOutlet="zone;context: {$implicit:bZone , title:bottomTitle}">
   </ng-container>
 </ng-template>

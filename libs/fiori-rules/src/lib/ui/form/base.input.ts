@@ -102,6 +102,10 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   compact: boolean = false;
 
 
+  /**
+   * Used in filters and any kind of comparators when we work with objects and this identify
+   * unique field name based on which we are going to do the job
+   */
   @Input()
   lookupKey: string;
 
