@@ -59,6 +59,10 @@ export class AppComponent {
       'Flinstone', 123, 'A123-11', new Date(2019, 11, 3),
       [new Topings('aa', 'Tomatos')], 'xx');
   }
+
+  onclick(event: any) {
+    alert('aaa');
+  }
 }
 
 class SomeObject {
