@@ -18,6 +18,8 @@
  *
  *
  */
+import {Value} from '@ngx-metaui/rules';
+
 /**
  * Interface SelectItem is used to deal with complex object in order to be able to format
  * custom label that is shown in the options.
@@ -42,4 +44,40 @@ export interface SelectItem {
 
 export function isSelectItem(item: SelectItem): item is SelectItem {
   return item && item.label !== undefined && item.value !== undefined;
+}
+
+
+export class Money implements Value {
+
+  constructor(public readonly amount: number = 0, public  currency: string = 'USD',
+              public readonly locale: string = 'en_US') {
+  }
+
+
+  getTypes(): any {
+    return {
+      amount: Number,
+      currency: String,
+      locale: String
+    };
+  }
+
+  className(): string {
+    return 'Money';
+  }
+
+
+  toString(): string {
+    return this.amount + ', locale: ' + this.locale + ', code:  ' + this.currency;
+  }
+
+
+  clone(data: { amount?: number, currency?: string, locale?: string } = {}): Money {
+    return new Money(
+      (data.amount) ? data.amount : this.amount,
+      (data.currency) ? data.currency : this.currency,
+      (data.locale) ? data.locale : this.locale
+    );
+  }
+
 }

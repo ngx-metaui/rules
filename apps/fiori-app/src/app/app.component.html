@@ -49,7 +49,10 @@
         </fdp-checkbox>
       </fdp-form-field>
 
-
+      <fdp-form-field #ffl7 [id]="'amount'" zone="zLeft" label="Amount" rank="90">
+        <fdp-money id="amount" [formControl]="ffl7.formControl">
+        </fdp-money>
+      </fdp-form-field>
       <!--
       Right side
       -->
@@ -59,8 +62,8 @@
       </fdp-form-field>
 
 
-      <fdp-form-field #ffr2 [id]="'amount'" [placeholder]="'Select cost amount'" rank="20"
-                      hint="Hint for amount "
+      <fdp-form-field #ffr2 [id]="'age'" [placeholder]="'Select age'" rank="20"
+                      hint="Hint for age "
                       zone="zRight">
         <fdp-input type="number" [formControl]="ffr2.formControl"></fdp-input>
       </fdp-form-field>

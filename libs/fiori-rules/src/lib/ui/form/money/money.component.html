@@ -1,0 +1,28 @@
+<div class="fd-input-group fdp-money-input" *ngIf="editable">
+  <input #elemRef fd-form-control class="fd-input fd-input-group__input fdp-currency"
+         [attr.id]="id"
+         [attr.name]="name"
+         [attr.placeholder]="placeholder"
+         [(ngModel)]="inputDisplayValue"
+         [disabled]="disabled"
+         type="text"
+         [state]="inErrorState ? 'invalid' : '' "
+         (blur)="_onFocusChanged(false, elemRef)"
+         (focus)="_onFocusChanged(true, elemRef)"/>
+
+  <fdp-select *ngIf="!readonlyCurrencyCode"
+              class="fd-input-group__addon fd-input-group__addon--button"
+              [value]="currencySelection"
+              [list]="currencies"
+              [disabled]="disabled"
+              (selection)="onSelection($event)"
+              [attr.id]="id + '-currency'">
+  </fdp-select>
+  <div *ngIf="readonlyCurrencyCode" class="fdp-currency-readonly">{{money.currency}}</div>
+</div>
+
+<!--
+ For displaying currency readonly we will use the same component as it requires
+ some more work
+-->
+<span *ngIf="!editable" class=" fd-input_readonly">{{inputDisplayValue}} {{ currency }}</span>

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {SelectItem} from '@ngx-metaui/fiori-rules';
+import {Money, SelectItem} from '@ngx-metaui/fiori-rules';
 
 @Component({
   selector: 'ngx-metaui-root',
@@ -63,6 +63,7 @@ export class AppComponent {
   cbValue: any;
 
   data: SomeObject;
+  amount: Money = new Money(325);
 
   constructor() {
 
@@ -103,7 +104,8 @@ export class AppComponent {
       'ariba@sap.com', 'blue', o[1], true,
       'Flinstone', 123, 'A123-11', new Date(2019, 11, 3),
       [new Topings('aa', 'Tomatos')], 'xx',
-      new Supplier('sid4', 'brellaBox'));
+      new Supplier('sid4', 'brellaBox'),
+      new Money(250));
 
 
     for (let i = 0; i < companies.length; i++) {
@@ -125,12 +127,13 @@ class SomeObject {
               public location: SupplierLocation,
               public userConfirmation: boolean,
               public lastName: string,
-              public amount: number,
+              public age: number,
               public accInfo: string,
               public startDate: Date,
               public topings: Array<Topings>,
               public description: string,
-              public supplier: Supplier) {
+              public supplier: Supplier,
+              public amount: Money) {
   }
 }
 

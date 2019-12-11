@@ -20,11 +20,11 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {
+  ComboboxModule,
   DatePickerModule as FdDatePickerModule,
   FormModule as FdFormModule,
   InlineHelpModule,
-  SelectModule,
-  ComboboxModule
+  SelectModule
 } from '@fundamental-ngx/core';
 import {FormGroupComponent} from './form-group/form-group.component';
 import {FormFieldComponent} from './form-field/form-field.component';
@@ -36,6 +36,7 @@ import {CheckboxGroupComponent} from './checkbox-group/checkbox-group.component'
 import {TextAreaComponent} from './text-area/text-area.component';
 import {DatePickerComponent} from './date-picker/date-picker.component';
 import {ComboBoxComponent} from './combo-box/combo-box.component';
+import {MoneyComponent} from './money/money.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {ComboBoxComponent} from './combo-box/combo-box.component';
     CheckboxGroupComponent,
     TextAreaComponent,
     DatePickerComponent,
-    ComboBoxComponent
+    ComboBoxComponent,
+    MoneyComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +70,8 @@ import {ComboBoxComponent} from './combo-box/combo-box.component';
     CheckboxGroupComponent,
     TextAreaComponent,
     DatePickerComponent,
-    ComboBoxComponent
+    ComboBoxComponent,
+    MoneyComponent
   ],
   exports: [
     FormGroupComponent,
@@ -80,7 +83,8 @@ import {ComboBoxComponent} from './combo-box/combo-box.component';
     CheckboxGroupComponent,
     TextAreaComponent,
     DatePickerComponent,
-    ComboBoxComponent
+    ComboBoxComponent,
+    MoneyComponent
   ]
 })
 export class FdpFormModule {

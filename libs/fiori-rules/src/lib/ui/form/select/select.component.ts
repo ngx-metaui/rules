@@ -6,12 +6,14 @@ import {
   ContentChild,
   DoCheck,
   ElementRef,
+  EventEmitter,
   forwardRef,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
+  Output,
   QueryList,
   Self,
   SimpleChanges,
@@ -119,6 +121,9 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
       this.writeValue(value);
     }
   }
+
+  @Output()
+  selection: EventEmitter<any> = new EventEmitter();
 
   /**
    * custom option popup item template defined by app.
@@ -231,6 +236,12 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
     this._value = value;
     this.onChange(value);
     this.emitStateChange('writeValue');
+
+    // Hack: force child to refresh to child since they dont use onPush, cna be removed in new
+    // fd version as they call internally markForCheck
+    setInterval(() => {
+      this._cd.markForCheck();
+    }, 200);
   }
 
   /**
@@ -286,6 +297,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
     this.onTouched();
     this._cd.markForCheck();
     this.emitStateChange('onSelection');
+    this.selection.emit(this.value);
   }
 
 
