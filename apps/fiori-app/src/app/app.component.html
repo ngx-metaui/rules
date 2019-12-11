@@ -83,11 +83,10 @@
         </fdp-checkbox-group>
       </fdp-form-field>
 
-      <fdp-form-field #ffr6 [id]="'supplier'" label="Supplier" zone="zRight" rank="75">
-        <fdp-combo-box [dataSource]="cb2List" placeholder="Select your value"
-                       displayKey="name"
-                       lookupKey="name"
-                       [formControl]="ffr6.formControl">
+      <fdp-form-field #ffr6 [id]="'supplier'" placeholder="Select your value"
+                      label="Supplier" zone="zRight" rank="75">
+        <fdp-combo-box [formControl]="ffr6.formControl" [dataSource]="cb2List"
+                       displayKey="name" lookupKey="name">
 
         </fdp-combo-box>
       </fdp-form-field>
