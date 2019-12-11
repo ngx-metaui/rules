@@ -38,6 +38,7 @@ import {Money} from '../../domain/data-model';
  * Simple and configurable Currency component based on the input-groups. This
  * component combines an input and currency code select.
  *
+ * todo: remove hover and focus from the inputs elements and make it on the input group level
  *
  */
 @Component({
