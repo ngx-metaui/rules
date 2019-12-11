@@ -54,7 +54,7 @@ export class CheckboxGroupComponent extends BaseInput {
 
   @Input()
   list: Array<SelectItem | string>;
-  
+
 
   @Output()
   readonly change: EventEmitter<SelectItem | string> = new EventEmitter<SelectItem | string>();

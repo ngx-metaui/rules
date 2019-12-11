@@ -123,6 +123,18 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   @Input()
   displayKey: string;
 
+  /**
+   * Tell  the component if we are in editing mode.
+   *
+   */
+  @Input()
+  get editable(): boolean {
+    return this._editable;
+  }
+
+  set editable(value: boolean) {
+    this._editable = this.boolProperty(value);
+  }
 
   /**
    * Reference to internal Input element
@@ -145,6 +157,7 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   protected _value: any;
   protected _name: string;
   protected _inErrorState: boolean;
+  protected _editable: boolean;
   protected _destroyed = new Subject<void>();
 
   // @formatter:off
@@ -159,6 +172,8 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
+
+    this.editable = true;
 
   }
 
