@@ -142,11 +142,6 @@ export class DatePickerComponent extends BaseInput {
     super.writeValue(value);
   }
 
-  private input(): HTMLInputElement {
-    return this._elementRef.nativeElement.querySelector('.fd-input');
-  }
-
-
   onContainerClick(event: MouseEvent): void {
     if (this._elementRef && !this.focused) {
       this.input().focus();
