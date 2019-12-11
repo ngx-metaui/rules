@@ -23,7 +23,8 @@ import {
   DatePickerModule as FdDatePickerModule,
   FormModule as FdFormModule,
   InlineHelpModule,
-  SelectModule
+  SelectModule,
+  ComboboxModule
 } from '@fundamental-ngx/core';
 import {FormGroupComponent} from './form-group/form-group.component';
 import {FormFieldComponent} from './form-field/form-field.component';
@@ -34,6 +35,7 @@ import {CheckboxComponent} from './checkbox/checkbox.component';
 import {CheckboxGroupComponent} from './checkbox-group/checkbox-group.component';
 import {TextAreaComponent} from './text-area/text-area.component';
 import {DatePickerComponent} from './date-picker/date-picker.component';
+import {ComboBoxComponent} from './combo-box/combo-box.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import {DatePickerComponent} from './date-picker/date-picker.component';
     CheckboxComponent,
     CheckboxGroupComponent,
     TextAreaComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    ComboBoxComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +57,8 @@ import {DatePickerComponent} from './date-picker/date-picker.component';
     FdFormModule,
     InlineHelpModule,
     SelectModule,
-    FdDatePickerModule
+    FdDatePickerModule,
+    ComboboxModule
   ],
   entryComponents: [
     InputComponent,
@@ -63,7 +67,8 @@ import {DatePickerComponent} from './date-picker/date-picker.component';
     CheckboxComponent,
     CheckboxGroupComponent,
     TextAreaComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    ComboBoxComponent
   ],
   exports: [
     FormGroupComponent,
@@ -74,7 +79,8 @@ import {DatePickerComponent} from './date-picker/date-picker.component';
     CheckboxComponent,
     CheckboxGroupComponent,
     TextAreaComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    ComboBoxComponent
   ]
 })
 export class FdpFormModule {

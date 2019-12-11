@@ -1,10 +1,4 @@
-
 <main class="fd-page">
-
-  <fdp-link  icon="slim-arrow-right"  type="iconleft" (click)="onclick('clicked')">
-    This is my Link
-  </fdp-link>
-
   <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
 
     <fdp-form-group #fg [multiLayout]="true" [formGroup]="form" [object]="data">
@@ -28,18 +22,18 @@
       </fdp-form-field>
 
 
-      <fdp-form-field #ffl5 [id]="'color'" [required]="true"
+      <fdp-form-field #ffl4 [id]="'color'" [required]="true"
                       [placeholder]="'Select color'"
                       hint="Last for two " zone="zLeft" rank="40">
 
-        <fdp-select [formControl]="ffl5.formControl" [list]="colors"
+        <fdp-select [formControl]="ffl4.formControl" [list]="colors"
                     [noSelectionString]="'(no value)'">
         </fdp-select>
       </fdp-form-field>
 
-      <fdp-form-field #ffl6 [id]="'location'" label="Preferred location" zone="zLeft" rank="60">
+      <fdp-form-field #ffl5 [id]="'location'" label="Preferred location" zone="zLeft" rank="60">
         <fdp-radio-group [list]="locations"
-                         [formControl]="ffl6.formControl"
+                         [formControl]="ffl5.formControl"
                          hasNoValue="true"
                          lookupKey="id"
                          noValueLabel="none"
@@ -48,8 +42,8 @@
       </fdp-form-field>
 
 
-      <fdp-form-field #ffl8 [id]="'userConfirmation'" zone="zLeft" [noLabelLayout]="true" rank="80">
-        <fdp-checkbox [formControl]="ffl8.formControl"
+      <fdp-form-field #ffl6 [id]="'userConfirmation'" zone="zLeft" [noLabelLayout]="true" rank="80">
+        <fdp-checkbox [formControl]="ffl6.formControl"
                       isBinary="true"
                       value="are you in?">
         </fdp-checkbox>
@@ -60,8 +54,8 @@
       Right side
       -->
 
-      <fdp-form-field #ffr5 [id]="'lastName'" hint="Enter your last name" zone="zRight" rank="10">
-        <fdp-input [formControl]="ffr5.formControl"></fdp-input>
+      <fdp-form-field #ffr1 [id]="'lastName'" hint="Enter your last name" zone="zRight" rank="10">
+        <fdp-input [formControl]="ffr1.formControl"></fdp-input>
       </fdp-form-field>
 
 
@@ -71,26 +65,35 @@
         <fdp-input type="number" [formControl]="ffr2.formControl"></fdp-input>
       </fdp-form-field>
 
-      <fdp-form-field #ffr4 [id]="'accInfo'" hint="hint to enter account info " zone="zRight"
+      <fdp-form-field #ffr3 [id]="'accInfo'" hint="hint to enter account info " zone="zRight"
                       rank="30">
-        <fdp-input [formControl]="ffr4.formControl"></fdp-input>
+        <fdp-input [formControl]="ffr3.formControl"></fdp-input>
       </fdp-form-field>
 
 
-      <fdp-form-field #ffr6 [id]="'startDate'" label="Start Date" zone="zRight" rank="40"
+      <fdp-form-field #ffr4 [id]="'startDate'" label="Start Date" zone="zRight" rank="40"
                       hint="Enter start date">
-        <fdp-date-picker [formControl]="ffr6.formControl">
+        <fdp-date-picker [formControl]="ffr4.formControl">
         </fdp-date-picker>
       </fdp-form-field>
 
-      <fdp-form-field #ffr9 [id]="'topings'" label="Your favorite topings" zone="zRight" rank="70">
-        <fdp-checkbox-group [list]="topings" [formControl]="ffr9.formControl"
+      <fdp-form-field #ffr5 [id]="'topings'" label="Your favorite topings" zone="zRight" rank="70">
+        <fdp-checkbox-group [list]="topings" [formControl]="ffr5.formControl"
                             lookupKey="id">
         </fdp-checkbox-group>
       </fdp-form-field>
 
-      <fdp-form-field  zone="zRight" rank="90">
-        <fdp-link  icon="slim-arrow-right"  type="iconleft" (click)="onclick('clicked')">
+      <fdp-form-field #ffr6 [id]="'supplier'" label="Supplier" zone="zRight" rank="75">
+        <fdp-combo-box [dataSource]="cb2List" placeholder="Select your value"
+                       displayKey="name"
+                       lookupKey="name"
+                       [formControl]="ffr6.formControl">
+
+        </fdp-combo-box>
+      </fdp-form-field>
+
+      <fdp-form-field zone="zRight" rank="90">
+        <fdp-link icon="slim-arrow-right" type="iconleft" (click)="onclick('clicked')">
           This is my Link
         </fdp-link>
       </fdp-form-field>
@@ -116,5 +119,10 @@
     </fdp-form-group>
   </div>
 </main>
+
+
+<pre>
+  {{form.value | json}}
+</pre>
 
 

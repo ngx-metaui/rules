@@ -35,7 +35,9 @@ import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/for
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
 import {isSelectItem} from '../domain/data-model';
+import {isJsObject} from '../utils/lang';
 
+let randomId = 0;
 
 /**
  * All form components share the same information (value, name, placeholder,.. ) as well as
@@ -45,8 +47,10 @@ import {isSelectItem} from '../domain/data-model';
 export abstract class BaseInput implements FormFieldControl<any>, ControlValueAccessor,
   OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy {
 
+  protected defaultId: string = `fdp-id-${randomId++}`;
+
   @Input()
-  id: string;
+  id: string = this.defaultId;
 
   @Input()
   get name(): string {
@@ -108,6 +112,16 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
    */
   @Input()
   lookupKey: string;
+
+
+  /**
+   * When we deal with unknown object we use use this Input to retrieve value from specific
+   * property of the object.
+   *
+   * @See ComboBox, Select, RadioGroup, CheckBox Group
+   */
+  @Input()
+  displayKey: string;
 
 
   /**
@@ -254,6 +268,21 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     } else {
       return (this.lookupKey) ? item[this.lookupKey] : item;
     }
+  }
+
+
+  protected displayValue(item: any): string {
+    if (isSelectItem(item)) {
+      return item.label;
+    } else if (isJsObject(item)) {
+      return (this.displayKey) ? item[this.displayKey] : item;
+    } else {
+      return item;
+    }
+  }
+
+  protected input(): HTMLInputElement {
+    return this._elementRef.nativeElement.querySelector('.fd-input');
   }
 }
 
