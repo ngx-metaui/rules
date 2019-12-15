@@ -27,7 +27,8 @@ import {FormFieldControl} from '../form-control';
 import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
-import {SelectItem} from '../../domain/data-model';
+import {isSelectItem} from '../../domain/data-model';
+import {isFunction, isJsObject} from '../../utils/lang';
 
 
 /**
@@ -83,6 +84,9 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   readonly: boolean;
 
   @Input()
+  displayKey: string;
+
+  @Input()
   get disabled(): boolean {
     if (this.ngControl && this.ngControl.disabled !== null) {
       return this.ngControl.disabled;
@@ -100,7 +104,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
    * directly but for this you need to provide custom template or SelectItem[]
    */
   @Input()
-  list: Array<SelectItem | string>;
+  list: Array<any>;
 
   /**
    * String rendered as first value in the popup which let the user to make 'no selection' from
@@ -112,11 +116,11 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
 
 
   @Input()
-  get value(): string {
+  get value(): any {
     return this._value;
   }
 
-  set value(value: string) {
+  set value(value: any) {
     if (value !== this.value) {
       this.writeValue(value);
     }
@@ -169,7 +173,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
 
 
   protected _disabled: boolean;
-  protected _value: string;
+  protected _value: any;
   protected _inErrorState: boolean;
   protected _destroyed = new Subject<void>();
 
@@ -234,6 +238,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
 
   writeValue(value: any): void {
     this._value = value;
+    console.log(this.value);
     this.onChange(value);
     this.emitStateChange('writeValue');
 
@@ -304,6 +309,16 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   private emitStateChange(text: string): void {
     if (this.stateChanges) {
       this.stateChanges.next(text);
+    }
+  }
+
+  protected displayValue(item: any): string {
+    if (isSelectItem(item)) {
+      return item.label;
+    } else if (isJsObject(item) && this.displayKey) {
+      return isFunction(item[this.displayKey]) ? item[this.displayKey]() : item[this.displayKey];
+    } else {
+      return item;
     }
   }
 

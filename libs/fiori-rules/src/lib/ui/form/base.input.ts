@@ -35,7 +35,7 @@ import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/for
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
 import {isSelectItem} from '../domain/data-model';
-import {isJsObject} from '../utils/lang';
+import {isFunction, isJsObject} from '../utils/lang';
 
 let randomId = 0;
 
@@ -285,12 +285,11 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     }
   }
 
-
   protected displayValue(item: any): string {
     if (isSelectItem(item)) {
       return item.label;
-    } else if (isJsObject(item)) {
-      return (this.displayKey) ? item[this.displayKey] : item;
+    } else if (isJsObject(item) && this.displayKey) {
+      return isFunction(item[this.displayKey]) ? item[this.displayKey]() : item[this.displayKey];
     } else {
       return item;
     }

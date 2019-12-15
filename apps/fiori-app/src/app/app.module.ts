@@ -2,27 +2,26 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import { FormModule } from '@fundamental-ngx/core';
-import { DatePickerModule } from '@fundamental-ngx/core';
+import {DemoModule} from './demo/demo.module';
+import {PlaygroundModule} from './playground/play.module';
+import {AppRoutingModule} from './app-routing.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule} from '@angular/forms';
+import {NewsModule} from './demo/portlets/news/news.module';
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
-    FioriRulesModule,
-    ReactiveFormsModule,
+    BrowserAnimationsModule,
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NoopAnimationsModule,
-    FormModule,
-    DatePickerModule
-
+    DemoModule,
+    PlaygroundModule,
+    AppRoutingModule
   ],
+  exports: [],
   providers: [],
   bootstrap: [AppComponent]
 })

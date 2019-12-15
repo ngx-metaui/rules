@@ -23,7 +23,7 @@
              [viewValue]="item.triggerValue"
              [value]="item">
 
-    <ng-template [ngIf]="!optionValueTemplate">{{item.label ? item.label : item }}</ng-template>
+    <ng-template [ngIf]="!optionValueTemplate">{{displayValue(item) }}</ng-template>
 
     <ng-template [ngIf]="optionValueTemplate">
       <ng-container

@@ -89,6 +89,12 @@
 import {BehaviorSubject, Observable} from 'rxjs';
 import {FieldPath} from '@ngx-metaui/rules';
 import {isPresent} from '../utils/lang';
+import {InjectionToken} from '@angular/core';
+
+
+export const DATA_PROVIDERS =
+  new InjectionToken<Map<string, DataProvider<any>>>('DataProviderRegistry');
+
 
 export interface DataSource<T> {
   open(): Observable<T[]>;
@@ -141,12 +147,11 @@ export abstract class DataProvider<T> {
 }
 
 
-export abstract class ComboBoxDataSource<T> implements DataSource<T> {
+export class ComboBoxDataSource<T> implements DataSource<T> {
   static readonly MaxLimit = 5;
   protected dataChanges: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
 
   constructor(public dataProvider: DataProvider<any>) {
-    console.log('public dataProvider: DataProvider');
   }
 
   match(predicate?: string | Map<string, string>) {
@@ -170,7 +175,6 @@ export abstract class ComboBoxDataSource<T> implements DataSource<T> {
   }
 
   open(): Observable<T[]> {
-    console.log('open');
     return this.dataChanges.asObservable();
   }
 
