@@ -1,0 +1,11 @@
+:host {
+  td, th {
+    font-size: 13px;
+
+    &:last-child,  &:first-child {
+      width: 5%;
+      padding: 7px;
+      text-align: center;
+    }
+  }
+}

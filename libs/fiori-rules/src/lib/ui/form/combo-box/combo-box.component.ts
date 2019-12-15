@@ -21,6 +21,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Inject,
   Input,
   Optional,
   Renderer2,
@@ -33,7 +34,12 @@ import {NgControl, NgForm} from '@angular/forms';
 import {ComboboxComponent as FdComboBoxComponent} from '@fundamental-ngx/core';
 
 import {BaseInput} from '../base.input';
-import {ComboBoxDataSource, isDataSource} from '../../domain/data-source';
+import {
+  ComboBoxDataSource,
+  DATA_PROVIDERS,
+  DataProvider,
+  isDataSource
+} from '../../domain/data-source';
 import {Subscription} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ArrayComboBoxDataSource} from '../../domain/array-data-source';
@@ -106,10 +112,10 @@ export class ComboBoxComponent extends BaseInput {
 
 
   constructor(protected _cd: ChangeDetectorRef,
+              @Inject(DATA_PROVIDERS) private providers: Map<string, DataProvider<any>>,
               private _renderer: Renderer2,
               @Optional() @Self() public ngControl: NgControl,
               @Optional() @Self() public ngForm: NgForm) {
-
 
     super(_cd, ngControl, ngForm);
   }
@@ -118,6 +124,10 @@ export class ComboBoxComponent extends BaseInput {
   ngOnInit(): void {
     if (this.dataSource && this.entityClass) {
       throw new Error('You can either set dataSource or entityClass not both.');
+    }
+
+    if (this.entityClass && this.providers.has(this.entityClass)) {
+      this.dataSource = new ComboBoxDataSource(this.providers.get(this.entityClass));
     }
   }
 
@@ -145,6 +155,7 @@ export class ComboBoxComponent extends BaseInput {
     if (this._elementRef && this.id) {
       this._renderer.setAttribute(this.input(), 'id', this.id);
       this._renderer.setAttribute(this.input(), 'name', this.name);
+      this._renderer.setAttribute(this.input(), 'tabindex', '0');
     }
 
     this.patchQueryMethod();

@@ -231,6 +231,8 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
     if (!this.formGroup) {
       this.formGroup = new FormGroup({});
     }
+
+    console.log(this.object);
   }
 
 
@@ -328,6 +330,7 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
     if (this.object && this.object[item.id]) {
       item.formControl.patchValue(this.object[item.id]);
+
     }
   }
 

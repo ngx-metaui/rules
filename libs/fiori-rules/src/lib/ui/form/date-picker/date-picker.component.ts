@@ -137,7 +137,6 @@ export class DatePickerComponent extends BaseInput {
 
 
   writeValue(value: any): void {
-    console.log('writevalue date');
     this.updateFdDate(value);
     super.writeValue(value);
   }

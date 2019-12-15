@@ -1,8 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
 
-
+*, ::after, ::before {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
 
 body {
-  background-color: #f3f4f5;
+  margin: 0;
+  background-color: white;
+  font-family: '72', sans-serif;
+}
 
+
+*:focus {
+  outline: 0;
 }

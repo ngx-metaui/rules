@@ -112,7 +112,11 @@ export class MoneyComponent extends BaseInput {
   }
 
   writeValue(value: any): void {
-    if (value instanceof Money && value.amount) {
+    if (!value) {
+      value = new Money(0);
+    }
+
+    if (value instanceof Money && !isNaN(value.amount)) {
       const m = <Money>value;
       if (m.currency) {
         this.currencySelection = m.currency;
@@ -160,7 +164,8 @@ export class MoneyComponent extends BaseInput {
   }
 
   private updateMoney(amount: string | number, currency: string) {
-    this.money = this.money.clone({amount: Number(amount), currency: currency});
+
+    this.money = this.money.clone({amount: Number(amount || 0), currency: currency});
     this.inputDisplayValue = this.formatCurrency(this.money.amount);
     this.onChange(this.money);
     this.value = this.money;
