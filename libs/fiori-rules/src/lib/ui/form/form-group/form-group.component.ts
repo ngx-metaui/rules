@@ -132,6 +132,9 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   name: string;
 
   @Input()
+  editable: boolean = true;
+
+  @Input()
   get multiLayout(): boolean {
     return this._multiLayout;
   }
@@ -231,8 +234,6 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
     if (!this.formGroup) {
       this.formGroup = new FormGroup({});
     }
-
-    console.log(this.object);
   }
 
 
@@ -327,6 +328,7 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
     item.hintPlacement = this._hintPlacement;
     item.i18Strings = this.i18Strings;
     item.formGroup = this.formGroup;
+    item.editable = this.editable;
 
     if (this.object && this.object[item.id]) {
       item.formControl.patchValue(this.object[item.id]);

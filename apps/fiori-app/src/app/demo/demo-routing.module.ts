@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {InvoiceComponent} from './domain/invoice/invoice.component';
+import {InvoiceViewComponent} from './domain/invoice/invoice-view.component';
 
 
 const demoRouting: Routes = [
@@ -23,7 +24,7 @@ const demoRouting: Routes = [
       },
       {
         path: 'invoice/view/:id',
-        component: InvoiceComponent
+        component: InvoiceViewComponent
       }
     ]
 

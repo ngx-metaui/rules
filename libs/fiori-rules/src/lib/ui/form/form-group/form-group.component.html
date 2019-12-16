@@ -26,7 +26,11 @@
 
   <div *ngIf="fields"
        [formGroup]="formGroup"
-       class="fd-section fd-section--no-border fd-has-margin-regular">
+       class="fd-section fd-section--no-border fd-has-margin-regular"
+       [ngClass]="{'is-editable' : editable}"
+
+
+  >
     <div class="fd-section__header" *ngIf="title">
       <h3 class="fd-section__title">{{title}}</h3>
     </div>

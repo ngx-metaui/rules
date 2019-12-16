@@ -94,5 +94,10 @@ export class RadioGroupComponent extends BaseInput {
 
     this.change.emit(this.value);
   }
+
+  writeValue(value: any): void {
+    super.writeValue(value);
+    this._cd.markForCheck();
+  }
 }
 

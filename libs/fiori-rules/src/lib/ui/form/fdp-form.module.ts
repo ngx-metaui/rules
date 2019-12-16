@@ -37,6 +37,7 @@ import {TextAreaComponent} from './text-area/text-area.component';
 import {DatePickerComponent} from './date-picker/date-picker.component';
 import {ComboBoxComponent} from './combo-box/combo-box.component';
 import {MoneyComponent} from './money/money.component';
+import {StringComponent} from './string/string.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {MoneyComponent} from './money/money.component';
     TextAreaComponent,
     DatePickerComponent,
     ComboBoxComponent,
-    MoneyComponent
+    MoneyComponent,
+    StringComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +73,8 @@ import {MoneyComponent} from './money/money.component';
     TextAreaComponent,
     DatePickerComponent,
     ComboBoxComponent,
-    MoneyComponent
+    MoneyComponent,
+    StringComponent
   ],
   exports: [
     FormGroupComponent,
@@ -84,7 +87,8 @@ import {MoneyComponent} from './money/money.component';
     TextAreaComponent,
     DatePickerComponent,
     ComboBoxComponent,
-    MoneyComponent
+    MoneyComponent,
+    StringComponent
   ]
 })
 export class FdpFormModule {

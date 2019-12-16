@@ -181,6 +181,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     // if (!this.id) {
     //   throw new Error('form input must have [id] attribute.');
     // }
+
+    this.ngControl.statusChanges.subscribe((status) => {
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -223,6 +226,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     }
   }
 
+  /**
+   * Each sub class must override this method as inheritance does not work
+   */
   writeValue(value: any): void {
     this._value = value;
     this.onChange(value);
@@ -279,9 +285,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
 
   protected lookupValue(item: any): string {
     if (isSelectItem(item)) {
-      return (this.lookupKey) ? item.value[this.lookupKey] : item.value;
+      return (this.lookupKey && item) ? item.value[this.lookupKey] : item.value;
     } else {
-      return (this.lookupKey) ? item[this.lookupKey] : item;
+      return (this.lookupKey && item) ? item[this.lookupKey] : item;
     }
   }
 

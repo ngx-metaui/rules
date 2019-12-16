@@ -20,7 +20,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
   Optional,
   Self,
   ViewEncapsulation
@@ -52,6 +51,11 @@ export class TextAreaComponent extends BaseInput {
 
 
     super(_cd, ngControl, ngForm);
+  }
+
+  writeValue(value: any): void {
+    super.writeValue(value);
+    this._cd.markForCheck();
   }
 
 }

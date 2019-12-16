@@ -1,0 +1,103 @@
+<main class="fd-page">
+  <header class="fd-page__header fd-has-background-color-background-2">
+    <div fd-action-bar>
+      <div fd-action-bar-back>
+        <button aria-label="back" fd-button [fdType]="'light'" [compact]="true"
+                [glyph]="'nav-back'" (click)="router.navigate(['/demo'])">
+        </button>
+      </div>
+      <div fd-action-bar-header>
+        <h3 fd-action-bar-title>Invoice</h3>
+        <div fd-action-bar-description>Invoice detail</div>
+      </div>
+    </div>
+  </header>
+  <div class="fd-page__content ">
+    <div class="row center-xs">
+      <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
+        <ng-container *ngTemplateOutlet="invoiceForm"></ng-container>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<ng-template #invoiceForm>
+  <fdp-form-group #fg [multiLayout]="true" [object]="invoice" [editable]="false" >
+    <!--
+  Left side
+    -->
+    <fdp-form-field [id]="'name'" label="Title" zone="zLeft"
+                    rank="10">
+      <fdp-string [value]="invoice.name"></fdp-string>
+    </fdp-form-field>
+
+    <fdp-form-field [id]="'requestor'"  zone="zLeft" rank="20">
+      <fdp-string [value]="invoice.requestor"></fdp-string>
+    </fdp-form-field>
+
+    <fdp-form-field [id]="'billingAddress'" label="Bill To" zone="zLeft" rank="30"
+                    >
+      <fdp-string [value]="invoice.billingAddress"></fdp-string>
+    </fdp-form-field>
+
+
+    <fdp-form-field [id]="'shippingAddress'" label="Ship To" zone="zLeft" rank="40"
+                    >
+      <fdp-string [value]="invoice.shippingAddress"></fdp-string>
+    </fdp-form-field>
+
+
+    <fdp-form-field [id]="'needBy'" label="Need By" zone="zLeft" rank="40">
+      <fdp-date-picker [editable]="false" [value]="invoice.needBy" ></fdp-date-picker>
+    </fdp-form-field>
+
+
+    <fdp-form-field [id]="'accountCategory'" label="Account Category" zone="zLeft" rank="40">
+      <fdp-string [value]="invoice.accountCategory"></fdp-string>
+    </fdp-form-field>
+
+    <fdp-form-field [id]="'isShared'" label="Is Shared?" zone="zLeft" rank="50"
+                    >
+      <fdp-string [value]="invoice.isShared ? 'Yes' : 'No' "></fdp-string>
+    </fdp-form-field>
+
+    <!--
+    Right side
+    -->
+    <fdp-form-field [id]="'uniqueName'" label="Id" zone="zRight"
+                    rank="5">
+      <fdp-string [value]="invoice.uniqueName"></fdp-string>
+    </fdp-form-field>
+
+
+    <fdp-form-field [id]="'totalAmounts'" zone="zRight" rank="10">
+      <fdp-money [value]="invoice.totalAmount" [editable]="false"></fdp-money>
+    </fdp-form-field>
+
+    <fdp-form-field [id]="'supplier'" zone="zRight" rank="20" >
+      <fdp-string [value]="invoice.supplier"></fdp-string>
+    </fdp-form-field>
+
+
+    <fdp-form-field [id]="'paymentTerms'" zone="zRight" rank="40" >
+      <fdp-string [value]="invoice.paymentTerms"></fdp-string>
+    </fdp-form-field>
+
+    <fdp-form-field [id]="'taxInvoiceNumber'" label="Tax Invoice Number"
+                    zone="zRight" rank="60">
+      <fdp-string [value]="invoice.taxInvoiceNumber"></fdp-string>
+    </fdp-form-field>
+
+
+    <fdp-form-field [id]="'purchaseOrder'" zone="zRight" rank="40">
+      <fdp-string [value]="invoice.purchaseOrder"></fdp-string>
+    </fdp-form-field>
+    s
+    <fdp-form-field [id]="'description'" label="Purpose" zone="zBottom">
+      <fdp-string [value]="invoice.description"></fdp-string>
+    </fdp-form-field>
+  </fdp-form-group>
+</ng-template>
+
+

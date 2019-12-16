@@ -87,6 +87,9 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   displayKey: string;
 
   @Input()
+  editable: boolean;
+
+  @Input()
   get disabled(): boolean {
     if (this.ngControl && this.ngControl.disabled !== null) {
       return this.ngControl.disabled;
@@ -238,7 +241,6 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
 
   writeValue(value: any): void {
     this._value = value;
-    console.log(this.value);
     this.onChange(value);
     this.emitStateChange('writeValue');
 
@@ -312,7 +314,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
     }
   }
 
-  protected displayValue(item: any): string {
+  displayValue(item: any): string {
     if (isSelectItem(item)) {
       return item.label;
     } else if (isJsObject(item) && this.displayKey) {
