@@ -2,7 +2,6 @@ import {Entity} from '@ngx-metaui/rules';
 import {Money} from '@ngx-metaui/fiori-rules';
 import {Address} from './address';
 import {User} from './user';
-import {PaymentTerms} from './payment-terms';
 import {Supplier} from './supplier';
 
 export class Invoice implements Entity {
@@ -16,15 +15,16 @@ export class Invoice implements Entity {
               public supplier?: Supplier,
               public purchaseOrder?: string,
               public purchasingUnit?: string,
-              public paymentTerms?: PaymentTerms,
+              public paymentTerms?: string,
               public taxInvoiceNumber?: string,
               public totalAmount?: Money,
               public billingAddress?: Address,
               public shippingAddress?: Address,
               public description?: string,
-              public internalId?: number) {
+              public internalId?: number,
+              public isShared?: boolean,
+              public accountCategory?: string) {
     this.createdDate = new Date();
-    this.needBy = new Date();
   }
 
 
@@ -44,13 +44,15 @@ export class Invoice implements Entity {
       supplier: Supplier,
       purchaseOrder: String,
       purchasingUnit: String,
-      paymentTerms: PaymentTerms,
+      paymentTerms: String,
       taxInvoiceNumber: String,
       totalAmount: Money,
       billingAddress: Address,
       shippingAddress: Address,
       description: String,
-      internalId: Number
+      internalId: Number,
+      isShared: Boolean,
+      accountCategory: String
     };
   }
 
@@ -67,8 +69,6 @@ export class Invoice implements Entity {
           return value;
         }
         switch (key) {
-          case 'paymentTerms':
-            return new PaymentTerms(value['uniqueName'], value['name'], value['description']);
           case 'requestor':
             return new User(value['uniqueName'], value['fullName'], value['firstName'],
               value['lastName'], value['organization'], value['email'], value['purchasingUnit'],
@@ -95,7 +95,8 @@ export class Invoice implements Entity {
                 value['purchaseOrder'],
                 value['purchasingUnit'], value['paymentTerms'], value['taxInvoiceNumber'],
                 value['totalAmount'], value['billingAddress'], value['shippingAddress'],
-                value['description']);
+                value['description'], value['internalId'], value['isShared'],
+                value['accountCategory']);
             } else {
               return value;
             }

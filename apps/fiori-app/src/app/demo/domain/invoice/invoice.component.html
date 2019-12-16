@@ -5,7 +5,7 @@
       [showBackButton]="true"
       [editing]="false"
       [description]="'Invoice with lines items'"
-      [actionItems]="butItems"
+      [actionItems]="operation === 'edit' ? butItemsEdit :  butItemsCreate "
       [placement]="'bottom-end'"
       (itemClick)="onActionClicked($event)"
       (backButtonClick)="onBackButtonClick()">
@@ -26,7 +26,7 @@
     <!--
   Left side
     -->
-    <fdp-form-field #ffl1 [id]="'name'" label="Title" zone="zLeft" fluid="true" required="true"
+    <fdp-form-field #ffl1 [id]="'name'" label="Title" zone="zLeft" columns="9" required="true"
                     placeholder="Title" rank="10">
       <fdp-input [formControl]="ffl1.formControl"></fdp-input>
     </fdp-form-field>
@@ -34,6 +34,7 @@
     <fdp-form-field #ffl2 [id]="'requestor'" required="true" placeholder="Requestor" zone="zLeft"
                     rank="20">
       <fdp-combo-box [formControl]="ffl2.formControl" [dataSource]="userDataSource"
+                     [readonly]="true"
                      displayKey="toString" lookupKey="fullName"></fdp-combo-box>
     </fdp-form-field>
 
@@ -57,17 +58,34 @@
       </fdp-date-picker>
     </fdp-form-field>
 
-    <fdp-form-field #ffl6 [id]="'purchaseOrder'"
-                    [placeholder]="'Purchase Order'" zone="zLeft" rank="40">
 
-      <fdp-select [formControl]="ffl6.formControl" [list]="['PO20022', 'PO1110', 'PO3456', 'PO987']"
-                  [noSelectionString]="'(no value)'">
-      </fdp-select>
+    <fdp-form-field #ffl6 [id]="'accountCategory'" label="Account Category" zone="zLeft" rank="40"
+    >
+      <fdp-radio-group [list]="['Asset', 'Order', 'Cost Center', 'Project']"
+                       [formControl]="ffl6.formControl"
+      >
+      </fdp-radio-group>
     </fdp-form-field>
+
+    <fdp-form-field #ffl7 [id]="'isShared'" label="Is Shared?" zone="zLeft" rank="50"
+                    noLabelLayout="true">
+      <fdp-checkbox [formControl]="ffl7.formControl"
+                    isBinary="true"
+                    value="are you in?">
+      </fdp-checkbox>
+    </fdp-form-field>
+
+
 
     <!--
     Right side
     -->
+    <fdp-form-field
+        #ffr0 [id]="'uniqueName'" label="Id" zone="zRight" columns="3"
+                    rank="5">
+      <fdp-input [formControl]="ffr0.formControl" [readonly]="true"></fdp-input>
+    </fdp-form-field>
+
 
     <fdp-form-field #ffr1 [id]="'totalAmount'" zone="zRight" rank="10">
       <fdp-money [formControl]="ffr1.formControl"></fdp-money>
@@ -82,7 +100,7 @@
     <fdp-form-field #ffr3 [id]="'paymentTerms'" zone="zRight" rank="40" required="true">
 
       <fdp-select [formControl]="ffr3.formControl" [list]="paymentTerms"
-                  displayKey="name" [noSelectionString]="'(no value)'">
+                  [noSelectionString]="'(no value)'">
       </fdp-select>
 
     </fdp-form-field>
@@ -93,10 +111,25 @@
       <fdp-input [formControl]="ffr4.formControl"></fdp-input>
     </fdp-form-field>
 
-    <fdp-form-field #ffb1 [id]="'description'" label="Purpose" zone="zBottom">
+
+    <fdp-form-field #ffr5 [id]="'purchaseOrder'"
+                    [placeholder]="'Purchase Order'" zone="zRight" rank="40">
+
+      <fdp-select [formControl]="ffr5.formControl" [list]="['PO20022', 'PO1110', 'PO3456', 'PO987']"
+                  [noSelectionString]="'(no value)'">
+      </fdp-select>
+    </fdp-form-field>
+
+
+
+    <fdp-form-field #ffb1 [id]="'description'" label="Purpose" zone="zBottom"
+                    placeholder="Describe the reason">
       <fdp-text-area [formControl]="ffb1.formControl">
       </fdp-text-area>
     </fdp-form-field>
+
+
+
 
 
     <ng-template #i18n let-errros>

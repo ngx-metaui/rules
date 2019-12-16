@@ -70,5 +70,8 @@ export class CheckboxGroupComponent extends BaseInput {
   }
 
 
+  writeValue(value: any): void {
+    super.writeValue(value);
+  }
 }
 

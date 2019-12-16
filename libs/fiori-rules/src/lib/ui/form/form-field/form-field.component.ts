@@ -129,6 +129,9 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   @Input()
   i18Strings: TemplateRef<any>;
 
+  @Input()
+  editable: boolean = true;
+
 
   @ViewChild('renderer', {static: true})
   renderer: TemplateRef<any>;
@@ -168,22 +171,24 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
 
 
   ngAfterContentChecked(): void {
-    this.validateFieldControlComponent();
+    // this.validateFieldControlComponent();
   }
 
   ngAfterContentInit(): void {
-    this.validateFieldControlComponent();
+    // this.validateFieldControlComponent();
 
-    this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
-      this.updateControlProperties();
+    if (this._control) {
+      this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
+        this.updateControlProperties();
 
-      // need to call explicitly detectChanges() instead of markForCheck before the
-      // modified validation state of the control passes over checked phase
-      this._cd.detectChanges();
-    });
+        // need to call explicitly detectChanges() instead of markForCheck before the
+        // modified validation state of the control passes over checked phase
+        this._cd.detectChanges();
+      });
+    }
 
     // Refresh UI when value changes
-    if (this._control.ngControl && this._control.ngControl.valueChanges) {
+    if (this._control && this._control.ngControl && this._control.ngControl.valueChanges) {
       this._control.ngControl.valueChanges
         .pipe(takeUntil(this._destroyed))
         .subscribe((v) => {
@@ -212,7 +217,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
 
 
   hasErrors(): boolean {
-    return this._control.inErrorState;
+    return this._control && this._control.inErrorState;
   }
 
   private validateFieldControlComponent() {
@@ -227,7 +232,8 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
 
 
   private validateErrorHandler() {
-    if (!this.i18Strings && (this.required || this.hasValidators())) {
+    if (this._control && this.validators.length > 1  && !this.i18Strings &&
+      (this.required || this.hasValidators())) {
       throw new Error('Validation strings are required for the any provided validations.');
     }
   }
@@ -237,7 +243,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   }
 
   private initFormControl() {
-    if (this._control.ngControl && this._control.ngControl.control) {
+    if (this._control && this._control.ngControl && this._control.ngControl.control) {
       if (this.required) {
         this.validators.push(Validators.required);
       }
@@ -251,6 +257,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
     if (this._control) {
       this._control.id = this.id;
       this._control.placeholder = this.placeholder;
+
     }
   }
 }

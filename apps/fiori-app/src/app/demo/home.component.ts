@@ -113,12 +113,10 @@ export class HomeComponent {
   }
 
   settingsCallback($event) {
-    console.log($event);
     alert('Settings Clicked');
   }
 
   signOutCallback($event) {
-    console.log($event);
     alert('Sign Out Clicked');
   }
 

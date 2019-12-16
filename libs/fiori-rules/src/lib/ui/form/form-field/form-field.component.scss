@@ -27,3 +27,9 @@
     color: red;
   }
 }
+
+::ng-deep .fd-input {
+  &[readonly] {
+    padding-left: 20px;
+  }
+}

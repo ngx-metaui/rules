@@ -27,7 +27,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {CanBeInForm, FormFieldControl} from '../form/form-control';
+import {FormFieldControl} from '../form/form-control';
 
 
 const VALID_INPUT_TYPES = [
@@ -58,7 +58,7 @@ export type LinkType = 'standard' | 'emphasized' | 'iconleft' | 'iconright';
     {provide: FormFieldControl, useExisting: LinkComponent, multi: true}
   ]
 })
-export class LinkComponent extends CanBeInForm {
+export class LinkComponent {
 
 
   @Input()

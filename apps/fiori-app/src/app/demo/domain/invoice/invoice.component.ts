@@ -1,12 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {Invoice} from '../model/invoice';
 import {ArrayComboBoxDataSource, ComboBoxDataSource} from '@ngx-metaui/fiori-rules';
 import {User} from '../model/user';
 import {Address} from '../model/address';
 import {AddressCSV, addressDB} from '../rest/address';
 import {UserCSV, userDB} from '../rest/user';
-import {PaymentTerms} from '../model/payment-terms';
 import {PaymentTermsCSV, paymentTermsDB} from '../rest/payment-terms';
 import {ActionItem} from '@fundamental-ngx/platform';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -14,7 +13,18 @@ import {Subscription} from 'rxjs';
 import {debounceTime, tap} from 'rxjs/operators';
 
 
-export const buttonItems: ActionItem[] = [
+export const buttonItemsEdit: ActionItem[] = [
+  {
+    label: 'Save',
+    type: undefined,
+    priority: 10,
+    compact: false,
+    editTitle: false,
+    options: 'emphasized'
+  }
+];
+
+export const buttonItemsCreate: ActionItem[] = [
   {
     label: 'Reset',
     type: 'standard',
@@ -24,7 +34,7 @@ export const buttonItems: ActionItem[] = [
     options: 'emphasized'
   },
   {
-    label: 'Submit',
+    label: 'Save',
     type: undefined,
     priority: 10,
     compact: false,
@@ -34,20 +44,20 @@ export const buttonItems: ActionItem[] = [
 ];
 
 @Component({
-  selector: 'fdp-shop',
+  selector: 'fdp-invoice',
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
-  butItems = buttonItems;
+  butItemsEdit = buttonItemsEdit;
+  butItemsCreate = buttonItemsCreate;
   form: FormGroup = new FormGroup({});
   invoice: Invoice;
   userDataSource: ComboBoxDataSource<User>;
   addressDataSource: ComboBoxDataSource<Address>;
-  paymentTerms: PaymentTerms[];
+  paymentTerms: string[];
 
   operation: string;
-
 
   private autoSaveSub: Subscription;
 
@@ -65,8 +75,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     } else {
       this.load();
-      this.initAutosave();
     }
+    this.initAutosave();
     this.initDataSources();
   }
 
@@ -84,33 +94,44 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   onActionClicked(event: ActionItem) {
-    if (event.label === 'reset') {
+    if (event.label === 'Reset') {
       localStorage.removeItem('in-progress');
-      this.form.patchValue({});
-      this.invoice = null;
-    } else {
-      const invoice: Invoice = this.form.value;
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
-        control.markAsTouched({onlySelf: true});
+        control.reset(undefined, {onlySelf: true, emitEvent: true});
       });
-
-      if (this.form.valid) {
-        const items = localStorage.getItem('invoices') || '[]';
-        if (items) {
-          console.log('Saveing: ', JSON.stringify(invoice));
-          const invoices: any[] = JSON.parse(items);
-
-          invoice.internalId = invoices.length + 1;
-          invoice.uniqueName = 'INV-' + invoices.length + 1;
-          invoices.push(invoice);
-          localStorage.setItem('invoices', JSON.stringify(invoices));
-          localStorage.removeItem('in-progress');
-        }
-      }
+      this.invoice = null;
+    } else {
+      this.doSave();
+      this.onBackButtonClick();
     }
   }
 
+
+  private doSave() {
+    const invoice: Invoice = this.form.value;
+    Object.keys(this.form.controls).forEach(field => {
+      const control = this.form.get(field);
+      control.markAsTouched({onlySelf: true});
+    });
+
+    if (this.form.valid) {
+      const items = localStorage.getItem('invoices') || '[]';
+      if (items) {
+        const invoices: any[] = JSON.parse(items);
+
+        if (invoice.internalId) {
+          invoices[invoice.internalId - 1] = invoice;
+        } else {
+          invoice.internalId = (invoices.length + 1);
+          invoice.uniqueName = `INV-${invoice.internalId}`;
+          invoices.push(invoice);
+        }
+        localStorage.setItem('invoices', JSON.stringify(invoices));
+        localStorage.removeItem('in-progress');
+      }
+    }
+  }
 
   private initDataSources() {
     this.userDataSource = new ArrayComboBoxDataSource<User>(
@@ -134,7 +155,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
 
     this.paymentTerms = paymentTermsDB.map((i: PaymentTermsCSV) => {
-      return new PaymentTerms(i.UniqueName, i.Name, i.Description);
+      return i.Name;
     });
   }
 
@@ -142,11 +163,14 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   private initAutosave() {
     this.autoSaveSub = this.form.valueChanges
       .pipe(
-        debounceTime(500),
+        debounceTime(1500),
         tap(change => {
           if (this.form.dirty) {
-            console.log(this.form.value);
-            localStorage.setItem('in-progress', JSON.stringify(this.form.value));
+            if (this.form.value && this.form.value.internalId) {
+              this.doSave();
+            } else {
+              localStorage.setItem('in-progress', JSON.stringify(this.form.value));
+            }
           }
         })
       )
@@ -161,6 +185,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         invoices.forEach((i) => {
           if (id === i['internalId']) {
             this.invoice = Invoice.fromJSON(JSON.stringify(i));
+            this.form.setControl('internalId', new FormControl(id));
           }
         });
       }

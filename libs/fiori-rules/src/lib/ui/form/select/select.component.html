@@ -20,7 +20,7 @@
   <fd-option *ngFor="let item of list; index as index"
              [disabled]="item.disabled ? true : false"
              (selectedChange)="onSelection($event)"
-             [viewValue]="item.triggerValue"
+             [viewValue]="item.triggerValue || item"
              [value]="item">
 
     <ng-template [ngIf]="!optionValueTemplate">{{displayValue(item) }}</ng-template>

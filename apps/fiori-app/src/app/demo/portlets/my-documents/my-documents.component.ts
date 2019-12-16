@@ -29,36 +29,17 @@ export class MyDocumentsComponent {
         router: '/demo'
       },
       {
-        id: 'PO0012',
-        date: '09/21/2019',
-        type: 'retail-store-manager',
-        read: 'accept',
-        router: '/demo'
-      },
-      {
-        id: 'INV8271',
+        id: 'INV-01',
         date: '09/21/2019',
         type: 'money-bills',
         read: 'accept',
-        router: '/demo/invoice'
+        router: '/demo/invoice/edit/1'
       },
       {
-        id: 'INV8271',
+        id: 'INV-02',
         date: '09/21/2019',
         type: 'money-bills',
-        router: '/demo'
-      },
-      {
-        id: 'INV8271',
-        date: '09/21/2019',
-        type: 'money-bills',
-        router: '/demo'
-      },
-      {
-        id: 'INV8271',
-        date: '09/21/2019',
-        type: 'money-bills',
-        router: '/demo'
+        router: '/demo/invoice/edit/2'
       }
     ];
   }

@@ -90,7 +90,6 @@ export class DatePickerComponent extends BaseInput {
               @Optional() @Self() public ngControl: NgControl,
               @Optional() @Self() public ngForm: NgForm) {
 
-
     super(_cd, ngControl, ngForm);
   }
 
@@ -117,6 +116,9 @@ export class DatePickerComponent extends BaseInput {
 
 
   ngAfterViewInit(): void {
+    if (!this._elementRef) {
+      return
+    }
     if (this._elementRef && this.id) {
       this._renderer.setAttribute(this.input(), 'id', this.id);
       this._renderer.setAttribute(this.input(), 'name', this.name);
@@ -137,7 +139,9 @@ export class DatePickerComponent extends BaseInput {
 
 
   writeValue(value: any): void {
-    this.updateFdDate(value);
+    if (this.editable) {
+      this.updateFdDate(value);
+    }
     super.writeValue(value);
   }
 
@@ -148,6 +152,9 @@ export class DatePickerComponent extends BaseInput {
   }
 
   private updateFdDate(value: any) {
+    if (!this._calendarRef) {
+      return;
+    }
     if (value instanceof Date) {
       this._fdDate = this.date2FdDate(value);
 

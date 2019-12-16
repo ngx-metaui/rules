@@ -23,8 +23,7 @@
              [attr.value]="item"
              (change)="onRadioChange(item, $event)"
              (click)="onRadioClick($event)"
-      >
-      {{(item.label ? item.label : item) }}
+      >{{(item.label ? item.label : item) }}
     </label>
   </div>
 </fd-form-group>
