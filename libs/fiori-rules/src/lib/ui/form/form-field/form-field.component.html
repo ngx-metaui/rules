@@ -1,8 +1,12 @@
+<ng-template [ngIf]="forceRender">
+  <ng-container *ngTemplateOutlet="renderer"></ng-container>
+</ng-template>
+
 <ng-template #renderer>
   <div fd-form-item (click)="_control && _control.onContainerClick($event)">
     <label fd-form-label [attr.for]="id">
       <span *ngIf="!noLabelLayout">{{label}}</span>
-      <span class="fdp-required-mark" *ngIf="required">*</span>
+      <span class="fdp-required-mark" *ngIf="editable && required">*</span>
       <fd-inline-help *ngIf="hint" [placement]="hintPlacement">
         {{hint}}
       </fd-inline-help>

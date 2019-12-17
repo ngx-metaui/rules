@@ -20,7 +20,12 @@
  */
 import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
+import {FormFieldControl} from '../form-control';
+import {NgControl} from '@angular/forms';
+import {Observable, Subject} from 'rxjs';
 
+
+let randomId = 0;
 
 /**
  * Simple component rendering values in the read only mode.
@@ -34,7 +39,9 @@ import {DomSanitizer} from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StringComponent {
+export class StringComponent implements FormFieldControl<any> {
+  protected defaultId: string = `fdp-string-${randomId++}`;
+
   private _value: string = '';
 
   @Input()
@@ -46,9 +53,58 @@ export class StringComponent {
     return this.sanitizer.bypassSecurityTrustHtml(this._value);
   }
 
+  readonly _stateChanges: Subject<any> = new Subject<any>();
+
   constructor(private sanitizer: DomSanitizer) {
   }
 
+  private readonly _disabled: boolean;
+  private _editable: boolean;
+  private readonly _focused: boolean;
+  private _id: string;
+  private readonly _inErrorState: boolean;
+  private readonly _ngControl: NgControl | null;
+  private _placeholder: string;
+
+  onContainerClick(event: MouseEvent): void {
+  }
+
+
+  get disabled(): boolean {
+    return false;
+  }
+
+  get editable(): boolean {
+    return false;
+  }
+
+  set editable(value: boolean) {
+    this._editable = value;
+  }
+
+  get focused(): boolean {
+    return this._focused;
+  }
+
+  get id(): string {
+    return this.defaultId;
+  }
+
+  get inErrorState(): boolean {
+    return false;
+  }
+
+  get ngControl(): NgControl | null {
+    return null;
+  }
+
+  get placeholder(): string {
+    return null;
+  }
+
+  get stateChanges(): Observable<void> {
+    return this._stateChanges;
+  }
 }
 
 

@@ -135,7 +135,6 @@ export class CheckboxComponent extends BaseInput {
   }
 
   writeValue(val: any): void {
-    console.log('valu: ' + val    );
     this.multiSelectModel = val;
     this.checked = this.isChecked();
     if (this.isBinary) {

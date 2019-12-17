@@ -81,6 +81,15 @@ export class ComboBoxComponent extends BaseInput {
     this.initializeDS(value);
   }
 
+  @Input()
+  get value(): any {
+    return super.getValue();
+  }
+
+  set value(value: any) {
+    super.setValue(value);
+  }
+
   /**
    * Todo: Name of the entity for which DataProvider will be loaded. You can either pass list of
    * items or use this entityClass and internally we should be able to do lookup to some registry

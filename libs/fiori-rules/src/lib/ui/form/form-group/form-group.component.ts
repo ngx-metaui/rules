@@ -275,7 +275,8 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
    * Make sure we have expected childs.
    */
   private validateFormFields(): boolean {
-    return this._fieldChildren.filter(item => !(item instanceof FormFieldComponent)).length === 0;
+    return this._fieldChildren.filter(item =>
+      !(item instanceof FormFieldComponent || item['renderer'])).length === 0;
   }
 
   /**

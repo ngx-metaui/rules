@@ -71,6 +71,14 @@ export class DatePickerComponent extends BaseInput {
   @Input()
   type: CalendarType = 'single';
 
+  @Input()
+  get value(): any {
+    return super.getValue();
+  }
+
+  set value(value: any) {
+    super.setValue(value);
+  }
 
   @ViewChild(FdDatePicker, {static: true, read: ElementRef})
   protected _elementRef: ElementRef;
@@ -117,7 +125,7 @@ export class DatePickerComponent extends BaseInput {
 
   ngAfterViewInit(): void {
     if (!this._elementRef) {
-      return
+      return;
     }
     if (this._elementRef && this.id) {
       this._renderer.setAttribute(this.input(), 'id', this.id);

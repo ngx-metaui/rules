@@ -58,6 +58,14 @@ export class InputComponent extends BaseInput {
   @Input()
   type: InputType = 'text';
 
+  @Input()
+  get value(): any {
+    return super.getValue();
+  }
+
+  set value(value: any) {
+    super.setValue(value);
+  }
 
   constructor(protected _cd: ChangeDetectorRef,
               @Optional() @Self() public ngControl: NgControl,
@@ -65,13 +73,20 @@ export class InputComponent extends BaseInput {
 
 
     super(_cd, ngControl, ngForm);
+
   }
 
   ngOnInit(): void {
     if (!this.type || VALID_INPUT_TYPES.indexOf(this.type) === -1) {
-      throw new Error(`Input type ${this.type} is not supported`);
+      throw new Error(` Input type ${this.type} is not supported`);
     }
   }
+
+
+  ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+  }
+
 
 }
 

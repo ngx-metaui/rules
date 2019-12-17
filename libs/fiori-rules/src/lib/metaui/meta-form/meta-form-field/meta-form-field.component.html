@@ -1,0 +1,20 @@
+<ng-template #renderer>
+  <fdp-form-field *ngIf="properties('visible')"
+                  [forceRender]="true"
+                  [i18Strings]="i18Strings"
+                  [formGroup]="formGroup"
+                  [id]="field"
+                  [editable]="editable"
+                  [label]="label"
+                  [zone]="zone"
+                  [validators]="validators"
+                  [columns]="columns"
+                  [required]="isRequired()"
+                  [placeholder]="placeholder"
+                  [rank]="rank"
+                  [hint]="hint"
+                  [validators]="validators">
+
+    <m-include-component [wrapNgContent]="false" fdpFormFieldAdapter></m-include-component>
+  </fdp-form-field>
+</ng-template>

@@ -20,6 +20,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
   Optional,
   Self,
   ViewEncapsulation
@@ -44,6 +45,14 @@ import {BaseInput} from '../base.input';
 })
 export class TextAreaComponent extends BaseInput {
 
+  @Input()
+  get value(): any {
+    return super.getValue();
+  }
+
+  set value(value: any) {
+    super.setValue(value);
+  }
 
   constructor(protected _cd: ChangeDetectorRef,
               @Optional() @Self() public ngControl: NgControl,

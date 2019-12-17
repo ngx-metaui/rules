@@ -64,6 +64,15 @@ export class RadioGroupComponent extends BaseInput {
   @Input()
   noValueLabel: string = 'None';
 
+  @Input()
+  get value(): any {
+    return super.getValue();
+  }
+
+  set value(value: any) {
+    super.setValue(value);
+  }
+
   @Output()
   readonly change: EventEmitter<SelectItem | string> = new EventEmitter<SelectItem | string>();
 

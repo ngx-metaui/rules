@@ -89,18 +89,15 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     this.setDisabledState(value);
   }
 
+  /**
+   * need to make  these value accessor as abstract to be implemented by subclasses. Having them
+   * in superclass have issue getting reference to them with Object.getOwnPropertyDescripton
+   * which we need to programmatically wraps components set/get value
+   *
+   */
+  abstract get value(): any;
 
-  @Input()
-  get value(): any {
-    return this._value;
-  }
-
-  set value(value: any) {
-    if (value !== this.value) {
-      this.writeValue(value);
-      this._cd.markForCheck();
-    }
-  }
+  abstract set value(value: any);
 
   @Input()
   compact: boolean = false;
@@ -181,9 +178,6 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     // if (!this.id) {
     //   throw new Error('form input must have [id] attribute.');
     // }
-
-    this.ngControl.statusChanges.subscribe((status) => {
-    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -303,6 +297,17 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
 
   protected input(): HTMLInputElement {
     return this._elementRef.nativeElement.querySelector('.fd-input');
+  }
+
+  protected setValue(value: any) {
+    if (value !== this._value) {
+      this.writeValue(value);
+      this._cd.markForCheck();
+    }
+  }
+
+  protected getValue(): any {
+    return this._value;
   }
 }
 
