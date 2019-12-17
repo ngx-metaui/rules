@@ -66,6 +66,16 @@ export class MoneyComponent extends BaseInput {
   @Input()
   currencySelection: string;
 
+
+  @Input()
+  get value(): any {
+    return super.getValue();
+  }
+
+  set value(value: any) {
+    super.setValue(value);
+  }
+
   /**
    *
    * The number of decimal places used to format the money object.

@@ -39,6 +39,13 @@ import {startWith, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {defaultLabelForIdentifier} from '@ngx-metaui/rules';
 
+export abstract class FormField {
+  i18Strings: TemplateRef<any>;
+  editable?: boolean;
+  formControl?: FormControl;
+
+}
+
 
 export type FormZone = 'zTop' | 'zBottom' | 'zLeft' | 'zRight';
 export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
@@ -54,8 +61,8 @@ export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class FormFieldComponent implements AfterContentInit, AfterContentChecked, AfterViewInit,
-  OnDestroy, OnInit {
+export class FormFieldComponent implements FormField, AfterContentInit, AfterContentChecked,
+  AfterViewInit, OnDestroy, OnInit {
 
   @Input()
   label: string;
@@ -74,6 +81,17 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
 
   @Input()
   noLabelLayout: boolean = false;
+
+  /**
+   * By default form field does not render any content as it is wrapped inside ng-template and
+   * controlled by parent. This is for cases where FormField is direct child of the form-group.
+   *
+   * In case we have more nested structure and Form-Field is wrapped with some other element
+   * that controls the rendering we need to let go this rendering and render the content
+   * directly
+   */
+  @Input()
+  forceRender: boolean = false;
 
   /**
    * custom width in columns must be between 1 - 12
@@ -101,7 +119,8 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
    * When used as standalone without form-group you can set FormGroup, otherwise it is set from
    * parent
    */
-  @Input() get formGroup(): FormGroup {
+  @Input()
+  get formGroup(): FormGroup {
     return this._formGroup;
   }
 
@@ -180,7 +199,6 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
     if (this._control) {
       this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
         this.updateControlProperties();
-
         // need to call explicitly detectChanges() instead of markForCheck before the
         // modified validation state of the control passes over checked phase
         this._cd.detectChanges();
@@ -217,7 +235,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
 
 
   hasErrors(): boolean {
-    return this._control && this._control.inErrorState;
+    return this.editable && this._control && this._control.inErrorState;
   }
 
   private validateFieldControlComponent() {
@@ -232,7 +250,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
 
 
   private validateErrorHandler() {
-    if (this._control && this.validators.length > 1  && !this.i18Strings &&
+    if (this._control && this.hasValidators() && !this.i18Strings &&
       (this.required || this.hasValidators())) {
       throw new Error('Validation strings are required for the any provided validations.');
     }
@@ -254,7 +272,7 @@ export class FormFieldComponent implements AfterContentInit, AfterContentChecked
   }
 
   private updateControlProperties() {
-    if (this._control) {
+    if (this._control && this.editable  ) {
       this._control.id = this.id;
       this._control.placeholder = this.placeholder;
 

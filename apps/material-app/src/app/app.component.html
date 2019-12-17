@@ -1,24 +1,16 @@
-<!--<mat-toolbar color="primary" class="mat-elevation-z4">-->
+<mat-toolbar color="primary" class="mat-elevation-z4">
 
-<!--  <button *ngFor="let route of contextMenu$ | async"-->
-<!--          mat-button [routerLink]="route.path"-->
-<!--          (click)="route.action.call(route.executionContext, $event)">-->
-<!--    <mat-icon *ngIf="route.icon">{{route.icon}}</mat-icon> {{route.label}}-->
-<!--  </button>-->
+  <button *ngFor="let route of contextMenu$ | async"
+          mat-button [routerLink]="route.path"
+          (click)="route.action.call(route.executionContext, $event)">
+    <mat-icon *ngIf="route.icon">{{route.icon}}</mat-icon> {{route.label}}
+  </button>
 
-<!--  <button [routerLink]="['/home'] " mat-button>Home</button>-->
-<!--  <button [routerLink]="['/user'] " mat-button>User Detail</button>-->
+  <button [routerLink]="['/home'] " mat-button>Home</button>
+  <button [routerLink]="['/user'] " mat-button>User Detail</button>
 
-<!--</mat-toolbar>-->
+</mat-toolbar>
 
 
 
-<!--<router-outlet></router-outlet>-->
-
-<mat-form-field class="example-full-width">
-  <mat-select placeholder="Favorite food">
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{ food.viewValue }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<router-outlet></router-outlet>

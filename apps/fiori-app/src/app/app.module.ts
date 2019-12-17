@@ -7,7 +7,9 @@ import {PlaygroundModule} from './playground/play.module';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
-import {NewsModule} from './demo/portlets/news/news.module';
+import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
+import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
+import * as userRules from './user-rules';
 
 @NgModule({
   declarations: [
@@ -19,11 +21,20 @@ import {NewsModule} from './demo/portlets/news/news.module';
     FormsModule,
     DemoModule,
     PlaygroundModule,
-    AppRoutingModule
+    // AppRoutingModule,
+    MetaUIRulesModule.forRoot(),
+    FioriRulesModule.forRoot()
   ],
   exports: [],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
+  constructor(private config: MetaConfig) {
+
+    const rules: any[] = config.get('metaui.rules.user-rules') || [];
+    rules.push(userRules);
+    config.set('metaui.rules.user-rules', rules);
+  }
 }

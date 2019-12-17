@@ -21,67 +21,56 @@
 
 field {
     type  {
-       component:StringField;
+       component:StringComponent;
         bindings:{
           value:$value;
+          id: ${properties.get("field")};
+          placeholder:${properties.get("label")};
         };
     }
 
     type=(boolean, Boolean) {
         editable {
-            component:Checkbox;
+            component:CheckboxComponent;
             bindings:{
               ngModel: $value;
-              required:${properties.get("required")};
-              disabled:false;
-              label:${properties.get("label")};
-              valueLabel:"Yes/No";
-              labelPosition:${properties.get("labelPosition")};
+              isBinary:true;
+              value:"Yes/No";
             };
         }
 
         editable=false {
            bindings:{
-              value: ${value ? "Yesx" : "Nox"};
+              isBinary:true;
+              value: ${value ? "Yes" : "No"};
            };
         }
     }
 
     type=(Number) {
         editable {
-          component:InputField;
+          component:InputComponent;
           canSetType:true;
           bindings:{
              ngModel: $value;
-             readonly:false;
-             required:${properties.get("required")};
           };
         }
-        operation=search { bindings:{formatter:$formatters.blankNull.integer;}; }
     }
 
     type=Date   {
         editable {
-          component:DatePicker;
+          component:DatePickerComponent;
             bindings:{
               ngModel:$value;
-              readonly:false;
-              disabled:false;
-              id: ${properties.get("field")};
-              inputDisabled: false;
-              editable:true;
           };
         }
 
         editable=false {
-            component:DatePicker;
+            component:DatePickerComponent;
               bindings:{
                 value:$value;
-                readonly:true;
-                disabled:false;
-                id: ${properties.get("field")};
-                inputDisabled: true;
                 editable:false;
+                placeholder:"MM/dd/yyyy";
             };
          }
         fiveZoneLayout = true {}
@@ -91,62 +80,39 @@ field {
         editable {
            trait:asSelect;
            bindings:{
-              multiple:true;
+              noSelectionString:${properties.get("noSelectionString")};
            };
         }
     }
 
-    type=String {
+    type=(String, string) {
         editable  {
-            component:InputField;
+            component:InputComponent;
             bindings:{
                ngModel: $value;
-               id: ${properties.get("field")};
-               placeholder:${properties.get("label")};
-               required:${properties.get("required")};
-               readonly: ${ properties.get("editing") && !properties.get("editable") };
             };
         }
         @trait=longtext {
             after:zBottom;
-            component:TextArea;
-            bindings:{
-              required:${properties.get("required")};
-              readonly: ${ properties.get("editing") && !properties.get("editable") };
-              autoSizeEnabled:true;
-              minRows: 4;
-            };
-
+            editable {
+              component:TextAreaComponent;
+            }
             operation=(search, list)  { visible:false; }
-        }
-
-        @trait=secret {
-            bindings:{formatter:$formatters.hiddenPassword;};
-            editable   { component:AWPasswordField; bindings:{formatter:null;}; }
-            operation=(search, list) { visible: false; }
         }
         trait=truncated { component:TruncateString; bindings:{size:10;}; }
     }
 
     type="Money" {
-        component: CurrencyComponent;
+        component: MoneyComponent;
         bindings:{
-            money:$value;
+            ngModel:$value;
             currencies:${properties.get("currencies")};
         };
     }
 
     @trait=derived {
         editable:false;
-        hideUnderline:true;
-        noLabelLayout:true;
         editing { after:zNone; }
-    }
-
-    @trait=searchable {
-        operation=search {
-            visible:true; editable:true!; after:null!;
-        }
     }
 
     @trait=required {
@@ -164,10 +130,11 @@ field {
 
     @trait=asSelect {
         editable {
-            component:Select;
+            component:SelectComponent;
             bindings:{
                 ngModel:$value;
                 required:${properties.get("required")};
+                lookupKey:${properties.get("lookupKey")};
                 displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
                 list:${properties.get("choices")};
             };
@@ -176,11 +143,13 @@ field {
 
     @trait=asRadio {
           editable {
-              component:RadioGroup;
+              component:RadioGroupComponent;
               bindings:{
                   ngModel:$value;
                   required:${properties.get("required")};
+                  isInline:${properties.get("isInline")};
                   label:${properties.get("label")};
+                  lookupKey:${properties.get("lookupKey")};
                   displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
                   list:${properties.get("choices")};
               };
@@ -189,35 +158,23 @@ field {
 
     @trait=asAutoComplete {
          editable {
-             component:AutoComplete;
+             component:ComboBoxComponent;
              bindings:{
                  ngModel:$value;
                  required:${properties.get("required")};
+                 entityClass:${properties.get("entityClass")};
+                 lookupKey:${properties.get("lookupKey")};
                  displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
-                 list:${properties.get("choices")};
+                 dataSource:${properties.get("choices")};
              };
          }
-    }
-
-
-    @layout=Content {
-        component:MetaObjectDetailComponent;
-        bindings: {
-            object:$value;
-            layout:Inspect;
-        };
     }
 
     @trait=noCreate { operation=create { visible:false; } }
     @trait=noSearch { operation=search { visible:false; } }
 
-    component=GenericChooserComponent {
-        @trait=Popup        { bindings:{type:Dropdown; }; }
-        @trait=PopupControl { bindings:{type:PopupControl; }; }
-        @trait=Chooser      { bindings:{type:Chooser; }; }
-    }
 
-    component=(StringField,AWHyperlink,PopupMenuLink) {
+    component=(StringComponent,LinkComponent) {
         @trait=bold {
             wrapperComponent:GenericContainerComponent;
             wrapperBindings: { tagName:b; };
@@ -239,8 +196,6 @@ field {
             wrapperBindings: { tagName:h3; };
         }
     }
-
-    floatingLabel:auto;
 }
 
 action {
@@ -255,45 +210,10 @@ action {
 
 
 layout {
-    @trait=ActionButtons {
-        visible:true;
-        component:MetaActionListComponent;
-    }
     @trait=Form { visible:true; component:MetaForm; }
 
-    @trait=Stack { visible:true; component:MetaElementListComponent; }
-
-    component=MetaForm @trait=labelsOnTop;
-
-    layout_trait=labelsOnTop class {
-        bindings:{showLabelsOnTop:true; };
-    }
 }
 
 ~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null; }; }
 
 
-
-
-layout=ListItem class {
-    component:StringComponent;
-    bindings:{
-        value:${properties.get("objectTitle")};
-    };
-}
-
-module {
-    visible:$${!properties.get("hidden")};
-    homePage:MetaHomePageComponent;
-    pageBindings:${properties.get("homePage") == "MetaHomePageComponent" ? new Map().set("module", values.get("module")) : null};
-    component:MetaDashboardLayoutComponent;
-    layout { visible:true; }
-
-    @trait=ActionTOC {
-        @layout=Actions {
-           label:"Actions";
-           component:"MetaActionListComponent";
-           after:zToc;
-        }
-    }
-}

@@ -576,6 +576,10 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
 
     const publicKey = nonPrivatePrefix(key);
     const cnxtPath: ContextFieldPath = value;
+
+    // need to call original accessors if any to keep component logic in sync
+    const origDescriptor = Object.getOwnPropertyDescriptor(me.constructor.prototype, key);
+    const origRefSetter = origDescriptor ? origDescriptor.set  : null;
     /**
      * captured also current context snapshot so we can replay ContextFieldPath.evaluate() if
      * called outside of push/pop cycle.
@@ -588,8 +592,10 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       },
 
       set: (val) => {
-
         this.mSetValue(me, key, val, this.metaContext, cnxtPath);
+        if (origRefSetter) {
+          origRefSetter.call(me, val);
+        }
       },
       enumerable: true,
       configurable: true

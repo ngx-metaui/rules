@@ -84,7 +84,7 @@ export abstract class BaseFormComponent extends BaseComponent implements Control
    *
    * @Input() - see getter
    */
-  private _formGroup: FormGroup;
+  protected _formGroup: FormGroup;
 
 
   /**
@@ -193,10 +193,10 @@ export abstract class BaseFormComponent extends BaseComponent implements Control
 
     if (isBlank(this.formGroup.controls[name])) {
       this.formGroup.registerControl(name, new FormControl(value));
-      fControl = <FormControl> this.formGroup.controls[name];
+      fControl = <FormControl>this.formGroup.controls[name];
 
     } else {
-      fControl = <FormControl> this.formGroup.controls[name];
+      fControl = <FormControl>this.formGroup.controls[name];
       const updatedValue: any = isPresent(fControl.value) ? fControl.value : value;
       fControl.patchValue(updatedValue, {onlySelf: true, emitEvent: false});
     }
@@ -219,7 +219,8 @@ export abstract class BaseFormComponent extends BaseComponent implements Control
   }
 
 
-  @Input() get formGroup(): FormGroup {
+  @Input()
+  get formGroup(): FormGroup {
     return isPresent(this._formGroup) ? this._formGroup : this.env.currentForm;
   }
 
