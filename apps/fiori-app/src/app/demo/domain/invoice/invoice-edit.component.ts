@@ -34,7 +34,7 @@ export const buttonItemsCreate: ActionItem[] = [
     options: 'emphasized'
   },
   {
-    label: 'Save',
+    label: 'Edit',
     type: undefined,
     priority: 10,
     compact: false,
@@ -44,11 +44,11 @@ export const buttonItemsCreate: ActionItem[] = [
 ];
 
 @Component({
-  selector: 'fdp-invoice',
-  templateUrl: './invoice.component.html',
-  styleUrls: ['./invoice.component.scss']
+  selector: 'fdp-invoice-e',
+  templateUrl: './invoice-edit.component.html',
+  styleUrls: ['./invoice-edit.component.scss']
 })
-export class InvoiceComponent implements OnInit, OnDestroy {
+export class InvoiceEditComponent implements OnInit, OnDestroy {
   butItemsEdit = buttonItemsEdit;
   butItemsCreate = buttonItemsCreate;
   form: FormGroup = new FormGroup({});
@@ -90,7 +90,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   onBackButtonClick() {
-    this.router.navigate(['/demo']);
+    window.history.back();
   }
 
   onActionClicked(event: ActionItem) {
@@ -102,8 +102,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       });
       this.invoice = null;
     } else {
-      this.doSave();
-      this.onBackButtonClick();
+      this.router.navigate([''])
     }
   }
 

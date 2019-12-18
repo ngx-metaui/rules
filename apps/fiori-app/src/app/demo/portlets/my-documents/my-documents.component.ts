@@ -33,13 +33,13 @@ export class MyDocumentsComponent {
         date: '09/21/2019',
         type: 'money-bills',
         read: 'accept',
-        router: '/demo/invoice/edit/1'
+        router: '/demo/invoice/view/1'
       },
       {
         id: 'INV-02',
         date: '09/21/2019',
         type: 'money-bills',
-        router: '/demo/invoice/edit/2'
+        router: '/demo/invoice/view/2'
       }
     ];
   }
