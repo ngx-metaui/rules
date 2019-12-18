@@ -1,15 +1,27 @@
 import {Component, OnInit} from '@angular/core';
 import {Invoice} from '../model/invoice';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ActionItem} from '@fundamental-ngx/platform';
 
+export const buttonItemsView: ActionItem[] = [
+  {
+    label: 'Edit',
+    type: undefined,
+    priority: 10,
+    compact: false,
+    editTitle: false,
+    options: 'emphasized'
+  }
+];
 
 @Component({
-  selector: 'fdp-invoice-view',
+  selector: 'fdp-invoice-view-v',
   templateUrl: './invoice-view.component.html',
   styleUrls: ['./invoice-view.component.scss']
 })
 export class InvoiceViewComponent implements OnInit {
   invoice: Invoice;
+  butItemsView = buttonItemsView;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }
@@ -28,7 +40,7 @@ export class InvoiceViewComponent implements OnInit {
 
 
   onBackButtonClick() {
-    this.router.navigate(['/demo']);
+    window.history.back();
   }
 
   private load(id?: number) {
@@ -43,6 +55,10 @@ export class InvoiceViewComponent implements OnInit {
         });
       }
     }
+  }
+
+  onActionClicked(event: ActionItem) {
+    this.router.navigate([`/demo/invoice/edit/${this.route.snapshot.params.id}`]);
   }
 }
 

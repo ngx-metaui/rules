@@ -1,16 +1,15 @@
 <main class="fd-page">
   <header class="fd-page__header fd-has-background-color-background-2">
-    <div fd-action-bar>
-      <div fd-action-bar-back>
-        <button aria-label="back" fd-button [fdType]="'light'" [compact]="true"
-                [glyph]="'nav-back'" (click)="router.navigate(['/demo'])">
-        </button>
-      </div>
-      <div fd-action-bar-header>
-        <h3 fd-action-bar-title>Invoice</h3>
-        <div fd-action-bar-description>Invoice detail</div>
-      </div>
-    </div>
+    <fdp-action-bar
+      [title]="'Invoice'"
+      [showBackButton]="true"
+      [editing]="false"
+      [description]="'View current invoice'"
+      [actionItems]="butItemsView "
+      [placement]="'bottom-end'"
+      (itemClick)="onActionClicked($event)"
+      (backButtonClick)="onBackButtonClick()">
+    </fdp-action-bar>
   </header>
   <div class="fd-page__content ">
     <div class="row center-xs">
@@ -36,18 +35,6 @@
       <fdp-string [value]="invoice.requestor"></fdp-string>
     </fdp-form-field>
 
-    <fdp-form-field [id]="'billingAddress'" label="Bill To" zone="zLeft" rank="30"
-                    >
-      <fdp-string [value]="invoice.billingAddress"></fdp-string>
-    </fdp-form-field>
-
-
-    <fdp-form-field [id]="'shippingAddress'" label="Ship To" zone="zLeft" rank="40"
-                    >
-      <fdp-string [value]="invoice.shippingAddress"></fdp-string>
-    </fdp-form-field>
-
-
     <fdp-form-field [id]="'needBy'" label="Need By" zone="zLeft" rank="40">
       <fdp-date-picker [editable]="false" [value]="invoice.needBy" ></fdp-date-picker>
     </fdp-form-field>
@@ -60,6 +47,16 @@
     <fdp-form-field [id]="'isShared'" label="Is Shared?" zone="zLeft" rank="50"
                     >
       <fdp-string [value]="invoice.isShared ? 'Yes' : 'No' "></fdp-string>
+    </fdp-form-field>
+
+    <fdp-form-field [id]="'billingAddress'" label="Bill To" zone="zLeft" rank="60"
+    >
+      <fdp-address [address]="invoice.billingAddress"></fdp-address>
+    </fdp-form-field>
+
+
+    <fdp-form-field [id]="'shippingAddress'" label="Ship To" zone="zLeft" rank="60">
+      <fdp-address [address]="invoice.shippingAddress"></fdp-address>
     </fdp-form-field>
 
     <!--

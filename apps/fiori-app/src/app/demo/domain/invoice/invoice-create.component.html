@@ -26,7 +26,7 @@
     <!--
   Left side
     -->
-    <fdp-form-field #ffl1 [id]="'name'" label="Title" zone="zLeft" columns="9" required="true"
+    <fdp-form-field #ffl1 [id]="'name'" label="Title" zone="zLeft" fluid="true" required="true"
                     placeholder="Title" rank="10">
       <fdp-input [formControl]="ffl1.formControl"></fdp-input>
     </fdp-form-field>
@@ -71,7 +71,7 @@
                     noLabelLayout="true">
       <fdp-checkbox [formControl]="ffl7.formControl"
                     isBinary="true"
-                    value="are you in?">
+                    value="Share?">
       </fdp-checkbox>
     </fdp-form-field>
 
@@ -80,14 +80,10 @@
     <!--
     Right side
     -->
-    <fdp-form-field
-        #ffr0 [id]="'uniqueName'" label="Id" zone="zRight" columns="3"
-                    rank="5">
-      <fdp-input [formControl]="ffr0.formControl" [readonly]="true"></fdp-input>
-    </fdp-form-field>
 
 
-    <fdp-form-field #ffr1 [id]="'totalAmount'" zone="zRight" rank="10">
+
+    <fdp-form-field #ffr1 [id]="'totalAmount'" zone="zRight" rank="10" columns="6">
       <fdp-money [formControl]="ffr1.formControl"></fdp-money>
     </fdp-form-field>
 

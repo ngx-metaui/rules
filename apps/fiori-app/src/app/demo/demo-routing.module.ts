@@ -2,8 +2,9 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {InvoiceComponent} from './domain/invoice/invoice.component';
+import {InvoiceCreateComponent} from './domain/invoice/invoice-create.component';
 import {InvoiceViewComponent} from './domain/invoice/invoice-view.component';
+import {InvoiceEditComponent} from './domain/invoice/invoice-edit.component';
 
 
 const demoRouting: Routes = [
@@ -16,11 +17,11 @@ const demoRouting: Routes = [
       },
       {
         path: 'invoice/create',
-        component: InvoiceComponent
+        component: InvoiceCreateComponent
       },
       {
         path: 'invoice/edit/:id',
-        component: InvoiceComponent
+        component: InvoiceEditComponent
       },
       {
         path: 'invoice/view/:id',

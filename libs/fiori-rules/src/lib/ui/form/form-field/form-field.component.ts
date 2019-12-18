@@ -250,7 +250,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
 
   private validateErrorHandler() {
-    if (this._control && this.hasValidators() && !this.i18Strings &&
+    if (this.editable && this._control && this.hasValidators() && !this.i18Strings &&
       (this.required || this.hasValidators())) {
       throw new Error('Validation strings are required for the any provided validations.');
     }

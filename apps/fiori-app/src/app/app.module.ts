@@ -21,9 +21,10 @@ import * as userRules from './user-rules';
     FormsModule,
     DemoModule,
     PlaygroundModule,
-    // AppRoutingModule,
     MetaUIRulesModule.forRoot(),
-    FioriRulesModule.forRoot()
+    FioriRulesModule.forRoot(),
+    AppRoutingModule,
+
   ],
   exports: [],
   providers: [],
