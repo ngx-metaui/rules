@@ -10,6 +10,7 @@ export * from './radio-group/radio-group.component';
 export * from './select/select.component';
 export * from './string/string.component';
 export * from './text-area/text-area.component';
+export * from './combo-box/combo-box.component';
 
 export * from './form-group/form-group.component';
 export * from './form-field/form-field.component';

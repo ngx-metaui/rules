@@ -198,6 +198,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
     if (this._control) {
       this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
+        console.log('this._control.stateChanges :', s);
         this.updateControlProperties();
         // need to call explicitly detectChanges() instead of markForCheck before the
         // modified validation state of the control passes over checked phase
@@ -210,6 +211,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
       this._control.ngControl.valueChanges
         .pipe(takeUntil(this._destroyed))
         .subscribe((v) => {
+          console.log('this._control.ngControl.valueChanges');
           this._cd.markForCheck();
         });
     }
@@ -275,7 +277,6 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
     if (this._control && this.editable  ) {
       this._control.id = this.id;
       this._control.placeholder = this.placeholder;
-
     }
   }
 }

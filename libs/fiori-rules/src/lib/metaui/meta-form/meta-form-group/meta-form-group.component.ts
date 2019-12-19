@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectorRef, Component, Host, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Host} from '@angular/core';
 
 import {
   Environment,
@@ -61,7 +61,8 @@ import {
  */
 @Component({
   selector: 'm-form-group',
-  templateUrl: 'meta-form-group.component.html'
+  templateUrl: 'meta-form-group.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaFormGroup extends MetaBaseComponent {
   /**
@@ -92,6 +93,10 @@ export class MetaFormGroup extends MetaBaseComponent {
     this.isFiveZoneLayout = this.context.propertyForKey(PropIsFieldsByZone);
   }
 
+
+  trackByFn(index, item) {
+    return item;
+  }
 
   zLeft(): string[] {
     return this.fieldsByZone.get(ZoneLeft);

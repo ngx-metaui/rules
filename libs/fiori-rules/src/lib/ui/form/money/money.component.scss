@@ -2,19 +2,14 @@
 
   .fdp-currency {
     min-width: 100px;
+    width: 90%;
   }
 
-  .fd-popover-custom {
-    padding-left: 0px;
-  }
-
-  .fd-select-custom .fd-select-button-custom {
-    width: 90px;
-  }
 }
 
 // todo make it ready for RTL
 .fdp-currency-readonly {
-  padding-left: 5px;
+  font-size: 1rem;
+  padding: 7px 12px;
   color: #969696;
 }

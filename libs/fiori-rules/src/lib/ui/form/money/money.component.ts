@@ -134,14 +134,14 @@ export class MoneyComponent extends BaseInput {
       super.writeValue(value);
       this.inputDisplayValue = this.formatCurrency(m.amount);
     }
-
   }
+
 
   onSelection(currency: any): void {
     this.currencySelection = currency;
-    this.inputDisplayValue = this.formatCurrency(this.money.amount);
+    this.inputDisplayValue = this.formatCurrency(this.value.amount);
 
-    this.updateMoney(this.money.amount, this.currencySelection);
+    this.updateMoney(this.value.amount, this.currencySelection);
     this.stateChanges.next('CurrencySet');
     this._cd.markForCheck();
   }
@@ -149,8 +149,8 @@ export class MoneyComponent extends BaseInput {
 
   _onFocusChanged(isFocused: boolean, element?: HTMLInputElement) {
     if (isFocused) {
-      if (this.money && this.money.amount) {
-        this.inputDisplayValue = this.money.amount.toString();
+      if (this.value && this.value.amount) {
+        this.inputDisplayValue = this.value.amount.toString();
       }
     } else {
       this.updateMoney(element.value, this.currencySelection);
@@ -165,20 +165,11 @@ export class MoneyComponent extends BaseInput {
     return '';
   }
 
-  get money(): Money {
-    return <Money>this.value;
-  }
-
-  set money(val: Money) {
-    this._value = val;
-  }
-
   private updateMoney(amount: string | number, currency: string) {
-
-    this.money = this.money.clone({amount: Number(amount || 0), currency: currency});
-    this.inputDisplayValue = this.formatCurrency(this.money.amount);
-    this.onChange(this.money);
-    this.value = this.money;
+    this.value = this.value.clone({amount: Number(amount || 0), currency: currency});
+    this.inputDisplayValue = this.formatCurrency(this.value.amount);
+    this.onChange(this.value);
+    this.value = this.value;
   }
 
   /**
@@ -196,7 +187,7 @@ export class MoneyComponent extends BaseInput {
     if (this.currencySelection) {
       code = this.currencySelection;
     }
-    this.money = this.money.clone({currency: this.currencySelection});
+    this.value = this.value.clone({currency: this.currencySelection});
 
     // By default, the precision is 2. For example, 10.23 USD.
     let digits = '1.0-2';

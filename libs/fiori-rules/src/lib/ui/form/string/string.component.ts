@@ -70,6 +70,14 @@ export class StringComponent implements FormFieldControl<any> {
   }
 
 
+  get id(): string {
+    return this.defaultId;
+  }
+
+  set id(value: string) {
+    throw new Error(`String component does not support ID (${value}).`);
+  }
+
   get disabled(): boolean {
     return false;
   }
@@ -84,10 +92,6 @@ export class StringComponent implements FormFieldControl<any> {
 
   get focused(): boolean {
     return this._focused;
-  }
-
-  get id(): string {
-    return this.defaultId;
   }
 
   get inErrorState(): boolean {

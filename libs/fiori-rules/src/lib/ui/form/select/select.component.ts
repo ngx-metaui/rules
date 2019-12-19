@@ -246,9 +246,9 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
 
     // Hack: force child to refresh to child since they dont use onPush, cna be removed in new
     // fd version as they call internally markForCheck
-    setInterval(() => {
-      this._cd.markForCheck();
-    }, 200);
+    // setTimeout(() => {
+    //   this._cd.markForCheck();
+    // }, 200);
   }
 
   /**

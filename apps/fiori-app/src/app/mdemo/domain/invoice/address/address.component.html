@@ -1,0 +1,20 @@
+<fdp-form-group #fg [multiLayout]="true" [object]="address" [editable]="false">
+
+  <fdp-form-field [id]="'name'" [noLabelLayout]="true" zone="zLeft" rank="10" [fluid]="true">
+    <fdp-string [value]="address.name"></fdp-string>
+  </fdp-form-field>
+
+  <fdp-form-field [id]="'street'" [noLabelLayout]="true" zone="zLeft" rank="10" [fluid]="true">
+    <fdp-string [value]="address.lines"></fdp-string>
+  </fdp-form-field>
+
+
+  <fdp-form-field [id]="'zip'" [noLabelLayout]="true" zone="zLeft" rank="10">
+    <fdp-string [value]="address.postalCode"></fdp-string>,
+    <fdp-string [value]="address.city"></fdp-string>,
+    <fdp-string [value]="address.country"></fdp-string>
+  </fdp-form-field>
+
+
+
+</fdp-form-group>

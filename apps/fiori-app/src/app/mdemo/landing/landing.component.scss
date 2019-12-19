@@ -1,0 +1,52 @@
+:host .fd-page {
+  .fd-page__content {
+    width: 80%;
+    align-self: center;
+  }
+
+  .portlet {
+    min-width: 250px;
+    height: 250px;
+
+    .fd-panel__header {
+      padding: 8px 24px;
+    }
+
+    .fd-panel__body {
+      padding: 0px;
+    }
+
+    &.news {
+      height: 140px;
+    }
+  }
+
+  .right-actions {
+    .box {
+      margin-bottom: 15px;
+    }
+
+    .create-actions {
+      li {
+        cursor: pointer;
+
+        span {
+          padding: 0 4px;
+        }
+      }
+    }
+  }
+}
+
+.box-row {
+  margin: 5px;
+  position: relative;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 2px 2px 4px #dadada;;
+  color: #fff;
+}
