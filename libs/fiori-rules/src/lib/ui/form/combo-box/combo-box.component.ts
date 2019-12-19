@@ -78,7 +78,9 @@ export class ComboBoxComponent extends BaseInput {
   }
 
   set dataSource(value: FdpComboBoxDataSource<any>) {
-    this.initializeDS(value);
+    if (value) {
+      this.initializeDS(value);
+    }
   }
 
   @Input()
@@ -131,11 +133,8 @@ export class ComboBoxComponent extends BaseInput {
 
 
   ngOnInit(): void {
-    if (this.dataSource && this.entityClass) {
-      throw new Error('You can either set dataSource or entityClass not both.');
-    }
-
-    if (this.entityClass && this.providers.has(this.entityClass)) {
+    // if we have both prefer dataSource
+    if (!this.dataSource && this.entityClass && this.providers.has(this.entityClass)) {
       this.dataSource = new ComboBoxDataSource(this.providers.get(this.entityClass));
     }
   }
@@ -177,9 +176,9 @@ export class ComboBoxComponent extends BaseInput {
 
     // Hack: force child to refresh to child since they dont use onPush, cna be removed in new
     // fd version as they call internally markForCheck
-    setInterval(() => {
-      this._cd.markForCheck();
-    }, 200);
+    // setTimeout(() => {
+    //   this._cd.markForCheck();
+    // }, 200);
   }
 
   ngOnDestroy(): void {

@@ -10,6 +10,7 @@ import {FormsModule} from '@angular/forms';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
 import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
 import * as userRules from './user-rules';
+import {MetaDemoModule} from './mdemo/meta-demo.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import * as userRules from './user-rules';
     BrowserAnimationsModule,
     FormsModule,
     DemoModule,
+    MetaDemoModule,
     PlaygroundModule,
     MetaUIRulesModule.forRoot(),
     FioriRulesModule.forRoot(),

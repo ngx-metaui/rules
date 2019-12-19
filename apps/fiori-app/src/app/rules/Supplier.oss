@@ -1,0 +1,5 @@
+class=Supplier {
+  field=name {
+    trait:labelField;
+  }
+}

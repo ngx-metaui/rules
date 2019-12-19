@@ -170,7 +170,6 @@ export class TextArea extends MatInput implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this._renderer.setProperty(this.nativeElement, 'disabled', isDisabled);
-    console.log('isDisabledisDisabled', isDisabled);
   }
 
   writeValue(value: any): void {

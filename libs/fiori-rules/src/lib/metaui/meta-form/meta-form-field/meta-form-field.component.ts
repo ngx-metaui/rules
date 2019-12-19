@@ -18,6 +18,7 @@
  *
  */
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   forwardRef,
@@ -44,7 +45,8 @@ import {FormField, FormFieldComponent} from '../../../ui/form/form-field/form-fi
   providers: [
 
     {provide: FormFieldComponent, useExisting: forwardRef(() => MetaFormField)}
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaFormField extends MetaBaseComponent implements FormField {
   @Input()
@@ -53,6 +55,9 @@ export class MetaFormField extends MetaBaseComponent implements FormField {
 
   @Input()
   zone: string;
+
+  @Input()
+  rank: number;
 
   /**
    * Cached validators
@@ -75,7 +80,6 @@ export class MetaFormField extends MetaBaseComponent implements FormField {
     super.ngOnInit();
     this.validators = this.createValidators();
   }
-
 
   bindingBoolProperty(key: string): boolean {
     const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
@@ -138,10 +142,6 @@ export class MetaFormField extends MetaBaseComponent implements FormField {
     return this.properties('field');
   }
 
-  get rank(): number {
-    return this.properties('rank');
-  }
-
   get placeholder(): string {
     return this.properties('placeholder', this.label);
   }
@@ -159,7 +159,7 @@ export class MetaFormField extends MetaBaseComponent implements FormField {
   }
 
   get fluid(): number {
-    return this.properties('fluid');
+    return this.properties('fluid', false);
   }
 
 }

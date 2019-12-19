@@ -133,7 +133,6 @@ field {
             component:SelectComponent;
             bindings:{
                 ngModel:$value;
-                required:${properties.get("required")};
                 lookupKey:${properties.get("lookupKey")};
                 displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
                 list:${properties.get("choices")};
@@ -146,9 +145,7 @@ field {
               component:RadioGroupComponent;
               bindings:{
                   ngModel:$value;
-                  required:${properties.get("required")};
                   isInline:${properties.get("isInline")};
-                  label:${properties.get("label")};
                   lookupKey:${properties.get("lookupKey")};
                   displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
                   list:${properties.get("choices")};
@@ -161,11 +158,10 @@ field {
              component:ComboBoxComponent;
              bindings:{
                  ngModel:$value;
-                 required:${properties.get("required")};
-                 entityClass:${properties.get("entityClass")};
+                 entityClass:${values.get("type")};
                  lookupKey:${properties.get("lookupKey")};
                  displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
-                 dataSource:${properties.get("choices")};
+                 dataSource:${properties.get("dataSource")};
              };
          }
     }

@@ -10,15 +10,7 @@
          (blur)="_onFocusChanged(false, elemRef)"
          (focus)="_onFocusChanged(true, elemRef)"/>
 
-  <fdp-select *ngIf="!readonlyCurrencyCode"
-              class="fd-input-group__addon fd-input-group__addon--button"
-              [value]="currencySelection"
-              [list]="currencies"
-              [disabled]="disabled"
-              (selection)="onSelection($event)"
-              [attr.id]="id + '-currency'">
-  </fdp-select>
-  <div *ngIf="readonlyCurrencyCode" class="fdp-currency-readonly">{{money.currency}}</div>
+  <div class="fdp-currency-readonly">{{currencySelection}}</div>
 </div>
 
 <!--

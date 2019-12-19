@@ -1,0 +1,26 @@
+<div class="fd-table-responsive-wrapper">
+  <table fd-table>
+    <thead fd-table-header>
+    <tr fd-table-row>
+      <th fd-table-cell>Type</th>
+      <th fd-table-cell>Id</th>
+      <th fd-table-cell>Date</th>
+      <th fd-table-cell>Read</th>
+
+    </tr>
+    </thead>
+    <tbody fd-table-body>
+    <tr fd-table-row *ngFor="let row of tableRows">
+      <td fd-table-cell>
+        <fd-icon [glyph]="row.type"></fd-icon>
+      </td>
+      <td fd-table-cell class="fd-has-font-weight-semi"><a [routerLink]="row.router">{{row.id}}</a></td>
+      <td fd-table-cell class="fd-has-font-weight-semi">{{row.date}}</td>
+      <td fd-table-cell>
+        <fd-icon [glyph]="row.read"></fd-icon>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -154,7 +154,7 @@ layout {
     @trait=Stack;
 }
 
-class layout=(Inspect, SearchForm) { trait:Form; label:${meta.beautifyClassName(values.class)}; }
+class layout=(Inspect, SearchForm) { trait:Form; label:${meta.beautifyClassName(values.get("class"))}; }
 
 
 layout=InspectWithActions {

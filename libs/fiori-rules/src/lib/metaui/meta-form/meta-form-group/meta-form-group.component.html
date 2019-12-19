@@ -1,32 +1,38 @@
-
 <fdp-form-group #fg [multiLayout]="true" [editable]="editing">
-    <ng-template ngFor let-curentField [ngForOf]="zTop()">
-      <m-context [field]="curentField">
-        <m-form-field [field]="curentField" [editable]="editing" zone="zTop"></m-form-field>
-      </m-context>
+  <ng-template ngFor let-curentField [ngForOf]="zTop()" let-rank="index" [ngForTrackBy]="trackByFn">
+    <m-context [field]="curentField">
+      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank"
+                    zone="zTop"></m-form-field>
+    </m-context>
   </ng-template>
 
-  <ng-template ngFor let-curentField [ngForOf]="zLeft()">
-      <m-context [field]="curentField">
-        <m-form-field [field]="curentField" [editable]="editing" zone="zLeft"></m-form-field>
-      </m-context>
+  <ng-template ngFor let-curentField [ngForOf]="zLeft()" let-rank="index"
+               [ngForTrackBy]="trackByFn">
+    <m-context [field]="curentField">
+      <m-form-field [field]="curentField" [editable]="editing" zone="zLeft" [rank]="rank">
+      </m-form-field>
+    </m-context>
   </ng-template>
 
-  <ng-template ngFor let-curentField [ngForOf]="zRight()">
-      <m-context [field]="curentField">
-        <m-form-field [field]="curentField" [editable]="editing" zone="zRight"></m-form-field>
-      </m-context>
+  <ng-template ngFor let-curentField [ngForOf]="zRight()" let-rank="index"
+               [ngForTrackBy]="trackByFn">
+    <m-context [field]="curentField">
+      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank"
+                    zone="zRight"></m-form-field>
+    </m-context>
   </ng-template>
 
-  <ng-template ngFor let-curentField [ngForOf]="zBottom()">
-      <m-context [field]="curentField">
-        <m-form-field [field]="curentField" [editable]="editing" zone="zBottom"></m-form-field>
-      </m-context>
+  <ng-template ngFor let-curentField [ngForOf]="zBottom()" let-rank="index"
+               [ngForTrackBy]="trackByFn">
+    <m-context [field]="curentField">
+      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank"
+                    zone="zBottom"></m-form-field>
+    </m-context>
   </ng-template>
 
 
   <ng-template #i18n let-errros>
 
     {{errros | json}}
-    </ng-template>
+  </ng-template>
 </fdp-form-group>
