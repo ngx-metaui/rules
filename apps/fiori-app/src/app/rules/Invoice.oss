@@ -4,11 +4,11 @@ class=Invoice {
   }
   field=name {
     label: "Title";
-    trait:fluid;
+    trait: required;
     placeholder: "Unique name that identifies this Invoice";
   }
   field=requestor {
-    trait:asAutoComplete;
+    trait:asAutoComplete, withDetail;
     placeholder: "Select a user";
     lookupKey: "fullName";
   }
@@ -19,7 +19,7 @@ class=Invoice {
   }
 
   field=supplier {
-    trait:asAutoComplete;
+    trait:asAutoComplete, withDetail;
     placeholder: "Select a supplier";
   }
 
@@ -33,19 +33,16 @@ class=Invoice {
   }
 
   field=billingAddress {
-    trait:asAutoComplete;
+    trait:asAutoComplete, inlineObject;
     label: "Bill To";
 
   }
 
   field=shippingAddress {
-    trait:asAutoComplete;
+    trait:asAutoComplete, inlineObject;
     label: "Ship To";
   }
 
-  field=(shippingAddress, billingAddress) {
-    displayKey: "toString";
-  }
 
   field=description {
     trait:longtext;
@@ -53,24 +50,34 @@ class=Invoice {
   }
 
   field=isShared {
-    label: "Ship To";
+    label: "Share";
+  }
+
+  field=shareContact {
+    label:"Share To";
+    visible:${object.isShared === true};
   }
 
   field=accountCategory {
-    trait:asSelect;
+    trait:asRadio;
     choices: ["Asset", "Order", "Cost Center", "Project"];
   }
 }
 
 class=Invoice {
-  zNone => *;
-  zLeft => name#fluid => requestor => needBy => accountCategory => isShared => billingAddress => shippingAddress
-   => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder
-   => description;
+
+   operation=(edit, create) {
+        zNone => *;
+        zLeft   =>  name#fluid => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress;
+        zRight  => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder => isShared => shareContact;
+        zBottom => description;
+     }
+
+    operation=view {
+        zNone => *;
+        zLeft   =>  name  => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress;
+        zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder => isShared => shareContact;
+        zBottom => description;
+   }
 
 }
-
-/**
-
-
-**/

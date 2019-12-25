@@ -1,21 +1,17 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {InvoiceCreateComponent} from './invoice-create.component';
+import {InvoiceComponent} from './invoice.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
 import {ActionBarModule as ABCore, ButtonModule} from '@fundamental-ngx/core';
-import {ActionBarModule} from '@fundamental-ngx/platform';
-import {InvoiceViewComponent} from './invoice-view.component';
-import {InvoiceEditComponent} from './invoice-edit.component';
+import {ActionBarModule} from '@fundamental-ngx/core';
 import {AddressComponent} from './address/address.component';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
 
 
 @NgModule({
   declarations: [
-    InvoiceCreateComponent,
-    InvoiceViewComponent,
-    InvoiceEditComponent,
+    InvoiceComponent,
     AddressComponent
   ],
   imports: [
@@ -29,10 +25,11 @@ import {MetaUIRulesModule} from '@ngx-metaui/rules';
     MetaUIRulesModule
 
   ],
+  entryComponents: [
+    AddressComponent
+  ],
   exports: [
-    InvoiceCreateComponent,
-    InvoiceViewComponent,
-    InvoiceEditComponent,
+    InvoiceComponent,
     AddressComponent
   ],
   providers: []

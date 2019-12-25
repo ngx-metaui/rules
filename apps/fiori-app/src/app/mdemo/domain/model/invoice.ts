@@ -7,7 +7,7 @@ import {Supplier} from './supplier';
 export class Invoice implements Entity {
 
   constructor(public uniqueName?: string,
-              public name?: string,
+              public name: string = 'Untitled Invoice',
               public requestor?: User,
               public createdDate?: Date,
               public needBy?: Date,
@@ -23,6 +23,7 @@ export class Invoice implements Entity {
               public description?: string,
               public internalId?: number,
               public isShared?: boolean,
+              public shareContact?: string,
               public accountCategory?: string) {
     this.createdDate = new Date();
   }
@@ -52,6 +53,7 @@ export class Invoice implements Entity {
       description: String,
       internalId: Number,
       isShared: Boolean,
+      shareContact: String,
       accountCategory: String
     };
   }
@@ -96,7 +98,7 @@ export class Invoice implements Entity {
                 value['purchasingUnit'], value['paymentTerms'], value['taxInvoiceNumber'],
                 value['totalAmount'], value['billingAddress'], value['shippingAddress'],
                 value['description'], value['internalId'], value['isShared'],
-                value['accountCategory']);
+                value['shareContact'], value['accountCategory']);
             } else {
               return value;
             }

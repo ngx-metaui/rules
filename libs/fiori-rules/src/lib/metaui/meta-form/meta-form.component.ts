@@ -30,7 +30,7 @@ import {Component} from '@angular/core';
   selector: 'm-fdp-form',
   template: `
       <m-context #cnx scopeKey="class">
-          <m-form-group></m-form-group>
+          <m-form-group *ngIf="cnx.hasObject"></m-form-group>
       </m-context>
   `
 })

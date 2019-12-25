@@ -1,0 +1,4 @@
+action {
+  detailRoute: "/mdemo/entity/detail";
+}
+

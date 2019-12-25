@@ -76,6 +76,7 @@ export class MetaFormGroup extends MetaBaseComponent {
    */
   isFiveZoneLayout: boolean;
 
+  useNoLabelLayout = false;
 
   constructor(@Host() protected _context: MetaContextComponent,
               public env: Environment, private cd: ChangeDetectorRef) {
@@ -91,6 +92,11 @@ export class MetaFormGroup extends MetaBaseComponent {
     super.doUpdate();
     this.fieldsByZone = this.context.propertyForKey(PropFieldsByZone);
     this.isFiveZoneLayout = this.context.propertyForKey(PropIsFieldsByZone);
+
+    const bin: Map<string, any> = this.context.propertyForKey('bindings');
+    if (bin && bin.has('noLabelLayout')) {
+      this.useNoLabelLayout  = bin.get('noLabelLayout');
+    }
   }
 
 

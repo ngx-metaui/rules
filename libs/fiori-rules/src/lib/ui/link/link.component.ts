@@ -52,7 +52,6 @@ export type LinkType = 'standard' | 'emphasized' | 'iconleft' | 'iconright';
   selector: 'fdp-link',
   templateUrl: 'link.component.html',
   styleUrls: ['./link.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {provide: FormFieldControl, useExisting: LinkComponent, multi: true}

@@ -1,10 +1,11 @@
 <fd-date-picker #elementRef *ngIf="editable else dateReadonly"
                 [(ngModel)]="fdDate"
                 [disabled]="disabled"
+                [placeholder]="placeholder"
                 [compact]="compact"
                 [type]="type">
 </fd-date-picker>
 
 <ng-template #dateReadonly>
-  <fdp-string value="{{value | date: placeholder}}"></fdp-string>
+  <fdp-string value="{{value  | date: placeholder}}"></fdp-string>
 </ng-template>

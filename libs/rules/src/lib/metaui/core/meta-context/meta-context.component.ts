@@ -111,12 +111,12 @@ const CNTX_CHANGED = 'Cntx_Changed';
 // angular
 const IMPLICIT_PROPERTIES = [
   'module', 'layout', 'operation', 'class', 'object', 'actionCategory', 'action', 'field',
-  'pushNewContext'
+  'locale', 'pushNewContext'
 ];
 
 
 const IMMUTABLE_PROPERTIES = [
-  'module', 'layout', 'operation', 'class', 'action', 'field', 'pushNewContext'
+  'module', 'layout', 'operation', 'class', 'action', 'field', 'locale', 'pushNewContext'
 ];
 
 
@@ -146,6 +146,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
   @Input() actionCategory: any;
   @Input() action: any;
   @Input() field: string;
+  @Input() locale: string;
 
   @Input() pushNewContext: boolean;
 
@@ -188,18 +189,28 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
 
   private _scopeBinding: string;
 
-  // private static stackDepth = 0;
-
-
   _myContext: Context;
 
   /**
    * Need to cache if we already have object or not in case we load data from REST where it
-   * could be deferred and not available when component is initialized
+   * could be deferred asnd not available when component is initialized
    */
   hasObject: boolean;
 
   hasActiveContext: boolean;
+
+  /**
+   * Turn on and off bellow dirty checking. Default value is value so it can work without a
+   * chance with other implementation
+   */
+  supportsDirtyChecking: boolean = false;
+
+  /**
+   * Since the push/pop is happening every time the view is created or  angular triggers change
+   * detection we need to eliminate event handler based CDs. where most of the time we dont care.
+   *
+   */
+  private _isDirty: boolean = true;
 
 
   /**
@@ -212,21 +223,19 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
               @SkipSelf() @Optional() @Inject(forwardRef(() => BaseFormComponent))
               protected parentContainer: BaseFormComponent) {
     super(env, null);
+
+    this.supportsDirtyChecking = false;
+    this._isDirty = false;
   }
 
   ngOnInit(): void {
     this.initBindings();
     this.hasObject = this._hasObject();
-
-    // MetaContextComponent.stackDepth++;
-    // console.log(this.indent() + '=> ngOnInit:', this.contextKey());
-    // Initial push, when component is first initialized the rest is done based on changes.
     this.pushPop(true);
 
     if (!this.env.hasValue('parent-cnx')) {
       this.env.setValue('parent-cnx', this);
     }
-
     this.hasActiveContext = isPresent(this.activeContext());
     this.formGroup = this.env.currentForm;
   }
@@ -237,9 +246,6 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    *
    */
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    // console.log(this.indent() + '    => ngOnChanges', this.contextKey());
-
-
     for (const name of IMMUTABLE_PROPERTIES) {
       if (isPresent(changes[name])
         && (changes[name].currentValue !== changes[name].previousValue)) {
@@ -261,14 +267,11 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    *
    */
   ngDoCheck(): void {
-
     if (this.viewInitialized) {
       this.hasObject = this._hasObject();
-      // MetaContextComponent.stackDepth++;
-
-      this.pushPop(true);
-      // console.log(this.indent() + '=> ngDoCheck(CHANGED)', this.contextKey());
-
+      if (this.needsCheck()) {
+        this.pushPop(true);
+      }
       if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
         this.updateModel();
       }
@@ -281,8 +284,6 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    */
   ngAfterViewInit(): void {
     if (!this.viewInitialized) {
-      // console.log(this.indent() + '=> ngAfterViewInit:', this.contextKey());
-      // MetaContextComponent.stackDepth--;
       this.pushPop(false);
     }
   }
@@ -290,22 +291,14 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
 
   ngAfterViewChecked(): void {
     if (this.viewInitialized) {
-      // console.log(this.indent() + '=> ngAfterViewChecked:', this.contextKey());
-      // MetaContextComponent.stackDepth--;
-      this.pushPop(false);
+      if (this.needsCheck()) {
+        this.pushPop(false);
+        this._isDirty = false;
+      }
     } else {
       this.viewInitialized = true;
     }
   }
-
-  // private indent(): string {
-  //   let ind = '';
-  //   for (let i = 0; i < MetaContextComponent.stackDepth; i++) {
-  //     ind += '\t\t\t ';
-  //   }
-  //
-  //   return ind;
-  // }
 
   /**
    *
@@ -319,7 +312,6 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    *    isPush identifies if we are pushing or popping to context stack
    */
   private pushPop(isPush: boolean): void {
-    // console.log(this.indent() + '=> pushPop: isPush' + isPush, this.contextKey());
     let activeContext: Context = this.activeContext();
     assert(isPush || isPresent(activeContext), 'pop(): Missing context');
 
@@ -372,27 +364,6 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
     }
   }
 
-  // /**
-  //  * For debugging to identify current key
-  //  */
-  // contextKey(): string {
-  //   let cnxKey = '';
-  //   if (isPresent(this.bindingKeys) && this.bindingKeys.length > 0) {
-  //     this.bindingKeys.forEach((name) => {
-  //       if (name === 'object') {
-  //         cnxKey += name;
-  //       } else {
-  //         cnxKey += name + this.bindingsMap.get(name);
-  //       }
-  //
-  //
-  //     });
-  //   } else if (isPresent(this._scopeBinding)) {
-  //     cnxKey += this._scopeBinding;
-  //   }
-  //   return cnxKey;
-  // }
-
 
   /**
    *
@@ -402,8 +373,6 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    */
   myContext(): Context {
     return this._myContext;
-    // let cnxKey = this.contextKey();
-    // return this.env.getValue(cnxKey);
   }
 
   /**
@@ -496,6 +465,9 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
     if (isPresent(this.field)) {
       this.bindingsMap.set('field', this.field);
     }
+    if (isPresent(this.locale)) {
+      this.bindingsMap.set('locale', this.locale);
+    }
   }
 
   /**
@@ -523,7 +495,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
     }
     const fields = Object.keys(this.object);
     fields.forEach((field: string) => {
-      const control: FormControl = <FormControl> this.formGroup.get(field);
+      const control: FormControl = <FormControl>this.formGroup.get(field);
       if (isPresent(control)) {
         control.patchValue(this.object[field], {onlySelf: false, emitEvent: true});
       }
@@ -536,9 +508,17 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
   private _hasObject(): boolean {
     const context = this.activeContext();
     if (isPresent(context)) {
-      return isPresent((<UIContext> context).object);
+      return isPresent((<UIContext>context).object);
     }
     return false;
+  }
+
+  markDirty() {
+    this._isDirty = true;
+  }
+
+  needsCheck(): boolean {
+    return this.supportsDirtyChecking ? this._isDirty : true;
   }
 }
 

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {ComboboxModule, ProductSwitchModule, ShellbarModule} from '@fundamental-ngx/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';

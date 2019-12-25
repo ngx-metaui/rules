@@ -176,9 +176,9 @@ export class ComboBoxComponent extends BaseInput {
 
     // Hack: force child to refresh to child since they dont use onPush, cna be removed in new
     // fd version as they call internally markForCheck
-    // setTimeout(() => {
-    //   this._cd.markForCheck();
-    // }, 200);
+    setTimeout(() => {
+      this._cd.markForCheck();
+    }, 200);
   }
 
   ngOnDestroy(): void {

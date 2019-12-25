@@ -1,87 +1,61 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  LOCALE_ID,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {Invoice} from '../model/invoice';
-import {ArrayComboBoxDataSource, ComboBoxDataSource} from '@ngx-metaui/fiori-rules';
-import {User} from '../model/user';
-import {Address} from '../model/address';
-import {AddressCSV, addressDB} from '../rest/address';
-import {UserCSV, userDB} from '../rest/user';
+import {DATA_PROVIDERS, DataProvider} from '@ngx-metaui/fiori-rules';
 import {PaymentTermsCSV, paymentTermsDB} from '../rest/payment-terms';
-import {ActionItem} from '@fundamental-ngx/platform';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {debounceTime, tap} from 'rxjs/operators';
+import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 
-
-export const buttonItemsEdit: ActionItem[] = [
-  {
-    label: 'Save',
-    type: undefined,
-    priority: 10,
-    compact: false,
-    editTitle: false,
-    options: 'emphasized'
-  }
-];
-
-export const buttonItemsCreate: ActionItem[] = [
-  {
-    label: 'Reset',
-    type: 'standard',
-    priority: 1,
-    compact: false,
-    editTitle: false,
-    options: 'emphasized'
-  },
-  {
-    label: 'Edit',
-    type: undefined,
-    priority: 10,
-    compact: false,
-    editTitle: false,
-    options: 'emphasized'
-  }
-];
 
 @Component({
-  selector: 'fdp-invoice-e',
-  templateUrl: './invoice-edit.component.html',
-  styleUrls: ['./invoice-edit.component.scss']
+  selector: 'fdp-invoice',
+  templateUrl: './invoice.component.html',
+  styleUrls: ['./invoice.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InvoiceEditComponent implements OnInit, OnDestroy {
-  butItemsEdit = buttonItemsEdit;
-  butItemsCreate = buttonItemsCreate;
+export class InvoiceComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({});
-  invoice: Invoice;
-  userDataSource: ComboBoxDataSource<User>;
-  addressDataSource: ComboBoxDataSource<Address>;
-  paymentTerms: string[];
+  invoice: Invoice = new Invoice();
+  paymentTermsDS: string[];
+
 
   operation: string;
 
   private autoSaveSub: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(@Inject(META_RULES) protected meta: MetaRules,
+              @Inject(LOCALE_ID) public locale: string,
+              @Inject(DATA_PROVIDERS) private providers: Map<string, DataProvider<any>>,
+              private router: Router, private route: ActivatedRoute) {
+
+    console.log(locale);
   }
 
   ngOnInit(): void {
     this.operation = this.route.snapshot.url[1].path;
+    this.meta.registerDependency('controller', this);
 
-    if (this.operation === 'edit' || this.operation === 'view') {
-      if (!this.route.snapshot.params.id) {
-        throw new Error('View or Edit Operation must have ID');
-      }
-      this.load(parseInt(this.route.snapshot.params.id));
-
-    } else {
-      this.load();
-    }
-    this.initAutosave();
+    this.load(parseInt(this.route.snapshot.params.id) || null);
     this.initDataSources();
+
+    if (this.operation !== 'view') {
+      this.initAutosave();
+    }
   }
 
   ngOnDestroy() {
-    this.autoSaveSub.unsubscribe();
+    if (this.operation !== 'view') {
+      this.autoSaveSub.unsubscribe();
+    }
   }
 
 
@@ -93,16 +67,19 @@ export class InvoiceEditComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  onActionClicked(event: ActionItem) {
-    if (event.label === 'Reset') {
+  onAction(action: string) {
+    if (action === 'reset') {
       localStorage.removeItem('in-progress');
       Object.keys(this.form.controls).forEach(field => {
         const control = this.form.get(field);
         control.reset(undefined, {onlySelf: true, emitEvent: true});
       });
       this.invoice = null;
-    } else {
-      this.router.navigate([''])
+    } else if (action === 'edit') {
+      this.router.navigate([`/mdemo/invoice/edit/${this.route.snapshot.params.id}`]);
+    } else if (action === 'save') {
+      this.doSave();
+      this.onBackButtonClick();
     }
   }
 
@@ -123,9 +100,10 @@ export class InvoiceEditComponent implements OnInit, OnDestroy {
           invoices[invoice.internalId - 1] = invoice;
         } else {
           invoice.internalId = (invoices.length + 1);
-          invoice.uniqueName = `INV-${invoice.internalId}`;
           invoices.push(invoice);
         }
+          invoice.uniqueName = `INV-${invoice.internalId}`;
+
         localStorage.setItem('invoices', JSON.stringify(invoices));
         localStorage.removeItem('in-progress');
       }
@@ -133,27 +111,7 @@ export class InvoiceEditComponent implements OnInit, OnDestroy {
   }
 
   private initDataSources() {
-    this.userDataSource = new ArrayComboBoxDataSource<User>(
-      userDB.map((i: UserCSV) => {
-
-        const user = i.Name.split(' ');
-
-        return new User(
-          i.UniqueName, i.Name, user[0].trim(), user[1].trim(), i.Organization, i.EmailAddress,
-          'US004', i.LocaleID, i.DefaultCurrency, '');
-      }));
-
-
-    this.addressDataSource = new ArrayComboBoxDataSource<Address>(
-      addressDB.map((i: AddressCSV) => {
-
-        return new Address(
-          i.UniqueName, i.Name, i.Lines, i.City, i.State, i.PostalCode + '',
-          i.Phone, i.Fax, i.Email, i.URL, i.Country);
-      }));
-
-
-    this.paymentTerms = paymentTermsDB.map((i: PaymentTermsCSV) => {
+    this.paymentTermsDS = paymentTermsDB.map((i: PaymentTermsCSV) => {
       return i.Name;
     });
   }

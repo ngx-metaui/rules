@@ -20,58 +20,30 @@
 
 
 field {
-    trait=toOneRelationship {
+    trait=withDetail {
         editable=false {
-            component:Button;
+            component:LinkComponent;
             bindings: {
                 click: ${
                     this.set("object", value);
                     this.set("actionCategory", "General");
-                    this.set("action", "Inspect");
+                    this.set("action", "DetailInspect");
                     meta.fireAction(this, null, true)
                 };
                 ngcontent: ${value ? FieldPath.getFieldValue(value, meta.displayLabel(type, properties.get("labelField") )) : null};
             };
         }
     }
-
-    trait=toManyChooser {
-        editable {
-            component:GenericChooserComponent;
-            bindings:{
-                object:${object};
-                key:${field};
-                destinationClass:${elementType};
-                multiselect:true;
-                type:Chooser;
-                displayKey:${ meta.displayLabel(type, properties.get("labelField") )};
-            };
-        }
-    }
-
-
-    trait=toManyLink {
-        component:AWHyperlink;
-        bindings: {
-            action: ${
-                set("object", value);
-                set("actionCategory", "General");
-                set("action", "Inspect");
-                meta.fireAction(this, requestContext)
-            };
-            omitTags:${!value || value.size() ==0};
-            ngcontent: ${value ? ("" + value.size() + " items") : "(none)"};
-        };
-    }
 }
 
 
-action=Inspect {
+action=DetailInspect {
     visible:true;
     trait:pageAction;
-    pageName:MetaContentPageComponent;
+    routeName: ${properties.get("detailRoute")};
     pageBindings: {
-        object:${object};
+        id:${object.identity()};
+        type:${properties.get("class")};
         operation:view;
         layout:Inspect;
     };

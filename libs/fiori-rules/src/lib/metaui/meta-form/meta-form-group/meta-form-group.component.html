@@ -1,7 +1,7 @@
-<fdp-form-group #fg [multiLayout]="true" [editable]="editing">
+<fdp-form-group #fg [multiLayout]="true" [editable]="editing" [noLabelLayout]="useNoLabelLayout">
   <ng-template ngFor let-curentField [ngForOf]="zTop()" let-rank="index" [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank"
+      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank + 5"
                     zone="zTop"></m-form-field>
     </m-context>
   </ng-template>
@@ -9,7 +9,7 @@
   <ng-template ngFor let-curentField [ngForOf]="zLeft()" let-rank="index"
                [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editable]="editing" zone="zLeft" [rank]="rank">
+      <m-form-field [field]="curentField" [editable]="editing" zone="zLeft" [rank]="rank + 5">
       </m-form-field>
     </m-context>
   </ng-template>
@@ -17,7 +17,7 @@
   <ng-template ngFor let-curentField [ngForOf]="zRight()" let-rank="index"
                [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank"
+      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank + 5"
                     zone="zRight"></m-form-field>
     </m-context>
   </ng-template>
@@ -25,7 +25,7 @@
   <ng-template ngFor let-curentField [ngForOf]="zBottom()" let-rank="index"
                [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank"
+      <m-form-field [field]="curentField" [editable]="editing" [rank]="rank + 5"
                     zone="zBottom"></m-form-field>
     </m-context>
   </ng-template>

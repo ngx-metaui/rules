@@ -1,1 +1,5 @@
 @import "~fundamental-styles/dist/link";
+
+:host .fd-link {
+  cursor: pointer;
+}

@@ -52,7 +52,7 @@ export class InvoiceCreateComponent implements OnInit, OnDestroy {
   butItemsEdit = buttonItemsEdit;
   butItemsCreate = buttonItemsCreate;
   form: FormGroup = new FormGroup({});
-  invoice: Invoice;
+  invoice: Invoice = new Invoice();
   userDataSource: ComboBoxDataSource<User>;
   addressDataSource: ComboBoxDataSource<Address>;
   paymentTerms: string[];

@@ -18,6 +18,7 @@
  *
  */
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -48,7 +49,8 @@ import {FormField, FormFieldComponent} from '../../../ui/form/form-field/form-fi
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaFormField extends MetaBaseComponent implements FormField {
+export class MetaFormField extends MetaBaseComponent implements FormField, AfterContentInit {
+
   @Input()
   field: string;
 
@@ -68,6 +70,7 @@ export class MetaFormField extends MetaBaseComponent implements FormField {
   renderer: TemplateRef<any>;
 
   private _i18Strings: TemplateRef<any>;
+  private _noLabelLayout: boolean = false;
 
   constructor(@Host() protected _metaContext: MetaContextComponent,
               private cd: ChangeDetectorRef,
@@ -89,6 +92,10 @@ export class MetaFormField extends MetaBaseComponent implements FormField {
       return !!value;
     }
     return false;
+  }
+
+  ngAfterContentInit(): void {
+    this._metaContext.supportsDirtyChecking = true;
   }
 
 
@@ -126,9 +133,21 @@ export class MetaFormField extends MetaBaseComponent implements FormField {
   }
 
 
+  onFormFieldChanged(event: string) {
+    this._metaContext.markDirty();
+  }
+
   /**
    * Need to have compatible accessors names with FormFieldComponent
    */
+  get noLabelLayout(): boolean {
+    return this._noLabelLayout;
+  }
+
+  set noLabelLayout(value: boolean) {
+    this._noLabelLayout = value;
+  }
+
   get i18Strings(): TemplateRef<any> {
     return this._i18Strings;
   }

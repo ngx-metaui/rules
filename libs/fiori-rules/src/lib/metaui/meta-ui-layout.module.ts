@@ -23,41 +23,37 @@ import {MetaUIRulesModule} from '@ngx-metaui/rules';
 import {UILibModule} from '../ui/ui.module';
 import {MetaForm} from './meta-form/meta-form.component';
 import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MetaFormField} from './meta-form/meta-form-field/meta-form-field.component';
 import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapter.directive';
+import {MetaObjectDetailComponent} from './object-detail/object-detail.component';
+import {MetaContentPageComponent} from './content-page/content-page.component';
+import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
 
-//
-// const routes: Routes = [
-//   {path: 'object-detail', component: MetaContentPageComponent}
-// ];
 
 @NgModule({
   declarations: [
     MetaForm,
     MetaFormGroup,
     MetaFormField,
-    MetaFormFieldAdapter
+    MetaFormFieldAdapter,
+    MetaObjectDetailComponent,
+    MetaContentPageComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    BrowserAnimationsModule,
     ReactiveFormsModule,
-
+    ActionBarModule,
+    ButtonModule,
     MetaUIRulesModule,
     UILibModule
-    // RouterModule.forChild(routes)
   ],
   entryComponents: [
     MetaForm,
-    MetaFormGroup,
-    MetaFormField
+    MetaObjectDetailComponent,
+    MetaContentPageComponent
   ],
   exports: [
-    MetaForm,
-    MetaFormGroup,
-    MetaFormField,
     UILibModule
   ]
 })
