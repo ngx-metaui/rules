@@ -15,6 +15,8 @@ export class AddressComponent {
   @Input()
   editable: boolean = false;
 
+  toggle = true;
+
   constructor(private router: Router, private route: ActivatedRoute) {
   }
 
