@@ -5,7 +5,7 @@
  *
  */
 /* tslint:disable */
-export const SupplierRule = 'class=Supplier {    field=uniqueName {     label:"Id";   }    field=name {     trait:labelField;   }    zLeft => name => contact => lines => city => email;   zRight => locationName => contactUser#withDetail; }  action {   detailRoute: "/mdemo/entity/detail"; } ';
+export const SupplierRule = 'class=Supplier {    field=uniqueName {     label:"Id";   }    field=name {     trait:labelField;   }    zLeft => name => contact => lines => city => email;   zRight => locationName => contactUser#withDetail; } ';
 /* tslint:disable */
 /**
  *  @formatter:on

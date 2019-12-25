@@ -39,8 +39,16 @@ class=Invoice {
   }
 
   field=shippingAddress {
-    trait:asAutoComplete, inlineObject;
+    trait:asAutoComplete;
     label: "Ship To";
+
+    operation=view {
+      component:AddressComponent;
+      bindings: {
+        address:$value;
+      };
+    }
+
   }
 
 
