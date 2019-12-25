@@ -24,9 +24,11 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -42,8 +44,8 @@ import {defaultLabelForIdentifier} from '@ngx-metaui/rules';
 export abstract class FormField {
   i18Strings: TemplateRef<any>;
   editable?: boolean;
+  noLabelLayout?: boolean;
   formControl?: FormControl;
-
 }
 
 
@@ -58,8 +60,7 @@ export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   selector: 'fdp-form-field',
   templateUrl: 'form-field.component.html',
   styleUrls: ['./form-field.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormFieldComponent implements FormField, AfterContentInit, AfterContentChecked,
   AfterViewInit, OnDestroy, OnInit {
@@ -151,6 +152,9 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   @Input()
   editable: boolean = true;
 
+  @Output()
+  onChange: EventEmitter<string> = new EventEmitter<string>();
+
 
   @ViewChild('renderer', {static: true})
   renderer: TemplateRef<any>;
@@ -198,10 +202,10 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
     if (this._control) {
       this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
-        console.log('this._control.stateChanges :', s);
         this.updateControlProperties();
         // need to call explicitly detectChanges() instead of markForCheck before the
         // modified validation state of the control passes over checked phase
+        this.onChange.emit('stateChanges');
         this._cd.detectChanges();
       });
     }
@@ -211,7 +215,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
       this._control.ngControl.valueChanges
         .pipe(takeUntil(this._destroyed))
         .subscribe((v) => {
-          console.log('this._control.ngControl.valueChanges');
+          // this.onChange.emit('valueChangess');
           this._cd.markForCheck();
         });
     }
@@ -252,14 +256,13 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
 
   private validateErrorHandler() {
-    if (this.editable && this._control && this.hasValidators() && !this.i18Strings &&
-      (this.required || this.hasValidators())) {
+    if (this.editable && this._control && this.hasValidators() && !this.i18Strings) {
       throw new Error('Validation strings are required for the any provided validations.');
     }
   }
 
   private hasValidators(): boolean {
-    return this.validators && this.validators.length > 0;
+    return this.validators && this.validators.length > 1;
   }
 
   private initFormControl() {
@@ -270,11 +273,12 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
       this._control.ngControl.control.setValidators(Validators.compose(this.validators));
       this.formGroup.addControl(this.id, this._control.ngControl.control);
+      // this._control.ngControl.control.reset();
     }
   }
 
   private updateControlProperties() {
-    if (this._control && this.editable  ) {
+    if (this._control && this.editable) {
       this._control.id = this.id;
       this._control.placeholder = this.placeholder;
     }

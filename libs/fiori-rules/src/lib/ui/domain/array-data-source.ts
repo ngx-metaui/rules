@@ -22,6 +22,7 @@
 import {ComboBoxDataSource, DataProvider} from './data-source';
 import {Observable, of as observableOf} from 'rxjs';
 import {isFunction, isJsObject, isPresent, objectToName, objectValues} from '../utils/lang';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
 
 export class ArrayComboBoxDataSource<T> extends ComboBoxDataSource<T> {
@@ -42,6 +43,7 @@ export class ArrayDataProvider<T> extends DataProvider<T> {
   fetch(params: Map<string, any>): Observable<T[]> {
 
     const queryString = params.get('query');
+    const fullText = params.has('fullText') ? params.get('fullText') : true;
     const limit = params.get('limit') || 50;
 
     if (!queryString || queryString === '*') {
@@ -52,7 +54,7 @@ export class ArrayDataProvider<T> extends DataProvider<T> {
 
     for (let i = 0; i < this.values.length; i++) {
       const item = this.values[i];
-      if (this.matches(item, toLowerPattern)) {
+      if (this.matches(item, toLowerPattern, fullText)) {
         result.push(item);
         if (result.length >= limit) {
           break;
@@ -70,15 +72,17 @@ export class ArrayDataProvider<T> extends DataProvider<T> {
    * that does not do deep compare.
    *
    */
-  matches(item: T, pattern: string): boolean {
+  matches(item: T, pattern: string, fullText: boolean = true): boolean {
     let value = (isPresent(this._keyPath)) ? this._keyPath.getFieldValue(item) : item;
 
     if (isFunction(value)) {
       value = value.call(item);
     } else if (isJsObject(value)) {
       return this.hasObjectValue(item, pattern);
-    } else {
+    } else if (fullText) {
       return (pattern && value) && value.toString().toLowerCase().indexOf(pattern) > -1;
+    } else {
+      return (pattern && value) && value.toString().toLowerCase() === pattern   ;
     }
   }
 

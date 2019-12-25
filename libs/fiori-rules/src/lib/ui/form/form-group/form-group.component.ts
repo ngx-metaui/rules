@@ -29,14 +29,14 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {ControlContainer, FormGroup} from '@angular/forms';
 import {FormFieldComponent} from '../form-field/form-field.component';
-import {startWith, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
@@ -135,6 +135,9 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   editable: boolean = true;
 
   @Input()
+  noLabelLayout: boolean = false;
+
+  @Input()
   get multiLayout(): boolean {
     return this._multiLayout;
   }
@@ -180,16 +183,15 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
 
 
   /**
-   * Convinient way to initialize internal FormControls
+   * Convenient way to initialize internal FormControls from object
    */
   @Input()
   object: any;
 
   /**
-   * This is just here to support several ways to pass in translation for the possible error
-   * messages
+   * This is just here to support several ways to pass translation.
    *
-   * One way is to provide ng-template #i18n inside the formgroup tag and the other one
+   * One way is to provide ng-template #i18n inside the form-group tag and the other one
    * some global one as binding
    */
   @Input()
@@ -227,7 +229,10 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   @ContentChildren(FormFieldComponent, {descendants: true})
   _fieldChildren: QueryList<FormFieldComponent>;
 
-  constructor(private _cd: ChangeDetectorRef) {
+
+  constructor(private _cd: ChangeDetectorRef, @Optional() private formContainer: ControlContainer) {
+    this.formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
+      : new FormGroup({}));
   }
 
   ngOnInit(): void {
@@ -247,12 +252,8 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   ngAfterContentInit(): void {
     this.i18Strings = (this.i18Strings) ? this.i18Strings : this.i18Template;
 
-    this._fieldChildren.changes
-      .pipe(startWith(null), takeUntil(this._destroyed))
-      .subscribe(() => {
-        this.updateFieldByZone();
-        this._cd.markForCheck();
-      });
+    this.updateFieldByZone();
+    this._cd.markForCheck();
   }
 
   ngAfterViewInit(): void {
@@ -325,15 +326,21 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   }
 
 
+  /**
+   * Pass some global properties to each field. Even formGroup cna be inject directly inside form
+   * field we are using here a setter method to initialize the
+   *
+   */
   private updateFormProperties(item: FormFieldComponent) {
     item.hintPlacement = this._hintPlacement;
     item.i18Strings = this.i18Strings;
     item.formGroup = this.formGroup;
     item.editable = this.editable;
+    item.noLabelLayout = this.noLabelLayout;
+
 
     if (this.object && this.object[item.id]) {
       item.formControl.patchValue(this.object[item.id]);
-
     }
   }
 
@@ -370,7 +377,6 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
   private calculateMainZone(left: GroupField[], right: GroupField[]): GroupField[] {
 
     if (left.length > 0 && right.length > 0) {
-
       const merged: GroupField[] = [];
       let indexL = 0, indexR = 0, current = 0;
 
@@ -378,7 +384,6 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
         if (indexL < left.length) {
           const f = new GroupField(left[indexL].zone, left[indexL].name, current,
             left[indexL].renderer, left[indexL].columns, left[indexL].isFluid);
-          f.styleClass = `col-sm-${f.columns} col-md-${f.columns} col-lg-${f.columns}`;
 
           merged[current++] = f;
           indexL++;
@@ -386,6 +391,7 @@ export class FormGroupComponent implements OnInit, AfterContentInit, AfterConten
           if (f.isFluid) {
             continue;
           }
+          f.styleClass = `col-sm-${f.columns} col-md-${f.columns} col-lg-${f.columns}`;
         }
 
         if (indexR < right.length) {

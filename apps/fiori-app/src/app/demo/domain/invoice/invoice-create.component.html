@@ -4,8 +4,8 @@
       [title]="'Invoice'"
       [showBackButton]="true"
       [editing]="false"
-      [description]="'Invoice with lines items'"
-      [actionItems]="operation === 'edit' ? butItemsEdit :  butItemsCreate "
+      [description]=""
+      [actionItems]="butItemsCreate"
       [placement]="'bottom-end'"
       (itemClick)="onActionClicked($event)"
       (backButtonClick)="onBackButtonClick()">
@@ -142,3 +142,4 @@
 </ng-template>
 
 
+{{form.getRawValue() | json}}

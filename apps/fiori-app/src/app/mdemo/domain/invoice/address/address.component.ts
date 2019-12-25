@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Address} from '../../model/address';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -8,9 +8,12 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.scss']
 })
-export class AddressComponent  {
+export class AddressComponent {
   @Input()
   address: Address;
+
+  @Input()
+  editable: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }

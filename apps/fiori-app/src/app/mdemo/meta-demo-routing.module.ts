@@ -2,9 +2,9 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {InvoiceCreateComponent} from './domain/invoice/invoice-create.component';
-import {InvoiceViewComponent} from './domain/invoice/invoice-view.component';
-import {InvoiceEditComponent} from './domain/invoice/invoice-edit.component';
+import {InvoiceComponent} from './domain/invoice/invoice.component';
+import {MetaContentPageComponent} from '@ngx-metaui/fiori-rules';
+import {EntityResolver} from './domain/rest/entity-resolver.service';
 
 
 const demoRouting: Routes = [
@@ -17,18 +17,24 @@ const demoRouting: Routes = [
       },
       {
         path: 'invoice/create',
-        component: InvoiceCreateComponent
+        component: InvoiceComponent
       },
       {
         path: 'invoice/edit/:id',
-        component: InvoiceEditComponent
+        component: InvoiceComponent
       },
       {
         path: 'invoice/view/:id',
-        component: InvoiceViewComponent
+        component: InvoiceComponent
+      },
+      {
+        path: 'entity/detail/:type/:id',
+        component: MetaContentPageComponent,
+        resolve: {
+          entity: EntityResolver
+        }
       }
     ]
-
   }
 
 ];

@@ -45,7 +45,7 @@ export enum WidgetSizeColumns {
 
 /**
  *  BaseFormComponnet extends BaseComponent for add specific form behavior
- *
+ * @deprecated this class will be removed in the next major version.
  */
 export abstract class BaseFormComponent extends BaseComponent implements ControlValueAccessor {
   /*

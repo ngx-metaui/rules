@@ -53,6 +53,8 @@ export class InvoiceViewComponent implements OnInit {
             this.invoice = Invoice.fromJSON(JSON.stringify(i));
           }
         });
+      } else {
+        throw new Error('No Data to load');
       }
     }
   }

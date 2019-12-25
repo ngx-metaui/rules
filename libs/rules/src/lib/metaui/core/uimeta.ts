@@ -80,7 +80,6 @@ import {
 } from './meta-rules';
 import {DynamicPropertyValue, PropertyMerger_And} from './policies/merging-policy';
 import {MetaConfig} from './config/meta-config';
-import {RuleLoaderService} from './rule-loader.service';
 import {LocalizedLabelString, LocalizedString} from './i18n/localized-string';
 
 
@@ -280,7 +279,7 @@ export class UIMeta extends ObjectMeta {
 
     if (isPresent(fieldsByZones)) {
 
-      for (const zone of  zoneList) {
+      for (const zone of zoneList) {
         const fields: string[] = fieldsByZones.get(zone);
 
         if (isBlank(fields)) {
@@ -335,7 +334,7 @@ export class UIMeta extends ObjectMeta {
         this._fireAction(context, false);
         context.pop();
       } else {
-        this.naviateToPage(context, action, withBackAction);
+        this.navigateToPage(context, action, withBackAction);
       }
     } else {
       context.push();
@@ -462,10 +461,10 @@ export class UIMeta extends ObjectMeta {
 
   private _fireAction(context: Context, withBackAction: boolean): void {
     const actionResults = context.propertyForKey('actionResults');
-    if (isBlank(actionResults) || !this.isRoute(actionResults)) {
+    if (!actionResults) {
       return;
     }
-    this.naviateToPage(context, actionResults, withBackAction);
+    this.navigateToPage(context, actionResults, withBackAction);
   }
 
   private defaultLabelGeneratorForKey(key: string): DynamicPropertyValue {
@@ -611,11 +610,17 @@ export class UIMeta extends ObjectMeta {
   }
 
 
-  private naviateToPage(context: Context, route: Route, withBackAction: boolean): void {
+  private navigateToPage(context: Context, route: Route | string, withBackAction: boolean): void {
     const params = this.prepareRoute(context, withBackAction);
 
     const uiContex: UIContext = <UIContext>context;
-    this.routingService.navigateWithRoute(route, params, uiContex.object);
+    if (this.isRoute(route)) {
+      this.routingService.navigateWithRoute(<Route>route, params, uiContex.object);
+    } else {
+      const id = params.id;
+      const type = params.type;
+      this.routingService.router.navigate([route, type, id]);
+    }
   }
 
 
@@ -624,8 +629,11 @@ export class UIMeta extends ObjectMeta {
     const pageBindings = context.propertyForKey('pageBindings');
     if (isPresent(pageBindings)) {
       pageBindings.forEach((v: any, k: any) => {
-        if (k !== KeyObject) {
-          (<any>params)[k] = context.resolveValue(v);
+
+        (<any>params)[k] = context.resolveValue(v);
+        // clean up defaults
+        if (k === KeyObject) {
+          delete (<any>params)[k]['$toString'];
         }
       });
       if (isPresent(withBackAction)) {

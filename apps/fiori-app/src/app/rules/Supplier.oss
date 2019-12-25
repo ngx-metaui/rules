@@ -1,5 +1,13 @@
 class=Supplier {
+
+  field=uniqueName {
+    label:"Id";
+  }
+
   field=name {
     trait:labelField;
   }
+
+  zLeft => name => contact => lines => city => email;
+  zRight => locationName => contactUser#withDetail;
 }

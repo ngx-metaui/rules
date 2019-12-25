@@ -1,4 +1,17 @@
-.fd-form-message {
+:host {
+  // little hack to align nested formgroup
+  ::ng-deep .fd-section {
+    border: 1px solid transparent !important;
+    margin: 0 !important;
+    padding: 0;
+  }
+
+  .fd-form-item ::ng-deep .fd-form-item {
+    margin-bottom: 0px;
+  }
+}
+
+::ng-deep  .fd-form-message {
   &.fd-form-message--error {
     position: absolute;
     padding-top: 2px;
@@ -16,6 +29,8 @@
 }
 
 .fd-form-item {
+  position: relative;
+
   .fd-popover-custom {
     //padding-left: 5px;
   }

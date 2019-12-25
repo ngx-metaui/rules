@@ -187,7 +187,7 @@ export class MoneyComponent extends BaseInput {
     if (this.currencySelection) {
       code = this.currencySelection;
     }
-    this.value = this.value.clone({currency: this.currencySelection});
+    this._value = this.value.clone({currency: this.currencySelection});
 
     // By default, the precision is 2. For example, 10.23 USD.
     let digits = '1.0-2';

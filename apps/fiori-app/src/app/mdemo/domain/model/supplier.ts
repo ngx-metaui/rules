@@ -1,4 +1,5 @@
 import {Entity} from '@ngx-metaui/rules';
+import {User} from './user';
 
 export class Supplier implements Entity {
 
@@ -14,7 +15,13 @@ export class Supplier implements Entity {
     public postalCode?: string,
     public country?: string,
     public phone?: string,
-    public email?: string) {
+    public email?: string,
+    public contactUser?: User
+  ) {
+
+    this.contactUser = new User('jkelly', 'Joe Kelly', 'Joe',
+      'Kelly', 'Slate Rock and Gravel Company', 'fred@rock.com',
+      'WE09', 'en', 'USD');
   }
 
   identity(): string {
@@ -34,7 +41,8 @@ export class Supplier implements Entity {
       postalCode: String,
       country: String,
       phone: String,
-      email: String
+      email: String,
+      contactUser: User
     };
   }
 

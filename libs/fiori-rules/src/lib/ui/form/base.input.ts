@@ -68,7 +68,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   }
 
   set placeholder(value: string) {
-    this._placeholder = value;
+    if (value) {
+      this._placeholder = value;
+    }
   }
 
   private _placeholder: string;

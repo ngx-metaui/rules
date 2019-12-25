@@ -82,13 +82,13 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<FormFieldControl<any>>this.metaInclude.component).editable;
     }
-    throw new Error('Dynamic component must implement FormFieldControl interface.');
+    return false;
   }
 
   get disabled(): boolean {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<FormFieldControl<any>>this.metaInclude.component).disabled;
-    } else if (!this._editable) {
+    } else if (!this.editable) {
       return false;
     }
     throw new Error('Dynamic component must implement FormFieldControl interface.');
@@ -97,7 +97,7 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
   get inErrorState(): boolean {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<FormFieldControl<any>>this.metaInclude.component).inErrorState;
-    } else if (!this._editable) {
+    } else if (!this.editable) {
       return false;
     }
     throw new Error('Dynamic component must implement FormFieldControl interface.');
@@ -107,7 +107,7 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
   get focused(): boolean {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<FormFieldControl<any>>this.metaInclude.component).focused;
-    } else if (!this._editable) {
+    } else if (!this.editable) {
       return false;
     }
     throw new Error('Dynamic component must implement FormFieldControl interface.');
@@ -142,7 +142,7 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
   get placeholder(): string {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<FormFieldControl<any>>this.metaInclude.component).placeholder;
-    } else if (!this._editable) {
+    } else if (!this.editable) {
       return '';
     }
     throw new Error('Dynamic component must implement FormFieldControl interface.');
@@ -152,7 +152,7 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
   get stateChanges(): Observable<void> {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<FormFieldControl<any>>this.metaInclude.component).stateChanges;
-    } else if (!this._editable) {
+    } else if (!this.editable) {
       return this._stateChanges;
     }
     throw new Error('Dynamic component must implement FormFieldControl interface.');
