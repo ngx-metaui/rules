@@ -1,13 +1,24 @@
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './home.component';
-import {ComboboxModule, ProductSwitchModule, ShellbarModule} from '@fundamental-ngx/core';
+import {
+  ButtonModule,
+  ComboboxModule,
+  ProductSwitchModule,
+  ActionBarModule,
+  ShellbarModule
+} from '@fundamental-ngx/core';
 import {DemoRoutingModule} from './demo-routing.module';
 import {DashboardModule} from './dashboard/dashboard.module';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {InvoiceModule} from './domain/invoice/invoice.module';
-import {ArrayDataProvider, DATA_PROVIDERS, DataProvider} from '@ngx-metaui/fiori-rules';
+import {
+  ArrayDataProvider,
+  DATA_PROVIDERS,
+  DataProvider,
+  FdpFormModule
+} from '@ngx-metaui/fiori-rules';
 import {User} from './domain/model/user';
 import {UserCSV, userDB} from './domain/rest/user';
 import {Address} from './domain/model/address';
@@ -16,6 +27,8 @@ import {Supplier} from './domain/model/supplier';
 import {SupplierCSV, supplierWithLocations} from './domain/rest/supplier';
 import {PaymentTerms} from './domain/model/payment-terms';
 import {PaymentTermsCSV, paymentTermsDB} from './domain/rest/payment-terms';
+import {UserViewComponent} from './domain/user/user-view.component';
+import {SupplierViewComponent} from './domain/supplier/supplier-view.component';
 
 
 const heroServiceFactory = () => {
@@ -60,13 +73,18 @@ const heroServiceFactory = () => {
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    UserViewComponent,
+    SupplierViewComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     FormsModule,
     ShellbarModule,
+    ActionBarModule,
+    ButtonModule,
+    FdpFormModule,
     DashboardModule,
     DemoRoutingModule,
     ComboboxModule,

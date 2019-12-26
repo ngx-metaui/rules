@@ -5,6 +5,9 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {InvoiceCreateComponent} from './domain/invoice/invoice-create.component';
 import {InvoiceViewComponent} from './domain/invoice/invoice-view.component';
 import {InvoiceEditComponent} from './domain/invoice/invoice-edit.component';
+import {UserViewComponent} from './domain/user/user-view.component';
+import {DemoEntityResolver} from './domain/rest/entity-resolver.service';
+import {SupplierViewComponent} from './domain/supplier/supplier-view.component';
 
 
 const demoRouting: Routes = [
@@ -26,6 +29,20 @@ const demoRouting: Routes = [
       {
         path: 'invoice/view/:id',
         component: InvoiceViewComponent
+      },
+      {
+        path: 'entity/detail/User/:id',
+        component: UserViewComponent,
+        resolve: {
+          entity: DemoEntityResolver
+        }
+      },
+      {
+        path: 'entity/detail/Supplier/:id',
+        component: SupplierViewComponent,
+        resolve: {
+          entity: DemoEntityResolver
+        }
       }
     ]
 

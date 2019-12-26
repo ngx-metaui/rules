@@ -22,7 +22,7 @@
 
 
 <ng-template #invoiceForm>
-  <fdp-form-group #fg [multiLayout]="true" [object]="invoice" [editable]="false" >
+  <fdp-form-group #fg [multiLayout]="true" [object]="invoice" [editable]="false">
     <!--
   Left side
     -->
@@ -31,12 +31,15 @@
       <fdp-string [value]="invoice.name"></fdp-string>
     </fdp-form-field>
 
-    <fdp-form-field [id]="'requestor'"  zone="zLeft" rank="20">
-      <fdp-string [value]="invoice.requestor"></fdp-string>
+    <fdp-form-field [id]="'requestor'" zone="zLeft" rank="20">
+      <fdp-link (click)="goToUser()">
+        {{invoice.requestor.toString()}}
+      </fdp-link>
+
     </fdp-form-field>
 
     <fdp-form-field [id]="'needBy'" label="Need By" zone="zLeft" rank="40">
-      <fdp-date-picker [editable]="false" [value]="invoice.needBy" ></fdp-date-picker>
+      <fdp-date-picker [editable]="false" [value]="invoice.needBy"></fdp-date-picker>
     </fdp-form-field>
 
 
@@ -45,7 +48,7 @@
     </fdp-form-field>
 
     <fdp-form-field [id]="'isShared'" label="Is Shared?" zone="zLeft" rank="50"
-                    >
+    >
       <fdp-string [value]="invoice.isShared ? 'Yes' : 'No' "></fdp-string>
     </fdp-form-field>
 
@@ -72,12 +75,15 @@
       <fdp-money [value]="invoice.totalAmount" [editable]="false"></fdp-money>
     </fdp-form-field>
 
-    <fdp-form-field [id]="'supplier'" zone="zRight" rank="20" >
-      <fdp-string [value]="invoice.supplier"></fdp-string>
+    <fdp-form-field [id]="'supplier'" zone="zRight" rank="20">
+      <fdp-link (click)="goToSupplier()">
+        {{invoice.supplier.toString()}}
+      </fdp-link>
+
     </fdp-form-field>
 
 
-    <fdp-form-field [id]="'paymentTerms'" zone="zRight" rank="40" >
+    <fdp-form-field [id]="'paymentTerms'" zone="zRight" rank="40">
       <fdp-string [value]="invoice.paymentTerms"></fdp-string>
     </fdp-form-field>
 

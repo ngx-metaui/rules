@@ -200,7 +200,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   ngAfterContentInit(): void {
     // this.validateFieldControlComponent();
 
-    if (this._control) {
+    if (this._control && this._control.stateChanges) {
       this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
         this.updateControlProperties();
         // need to call explicitly detectChanges() instead of markForCheck before the

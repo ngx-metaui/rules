@@ -1,0 +1,58 @@
+<main class="fd-page">
+  <header class="fd-page__header fd-has-background-color-background-2">
+    <div fd-action-bar>
+      <div fd-action-bar-back>
+        <button aria-label="back" fd-button [fdType]="'light'" [compact]="true"
+                (click)="onBack()"
+                [glyph]="'nav-back'"></button>
+      </div>
+      <div fd-action-bar-header>
+        <h3 fd-action-bar-title>User details</h3>
+        <div fd-action-bar-description>Read only object details. Click the Back button to go back
+        </div>
+      </div>
+      <div fd-action-bar-actions>
+      </div>
+    </div>
+  </header>
+  <div class="fd-page__content ">
+    <div class="row center-xs">
+      <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
+        <fdp-form-group #fg [multiLayout]="true" [object]="user" [editable]="false">
+          <!--
+        Left side
+          -->
+          <fdp-form-field [id]="'name'" label="Title" zone="zLeft"
+                          rank="10">
+            <fdp-string [value]="user.fullName"></fdp-string>
+          </fdp-form-field>
+
+          <fdp-form-field [id]="'firstName'" zone="zLeft" rank="20">
+            <fdp-string [value]="user.firstName"></fdp-string>
+          </fdp-form-field>
+
+          <fdp-form-field [id]="'lastName'" zone="zLeft" rank="40">
+            <fdp-string [value]="user.lastName"></fdp-string>
+          </fdp-form-field>
+
+          <fdp-form-field [id]="'organization'" zone="zLeft" rank="50">
+            <fdp-string [value]="user.organization"></fdp-string>
+          </fdp-form-field>
+
+          <fdp-form-field [id]="'purchasingUnit'" zone="zLeft" rank="60">
+            <fdp-string [value]="user.purchasingUnit"></fdp-string>
+          </fdp-form-field>
+
+          <fdp-form-field [id]="'locale'" zone="zLeft" rank="70">
+            <fdp-string [value]="user.locale"></fdp-string>
+          </fdp-form-field>
+
+          <fdp-form-field [id]="'description'" zone="zBottom" rank="80">
+            <fdp-string [value]="user.description"></fdp-string>
+          </fdp-form-field>
+
+        </fdp-form-group>
+      </div>
+    </div>
+  </div>
+</main>
