@@ -1,0 +1,21 @@
+<m-context>
+  <ng-template ngFor [ngForOf]="actionCategories()" let-category>
+    <m-context [actionCategory]="category.name">
+      <ng-template ngFor [ngForOf]="actions(category)" let-action>
+        <m-context [action]="action.name"
+                   (onContextChanged)="onContextChanged($event)"
+                   (afterContextSet)="onAfterContextSet($event)">
+
+          <button fd-button
+                  *ngIf="actionProp(action.name, 'visible')"
+                  [fdType]="actionProp(action.name, 'buttonType')"
+                  [options]="actionProp(action.name, 'buttonOptions')"
+                  [disabled]="isActionDisabled(action.name)"
+                  (click)="actionClicked(action.name)">
+            {{ actionProp(action.name, 'label') }}
+          </button>
+        </m-context>
+      </ng-template>
+    </m-context>
+  </ng-template>
+</m-context>

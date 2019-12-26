@@ -1,47 +1,32 @@
-<main class="fd-page">
-  <header class="fd-page__header fd-has-background-color-background-2">
-    <div fd-action-bar>
-      <div fd-action-bar-back>
-        <button aria-label="back" fd-button [fdType]="'light'"
-                (click)="onBackButtonClick()" [compact]="true" [glyph]="'nav-back'"></button>
+<m-context [object]="invoice" [operation]="operation" [locale]="locale">
+  <main class="fd-page">
+    <header class="fd-page__header fd-has-background-color-background-2">
+      <div fd-action-bar>
+        <div fd-action-bar-back>
+          <button aria-label="back" fd-button [fdType]="'light'"
+                  (click)="onBackButtonClick()" [compact]="true" [glyph]="'nav-back'"></button>
+        </div>
+        <div fd-action-bar-header>
+          <h3 fd-action-bar-title>Invoice</h3>
+          <div fd-action-bar-description>Invoice descriptions</div>
+        </div>
+        <div fd-action-bar-actions>
+          <m-context layout="SelectionButtonArea">
+            <m-include-component></m-include-component>
+          </m-context>
+        </div>
       </div>
-      <div fd-action-bar-header>
-        <h3 fd-action-bar-title>Invoice</h3>
-        <div fd-action-bar-description>Invoice descriptions</div>
-      </div>
-      <div fd-action-bar-actions>
-        <button fd-button *ngIf="operation === 'view'" [options]="'emphasized'"
-                (click)="onAction('edit')">Edit</button>
-        <ng-template [ngIf]="operation === 'create' || operation === 'edit'">
-          <button fd-button [options]="'emphasized'" (click)="onAction('save')">Save</button>
-          <button fd-button (click)="onAction('reset')" [fdType]="'standard'">Reset
-          </button>
-        </ng-template>
-
-      </div>
-    </div>
-
-  </header>
-  <div class="fd-page__content">
-    <div class="row center-xs">
-      <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
-        <m-context [object]="invoice" [operation]="operation" layout="Inspect" [formGroup]="form"
-                   [locale]="locale">
-          <m-include-component></m-include-component>
-        </m-context>
+    </header>
+    <div class="fd-page__content">
+      <div class="row center-xs">
+        <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
+          <m-context layout="Inspect" [formGroup]="form">
+            <m-include-component></m-include-component>
+          </m-context>
+        </div>
       </div>
     </div>
-  </div>
-
-</main>
-
-<pre>
-{{invoice | json}}
-</pre>
-
-
-<pre>
-  {{form.getRawValue() | json}}
-</pre>
+  </main>
+</m-context>
 
 

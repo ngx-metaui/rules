@@ -14,8 +14,8 @@ import {MetaDemoModule} from './mdemo/meta-demo.module';
 
 
 
-const LOCALE = 'de';
-import localeStr from '@angular/common/locales/en-DE';
+const LOCALE = 'us';
+import localeStr from '@angular/common/locales/es-US';
 registerLocaleData(localeStr, LOCALE);
 
 @NgModule({

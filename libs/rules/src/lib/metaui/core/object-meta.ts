@@ -332,7 +332,7 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
     }
     addTrait(action.type, props);
 
-    if (action.value && action.type === 'messageResults') {
+    if (action.value.length >= 0 && action.type === 'messageResults') {
       props.set('message', action.value);
       props.set('mRef', action.methodRef);
     }

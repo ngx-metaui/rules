@@ -48,9 +48,7 @@ class=Invoice {
         address:$value;
       };
     }
-
   }
-
 
   field=description {
     trait:longtext;
@@ -73,7 +71,6 @@ class=Invoice {
 }
 
 class=Invoice {
-
    operation=(edit, create) {
         zNone => *;
         zLeft   =>  name#fluid => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress;
@@ -87,5 +84,23 @@ class=Invoice {
         zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder => isShared => shareContact;
         zBottom => description;
    }
-
 }
+
+
+class=Invoice object {
+  action=(reset, save) {
+      trait:controllerAction;
+      visible:${properties.get('editing') === true};
+  }
+
+
+  action=edit {
+      trait:controllerAction;
+      visible:${properties.get('editing') === false};
+  }
+
+  action=(edit, save) {
+    buttonOptions:"emphasized";
+  }
+}
+

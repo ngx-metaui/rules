@@ -155,12 +155,6 @@ export class Expr extends DynamicPropertyValue {
   constructor(private _expressionString: string, private meta: MetaRules) {
     super();
     this.addDepencyToContext('FieldPath', FieldPath);
-
-    if (meta && meta.contextDependencies().size > 0) {
-      meta.contextDependencies().forEach((v, k) => {
-        this.addDepencyToContext(k, v);
-      });
-    }
   }
 
 
@@ -171,6 +165,12 @@ export class Expr extends DynamicPropertyValue {
   }
 
   evaluate(context: Context): any {
+    if (this.meta && this.meta.contextDependencies().size > 0) {
+      this.meta.contextDependencies().forEach((v, k) => {
+        this.addDepencyToContext(k, v);
+      });
+    }
+
     let index = 0;
     this._extendedObjects.forEach((v, k) => {
       const typeName = `DynObj${index++}`;
@@ -178,6 +178,9 @@ export class Expr extends DynamicPropertyValue {
 
       if (this._expressionString.indexOf(`${k}.`) !== -1) {
         this._expressionString = this._expressionString.replace(`${k}.`, `${typeName}.`);
+
+      } else if (this._expressionString.indexOf(`this.${k}`) !== -1) {
+        this._expressionString = this._expressionString.replace(`this.${k}`, `${typeName}`);
       }
     });
 
