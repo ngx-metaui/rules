@@ -62,5 +62,13 @@ export class InvoiceViewComponent implements OnInit {
   onActionClicked(event: ActionItem) {
     this.router.navigate([`/demo/invoice/edit/${this.route.snapshot.params.id}`]);
   }
+
+  goToUser() {
+    this.router.navigate(['/demo/entity/detail/User/' + this.invoice.requestor.uniqueName]);
+  }
+
+  goToSupplier() {
+    this.router.navigate(['/demo/entity/detail/Supplier/' + this.invoice.supplier.uniqueName]);
+  }
 }
 
