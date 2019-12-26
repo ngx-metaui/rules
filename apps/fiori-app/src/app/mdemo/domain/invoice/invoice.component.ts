@@ -6,14 +6,14 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {Invoice} from '../model/invoice';
 import {DATA_PROVIDERS, DataProvider} from '@ngx-metaui/fiori-rules';
 import {PaymentTermsCSV, paymentTermsDB} from '../rest/payment-terms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {debounceTime, tap} from 'rxjs/operators';
-import {META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {Action, META_RULES, MetaRules, Property} from '@ngx-metaui/rules';
 
 
 @Component({
@@ -37,7 +37,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
               @Inject(DATA_PROVIDERS) private providers: Map<string, DataProvider<any>>,
               private router: Router, private route: ActivatedRoute) {
 
-    console.log(locale);
   }
 
   ngOnInit(): void {
@@ -59,28 +58,30 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
 
-  required(): ValidatorFn[] {
-    return [Validators.required];
-  }
-
   onBackButtonClick() {
     window.history.back();
   }
 
-  onAction(action: string) {
-    if (action === 'reset') {
-      localStorage.removeItem('in-progress');
-      Object.keys(this.form.controls).forEach(field => {
-        const control = this.form.get(field);
-        control.reset(undefined, {onlySelf: true, emitEvent: true});
-      });
-      this.invoice = null;
-    } else if (action === 'edit') {
-      this.router.navigate([`/mdemo/invoice/edit/${this.route.snapshot.params.id}`]);
-    } else if (action === 'save') {
-      this.doSave();
-      this.onBackButtonClick();
-    }
+  @Action({applyTo: Invoice})
+  edit(event: Invoice) {
+    this.router.navigate([`/mdemo/invoice/edit/${event.internalId}`]);
+  }
+
+  @Action({applyTo: Invoice})
+  save(event: Invoice) {
+    this.doSave();
+    this.onBackButtonClick();
+  }
+
+
+  @Action({applyTo: Invoice})
+  reset(event: Invoice) {
+    localStorage.removeItem('in-progress');
+    Object.keys(this.form.controls).forEach(field => {
+      const control = this.form.get(field);
+      control.reset(undefined, {onlySelf: true, emitEvent: true});
+    });
+    this.invoice = null;
   }
 
 
@@ -102,7 +103,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           invoice.internalId = (invoices.length + 1);
           invoices.push(invoice);
         }
-          invoice.uniqueName = `INV-${invoice.internalId}`;
+        invoice.uniqueName = `INV-${invoice.internalId}`;
 
         localStorage.setItem('invoices', JSON.stringify(invoices));
         localStorage.removeItem('in-progress');

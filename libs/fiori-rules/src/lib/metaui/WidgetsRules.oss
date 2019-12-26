@@ -170,7 +170,6 @@ field {
     @trait=inlineObject {
         editable=false {
             component:MetaObjectDetailComponent;
-            xuseNoLabelLayout:true;
             bindings: {
                 object:$value;
                 layout:Inspect;
@@ -216,7 +215,6 @@ action {
       actionResults:${
           m = properties.get('mRef');
           m(object);
-          matSnackBar.open(properties.get('message'))
       };
   }
 }
@@ -227,7 +225,13 @@ group=inlineObject class layout {
 
 
 layout {
+    @trait=InstanceActionButtons {
+        visible:true;
+        component:MetaActionListComponent;
+    }
+
     @trait=Form { visible:true; component:MetaForm; }
+
 
     component=MetaForm @trait=noLabelLayout;
     layout_trait=noLabelLayout class {

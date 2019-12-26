@@ -28,6 +28,7 @@ import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapt
 import {MetaObjectDetailComponent} from './object-detail/object-detail.component';
 import {MetaContentPageComponent} from './content-page/content-page.component';
 import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
+import {MetaActionListComponent} from './meta-action-list/meta-action-list.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
     MetaFormField,
     MetaFormFieldAdapter,
     MetaObjectDetailComponent,
-    MetaContentPageComponent
+    MetaContentPageComponent,
+    MetaActionListComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +53,8 @@ import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
   entryComponents: [
     MetaForm,
     MetaObjectDetailComponent,
-    MetaContentPageComponent
+    MetaContentPageComponent,
+    MetaActionListComponent
   ],
   exports: [
     UILibModule

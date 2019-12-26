@@ -40,6 +40,10 @@ export function Action(def: ActionDef) {
       def.category = 'General';
     }
 
+    if (!def.message) {
+      def.message = '';
+    }
+
     addMetaAction(def.applyTo, def.responseType, propertyKey,
       def.responseType === 'messageResults' ? def.message : def.responseType,
       target[propertyKey], isFunction(target), def.category);

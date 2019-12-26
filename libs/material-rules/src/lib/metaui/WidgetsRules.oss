@@ -259,6 +259,7 @@ layout {
         visible:true;
         component:MetaActionListComponent;
     }
+
     @trait=Form { visible:true; component:MetaForm; }
 
     @trait=Stack { visible:true; component:MetaElementListComponent; }
