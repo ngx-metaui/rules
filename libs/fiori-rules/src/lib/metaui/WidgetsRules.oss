@@ -254,6 +254,9 @@ module {
            label:"Actions";
            component:"MetaActionListComponent";
            after:zToc;
+           bindings: {
+            renderAs:"links";
+           };
         }
     }
 }

@@ -321,7 +321,6 @@ export class UIMeta extends ObjectMeta {
              withBackAction: boolean = false): void {
 
     if (isPresent(action)) {
-
       if (action instanceof ItemProperties) {
         context.push();
         let actionCategory = action.properties.get(KeyActionCategory);
@@ -640,7 +639,11 @@ export class UIMeta extends ObjectMeta {
     } else {
       const id = params.id;
       const type = params.type;
-      this.routingService.router.navigate([route, type, id]);
+      const routePath = [route];
+      if (params.id && params.type) {
+        routePath.push(type, id);
+      }
+      this.routingService.router.navigate(routePath);
     }
   }
 

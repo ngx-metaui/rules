@@ -28,7 +28,6 @@
       layouts: mainLayouts()}">
     </ng-container>
 
-<!--    -->
   </div>
   <div class="row zBottom">
     <ng-container
@@ -54,37 +53,13 @@
     </fdp-select>
   </div>
 
-  <div class="box">
-    <fd-panel>
-      <fd-panel-header>
-        <fd-panel-head>
-          <h2 fd-panel-title>Create</h2>
-        </fd-panel-head>
-        <fd-panel-actions>
-          <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"></span>
-        </fd-panel-actions>
-      </fd-panel-header>
+  <m-context #zTopm [ngClass]="'box'"
+             *ngFor="let layout of zTocLayouts()" [layout]="layout.name"
+             (afterContextSet)="afterContextSet($event)"
+             (beforeContextSet)="beforeContextSet($event)">
+    <m-include-component></m-include-component>
+  </m-context>
 
-      <fd-panel-body>
-        <ul fd-list class="create-actions">
-          <li fd-list-item routerLink="/demo">
-            <fd-icon [size]="'m'" glyph="sales-order-item"></fd-icon>
-            <span>Order</span>
-          </li>
-          <li fd-list-item [routerLink]="['/mdemo/invoice/create']">
-            <fd-icon [size]="'m'" glyph="money-bills"></fd-icon>
-            <span>Invoice</span>
-          </li>
-          <li fd-list-item>
-            <fd-icon [size]="'m'" glyph="customer-order-entry"></fd-icon>
-            <span>Receipt</span>
-          </li>
-        </ul>
-
-
-      </fd-panel-body>
-    </fd-panel>
-  </div>
 </ng-template>
 
 

@@ -13,11 +13,6 @@ const demoRouting: Routes = [
     path: 'mdemo', component: HomeComponent,
     children: [
       {
-        path: '',
-        redirectTo: './home',
-        pathMatch: 'prefix'
-      },
-      {
         path: 'home',
         component: MetaHomePageComponent
       },
