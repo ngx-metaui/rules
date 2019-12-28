@@ -242,3 +242,18 @@ layout {
 ~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null; }; }
 
 
+module {
+    visible:$${!properties.get("hidden")};
+    homePage:"home";
+    pageBindings:${properties.get("homePage") == "home" ? new Map().set("module", values.get("module")) : null};
+    component:MetaDashboardLayoutComponent;
+    layout { visible:true; }
+
+    @trait=ActionTOC {
+        @layout=Actions {
+           label:"Actions";
+           component:"MetaActionListComponent";
+           after:zToc;
+        }
+    }
+}

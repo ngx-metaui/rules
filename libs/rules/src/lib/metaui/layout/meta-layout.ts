@@ -93,7 +93,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   }
 
   /**
-   * Can be called by m-content to @Output after context properties are pushed to stack
+   * Can be called by m-content to @Output before context properties are pushed to stack
    *
    */
   beforeContextSet(layoutName: any): void {

@@ -1,0 +1,168 @@
+<main class="fd-page">
+  <div class="fd-page__content ">
+    <div class="row top-xs">
+      <div class="col-xs-12, col-sm-12 col-md-12 col-lg-9">
+        <ng-container *ngTemplateOutlet="portlets">
+        </ng-container>
+      </div>
+      <div class="zToc col-xs-4 col-sm-4 col-md-3 col-lg-3s">
+        <ng-container *ngTemplateOutlet="actions">
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+
+<ng-template #portlets>
+  <div class="row zTop">
+    <ng-container
+      *ngTemplateOutlet="portlet;context: {$implicit:'col-xs-12', layouts: topLayouts() }">
+    </ng-container>
+  </div>
+  <div class="row zMain">
+
+    <ng-container
+      *ngTemplateOutlet="portlet;context: { $implicit:'col-xs-12 col-sm-6 col-md-6 col-lg-6',
+      layouts: mainLayouts()}">
+    </ng-container>
+
+<!--    -->
+  </div>
+  <div class="row zBottom">
+    <ng-container
+      *ngTemplateOutlet="portlet;context: {$implicit:'col-xs-12' }">
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #portlet let-colClass let-layouts="layouts">
+  <m-context [ngClass]="colClass"
+            *ngFor="let layout of layouts" [layout]="layout.name"
+             (afterContextSet)="afterContextSet($event)"
+             (beforeContextSet)="beforeContextSet($event)">
+    <div class="portlet">
+      <m-include-component></m-include-component>
+    </div>
+  </m-context>
+</ng-template>
+
+<ng-template #actions>
+  <div class="box">
+    <fdp-select placeholder="Quick Links" [list]="['Ad Hoc Request', 'Create Invoice']">
+    </fdp-select>
+  </div>
+
+  <div class="box">
+    <fd-panel>
+      <fd-panel-header>
+        <fd-panel-head>
+          <h2 fd-panel-title>Create</h2>
+        </fd-panel-head>
+        <fd-panel-actions>
+          <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"></span>
+        </fd-panel-actions>
+      </fd-panel-header>
+
+      <fd-panel-body>
+        <ul fd-list class="create-actions">
+          <li fd-list-item routerLink="/demo">
+            <fd-icon [size]="'m'" glyph="sales-order-item"></fd-icon>
+            <span>Order</span>
+          </li>
+          <li fd-list-item [routerLink]="['/mdemo/invoice/create']">
+            <fd-icon [size]="'m'" glyph="money-bills"></fd-icon>
+            <span>Invoice</span>
+          </li>
+          <li fd-list-item>
+            <fd-icon [size]="'m'" glyph="customer-order-entry"></fd-icon>
+            <span>Receipt</span>
+          </li>
+        </ul>
+
+
+      </fd-panel-body>
+    </fd-panel>
+  </div>
+</ng-template>
+
+
+<div *ngIf="false" class="fd-layout-grid  fd-layout-grid--col-3">
+  <div class="fd-layout-grid__span-column-3">
+    <fd-panel>
+      <fd-panel-header>
+        <fd-panel-head>
+          <h2 fd-panel-title>News</h2>
+        </fd-panel-head>
+        <fd-panel-actions>
+          <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"></span>
+        </fd-panel-actions>
+      </fd-panel-header>
+
+      <fd-panel-body>
+        <p>
+          SAP Ariba Integrates with Givewith Platform, Enabling Buyers and Suppliers to Drive
+          Social Impact Through B2B Transactions.
+        </p>
+        <p>
+          <a
+            href="https://www.sdcexec.com/sustainability/news/21103665/sap-ariba-integrates-with-givewith-platform-enabling-buyers-and-suppliers-to-drive-social-impact-through-b2b-transactions">
+            To read more
+          </a>
+        </p>
+      </fd-panel-body>
+    </fd-panel>
+  </div>
+
+
+  <fd-panel class="portlet">
+    <fd-panel-header>
+      <fd-panel-head>
+        <h2 fd-panel-title>Documents</h2>
+      </fd-panel-head>
+      <fd-panel-actions>
+              <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"
+              ></span>
+      </fd-panel-actions>
+    </fd-panel-header>
+
+    <fd-panel-body>
+      <p>
+        SAP Ariba Integrates with Givewith Platform, Enabling Buyers and Suppliers to Drive
+        Social Impact Through B2B Transactions.
+      </p>
+      <p>
+        <a
+          href="https://www.sdcexec.com/sustainability/news/21103665/sap-ariba-integrates-with-givewith-platform-enabling-buyers-and-suppliers-to-drive-social-impact-through-b2b-transactions">
+          To read more
+        </a>
+      </p>
+    </fd-panel-body>
+  </fd-panel>
+
+  <fd-panel class="portlet">
+    <fd-panel-header>
+      <fd-panel-head>
+        <h2 fd-panel-title>News</h2>
+      </fd-panel-head>
+      <fd-panel-actions>
+              <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"
+              ></span>
+      </fd-panel-actions>
+    </fd-panel-header>
+
+    <fd-panel-body>
+      <p>
+        SAP Ariba Integrates with Givewith Platform, Enabling Buyers and Suppliers to Drive
+        Social Impact Through B2B Transactions.
+      </p>
+      <p>
+        <a
+          href="https://www.sdcexec.com/sustainability/news/21103665/sap-ariba-integrates-with-givewith-platform-enabling-buyers-and-suppliers-to-drive-social-impact-through-b2b-transactions">
+          To read more
+        </a>
+      </p>
+    </fd-panel-body>
+  </fd-panel>
+</div>

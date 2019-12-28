@@ -66,7 +66,6 @@ import {ItemProperties} from './item-properties';
 import {OnDestroy, Type} from '@angular/core';
 import {Route} from '@angular/router';
 import {LocalizedString} from './i18n/localized-string';
-import {RuleLoaderService} from './rule-loader.service';
 import {RuntimeParser} from './compiler/runtime-parser.visitor';
 
 
@@ -384,6 +383,8 @@ export abstract class Meta implements MetaRules, OnDestroy {
 
   abstract gotoModule(module: ItemProperties, activatedPath?: string): void;
 
+  abstract go2Module(module: ItemProperties, routePrefix: string): void;
+
   abstract itemList(context: Context, key: string, zones: string[]): Array<ItemProperties>;
 
   abstract itemNamesByZones(context: Context, key: string, zones: string[]): Map<string, any>;
@@ -602,7 +603,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
     let best: Selector;
     let bestRank = Number.MIN_VALUE;
     let pos = 0;
-    for (const sel of  selectors) {
+    for (const sel of selectors) {
       const rank = this.selectivityRank(sel) + pos++;
       if (rank > bestRank) {
         best = sel;
@@ -654,7 +655,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
       const keyData = this._keyData.get(id);
       const valuess = keyData.ruleVecs.values();
 
-      for (const vm  of valuess) {
+      for (const vm of valuess) {
         const kvc = new KeyValueCount(keyData._key, (<any>vm)['_value'], isPresent(
           vm._arr) ? vm._arr[0] : 0);
 

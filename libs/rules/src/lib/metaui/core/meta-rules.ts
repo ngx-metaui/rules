@@ -425,9 +425,12 @@ export interface LayoutRule {
    * Even not fully implemented but this methods triggers actions that retrieves current module
    * properties and trigers specified route action that supposed to transition to a new page.
    *
+   * @deprecated use go2Module instead
    */
   gotoModule(module: ItemProperties, activatedPath?: string): void;
 
+
+  go2Module(module: ItemProperties, routePrefix: string): void;
 
   /**
    *
