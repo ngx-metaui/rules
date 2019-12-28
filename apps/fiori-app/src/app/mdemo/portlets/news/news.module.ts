@@ -17,6 +17,9 @@ import {BrowserModule} from '@angular/platform-browser';
     FormsModule,
     IdentifierModule
   ],
+  entryComponents: [
+    NewsComponent
+  ],
   exports: [
     NewsComponent
   ],

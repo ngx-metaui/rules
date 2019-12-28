@@ -10,6 +10,9 @@ import {CommodityComponent} from './commodity.component';
   imports: [
     CommonModule
   ],
+  entryComponents: [
+    CommodityComponent
+  ],
   exports: [
     CommodityComponent
   ],

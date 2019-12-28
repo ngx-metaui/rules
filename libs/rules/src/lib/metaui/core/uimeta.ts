@@ -343,11 +343,16 @@ export class UIMeta extends ObjectMeta {
     }
   }
 
+  /**
+   *
+   * @deprecated please use go2Module instead
+   */
   gotoModule(module: ItemProperties, activatedPath?: string): void {
 
     this.env.deleteValue(ACTIVE_CNTX);
     const context = this.newContext();
 
+    console.log('got To Module: ', module);
     context.push();
     context.set(KeyModule, module.name);
     const pageName = context.propertyForKey(KeyHomePage);
@@ -362,6 +367,22 @@ export class UIMeta extends ObjectMeta {
 
     this.routingService.navigate([path, params], {skipLocationChange: true});
   }
+
+  go2Module(module: ItemProperties, routePrefix: string): void {
+    this.env.deleteValue(ACTIVE_CNTX);
+    const context = this.newContext();
+
+    context.push();
+    context.set(KeyModule, module.name);
+    const homePageRoute = context.propertyForKey(KeyHomePage);
+    const params = this.prepareRoute(context, null);
+    context.pop();
+
+    this.routingService.router.navigate([routePrefix, homePageRoute], {
+      queryParams: params
+    });
+  }
+
 
   fieldList(context: Context): Array<ItemProperties> {
     return this.itemList(context, KeyField, ZonesTLRMB);

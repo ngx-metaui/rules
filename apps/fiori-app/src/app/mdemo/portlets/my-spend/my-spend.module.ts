@@ -14,6 +14,9 @@ import {MySpendComponent} from './my-spend.component';
   ],
   exports: [
     MySpendComponent
+  ],
+  entryComponents: [
+    MySpendComponent
   ]
 })
 export class MySpendModule {

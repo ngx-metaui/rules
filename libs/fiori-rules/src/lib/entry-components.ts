@@ -37,5 +37,4 @@ export * from './ui/form/string/string.component';
 export * from './ui/form/text-area/text-area.component';
 export * from './ui/form/combo-box/combo-box.component';
 export * from './ui/link/link.component';
-
 export * from './metaui/public_api';

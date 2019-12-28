@@ -6,6 +6,7 @@ import {LandingModule} from '../landing/landing.module';
 import {FormsModule} from '@angular/forms';
 import {Landing2Module} from '../landing2/landing2.module';
 import {Landing3Module} from '../landing3/landing3.module';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {Landing3Module} from '../landing3/landing3.module';
     TabsModule,
     LandingModule,
     Landing2Module,
-    Landing3Module
+    Landing3Module,
+    RouterModule
   ],
   providers: []
 })

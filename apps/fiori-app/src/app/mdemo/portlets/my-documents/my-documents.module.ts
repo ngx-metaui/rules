@@ -18,6 +18,10 @@ import {RouterModule} from '@angular/router';
   exports: [
     MyDocumentsComponent
   ],
+  entryComponents: [
+    MyDocumentsComponent
+  ],
+
   providers: []
 })
 export class MyDocumentsModule {

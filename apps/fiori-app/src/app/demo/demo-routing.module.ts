@@ -8,6 +8,9 @@ import {InvoiceEditComponent} from './domain/invoice/invoice-edit.component';
 import {UserViewComponent} from './domain/user/user-view.component';
 import {DemoEntityResolver} from './domain/rest/entity-resolver.service';
 import {SupplierViewComponent} from './domain/supplier/supplier-view.component';
+import {LandingComponent} from './landing/landing.component';
+import {Landing2Component} from './landing2/landing2.component';
+import {Landing3Component} from './landing3/landing3.component';
 
 
 const demoRouting: Routes = [
@@ -16,8 +19,28 @@ const demoRouting: Routes = [
     children: [
       {
         path: '',
-        component: DashboardComponent
+        component: DashboardComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: './home',
+            pathMatch: 'prefix'
+          },
+          {
+            path: 'home',
+            component: LandingComponent
+          },
+          {
+            path: 'invocing',
+            component: Landing2Component
+          },
+          {
+            path: 'receiving',
+            component: Landing3Component
+          }
+        ]
       },
+
       {
         path: 'invoice/create',
         component: InvoiceCreateComponent

@@ -6,7 +6,6 @@
 
   .portlet {
     min-width: 250px;
-    height: 250px;
 
     .fd-panel__header {
       padding: 8px 24px;
@@ -15,18 +14,24 @@
     .fd-panel__body {
       padding: 0px;
     }
+  }
 
-    &.news {
-      height: 140px;
+  .zMain {
+    .portlet {
+      height: 250px;
     }
   }
 
-  .right-actions {
-    .box {
+  .zTop, .zBottom {
+    .portlet {
       margin-bottom: 15px;
+      height: 120px;
     }
+  }
 
-    .create-actions {
+  .zToc {
+    .box {
+      margin-bottom: 10px;
       li {
         cursor: pointer;
 
@@ -38,7 +43,7 @@
   }
 }
 
-.box-row {
+.portlet {
   margin: 5px;
   position: relative;
   box-sizing: border-box;
@@ -48,5 +53,5 @@
   overflow: hidden;
   text-align: center;
   box-shadow: 2px 2px 4px #dadada;;
-  color: #fff;
+  color: #9d9d9d;
 }
