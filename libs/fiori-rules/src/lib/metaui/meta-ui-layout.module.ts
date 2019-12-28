@@ -28,10 +28,9 @@ import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapt
 import {MetaObjectDetailComponent} from './object-detail/object-detail.component';
 import {MetaContentPageComponent} from './content-page/content-page.component';
 import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
-import {MetaActionListComponent} from './meta-action-list/meta-action-list.component';
 import {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
-import {MetaDashboardLayoutComponent} from './meta-dashboard/meta-dashboard-layout.component';
 import {MetaDashboardLayoutModule} from './meta-dashboard/meta-dashboard-layout.module';
+import {MetaActionListModule} from './meta-action-list/meta-action-list.module';
 
 
 @NgModule({
@@ -42,7 +41,6 @@ import {MetaDashboardLayoutModule} from './meta-dashboard/meta-dashboard-layout.
     MetaFormFieldAdapter,
     MetaObjectDetailComponent,
     MetaContentPageComponent,
-    MetaActionListComponent,
     MetaHomePageComponent
   ],
   imports: [
@@ -53,13 +51,13 @@ import {MetaDashboardLayoutModule} from './meta-dashboard/meta-dashboard-layout.
     ButtonModule,
     MetaUIRulesModule,
     MetaDashboardLayoutModule,
+    MetaActionListModule,
     UILibModule
   ],
   entryComponents: [
     MetaForm,
     MetaObjectDetailComponent,
     MetaContentPageComponent,
-    MetaActionListComponent
   ],
   exports: [
     UILibModule

@@ -82,6 +82,15 @@ export class MetaActionListComponent extends MetaBaseComponent {
 
 
   /**
+   *
+   * Defines type of components that renders our actions. We have 3 types:
+   * Buttons, Links and Popup Menu
+   *
+   */
+  @Input()
+  renderAs: string = 'buttons';
+
+  /**
    * This is special identifier and when used we push extra stack property in order to get some
    * additional properties that are primarily related to type of actions that can be visible or
    * enabled
@@ -170,6 +179,7 @@ export class MetaActionListComponent extends MetaBaseComponent {
 
       this._actionsByCategory = new Map<string, ItemProperties[]>();
       this._actionsByName = new Map<string, ItemProperties>();
+
       this.categories = meta.actionsByCategory(this.context, this._actionsByCategory,
         ActionZones);
       this.context.pop();
@@ -219,6 +229,7 @@ export class MetaActionListComponent extends MetaBaseComponent {
   actionClicked(action: any): void {
     const context = this._contextMap.get(action);
     context.meta.fireAction(context, this._actionsByName.get(action));
+    this.cd.markForCheck();
   }
 
 

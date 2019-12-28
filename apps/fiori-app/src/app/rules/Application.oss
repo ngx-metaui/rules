@@ -1,5 +1,29 @@
 module {
   productSwitcher:'switcher';
+  pageTitle:${"This is fiori MetaUI demo - " + properties.get("label")};
+
+  layout {
+    portletWrapper: NoPortletWrapper;
+  }
+
+
+  @actionCategory=Create {
+
+      @action=Order#pageAction {
+          icon:"sales-order-item";
+          routeName:"/mdemo/invoice/create";
+      }
+
+      @action=Invoice#pageAction {
+          icon:"money-bills";
+          routeName:"/mdemo/invoice/create";
+      }
+
+      @action=Receipt#pageAction {
+          icon:"customer-order-entry";
+          routeName:"/mdemo/invoice/create";
+      }
+  }
 }
 
 
@@ -23,6 +47,16 @@ module {
       label: "My Spends";
       component:CommodityComponent;
    }
+
+   @layout=Actions {
+      label:"Actions";
+      component:MetaActionListComponent;
+      after:zToc;
+      bindings: {
+       renderAs:"links";
+      };
+   }
+
 }
 
 
@@ -38,6 +72,7 @@ module {
 }
 
 
+
 action {
   detailRoute: "/mdemo/entity/detail";
   @trait=controllerAction {
@@ -47,4 +82,3 @@ action {
       };
   }
 }
-

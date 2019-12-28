@@ -1,10 +1,18 @@
 :host {
-  m-context {
+  .as-buttons {
     display: flex;
+
+    m-context {
+      display: flex;
+    }
   }
 
   button {
     margin-right: 10px;
+  }
+
+  .fd-panel {
+    width: 100%;
   }
 
 }
