@@ -61,10 +61,9 @@ export class StringComponent implements FormFieldControl<any> {
   private readonly _disabled: boolean;
   private _editable: boolean;
   private readonly _focused: boolean;
-  private _id: string;
   private readonly _inErrorState: boolean;
   private readonly _ngControl: NgControl | null;
-  private _placeholder: string;
+  placeholder: string;
 
   onContainerClick(event: MouseEvent): void {
   }
@@ -75,7 +74,7 @@ export class StringComponent implements FormFieldControl<any> {
   }
 
   set id(value: string) {
-    throw new Error(`String component does not support ID (${value}).`);
+    // console.log('readonly component does not have id: ', value);
   }
 
   get disabled(): boolean {
@@ -99,10 +98,6 @@ export class StringComponent implements FormFieldControl<any> {
   }
 
   get ngControl(): NgControl | null {
-    return null;
-  }
-
-  get placeholder(): string {
     return null;
   }
 

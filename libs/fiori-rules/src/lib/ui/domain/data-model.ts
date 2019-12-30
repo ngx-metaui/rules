@@ -74,7 +74,7 @@ export class Money implements Value {
 
   clone(data: { amount?: number, currency?: string, locale?: string } = {}): Money {
     return new Money(
-      (data.amount) ? data.amount : this.amount,
+      (isNaN(data.amount)) ? 0 : data.amount,
       (data.currency) ? data.currency : this.currency,
       (data.locale) ? data.locale : this.locale
     );

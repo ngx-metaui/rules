@@ -87,7 +87,18 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   displayKey: string;
 
   @Input()
-  editable: boolean;
+  get editable(): boolean {
+    return this._editable;
+  }
+
+  set editable(value: boolean) {
+    this._editable = value;
+    this._cd.markForCheck();
+    this.stateChanges.next('editable');
+  }
+
+  private _editable: boolean;
+
 
   @Input()
   get disabled(): boolean {

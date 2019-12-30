@@ -156,6 +156,7 @@ export class MoneyComponent extends BaseInput {
       this.updateMoney(element.value, this.currencySelection);
     }
     super._onFocusChanged(isFocused);
+    this._cd.markForCheck();
   }
 
   get currency(): string {
@@ -166,7 +167,8 @@ export class MoneyComponent extends BaseInput {
   }
 
   private updateMoney(amount: string | number, currency: string) {
-    this.value = this.value.clone({amount: Number(amount || 0), currency: currency});
+    const val = (amount && amount !== '') ?  amount : 0;
+    this.value = this.value.clone({amount: Number(val), currency: currency});
     this.inputDisplayValue = this.formatCurrency(this.value.amount);
     this.onChange(this.value);
     this.value = this.value;
