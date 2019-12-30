@@ -78,7 +78,7 @@ export class MetaFormGroup extends MetaBaseComponent {
 
   useNoLabelLayout = false;
 
-  constructor(@Host() protected _context: MetaContextComponent,
+  constructor(@Host() public _context: MetaContextComponent,
               public env: Environment, private cd: ChangeDetectorRef) {
     super(env, _context);
   }
