@@ -1,4 +1,5 @@
-<fdp-form-group #fg [multiLayout]="true" [editable]="editing" [noLabelLayout]="useNoLabelLayout">
+<fdp-form-group #fg [multiLayout]="true" [editable]="editing" [noLabelLayout]="useNoLabelLayout"
+  [i18Strings]="_metaContext.i18Template">
   <ng-template ngFor let-curentField [ngForOf]="zTop()" let-rank="index" [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
       <m-form-field [field]="curentField" [editable]="editing" [rank]="rank + 5"
@@ -32,7 +33,6 @@
 
 
   <ng-template #i18n let-errros>
-
     {{errros | json}}
   </ng-template>
 </fdp-form-group>

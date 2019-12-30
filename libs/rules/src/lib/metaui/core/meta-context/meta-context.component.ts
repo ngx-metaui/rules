@@ -22,6 +22,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   forwardRef,
@@ -31,7 +32,8 @@ import {
   Optional,
   Output,
   SimpleChange,
-  SkipSelf
+  SkipSelf,
+  TemplateRef
 } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {assert, equals, isBlank, isPresent, StringWrapper} from '../utils/lang';
@@ -164,6 +166,8 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
   @Output()
   onAction: EventEmitter<MetaUIActionEvent> = new EventEmitter();
 
+  @ContentChild('i18n', {static: true})
+  i18Template: TemplateRef<any>;
 
   /**
    * Flag that tells us that component is fully rendered
@@ -238,6 +242,12 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
     }
     this.hasActiveContext = isPresent(this.activeContext());
     this.formGroup = this.env.currentForm;
+
+    if (this.i18Template && !this.env.hasValue('i18n')) {
+      this.env.setValue('i18n', this.i18Template);
+    } else if (this.env.hasValue('i18n')) {
+      this.i18Template = this.env.getValue('i18n');
+    }
   }
 
 
