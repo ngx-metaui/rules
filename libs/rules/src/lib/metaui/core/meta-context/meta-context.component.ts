@@ -530,6 +530,10 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
   needsCheck(): boolean {
     return this.supportsDirtyChecking ? this._isDirty : true;
   }
+
+  get bindings(): Map<string, any> {
+    return this.bindingsMap;
+  }
 }
 
 

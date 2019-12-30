@@ -3,7 +3,7 @@
   [(value)]="value"
   [attr.id]="id"
   [placeholder]="placeholder"
-  [disabled]="disabled"
+  [disabled]="(!editable) || disabled"
   [maxHeight]="maxHeight"
   [compact]="compact"
   [fillControlMode]="fillControlMode"

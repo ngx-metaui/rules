@@ -390,7 +390,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       bindings.set(KeyType, type);
     }
 
-    if (isPresent(editable) && isPresent(component.instance['editable'])) {
+    if (editable !== undefined && inputs.indexOf('editable') !== -1) {
       component.instance['editable'] = editable;
     }
 

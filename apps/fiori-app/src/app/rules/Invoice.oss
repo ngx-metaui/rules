@@ -16,6 +16,7 @@ class=Invoice {
   field=purchaseOrder {
     trait:asSelect;
     choices: ["PO1111", "PO2222", "PO33333", "P33333", "PO3333", "PO44444", "PO55555"];
+    editable:${object.accountCategory == "Order"};
   }
 
   field=supplier {
@@ -30,6 +31,7 @@ class=Invoice {
 
   field=totalAmount {
     label: "Price to Pay";
+    valid: ${( value.amount < 200) ? "Amount must be above 200 USD  ": true};
   }
 
   field=billingAddress {
@@ -41,13 +43,6 @@ class=Invoice {
   field=shippingAddress {
     trait:asAutoComplete;
     label: "Ship To";
-
-    operation=view {
-      component:AddressComponent;
-      bindings: {
-        address:$value;
-      };
-    }
   }
 
   field=description {
@@ -73,15 +68,15 @@ class=Invoice {
 class=Invoice {
    operation=(edit, create) {
         zNone => *;
-        zLeft   =>  name#fluid => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress;
-        zRight  => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder => isShared => shareContact;
+      zLeft   =>  name#fluid => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress => isShared => shareContact;
+      zRight  => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder;
         zBottom => description;
      }
 
     operation=view {
         zNone => *;
-        zLeft   =>  name  => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress;
-        zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder => isShared => shareContact;
+      zLeft   =>  name  => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress => isShared => shareContact;
+      zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder ;
         zBottom => description;
    }
 }

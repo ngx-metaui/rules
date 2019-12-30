@@ -97,7 +97,7 @@ export class Invoice implements Entity {
                 value['purchaseOrder'],
                 value['purchasingUnit'], value['paymentTerms'], value['taxInvoiceNumber'],
                 value['totalAmount'], value['billingAddress'], value['shippingAddress'],
-                value['description'], value['internalId'], value['isShared'],
+                value['description'], value['internalId'], value['isShared'] || true,
                 value['shareContact'], value['accountCategory']);
             } else {
               return value;

@@ -30,6 +30,7 @@
     "compile:oss:det": "./libs/rules/src/lib/resources/bin/oss.js -i ./apps/my-detail-page/src/app/rules -u",
     "compile:oss:md": "./libs/rules/src/lib/resources/bin/oss.js -i ./apps/material-app/src/app/rules -u",
     "compile:oss:fd": "./libs/rules/src/lib/resources/bin/oss.js -i ./apps/fiori-app/src/app/rules -u",
+    "watch:oss:fd": "watch --wait=30 'npm run compile:oss:fd' ./apps/fiori-app/src/app/rules",
     "copy:schematics": "cp ./libs/schematics/*.json ./dist/libs/rules/lib/schematics && cp ./libs/schematics/ng-add/*.json ./dist/libs/rules/lib/schematics/ng-add && cp -R ./libs/schematics/ng-add/files ./dist/libs/rules/lib/schematics/ng-add/files && cp ./libs/schematics/ng-generate/m-page/*.json ./dist/libs/rules/lib/schematics/ng-generate/m-page && cp -R ./libs/schematics/ng-generate/m-page/files ./dist/libs/rules/lib/schematics/ng-generate/m-page/files",
     "build:schematics": " ./node_modules/typescript/bin/tsc -p ./libs/schematics/tsconfig.json && npm run copy:schematics",
     "nx": "nx"
@@ -107,7 +108,8 @@
     "tslint": "~5.20.1",
     "typescript": "3.5.3",
     "cypress": "3.4.1",
-    "@nrwl/cypress": "8.7.1"
+    "@nrwl/cypress": "8.7.1",
+    "watch": "^1.0.2"
   },
   "standard-version": {
     "skip": {

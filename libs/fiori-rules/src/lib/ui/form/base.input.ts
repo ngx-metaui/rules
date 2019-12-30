@@ -133,6 +133,8 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
 
   set editable(value: boolean) {
     this._editable = this.boolProperty(value);
+    this._cd.markForCheck();
+    this.stateChanges.next('editable');
   }
 
   /**
@@ -185,6 +187,8 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   ngOnChanges(changes: SimpleChanges): void {
     this.stateChanges.next('rb: ngOnChanges');
   }
+
+
 
   /**
    * Re-validate and emit event to parent container on every CD cycle as they are some errors
