@@ -1,43 +1,51 @@
-<m-context [object]="invoice" [operation]="operation" [locale]="locale">
-  <main class="fd-page">
-    <header class="fd-page__header fd-has-background-color-background-2">
-      <div fd-action-bar>
-        <div fd-action-bar-back>
-          <button aria-label="back" fd-button [fdType]="'light'"
-                  (click)="onBackButtonClick()" [compact]="true" [glyph]="'nav-back'"></button>
+<div class="fd-shell__app">
+  <div class="fd-app">
+    <main class="fd-app__main">
+      <main class="fd-page">
+        <header class="fd-page__header fd-has-background-color-background-2">
+          <div fd-action-bar>
+            <div fd-action-bar-back>
+            </div>
+            <div fd-action-bar-header>
+              <h3 fd-action-bar-title>Invoice</h3>
+              <div fd-action-bar-description>This is invoice demo how it can be generated using
+                MetaUI
+              </div>
+            </div>
+            <div fd-action-bar-actions>
+              <button fd-button [fdType]="'main'" (click)="operation='create'">Create</button>
+              <button fd-button [fdType]="'main'" (click)="operation='edit'">Edit</button>
+              <button fd-button [fdType]="'main'" (click)="operation='view'">View</button>
+            </div>
+          </div>
+        </header>
+        <div class="fd-page__content ">
+          <div class="row center-xs">
+            <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
+              <ng-container *ngTemplateOutlet="invoiceForm"></ng-container>
+            </div>
+          </div>
         </div>
-        <div fd-action-bar-header>
-          <h3 fd-action-bar-title>Invoice</h3>
-          <div fd-action-bar-description>Invoice descriptions</div>
-        </div>
-        <div fd-action-bar-actions>
-          <m-context layout="SelectionButtonArea">
-            <m-include-component></m-include-component>
-          </m-context>
-        </div>
-      </div>
-    </header>
-    <div class="fd-page__content">
-      <div class="row center-xs">
-        <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
-          <m-context layout="Inspect" [formGroup]="form">
-            <m-include-component></m-include-component>
-          </m-context>
-        </div>
-      </div>
+      </main>
+    </main>
+  </div>
+</div>
+<div class="fd-shell__footer--fixed ">
+</div>
+
+
+<ng-template #invoiceForm>
+  <h2> Here we generate form</h2>
+
+  <p>
+    {{operation}}
+  </p>
+
+  <!--
+    <div>
+      <pre>
+        {{invoice | json}}
+      </pre>
     </div>
-  </main>
-
-
-  <ng-template #i18n let-errors>
-        <span *ngIf="errors?.metavalid">
-            {{errors.metavalid.msg    }}
-        </span>
-        <span *ngIf="errors?.required && !errors.metavalid">
-            Required field
-        </span>
-
-  </ng-template>
-</m-context>
-
-
+  -->
+</ng-template>

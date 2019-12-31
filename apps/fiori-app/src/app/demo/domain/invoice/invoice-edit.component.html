@@ -76,13 +76,12 @@
     </fdp-form-field>
 
 
-
     <!--
     Right side
     -->
     <fdp-form-field
         #ffr0 [id]="'uniqueName'" label="Id" zone="zRight" columns="3"
-                    rank="5">
+        rank="5">
       <fdp-input [formControl]="ffr0.formControl" [readonly]="true"></fdp-input>
     </fdp-form-field>
 
@@ -121,15 +120,11 @@
     </fdp-form-field>
 
 
-
     <fdp-form-field #ffb1 [id]="'description'" label="Purpose" zone="zBottom"
                     placeholder="Describe the reason">
       <fdp-text-area [formControl]="ffb1.formControl">
       </fdp-text-area>
     </fdp-form-field>
-
-
-
 
 
     <ng-template #i18n let-errros>

@@ -1,6 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {User} from '../model/user';
 import {Supplier} from '../model/supplier';
 
 
