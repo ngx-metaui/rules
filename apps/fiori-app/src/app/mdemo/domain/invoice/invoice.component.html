@@ -39,13 +39,13 @@
     <m-include-component></m-include-component>
 
 
-<!--    <ng-template #i18n let-errors>-->
-<!--      <span *ngIf="errors?.metavalid">-->
-<!--          {{errors.metavalid.msg    }}-->
-<!--      </span>-->
-<!--        <span *ngIf="errors?.required && !errors.metavalid">-->
-<!--          Required field-->
-<!--      </span>-->
-<!--    </ng-template>-->
+    <ng-template #i18n let-errors>
+      <span *ngIf="errors?.metavalid">
+          {{errors.metavalid.msg    }}
+      </span>
+        <span *ngIf="errors?.required && !errors.metavalid">
+          Required field
+      </span>
+    </ng-template>
   </m-context>
 </ng-template>

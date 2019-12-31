@@ -1,4 +1,4 @@
-import {Entity, Property, Trait} from '@ngx-metaui/rules';
+import {Entity} from '@ngx-metaui/rules';
 import {Money} from '@ngx-metaui/fiori-rules';
 import {Address} from './address';
 import {User} from './user';
