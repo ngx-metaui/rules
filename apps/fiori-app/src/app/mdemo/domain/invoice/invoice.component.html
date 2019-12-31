@@ -13,9 +13,9 @@
               </div>
             </div>
             <div fd-action-bar-actions>
-              <button fd-button [fdType]="'main'" (click)="operation='create'">Create</button>
-              <button fd-button [fdType]="'main'" (click)="operation='edit'">Edit</button>
-              <button fd-button [fdType]="'main'" (click)="operation='view'">View</button>
+              <button fd-button [fdType]="'main'" (click)="changeOP('create')">Create</button>
+              <button fd-button [fdType]="'main'" (click)="changeOP('edit')">Edit</button>
+              <button fd-button [fdType]="'main'" (click)="changeOP('view')">View</button>
             </div>
           </div>
         </header>
@@ -35,17 +35,17 @@
 
 
 <ng-template #invoiceForm>
-  <h2> Here we generate form</h2>
+  <m-context [object]="invoice" [operation]="operation" layout="Inspect" [formGroup]="form">
+    <m-include-component></m-include-component>
 
-  <p>
-    {{operation}}
-  </p>
 
-  <!--
-    <div>
-      <pre>
-        {{invoice | json}}
-      </pre>
-    </div>
-  -->
+<!--    <ng-template #i18n let-errors>-->
+<!--      <span *ngIf="errors?.metavalid">-->
+<!--          {{errors.metavalid.msg    }}-->
+<!--      </span>-->
+<!--        <span *ngIf="errors?.required && !errors.metavalid">-->
+<!--          Required field-->
+<!--      </span>-->
+<!--    </ng-template>-->
+  </m-context>
 </ng-template>

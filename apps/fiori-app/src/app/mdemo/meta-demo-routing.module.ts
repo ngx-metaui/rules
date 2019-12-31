@@ -10,6 +10,19 @@ const demoRouting: Routes = [
     children: [
       {
         path: '',
+        redirectTo: 'create',
+        pathMatch: 'prefix'
+      },
+      {
+        path: 'edit',
+        component: InvoiceComponent
+      },
+      {
+        path: 'view',
+        component: InvoiceComponent
+      },
+      {
+        path: 'create',
         component: InvoiceComponent
       }
     ]
