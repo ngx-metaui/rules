@@ -1,5 +1,14 @@
 class=User {
+
+  field=uniqueName {
+    label:"Id";
+  }
   field=fullName {
     trait:labelField;
   }
+
+  zLeft => uniqueName => firstName => organization => purchasingUnit => defaultCurrency;
+  zRight => fullName => lastName => email;
+
+  zBottom => description;
 }

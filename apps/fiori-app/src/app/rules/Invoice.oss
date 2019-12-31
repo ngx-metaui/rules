@@ -29,7 +29,7 @@ class=Invoice {
   }
 
   field=(billingAddress, shippingAddress ) {
-    trait:asAutoComplete;
+    trait:asAutoComplete, inlineObject;
   }
 
    field=description {
@@ -40,7 +40,7 @@ class=Invoice {
   field=accountCategory {
     trait:asRadio;
     choices: ["Asset", "Order", "Cost Center", "Project"];
-   }
+  }
 }
 
 class=Invoice {

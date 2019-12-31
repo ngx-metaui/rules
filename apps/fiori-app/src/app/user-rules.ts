@@ -7,3 +7,4 @@ export * from './mdemo/domain/model/address';
 export * from './mdemo/domain/model/payment-terms';
 export * from './mdemo/domain/model/supplier';
 
+export * from './mdemo/domain/invoice/address/address.component';
