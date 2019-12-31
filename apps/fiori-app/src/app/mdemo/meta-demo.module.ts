@@ -20,6 +20,12 @@ import {Supplier} from './domain/model/supplier';
 import {SupplierCSV, supplierWithLocations} from './domain/rest/supplier';
 import {PaymentTerms} from './domain/model/payment-terms';
 import {PaymentTermsCSV, paymentTermsDB} from './domain/rest/payment-terms';
+import {Landing2Module} from './landing2/landing2.module';
+import {Landing3Module} from './landing3/landing3.module';
+import {NewsModule} from './portlets/news/news.module';
+import {MyDocumentsModule} from './portlets/my-documents/my-documents.module';
+import {MySpendModule} from './portlets/my-spend/my-spend.module';
+import {CommodityModule} from './portlets/commodity/commodity.module';
 
 
 const heroServiceFactory = () => {
@@ -73,7 +79,13 @@ const heroServiceFactory = () => {
     ShellbarModule,
     MetaDemoRoutingModule,
     InvoiceModule,
-    MetaApplicationModule
+    MetaApplicationModule,
+    NewsModule,
+    MyDocumentsModule,
+    MySpendModule,
+    CommodityModule,
+    Landing2Module,
+    Landing3Module
   ],
   providers: [
     {provide: DATA_PROVIDERS, useFactory: heroServiceFactory}

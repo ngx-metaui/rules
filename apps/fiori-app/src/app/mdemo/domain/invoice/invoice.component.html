@@ -1,52 +1,43 @@
-<div class="fd-shell__app">
-  <div class="fd-app">
-    <main class="fd-app__main">
-      <main class="fd-page">
-        <header class="fd-page__header fd-has-background-color-background-2">
-          <div fd-action-bar>
-            <div fd-action-bar-back>
-            </div>
-            <div fd-action-bar-header>
-              <h3 fd-action-bar-title>Invoice</h3>
-              <div fd-action-bar-description>This is invoice demo how it can be generated using
-                MetaUI
-              </div>
-            </div>
-            <div fd-action-bar-actions>
-              <button fd-button [fdType]="'main'" (click)="changeOP('create')">Create</button>
-              <button fd-button [fdType]="'main'" (click)="changeOP('edit')">Edit</button>
-              <button fd-button [fdType]="'main'" (click)="changeOP('view')">View</button>
-            </div>
-          </div>
-        </header>
-        <div class="fd-page__content ">
-          <div class="row center-xs">
-            <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
-              <ng-container *ngTemplateOutlet="invoiceForm"></ng-container>
-            </div>
-          </div>
+<m-context [object]="invoice" [operation]="operation" [locale]="locale">
+  <main class="fd-page">
+    <header class="fd-page__header fd-has-background-color-background-2">
+      <div fd-action-bar>
+        <div fd-action-bar-back>
+          <button aria-label="back" fd-button [fdType]="'light'"
+                  (click)="onBackButtonClick()" [compact]="true" [glyph]="'nav-back'"></button>
         </div>
-      </main>
-    </main>
-  </div>
-</div>
-<div class="fd-shell__footer--fixed ">
-</div>
+        <div fd-action-bar-header>
+          <h3 fd-action-bar-title>Invoice</h3>
+          <div fd-action-bar-description>Invoice descriptions</div>
+        </div>
+        <div fd-action-bar-actions>
+          <m-context layout="SelectionButtonArea">
+            <m-include-component></m-include-component>
+          </m-context>
+        </div>
+      </div>
+    </header>
+    <div class="fd-page__content">
+      <div class="row center-xs">
+        <div class="col-xs-12 col-sm-11 col-md-9 col-lg-9">
+          <m-context layout="Inspect" [formGroup]="form">
+            <m-include-component></m-include-component>
+          </m-context>
+        </div>
+      </div>
+    </div>
+  </main>
 
 
-
-<ng-template #invoiceForm>
-  <m-context [object]="invoice" [operation]="operation" layout="Inspect" [formGroup]="form" [locale]="locale">
-    <m-include-component></m-include-component>
-
-
-    <ng-template #i18n let-errors>
-      <span *ngIf="errors?.metavalid">
-          {{errors.metavalid.msg    }}
+  <ng-template #i18n let-errors>
+        <span *ngIf="errors?.metavalid">
+            {{errors.metavalid.msg    }}
+        </span>
+    <span *ngIf="errors?.required && !errors.metavalid">
+            Required field
       </span>
-      <span *ngIf="errors?.required && !errors.metavalid">
-          Required field
-      </span>
-    </ng-template>
-  </m-context>
-</ng-template>
+
+  </ng-template>
+</m-context>
+
+

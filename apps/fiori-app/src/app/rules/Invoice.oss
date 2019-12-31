@@ -8,7 +8,7 @@ class=Invoice {
     placeholder: "Unique name that identifies this Invoice";
   }
   field=requestor {
-    trait:asAutoComplete;
+    trait:asAutoComplete, withDetail;
     placeholder: "Select a user";
     lookupKey: "fullName";
   }
@@ -16,10 +16,11 @@ class=Invoice {
   field=purchaseOrder {
     trait:asSelect;
     choices: ["PO1111", "PO2222", "PO33333", "P33333", "PO3333", "PO44444", "PO55555"];
+    editable:${object.accountCategory == "Order"};
   }
 
   field=supplier {
-    trait:asAutoComplete;
+    trait:asAutoComplete, withDetail;
     placeholder: "Select a supplier";
   }
 
@@ -35,6 +36,14 @@ class=Invoice {
    field=description {
     trait:longtext;
     label: "Purpose";
+  }
+
+   field=shareContact {
+    visible:${object.isShared === true};
+   }
+
+  field=totalAmount {
+    valid: ${( value.amount < 200) ? "Amount must be above 200 USD  ": true};
   }
 
   field=accountCategory {
@@ -62,6 +71,24 @@ class=Invoice {
       zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => isShared => shareContact;
       zBottom => description;
     }
+}
+
+
+class=Invoice object {
+  action=(reset, save) {
+      trait:controllerAction;
+      visible:${properties.get('editing') === true};
+  }
+
+
+  action=edit {
+      trait:controllerAction;
+      visible:${properties.get('editing') === false};
+  }
+
+  action=(edit, save) {
+    buttonOptions:"emphasized";
+  }
 }
 
 
