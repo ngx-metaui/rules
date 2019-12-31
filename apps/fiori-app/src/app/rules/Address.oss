@@ -1,0 +1,5 @@
+class=Address {
+   field=name {
+     trait:labelField;
+   }
+ }

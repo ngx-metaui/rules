@@ -1,0 +1,10 @@
+class=Supplier {
+
+  field=uniqueName {
+    label:"Id";
+  }
+
+  field=name {
+    trait:labelField;
+  }
+}

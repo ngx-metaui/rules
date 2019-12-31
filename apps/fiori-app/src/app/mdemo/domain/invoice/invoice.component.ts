@@ -2,6 +2,7 @@ import {Component, Inject, LOCALE_ID, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {Invoice} from '../model/invoice';
 import {DATA_PROVIDERS, DataProvider} from '@ngx-metaui/fiori-rules';
+import {PaymentTermsCSV, paymentTermsDB} from '../rest/payment-terms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 
@@ -15,6 +16,7 @@ export class InvoiceComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   invoice: Invoice;
   operation = 'edit';
+  paymentTermsDS: string[];
 
 
   constructor(@Inject(META_RULES) protected meta: MetaRules,
@@ -27,6 +29,7 @@ export class InvoiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.operation = this.route.snapshot.url[0].path;
+    this.meta.registerDependency('controller', this);
     this.loadInvoice();
   }
 
@@ -35,8 +38,15 @@ export class InvoiceComponent implements OnInit {
   }
 
   private loadInvoice() {
+    this.initDataSources();
     this.invoice = Invoice.fromJSON(localStorage.getItem('demo-invoice'));
   }
 
+
+  private initDataSources() {
+    this.paymentTermsDS = paymentTermsDB.map((i: PaymentTermsCSV) => {
+      return i.Name;
+    });
+  }
 }
 

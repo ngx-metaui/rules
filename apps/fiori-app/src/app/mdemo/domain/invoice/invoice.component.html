@@ -34,8 +34,9 @@
 </div>
 
 
+
 <ng-template #invoiceForm>
-  <m-context [object]="invoice" [operation]="operation" layout="Inspect" [formGroup]="form">
+  <m-context [object]="invoice" [operation]="operation" layout="Inspect" [formGroup]="form" [locale]="locale">
     <m-include-component></m-include-component>
 
 
@@ -43,7 +44,7 @@
       <span *ngIf="errors?.metavalid">
           {{errors.metavalid.msg    }}
       </span>
-        <span *ngIf="errors?.required && !errors.metavalid">
+      <span *ngIf="errors?.required && !errors.metavalid">
           Required field
       </span>
     </ng-template>
