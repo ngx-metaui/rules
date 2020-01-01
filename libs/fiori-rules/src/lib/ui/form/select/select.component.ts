@@ -92,9 +92,12 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
   }
 
   set editable(value: boolean) {
-    this._editable = value;
-    this._cd.markForCheck();
-    this.stateChanges.next('editable');
+    const newVal = coerceBooleanProperty(value);
+    if (this._editable !== newVal) {
+      this._editable = newVal;
+      this._cd.markForCheck();
+      this.stateChanges.next('editable');
+    }
   }
 
   private _editable: boolean;
