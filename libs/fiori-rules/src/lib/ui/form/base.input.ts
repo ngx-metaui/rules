@@ -132,9 +132,12 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   }
 
   set editable(value: boolean) {
-    this._editable = this.boolProperty(value);
+    const newVal = this.boolProperty(value);
+    if (this._editable !== newVal) {
+      this._editable = newVal;
     this._cd.markForCheck();
     this.stateChanges.next('editable');
+  }
   }
 
   /**
@@ -158,7 +161,7 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   protected _value: any;
   protected _name: string;
   protected _inErrorState: boolean;
-  protected _editable: boolean;
+  protected _editable: boolean = true;
   protected _destroyed = new Subject<void>();
 
   // @formatter:off
@@ -173,9 +176,6 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
-
-    this.editable = true;
-
   }
 
   ngOnInit(): void {
@@ -187,7 +187,6 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   ngOnChanges(changes: SimpleChanges): void {
     this.stateChanges.next('rb: ngOnChanges');
   }
-
 
 
   /**
