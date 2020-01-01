@@ -30,8 +30,7 @@ import {
   OnInit,
   Output,
   TemplateRef,
-  ViewChild,
-  ViewEncapsulation
+  ViewChild
 } from '@angular/core';
 import {InlineHelpComponent} from '@fundamental-ngx/core';
 import {FormFieldControl} from '../form-control';
@@ -150,7 +149,17 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   i18Strings: TemplateRef<any>;
 
   @Input()
-  editable: boolean = true;
+  get editable(): boolean {
+    return this._editable;
+  }
+
+  set editable(value: boolean) {
+    const newVal = coerceBooleanProperty(value);
+    if (this._editable !== newVal) {
+      this._editable = value;
+      this.updateControlProperties();
+    }
+  }
 
   @Output()
   onChange: EventEmitter<string> = new EventEmitter<string>();
@@ -166,6 +175,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   @ContentChild(FormFieldControl, {static: false})
   _control: FormFieldControl<any>;
 
+  protected _editable: boolean = true;
   protected _formGroup: FormGroup;
   protected _required: boolean = false;
   protected _destroyed = new Subject<void>();
@@ -229,6 +239,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   ngAfterViewInit(): void {
     this.validateErrorHandler();
     this.initFormControl();
+    this.updateControlProperties();
     this._cd.detectChanges();
 
   }
@@ -241,7 +252,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
 
   hasErrors(): boolean {
-    return this.editable && this._control && this._control.inErrorState;
+    return this._editable && this._control && this._control.inErrorState;
   }
 
   private validateFieldControlComponent() {
@@ -256,7 +267,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
 
   private validateErrorHandler() {
-    if (this.editable && this._control && this.hasValidators() && !this.i18Strings) {
+    if (this._editable && this._control && this.hasValidators() && !this.i18Strings) {
       throw new Error('Validation strings are required for the any provided validations.');
     }
   }
@@ -278,10 +289,13 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   }
 
   private updateControlProperties() {
-    if (this._control && this.editable) {
+    if (this._control) {
+      this._control.editable = this._editable;
+      if (this._editable) {
       this._control.id = this.id;
       this._control.placeholder = this.placeholder;
     }
   }
+}
 }
 

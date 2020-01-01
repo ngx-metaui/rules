@@ -214,7 +214,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    * detection we need to eliminate event handler based CDs. where most of the time we dont care.
    *
    */
-  private _isDirty: boolean = true;
+  private _isDirty: boolean = false;
 
 
   /**
@@ -281,11 +281,12 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
       this.hasObject = this._hasObject();
       if (this.needsCheck()) {
         this.pushPop(true);
-      }
+
       if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
         this.updateModel();
       }
     }
+  }
   }
 
 
@@ -400,7 +401,6 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    * Let's clean up and destroy pushed context
    */
   ngOnDestroy() {
-
     if (this.env.hasValue('parent-cnx')) {
       this.env.deleteValue('parent-cnx');
     }
