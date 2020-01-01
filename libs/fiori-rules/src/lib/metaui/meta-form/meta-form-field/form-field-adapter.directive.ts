@@ -59,7 +59,7 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
       this.registerType();
       this._editable = this.editable;
 
-      (<Subject<any>>this.stateChanges).next();
+      // (<Subject<any>>this.stateChanges).next();
       this.cd.detectChanges();
     }
   }
