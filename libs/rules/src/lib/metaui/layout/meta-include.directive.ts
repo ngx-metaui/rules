@@ -391,7 +391,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     }
 
     if (editable !== undefined && inputs.indexOf('editable') !== -1) {
-      component.instance['editable'] = editable;
+      this.setIfChanged(component.instance, 'editable', editable);
     }
 
     let updateComponent = false;
@@ -415,14 +415,13 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       } else if (initialApplyInputs && value instanceof DynamicPropertyValue) {
         const dynval: DynamicPropertyValue = value;
         const newValue = dynval.evaluate(this.metaContext.myContext());
-        component.instance[publicKey] = newValue;
-
+        this.setIfChanged(component.instance, publicKey, newValue);
       } else {
         /**
          * when re-applying primitives
          */
         if (!equals(component.instance[publicKey], value)) {
-          component.instance[publicKey] = value;
+          this.setIfChanged(component.instance, publicKey, value);
           updateComponent = true;
 
           /*** If created NgModel update setDisabled as this is controled by FormControl
@@ -466,6 +465,12 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     //         .get(bindings.get(MetaIncludeDirective.FormatterBinding));
     //     component.instance[MetaIncludeDirective.FormatterBinding] = transform;
     // }
+  }
+
+  private setIfChanged(comp: any, field: string, newVal: any): void {
+    if (comp[field] !== newVal) {
+      comp[field] = newVal;
+    }
   }
 
   /**
@@ -579,7 +584,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
 
     // need to call original accessors if any to keep component logic in sync
     const origDescriptor = Object.getOwnPropertyDescriptor(me.constructor.prototype, key);
-    const origRefSetter = origDescriptor ? origDescriptor.set  : null;
+    const origRefSetter = origDescriptor ? origDescriptor.set : null;
     /**
      * captured also current context snapshot so we can replay ContextFieldPath.evaluate() if
      * called outside of push/pop cycle.
