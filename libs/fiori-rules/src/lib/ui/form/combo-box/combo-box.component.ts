@@ -216,7 +216,7 @@ export class ComboBoxComponent extends BaseInput {
       this._suggestions = data || [];
 
       this.elementTypeIsObject = isJsObject(this._suggestions[0]);
-      this.stateChanges.next();
+      this.stateChanges.next('initDataSource.open().');
       this._cd.markForCheck();
     });
     initDataSource.dataProvider.setLookupKey(this.lookupKey);
