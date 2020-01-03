@@ -1,4 +1,4 @@
-# Rules UI for Angular (MetaUI)
+    # Rules UI for Angular (MetaUI)
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.org/ngx-meta/rules.svg?branch=master)](https://travis-ci.org/ngx-meta/rules)
@@ -99,7 +99,7 @@ got much better chances of getting your question answered on our [Slack channel]
 
 
  [1]: https://github.com/ngx-meta/rules/blob/master/docs/metaui-architecture.md
- [2]: https://join.slack.com/t/ngxmetaui/shared_invite/enQtNDcyNTUyNDE3NjIzLTVkYmVmNGNjMjVjMzMzNDNkOGMwMWVjNTRlNTE4NTA3ODdhM2U1ZjdlZDIzNjZkMmJhMTc5ODA5ZTU2MWE1Yjk
+ [2]: https://join.slack.com/t/ngxmetaui/shared_invite/enQtNzYyMTkxMjIzMDQ0LTcyYTM0ZTI5M2Y2NzQzMzk0ZGI5Mzg2OTUxNmFlZjgzZTc0Mzk0NTliMWU0ZmQwMmI4MTA0NDg1OWJkMjQzN2E
  
   
 
