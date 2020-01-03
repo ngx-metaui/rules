@@ -135,9 +135,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     const newVal = this.boolProperty(value);
     if (this._editable !== newVal) {
       this._editable = newVal;
-    this._cd.markForCheck();
-    this.stateChanges.next('editable');
-  }
+      this._cd.markForCheck();
+      this.stateChanges.next('editable');
+    }
   }
 
   /**

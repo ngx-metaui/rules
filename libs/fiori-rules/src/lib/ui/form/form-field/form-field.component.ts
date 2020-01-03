@@ -289,13 +289,10 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   }
 
   private updateControlProperties() {
-    if (this._control) {
-      this._control.editable = this._editable;
-      if (this._editable) {
+    if (this._control && this._editable) {
       this._control.id = this.id;
       this._control.placeholder = this.placeholder;
     }
   }
-}
 }
 
