@@ -1,152 +1,90 @@
-/**
- * @license
- * F. Kolar
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- *
- */
 import {
-  AfterContentChecked,
-  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DoCheck,
+  ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
+  QueryList,
+  Self,
+  SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewChildren,
+  ViewEncapsulation
 } from '@angular/core';
-import {InlineHelpComponent} from '@fundamental-ngx/core';
+import {OptionComponent, SelectComponent as FdSelect} from '@fundamental-ngx/core';
 import {FormFieldControl} from '../form-control';
-import {coerceBooleanProperty, coerceNumberProperty} from '@angular/cdk/coercion';
-import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import {startWith, takeUntil} from 'rxjs/operators';
+import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/forms';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {Subject} from 'rxjs';
-import {defaultLabelForIdentifier} from '@ngx-metaui/rules';
+import {isSelectItem} from '../../domain/data-model';
+import {isFunction, isJsObject} from '../../utils/lang';
 
-export abstract class FormField {
-  i18Strings: TemplateRef<any>;
-  editable?: boolean;
-  noLabelLayout?: boolean;
-  formControl?: FormControl;
-}
-
-
-export type FormZone = 'zTop' | 'zBottom' | 'zLeft' | 'zRight';
-export type Column = 1 | 2 | 3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 /**
- * Form Field wraps the whole input field
+ * Renders a `<select ...>...[<option>...</option>]*...</select>` popup menu in the html.
+ * This component is implemented on top of fd-select, to both:
+ *
+ * - to abstract implementation details from the developers
+ *
+ * - Adds "no selection" behavior. The string to be displayed in the popup which allows the user to
+ *    make "no selection" from the available list. If the user chooses this option, then the
+ *    selection binding will be pushed as null
+ *
+ * - Way to work with complex object is to:
+ *     * using an Array<SelectItem> that application can implement
+ *     * providing custom `ng-template` with name `optionValue`
+ *     (`<ng-template #optionValue let-item>`)
+ *
+ *
+ *  Todo: Revisit keyboard navigation once it start to work in core + this is good candidate
+ *  to use cdk for this
  *
  */
 @Component({
-  selector: 'fdp-form-field',
-  templateUrl: 'form-field.component.html',
-  styleUrls: ['./form-field.component.scss'],
+  selector: 'fdp-select',
+  templateUrl: './select.component.html',
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    {
+      provide: FormFieldControl,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true
+    }
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormFieldComponent implements FormField, AfterContentInit, AfterContentChecked,
-  AfterViewInit, OnDestroy, OnInit {
+export class SelectComponent extends FdSelect implements FormFieldControl<any>,
+  ControlValueAccessor, OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy {
 
-  @Input()
-  label: string;
-
+  /**
+   * Form element ID.
+   * Todo: This should be moved to higher class that will be common to all input fields
+   */
   @Input()
   id: string;
 
   @Input()
-  zone: FormZone;
-
-  @Input()
-  hintPlacement: 'left' | 'right' = 'right';
-
-  @Input()
-  hint: string;
-
-  @Input()
-  noLabelLayout: boolean = false;
-
-  /**
-   * By default form field does not render any content as it is wrapped inside ng-template and
-   * controlled by parent. This is for cases where FormField is direct child of the form-group.
-   *
-   * In case we have more nested structure and Form-Field is wrapped with some other element
-   * that controls the rendering we need to let go this rendering and render the content
-   * directly
-   */
-  @Input()
-  forceRender: boolean = false;
-
-  /**
-   * custom width in columns must be between 1 - 12
-   */
-  @Input()
-  get columns(): Column {
-    return this._columns;
-  }
-
-  set columns(value: Column) {
-    this._columns = <Column>coerceNumberProperty(value);
-  }
-
-  @Input()
-  get required(): boolean {
-    return this._required;
-  }
-
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
-  }
-
-
-  /**
-   * When used as standalone without form-group you can set FormGroup, otherwise it is set from
-   * parent
-   */
-  @Input()
-  get formGroup(): FormGroup {
-    return this._formGroup;
-  }
-
-  set formGroup(value: FormGroup) {
-    this._formGroup = value;
-    this.initFormControl();
-    this._cd.markForCheck();
-  }
-
-  @Input()
-  validators: Array<ValidatorFn> = [Validators.nullValidator];
-
-  @Input()
-  rank: number;
+  name: string;
 
   @Input()
   placeholder: string;
 
   @Input()
-  fluid: boolean = false;
+  readonly: boolean;
 
-  /**
-   * This is in most of the cases set from parent container (form-group)
-   */
   @Input()
-  i18Strings: TemplateRef<any>;
+  displayKey: string;
 
   @Input()
   get editable(): boolean {
@@ -156,146 +94,255 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   set editable(value: boolean) {
     const newVal = coerceBooleanProperty(value);
     if (this._editable !== newVal) {
-      this._editable = value;
-      this.updateControlProperties();
+      this._editable = newVal;
+      this._cd.markForCheck();
+      this.stateChanges.next('editable');
+    }
+  }
+
+  private _editable: boolean;
+
+
+  @Input()
+  get disabled(): boolean {
+    if (this.ngControl && this.ngControl.disabled !== null) {
+      return this.ngControl.disabled;
+    }
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+    this.emitStateChange('disabled');
+  }
+
+  /**
+   * Ordered list of items displayed in the popup menu. You can use strings, list of object
+   * directly but for this you need to provide custom template or SelectItem[]
+   */
+  @Input()
+  list: Array<any>;
+
+  /**
+   * String rendered as first value in the popup which let the user to make 'no selection' from
+   * available list of values. When this option is active and use make this selection we save a
+   * NULL value
+   */
+  @Input()
+  noSelectionString: string;
+
+
+  @Input()
+  get value(): any {
+    return this._value;
+  }
+
+  set value(value: any) {
+    if (value !== this.value) {
+      this.writeValue(value);
     }
   }
 
   @Output()
-  onChange: EventEmitter<string> = new EventEmitter<string>();
+  selection: EventEmitter<any> = new EventEmitter();
+
+  /**
+   * custom option popup item template defined by app.
+   *
+   */
+  @ContentChild('optionValue', {static: false})
+  optionValueTemplate: TemplateRef<any>;
 
 
-  @ViewChild('renderer', {static: true})
-  renderer: TemplateRef<any>;
+  /**
+   * custom option item template defined by app.
+   *
+   */
+  @ContentChild('triggerValue', {static: false})
+  triggerValueTemplate: TemplateRef<any>;
 
-  @ContentChild(InlineHelpComponent, {static: false})
-  _hintChild: InlineHelpComponent;
+
+  /**
+   * Keyboard handling needs to have an options and since we dont have them on app level and have
+   * them inside we need to query them by View query.
+   *
+   * todo: use cdk for keyboard events on core side
+   */
+  @ViewChildren(OptionComponent)
+  options: QueryList<OptionComponent> = new QueryList<OptionComponent>();
+
+  /**
+   * Reference to internal Input element
+   */
+  @ViewChild(FdSelect, {static: true, read: ElementRef})
+  protected _elementRef: ElementRef;
+
+  /**
+   * See @FormFieldControl
+   */
+  focused: boolean = false;
 
 
-  @ContentChild(FormFieldControl, {static: false})
-  _control: FormFieldControl<any>;
+  /**
+   * See @FormFieldControl
+   */
+  readonly stateChanges: Subject<any> = new Subject<any>();
 
-  protected _editable: boolean = true;
-  protected _formGroup: FormGroup;
-  protected _required: boolean = false;
+
+  protected _disabled: boolean;
+  protected _value: any;
+  protected _inErrorState: boolean;
   protected _destroyed = new Subject<void>();
-  protected _columns: Column = 6;
 
-  formControl: FormControl;
+  // @formatter:off
+  onChange = (_: any) => {};
+  onTouched = () => {};
+  // @formatter:on
 
 
-  constructor(private _cd: ChangeDetectorRef) {
-    this.formControl = new FormControl();
+  constructor(protected _cd: ChangeDetectorRef,
+              @Optional() @Self() public ngControl: NgControl,
+              @Optional() @Self() public ngForm: NgForm) {
+
+    super();
+    this.fdDropdownClass = false;
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
   }
 
   ngOnInit(): void {
-    if (!this.noLabelLayout && this.id && !this.label) {
-      this.label = defaultLabelForIdentifier(this.id);
-    }
-
-    if (this.columns && (this.columns < 1 || this.columns > 12)) {
-      throw new Error('[columns] accepts numbers between 1 - 12');
-    }
-
-    if (this.fluid) {
-      this.columns = 12;
-    }
   }
 
-
-  ngAfterContentChecked(): void {
-    // this.validateFieldControlComponent();
+  ngOnChanges(changes: SimpleChanges): void {
+    this.emitStateChange('ngOnChanges');
   }
 
-  ngAfterContentInit(): void {
-    // this.validateFieldControlComponent();
-
-    if (this._control && this._control.stateChanges) {
-      this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
-        this.updateControlProperties();
-        // need to call explicitly detectChanges() instead of markForCheck before the
-        // modified validation state of the control passes over checked phase
-        this.onChange.emit('stateChanges');
-        this._cd.detectChanges();
-      });
+  /**
+   * Re-validate and emit event to parent container on every CD cycle as they are some errors
+   * that we can't subscribe to.
+   */
+  ngDoCheck(): void {
+    if (this.ngControl) {
+      this.updateErrorState();
     }
-
-    // Refresh UI when value changes
-    if (this._control && this._control.ngControl && this._control.ngControl.valueChanges) {
-      this._control.ngControl.valueChanges
-        .pipe(takeUntil(this._destroyed))
-        .subscribe((v) => {
-          // this.onChange.emit('valueChangess');
-          this._cd.markForCheck();
-        });
-    }
-
-    if (this.required) {
-      this.validators.push(Validators.required);
-    }
-    this._cd.markForCheck();
   }
 
   ngAfterViewInit(): void {
-    this.validateErrorHandler();
-    this.initFormControl();
-    this.updateControlProperties();
     this._cd.detectChanges();
-
   }
 
 
   ngOnDestroy(): void {
+    this.stateChanges.complete();
     this._destroyed.next();
     this._destroyed.complete();
   }
 
-
-  hasErrors(): boolean {
-    return this._editable && this._control && this._control.inErrorState;
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
   }
 
-  private validateFieldControlComponent() {
-    if (!this._control) {
-      throw new Error('fdp-form-field must contain component implemented FormFieldControl.');
-    }
-
-    if (this._control.ngControl && !this.id) {
-      throw new Error('fdp-form-field must contain [id] binding.');
-    }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
   }
 
-
-  private validateErrorHandler() {
-    if (this._editable && this._control && this.hasValidators() && !this.i18Strings) {
-      throw new Error('Validation strings are required for the any provided validations.');
-    }
+  setDisabledState(isDisabled: boolean): void {
+    this._disabled = isDisabled;
+    this._cd.markForCheck();
+    this.emitStateChange('setDisabledState');
   }
 
-  private hasValidators(): boolean {
-    return this.validators && this.validators.length > 1;
+  writeValue(value: any): void {
+    this._value = value;
+    this.onChange(value);
+    this.emitStateChange('writeValue');
+
+    // Hack: force child to refresh to child since they dont use onPush, cna be removed in new
+    // fd version as they call internally markForCheck
+    // setTimeout(() => {
+    //   this._cd.markForCheck();
+    // }, 200);
   }
 
-  private initFormControl() {
-    if (this._control && this._control.ngControl && this._control.ngControl.control) {
-      if (this.required) {
-        this.validators.push(Validators.required);
-      }
-
-      this._control.ngControl.control.setValidators(Validators.compose(this.validators));
-      this.formGroup.addControl(this.id, this._control.ngControl.control);
-      // this._control.ngControl.control.reset();
-    }
-  }
-
-  private updateControlProperties() {
-    if (this._control) {
-      this._control.editable = this._editable;
-      if (this._editable) {
-        this._control.id = this.id;
-        this._control.placeholder = this.placeholder;
+  /**
+   * Handles even when we click on parent container which is the FormField Wrapping this
+   * control
+   */
+  onContainerClick(event: MouseEvent): void {
+    if (this._elementRef) {
+      const btn = this._elementRef.nativeElement.querySelector('button');
+      if (btn) {
+        btn.focus();
       }
     }
+  }
+
+  /**
+   *  Need re-validates errors on every CD iteration to make sure we are also
+   *  covering non-control errors, errors that happens outside of this control
+   */
+  private updateErrorState() {
+    const oldState = this._inErrorState;
+    const parent = this.ngForm;
+    const control = this.ngControl ? this.ngControl.control as FormControl : null;
+    const newState = !!(control && control.invalid && (control.touched ||
+      (parent && parent.submitted)));
+
+    if (newState !== oldState) {
+      this._inErrorState = newState;
+      this.emitStateChange('updateErrorState');
+    }
+  }
+
+
+  /**
+   *
+   * Keeps track of element focus
+   */
+  _onFocusChanged(isFocused: boolean) {
+    if (isFocused !== this.focused && (!this.readonly || !isFocused)) {
+      this.focused = isFocused;
+      this.emitStateChange('_onFocusChanged');
+    }
+    this.onTouched();
+  }
+
+  get inErrorState(): boolean {
+    return this._inErrorState;
+  }
+
+  onSelection(event: OptionComponent): void {
+    this.value = event.value;
+    this.onChange(this.value);
+    this.onTouched();
+    this._cd.markForCheck();
+    this.emitStateChange('onSelection');
+    this.selection.emit(this.value);
+  }
+
+
+  private emitStateChange(text: string): void {
+    if (this.stateChanges) {
+      this.stateChanges.next(text);
+    }
+  }
+
+  displayValue(item: any): string {
+    if (isSelectItem(item)) {
+      return item.label;
+    } else if (isJsObject(item) && this.displayKey) {
+      return isFunction(item[this.displayKey]) ? item[this.displayKey]() : item[this.displayKey];
+    } else {
+      return item;
+    }
+  }
+
+  /**
+   * Dirty assignment is to disable resetOption logic.
+   */
+  ngAfterContentInit(): void {
+    this['unselectOptions'] = () => {
+    };
   }
 }
-
