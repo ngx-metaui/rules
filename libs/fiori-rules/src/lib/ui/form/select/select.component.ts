@@ -100,7 +100,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
     }
   }
 
-  private _editable: boolean;
+  private _editable: boolean = true ;
 
 
   @Input()
