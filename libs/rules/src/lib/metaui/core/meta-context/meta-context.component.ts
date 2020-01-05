@@ -282,11 +282,11 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
       if (this.needsCheck()) {
         this.pushPop(true);
 
-      if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
-        this.updateModel();
+        if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
+          this.updateModel();
+        }
       }
     }
-  }
   }
 
 
