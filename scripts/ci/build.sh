@@ -20,11 +20,15 @@ ng build primeng-rules
 echo "################ Building @ngx-meta/material-rules ################"
 ng build material-rules
 
+echo "################ Building @ngx-meta/material-rules ################"
+ng build fiori-rules
+
 echo "################ Building apps ################"
 ng build doc-app
 ng build material-app
 ng build metaui-evolution
 ng build my-detail-page
+ng build fiori-app
 
 # Build schematics
 echo "Building schematics"
@@ -44,6 +48,9 @@ if [ ${args[0]} == "link" ]; then
    PRIMENG_ICONS_VERSION=$(node -p "require('./package.json').dependencies['primeicons']")
    PRIMENG_VERSION=$(node -p "require('./package.json').dependencies['primeng']")
    MATERIAL_VERSION=$(node -p "require('./package.json').dependencies['@angular/material']")
+   FD_CORE_VERSION=$(node -p "require('./package.json').dependencies['@fundamental-ngx/core']")
+   FD_PLATFORM_VERSION=$(node -p "require('./package.json').dependencies['@fundamental-ngx/platform']")
+   SAP_THEMNE_VERSION=$(node -p "require('./package.json').dependencies['@sap-theming/theming-base-content']")
 
    echo "Updating packages.json under dist/libs with version ${NEW_VERSION}"
 
@@ -53,6 +60,10 @@ if [ ${args[0]} == "link" ]; then
    grep -rl 'PRIMENG_ICONS_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_ICONS_PLACEHOLDER/${PRIMENG_ICONS_VERSION}/g"
    grep -rl 'PRIMENG_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_PLACEHOLDER/${PRIMENG_VERSION}/g"
    grep -rl 'MATERIAL_PLACEHOLDER' . | xargs  perl -p -i -e "s/MATERIAL_PLACEHOLDER/${MATERIAL_VERSION}/g"
+
+   grep -rl 'FD_CORE_PLACEHOLDER' . | xargs  perl -p -i -e "s/FD_CORE_PLACEHOLDER/${FD_CORE_VERSION}/g"
+   grep -rl 'FD_PLATFORM_PLACEHOLDER' . | xargs  perl -p -i -e "s/FD_PLATFORM_PLACEHOLDER/${FD_PLATFORM_VERSION}/g"
+   grep -rl 'SAP_THEMNE_PLACEHOLDER' . | xargs  perl -p -i -e "s/SAP_THEMNE_PLACEHOLDER/${SAP_THEMNE_VERSION}/g"
 
    cd ..
 fi
@@ -78,6 +89,9 @@ echo "Building resources for material"
 cp -R libs/material-rules/src/lib/metaui/*.oss ./dist/libs/material-rules/lib/metaui
 
 
+# Copy resources for material rules
+echo "Building resources for fiori"
+cp -R libs/fiori-rules/src/lib/metaui/*.oss ./dist/libs/fiori-rules/lib/metaui
 
 
 
