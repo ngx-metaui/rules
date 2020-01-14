@@ -10,6 +10,13 @@
     <a mat-button (click)="operation='edit'">Edit</a> |
     <a mat-button (click)="operation='view'">View</a>
   <% } %>
+
+  <% if (uiLib === "material") { %>
+    <button fd-button (click)="operation='create'">Create</button>
+    <button fd-button (click)="operation='edit'">Edit</button>
+    <button fd-button (click)="operation='view'">View</button>
+  <% } %>
+
   <hr/>
 
   <m-context [object]="object" [operation]="operation" layout="Inspect">

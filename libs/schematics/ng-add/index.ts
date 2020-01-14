@@ -178,7 +178,14 @@ function addStyles(options: AddSchema): Rule {
         'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css',
         'node_modules/flexboxgrid/css/flexboxgrid.css'
       ];
-
+      return addStylesToAngularJson(styleEntries, options);
+    } else if (options.uiLib === 'fiori') {
+      const styleEntries: string[] = [
+        'node_modules/flexboxgrid/dist/flexboxgrid.css',
+        'node_modules/fundamental-styles/dist/fundamental-styles.css',
+        'node_modules/fundamental-styles/dist/fonts.css',
+        'node_modules/fundamental-styles/dist/icon.css'
+      ];
       return addStylesToAngularJson(styleEntries, options);
     }
   };
@@ -210,6 +217,11 @@ function addNgModuleImports(options: AddSchema): Rule {
           changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
             'imports',
             'MaterialRulesModule.forRoot()')];
+
+        } else if (options.uiLib === 'fiori') {
+          changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
+            'imports',
+            'FioriRulesModule.forRoot()')];
         }
 
         const recorder = host.beginUpdate(modulePath);
@@ -289,6 +301,11 @@ function addFileImportsUILib(options: AddSchema): Rule {
       return chain([
         addFileHeaderImports(options, 'MaterialRulesModule',
           '@ngx-metaui/material-rules')
+      ]);
+    } else if (options.uiLib === 'fiori') {
+      return chain([
+        addFileHeaderImports(options, 'FioriRulesModule',
+          '@ngx-metaui/fiori-rules')
       ]);
     } else {
       return host;

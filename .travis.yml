@@ -2,7 +2,7 @@ language: node_js
 sudo: required
 dist: trusty
 node_js:
-- '10.9.0'
+- 'v11.0.0'
 
 addons:
   chrome: stable
@@ -22,8 +22,8 @@ before_script:
 
 script:
 - ./scripts/ci/build.sh ci
-# - ./scripts/ci/lint.sh ci
-# - ./scripts/ci/test.sh ci
+- ./scripts/ci/lint.sh ci
+- ./scripts/ci/test.sh ci
 
 
 
