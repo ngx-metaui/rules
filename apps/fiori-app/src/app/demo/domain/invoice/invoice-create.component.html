@@ -22,7 +22,7 @@
 
 
 <ng-template #invoiceForm>
-  <fdp-form-group #fg [multiLayout]="true" [formGroup]="form" [object]="invoice">
+  <fdp-form-group #fg [multiLayout]="true" [formGroup]="form" [object]="invoice" [editable]="true">
     <!--
   Left side
     -->
@@ -76,11 +76,9 @@
     </fdp-form-field>
 
 
-
     <!--
     Right side
     -->
-
 
 
     <fdp-form-field #ffr1 [id]="'totalAmount'" zone="zRight" rank="10" columns="6">
@@ -117,15 +115,11 @@
     </fdp-form-field>
 
 
-
     <fdp-form-field #ffb1 [id]="'description'" label="Purpose" zone="zBottom"
                     placeholder="Describe the reason">
       <fdp-text-area [formControl]="ffb1.formControl">
       </fdp-text-area>
     </fdp-form-field>
-
-
-
 
 
     <ng-template #i18n let-errros>

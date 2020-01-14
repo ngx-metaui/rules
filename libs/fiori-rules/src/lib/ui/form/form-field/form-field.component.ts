@@ -211,7 +211,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
     // this.validateFieldControlComponent();
 
     if (this._control && this._control.stateChanges) {
-      this._control.stateChanges.pipe(startWith(null!)).subscribe((s) => {
+      this._control.stateChanges.pipe(startWith(<string>null!)).subscribe((s) => {
         this.updateControlProperties();
         // need to call explicitly detectChanges() instead of markForCheck before the
         // modified validation state of the control passes over checked phase

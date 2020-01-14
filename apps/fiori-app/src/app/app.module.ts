@@ -11,11 +11,11 @@ import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
 import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
 import * as userRules from './user-rules';
 import {MetaDemoModule} from './mdemo/meta-demo.module';
-
+import localeStr from '@angular/common/locales/es-US';
 
 
 const LOCALE = 'us';
-import localeStr from '@angular/common/locales/es-US';
+
 registerLocaleData(localeStr, LOCALE);
 
 @NgModule({
@@ -31,12 +31,12 @@ registerLocaleData(localeStr, LOCALE);
     PlaygroundModule,
     MetaUIRulesModule.forRoot(),
     FioriRulesModule.forRoot(),
-    AppRoutingModule,
+    AppRoutingModule
 
   ],
   exports: [],
   providers: [
-    { provide: LOCALE_ID, useValue: LOCALE }
+    {provide: LOCALE_ID, useValue: LOCALE}
   ],
   bootstrap: [AppComponent]
 })

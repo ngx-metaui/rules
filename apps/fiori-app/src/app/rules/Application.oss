@@ -2,13 +2,9 @@ module {
   productSwitcher:'switcher';
   pageTitle:${"This is fiori MetaUI demo - " + properties.get("label")};
 
-  layout {
-    portletWrapper: NoPortletWrapper;
-  }
 
 
   @actionCategory=Create {
-
       @action=Order#pageAction {
           icon:"sales-order-item";
           routeName:"/mdemo/invoice/create";

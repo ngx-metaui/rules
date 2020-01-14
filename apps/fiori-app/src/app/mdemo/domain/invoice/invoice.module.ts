@@ -3,8 +3,7 @@ import {CommonModule} from '@angular/common';
 import {InvoiceComponent} from './invoice.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
-import {ActionBarModule as ABCore, ButtonModule} from '@fundamental-ngx/core';
-import {ActionBarModule} from '@fundamental-ngx/core';
+import {ActionBarModule as ABCore, ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
 import {AddressComponent} from './address/address.component';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
 
