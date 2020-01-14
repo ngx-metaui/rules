@@ -229,7 +229,7 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
   return (host: Tree, context: SchematicContext) => {
 
     try {
-      const matButton = ['MatButtonModule', '@angular/material'];
+
       const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
       const relativePath = buildRelativePath(modulePath, componentPath);
 
@@ -240,8 +240,14 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
         let changes = addDeclarationToModule(srcPath, modulePath, compName, relativePath);
 
         if (options.uiLib === 'material') {
+          const matButton = ['MatButtonModule', '@angular/material'];
           changes = [...changes, ...addImportToModule(srcPath, modulePath, matButton[0],
             matButton[1])];
+
+        } else if (options.uiLib === 'fiori') {
+          const fButton = ['ButtonModule', '@fundamental-ngx/core'];
+          changes = [...changes, ...addImportToModule(srcPath, modulePath, fButton[0],
+            fButton[1])];
         }
 
         const recorder = host.beginUpdate(modulePath);
