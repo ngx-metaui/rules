@@ -13,7 +13,7 @@ import {PaymentTermsCSV, paymentTermsDB} from '../rest/payment-terms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {debounceTime, tap} from 'rxjs/operators';
-import {Action, META_RULES, MetaRules, Property} from '@ngx-metaui/rules';
+import {Action, META_RULES, MetaRules} from '@ngx-metaui/rules';
 
 
 @Component({

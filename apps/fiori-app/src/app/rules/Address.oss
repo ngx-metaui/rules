@@ -4,8 +4,8 @@ class=Address {
   }
 
   @field=(line1 , line2) {
-      trait:derived;
-       type:String;
+     trait:derived;
+     type:String;
   }
   zNone => *;
   zLeft => name;
@@ -13,16 +13,16 @@ class=Address {
 
 
 locale=de class=Address  {
-    field=line1 {
-       value:${object.lines  };
-     }
+  field=line1 {
+    value:${object.lines  };
+  }
 
-     field=line2 {
-      value:${object.postalCode + ', ' +  object.city +  ', '  + object.country };
-    }
+  field=line2 {
+    value:${object.postalCode + ', ' +  object.city +  ', '  + object.country };
+  }
 
-    zNone => *;
-    zLeft => line1 => line2 ;
+  zNone => *;
+  zLeft => line1 => line2 ;
 }
 
 

@@ -29,34 +29,21 @@ class=Invoice {
     choices:${controller.paymentTermsDS};
   }
 
-  field=totalAmount {
-    label: "Price to Pay";
-    valid: ${( value.amount < 200) ? "Amount must be above 200 USD  ": true};
-  }
-
-  field=billingAddress {
+  field=(billingAddress, shippingAddress ) {
     trait:asAutoComplete, inlineObject;
-    label: "Bill To";
-
   }
 
-  field=shippingAddress {
-    trait:asAutoComplete;
-    label: "Ship To";
-  }
-
-  field=description {
+   field=description {
     trait:longtext;
     label: "Purpose";
   }
 
-  field=isShared {
-    label: "Share";
-  }
-
-  field=shareContact {
-    label:"Share To";
+   field=shareContact {
     visible:${object.isShared === true};
+   }
+
+  field=totalAmount {
+    valid: ${( value.amount < 200) ? "Amount must be above 200 USD  ": true};
   }
 
   field=accountCategory {
@@ -66,19 +53,24 @@ class=Invoice {
 }
 
 class=Invoice {
-   operation=(edit, create) {
-        zNone => *;
-      zLeft   =>  name#fluid => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress => isShared => shareContact;
-      zRight  => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder;
-        zBottom => description;
-     }
+   operation=create {
+      zNone => *;
+      zLeft   =>  name =>  needBy => totalAmount => billingAddress => supplier;
+   }
+
+   operation=edit {
+      zNone => *;
+      zLeft   =>  name#fluid => requestor =>  needBy => purchaseOrder => shippingAddress => billingAddress => accountCategory;
+      zRight  => totalAmount => supplier => paymentTerms => taxInvoiceNumber => isShared => shareContact;
+      zBottom => description;
+   }
 
     operation=view {
-        zNone => *;
-      zLeft   =>  name  => requestor =>    needBy           => accountCategory => shippingAddress => billingAddress => isShared => shareContact;
-      zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => purchaseOrder ;
-        zBottom => description;
-   }
+      zNone => *;
+      zLeft   => name  => requestor => needBy => purchaseOrder => shippingAddress => billingAddress => accountCategory;
+      zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => isShared => shareContact;
+      zBottom => description;
+    }
 }
 
 
@@ -98,4 +90,5 @@ class=Invoice object {
     buttonOptions:"emphasized";
   }
 }
+
 

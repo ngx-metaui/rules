@@ -4,7 +4,7 @@ import {Money, SelectItem} from '@ngx-metaui/fiori-rules';
 
 
 @Component({
-  selector: 'ngx-fiori-play',
+  selector: 'fdp-fiori-play',
   templateUrl: './play.component.html'
 })
 export class PlayComponent {

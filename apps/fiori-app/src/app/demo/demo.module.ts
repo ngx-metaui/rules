@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './home.component';
 import {
+  ActionBarModule,
   ButtonModule,
   ComboboxModule,
   ProductSwitchModule,
-  ActionBarModule,
   ShellbarModule
 } from '@fundamental-ngx/core';
 import {DemoRoutingModule} from './demo-routing.module';

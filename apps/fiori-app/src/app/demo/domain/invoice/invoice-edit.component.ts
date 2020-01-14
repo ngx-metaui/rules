@@ -102,7 +102,7 @@ export class InvoiceEditComponent implements OnInit, OnDestroy {
       });
       this.invoice = null;
     } else {
-      this.router.navigate([''])
+      this.router.navigate(['']);
     }
   }
 

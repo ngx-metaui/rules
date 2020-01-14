@@ -12,7 +12,8 @@ export class EntityResolver implements Resolve<any> {
               private router: Router) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> |
+    Observable<never> {
     const id = route.paramMap.get('id');
     const type = route.paramMap.get('type');
     const dataProvider = this.providers.get(type);
