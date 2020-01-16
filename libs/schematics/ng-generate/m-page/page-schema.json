@@ -51,7 +51,7 @@
         "material",
         "prime-ng"
       ],
-      "default": "material"
+      "default": "fiori"
     }
   },
   "required": [

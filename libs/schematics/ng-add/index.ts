@@ -130,7 +130,29 @@ function addDependencies(options: AddSchema): Rule {
         },
         {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
       ];
+    } else if (options.uiLib === 'fiori') {
+      uiLibs = [
+        {
+          type: NodeDependencyType.Default,
+          version: '^VERSION_PLACEHOLDER',
+          name: '@ngx-metaui/fiori-rules'
+        },
+        {
+          type: NodeDependencyType.Default,
+          version: 'FD_CORE_PLACEHOLDER',
+          name: '@fundamental-ngx/core'
+        },
+        {
+          type: NodeDependencyType.Default,
+          version: 'FD_PLATFORM_PLACEHOLDER',
+          name: '@fundamental-ngx/platform'
+        },
+        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
+        {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
+      ];
     }
+
+
     return addDependenciesToPackageJson([...core, ...uiLibs], options.skipNpmInstall);
   };
 }
@@ -138,7 +160,7 @@ function addDependencies(options: AddSchema): Rule {
 
 function addScripts(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
-    if (options.uiLib === 'none' || options.uiLib === 'material') {
+    if (options.uiLib === 'none' || options.uiLib === 'material' || options.uiLib === 'fiori') {
       return host;
     }
     const scriptsPaths: string[] = [

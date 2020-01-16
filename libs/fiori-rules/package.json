@@ -13,8 +13,7 @@
   "dependencies": {
     "@ngx-metaui/rules": "^VERSION_PLACEHOLDER",
     "flexboxgrid": "^6.3.1",
-    "@fundamental-ngx/core": "FD_CORE_VERSION",
-    "@fundamental-ngx/platform": "FD_PLATFORM_VERSION",
-    "@sap-theming/theming-base-content": "SAP_THEMNE_PLACEHOLDER"
+    "@fundamental-ngx/core": "FD_CORE_PLACEHOLDER",
+    "@fundamental-ngx/platform": "FD_PLATFORM_PLACEHOLDER"
   }
 }

@@ -10,6 +10,8 @@
   "whitelistedNonPeerDependencies": [
     "flexboxgrid",
     "fundamental-styles",
-    "@fundamental-ngx/core"
+    "@fundamental-ngx/core",
+    "@fundamental-ngx/platform",
+    "@ngx-metaui/rules"
   ]
 }
