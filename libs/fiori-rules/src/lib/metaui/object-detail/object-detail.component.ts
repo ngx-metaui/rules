@@ -15,7 +15,15 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectorRef, Component, Host, Inject, Input, LOCALE_ID} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Host,
+  Inject,
+  Input,
+  LOCALE_ID,
+  Optional
+} from '@angular/core';
 import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
 
 
@@ -50,7 +58,7 @@ export class MetaObjectDetailComponent extends MetaBaseComponent {
 
   constructor(@Host() protected _metaContext: MetaContextComponent,
               private cd: ChangeDetectorRef,
-              @Inject(LOCALE_ID) public locale: string,
+              @Inject(LOCALE_ID) @Optional() public locale: string,
               public env: Environment) {
     super(env, _metaContext);
   }

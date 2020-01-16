@@ -31,7 +31,7 @@ import {UserViewComponent} from './domain/user/user-view.component';
 import {SupplierViewComponent} from './domain/supplier/supplier-view.component';
 
 
-const heroServiceFactory = () => {
+const dataProviderServiceFactory = () => {
   const providers = new Map<string, DataProvider<any>>();
 
   providers.set('User', new ArrayDataProvider<User>(
@@ -92,7 +92,7 @@ const heroServiceFactory = () => {
     InvoiceModule
   ],
   providers: [
-    {provide: DATA_PROVIDERS, useFactory: heroServiceFactory}
+    {provide: DATA_PROVIDERS, useFactory: dataProviderServiceFactory}
   ]
 })
 export class DemoModule {
