@@ -1,5 +1,4 @@
 /**
- * Export generated TS files from ./ts directory
+ * Content of this file is automatically populated by oss compile
  */
-
 export {DummyRule} from './ts/Dummy.oss';
