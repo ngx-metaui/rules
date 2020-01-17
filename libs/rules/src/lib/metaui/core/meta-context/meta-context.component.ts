@@ -214,7 +214,7 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    * detection we need to eliminate event handler based CDs. where most of the time we dont care.
    *
    */
-  private _isDirty: boolean = false;
+  _isDirty: boolean = false;
 
 
   /**
@@ -260,6 +260,11 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
       if (isPresent(changes[name])
         && (changes[name].currentValue !== changes[name].previousValue)) {
         this.initBindings();
+
+        if (!changes[name].isFirstChange()) {
+          this.markDirty();
+        }
+
         break;
       }
     }

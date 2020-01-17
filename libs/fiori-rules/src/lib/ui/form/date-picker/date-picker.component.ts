@@ -178,7 +178,7 @@ export class DatePickerComponent extends BaseInput {
     }
 
     // this should not be here but FD date picker is broken so need to trigger CD
-    this._cd.detectChanges();
+    // this._cd.detectChanges();
   }
 
   private date2FdDate(d: Date): FdDate {
