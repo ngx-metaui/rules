@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [8.2.0](https://github.com/ngx-meta/rules/compare/v8.1.1...v8.2.0) (2020-01-17)
+
+
+### Bug Fixes
+
+* **fiori:** Fix core rules api and update fiori app ([321a83c](https://github.com/ngx-meta/rules/commit/321a83c))
+* **fix:** Styling and refactoring changes ([b58a846](https://github.com/ngx-meta/rules/commit/b58a846))
+* **readme:** Update slack invite link ([93a0433](https://github.com/ngx-meta/rules/commit/93a0433))
+* **rules:** Performance improvements for rendering logic. ([34ba192](https://github.com/ngx-meta/rules/commit/34ba192))
+* **schematics:** Updated mPage logic to capture compile syntax ([1a91b7e](https://github.com/ngx-meta/rules/commit/1a91b7e))
+* **select:** Add default editable value ([d5e8e97](https://github.com/ngx-meta/rules/commit/d5e8e97))
+
+
+### Features
+
+* **fiori:** Support for new UI library Fiori 3 implemented by fundamental-ngx ([c2aa27e](https://github.com/ngx-meta/rules/commit/c2aa27e))
+* **rules:** Actions support as decorators ([0759ef9](https://github.com/ngx-meta/rules/commit/0759ef9))
+
+
+### Performance Improvements
+
+* **fiori:** Update detect cycle to fire only when changed ([40aa8a8](https://github.com/ngx-meta/rules/commit/40aa8a8))
+
+
+
 ## [8.1.1](https://github.com/ngx-meta/rules/compare/v8.1.0...v8.1.1) (2019-11-20)
 
 

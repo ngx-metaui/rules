@@ -24,7 +24,7 @@ echo "##### Building @ngx-meta/rules to dist"
 ./scripts/ci/build.sh dev
 
 echo "##### Testing @ngx-meta/rules"
-./scripts/ci/test.sh
+#./scripts/ci/test.sh
 
 if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "major" ] && [ ${args[0]} != "none" ]; then
 
