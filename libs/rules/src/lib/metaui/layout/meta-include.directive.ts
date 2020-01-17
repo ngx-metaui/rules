@@ -164,7 +164,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
 
     // create new component
     const newComponent = context.propertyForKey('component');
-    if (isPresent(newComponent) && isPresent(this.name) && (this.name !== newComponent)) {
+    if (newComponent && ((this.name && this.name !== newComponent) || this.metaContext._isDirty)) {
       this.viewContainer.clear();
       this.doRenderComponent();
       // console.log('MetaInclude(ngDoCheck- rerender ):', this.name);
