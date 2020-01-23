@@ -26,7 +26,7 @@ syntaxes you may know already.
 
 #### Extend MetaUI Applications
 
-Let's add two more fields on the `User.ts` object from the getting started guide:
+Let's add two more fields on the `user.ts` object from the getting started guide:
 
 ```ts
 
