@@ -19,8 +19,7 @@
     "skipNpmInstall": {
       "type": "boolean",
       "description": "Tells if we should skip npm install tasks",
-      "default": false,
-      "x-prompt": "Do you want to skip 'npm install' (e.g., --skipNpmInstall)?"
+      "default": false
     },
     "skipStyles": {
       "type": "boolean",
