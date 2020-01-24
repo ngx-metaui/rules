@@ -5,10 +5,10 @@
  *
  */
 /* tslint:disable */
-export const DummyRule = 'class=Dummy { } ';
+export const ApplicationRule = 'module { } ';
 /* tslint:disable */
 /**
  *  @formatter:on
  *
  */
- 
+

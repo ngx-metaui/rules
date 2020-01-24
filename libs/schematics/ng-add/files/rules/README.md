@@ -30,8 +30,5 @@ content fast depending on certain path or name.
 
 Please check out [High Level Architecture][1].
 
-_Note: The Dummy.oss can be removed once you have some rel OSS rules. It is only as a place holder_
-
-
 
 [1]: https://github.com/ngx-meta/rules/blob/master/docs/metaui-architecture.md
