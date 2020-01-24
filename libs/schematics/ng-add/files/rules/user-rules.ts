@@ -1,4 +1,5 @@
 /**
- * Content of this file is automatically populated by oss compile
+ * Content of this file is automatically populated by oss compiler
  */
-export {DummyRule} from './ts/Dummy.oss';
+
+export {ApplicationRule} from './ts/Application.oss';
