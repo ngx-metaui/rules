@@ -30,7 +30,7 @@ export const UILibRules = ' /**  * @license  * Copyright 2017 SAP Ariba  *  * Li
 // @formatter:on
 /* tslint:disable */
 
-fdescribe('Use of decorators to extend oss ', () => {
+describe('Use of decorators to extend oss ', () => {
 
 
   beforeEach((done) => {
@@ -51,12 +51,10 @@ fdescribe('Use of decorators to extend oss ', () => {
     }, 0);
   });
 
-
-  fdescribe('With Properties decorators', () => {
+  describe('With Properties decorators', () => {
 
 // @formatter:off
-    it('should maintain existing behavior with just using rules so it evaluate' +
-      ' list of properties based on given oss', () => {
+    it('should set correct label for annotated field to equal to xName', () => {
 
         const metaUI: MetaRules = TestBed.get(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
@@ -76,7 +74,7 @@ fdescribe('Use of decorators to extend oss ', () => {
         context.push(); // 3
 
         context.set('field', 'firstName');
-        expect(context.propertyForKey(KeyLabel)).toEqual('My First Name');
+        expect(context.propertyForKey(KeyLabel)).toEqual('xName');
         context.pop(); // 3
 
 
@@ -85,7 +83,7 @@ fdescribe('Use of decorators to extend oss ', () => {
       }
     );
 
-    fit('should override firstName label to Name if we use label decorator', () => {
+    it('should override firstName label to Name if we use label decorator', () => {
 
         debugger;
         const metaUI: MetaRules = TestBed.get(META_RULES);
