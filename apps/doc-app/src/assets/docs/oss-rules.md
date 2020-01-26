@@ -570,7 +570,7 @@ Since we have already `User.oss` in the `app/rules` directory we are going to ad
           component:AgeRatingComponent;
           bindings: {
             value:$value;
-          }
+          };
        }
 ```
 
