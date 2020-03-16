@@ -278,7 +278,7 @@ describe('Loading rules functionality', () => {
  it(' should load all the system rules in the rule engine based on WidgetsRules. ', () => {
 
       try {
-        const metaUI: MetaRules = TestBed.get(META_RULES);
+        const metaUI: MetaRules = TestBed.inject(META_RULES);
 
         expect(metaUI).toBeDefined();
         expect(metaUI.rules.length).toEqual(212); // commented out toOneRelationShip
@@ -302,13 +302,13 @@ describe('Rule matching functionality on preloaded ruleset', () => {
       ]
     });
 
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.loadUILibSystemRuleFiles({}, UILibRules, {});
   });
 
   it(' it must pick the best selector to Index from list of selectors ', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       const classSel: Selector = new Selector('class', '*');
       const operSel: Selector = new Selector('operation', 'view');
@@ -333,7 +333,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it(' it should recognized as scope properties and scope property must be set to thru for ' +
     'field, action,' + ' action category, class, layout', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       let keyData = metaUI.keyData('field');
       expect(keyData.isPropertyScope).toBeTruthy();
@@ -356,7 +356,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it(' it should not recognized as scope properties for anything but  field, action,' +
     ' action category, class, layout', () => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       let keyData = metaUI.keyData('operation');
       expect(keyData.isPropertyScope).toBeFalsy();
@@ -373,7 +373,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it(' It can match properties layout=Inspect, operation=edit, field=*, type=int and ' +
     'return MatchResult ', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
 
       let prevMatch: MatchResult = metaUI.match('layout', 'Inspect', null);
@@ -394,7 +394,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it(' It can match properties for string and Editing and expect InputFieldComponent in  the ' +
     'retrieved rule properties', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       let prevMatch: MatchResult = metaUI.match('operation', 'edit', null);
       prevMatch = metaUI.match('field', '*', prevMatch);
@@ -421,7 +421,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it(' It can match properties for date and viewing and expect DateAndTimeComponent in of ' +
     'the retrieve rule properties ', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       let prevMatch: MatchResult = metaUI.match('operation', 'view', null);
       prevMatch = metaUI.match('field', '*', prevMatch);
@@ -449,7 +449,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   it('It can match string with trait richtext expect RichTextArea in the retrieved rule ' +
     'properties', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       let prevMatch: MatchResult = metaUI.match('operation', 'view', null);
       prevMatch = metaUI.match('field', '*', prevMatch);
@@ -476,7 +476,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it('It can match layout Inspect and retrieve StringComponent component if ~class', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       let prevMatch: MatchResult = metaUI.match('class', '*', null);
       prevMatch = metaUI.match('layout', 'Inspect', prevMatch);
@@ -499,7 +499,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   );
 
   it('It can match class with trait  form and retrieve MetaForm', () => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       let prevMatch: MatchResult = metaUI.match('class', '*', null);
       prevMatch = metaUI.match('trait', 'Form', prevMatch);
@@ -524,7 +524,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   );
 
   it('It can match class with trait Stack and retrieve MetaElementList', () => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
 
       let prevMatch: MatchResult = metaUI.match('class', '*', null);
@@ -551,7 +551,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it('It can match trait with form  and field name and retrieve InputFieldComponent component ',
     () => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
 
       metaUI.keyData(KeyClass).setParent('MyClass', 'Object');
@@ -599,7 +599,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
 
   it('It checks if observers were registered and called when we do match on class or field ',
     () => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
 
       const observers = metaUI.keyData(KeyClass).observers;
@@ -665,7 +665,7 @@ describe('Expression eval of Matched properties how they can be resolved on the 
 
   it('It evaluates expression object.firstName.length > 4 on Context', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
         private _someObject: any;
@@ -713,7 +713,7 @@ describe('Expression eval of Matched properties how they can be resolved on the 
 
   it('It evaluates expression object.firstName === Frank on Context', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
         private _someObject: any;
@@ -764,7 +764,7 @@ describe('Expression eval of Matched properties how they can be resolved on the 
 
   it('It evaluates context field path  on Context to get value from a object', () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
         private _someObject: any;
@@ -814,7 +814,7 @@ describe('Expression eval of Matched properties how they can be resolved on the 
   it('It evaluates context field path  on Context to set a value to a object',
     () => {
 
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
         private _someObject: any;

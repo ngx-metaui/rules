@@ -150,7 +150,7 @@ describe('3 different layouts formed into Stack', () => {
 
   it('should render two FormTables', () => {
 
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('UserStackARule', UserStackARule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
@@ -164,7 +164,7 @@ describe('3 different layouts formed into Stack', () => {
   });
 
   it('should have two buttons in the top container when trait ActionButtons ', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('UserStackARule', UserStackARule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
@@ -179,7 +179,7 @@ describe('3 different layouts formed into Stack', () => {
   });
 
   it('should have two link at the top container when trait is ActionLinks', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('UserStackARule', LinksUserStackARule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditLinksComponent);
@@ -195,7 +195,7 @@ describe('3 different layouts formed into Stack', () => {
 
 
   it('should have popup menu with 2 items at the top container when trait is ActionMenu', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('UserStackARule', PopupUserStackARule);
 
 

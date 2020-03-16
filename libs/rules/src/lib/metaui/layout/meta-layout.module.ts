@@ -37,10 +37,6 @@ import {GenericContainerComponent} from './core/generic-container.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [
-    NoMetaComponent,
-    GenericContainerComponent
-  ],
   exports: [
     IncludeDirective,
     MetaIncludeDirective,

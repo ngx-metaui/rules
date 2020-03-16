@@ -30,9 +30,6 @@ import {MetaContextComponent} from './meta-context/meta-context.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [
-    MetaContextComponent
-  ],
   exports: [
     MetaContextComponent
   ],

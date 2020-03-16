@@ -60,14 +60,6 @@ const routes: Routes = [
     UILibModule,
     RouterModule.forChild(routes)
   ],
-  entryComponents: [
-    MetaForm,
-    MetaFormGroup,
-    MetaFormField,
-    MetaContentPageComponent,
-    MetaActionListComponent,
-    MetaElementListComponent
-  ],
   exports: [
     MetaForm,
     MetaFormGroup,

@@ -69,7 +69,7 @@ describe('Meta Context Component', () => {
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
 
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
     fixtureWrapper.detectChanges();
@@ -91,7 +91,7 @@ describe('Meta Context Component', () => {
   it('It should render 4 String components - read only mode pre-loaded values: ' +
     'Frank, Kolar,' + ' 1000, Some note about me.',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
       metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerViewComponent);
@@ -111,7 +111,7 @@ describe('Meta Context Component', () => {
 
   it('It should render 4 String components when object loaded is deffered using timer',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
       metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerViewDefferedComponent);

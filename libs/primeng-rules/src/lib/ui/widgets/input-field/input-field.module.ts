@@ -36,9 +36,6 @@ import {AWStringFieldModule} from '../string/string.module';
     InputTextModule,
     AWStringFieldModule
   ],
-  entryComponents: [
-    InputFieldComponent
-  ],
   exports: [
     InputFieldComponent,
     AWStringFieldModule,

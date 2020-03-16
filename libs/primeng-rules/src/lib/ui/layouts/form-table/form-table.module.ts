@@ -51,15 +51,6 @@ import {AWCoreComponentModule} from '../../core/core.module';
     InputTextModule,
     AWCoreComponentModule
   ],
-  entryComponents: [
-    FormTableComponent,
-    FormRowComponent,
-    TopZoneComponent,
-    LeftZoneComponent,
-    RightZoneComponent,
-    MiddleZoneComponent,
-    BottomZoneComponent
-  ],
   exports: [
     FormTableComponent,
     FormRowComponent,

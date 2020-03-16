@@ -46,7 +46,7 @@ describe('Parsing rules on the fly and registering them with the rule engine',
         const ossFile: any = require(
           '!!raw-loader!../../../resources/compiler/WidgetsRules-ui.oss');
 
-        const metaUI: MetaRules = TestBed.get(META_RULES);
+        const metaUI: MetaRules = TestBed.inject(META_RULES);
         metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
 
 
@@ -62,7 +62,7 @@ describe('Parsing rules on the fly and registering them with the rule engine',
           '!!raw-loader!../../../resources/compiler/WidgetsRules-ui-m.oss');
 
         try {
-          const metaUI: MetaRules = TestBed.get(META_RULES);
+          const metaUI: MetaRules = TestBed.inject(META_RULES);
           metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
         } catch (e) {
           console.log(e);
@@ -76,7 +76,7 @@ describe('Parsing rules on the fly and registering them with the rule engine',
         /* tslint:disable: no-trailing-whitespace */
 
         try {
-          const metaUI: MetaRules = TestBed.get(META_RULES);
+          const metaUI: MetaRules = TestBed.inject(META_RULES);
 
           metaUI.beginRuleSet('User');
           const parser = new RuntimeParser('label:Hahaha;', metaUI);

@@ -42,9 +42,6 @@ import {AWCoreComponentModule} from '../../core/core.module';
     AWStringFieldModule,
     AWCoreComponentModule
   ],
-  entryComponents: [
-    CurrencyComponent
-  ],
   exports: [
     CurrencyComponent,
     ReactiveFormsModule,

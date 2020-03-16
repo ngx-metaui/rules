@@ -35,9 +35,6 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     ReactiveFormsModule,
     RadioButtonModule
   ],
-  entryComponents: [
-    RadioButtonComponent
-  ],
   exports: [
     RadioButtonComponent,
     ReactiveFormsModule,

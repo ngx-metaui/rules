@@ -54,11 +54,6 @@ import {MetaActionListModule} from './meta-action-list/meta-action-list.module';
     MetaActionListModule,
     UILibModule
   ],
-  entryComponents: [
-    MetaForm,
-    MetaObjectDetailComponent,
-    MetaContentPageComponent,
-  ],
   exports: [
     UILibModule
   ]

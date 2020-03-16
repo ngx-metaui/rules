@@ -42,7 +42,7 @@ describe('Use of decorators to extend oss ', () => {
     });
 
     TestBed.compileComponents();
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
 
     metaUI.loadUILibSystemRuleFiles({}, UILibRules, {});
 
@@ -56,7 +56,7 @@ describe('Use of decorators to extend oss ', () => {
 // @formatter:off
     it('should set correct label for annotated field to equal to xName', () => {
 
-        const metaUI: MetaRules = TestBed.get(META_RULES);
+        const metaUI: MetaRules = TestBed.inject(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const myUserTestClass = new MyUserTestClass('Frank');
@@ -86,7 +86,7 @@ describe('Use of decorators to extend oss ', () => {
     it('should override firstName label to Name if we use label decorator', () => {
 
         debugger;
-        const metaUI: MetaRules = TestBed.get(META_RULES);
+        const metaUI: MetaRules = TestBed.inject(META_RULES);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();

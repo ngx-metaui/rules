@@ -54,18 +54,6 @@ import {MetaFormRowComponent} from './meta-form/meta-form-row/meta-form-row.comp
     AribaComponentsModule
 
   ],
-  entryComponents: [
-    MetaActionListComponent,
-    MetaContentPageComponent,
-    MetaDashboardLayoutComponent,
-    MetaElementListComponent,
-    MetaFormComponent,
-    MetaFormTableComponent,
-    MetaFormRowComponent,
-    MetaHomePageComponent,
-    MetaObjectDetailComponent,
-    MetaSectionsComponent
-  ],
   exports: [
     MetaActionListComponent,
     MetaContentPageComponent,

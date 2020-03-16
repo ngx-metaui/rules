@@ -113,7 +113,7 @@ describe('Meta Sections', () => {
 
   it('It should render 4 section 1. forms, 2. string, 3. string, 4.form', () => {
 
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
     TestBed.compileComponents();
@@ -134,7 +134,7 @@ describe('Meta Sections', () => {
 
   it('It should render first section collapsed', () => {
 
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
     TestBed.compileComponents();
@@ -150,7 +150,7 @@ describe('Meta Sections', () => {
 
 
   it('should render last section expended with rendered one invoice field', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
     let fixtureWrapper = TestBed.createComponent(TestMetaSectionComponent);
@@ -165,7 +165,7 @@ describe('Meta Sections', () => {
 
 
   it('should show edit button for 2nd section when we add property "editable:true"', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
     let fixtureWrapper = TestBed.createComponent(TestMetaSectionComponent);
@@ -180,7 +180,7 @@ describe('Meta Sections', () => {
 
   it('should show custom icon for 3d section when using property actionIcon:"icon-positive"',
     () => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
@@ -196,7 +196,7 @@ describe('Meta Sections', () => {
 
   it('broadcasts event onEdit when clicking on edit icon (2nd section)',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
       metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
       let fixtureWrapper = TestBed.createComponent(TestMetaSectionComponent);
@@ -217,7 +217,7 @@ describe('Meta Sections', () => {
 
   it('shows cancel and save button when edit icon is clicked on 2nd Section',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
       metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
       let fixtureWrapper = TestBed.createComponent(TestMetaSectionComponent);
@@ -239,7 +239,7 @@ describe('Meta Sections', () => {
 
   it('hides footer buttons (cancel, save) when we click on Save action button',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
       metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
       let fixtureWrapper = TestBed.createComponent(TestMetaSectionComponent);
@@ -268,7 +268,7 @@ describe('Meta Sections', () => {
 
   it('Render a expanded form with rendered 1 field when object loaded is deferred using timer',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.get(META_RULES);
+      const metaUI: MetaRules = TestBed.inject(META_RULES);
       metaUI.addTestUserRule('InvoiceTestRule', InvoiceSectionRule);
 
       let fixtureWrapper = TestBed.createComponent(TestMetaSectionDeferredComponent);

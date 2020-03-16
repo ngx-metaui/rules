@@ -30,9 +30,6 @@ import {CommonModule} from '@angular/common';
   imports: [
     CommonModule
   ],
-  entryComponents: [
-    ToggleSwitchComponent
-  ],
   exports: [
     ToggleSwitchComponent
   ],
