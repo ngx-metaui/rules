@@ -24,7 +24,6 @@ import {assert, isBlank, isPresent} from '../../core/utils/lang';
 import {OverlayComponent} from '../overlay/overlay.component';
 import {BaseComponent, Environment} from '@ngx-metaui/rules';
 import {DomHandler} from 'primeng/api';
-import {MatInput} from '@angular/material';
 
 
 /**
@@ -179,25 +178,12 @@ export class HoverCardComponent extends BaseComponent {
    *
    */
   arrowClass: string = '';
-
-
-  /**
-   * Internal properties to references template elements in order to calculate positioning
-   *
-   */
-  private titleAreaRect: any;
   trigRect: any;
   trigIconMiddle: any;
-
   opening: boolean = false;
-
   appendTo: 'body';
-
   currrentPosition: HCCardPosition = HCCardPosition.none;
-
   overlayOnAnimationStart: (event: AnimationEvent) => void;
-
-
   /**
    * In cases where we need to inject dynamic content using programmatic API we use this extra
    * element which is outside of the <ng-content> and hidden and once the <ng-content>  of
@@ -205,7 +191,11 @@ export class HoverCardComponent extends BaseComponent {
    *
    */
   dynamicContent: any;
-
+  /**
+   * Internal properties to references template elements in order to calculate positioning
+   *
+   */
+  private titleAreaRect: any;
 
   constructor(protected elem: ElementRef, public env: Environment,
               private cd: ChangeDetectorRef) {
@@ -414,6 +404,27 @@ export class HoverCardComponent extends BaseComponent {
     return pos;
   }
 
+  /**
+   *
+   * Turn on temporary display to BLOCK so we can read dimensions
+   *
+   */
+  openForAdjustments(container: any): void {
+    container.style.visibility = 'hidden';
+    container.style.display = 'block';
+
+    this.initElements();
+  }
+
+  /**
+   *
+   * Turn off display back NONE
+   *
+   */
+  closeForAdjustments(container: any): void {
+    container.style.visibility = 'visible';
+    // container.style.display = 'none';
+  }
 
   /**
    *
@@ -443,30 +454,6 @@ export class HoverCardComponent extends BaseComponent {
     }
     return alignment;
   }
-
-  /**
-   *
-   * Turn on temporary display to BLOCK so we can read dimensions
-   *
-   */
-  openForAdjustments(container: any): void {
-    container.style.visibility = 'hidden';
-    container.style.display = 'block';
-
-    this.initElements();
-  }
-
-
-  /**
-   *
-   * Turn off display back NONE
-   *
-   */
-  closeForAdjustments(container: any): void {
-    container.style.visibility = 'visible';
-    // container.style.display = 'none';
-  }
-
 
   /**
    *

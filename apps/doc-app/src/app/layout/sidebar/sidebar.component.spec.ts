@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarComponent } from './sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MatListModule } from '@angular/material';
+import { MatListModule } from '@angular/material/list';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;

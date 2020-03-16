@@ -43,7 +43,6 @@ import {DataProviders} from '../../core/data/data-providers';
 import {DataFinders, QueryType} from '../../core/data/data-finders';
 import {ChooserState, DefaultSelectionState} from './chooser-state';
 import {BaseFormComponent, Environment} from '@ngx-metaui/rules';
-import {MatInput} from '@angular/material';
 
 
 /**
@@ -298,7 +297,7 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
       super.registerFormControl(this.internalChooserModel);
     } else {
       if (isPresent(this.name)) {
-        this.formControl = <FormControl> this.formGroup.controls[this.name];
+        this.formControl = <FormControl>this.formGroup.controls[this.name];
       }
     }
   }

@@ -34,7 +34,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {MatFormFieldControl, MatInput, MatRadioChange, MatRadioGroup} from '@angular/material';
+import {MatFormFieldControl} from '@angular/material/form-field';
+import {MatRadioChange, MatRadioGroup} from '@angular/material/radio';
 import {Subject} from 'rxjs';
 import {DomUtilsService} from '@ngx-metaui/rules';
 
@@ -151,20 +152,6 @@ export class RadioGroup implements ControlValueAccessor, MatFormFieldControl<any
   @Output()
   readonly change: EventEmitter<MatRadioChange> = new EventEmitter<MatRadioChange>();
 
-  /**
-   * Required by MatFormFieldControl but not really used
-   */
-  _stateChanges = new Subject<void>();
-
-
-  /**
-   *
-   * Methods used by ControlValueAccessor
-   */
-  onChange = (_: any) => {};
-  onTouched = () => {};
-
-
   constructor(@Optional() @Self() public ngControl: NgControl,
               private elementRef: ElementRef,
               private cd: ChangeDetectorRef,
@@ -174,49 +161,14 @@ export class RadioGroup implements ControlValueAccessor, MatFormFieldControl<any
     }
   }
 
-  ngOnInit(): void {
-    if (!!this.required) {
-      this.hasNoValue = true;
-    }
+  /**
+   * Required by MatFormFieldControl but not really used
+   */
+  _stateChanges = new Subject<void>();
+
+  get stateChanges(): Subject<void> {
+    return this._stateChanges;
   }
-
-
-  ngAfterViewInit(): void {
-    // if (this.radioGroup) {
-    //   const ff = this.domUtils.closest(this.elementRef.nativeElement,
-    //     '.mat-form-field-wrapper');
-    //   if (ff && !this.errorState) {
-    //     ff.classList.add('no-underline');
-    //   }
-    // }
-
-    this.cd.markForCheck();
-  }
-
-  ngDoCheck(): void {
-    this.updateFieldUnderline();
-  }
-
-
-  registerOnChange(fn: (_: any) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-    if (this.radioGroup) {
-      this.radioGroup.setDisabledState(isDisabled);
-    }
-  }
-
-  writeValue(value: any): void {
-    this.value = value;
-  }
-
 
   get shouldLabelFloat(): boolean {
     return true;
@@ -241,16 +193,63 @@ export class RadioGroup implements ControlValueAccessor, MatFormFieldControl<any
     return false;
   }
 
-  get stateChanges(): Subject<void> {
-    return this._stateChanges;
-  }
-
   get autofilled(): boolean {
     return false;
   }
 
   get placeholder(): string {
     return this.label;
+  }
+
+  /**
+   *
+   * Methods used by ControlValueAccessor
+   */
+  onChange = (_: any) => {
+  };
+
+  onTouched = () => {
+  };
+
+  ngOnInit(): void {
+    if (!!this.required) {
+      this.hasNoValue = true;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // if (this.radioGroup) {
+    //   const ff = this.domUtils.closest(this.elementRef.nativeElement,
+    //     '.mat-form-field-wrapper');
+    //   if (ff && !this.errorState) {
+    //     ff.classList.add('no-underline');
+    //   }
+    // }
+
+    this.cd.markForCheck();
+  }
+
+  ngDoCheck(): void {
+    this.updateFieldUnderline();
+  }
+
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    if (this.radioGroup) {
+      this.radioGroup.setDisabledState(isDisabled);
+    }
+  }
+
+  writeValue(value: any): void {
+    this.value = value;
   }
 
   onContainerClick(event: MouseEvent): void {

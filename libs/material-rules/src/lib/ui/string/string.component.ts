@@ -17,24 +17,22 @@
  *
  */
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
-  Inject, Input,
-  NgZone, OnChanges,
+  Inject,
+  NgZone,
   Optional,
   Renderer2,
-  Self, SimpleChanges,
+  Self,
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
-import {
-  ErrorStateMatcher,
-  MAT_INPUT_VALUE_ACCESSOR,
-  MatFormFieldControl,
-  MatInput
-} from '@angular/material';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {MatFormFieldControl} from '@angular/material/form-field';
+import {MAT_INPUT_VALUE_ACCESSOR, MatInput} from '@angular/material/input';
 import {Platform} from '@angular/cdk/platform';
 import {AutofillMonitor} from '@angular/cdk/text-field';
 
@@ -65,9 +63,6 @@ export class StringField extends MatInput implements ControlValueAccessor {
   @ViewChild('inputField', {static: true})
   protected inputControl: ElementRef;
 
-  onChange = (_: any) => {};
-  onTouched = () => {};
-
   constructor(
     protected _elementRef: ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     protected _platform: Platform,
@@ -89,6 +84,11 @@ export class StringField extends MatInput implements ControlValueAccessor {
     }
   }
 
+  onChange = (_: any) => {
+  };
+
+  onTouched = () => {
+  };
 
   ngOnInit(): void {
     this._elementRef = this.inputControl;
