@@ -14,5 +14,10 @@
       "ngx-metaui",
       "kebab-case"
     ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "!**/*"
+    ]
   }
 }

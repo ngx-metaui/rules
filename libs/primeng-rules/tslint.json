@@ -21,8 +21,13 @@
       "kebab-case"
     ],
     "import-blacklist": [
-        true,
+      true,
       "primeng/primeng"
+    ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "!**/*"
     ]
   }
 }
