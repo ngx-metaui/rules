@@ -66,7 +66,7 @@ export class MetaUIRulesModule {
    * This is a wrapper initializer both for core and components until we separate META and UI
    *
    */
-  static forRoot(config: { [key: string]: any } = {}): ModuleWithProviders {
+  static forRoot(config: { [key: string]: any } = {}): ModuleWithProviders<MetaUIRulesModule> {
     return {
       ngModule: MetaUIRulesModule,
       providers: [

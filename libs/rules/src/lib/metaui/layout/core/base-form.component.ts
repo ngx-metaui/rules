@@ -20,7 +20,7 @@
  */
 import {isBlank, isPresent, noop, uuid} from '../../core/utils/lang';
 import {Environment} from '../../core/config/environment';
-import {forwardRef, Inject, Input, Optional, PipeTransform, SkipSelf} from '@angular/core';
+import { forwardRef, Inject, Input, Optional, PipeTransform, SkipSelf, Directive } from '@angular/core';
 import {ControlValueAccessor, FormControl, FormGroup} from '@angular/forms';
 import {BaseComponent} from '../core/base.component';
 
@@ -47,6 +47,7 @@ export enum WidgetSizeColumns {
  *  BaseFormComponnet extends BaseComponent for add specific form behavior
  * @deprecated this class will be removed in the next major version.
  */
+@Directive()
 export abstract class BaseFormComponent extends BaseComponent implements ControlValueAccessor {
   /*
    *  Supported layout constants. It is expected there will be more options as we currently

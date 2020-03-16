@@ -52,7 +52,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
    * Reference to parent component the MatFormField that we used to get hold of the control so
    * some validation rules can be registered
    */
-  @ViewChild('formField', {static: false})
+  @ViewChild('formField')
   mdFormField: MatFormField;
 
 

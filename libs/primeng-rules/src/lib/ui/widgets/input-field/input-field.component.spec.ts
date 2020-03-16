@@ -276,7 +276,7 @@ describe(' Input field', () => {
   template: '<aw-input-field name="asdf" [value]="inputValue" ></aw-input-field>'
 })
 class TestInputInstantiationComponent {
-  @ViewChild(InputFieldComponent, {static: false})
+  @ViewChild(InputFieldComponent)
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
 }
@@ -287,7 +287,7 @@ class TestInputInstantiationComponent {
   template: '<aw-input-field [value]="inputValue" [type]="inputType"></aw-input-field>'
 })
 class TestInputTypenComponent {
-  @ViewChild(InputFieldComponent, {static: false})
+  @ViewChild(InputFieldComponent)
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
   inputType: string = 'string';
@@ -306,7 +306,7 @@ class TestInputTypenComponent {
   `
 })
 class TestInputSizeComponent {
-  @ViewChild(InputFieldComponent, {static: false})
+  @ViewChild(InputFieldComponent)
   inputComponent: InputFieldComponent;
 
   editing: boolean = true;
@@ -334,7 +334,7 @@ class TestInputSizeComponent {
   `
 })
 class TestInputWithImplicitValuesComponent {
-  @ViewChild(InputFieldComponent, {static: false})
+  @ViewChild(InputFieldComponent)
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
   inputType: string = 'string';
@@ -353,7 +353,7 @@ class TestInputWithImplicitValuesComponent {
   template: '<aw-input-field [formControl]="myControl"></aw-input-field>'
 })
 class TestInputExposeNGModelComponent {
-  @ViewChild(InputFieldComponent, {static: false})
+  @ViewChild(InputFieldComponent)
   inputComponent: InputFieldComponent;
   initialValue: string = 'Some text';
   myValue: string = 'Some text';
@@ -375,7 +375,7 @@ class TestInputExposeNGModelComponent {
   `
 })
 class TestInputInitWithNgModelComponent {
-  @ViewChild(InputFieldComponent, {static: false})
+  @ViewChild(InputFieldComponent)
   inputComponent: InputFieldComponent;
   inputValue: string = 'Some text';
   inputType: string = 'string';

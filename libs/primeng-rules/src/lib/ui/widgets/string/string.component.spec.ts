@@ -73,7 +73,7 @@ describe(
   `
 })
 class TestStringCompComponent {
-  @ViewChild(StringComponent, {static: false})
+  @ViewChild(StringComponent)
   inputComponent: StringComponent;
   inputValue: string = 'Some text';
   inputType: string = 'string';

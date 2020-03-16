@@ -352,7 +352,7 @@ describe('Section component', () => {
   `
 })
 class BasicSectionTestComponent {
-  @ViewChild(SectionComponent, {static: false})
+  @ViewChild(SectionComponent)
   section: SectionComponent;
 
 
@@ -394,7 +394,7 @@ class SectionAttributeClosedTestComponent {
 })
 class SectionAttributeEditableTestComponent {
 
-  @ViewChild(SectionComponent, {static: false})
+  @ViewChild(SectionComponent)
   section: SectionComponent;
 
   title: string = 'section title';
@@ -427,7 +427,7 @@ class SectionAttributeEditableTestComponent {
 })
 class SectionEditableWithButtonsTestComponent {
 
-  @ViewChild(SectionComponent, {static: false})
+  @ViewChild(SectionComponent)
   section: SectionComponent;
 
   title: string = 'section title';
@@ -452,7 +452,7 @@ class SectionEditableWithButtonsTestComponent {
 })
 class SectionEditableWithCustomEditActionTestComponent {
 
-  @ViewChild(SectionComponent, {static: false})
+  @ViewChild(SectionComponent)
   section: SectionComponent;
 
 
@@ -482,7 +482,7 @@ class SectionEditableWithCustomEditActionTestComponent {
 })
 class SectionWithNoHeaderTestComponent {
 
-  @ViewChild(SectionComponent, {static: false})
+  @ViewChild(SectionComponent)
   section: SectionComponent;
 
   clicked = false;

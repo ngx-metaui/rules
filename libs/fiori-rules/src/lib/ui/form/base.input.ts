@@ -16,20 +16,7 @@
  *
  *
  */
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  DoCheck,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Self,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, DoCheck, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Self, SimpleChanges, ViewChild, Directive } from '@angular/core';
 import {FormFieldControl} from './form-control';
 import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
@@ -44,6 +31,7 @@ let randomId = 0;
  * the same behavior given by ControlValueAccessor.
  *
  */
+@Directive()
 export abstract class BaseInput implements FormFieldControl<any>, ControlValueAccessor,
   OnInit, OnChanges, DoCheck, AfterViewInit, OnDestroy {
 

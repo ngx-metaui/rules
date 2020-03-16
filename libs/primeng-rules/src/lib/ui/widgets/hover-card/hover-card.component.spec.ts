@@ -210,7 +210,7 @@ describe('Component: Hover card', () => {
   `
 })
 class TestHCSimpleComponent {
-  @ViewChild(HoverCardComponent, {static: false})
+  @ViewChild(HoverCardComponent)
   hover: HoverCardComponent;
 
   title: string = 'testTitle';

@@ -83,7 +83,7 @@ export class DatePickerComponent extends BaseInput {
   @ViewChild(FdDatePicker, {static: true, read: ElementRef})
   protected _elementRef: ElementRef;
 
-  @ViewChild(FdDatePicker, {static: false})
+  @ViewChild(FdDatePicker)
   protected _calendarRef: FdDatePicker;
 
 

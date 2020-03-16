@@ -33,7 +33,7 @@ import {ModalService} from '../modal.service';
 })
 export class ModalComponent implements OnInit {
 
-  @ViewChild('modal', {read: ViewContainerRef, static: false})
+  @ViewChild('modal', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
 
   constructor(private modalService: ModalService) {

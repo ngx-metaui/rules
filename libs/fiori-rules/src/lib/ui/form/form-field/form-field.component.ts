@@ -168,11 +168,11 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   @ViewChild('renderer', {static: true})
   renderer: TemplateRef<any>;
 
-  @ContentChild(InlineHelpComponent, {static: false})
+  @ContentChild(InlineHelpComponent)
   _hintChild: InlineHelpComponent;
 
 
-  @ContentChild(FormFieldControl, {static: false})
+  @ContentChild(FormFieldControl)
   _control: FormFieldControl<any>;
 
   protected _editable: boolean = true;

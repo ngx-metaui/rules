@@ -268,14 +268,14 @@ export class SectionComponent extends BaseComponent {
   /**
    * internal accordionTab
    */
-  @ViewChild('accordionTab', {static: false})
+  @ViewChild('accordionTab')
   private accordionTab: AccordionTab;
 
 
   /**
    * Save reference to developer's defined actions so if we can hide default ones
    */
-  @ContentChild(SectionActionsComponent, {static: false})
+  @ContentChild(SectionActionsComponent)
   customActions: SectionActionsComponent;
 
   constructor(protected element: ElementRef, public env: Environment) {

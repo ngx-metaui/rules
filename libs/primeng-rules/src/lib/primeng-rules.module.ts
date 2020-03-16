@@ -30,7 +30,7 @@ export class PrimeNgRulesModule {
 
   }
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<PrimeNgRulesModule> {
     return {
       ngModule: PrimeNgRulesModule,
       providers: [

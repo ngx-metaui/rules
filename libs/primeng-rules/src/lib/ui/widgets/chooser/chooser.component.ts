@@ -245,17 +245,17 @@ export class ChooserComponent extends BaseFormComponent implements AfterViewChec
    * Each object can provide its own toString implementation.
    *
    */
-  @ContentChild('menuItem', {static: false})
+  @ContentChild('menuItem')
   menuTemplate: TemplateRef<any>;
 
 
-  @ContentChild('selectionItem', {static: false})
+  @ContentChild('selectionItem')
   selectionTemplate: TemplateRef<any>;
 
-  @ViewChild('autoCompplete', {static: false})
+  @ViewChild('autoCompplete')
   autoCompleteComponent: AutoComplete;
 
-  @ViewChild('selectionView', {static: false})
+  @ViewChild('selectionView')
   selectionViewElem: ElementRef;
 
 
