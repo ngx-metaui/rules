@@ -32,7 +32,8 @@ import {
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {MatFormFieldControl, MatSelect, MatSelectChange} from '@angular/material';
+import {MatFormFieldControl} from '@angular/material/form-field';
+import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {isObservable, Subject} from 'rxjs';
 
 
@@ -95,49 +96,60 @@ import {isObservable, Subject} from 'rxjs';
 export class Select implements ControlValueAccessor, MatFormFieldControl<any>, OnInit,
   OnChanges, AfterViewInit {
 
-  /**
-   * Reference to internal Material select component so communicate with it.
-   */
-  @ViewChild('matSelect', {static: true})
-  protected selectComponent: MatSelect;
-
   @Input()
   list: any;
-
   /**
    * In case class as model item this specifies the key for the display value.
    * Otherwise toString is used
    */
   @Input()
   displayKey: string;
-
   /**
    * Should we show no selection option?
    */
   @Input()
   hasNoSelection: boolean = true;
-
-
   /**
    * You can pass no selection value that is shown. Ideally this will be pulled from i18n
    * resource files
    */
   @Input()
   noSelectionString: string = '---';
-
   /**
    * These bellow are MatFormFieldControl implementation that delegates the
    * call into actual component. This component should not have any extra logic
    */
 
   @Input()
-  disabled: boolean  = false;
-
+  disabled: boolean = false;
   @Input()
   id: string;
-
   @Input()
   multiple: boolean = false;
+  @Input()
+  placeholder: string;
+  @Input()
+  required: boolean = false;
+  /**
+   * Just broadcast MatSelect item selection event outside of this component as this could be
+   * useful
+   */
+  @Output()
+  readonly selectionChange: EventEmitter<MatSelectChange> = new EventEmitter<MatSelectChange>();
+  isAsync: boolean;
+  /**
+   * Reference to internal Material select component so communicate with it.
+   */
+  @ViewChild('matSelect', {static: true})
+  protected selectComponent: MatSelect;
+
+  constructor(@Optional() @Self() public ngControl: NgControl) {
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
+
+  private _value: any;
 
   /**
    * Directly sets value to the component that at the ends up at writeValue as well fires
@@ -158,48 +170,48 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
     }
   }
 
-  private _value: any;
-
-  @Input()
-  placeholder: string;
-
-  @Input()
-  required: boolean = false;
-
-
-  /**
-   * Just broadcast MatSelect item selection event outside of this component as this could be
-   * useful
-   */
-  @Output()
-  readonly selectionChange: EventEmitter<MatSelectChange> = new EventEmitter<MatSelectChange>();
-
   /**
    * Required by MatFormFieldControl but not really used
    */
   _stateChanges = new Subject<void>();
 
+  get stateChanges(): Subject<void> {
+    return this.selectComponent ? this.selectComponent.stateChanges : this._stateChanges;
+  }
 
-  isAsync: boolean;
+  get shouldLabelFloat(): boolean {
+    return this.selectComponent && this.selectComponent.shouldLabelFloat;
+  }
+
+  get controlType(): string {
+    return this.selectComponent && this.selectComponent.controlType;
+  }
+
+  get empty(): boolean {
+    return this.selectComponent && this.selectComponent.empty;
+  }
+
+  get errorState(): boolean {
+    return this.selectComponent && this.selectComponent.errorState;
+  }
+
+  get focused(): boolean {
+    return this.selectComponent && this.selectComponent.focused;
+  }
 
   /**
    *
    * Methods used by ControlValueAccessor
    */
-  onChange = (_: any) => {};
-  onTouched = () => {};
+  onChange = (_: any) => {
+  };
 
-
-  constructor(@Optional() @Self() public ngControl: NgControl) {
-    if (this.ngControl != null) {
-      this.ngControl.valueAccessor = this;
-    }
-  }
+  onTouched = () => {
+  };
 
   ngOnInit(): void {
     this.isAsync = isObservable(this.list);
   }
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['list'] && changes['list'].currentValue) {
@@ -212,7 +224,6 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
       this.selectComponent['displayKey'] = this.displayKey;
     }
   }
-
 
   /**
    * Not sure if this this is the best solution that MatSelect is firing this as crazy on
@@ -243,32 +254,6 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
     this.value = value;
     this.onChange(value);
   }
-
-
-  get shouldLabelFloat(): boolean {
-    return this.selectComponent && this.selectComponent.shouldLabelFloat;
-  }
-
-  get controlType(): string {
-    return this.selectComponent && this.selectComponent.controlType;
-  }
-
-  get empty(): boolean {
-    return this.selectComponent && this.selectComponent.empty;
-  }
-
-  get errorState(): boolean {
-    return this.selectComponent && this.selectComponent.errorState;
-  }
-
-  get focused(): boolean {
-    return this.selectComponent && this.selectComponent.focused;
-  }
-
-  get stateChanges(): Subject<void> {
-    return this.selectComponent ? this.selectComponent.stateChanges : this._stateChanges;
-  }
-
 
   onContainerClick(event: MouseEvent): void {
     if (this.selectComponent) {

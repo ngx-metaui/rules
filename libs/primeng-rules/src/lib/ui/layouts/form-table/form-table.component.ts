@@ -40,7 +40,6 @@ import {
   TopZoneComponent
 } from '../five-zone-layout.component';
 import {BaseFormComponent, Environment} from '@ngx-metaui/rules';
-import {MatInput} from '@angular/material';
 
 
 /**
@@ -323,12 +322,6 @@ export class FormTableComponent extends BaseFormComponent implements AfterConten
     }
   }
 
-
-  private hasAnyZones() {
-    return isPresent(this.leftZone) || isPresent(this.rightZone) || isPresent(this.middleZone)
-      || isPresent(this.topZone) || isPresent(this.bottomZone);
-  }
-
   /**
    * Helper method to check if we already initialized the classList.
    * the
@@ -339,7 +332,6 @@ export class FormTableComponent extends BaseFormComponent implements AfterConten
     return this.leftZone.classList.indexOf('ui-lg-6') > 0 &&
       this.leftZone.classList.indexOf('ui-lg-6') > 0;
   }
-
 
   /**
    * Helper method to check if we already initialized the classList.
@@ -363,6 +355,10 @@ export class FormTableComponent extends BaseFormComponent implements AfterConten
     });
   }
 
+  private hasAnyZones() {
+    return isPresent(this.leftZone) || isPresent(this.rightZone) || isPresent(this.middleZone)
+      || isPresent(this.topZone) || isPresent(this.bottomZone);
+  }
 
   private updateFormFields(): void {
     if (this.editabilityCheck && isPresent(this.formFields) && this.formFields.length > 0) {

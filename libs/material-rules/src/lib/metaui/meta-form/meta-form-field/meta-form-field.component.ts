@@ -20,7 +20,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Host, Input, ViewChild} from '@angular/core';
 import {AbstractControl, FormControl, ValidatorFn, Validators} from '@angular/forms';
 import {Environment, KeyBindings, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
-import {MatFormField, MatInput} from '@angular/material';
+import {MatFormField} from '@angular/material/form-field';
 
 
 /**
@@ -70,13 +70,18 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     super(env, _metaContext);
   }
 
+  get control(): FormControl {
+    if (this.mdFormField && this.mdFormField._control.ngControl) {
+      return <FormControl>this.mdFormField._control.ngControl.control;
+    }
+    return null;
+  }
 
   ngOnInit(): void {
     super.ngOnInit();
     this.validators = this.createValidators();
 
   }
-
 
   ngDoCheck(): void {
     super.ngDoCheck();
@@ -92,7 +97,6 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     }
   }
 
-
   bindingBoolProperty(key: string): boolean {
     const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
 
@@ -102,7 +106,6 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     }
     return false;
   }
-
 
   bindingStringProperty(key: string): string {
     const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
@@ -114,6 +117,18 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     return null;
   }
 
+  isRequired(): boolean {
+    return this.editing && this.context.booleanPropertyForKey('required', false);
+  }
+
+  hasErrors(): boolean {
+    if (this.editing && this.control && this.mdFormField._control.ngControl.control.invalid) {
+      this.errorMessage = this.control.errors['metavalid'] ? this.control.errors['metavalid'].msg
+        : '';
+      return true;
+    }
+    return false;
+  }
 
   /**
    * Creates angular based Validator which for a current field executes validation rules real
@@ -134,10 +149,6 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     return [metaValidator];
   }
 
-  isRequired(): boolean {
-    return this.editing && this.context.booleanPropertyForKey('required', false);
-  }
-
   private registerValidators(control: FormControl) {
     let validators: ValidatorFn[] = [];
 
@@ -150,21 +161,5 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     } else if (validators.length > 1) {
       control.setValidators(Validators.compose(validators));
     }
-  }
-
-  hasErrors(): boolean {
-    if (this.editing && this.control && this.mdFormField._control.ngControl.control.invalid) {
-      this.errorMessage = this.control.errors['metavalid'] ? this.control.errors['metavalid'].msg
-        : '';
-      return true;
-    }
-    return false;
-  }
-
-  get control(): FormControl {
-    if (this.mdFormField && this.mdFormField._control.ngControl) {
-      return <FormControl>this.mdFormField._control.ngControl.control;
-    }
-    return null;
   }
 }

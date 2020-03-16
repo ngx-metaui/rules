@@ -3,7 +3,8 @@ import {PlayComponent} from './play.component';
 import {CommonModule} from '@angular/common';
 import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule, MatInputModule} from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DatePickerModule, FormModule} from '@fundamental-ngx/core';
 

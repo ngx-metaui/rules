@@ -25,7 +25,8 @@ import {
   MetaBaseComponent,
   MetaContextComponent,
   PropFieldsByZone,
-  PropIsFieldsByZone, UIContext,
+  PropIsFieldsByZone,
+  UIContext,
   ZoneBottom,
   ZoneLeft,
   ZoneMiddle,
@@ -34,7 +35,6 @@ import {
 } from '@ngx-metaui/rules';
 import {FormTableComponent} from '../../../ui/layouts/form-table/form-table.component';
 import {isBlank, isPresent} from '../../../ui/core/utils/lang';
-import {MatInput} from '@angular/material';
 
 /**
  * This is a wrapper around FormtTable to render data based on current MetaContext.
@@ -46,22 +46,18 @@ import {MatInput} from '@angular/material';
 })
 export class MetaFormTableComponent extends MetaBaseComponent {
   /**
-   * For multizone layout this contains fields broken by its assigned zones
-   */
-  private fieldsByZone: Map<string, any>;
-
-  /**
    * Is five zone layout? ForMetaUi we probalby have always fiveZone, unless in MetaRules we say
    * otherwise
    */
   isFiveZoneLayout: boolean;
-
-
   /**
    * Do we have labels on top layout?
    */
   showLabelsAboveControls: boolean;
-
+  /**
+   * For multizone layout this contains fields broken by its assigned zones
+   */
+  private fieldsByZone: Map<string, any>;
   /**
    * Reference to current rendered FormTable
    */
@@ -102,27 +98,6 @@ export class MetaFormTableComponent extends MetaBaseComponent {
     return isPresent(this.fieldsByZone) && this.fieldsByZone.has(zone);
   }
 
-
-  protected doUpdate(): void {
-    super.doUpdate();
-
-    this.fieldsByZone = this.context.propertyForKey(PropFieldsByZone);
-    this.isFiveZoneLayout = this.context.propertyForKey(PropIsFieldsByZone);
-
-
-    const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
-    if (isPresent(bindings)) {
-      this.showLabelsAboveControls = bindings.get('showLabelsAboveControls');
-
-      if (isBlank(this.showLabelsAboveControls)) {
-        this.showLabelsAboveControls = false;
-      }
-    }
-
-    this.initForm();
-  }
-
-
   zLeft(): string[] {
     return this.fieldsByZone.get(ZoneLeft);
   }
@@ -143,6 +118,24 @@ export class MetaFormTableComponent extends MetaBaseComponent {
     return this.fieldsByZone.get(ZoneBottom);
   }
 
+  protected doUpdate(): void {
+    super.doUpdate();
+
+    this.fieldsByZone = this.context.propertyForKey(PropFieldsByZone);
+    this.isFiveZoneLayout = this.context.propertyForKey(PropIsFieldsByZone);
+
+
+    const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
+    if (isPresent(bindings)) {
+      this.showLabelsAboveControls = bindings.get('showLabelsAboveControls');
+
+      if (isBlank(this.showLabelsAboveControls)) {
+        this.showLabelsAboveControls = false;
+      }
+    }
+
+    this.initForm();
+  }
 
   /**
    * Need to initialize FormGroup with all the available fields based on the given object. Its

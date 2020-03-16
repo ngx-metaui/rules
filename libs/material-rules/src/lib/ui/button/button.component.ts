@@ -23,10 +23,13 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Input, OnDestroy, Output,
+  Input,
+  OnDestroy,
+  Output,
   ViewEncapsulation
 } from '@angular/core';
-import {MatFormFieldControl, ThemePalette} from '@angular/material';
+import {ThemePalette} from '@angular/material/core';
+import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
 import {NgControl} from '@angular/forms';
 import {DomUtilsService} from '@ngx-metaui/rules';
@@ -70,7 +73,7 @@ export type ButtonType = 'basic' | 'raised' | 'flat' | 'stroked';
         text-align: left;
         font-weight: 400;
         font-size: 14px;
-        color: rgba(0,0,0,.68);
+        color: rgba(0, 0, 0, .68);
       }
 
       .button-with-ff .mat-form-field-infix {
@@ -113,49 +116,17 @@ export class Button implements MatFormFieldControl<any>, AfterViewInit, OnDestro
   @Output()
   click: EventEmitter<any> = new EventEmitter();
 
+  constructor(private elementRef: ElementRef, private domUtils: DomUtilsService) {
+  }
+
   /**
    * Required by MatFormFieldControl but not really used
    */
   _stateChanges = new Subject<void>();
 
-
-  constructor(private elementRef: ElementRef, private domUtils: DomUtilsService) {
+  get stateChanges(): Subject<void> {
+    return this._stateChanges;
   }
-
-  ngOnInit(): void {
-
-  }
-
-  ngAfterViewInit(): void {
-    const ff = this.domUtils.closest(this.elementRef.nativeElement,
-      '.mat-form-field-wrapper');
-
-    if (ff) {
-      ff.classList.add('no-underline', 'button-with-ff');
-    }
-  }
-
-  ngOnDestroy(): void {
-    const ff = this.domUtils.closest(this.elementRef.nativeElement,
-      '.no-underline');
-
-    if (ff) {
-      ff.classList.remove('no-underline', 'button-with-ff');
-    }
-  }
-
-
-
-
-  onClick(event: any): void {
-    if (this.disabled) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    } else {
-      this.click.emit(event);
-    }
-  }
-
 
   get shouldLabelFloat(): boolean {
     return true;
@@ -181,10 +152,6 @@ export class Button implements MatFormFieldControl<any>, AfterViewInit, OnDestro
     return false;
   }
 
-  get stateChanges(): Subject<void> {
-    return this._stateChanges;
-  }
-
   get autofilled(): boolean {
     return false;
   }
@@ -193,6 +160,36 @@ export class Button implements MatFormFieldControl<any>, AfterViewInit, OnDestro
     return null;
   }
 
+  ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit(): void {
+    const ff = this.domUtils.closest(this.elementRef.nativeElement,
+      '.mat-form-field-wrapper');
+
+    if (ff) {
+      ff.classList.add('no-underline', 'button-with-ff');
+    }
+  }
+
+  ngOnDestroy(): void {
+    const ff = this.domUtils.closest(this.elementRef.nativeElement,
+      '.no-underline');
+
+    if (ff) {
+      ff.classList.remove('no-underline', 'button-with-ff');
+    }
+  }
+
+  onClick(event: any): void {
+    if (this.disabled) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    } else {
+      this.click.emit(event);
+    }
+  }
 
   onContainerClick(event: MouseEvent): void {
   }

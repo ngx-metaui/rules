@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
-import { MatIconModule, MatToolbar } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbar } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('HeaderComponent', () => {

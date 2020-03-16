@@ -5,7 +5,10 @@ import {HeaderComponent} from './layout/header/header.component';
 import {SidebarComponent} from './layout/sidebar/sidebar.component';
 import {AsideNavComponent} from './layout/aside-nav/aside-nav.component';
 import {FooterComponent} from './layout/footer/footer.component';
-import {MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {

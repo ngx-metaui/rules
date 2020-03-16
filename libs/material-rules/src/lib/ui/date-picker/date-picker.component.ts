@@ -34,13 +34,9 @@ import {
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {
-  MatDatepicker,
-  MatDatepickerInputEvent,
-  MatFormField,
-  MatFormFieldControl,
-  MatInput
-} from '@angular/material';
+import {MatDatepicker, MatDatepickerInputEvent} from '@angular/material/datepicker';
+import {MatFormField, MatFormFieldControl} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
 import {Subject} from 'rxjs';
 import {DomUtilsService} from '@ngx-metaui/rules';
 
@@ -69,81 +65,50 @@ import {DomUtilsService} from '@ngx-metaui/rules';
 export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any>, AfterViewInit,
   DoCheck {
 
-  /**
-   * Reference to internal Material Inputfield
-   */
-  @ViewChild(MatInput, {static: true})
-  protected input: MatInput;
-
-
-  /**
-   * Reference to internal Material Inputfield
-   */
-  @ViewChild(MatDatepicker, {static: true})
-  protected datePicker: MatDatepicker<Date>;
-
-
   @Input()
   disabled: boolean = false;
-
   @Input()
   inputDisabled: boolean = false;
-
   @Input()
   id: string;
-
   @Input()
   readonly: boolean = false;
-
   /**
    * We need to use this component for both to display readonly value as well as
    * editable value. For readonly we need to hide date picker toggle
    */
   @Input()
   editable: boolean = true;
-
-
   /**
    * Please see MatCheckbox
    */
   @Input()
   value: Date;
-
-
   @Input()
   required: boolean = false;
-
   @Input()
   placeholder: string;
-
-  /**
-   * Required by MatFormFieldControl but not really used
-   */
-  _stateChanges = new Subject<void>();
-
   /** Emits when a `change` event is fired on this `<input>`. */
   @Output()
   readonly dateChange: EventEmitter<MatDatepickerInputEvent<Date>> =
     new EventEmitter<MatDatepickerInputEvent<Date>>();
-
   /** Emits when an `input` event is fired on this `<input>`. */
   @Output()
   readonly dateInput: EventEmitter<MatDatepickerInputEvent<Date>> =
     new EventEmitter<MatDatepickerInputEvent<Date>>();
-
-
+  /**
+   * Reference to internal Material Inputfield
+   */
+  @ViewChild(MatInput, {static: true})
+  protected input: MatInput;
+  /**
+   * Reference to internal Material Inputfield
+   */
+  @ViewChild(MatDatepicker, {static: true})
+  protected datePicker: MatDatepicker<Date>;
   private suffixElem: any;
   private flexFieldElem: any;
-
   private viewInit = false;
-
-  /**
-   *
-   * Methods used by ControlValueAccessor
-   */
-  onChange = (_: any) => {};
-  onTouched = () => {};
-
 
   constructor(@Optional() @Self() public ngControl: NgControl,
               private elementRef: ElementRef,
@@ -157,66 +122,17 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
     }
   }
 
-
-  ngDoCheck(): void {
-    const isFirstTime = !this.suffixElem && this.viewInit && this.editable;
-
-    if (isFirstTime || !this.hasToggleInSuffix()) {
-      this.flexFieldElem = this.domUtils.closest(this.elementRef.nativeElement,
-        '.mat-form-field-flex');
-      const toggleElem = this.flexFieldElem.querySelector('mat-datepicker-toggle');
-      if (!toggleElem) {
-        return;
-      }
-      this.suffixElem = this.flexFieldElem.querySelector('.mat-form-field-suffix');
-      const infixDiv = this.renderer.createElement('div');
-      this.renderer.addClass(infixDiv, 'mat-form-field-suffix');
-      this.renderer.appendChild(this.flexFieldElem, infixDiv);
-
-      const suffix = this.flexFieldElem.querySelector('.mat-form-field-suffix');
-      suffix.appendChild(toggleElem);
-    }
-  }
-
-
   /**
-   * This is such hack as due to the FormField restriction where I cannot have really any MatSuffix
-   * the way I need it to have it. It requires that MatSuffix is direct child of FormField and it
-   * cannot be really part of any other component. User is required to assemble DatePicker from 3
-   * different parts every time.
+   * Required by MatFormFieldControl but not really used
    */
-  ngAfterViewInit(): void {
-    if (this.formField) {
-      this.viewInit = true;
-    }
+  _stateChanges = new Subject<void>();
 
-  }
-
-
-  registerOnChange(fn: (_: any) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  get stateChanges(): Subject<void> {
     if (this.input) {
-      this.input.disabled = isDisabled;
-
-      this.cd.markForCheck();
+      return this.input.stateChanges;
     }
+    return this._stateChanges;
   }
-
-  writeValue(value: any): void {
-    this.value = value;
-    this.onChange(value);
-
-    this.cd.markForCheck();
-  }
-
 
   get shouldLabelFloat(): boolean {
     if (this.input) {
@@ -254,18 +170,78 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
     return false;
   }
 
-  get stateChanges(): Subject<void> {
-    if (this.input) {
-      return this.input.stateChanges;
-    }
-    return this._stateChanges;
-  }
-
   get autofilled(): boolean {
     if (this.input) {
       return this.input.autofilled;
     }
     return false;
+  }
+
+  /**
+   *
+   * Methods used by ControlValueAccessor
+   */
+  onChange = (_: any) => {
+  };
+
+  onTouched = () => {
+  };
+
+  ngDoCheck(): void {
+    const isFirstTime = !this.suffixElem && this.viewInit && this.editable;
+
+    if (isFirstTime || !this.hasToggleInSuffix()) {
+      this.flexFieldElem = this.domUtils.closest(this.elementRef.nativeElement,
+        '.mat-form-field-flex');
+      const toggleElem = this.flexFieldElem.querySelector('mat-datepicker-toggle');
+      if (!toggleElem) {
+        return;
+      }
+      this.suffixElem = this.flexFieldElem.querySelector('.mat-form-field-suffix');
+      const infixDiv = this.renderer.createElement('div');
+      this.renderer.addClass(infixDiv, 'mat-form-field-suffix');
+      this.renderer.appendChild(this.flexFieldElem, infixDiv);
+
+      const suffix = this.flexFieldElem.querySelector('.mat-form-field-suffix');
+      suffix.appendChild(toggleElem);
+    }
+  }
+
+  /**
+   * This is such hack as due to the FormField restriction where I cannot have really any MatSuffix
+   * the way I need it to have it. It requires that MatSuffix is direct child of FormField and it
+   * cannot be really part of any other component. User is required to assemble DatePicker from 3
+   * different parts every time.
+   */
+  ngAfterViewInit(): void {
+    if (this.formField) {
+      this.viewInit = true;
+    }
+
+  }
+
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    if (this.input) {
+      this.input.disabled = isDisabled;
+
+      this.cd.markForCheck();
+    }
+  }
+
+  writeValue(value: any): void {
+    this.value = value;
+    this.onChange(value);
+
+    this.cd.markForCheck();
   }
 
   onContainerClick(event: MouseEvent): void {

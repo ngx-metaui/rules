@@ -17,7 +17,8 @@
  *
  */
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
@@ -30,12 +31,9 @@ import {
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
-import {
-  ErrorStateMatcher,
-  MAT_INPUT_VALUE_ACCESSOR,
-  MatFormFieldControl,
-  MatInput
-} from '@angular/material';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {MatFormFieldControl} from '@angular/material/form-field';
+import {MAT_INPUT_VALUE_ACCESSOR, MatInput} from '@angular/material/input';
 import {Platform} from '@angular/cdk/platform';
 import {AutofillMonitor} from '@angular/cdk/text-field';
 
@@ -75,56 +73,18 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
 })
 export class InputField extends MatInput implements ControlValueAccessor {
 
-  private _xType = 'text';
-
-  @Input()
-  set type(value: string) {
-    this._xType = value;
-  }
-
-
-  get type(): string {
-    return this._xType ? this._xType.toLowerCase() : 'text';
-  }
-
-  private _readonlyx = false;
-  private _disabledx = false;
-  @Input()
-  get readonly(): boolean {
-    return this._readonlyx;
-  }
-
-  set readonly(value: boolean) {
-    this._readonlyx = value;
-
-    this._cd.markForCheck();
-  }
-
-  @Input()
-  get disabled(): boolean {
-    return this._disabledx;
-  }
-
-  set disabled(value: boolean) {
-    this._disabledx = value;
-
-    this._cd.markForCheck();
-  }
-
-
   /**
    * Reference to internal INPUT element having MatInput directive so we can set this reference
    * back to the MatInput
    */
   @ViewChild('inputField', {static: true})
   protected inputControl: ElementRef;
-
+  private _xType = 'text';
+  private _readonlyx = false;
+  private _disabledx = false;
   /** @internal */
   private _composing = false;
   private _compositionMode = false;
-
-  onChange = (_: any) => {};
-  onTouched = () => {};
 
   /** Whether the user is creating a composition string (IME events). */
 
@@ -149,6 +109,47 @@ export class InputField extends MatInput implements ControlValueAccessor {
     }
   }
 
+  get type(): string {
+    return this._xType ? this._xType.toLowerCase() : 'text';
+  }
+
+  @Input()
+  set type(value: string) {
+    this._xType = value;
+  }
+
+  @Input()
+  get readonly(): boolean {
+    return this._readonlyx;
+  }
+
+  set readonly(value: boolean) {
+    this._readonlyx = value;
+
+    this._cd.markForCheck();
+  }
+
+  @Input()
+  get disabled(): boolean {
+    return this._disabledx;
+  }
+
+  set disabled(value: boolean) {
+    this._disabledx = value;
+
+    this._cd.markForCheck();
+  }
+
+  /** @internal */
+  get nativeElement(): any {
+    return this.inputControl.nativeElement;
+  }
+
+  onChange = (_: any) => {
+  };
+
+  onTouched = () => {
+  };
 
   ngOnInit(): void {
     this.reInit();
@@ -178,24 +179,11 @@ export class InputField extends MatInput implements ControlValueAccessor {
     this.onChange(value);
   }
 
-
   onInput(value: any): void {
     if (!this._compositionMode || (this._compositionMode && !this._composing)) {
       this.onChange(value);
     }
   }
-
-  private reInit(): void {
-    this._elementRef = this.inputControl;
-    this._isNativeSelect = this.nativeElement.nodeName.toLowerCase() === 'select';
-
-    if (this._isNativeSelect) {
-      this.controlType = (this.nativeElement as HTMLSelectElement).multiple
-        ? 'mat-native-select-multiple' : 'mat-native-select';
-    }
-    this._compositionMode = !this._platform.ANDROID;
-  }
-
 
   _focusChanged(isFocused: boolean): void {
     super._focusChanged(isFocused);
@@ -216,9 +204,15 @@ export class InputField extends MatInput implements ControlValueAccessor {
     this.onChange(value);
   }
 
-  /** @internal */
-  get nativeElement(): any {
-    return this.inputControl.nativeElement;
+  private reInit(): void {
+    this._elementRef = this.inputControl;
+    this._isNativeSelect = this.nativeElement.nodeName.toLowerCase() === 'select';
+
+    if (this._isNativeSelect) {
+      this.controlType = (this.nativeElement as HTMLSelectElement).multiple
+        ? 'mat-native-select-multiple' : 'mat-native-select';
+    }
+    this._compositionMode = !this._platform.ANDROID;
   }
 
 }

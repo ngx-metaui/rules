@@ -18,7 +18,7 @@
  */
 import {ChangeDetectorRef, Directive} from '@angular/core';
 import {MetaIncludeDirective} from '@ngx-metaui/rules';
-import {MatFormFieldControl} from '@angular/material';
+import {MatFormFieldControl} from '@angular/material/form-field';
 import {Observable, Subject} from 'rxjs';
 import {NgControl} from '@angular/forms';
 
@@ -46,30 +46,6 @@ export class MetaFormFieldAdapter implements MatFormFieldControl<any> {
   constructor(public metaInclude: MetaIncludeDirective, private cd: ChangeDetectorRef) {
   }
 
-
-  ngOnInit(): void {
-
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      this.registerType();
-      (<Subject<any>>this.stateChanges).next();
-      this.cd.detectChanges();
-    }
-  }
-
-
-  onContainerClick(event: MouseEvent): void {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      (<MatFormFieldControl<any>>this.metaInclude.component).onContainerClick(event);
-    }
-  }
-
-  setDescribedByIds(ids: string[]): void {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      (<MatFormFieldControl<any>>this.metaInclude.component).setDescribedByIds(ids);
-    }
-  }
-
-
   get autofilled(): boolean {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<MatFormFieldControl<any>>this.metaInclude.component).autofilled;
@@ -83,7 +59,6 @@ export class MetaFormFieldAdapter implements MatFormFieldControl<any> {
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
-
 
   get disabled(): boolean {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
@@ -169,6 +144,26 @@ export class MetaFormFieldAdapter implements MatFormFieldControl<any> {
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
+  ngOnInit(): void {
+
+    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
+      this.registerType();
+      (<Subject<any>>this.stateChanges).next();
+      this.cd.detectChanges();
+    }
+  }
+
+  onContainerClick(event: MouseEvent): void {
+    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
+      (<MatFormFieldControl<any>>this.metaInclude.component).onContainerClick(event);
+    }
+  }
+
+  setDescribedByIds(ids: string[]): void {
+    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
+      (<MatFormFieldControl<any>>this.metaInclude.component).setDescribedByIds(ids);
+    }
+  }
 
   hasComponent(): boolean {
     return this.isFormControl(this.metaInclude.component);

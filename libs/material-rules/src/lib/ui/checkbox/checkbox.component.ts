@@ -32,7 +32,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NgControl} from '@angular/forms';
-import {MatCheckbox, MatCheckboxChange, MatFormFieldControl, MatInput} from '@angular/material';
+import {MatCheckbox, MatCheckboxChange} from '@angular/material/checkbox';
+import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
 import {DomUtilsService} from '@ngx-metaui/rules';
 
@@ -75,67 +76,41 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
   OnInit {
 
   /**
-   * Reference to internal Material select component so comunicate with it.
-   */
-  @ViewChild('matCheck', {static: true})
-  protected checkbox: MatCheckbox;
-
-  /**
    * Please see MatCheckbox
    */
   @Input()
   labelPosition: 'before' | 'after' = 'after';
-
-
   @Input()
   disabled: boolean = false;
-
   @Input()
   id: string;
-
   /**
    * Please see MatCheckbox
    */
   @Input()
   value: string;
-
-
   @Input()
   required: boolean;
-
   /**
    * Please see MatCheckbox
    */
   @Input()
   checked: boolean = false;
-
   @Input()
   label: string;
-
   @Input()
   valueLabel: string;
-
-
   /**
    * Just broadcast MatSelect item selection event outside of this component as this could be
    * useful
    */
   @Output()
   readonly change: EventEmitter<MatCheckboxChange> = new EventEmitter<MatCheckboxChange>();
-
   /**
-   * Required by MatFormFieldControl but not really used
+   * Reference to internal Material select component so comunicate with it.
    */
-  _stateChanges = new Subject<void>();
-
-
-  /**
-   *
-   * Methods used by ControlValueAccessor
-   */
-  onChange = (_: any) => {};
-  onTouched = () => {};
-
+  @ViewChild('matCheck', {static: true})
+  protected checkbox: MatCheckbox;
 
   constructor(@Optional() @Self() public ngControl: NgControl,
               private elementRef: ElementRef,
@@ -145,41 +120,14 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
     }
   }
 
-  ngOnInit(): void {
+  /**
+   * Required by MatFormFieldControl but not really used
+   */
+  _stateChanges = new Subject<void>();
+
+  get stateChanges(): Subject<void> {
+    return this._stateChanges;
   }
-
-
-  ngAfterViewInit(): void {
-    if (this.checkbox) {
-      const ff = this.domUtils.closest(this.elementRef.nativeElement,
-        '.mat-form-field-wrapper');
-      if (ff) {
-        ff.classList.add('no-underline');
-      }
-    }
-  }
-
-
-  registerOnChange(fn: (_: any) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-    if (this.checkbox) {
-      this.checkbox.setDisabledState(isDisabled);
-    }
-  }
-
-  writeValue(value: any): void {
-    this.checked = !!value;
-    this.onChange(value);
-  }
-
 
   get shouldLabelFloat(): boolean {
     return true;
@@ -201,16 +149,55 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
     return false;
   }
 
-  get stateChanges(): Subject<void> {
-    return this._stateChanges;
-  }
-
   get autofilled(): boolean {
     return false;
   }
 
   get placeholder(): string {
     return this.label;
+  }
+
+  /**
+   *
+   * Methods used by ControlValueAccessor
+   */
+  onChange = (_: any) => {
+  };
+
+  onTouched = () => {
+  };
+
+  ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    if (this.checkbox) {
+      const ff = this.domUtils.closest(this.elementRef.nativeElement,
+        '.mat-form-field-wrapper');
+      if (ff) {
+        ff.classList.add('no-underline');
+      }
+    }
+  }
+
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    if (this.checkbox) {
+      this.checkbox.setDisabledState(isDisabled);
+    }
+  }
+
+  writeValue(value: any): void {
+    this.checked = !!value;
+    this.onChange(value);
   }
 
   onContainerClick(event: MouseEvent): void {
