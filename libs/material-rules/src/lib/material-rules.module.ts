@@ -43,7 +43,7 @@ export class MaterialRulesModule {
   constructor() {
   }
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<MaterialRulesModule> {
     return {
       ngModule: MaterialRulesModule,
       providers: [

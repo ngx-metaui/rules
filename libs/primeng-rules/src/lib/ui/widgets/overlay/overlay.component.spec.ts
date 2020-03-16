@@ -118,7 +118,7 @@ describe('Component: overlay', () => {
    * Class that will only draw a overlay.
    */
 class TestOverlayDefaultComponent {
-  @ViewChild(OverlayComponent, {static: false})
+  @ViewChild(OverlayComponent)
   overlay: OverlayComponent;
 
   constructor() {

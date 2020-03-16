@@ -117,7 +117,7 @@ describe('Checkbox List ', () => {
 
 })
 class TestCBListBasicBehaviorComponent {
-  @ViewChild(CheckBoxListComponent, {static: false})
+  @ViewChild(CheckBoxListComponent)
   checkboxList: CheckBoxListComponent;
 
 
@@ -158,7 +158,7 @@ class TestCBListBasicBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestCBBListContainerBehaviorComponent {
-  @ViewChild(CheckBoxListComponent, {static: false})
+  @ViewChild(CheckBoxListComponent)
   checkboxList: CheckBoxListComponent;
 
   checkBoxListValues: string[] = [

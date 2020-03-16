@@ -142,7 +142,7 @@ describe('Describe dropdown menu behavior', () => {
     ' (onSelection)="onSelection($event)"></aw-dropdown>'
 })
 class TestDDInstantiationComponent {
-  @ViewChild(DropdownComponent, {static: false})
+  @ViewChild(DropdownComponent)
 
   dropDown: DropdownComponent;
 
@@ -174,7 +174,7 @@ class TestDDInstantiationComponent {
     '</aw-dropdown>'
 })
 class TestDDInstantiationWithSelItemComponent {
-  @ViewChild(DropdownComponent, {static: false})
+  @ViewChild(DropdownComponent)
 
   dropDown: DropdownComponent;
 
@@ -195,7 +195,7 @@ class TestDDInstantiationWithSelItemComponent {
     ' [(ngModel)]="itemSelected"></aw-dropdown>'
 })
 class TestDDWithNgModelComponent {
-  @ViewChild(DropdownComponent, {static: false})
+  @ViewChild(DropdownComponent)
   dropDown: DropdownComponent;
 
   testItemSmall: string[] = ['view', 'edit'];

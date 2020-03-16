@@ -53,7 +53,7 @@ export class MetaContentPageComponent implements OnInit, OnDestroy, AfterViewIni
   label: string;
 
 
-  @ViewChild(MetaIncludeDirective, {static: false})
+  @ViewChild(MetaIncludeDirective)
   metaInclude: MetaIncludeDirective;
 
   constructor(private route: ActivatedRoute, private _cd: ChangeDetectorRef) {

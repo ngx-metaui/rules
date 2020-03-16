@@ -334,7 +334,7 @@ function flushPendingTimers() {
   `
 })
 class TestChooserErrorComponent implements OnInit {
-  @ViewChild(ChooserComponent, {static: false})
+  @ViewChild(ChooserComponent)
   chooser: ChooserComponent;
 
   formGroup: FormGroup = new FormGroup({});
@@ -359,7 +359,7 @@ class TestChooserErrorComponent implements OnInit {
   `
 })
 class TestChooserBasicComponent implements OnInit {
-  @ViewChild(ChooserComponent, {static: false})
+  @ViewChild(ChooserComponent)
   chooser: ChooserComponent;
 
   initValue: any[] = [];
@@ -409,7 +409,7 @@ class TestChooserBasicComponent implements OnInit {
   `
 })
 class TestChooserBasicSingleComponent implements OnInit {
-  @ViewChild(ChooserComponent, {static: false})
+  @ViewChild(ChooserComponent)
   chooser: ChooserComponent;
 
   list = [
@@ -454,7 +454,7 @@ class TestChooserBasicSingleComponent implements OnInit {
   `
 })
 class TestChooserRenderComponent implements OnInit {
-  @ViewChild(ChooserComponent, {static: false})
+  @ViewChild(ChooserComponent)
   chooser: ChooserComponent;
 
 
@@ -516,7 +516,7 @@ class TestChooserRenderComponent implements OnInit {
   `
 })
 class TestChooserWCustomTemplComponent implements OnInit {
-  @ViewChild(ChooserComponent, {static: false})
+  @ViewChild(ChooserComponent)
   chooser: ChooserComponent;
 
   list = [
@@ -567,7 +567,7 @@ class TestChooserWCustomTemplComponent implements OnInit {
   `
 })
 class TestChooserWithDestinationClassComponent implements OnInit {
-  @ViewChild(ChooserComponent, {static: false})
+  @ViewChild(ChooserComponent)
   chooser: ChooserComponent;
 
   list = [
@@ -615,7 +615,7 @@ class TestChooserWithDestinationClassComponent implements OnInit {
   `
 })
 class TestChooserWithDetachedSelectionComponent implements OnInit {
-  @ViewChild(ChooserComponent, {static: false})
+  @ViewChild(ChooserComponent)
   chooser: ChooserComponent;
 
   list = [

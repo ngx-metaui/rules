@@ -18,7 +18,7 @@
  *
  *
  */
-import {DoCheck, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import { DoCheck, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, Directive } from '@angular/core';
 import {Environment} from '../../core/config/environment';
 
 
@@ -26,6 +26,7 @@ import {Environment} from '../../core/config/environment';
  *  Base component shares common functionality among all the components (layouts, widgets).
  *
  */
+@Directive()
 export abstract class BaseComponent implements OnInit, OnChanges, DoCheck, OnDestroy {
 
   /**

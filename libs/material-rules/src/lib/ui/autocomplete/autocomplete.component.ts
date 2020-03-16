@@ -80,7 +80,7 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
   /**
    * Used by application to have a full control how the option item is rendered
    */
-  @ContentChild('optionTemplate', {static: false})
+  @ContentChild('optionTemplate')
   itemTemplate: TemplateRef<any>;
 
   @Input()

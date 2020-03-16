@@ -129,7 +129,7 @@ describe('Component: DateAndTime', () => {
 })
   /* jshint ignore:end */
 class TestDateTimeBasicBehaviorComponent {
-  @ViewChild(DateAndTimeComponent, {static: false})
+  @ViewChild(DateAndTimeComponent)
   dateTime: DateAndTimeComponent;
 
   editable = true;
@@ -160,7 +160,7 @@ class TestDateTimeBasicBehaviorComponent {
 })
   /* jshint ignore:end */
 class TestDTContainerBehaviorComponent {
-  @ViewChild(DateAndTimeComponent, {static: false})
+  @ViewChild(DateAndTimeComponent)
   dateTime: DateAndTimeComponent;
 
 }

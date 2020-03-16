@@ -156,7 +156,7 @@ describe('RadioButton LIST   behavior', () => {
   `
 })
 class TestRBListBasicBehaviorComponent {
-  @ViewChild(RadioButtonListComponent, {static: false})
+  @ViewChild(RadioButtonListComponent)
   rbList: RadioButtonListComponent;
 
   rbListValues: string[] = ['male', 'female', 'other'];

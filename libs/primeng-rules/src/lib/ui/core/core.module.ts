@@ -22,12 +22,14 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ErrorMessagesComponent} from './error-messages/error-messages.component';
 import {CurrencyFormatPipe} from './pipes/currency-format.pipe';
+import {ModalComponent} from './modal-service/modal/modal.component';
 
 
 @NgModule({
   declarations: [
     ErrorMessagesComponent,
-    CurrencyFormatPipe
+    CurrencyFormatPipe,
+    ModalComponent
   ],
   imports: [
     CommonModule

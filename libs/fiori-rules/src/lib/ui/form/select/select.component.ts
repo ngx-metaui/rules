@@ -150,7 +150,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
    * custom option popup item template defined by app.
    *
    */
-  @ContentChild('optionValue', {static: false})
+  @ContentChild('optionValue')
   optionValueTemplate: TemplateRef<any>;
 
 
@@ -158,7 +158,7 @@ export class SelectComponent extends FdSelect implements FormFieldControl<any>,
    * custom option item template defined by app.
    *
    */
-  @ContentChild('triggerValue', {static: false})
+  @ContentChild('triggerValue')
   triggerValueTemplate: TemplateRef<any>;
 
 

@@ -227,15 +227,15 @@ export class FormTableComponent extends BaseFormComponent implements AfterConten
    * These properties represent individual zones and we use them to adjust our column grid
    * layout
    */
-  @ContentChild(LeftZoneComponent, {static: false}) leftZone: LeftZoneComponent;
+  @ContentChild(LeftZoneComponent) leftZone: LeftZoneComponent;
 
-  @ContentChild(MiddleZoneComponent, {static: false}) middleZone: MiddleZoneComponent;
+  @ContentChild(MiddleZoneComponent) middleZone: MiddleZoneComponent;
 
-  @ContentChild(RightZoneComponent, {static: false}) rightZone: RightZoneComponent;
+  @ContentChild(RightZoneComponent) rightZone: RightZoneComponent;
 
-  @ContentChild(TopZoneComponent, {static: false}) topZone: TopZoneComponent;
+  @ContentChild(TopZoneComponent) topZone: TopZoneComponent;
 
-  @ContentChild(BottomZoneComponent, {static: false}) bottomZone: BottomZoneComponent;
+  @ContentChild(BottomZoneComponent) bottomZone: BottomZoneComponent;
 
 
   @ContentChildren(BaseFormComponent, {descendants: true})

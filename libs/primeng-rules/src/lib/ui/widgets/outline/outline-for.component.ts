@@ -330,11 +330,11 @@ export class OutlineForComponent extends BaseComponent {
   /**
    * A template to use on application level to render individual items
    */
-  @ContentChild('outline', {static: false})
+  @ContentChild('outline')
   controlTemplate: TemplateRef<any>;
 
 
-  @ViewChild('renderedItem', {static: false})
+  @ViewChild('renderedItem')
   outlineItem: ElementRef;
 
 

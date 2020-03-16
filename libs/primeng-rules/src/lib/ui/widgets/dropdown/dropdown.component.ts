@@ -145,7 +145,7 @@ export class DropdownComponent extends BaseFormComponent {
    * each item should be handled
    *
    */
-  @ContentChild('itemTemplate', {static: false})
+  @ContentChild('itemTemplate')
   itemTemplate: TemplateRef<any>;
 
 

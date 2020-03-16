@@ -65,7 +65,7 @@ export class MetaFormTableComponent extends MetaBaseComponent {
   /**
    * Reference to current rendered FormTable
    */
-  @ViewChild('metaFormTable', {static: false})
+  @ViewChild('metaFormTable')
   private form: FormTableComponent;
 
   /**

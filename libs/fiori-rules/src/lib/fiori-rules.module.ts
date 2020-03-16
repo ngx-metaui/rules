@@ -23,7 +23,7 @@ export class FioriRulesModule {
   constructor() {
   }
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<FioriRulesModule> {
     return {
       ngModule: FioriRulesModule,
       providers: [

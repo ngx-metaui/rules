@@ -61,6 +61,7 @@ import {AWTextAreaModule} from './widgets/text-area/text-area.module';
 import {AWButtonModule} from './widgets/button/button.module';
 import {AWFormTableModule} from './layouts/form-table/form-table.module';
 import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
+import {NotFoundComponent} from './widgets/not-found/not-found.component';
 
 /**
  * Component module is core module for the common layouts and widgets libraries.
@@ -120,7 +121,7 @@ import {ToggleSwitchModule} from './widgets/toggle-switch/toggle-switch.module';
 
   ],
   declarations: [
-    // 3th party declaration
+    NotFoundComponent
   ],
   bootstrap: [],
   entryComponents: [
