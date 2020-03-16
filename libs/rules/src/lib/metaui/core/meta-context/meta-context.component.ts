@@ -29,10 +29,8 @@ import {
   Inject,
   Input,
   OnDestroy,
-  Optional,
   Output,
   SimpleChange,
-  SkipSelf,
   TemplateRef
 } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -40,7 +38,6 @@ import {assert, equals, isBlank, isPresent, StringWrapper} from '../utils/lang';
 import {Environment} from '../config/environment';
 import {ListWrapper} from '../utils/collection';
 import {Context} from '../../core/context';
-import {BaseFormComponent} from '../../layout/core/base-form.component';
 import {UIContext} from '../context';
 import {META_RULES, MetaRules} from '../meta-rules';
 
@@ -125,13 +122,9 @@ const IMMUTABLE_PROPERTIES = [
 @Component({
   selector: 'm-context',
   template: '<ng-content></ng-content>',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-
-  providers: [
-    {provide: BaseFormComponent, useExisting: forwardRef(() => MetaContextComponent)}
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaContextComponent extends BaseFormComponent implements OnDestroy,
+export class MetaContextComponent implements OnDestroy,
   AfterViewInit, AfterViewChecked {
   /**
    * Currently there are set of properties which can be passed as expression and therefore they
@@ -140,17 +133,35 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    * expression it must be defined as input. Otherwise any other attributes will be treated as
    * strings.
    */
-  @Input() module: string;
-  @Input() layout: string;
-  @Input() operation: string;
-  @Input() class: string;
-  @Input() object: any;
-  @Input() actionCategory: any;
-  @Input() action: any;
-  @Input() field: string;
-  @Input() locale: string;
+  @Input()
+  module: string;
 
-  @Input() pushNewContext: boolean;
+  @Input()
+  layout: string;
+
+  @Input()
+  operation: string;
+
+  @Input()
+  class: string;
+
+  @Input()
+  object: any;
+
+  @Input()
+  actionCategory: any;
+
+  @Input()
+  action: any;
+
+  @Input()
+  field: string;
+
+  @Input()
+  locale: string;
+
+  @Input()
+  pushNewContext: boolean;
 
 
   @Output()
@@ -222,11 +233,9 @@ export class MetaContextComponent extends BaseFormComponent implements OnDestroy
    */
   formGroup: FormGroup;
 
-  constructor(private elementRef: ElementRef, public env: Environment,
-              @Inject(META_RULES) protected meta: MetaRules,
-              @SkipSelf() @Optional() @Inject(forwardRef(() => BaseFormComponent))
-              protected parentContainer: BaseFormComponent) {
-    super(env, null);
+  constructor(private elementRef: ElementRef,
+              public env: Environment,
+              @Inject(META_RULES) protected meta: MetaRules) {
 
     this.supportsDirtyChecking = false;
     this._isDirty = false;

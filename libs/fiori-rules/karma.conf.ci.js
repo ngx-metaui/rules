@@ -10,7 +10,7 @@ module.exports = function (config) {
     ...baseConfig,
     coverageIstanbulReporter: {
       ...baseConfig.coverageIstanbulReporter,
-      dir: join(__dirname, '../../coverage/libs/primeng-rules')
+      dir: join(__dirname, '../../coverage/libs/fiori-rules')
     },
     browsers: ['Chrome', 'ChromeHeadless'],
     flags: [

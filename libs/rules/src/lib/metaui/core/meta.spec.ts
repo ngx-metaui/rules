@@ -22,7 +22,6 @@ import {TestBed} from '@angular/core/testing';
 import {MetaUIRulesModule} from '../rules.module';
 import {JsonRule} from './json-rule';
 import {Rule, Selector} from './rule';
-import {RuleLoaderService} from './rule-loader.service';
 import {ContextFieldPath, Expr, isDynamicSettable, StaticDynamicWrapper} from './property-value';
 import {LocalizedString} from './i18n/localized-string';
 import {ClassRulePriority, KeyClass, KeyField, META_RULES, MetaRules} from './meta-rules';
@@ -149,130 +148,6 @@ describe('Loading rules functionality', () => {
     }
   );
 
-
-  it('should use loader to load rules with specific dynamic properties bindings for ' +
-    'each type Expr | SDW | CFP | OV | i18n ', () => {
-      /* tslint:disable */
-      // @formatter:off
-      /* Represent all different rules that can apear in the Meta*/
-      let jsonRulesTypes = [
-        {
-          '_properties': {'class': {'t': 'Expr', 'v': 'Meta.className(object)'}},
-          '_rank': 0,
-          '_selectors': [{'_isDecl': false, '_value': '*', '_key': 'object'}]
-        }, {
-          /* key/value type*/ '_rank': 0,
-          '_selectors': [
-            {
-              '_isDecl': false, '_value': ['edit', 'create', 'search'],
-              '_key': 'operation'
-            }
-          ]
-        }, {
-          /* no properties type*/ '_properties': {'editing': true}, '_rank': 0,
-          '_selectors': [
-            {
-              '_isDecl': false, '_value': ['edit', 'create', 'search'],
-              '_key': 'operation'
-            },
-            {'_isDecl': false, '_value': '*', '_key': 'layout'}
-          ]
-        }, {
-          /* StaticDynamicWrapper*/
-          '_properties': {'visible': {'t': 'SDW', 'v': '!properties.hidden'}},
-          '_rank': 0, '_selectors': [{'_isDecl': false, '_value': '*', '_key': 'field'}]
-        }, {
-          '_properties': {
-            'wrapperComponent': 'MetaContext', 'component': 'AWImageData',
-            'wrapperBindings': {'scopeKey': 'field'}, 'bindings': {
-              'bytes': {'t': 'CFP', 'v': 'value'}, 'style': 'width:100px',
-              'contentType': {
-                't': 'Expr',
-                'v': 'ContentTypeUtils.contentTypeNamed(properties.contentType)'
-              }
-            }
-          }, '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': '*', '_key': 'field'},
-            {'_isDecl': false, '_value': '_imgUploadPreview', '_key': 'layout'}
-          ]
-        }, {
-          /* Override Rule*/'_properties': {
-            'visible': true, 'editable': {'t': 'OV', 'v': 'true'},
-            'after': {'t': 'OV', 'v': 'null'}
-          }, '_rank': 0,
-          '_selectors': [{'_isDecl': false, '_value': '*', '_key': 'field'}]
-        }, {
-          /* i18n*/'_properties': {
-            'visible': {
-              't': 'i18n', 'v': {'key': '01234', 'defVal': 'Some Label'}
-            }
-          },
-          '_rank': 0, '_selectors': [{'_isDecl': false, '_value': '*', '_key': 'field'}]
-        }
-      ];
-      // @formatter:on
-      /* tslint:enable */
-
-      const ruleLoader: RuleLoaderService = new RuleLoaderService();
-      const rules: Array<Rule> = ruleLoader.loadRulesWithReturn(jsonRulesTypes, 'system');
-
-
-      // expect 7 rules loaded
-      expect(rules.length).toEqual(7);
-
-      // expect first rule will have expression
-      const rule1: Rule = rules[0];
-      const expr: Expr = rule1.properties.get('class');
-      expect(expr instanceof Expr).toBeTruthy();
-      expect(expr.toString()).toMatch('expr:');
-
-      // expect first rule will have expression
-      const rule2: Rule = rules[1];
-      expect(rule2.properties).not.toBeDefined();
-
-
-      const rule3: Rule = rules[2];
-      const isEditing: boolean = rule3.properties.get('editing');
-      expect(isEditing).toBeTruthy();
-
-      const rule4: Rule = rules[3];
-      const wrapper: StaticDynamicWrapper = rule4.properties.get('visible');
-      expect(wrapper.toString()).toMatch('StaticDynamicWrapper');
-
-
-      const rule5: Rule = rules[4];
-
-      expect(rule5.properties.size).toEqual(4);
-
-      const subMap: any = rule5.properties.get('bindings');
-      expect(subMap instanceof Map).toBeTruthy();
-
-      const contentType: Expr = subMap.get('contentType');
-      expect(contentType instanceof Expr).toBeTruthy();
-      expect(contentType.toString()).toMatch('expr:');
-
-
-      const rule6: Rule = rules[5];
-
-      expect(rule6.properties.size).toEqual(3);
-
-      const editable: OverrideValue = rule6.properties.get('editable');
-
-      expect(editable instanceof OverrideValue).toBeTruthy();
-      expect(editable.toString()).toMatch('!');
-
-
-      const rule7: Rule = rules[6];
-
-      expect(rule7.properties.size).toEqual(1);
-
-      const loc: LocalizedString = rule7.properties.get('visible');
-
-      expect(loc instanceof LocalizedString).toBeTruthy();
-      expect(loc.toString()).toMatch('LocaledString');
-
-    }
-  );
 
 
  it(' should load all the system rules in the rule engine based on WidgetsRules. ', () => {

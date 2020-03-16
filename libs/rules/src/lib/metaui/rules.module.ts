@@ -27,7 +27,6 @@ import {
 import {Router} from '@angular/router';
 import {CommonModule, Location} from '@angular/common';
 import {UIMeta} from './core/uimeta';
-import {RuleLoaderService} from './core/rule-loader.service';
 import * as sysMetaComponents from './entry-components';
 import {AWMetaCoreModule} from './core/meta-core.module';
 import {Environment} from './core/config/environment';

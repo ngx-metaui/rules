@@ -25,7 +25,7 @@
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
-    "compile:oss:sys": "./libs/rules/src/lib/resources/bin/oss.js -i ./libs/rules/src/lib/metaui/core && ./libs/rules/src/lib/resources/bin/oss.js  -i ./libs/primeng-rules/src/lib/metaui && ./libs/rules/src/lib/resources/bin/oss.js -i ./libs/material-rules/src/lib/metaui && ./libs/rules/src/lib/resources/bin/oss.js -i ./libs/fiori-rules/src/lib/metaui",
+    "compile:oss:sys": "./libs/rules/src/lib/resources/bin/oss.js -i ./libs/rules/src/lib/metaui/core && ./libs/rules/src/lib/resources/bin/oss.js -i ./libs/material-rules/src/lib/metaui && ./libs/rules/src/lib/resources/bin/oss.js -i ./libs/fiori-rules/src/lib/metaui",
     "compile:oss:evo": "./libs/rules/src/lib/resources/bin/oss.js -i ./apps/metaui-evolution/src/app/rules -u",
     "compile:oss:det": "./libs/rules/src/lib/resources/bin/oss.js -i ./apps/my-detail-page/src/app/rules -u",
     "compile:oss:md": "./libs/rules/src/lib/resources/bin/oss.js -i ./apps/material-app/src/app/rules -u",

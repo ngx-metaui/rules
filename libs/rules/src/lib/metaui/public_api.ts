@@ -18,17 +18,13 @@
  */
 
 /*
- * Just re-export for the IDE and the mapping we have tsconfig
+ * Public API Surface of core
  */
 
 
-export {
-  DataTypeProviderRegistry, DataProvider, DataProviders, DataFinders,
-  DataFinder, QueryType, FullTextArrayDataFinder, DATA_SOURCE, ArrayDataProvider
-} from './core/index';
+export * from './core/public_api';
+export * from './layout/public_api';
 
-export {AribaComponentsModule} from './ariba.component.module';
-export * from './widgets/index';
 
 
 
