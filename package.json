@@ -69,11 +69,11 @@
     "zone.js": "^0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.22",
-    "@angular-devkit/build-ng-packagr": "^0.803.22",
+    "@angular-devkit/build-angular": "^0.803.25",
+    "@angular-devkit/build-ng-packagr": "^0.803.25",
     "@angular-devkit/core": "^8.3.22",
     "@angular-devkit/schematics": "^8.3.22",
-    "@angular/cli": "8.3.18",
+    "@angular/cli": "8.3.25",
     "@angular/compiler-cli": "^8.2.14",
     "@angular/language-service": "^8.2.14",
     "@ngx-metaui/rules": "^8.1.1",
