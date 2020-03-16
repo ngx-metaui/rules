@@ -1,5 +1,4 @@
 /**
- *
  * @license
  * Copyright 2017 SAP Ariba
  *
@@ -16,26 +15,11 @@
  * limitations under the License.
  *
  *
- *
  */
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {HyperlinkComponent} from './hyperlink.component';
-
-
-@NgModule({
-  declarations: [
-    HyperlinkComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    HyperlinkComponent
-  ],
-  providers: []
-})
-export class AWHyperlinkModule {
-}
-
+export {MetaIncludeDirective} from './meta-include.directive';
+export {ComponentReference, IncludeDirective} from './core/include.directive';
+export {MetaBaseComponent} from './meta.base.component';
+export {GenericContainerComponent} from './core/generic-container.component';
+export {MetaLayout} from './meta-layout';
+export {DomUtilsService} from './core/dom-utils.service';
 

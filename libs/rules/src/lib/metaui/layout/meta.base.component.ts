@@ -16,10 +16,9 @@
  *
  *
  */
-import {AfterViewChecked} from '@angular/core';
+import {AfterViewChecked, Input} from '@angular/core';
 import {assert, isPresent} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
-import {BaseFormComponent} from './core/base-form.component';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
 import {Context, Snapshot} from '../core/context';
 import {KeyEditing, KeyObject} from '../core/meta-rules';
@@ -28,7 +27,8 @@ import {KeyEditing, KeyObject} from '../core/meta-rules';
 /**
  * Common component to setup the context and also create context snapshot for later user.
  */
-export abstract class MetaBaseComponent extends BaseFormComponent implements AfterViewChecked {
+export abstract class MetaBaseComponent implements AfterViewChecked {
+  @Input()
   editing: boolean;
 
   /**
@@ -52,11 +52,9 @@ export abstract class MetaBaseComponent extends BaseFormComponent implements Aft
 
   constructor(public env: Environment,
               protected _metaContext: MetaContextComponent) {
-    super(env, _metaContext);
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
     this.updateMeta();
   }
 
