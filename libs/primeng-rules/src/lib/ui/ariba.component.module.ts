@@ -26,8 +26,8 @@ import {AccordionModule} from 'primeng/accordion';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {ButtonModule} from 'primeng/button';
 import {CalendarModule} from 'primeng/calendar';
-import {Checkbox, CheckboxModule} from 'primeng/checkbox';
-import {Dialog, DialogModule} from 'primeng/dialog';
+import {CheckboxModule} from 'primeng/checkbox';
+import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {EditorModule} from 'primeng/editor';
 import {InputTextareaModule} from 'primeng/inputtextarea';
@@ -124,12 +124,6 @@ import {NotFoundComponent} from './widgets/not-found/not-found.component';
     NotFoundComponent
   ],
   bootstrap: [],
-  entryComponents: [
-
-    // PrimeNG
-    Checkbox,
-    Dialog
-  ],
   exports: [
     ReactiveFormsModule,
     FormsModule,

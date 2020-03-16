@@ -43,9 +43,6 @@ import {AWDropdownModule} from '../dropdown/dropdown.module';
     AWChooserModule,
     AWRadioButtonListModule
   ],
-  entryComponents: [
-    GenericChooserComponent
-  ],
   exports: [
     ReactiveFormsModule,
     FormsModule,

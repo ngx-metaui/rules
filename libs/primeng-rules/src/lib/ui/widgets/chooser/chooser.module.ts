@@ -40,9 +40,6 @@ import {AWCoreComponentModule} from '../../core/core.module';
     AWCoreComponentModule
 
   ],
-  entryComponents: [
-    ChooserComponent
-  ],
   exports: [
     ChooserComponent,
     ReactiveFormsModule,

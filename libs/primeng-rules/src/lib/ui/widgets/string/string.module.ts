@@ -32,9 +32,6 @@ import {StringComponent} from './string.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [
-    StringComponent
-  ],
   exports: [
     StringComponent
   ],

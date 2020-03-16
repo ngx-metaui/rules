@@ -31,9 +31,6 @@ import {MetaUIRulesModule} from '@ngx-metaui/rules';
 
 
   ],
-  entryComponents: [
-    MetaActionListComponent
-  ],
   providers: []
 })
 export class MetaActionListModule {

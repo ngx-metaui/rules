@@ -16,9 +16,6 @@ import {AWStringFieldModule} from '../string/string.module';
     CalendarModule,
     AWStringFieldModule
   ],
-  entryComponents: [
-    DateAndTimeComponent
-  ],
   exports: [
     DateAndTimeComponent,
     ReactiveFormsModule,

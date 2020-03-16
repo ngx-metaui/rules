@@ -35,9 +35,6 @@ import {AWRadioButtonModule} from '../radio-button/radio-button.module';
     ReactiveFormsModule,
     AWRadioButtonModule
   ],
-  entryComponents: [
-    RadioButtonListComponent
-  ],
   exports: [
     RadioButtonListComponent,
     ReactiveFormsModule,

@@ -33,9 +33,6 @@ import {MetaUIRulesModule} from '@ngx-metaui/rules';
 
 
   ],
-  entryComponents: [
-    MetaDashboardLayoutComponent
-  ],
   providers: []
 })
 export class MetaDashboardLayoutModule {

@@ -71,18 +71,6 @@ import {META_RULES, MetaRules} from '@ngx-metaui/rules';
     MatAutocompleteModule,
     MatSnackBarModule
   ],
-  entryComponents: [
-    InputField,
-    TextArea,
-    Select,
-    StringField,
-    Checkbox,
-    RadioGroup,
-    DatePicker,
-    Button,
-    AutoComplete
-
-  ],
   exports: [
     MatInputModule,
     MatSelectModule,

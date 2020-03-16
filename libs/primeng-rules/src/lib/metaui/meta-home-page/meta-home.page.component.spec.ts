@@ -47,7 +47,7 @@ describe('How we can retrieve homepage from module', () => {
 
   it('should retrieve generic module homepage called MetaHomePageComponent', () => {
 
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     const context: Context = metaUI.newContext();
     context.push();
     context.set(KeyModule, KeyAny);
@@ -64,7 +64,7 @@ describe('How we can retrieve homepage from module', () => {
 
   it('should retrieve generic module component representing layout called' +
     ' MetaDashboardLayoutComponent', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
 
     const context: Context = metaUI.newContext();
     context.push();
@@ -83,22 +83,22 @@ describe('How we can retrieve homepage from module', () => {
   // @formatter:off
   /* tslint:disable */
   const ApplicationRule = `
-      
+
       @module=Home {
         pageTitle: 'My Home Title';
         homePage: 'TestMetaHomePage';
       }
-      
-      
+
+
       @module=Product {
           pageTitle: 'My Product Title';
          homePage: 'Test2MetaHomePage';
-      }  
+      }
  `;
   // @formatter:on
   /* tslint:disable */
   it('should retrieve application based module and its homePage TestMetaHomePage', () => {
-    const metaUI: MetaRules = TestBed.get(META_RULES);
+    const metaUI: MetaRules = TestBed.inject(META_RULES);
     metaUI.addTestUserRule('ApplicationRule', ApplicationRule);
 
     debugger;

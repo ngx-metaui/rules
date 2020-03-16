@@ -33,9 +33,6 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     AWCoreComponentModule,
     OverlayPanelModule
   ],
-  entryComponents: [
-    OverlayComponent
-  ],
   exports: [
     OverlayComponent,
     AWCoreComponentModule

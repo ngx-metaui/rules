@@ -29,7 +29,6 @@ import {FdpLinkModule} from './link/link.module';
     FdpLinkModule
   ],
   declarations: [],
-  entryComponents: [],
   exports: [
     FdpFormModule,
     FdpLinkModule

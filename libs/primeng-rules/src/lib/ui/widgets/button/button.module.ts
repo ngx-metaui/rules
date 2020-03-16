@@ -33,9 +33,6 @@ import {ButtonModule} from 'primeng/button';
     ButtonModule,
 
   ],
-  entryComponents: [
-    ButtonComponent
-  ],
   exports: [
     ButtonComponent
   ],

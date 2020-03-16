@@ -64,18 +64,6 @@ import {StringComponent} from './string/string.component';
     FdDatePickerModule,
     ComboboxModule
   ],
-  entryComponents: [
-    InputComponent,
-    SelectComponent,
-    RadioGroupComponent,
-    CheckboxComponent,
-    CheckboxGroupComponent,
-    TextAreaComponent,
-    DatePickerComponent,
-    ComboBoxComponent,
-    MoneyComponent,
-    StringComponent
-  ],
   exports: [
     FormGroupComponent,
     FormFieldComponent,

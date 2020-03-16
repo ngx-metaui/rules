@@ -30,9 +30,6 @@ import {HyperlinkComponent} from './hyperlink.component';
   imports: [
     CommonModule
   ],
-  entryComponents: [
-    HyperlinkComponent
-  ],
   exports: [
     HyperlinkComponent
   ],

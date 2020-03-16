@@ -30,9 +30,6 @@ import {LinkComponent} from './link.component';
   imports: [
     CommonModule
   ],
-  entryComponents: [
-    LinkComponent
-  ],
   exports: [
     LinkComponent
   ],

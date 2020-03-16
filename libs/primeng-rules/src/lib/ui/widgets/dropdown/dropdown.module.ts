@@ -37,9 +37,6 @@ import {AWCoreComponentModule} from '../../core/core.module';
     DropdownModule,
     AWCoreComponentModule
   ],
-  entryComponents: [
-    DropdownComponent
-  ],
   exports: [
     DropdownComponent,
     ReactiveFormsModule,

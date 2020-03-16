@@ -37,9 +37,6 @@ import {AWStringFieldModule} from '../string/string.module';
     AWStringFieldModule
   ],
 
-  entryComponents: [
-    TextAreaComponent
-  ],
   exports: [
     TextAreaComponent,
     ReactiveFormsModule,

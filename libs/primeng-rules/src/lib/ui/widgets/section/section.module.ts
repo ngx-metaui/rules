@@ -44,11 +44,6 @@ import {AWButtonModule} from '../button/button.module';
     SharedModule
   ],
 
-  entryComponents: [
-    SectionComponent,
-    SubSectionComponent,
-    SectionActionsComponent
-  ],
   exports: [
     SectionComponent,
     SectionActionsComponent,

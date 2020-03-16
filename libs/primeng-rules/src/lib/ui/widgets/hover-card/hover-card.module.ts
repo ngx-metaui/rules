@@ -34,9 +34,6 @@ import {AWStringFieldModule} from '../string/string.module';
     AWOverlayModule,
     AWStringFieldModule
   ],
-  entryComponents: [
-    HoverCardComponent
-  ],
   exports: [
     HoverCardComponent
   ],
