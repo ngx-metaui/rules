@@ -13,5 +13,10 @@
       "fdp",
       "kebab-case"
     ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "!**/*"
+    ]
   }
 }

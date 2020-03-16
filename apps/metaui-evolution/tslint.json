@@ -10,8 +10,16 @@
     "component-selector": [
       true,
       "element",
-      ["ngx-meta", "app"],
+      [
+        "ngx-meta",
+        "app"
+      ],
       "kebab-case"
+    ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "!**/*"
     ]
   }
 }
