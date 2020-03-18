@@ -48,7 +48,7 @@ describe('MetaUI parser', () => {
       () => {
         /* tslint:disable: no-trailing-whitespace */
         lexer = new OSSLexer(`
-                    class=User;                   
+                    class=User;
                 `);
         const parser = new OSSParser(lexer);
         const ossFileAst = parser.parse();
@@ -75,7 +75,7 @@ describe('MetaUI parser', () => {
       () => {
 
         lexer = new OSSLexer(`
-                    role=admin class=User;                   
+                    role=admin class=User;
                 `);
         const parser = new OSSParser(lexer);
         const ossFileAst = parser.parse();
@@ -100,7 +100,7 @@ describe('MetaUI parser', () => {
       () => {
 
         lexer = new OSSLexer(`
-                    role=admin class=User                   
+                    role=admin class=User
                 `);
 
         const parser = new OSSParser(lexer);
@@ -112,7 +112,7 @@ describe('MetaUI parser', () => {
     it('parse selector declaration ', () => {
 
       lexer = new OSSLexer(`
-                    class=User @field=test;                   
+                    class=User @field=test;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -129,7 +129,7 @@ describe('MetaUI parser', () => {
     it('parse null marker with identifier ', () => {
 
       lexer = new OSSLexer(`
-                    ~class;                   
+                    ~class;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -145,7 +145,7 @@ describe('MetaUI parser', () => {
     it('should recognize unqualified key selectors *  ', () => {
 
       lexer = new OSSLexer(`
-                    class field;                   
+                    class field;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -166,7 +166,7 @@ describe('MetaUI parser', () => {
     it('should parse selector s traits #required', () => {
 
       lexer = new OSSLexer(`
-                    class=test#required;                   
+                    class=test#required;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -185,7 +185,7 @@ describe('MetaUI parser', () => {
     it('should parse selector with traits #required,bold', () => {
 
       lexer = new OSSLexer(`
-                    class=test#required,bold;                   
+                    class=test#required,bold;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -205,7 +205,7 @@ describe('MetaUI parser', () => {
     it('should parse unqualified selector with trait #required', () => {
 
       lexer = new OSSLexer(`
-                    class#required,bold;                   
+                    class#required,bold;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -225,7 +225,7 @@ describe('MetaUI parser', () => {
     it('should read List of values in selector operation=(view,edit)', () => {
 
       lexer = new OSSLexer(`
-                    operation=(view,edit);                   
+                    operation=(view,edit);
                 `);
 
       const parser = new OSSParser(lexer);
@@ -245,7 +245,7 @@ describe('MetaUI parser', () => {
       () => {
 
         lexer = new OSSLexer(`
-                    class=user operation=(view,edit);                   
+                    class=user operation=(view,edit);
                 `);
 
         const parser = new OSSParser(lexer);
@@ -264,7 +264,7 @@ describe('MetaUI parser', () => {
     it('should support string literal as selector value', () => {
 
       lexer = new OSSLexer(`
-                    class='Test';                   
+                    class='Test';
                 `);
 
       const parser = new OSSParser(lexer);
@@ -281,7 +281,7 @@ describe('MetaUI parser', () => {
 
     it('should support Integer  as selector value', () => {
       lexer = new OSSLexer(`
-                    class=1;                   
+                    class=1;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -298,7 +298,7 @@ describe('MetaUI parser', () => {
 
     it('should support float  as selector value', () => {
       lexer = new OSSLexer(`
-                    class=12.22;                   
+                    class=12.22;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -313,7 +313,7 @@ describe('MetaUI parser', () => {
 
     it('should support keyPath  as selector value', () => {
       lexer = new OSSLexer(`
-                    class=aa.aas;                   
+                    class=aa.aas;
                 `);
       const parser = new OSSParser(lexer);
       const ossFileAst = parser.parse();
@@ -329,7 +329,7 @@ describe('MetaUI parser', () => {
 
     it('should support boolean TRUE  as selector value', () => {
       lexer = new OSSLexer(`
-                    class=true;                   
+                    class=true;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -346,7 +346,7 @@ describe('MetaUI parser', () => {
 
     it('should support boolean FALSE  as selector value', () => {
       lexer = new OSSLexer(`
-                    class=false;                   
+                    class=false;
                 `);
 
       const parser = new OSSParser(lexer);
@@ -363,7 +363,7 @@ describe('MetaUI parser', () => {
 
     it('should support NULL  as selector value', () => {
       lexer = new OSSLexer(`
-                    class=null;                   
+                    class=null;
                 `);
       const parser = new OSSParser(lexer);
       const ossFileAst = parser.parse();
@@ -383,24 +383,24 @@ describe('MetaUI parser', () => {
           `
           field {
             type  {
-               component:StringField;               
+               component:StringField;
             }
           }
-          
+
           class=model.Issue {
             Notes.zDetail => notes;
-        
+
             field=subject {
-                operation=edit  { 
-                  trait:bold;  
+                operation=edit  {
+                  trait:bold;
                 }
                 editable:false;
-            }            
+            }
             operation=list {
                 zNone => *;
                 zLeft => category => owner => priority => status => lastModified;
                 zDetail => subject#italic;
-            }                           
+            }
            }
            `
         );
@@ -422,7 +422,7 @@ describe('MetaUI parser', () => {
         /* tslint:disable: no-trailing-whitespace */
         lexer = new OSSLexer(`class=User {
                                           visible:true;
-                                       }                   
+                                       }
                 `);
         const parser = new OSSParser(lexer);
 
@@ -645,26 +645,26 @@ describe('MetaUI parser', () => {
           `
           class {
             displayKey:toString;
-        
+
             searchOperation:search;
-        
+
             trait=Searchable {
                 textSearchSupported:true;
                 searchOperation:keywordSearch;
             }
-        
-        
+
+
             operation=keywordSearch {
                 useTextIndex:true;
-        
+
                 field { visible:false;}
-                @field=keywords#SearchableProperty{ 
-                    visiblex:true!; 
-                    type:String; 
-                    rank:0; 
-                    after:zTop; 
+                @field=keywords#SearchableProperty{
+                    visiblex:true!;
+                    type:String;
+                    rank:0;
+                    after:zTop;
                 }
-            }            
+            }
             operation=textSearch {
                 field {
                     trait=SearchableProperty {
@@ -756,7 +756,7 @@ describe('MetaUI parser', () => {
           `
           class=User {
             displayKey:One, two;
-                   
+
           }`
         );
 
@@ -781,7 +781,7 @@ describe('MetaUI parser', () => {
           `
           class=User {
             displayKey:One, two;
-                   
+
           }`
         );
 
@@ -805,7 +805,7 @@ describe('MetaUI parser', () => {
           `
           class=User {
             displayKey:One, [two, three];
-                   
+
           }`
         );
 
@@ -831,7 +831,7 @@ describe('MetaUI parser', () => {
           `
           class=User {
             displayKey: [one, two];
-                   
+
           }`
         );
         const parser = new OSSParser(lexer);
@@ -856,7 +856,7 @@ describe('MetaUI parser', () => {
                renderAs:menu;
                align:right;
             };
-                   
+
           }`
         );
         const parser = new OSSParser(lexer);
@@ -878,7 +878,7 @@ describe('MetaUI parser', () => {
           `
           class=User {
             renderAs:$type;
-            value:$object.name;                   
+            value:$object.name;
           }`
         );
         const parser = new OSSParser(lexer);
@@ -900,7 +900,7 @@ describe('MetaUI parser', () => {
       () => {
         /* tslint:disable: no-trailing-whitespace */
         lexer = new OSSLexer(
-          `class=Issue {              
+          `class=Issue {
                     zLeft => name => address.city;
                 }`
         );
@@ -960,9 +960,9 @@ describe('MetaUI parser', () => {
           `
           class {
             displayKey:toString;
-            
+
             zNone => *;
-            zLeft => firstName => lastName;                
+            zLeft => firstName => lastName;
            }`
         );
 
@@ -993,18 +993,18 @@ describe('MetaUI parser', () => {
           `
           class=model.Issue {
             Notes.zDetail => notes;
-        
+
             field=subject {
-                operation=edit  { 
-                  trait:bold;  
+                operation=edit  {
+                  trait:bold;
                 }
                 editable:false;
-            }            
+            }
             operation=list {
                 zNone => *;
                 zLeft => category => owner => priority => status => lastModified;
                 zDetail => subject#italic;
-            }                           
+            }
            }`
         );
 

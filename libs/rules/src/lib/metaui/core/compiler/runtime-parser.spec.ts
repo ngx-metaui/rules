@@ -65,7 +65,7 @@ describe('Parsing rules on the fly and registering them with the rule engine',
           const metaUI: MetaRules = TestBed.inject(META_RULES);
           metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
         } catch (e) {
-          console.log(e);
+          fail(e);
         }
         expect(true).toBeTruthy();
       });

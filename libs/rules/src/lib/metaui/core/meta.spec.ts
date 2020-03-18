@@ -17,17 +17,13 @@
  *
  */
 import {evalExpression} from './utils/lang';
-import {MapWrapper} from './utils/collection';
 import {TestBed} from '@angular/core/testing';
 import {MetaUIRulesModule} from '../rules.module';
-import {JsonRule} from './json-rule';
 import {Rule, Selector} from './rule';
-import {ContextFieldPath, Expr, isDynamicSettable, StaticDynamicWrapper} from './property-value';
-import {LocalizedString} from './i18n/localized-string';
+import {ContextFieldPath, Expr, isDynamicSettable} from './property-value';
 import {ClassRulePriority, KeyClass, KeyField, META_RULES, MetaRules} from './meta-rules';
 import {MatchResult} from './match';
 import {Context} from './context';
-import {OverrideValue} from './policies/merging-policy';
 import {MetaUITestRulesModule} from '../test.rules.module';
 
 
@@ -42,115 +38,7 @@ describe('Loading rules functionality', () => {
     });
   });
 
-  it('should convert Meta rule that are prepared in JSON ', () => {
-
-      const jsonRule: JsonRule = {
-        _rank: 0,
-        _properties: {'visible': false},
-        _selectors: [{'_isDecl': false, '_value': '*', '_key': 'object'}]
-      };
-
-      const selectors: Array<Selector> = new Array<Selector>();
-      for (const item of jsonRule._selectors) {
-        const selector = new Selector(item._key, item._value, item._isDecl);
-        selectors.push(selector);
-      }
-
-      const properties = MapWrapper.createFromStringMap<any>(jsonRule._properties);
-      const rule: Rule = new Rule(selectors, properties, jsonRule._rank);
-
-      expect(rule.selectors.length).toEqual(1);
-      expect(rule.properties.get('visible')).toEqual(false);
-
-
-    }
-  );
-
-  it('should convert array  of Meta rules that are prepared in JSON  into actual Rules[] Objects',
-    () => {
-
-      /* tslint:disable */
-      // @formatter:off
-      let jsonRules = [
-        {
-          '_properties': {'class': {'t': 'Expr', 'v': 'Meta.className(object)'}},
-          '_rank': 0,
-          '_selectors': [{'_isDecl': false, '_value': '*', '_key': 'object'}]
-        }, {
-          '_properties': {'class': {'t': 'Expr', 'v': 'Meta.className(object)'}},
-          '_rank': 0, '_selectors': [
-            {'_isDecl': false, '_value': '*', '_key': 'object'},
-            {'_isDecl': false, '_value': '*', '_key': 'declare'}
-          ]
-        }, {
-          '_properties': {'class': {'t': 'Expr', 'v': 'values.get(\'class\')'}},
-          '_rank': 0,
-          '_selectors': [{'_isDecl': false, '_value': 'search', '_key': 'operation'}]
-        }, {
-          '_rank': 0,
-          '_selectors': [
-            {
-              '_isDecl': false, '_value': ['edit', 'create', 'search'],
-              '_key': 'operation'
-            }
-          ]
-        }, {
-          '_properties': {'editing': true}, '_rank': 0, '_selectors': [
-            {
-              '_isDecl': false, '_value': ['edit', 'create', 'search'],
-              '_key': 'operation'
-            },
-            {'_isDecl': false, '_value': '*', '_key': 'layout'}
-          ]
-        }, {
-          '_rank': 0,
-          '_selectors': [
-            {
-              '_isDecl': false, '_value': ['edit', 'create', 'search'],
-              '_key': 'operation'
-            }
-          ]
-        }, {
-          '_properties': {'editing': true}, '_rank': 0, '_selectors': [
-            {
-              '_isDecl': false, '_value': ['edit', 'create', 'search'],
-              '_key': 'operation'
-            },
-            {'_isDecl': false, '_value': '*', '_key': 'class'}
-          ]
-        }
-      ];
-      // @formatter:on
-      /* tslint:enable */
-
-      const rules: Array<Rule> = [];
-
-      jsonRules.forEach((val, index) => {
-        const jsonRule: JsonRule = <JsonRule>val;
-
-        const selectors: Array<Selector> = new Array<Selector>();
-        for (const item of jsonRule._selectors) {
-          const selector = new Selector(item._key, item._value, item._isDecl);
-          selectors.push(selector);
-        }
-
-        const properties = MapWrapper.createFromStringMap<any>(jsonRule._properties);
-        const rule: Rule = new Rule(selectors, properties, jsonRule._rank);
-
-        rules.push(rule);
-      });
-
-      expect(rules.length).toEqual(7);
-
-      const class2 = rules[0].properties.get('class');
-      expect(class2['t']).toEqual('Expr');
-
-    }
-  );
-
-
-
- it(' should load all the system rules in the rule engine based on WidgetsRules. ', () => {
+  it(' should load all the system rules in the rule engine based on WidgetsRules. ', () => {
 
       try {
         const metaUI: MetaRules = TestBed.inject(META_RULES);
@@ -177,8 +65,12 @@ describe('Rule matching functionality on preloaded ruleset', () => {
       ]
     });
 
+    const ossFile: any = require(
+      '!!raw-loader!../../resources/compiler/metaspec/uilib.oss');
+
+
     const metaUI: MetaRules = TestBed.inject(META_RULES);
-    metaUI.loadUILibSystemRuleFiles({}, UILibRules, {});
+    metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
   });
 
   it(' it must pick the best selector to Index from list of selectors ', () => {
@@ -745,11 +637,3 @@ describe('Expression eval of Matched properties how they can be resolved on the 
   );
 });
 
-
-// @formatter:off
-/* tslint:disable */
-// temp rules to push some default that are now separated from the rule engine
-export const UILibRules =  ' /**  * @license  * Copyright 2017 SAP Ariba  *  * Licensed under the Apache License, Version 2.0 (the "License");  * you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  *  * Based on original work: MetaUI: Craig Federighi (2008)  *  */  field {     type  {       component:StringComponent;       bindings:{         value:$value;       };     }     type=(boolean, Boolean) {         editable {             component:Checkbox;             bindings:{               ngModel: $value;               binary: true;             };         }     }     type=(Number) {         bindings:{formatter:$formatters.integer; };         editable { component:InputFieldComponent;  }         operation=search {           bindings:{formatter:$formatters.blankNull.integer;};         }     }      type=Date   {         component:DateAndTimeComponent;         bindings:{           showTime:false;           formatter:shortDate;         };          fiveZoneLayout = true {}           @trait=dateTime editable {             bindings:{formatter:dateTime; showTime:true;};          }      }      type=Enum   {         editable                {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${field};                 destinationClass:${type};                 displayKey:"name";                 formatter:$formatters.identifier;             };              operation=(search, list) {                 bindings: { type:Popup; };             }         }     }      type=(Array, Set) {         @trait=enum editable {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${field};                 multiselect:true;                 destinationClass:${properties.get("enumClass")};                 displayKey:"name";                 formatter:$formatters.identifier;             };         }          operation=(search, list)        { visible:false ;}          @trait=ownedToMany {             after:zDetail;             component:MetaDetailTable;         }     }       type="File" {         editable {             component:FileUploadChooser;             bindings:{ file:$value; };         }         editable=false {             bindings: {               value:${value ? value.name : "(none)"};             };         }     }       type=String {         editable  {             component:InputFieldComponent;         }         @trait=longtext {             after:zBottom;             editable {               component:TextAreaComponent;               bindings:{                 cols:60;                 rows:10;               };             }             operation=(search, list)  { visible:false; }         }         @trait=richtext {             after:zBottom;             bindings:{escapeUnsafeHtml:true;};             editable            { component:RichTextAreaComponent;                                   bindings:{cols:60; rows:10;}; }             operation=(search)  { after:zNone; }             operation=(list)  { editable:false; after:zDetail; }         }         @trait=secret {             bindings:{formatter:$formatters.hiddenPassword;};             editable   {               component:AWPasswordField;               bindings:{formatter:null;};             }             operation=(search, list) { visible: false; }         }         trait=truncated { component:TruncateString; bindings:{size:10;}; }     }      type="Money" {         component: CurrencyComponent;         bindings:{             money:$value;             currencies:${properties.get("currencies")};         };     }      @trait=derived {         editable:false;         editing { after:zNone; }     }      @trait=searchable {         operation=search {             visible:true;             editable:true!;             after:null!;         }     }      @trait=required {         operation=(edit, create) {             required:true;             object {                 valid: ${( value != undefined && value != null) ? true : "Answer required"};             }         }     }      @trait=list {         editable {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${properties.get("field")};                 list:${properties.get("choices")};                 type:${properties.get("chooserStyle")};             };         }     }       @trait=asObject {         editable=false {             component:MetaObjectDetailComponent;             nestedLayout:true;             bindings: {                 object:$value;                 layout:Inspect;                 useNoLabelLayout:true;                 label:${properties.get("label")};             };         }     }       @trait=asHover {         editable=false {             component:HoverCardComponent;             bindings:{                 linkTitle:$value;                 ngcontentLayout:Content;                 appendContentToBody:false;             };         }     }       @layout=Content {         component:MetaObjectDetailComponent;         bindings: {             object:$value;             layout:Inspect;         };     }      @trait=noCreate { operation=create { visible:false; } }     @trait=noSearch { operation=search { visible:false; } }      component=GenericChooserComponent {         @trait=Popup        { bindings:{type:Dropdown;}; }         @trait=PopupControl { bindings:{type:PopupControl;}; }         @trait=Chooser      { bindings:{type:Chooser;}; }          @trait=PostOnChange { bindings:{action:null;}; }     }      component=(StringComponent,AWHyperlink,PopupMenuLink) {         @trait=bold {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:b; };         }         @trait=italic {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:i; };         }         @trait=heading1 {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:h1; };         }         @trait=heading2 {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:h2; };         }         @trait=heading3 {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:h3; };         }     } }   layout {     @trait=ActionButtons {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:buttons;             align:right;             defaultStyle:primary;          };          elementClass:"l-action-buttons";     }      @trait=ActionLinks {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:links;             align:none;          };          elementClass:"l-action-buttons";     }      @trait=ActionLinksAligned {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:links;             align:right;          };          elementClass:"l-action-buttons";     }      @trait=ActionMenu {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:menu;             align:right;          };          elementClass:"l-action-buttons";     }      @trait=InstanceActionButtons {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:buttons;             align:right;             filterActions:instance;          };          elementClass:"l-action-buttons";     }      @trait=StaticActionButtons {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:buttons;             align:right;             filterActions:static;          };          elementClass:"l-action-buttons";     }      @trait=Tabs { visible:true; component:MetaTabs; }      @trait=Sections { visible:true; component:MetaSectionsComponent; }      @trait=Form { visible:true; component:MetaFormComponent; }      @trait=Stack { visible:true; component:MetaElementListComponent; }      component=MetaFormComponent @trait=labelsOnTop;      layout_trait=labelsOnTop class {         bindings:{showLabelsAboveControls:true;};     } }  ~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null;}; }   layout=ListItem class {     component:StringComponent;     bindings:{         value:${properties.get("objectTitle")};     }; }  module {     visible:$${!properties.get("hidden")};     homePage:MetaHomePageComponent;     pageBindings:${properties.get("homePage") == "MetaHomePageComponent" ? new Map().set("module", values.get("module")) : null};     component:MetaDashboardLayoutComponent;     layout { visible:true; }      @trait=ActionTOC {         @layout=Actions {            label:"Actions";            component:"MetaActionListComponent";            after:zToc;         }     } } ';
-
-// @formatter:on
-/* tslint:disable */

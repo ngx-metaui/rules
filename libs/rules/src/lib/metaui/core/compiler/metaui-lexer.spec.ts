@@ -33,32 +33,32 @@ describe('MetaUI Lexer', () => {
   describe('Comments lexing', () => {
     it('should tokenize block level comments as well as Line Comments', async(() => {
       /* tslint:disable: no-trailing-whitespace */
-      lexer = new OSSLexer(`/** 
+      lexer = new OSSLexer(`/**
                some comment
-            
-            */ 
-            
-            
-            /** 
+
+            */
+
+
+            /**
                some comment 2
-            
-            */ 
-             
+
+            */
+
             // Test Line Comment
             /**/
-                                   
+
         `);
 
       let token: OSSToken = lexer.nextToken();
-      expect(token.value).toBe(`/** 
+      expect(token.value).toBe(`/**
                some comment
-            
+
             */`);
 
       token = lexer.nextToken();
-      expect(token.value).toBe(`/** 
+      expect(token.value).toBe(`/**
                some comment 2
-            
+
             */`);
 
 
@@ -74,18 +74,18 @@ describe('MetaUI Lexer', () => {
 
     it('should throw error when block comment is not terminated', async(() => {
       lexer = new OSSLexer(`
-            /** 
+            /**
                some comment
-            
+
             */
-            
-            
-            /** 
+
+
+            /**
                some comment 2
-            
-                         
+
+
             // Test Line Comment
-                        
+
         `);
 
       const token: OSSToken = lexer.nextToken();
@@ -99,11 +99,11 @@ describe('MetaUI Lexer', () => {
 
     it('should throw error when line level comment is not terminated by new line', async(() => {
       lexer = new OSSLexer(`
-            /** 
+            /**
                some comment
-            
+
             */
-                               
+
             // Test Line Comment`);
 
       const token: OSSToken = lexer.nextToken();
@@ -120,11 +120,11 @@ describe('MetaUI Lexer', () => {
 
     it('should tokenize start and end of the basic block', async(() => {
 
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
                 class=User#AAAA {
-                    visible:true;               
-                    zNone => aaa;                                                
-                }                  
+                    visible:true;
+                    zNone => aaa;
+                }
             `);
 
       let token = rewindTo(lexer, 6);
@@ -139,14 +139,14 @@ describe('MetaUI Lexer', () => {
 
     it('should tokenize start and end of the nested block', async(() => {
 
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
             class=User {
-                
-                
+
+
                 layout=Inspect {
                 }
-                                                
-            }                  
+
+            }
         `);
       let token = rewindTo(lexer, 4);
 
@@ -169,10 +169,10 @@ describe('MetaUI Lexer', () => {
 
     it('should tokenize start and end of the inline block', async(() => {
 
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
             class=User field=name {
-                                                                                              
-            }                  
+
+            }
         `);
 
       let token = rewindTo(lexer, 7);
@@ -187,12 +187,12 @@ describe('MetaUI Lexer', () => {
 
     it('should recognize Semi 2 colons', async(() => {
 
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
             class=User {
                 field:value;
                 field1:value2;
-                                                                                              
-            }                  
+
+            }
         `);
 
       let token = rewindTo(lexer, 8);
@@ -208,11 +208,11 @@ describe('MetaUI Lexer', () => {
 
     it('should tokenize key: value so it will read 2 colons', async(() => {
       /* tslint:disable: no-trailing-whitespace */
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
                     class=User {
                         field:value;
-                        field1:value2;                                                         
-                    }                  
+                        field1:value2;
+                    }
                 `);
 
 
@@ -230,11 +230,11 @@ describe('MetaUI Lexer', () => {
 
     it('should tokenize array: value so it will read 3 values', async(() => {
 
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
                     class=User {
                         field=(aa, bb, cc) {
-                        }                                                                     
-                    }                  
+                        }
+                    }
                 `);
 
       let token = rewindTo(lexer, 9);
@@ -249,11 +249,11 @@ describe('MetaUI Lexer', () => {
 
 
     it('should tokenize commans for aa, bb, cc ', async(() => {
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
                     class=User {
                         field=(aa, bb, cc) {
-                        }                                                                     
-                    }                  
+                        }
+                    }
                 `);
 
       let token = rewindTo(lexer, 9);
@@ -269,10 +269,10 @@ describe('MetaUI Lexer', () => {
 
     it('should recognize Equal for the selectors', async(() => {
 
-      lexer = new OSSLexer(`            
+      lexer = new OSSLexer(`
                         module=home class=User {
-                                                                                      
-                        }                  
+
+                        }
                 `);
 
       let token = rewindTo(lexer, 2);
@@ -288,13 +288,13 @@ describe('MetaUI Lexer', () => {
     it('should tokenize properties and precedenceChain path', async(() => {
       lexer = new OSSLexer(`
                // aaas
-            
+
                 class=User#AAAA {
                     visible:true;
-                    
+
                     zNone => aaa;
-                                                    
-                }                      
+
+                }
             `);
       const token = rewindTo(lexer, 13);
       expect(token.value).toBe('=>');
@@ -304,16 +304,16 @@ describe('MetaUI Lexer', () => {
 
     it('should tokenize precedenceChain path', async(() => {
       lexer = new OSSLexer(`
-               // aaas           
+               // aaas
                 class=User {
                     visible:true;
-                    
+
                     zNone => *;
                     zLeft => firstName => lastName#traitOne;
                     zRight => description#traitTwo => label;
                     Notes.zDetail => notes;
-                                                    
-                }                      
+
+                }
             `);
       let token = rewindTo(lexer, 12); // star
 
@@ -407,9 +407,9 @@ describe('MetaUI Lexer', () => {
     it('should read zone based keypath ', async(() => {
       lexer = new OSSLexer(
         `class=User {
-                    
-                    
-                       myForm.zTop => AAA.aaa; 
+
+
+                       myForm.zTop => AAA.aaa;
                    }`
       );
       let token = rewindTo(lexer, 5);
@@ -429,8 +429,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
-                        label:$[key001]"Default Value";  
-                    }                                                              
+                        label:$[key001]"Default Value";
+                    }
               }`
       );
       const token = rewindTo(lexer, 11);
@@ -443,8 +443,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
-                        label:$[key001"Default Value";  
-                    }                                                              
+                        label:$[key001"Default Value";
+                    }
               }`
       );
 
@@ -462,8 +462,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
-                        label:$[key001]"Default Value";   
-                    }                                                              
+                        label:$[key001]"Default Value";
+                    }
               }`
       );
       const token = rewindTo(lexer, 12);
@@ -477,8 +477,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                             field=aa {
-                                label:$[key001]"Default Value;   
-                            }                                                              
+                                label:$[key001]"Default Value;
+                            }
                       }`
       );
 
@@ -494,8 +494,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
-                        label:$[key001]'Default Value';   
-                    }                                                              
+                        label:$[key001]'Default Value';
+                    }
               }`
       );
       const token = rewindTo(lexer, 12);
@@ -509,8 +509,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                             field=aa {
-                                label:$[key001]'Default Value;   
-                            }                                                              
+                                label:$[key001]'Default Value;
+                            }
                       }`
       );
 
@@ -525,8 +525,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                             field=aa {
-                                label:$[key001]'Default Value";   
-                            }                                                              
+                                label:$[key001]'Default Value";
+                            }
                       }`
       );
 
@@ -545,8 +545,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {
-                            value:$object;   
-                        }                                                              
+                            value:$object;
+                        }
                  }`
       );
 
@@ -561,8 +561,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {
-                            value:$object.aa;   
-                        }                                                              
+                            value:$object.aa;
+                        }
                  }`
       );
 
@@ -577,8 +577,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {
-                            value:$object12.aa;   
-                        }                                                              
+                            value:$object12.aa;
+                        }
                  }`
       );
       const token = rewindTo(lexer, 11);
@@ -592,8 +592,8 @@ describe('MetaUI Lexer', () => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {
-                            value:$1object12.aa;   
-                        }                                                              
+                            value:$1object12.aa;
+                        }
                  }`
       );
       const token = rewindTo(lexer, 11);
