@@ -99,7 +99,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
 
   rules: Rule[] = new Array<Rule>();
   ruleCount: number = 0;
-  _testRules: Map<string, any> = new Map<string, any>();
+  _testRules: Map<string, string> = new Map<string, string>();
 
   declareKeyMask: number = 0;
   ruleSetGeneration: number = 0;

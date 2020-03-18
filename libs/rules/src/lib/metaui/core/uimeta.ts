@@ -38,7 +38,6 @@ import {
   StaticDynamicWrapper
 } from './property-value';
 import {Rule, Selector} from './rule';
-import {JsonRule} from './json-rule';
 import {ItemProperties} from './item-properties';
 import {ACTIVE_CNTX} from './meta-context/meta-context.component';
 import {
@@ -397,7 +396,7 @@ export class UIMeta extends ObjectMeta {
    * Loads application level rules. Application level rules are global rules
    */
   loadApplicationRule(): void {
-    let aRules: Array<JsonRule>;
+    let aRules: string;
     let registeredAppRules: any[];
     let appRuleFiles: string[] = ['Application'];
 
@@ -815,7 +814,7 @@ export class UIMeta extends ObjectMeta {
 class AppRuleMetaDataProvider implements ValueQueriedObserver {
 
   notify(meta: MetaRules, key: string, value: any): void {
-    let aRules: Array<JsonRule>;
+    let aRules: string;
     const uiMeta: UIMeta = <UIMeta>meta;
 
     if (uiMeta._testRules.has(value + 'Rule')) {

@@ -271,13 +271,13 @@ layout {
     }
 }
 
-~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null; }; }
+~class layout=(Inspect, SearchForm) {component:StringField; bindings:{value:null; }; }
 
 
 
 
 layout=ListItem class {
-    component:StringComponent;
+    component:StringField;
     bindings:{
         value:${properties.get("objectTitle")};
     };

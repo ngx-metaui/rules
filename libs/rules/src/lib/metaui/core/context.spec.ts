@@ -16,7 +16,7 @@
  *
  *
  */
-import {Component, DebugElement, Input} from '@angular/core';
+import {Component, DebugElement, EventEmitter, Input, Output} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {ContextFieldPath, Expr} from './property-value';
@@ -41,13 +41,6 @@ import {
 import {NestedMap} from './nested-map';
 import {UIContext} from './context';
 
-// @formatter:off
-/* tslint:disable */
-// temp rules to push some default that are now separated from the rule engine
-export const UILibRules = 'field {     type  {       component:StringComponent;       bindings:{         value:$value;       };     }     type=(boolean, Boolean) {         editable {             component:Checkbox;             bindings:{               ngModel: $value;               binary: true;             };         }     }     type=(Number) {         bindings:{formatter:$formatters.integer; };         editable { component:InputFieldComponent;  }         operation=search {           bindings:{formatter:$formatters.blankNull.integer;};         }     }      type=Date   {         component:DateAndTimeComponent;         bindings:{           showTime:false;           formatter:shortDate;         };          fiveZoneLayout = true {}           @trait=dateTime editable {             bindings:{formatter:dateTime; showTime:true;};          }      }      type=Enum   {         editable                {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${field};                 destinationClass:${type};                 displayKey:"name";                 formatter:$formatters.identifier;             };              operation=(search, list) {                 bindings: { type:Popup; };             }         }     }      type=(Array, Set) {         @trait=enum editable {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${field};                 multiselect:true;                 destinationClass:${properties.get("enumClass")};                 displayKey:"name";                 formatter:$formatters.identifier;             };         }          operation=(search, list)        { visible:false ;}          @trait=ownedToMany {             after:zDetail;             component:MetaDetailTable;         }     }       type="File" {         editable {             component:FileUploadChooser;             bindings:{ file:$value; };         }         editable=false {             bindings: {               value:${value ? value.name : "(none)"};             };         }     }       type=String {         editable  {             component:InputFieldComponent;         }         @trait=longtext {             after:zBottom;             editable {               component:TextAreaComponent;               bindings:{                 cols:60;                 rows:10;               };             }             operation=(search, list)  { visible:false; }         }         @trait=richtext {             after:zBottom;             bindings:{escapeUnsafeHtml:true;};             editable            { component:RichTextAreaComponent;                                   bindings:{cols:60; rows:10;}; }             operation=(search)  { after:zNone; }             operation=(list)  { editable:false; after:zDetail; }         }         @trait=secret {             bindings:{formatter:$formatters.hiddenPassword;};             editable   {               component:AWPasswordField;               bindings:{formatter:null;};             }             operation=(search, list) { visible: false; }         }         trait=truncated { component:TruncateString; bindings:{size:10;}; }     }      type="Money" {         component: CurrencyComponent;         bindings:{             money:$value;             currencies:${properties.get("currencies")};         };     }      @trait=derived {         editable:false;         editing { after:zNone; }     }      @trait=searchable {         operation=search {             visible:true;             editable:true!;             after:null!;         }     }      @trait=required {         operation=(edit, create) {             required:true;             object {                 valid: ${( value != undefined && value != null) ? true : "Answer required"};             }         }     }      @trait=list {         editable {             component:GenericChooserComponent;             bindings:{                 object:${object};                 key:${properties.get("field")};                 list:${properties.get("choices")};                 type:${properties.get("chooserStyle")};             };         }     }       @trait=asObject {         editable=false {             component:MetaObjectDetailComponent;             nestedLayout:true;             bindings: {                 object:$value;                 layout:Inspect;                 useNoLabelLayout:true;                 label:${properties.get("label")};             };         }     }       @trait=asHover {         editable=false {             component:HoverCardComponent;             bindings:{                 linkTitle:$value;                 ngcontentLayout:Content;                 appendContentToBody:false;             };         }     }       @layout=Content {         component:MetaObjectDetailComponent;         bindings: {             object:$value;             layout:Inspect;         };     }      @trait=noCreate { operation=create { visible:false; } }     @trait=noSearch { operation=search { visible:false; } }      component=GenericChooserComponent {         @trait=Popup        { bindings:{type:Dropdown;}; }         @trait=PopupControl { bindings:{type:PopupControl;}; }         @trait=Chooser      { bindings:{type:Chooser;}; }          @trait=PostOnChange { bindings:{action:null;}; }     }      component=(StringComponent,AWHyperlink,PopupMenuLink) {         @trait=bold {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:b; };         }         @trait=italic {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:i; };         }         @trait=heading1 {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:h1; };         }         @trait=heading2 {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:h2; };         }         @trait=heading3 {             wrapperComponent:GenericContainerComponent;             wrapperBindings: { tagName:h3; };         }     } }   layout {     @trait=ActionButtons {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:buttons;             align:right;             defaultStyle:primary;          };          elementClass:"l-action-buttons";     }      @trait=ActionLinks {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:links;             align:none;          };          elementClass:"l-action-buttons";     }      @trait=ActionLinksAligned {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:links;             align:right;          };          elementClass:"l-action-buttons";     }      @trait=ActionMenu {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:menu;             align:right;          };          elementClass:"l-action-buttons";     }      @trait=InstanceActionButtons {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:buttons;             align:right;             filterActions:instance;          };          elementClass:"l-action-buttons";     }      @trait=StaticActionButtons {         visible:true;         component:MetaActionListComponent;         bindings:{             renderAs:buttons;             align:right;             filterActions:static;          };          elementClass:"l-action-buttons";     }      @trait=Tabs { visible:true; component:MetaTabs; }      @trait=Sections { visible:true; component:MetaSectionsComponent; }      @trait=Form { visible:true; component:MetaFormComponent; }      @trait=Stack { visible:true; component:MetaElementListComponent; }      component=MetaFormComponent @trait=labelsOnTop;      layout_trait=labelsOnTop class {         bindings:{showLabelsAboveControls:true;};     } }  ~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null;}; }   layout=ListItem class {     component:StringComponent;     bindings:{         value:${properties.get("objectTitle")};     }; }  module {     visible:$${!properties.get("hidden")};     homePage:MetaHomePageComponent;     pageBindings:${properties.get("homePage") == "MetaHomePageComponent" ? new Map().set("module", values.get("module")) : null};     component:MetaDashboardLayoutComponent;     layout { visible:true; }      @trait=ActionTOC {         @layout=Actions {            label:"Actions";            component:"MetaActionListComponent";            after:zToc;         }     } } ';
-
-// @formatter:on
-/* tslint:disable */
 
 describe('Meta Context behaivor ', () => {
 
@@ -64,8 +57,10 @@ describe('Meta Context behaivor ', () => {
 
     TestBed.compileComponents();
     const metaUI: MetaRules = TestBed.inject(META_RULES);
+    const ossFile: any = require(
+      '!!raw-loader!../../resources/compiler/context/WidgetsRules-ui-m.oss');
 
-    metaUI.loadUILibSystemRuleFiles({}, UILibRules, {});
+    metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
 
     window.setTimeout(function () {
       done();
@@ -231,8 +226,8 @@ describe('Meta Context behaivor ', () => {
     );
 
 
-    it('it should retrive default exaclty for basic when no user rules are loaded  and no ' +
-      'class is specified after we push layout=Inspect', () => {
+    it('it should retrive default (programatic)  rules when no user rules are loaded  ' +
+      'and no class is specified after we push layout=Inspect', () => {
 
         const metaUI: MetaRules = TestBed.inject(META_RULES);
 
@@ -244,14 +239,13 @@ describe('Meta Context behaivor ', () => {
 
         const propertyMap = context.allProperties();
 
-
         expect(propertyMap.size).toEqual(5);
         expect(propertyMap.has('label')).toBeTruthy();
         expect(propertyMap.has('zones')).toBeTruthy();
         expect(propertyMap.has('bindings')).toBeTruthy();
         expect(propertyMap.has('component')).toBeTruthy();
         expect(propertyMap.has('bindings')).toBeTruthy();
-        expect(propertyMap.get('component')).toEqual('StringComponent');
+        expect(propertyMap.get('component')).toEqual('StringField');
 
         context.pop();
       }
@@ -280,7 +274,7 @@ describe('Meta Context behaivor ', () => {
         expect(propertyMap.has('bindings')).toBeTruthy();
         expect(propertyMap.has('component')).toBeTruthy();
         expect(propertyMap.has('bindings')).toBeTruthy();
-        expect(propertyMap.get('component')).toEqual('StringComponent');
+        expect(propertyMap.get('component')).toEqual('StringField');
 
         context.pop();
       }
@@ -307,7 +301,7 @@ describe('Meta Context behaivor ', () => {
         expect(propertyMap.has('bindings')).toBeTruthy();
         expect(propertyMap.has('component')).toBeTruthy();
         expect(propertyMap.has('bindings')).toBeTruthy();
-        expect(propertyMap.get('component')).toEqual('StringComponent');
+        expect(propertyMap.get('component')).toEqual('StringField');
 
         context.pop();
       }
@@ -442,7 +436,7 @@ describe('Meta Context behaivor ', () => {
         expect(propertyMap.has('bindings')).toBeTruthy();
         expect(propertyMap.has('component')).toBeTruthy();
         expect(propertyMap.has('bindings')).toBeTruthy();
-        expect(propertyMap.get('component')).toEqual('StringComponent');
+        expect(propertyMap.get('component')).toEqual('StringField');
 
         context.pop();
       }
@@ -471,7 +465,7 @@ describe('Meta Context behaivor ', () => {
         expect(propertyMap.has('bindings')).toBeTruthy();
         expect(propertyMap.has('component')).toBeTruthy();
         expect(propertyMap.has('bindings')).toBeTruthy();
-        expect(propertyMap.get('component')).toEqual('StringComponent');
+        expect(propertyMap.get('component')).toEqual('StringField');
 
         context.pop();
       }
@@ -498,7 +492,7 @@ describe('Meta Context behaivor ', () => {
         expect(propertyMap.has('bindings')).toBeTruthy();
         expect(propertyMap.has('component')).toBeTruthy();
         expect(propertyMap.has('bindings')).toBeTruthy();
-        expect(propertyMap.get('component')).toEqual('StringComponent');
+        expect(propertyMap.get('component')).toEqual('StringField');
 
         context.pop();
       }
@@ -531,7 +525,7 @@ describe('Meta Context behaivor ', () => {
         expect(props.has('label')).toBeTruthy();
         expect(props.has('objectTitle')).toBeTruthy();
         expect(props.get('class_trait')).toEqual('fiveZones');
-        expect(props.get('component')).toEqual('MetaFormComponent');
+        expect(props.get('component')).toEqual('MetaForm');
       }
     );
 
@@ -590,7 +584,7 @@ describe('Meta Context behaivor ', () => {
         expect(props.has('label')).toBeTruthy();
         expect(props.has('objectTitle')).toBeTruthy();
         expect(props.get('class_trait')).toEqual('tableZones');
-        expect(props.get('component')).toEqual('MetaFormComponent');
+        expect(props.get('component')).toEqual('MetaForm');
       }
     );
 
@@ -619,7 +613,7 @@ describe('Meta Context behaivor ', () => {
         const componentName = context.propertyForKey(KeyComponentName);
 
 
-        expect(componentName).toEqual('InputFieldComponent');
+        expect(componentName).toEqual('InputField');
         expect(context.propertyForKey('layout_trait')).toEqual('Form');
         expect(context.propertyForKey(KeyEditable)).toEqual(true);
         context.pop();
@@ -652,7 +646,7 @@ describe('Meta Context behaivor ', () => {
 
         // print(componentName);
 
-        expect(componentName).toEqual('StringComponent');
+        expect(componentName).toEqual('StringField');
         expect(context.propertyForKey('layout_trait')).toEqual('Form');
         expect(context.propertyForKey(KeyEditable)).toEqual(false);
         context.pop();
@@ -685,7 +679,7 @@ describe('Meta Context behaivor ', () => {
 
         // print(componentName);
 
-        expect(componentName).toEqual('StringComponent');
+        expect(componentName).toEqual('StringField');
         expect(context.propertyForKey('layout_trait')).toEqual('Form');
         expect(context.propertyForKey(KeyEditable)).toEqual(false);
         context.pop();
@@ -735,8 +729,6 @@ describe('Meta Context behaivor ', () => {
         context.set('object', new MyUserTestClass('Frank', 'Kolar', 16,
           'From Czech Republicc'));
         context.setScopeKey('class');
-
-
         context.set('field', 'firstName');
 
         const props = context.allProperties();
@@ -817,7 +809,7 @@ describe('Meta Context behaivor ', () => {
         context.set('field', 'age');
 
         expect(context.propertyForKey(KeyComponentName))
-          .toEqual('InputFieldComponent');
+          .toEqual('InputField');
 
         const type = context.propertyForKey(KeyType);
         expect(type).toEqual('Number');
@@ -848,7 +840,7 @@ describe('Meta Context behaivor ', () => {
 
         context.push();
         context.set('field', 'age');
-        expect(context.propertyForKey(KeyComponentName)).toEqual('StringComponent');
+        expect(context.propertyForKey(KeyComponentName)).toEqual('StringField');
         context.pop();
 
         context.pop();
@@ -994,7 +986,7 @@ describe('Meta Context behaivor ', () => {
 
   // @formatter:on
   describe(
-    'layout based behavior with neested selectors such as operation=create, view and check ' +
+    'layout based behavior with nested selectors such as operation=create, view and check ' +
     'how the ' +
     'structure and content can be changed so that we can e.g. hide show certain fields per ' +
     'operation or overide ' +
@@ -1200,11 +1192,7 @@ describe('Meta Context behaivor ', () => {
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
 
           const context = metaUI.newContext();
-
-
           context.push();
-
-
           context.set('layout', 'Inspect');
           context.set('operation', 'edit');
           context.set('role', 'admin');
@@ -1213,11 +1201,9 @@ describe('Meta Context behaivor ', () => {
               'pasw', 'asdf', '11'));
           context.setScopeKey('class');
 
-
           const mapp = context.propertyForKey(PropFieldsByZone);
 
           expect(mapp.size).toEqual(2);
-
           const zLeft = mapp.get('zLeft');
           const zNone = mapp.get('zNone');
 
@@ -1237,8 +1223,6 @@ describe('Meta Context behaivor ', () => {
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
 
           const context = metaUI.newContext();
-
-
           context.push();
 
 
@@ -1263,8 +1247,6 @@ describe('Meta Context behaivor ', () => {
           expect(zNone).not.toBeDefined();
 
           context.pop();
-
-
         }
       );
 
@@ -1695,14 +1677,18 @@ describe('Meta Context behaivor ', () => {
 
 
     beforeEach(() => {
+      const compMeta = SFComponent['__prop_metadata__'];
+
+      let _title = '';
       Object.defineProperty(SFComponent.prototype, 'title', {
 
+
         get: () => {
-          return this.title + '-patched';
+          return _title + '-patched';
         },
 
         set: (value) => {
-          this.title = value;
+          _title = value;
         },
         enumerable: true,
         configurable: true
@@ -1776,10 +1762,10 @@ describe('Meta Context behaivor ', () => {
 
       const processedIn = Date.now() - start;
 
-      expect(processedIn).toBeLessThan(5000);
-      expect(Match._Debug_ElementProcessCount).toBeGreaterThan(800000);
+      expect(processedIn).toBeLessThan(2500);
+      expect(Match._Debug_ElementProcessCount).toBeGreaterThan(950000);
 
-      // console.log('Rule index entries processed:', Match._Debug_ElementProcessCount)
+      // console.log('Rule index entries processed:', Match._Debug_ElementProcessCount);
       // console.log('Processed in:',  processedIn);
     });
   });
@@ -1801,7 +1787,7 @@ describe('Meta Context behaivor ', () => {
   describe('how class can get object details ', () => {
 
 
-    it('should retrieve correct component to render when trait asHover is used and' +
+    xit('should retrieve correct component to render when trait asHover is used and' +
       ' overriden by user rules', () => {
 
       const metaUI: MetaRules = TestBed.inject(META_RULES);
@@ -1986,7 +1972,7 @@ export const MyUserTestClasForZonesRule =
 export const UserWithDetailRule = `
   class=UserWithDetail {
      field=name {
-         trait:asHover;
+         trait:asSelect;
          label:"Frank Kolar";
 
          layout=Content {
