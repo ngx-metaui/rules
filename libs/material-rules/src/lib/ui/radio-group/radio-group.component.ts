@@ -205,11 +205,9 @@ export class RadioGroup implements ControlValueAccessor, MatFormFieldControl<any
    *
    * Methods used by ControlValueAccessor
    */
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
 
-  onTouched = () => {
-  };
+  onTouched = () => {};
 
   ngOnInit(): void {
     if (!!this.required) {

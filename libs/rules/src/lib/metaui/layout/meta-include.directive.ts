@@ -166,6 +166,7 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     const newComponent = context.propertyForKey('component');
     if (newComponent && ((this.name && this.name !== newComponent) || this.metaContext._isDirty)) {
       this.viewContainer.clear();
+      this.resolvedComponentRef = undefined;
       this.doRenderComponent();
       // console.log('MetaInclude(ngDoCheck- rerender ):', this.name);
 
@@ -498,10 +499,9 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
     });
     const unsubscribe = subscription.unsubscribe.bind(subscription);
 
-    // todo: confirm if this even work
-    (<any>component['_view']).disposables =
-      ((<any>component['_view']).disposables) ?
-        ([...(<any>component['_view']).disposables, unsubscribe]) : [unsubscribe];
+    component.onDestroy(() => {
+      subscription.unsubscribe();
+    });
 
     ngModel.model = this.mGetValue(component.instance, this.metaContext, cntxPath);
     ngModel.name = this.metaContext.myContext().propertyForKey(KeyField);

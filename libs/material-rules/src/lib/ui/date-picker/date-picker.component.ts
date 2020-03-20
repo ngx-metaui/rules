@@ -181,11 +181,9 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
    *
    * Methods used by ControlValueAccessor
    */
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
 
-  onTouched = () => {
-  };
+  onTouched = () => {};
 
   ngDoCheck(): void {
     const isFirstTime = !this.suffixElem && this.viewInit && this.editable;

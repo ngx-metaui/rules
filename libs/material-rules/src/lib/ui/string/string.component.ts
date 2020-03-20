@@ -23,6 +23,7 @@ import {
   ElementRef,
   forwardRef,
   Inject,
+  Input,
   NgZone,
   Optional,
   Renderer2,
@@ -32,9 +33,10 @@ import {
 import {ControlValueAccessor, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
-import {MAT_INPUT_VALUE_ACCESSOR, MatInput} from '@angular/material/input';
+import {MAT_INPUT_VALUE_ACCESSOR} from '@angular/material/input';
 import {Platform} from '@angular/cdk/platform';
 import {AutofillMonitor} from '@angular/cdk/text-field';
+import {Subject} from 'rxjs';
 
 
 /**
@@ -55,7 +57,31 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StringField extends MatInput implements ControlValueAccessor {
+export class StringField implements MatFormFieldControl<any>, ControlValueAccessor {
+  @Input()
+  id: string;
+
+  @Input()
+  type: string = 'text';
+
+  @Input()
+  placeholder: string;
+
+  @Input()
+  readonly: boolean = false;
+
+  @Input()
+  required: boolean = false;
+
+  @Input()
+  disabled: boolean = false;
+
+  private _errorState: boolean;
+
+
+  @Input()
+  value: string;
+
   /**
    * Reference to internal INPUT element having MatInput directive so we can set this reference
    * back to the MatInput
@@ -63,11 +89,20 @@ export class StringField extends MatInput implements ControlValueAccessor {
   @ViewChild('inputField', {static: true})
   protected inputControl: ElementRef;
 
+
+  readonly stateChanges = new Subject<void>();
+  focused = false;
+  autofilled = false;
+
+  onChange = (_: any) => {};
+
+  onTouched = () => {};
+
   constructor(
     protected _elementRef: ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     protected _platform: Platform,
     private _cd: ChangeDetectorRef,
-    @Optional() @Self() public _ngControl: NgControl,
+    @Optional() @Self() public ngControl: NgControl,
     @Optional() protected parentForm: NgForm,
     @Optional() protected parentFormGroup: FormGroupDirective,
     _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -76,41 +111,76 @@ export class StringField extends MatInput implements ControlValueAccessor {
     private _renderer: Renderer2,
     ngZone: NgZone) {
 
-    super(_elementRef, _platform, _ngControl, parentForm, parentFormGroup,
-      _defaultErrorStateMatcher, inputValueAccessor, autofillMonitor, ngZone);
-
-    if (this._ngControl != null) {
-      this._ngControl.valueAccessor = this;
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
     }
   }
 
-  onChange = (_: any) => {
-  };
 
-  onTouched = () => {
-  };
+  /** @internal */
+  get nativeElement(): any {
+    return this.inputControl.nativeElement;
+  }
 
-  ngOnInit(): void {
-    this._elementRef = this.inputControl;
-    super.ngOnInit();
+  get empty(): boolean {
+    return !this._elementRef.nativeElement.value;
   }
 
 
-  ngDoCheck(): void {
-    super.ngDoCheck();
-    this._cd.markForCheck();
+  get errorState(): boolean {
+    return this._errorState;
+  }
+
+  get shouldLabelFloat(): boolean {
+    return this.focused || !this.empty;
+  }
+
+  get controlType(): string {
+    return 'mat-input';
+  }
+
+  onContainerClick(event: MouseEvent): void {
+  }
+
+  setDescribedByIds(ids: string[]): void {
+  }
+
+
+  ngOnInit(): void {
   }
 
 
   registerOnChange(fn: (_: any) => void): void {
-    this.onChange = fn;
+    if (this.type === 'number') {
+      this.onChange = (value) => {
+        fn(value === '' ? null : parseFloat(value));
+      };
+    } else {
+      this.onChange = fn;
+    }
   }
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this._renderer.setProperty(this.nativeElement, 'disabled', isDisabled);
+  }
+
   writeValue(value: any): void {
+    this.value = value;
+    this.onChange(value);
+    this.stateChanges.next();
+  }
+
+
+  _focusChanged(isFocused: boolean): void {
+    // Since we have custom ValueAccessor
+    this.focused = isFocused;
+    this.onTouched();
+    this.stateChanges.next();
+
   }
 }
 

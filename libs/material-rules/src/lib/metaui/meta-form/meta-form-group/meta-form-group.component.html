@@ -4,7 +4,7 @@
 <div class="row around-xs" *ngIf="canShowZone('zTop')">
    <div *ngFor="let field of zTop()" class="col-xs-12" [class.meta-fg-readonly]="!editing">
       <m-context [field]="field">
-        <m-form-field [field]=field [editable]="editing"></m-form-field>
+        <m-form-field [field]=field [editing]="editing"></m-form-field>
       </m-context>
     </div>
 </div>
@@ -23,7 +23,7 @@
        [style.order]="field.orderNum">
 
     <m-context [field]="field.name">
-      <m-form-field [field]=field.name></m-form-field>
+      <m-form-field [field]="field.name" [editing]="editing"></m-form-field>
     </m-context>
   </div>
 </div>
@@ -35,7 +35,7 @@
 <div class="row between-xs" *ngIf="canShowZone('zBottom')">
   <div *ngFor="let field of zBottom()" class="col-xs-12" [class.meta-fg-readonly]="!editing">
     <m-context [field]="field">
-      <m-form-field [field]=field [editable]="editing"></m-form-field>
+      <m-form-field [field]=field [editing]="editing"></m-form-field>
     </m-context>
   </div>
 </div>
