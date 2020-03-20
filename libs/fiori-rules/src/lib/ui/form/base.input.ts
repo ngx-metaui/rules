@@ -16,7 +16,21 @@
  *
  *
  */
-import { AfterViewInit, ChangeDetectorRef, DoCheck, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Self, SimpleChanges, ViewChild, Directive } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  DoCheck,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Self,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {FormFieldControl} from './form-control';
 import {ControlValueAccessor, FormControl, NgControl, NgForm} from '@angular/forms';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
@@ -123,9 +137,9 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     const newVal = this.boolProperty(value);
     if (this._editable !== newVal) {
       this._editable = newVal;
-    this._cd.markForCheck();
-    this.stateChanges.next('editable');
-  }
+      this._cd.markForCheck();
+      this.stateChanges.next('editable');
+    }
   }
 
   /**
@@ -155,6 +169,7 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   // @formatter:off
   onChange = (_: any) => {};
   onTouched = () => {};
+
   // @formatter:on
 
   constructor(protected _cd: ChangeDetectorRef,
