@@ -17,9 +17,9 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {BaseComponent, Environment, KeyModule} from '@ngx-metaui/rules';
+import {Environment, KeyModule} from '@ngx-metaui/rules';
 
 /* tslint:disable */
 /**
@@ -58,23 +58,22 @@ import {BaseComponent, Environment, KeyModule} from '@ngx-metaui/rules';
 @Component({
   selector: 'm-home-page',
   template: `
-      <ng-template [ngIf]="module">
-          <m-context [module]="module">
-              <m-include-component></m-include-component>
-          </m-context>
-      </ng-template>
+    <ng-template [ngIf]="module">
+      <m-context [module]="module">
+        <m-include-component></m-include-component>
+      </m-context>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class MetaHomePageComponent extends BaseComponent {
+export class MetaHomePageComponent implements OnInit {
 
   @Input()
   module: string;
 
   constructor(public env: Environment, private activatedRoute: ActivatedRoute,
               private _cd: ChangeDetectorRef) {
-    super(env);
   }
 
 
@@ -85,7 +84,6 @@ export class MetaHomePageComponent extends BaseComponent {
    *
    */
   ngOnInit(): void {
-    super.ngOnInit();
 
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params && params[KeyModule]) {
