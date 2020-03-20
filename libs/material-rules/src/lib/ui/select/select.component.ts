@@ -122,12 +122,16 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
 
   @Input()
   disabled: boolean = false;
+
   @Input()
   id: string;
+
   @Input()
   multiple: boolean = false;
+
   @Input()
   placeholder: string;
+
   @Input()
   required: boolean = false;
   /**
@@ -136,6 +140,7 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
    */
   @Output()
   readonly selectionChange: EventEmitter<MatSelectChange> = new EventEmitter<MatSelectChange>();
+
   isAsync: boolean;
   /**
    * Reference to internal Material select component so communicate with it.
@@ -203,11 +208,9 @@ export class Select implements ControlValueAccessor, MatFormFieldControl<any>, O
    *
    * Methods used by ControlValueAccessor
    */
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
 
-  onTouched = () => {
-  };
+  onTouched = () => {};
 
   ngOnInit(): void {
     this.isAsync = isObservable(this.list);

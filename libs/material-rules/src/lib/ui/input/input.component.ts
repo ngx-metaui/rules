@@ -20,6 +20,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DoCheck,
   ElementRef,
   forwardRef,
   Inject,
@@ -30,12 +31,19 @@ import {
   Self,
   ViewChild
 } from '@angular/core';
-import {ControlValueAccessor, FormGroupDirective, NgControl, NgForm} from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroupDirective,
+  NgControl,
+  NgForm
+} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
-import {MAT_INPUT_VALUE_ACCESSOR, MatInput} from '@angular/material/input';
+import {MAT_INPUT_VALUE_ACCESSOR} from '@angular/material/input';
 import {Platform} from '@angular/cdk/platform';
 import {AutofillMonitor} from '@angular/cdk/text-field';
+import {Subject} from 'rxjs';
 
 
 /**
@@ -71,7 +79,52 @@ import {AutofillMonitor} from '@angular/cdk/text-field';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InputField extends MatInput implements ControlValueAccessor {
+export class InputField implements MatFormFieldControl<any>, ControlValueAccessor, DoCheck {
+
+  @Input()
+  id: string;
+
+  @Input()
+  type: string = 'text';
+
+  @Input()
+  placeholder: string;
+
+  @Input()
+  readonly: boolean = false;
+
+  @Input()
+  required: boolean = false;
+
+
+  @Input()
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    this._disabled = value;
+
+    this._cd.markForCheck();
+    this.stateChanges.next();
+  }
+
+  private _errorState: boolean;
+
+
+  @Input()
+  get value(): any {
+    return this._value;
+  }
+
+  set value(newValue: any) {
+    if (newValue !== this._value) {
+      this._value = newValue;
+      this.onChange(newValue);
+      this._cd.markForCheck();
+      this.stateChanges.next();
+    }
+  }
 
   /**
    * Reference to internal INPUT element having MatInput directive so we can set this reference
@@ -79,20 +132,29 @@ export class InputField extends MatInput implements ControlValueAccessor {
    */
   @ViewChild('inputField', {static: true})
   protected inputControl: ElementRef;
-  private _xType = 'text';
-  private _readonlyx = false;
-  private _disabledx = false;
+
+
+  private _disabled = false;
+  private _value: string;
   /** @internal */
   private _composing = false;
   private _compositionMode = false;
 
-  /** Whether the user is creating a composition string (IME events). */
+
+  readonly stateChanges = new Subject<void>();
+  focused = false;
+  autofilled = false;
+
+  onChange = (_: any) => {};
+
+  onTouched = () => {};
+
 
   constructor(
     protected _elementRef: ElementRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     protected _platform: Platform,
     private _cd: ChangeDetectorRef,
-    @Optional() @Self() public _ngControl: NgControl,
+    @Optional() @Self() public ngControl: NgControl,
     @Optional() protected parentForm: NgForm,
     @Optional() protected parentFormGroup: FormGroupDirective,
     _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -101,63 +163,57 @@ export class InputField extends MatInput implements ControlValueAccessor {
     private _renderer: Renderer2,
     ngZone: NgZone) {
 
-    super(_elementRef, _platform, _ngControl, parentForm, parentFormGroup,
-      _defaultErrorStateMatcher, inputValueAccessor, autofillMonitor, ngZone);
 
-    if (this._ngControl != null) {
-      this._ngControl.valueAccessor = this;
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
     }
   }
 
-  get type(): string {
-    return this._xType ? this._xType.toLowerCase() : 'text';
-  }
-
-  @Input()
-  set type(value: string) {
-    this._xType = value;
-  }
-
-  @Input()
-  get readonly(): boolean {
-    return this._readonlyx;
-  }
-
-  set readonly(value: boolean) {
-    this._readonlyx = value;
-
-    this._cd.markForCheck();
-  }
-
-  @Input()
-  get disabled(): boolean {
-    return this._disabledx;
-  }
-
-  set disabled(value: boolean) {
-    this._disabledx = value;
-
-    this._cd.markForCheck();
-  }
 
   /** @internal */
   get nativeElement(): any {
     return this.inputControl.nativeElement;
   }
 
-  onChange = (_: any) => {
-  };
-
-  onTouched = () => {
-  };
-
-  ngOnInit(): void {
-    this.reInit();
-    super.ngOnInit();
+  get empty(): boolean {
+    return !this._elementRef.nativeElement.value;
   }
 
+
+  get errorState(): boolean {
+    return this._errorState;
+  }
+
+  get shouldLabelFloat(): boolean {
+    return this.focused || !this.empty;
+  }
+
+  get controlType(): string {
+    return 'mat-input';
+  }
+
+  onContainerClick(event: MouseEvent): void {
+  }
+
+  setDescribedByIds(ids: string[]): void {
+  }
+
+
+  ngOnInit(): void {
+  }
+
+  ngDoCheck() {
+    if (this.ngControl) {
+      // We need to re-evaluate this on every change detection cycle, because there are some
+      // error triggers that we can't subscribe to (e.g. parent form submissions). This means
+      // that whatever logic is in here has to be super lean or we risk destroying the performance.
+      this.updateErrorState();
+    }
+  }
+
+
   registerOnChange(fn: (_: any) => void): void {
-    if (this._type === 'number') {
+    if (this.type === 'number') {
       this.onChange = (value) => {
         fn(value === '' ? null : parseFloat(value));
       };
@@ -177,19 +233,21 @@ export class InputField extends MatInput implements ControlValueAccessor {
   writeValue(value: any): void {
     this.value = value;
     this.onChange(value);
+    this.stateChanges.next();
   }
 
   onInput(value: any): void {
     if (!this._compositionMode || (this._compositionMode && !this._composing)) {
-      this.onChange(value);
+      this.onChange(this.value);
+      this.stateChanges.next();
     }
   }
 
   _focusChanged(isFocused: boolean): void {
-    super._focusChanged(isFocused);
-
     // Since we have custom ValueAccessor
+    this.focused = isFocused;
     this.onTouched();
+    this.stateChanges.next();
 
   }
 
@@ -204,16 +262,19 @@ export class InputField extends MatInput implements ControlValueAccessor {
     this.onChange(value);
   }
 
-  private reInit(): void {
-    this._elementRef = this.inputControl;
-    this._isNativeSelect = this.nativeElement.nodeName.toLowerCase() === 'select';
+  private updateErrorState() {
+    const oldState = this.errorState;
+    const parent = this.parentForm;
+    const control = this.ngControl ? this.ngControl.control as FormControl : null;
+    const newState = !!(control && control.invalid && (control.touched ||
+      (parent && parent.submitted)));
 
-    if (this._isNativeSelect) {
-      this.controlType = (this.nativeElement as HTMLSelectElement).multiple
-        ? 'mat-native-select-multiple' : 'mat-native-select';
+    if (newState !== oldState) {
+      this._errorState = newState;
+      this.stateChanges.next();
     }
-    this._compositionMode = !this._platform.ANDROID;
   }
+
 
 }
 

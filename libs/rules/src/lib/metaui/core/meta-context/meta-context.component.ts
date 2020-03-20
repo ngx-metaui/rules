@@ -25,7 +25,6 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  forwardRef,
   Inject,
   Input,
   OnDestroy,

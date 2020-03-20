@@ -230,9 +230,9 @@ export class PropFieldsByZoneResolver extends StaticallyResolvable {
     let m = context.meta.itemNamesByZones(context, KeyField, context.meta.zones(context));
     const zonePath = context.meta.zonePath(context);
 
-    if (isPresent(zonePath)) {
+    if (zonePath) {
       m = <Map<string, any>>FieldPath.getFieldValue(m, zonePath);
-      if (isBlank(m)) {
+      if (!m) {
         m = new Map<string, any>();
       }
     }

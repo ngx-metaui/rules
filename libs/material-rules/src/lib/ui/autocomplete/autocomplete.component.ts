@@ -164,11 +164,9 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
    *
    * Methods used by ControlValueAccessor
    */
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
 
-  onTouched = () => {
-  };
+  onTouched = () => {};
 
   ngOnInit(): void {
     this.isAsync = isObservable(this.list);
@@ -195,8 +193,7 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
   }
 
   ngAfterContentInit(): void {
-    this.matInput.stateChanges.pipe(
-      startWith<void>(null!)
+    this.matInput.stateChanges.pipe(startWith( <string> null!)
     ).subscribe(() => {
       this.cd.detectChanges();
     });

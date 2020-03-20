@@ -28,6 +28,11 @@ import {KeyEditing, KeyObject} from '../core/meta-rules';
  * Common component to setup the context and also create context snapshot for later user.
  */
 export abstract class MetaBaseComponent implements AfterViewChecked {
+
+  /**
+   * We are in editing (editing=true) usually when we edit, create, search. Editing=false when
+   * view, list
+   */
   @Input()
   editing: boolean;
 
