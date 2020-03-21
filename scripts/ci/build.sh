@@ -26,8 +26,6 @@ ng build fiori-rules
 echo "################ Building apps ################"
 ng build doc-app
 ng build material-app
-ng build metaui-evolution
-ng build my-detail-page
 ng build fiori-app
 
 # Build schematics
