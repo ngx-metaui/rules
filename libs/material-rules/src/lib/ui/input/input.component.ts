@@ -176,7 +176,7 @@ export class InputField implements MatFormFieldControl<any>, ControlValueAccesso
   }
 
   get empty(): boolean {
-    return !this._elementRef.nativeElement.value;
+    return !this._elementRef.nativeElement.value && !this.value;
   }
 
 

@@ -15,6 +15,4 @@ ng lint fiori-rules
 
 ng lint doc-app
 ng lint material-app
-ng lint metaui-evolution
-ng lint my-detail-page
 ng lint fiori-app
