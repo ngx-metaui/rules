@@ -11,3 +11,4 @@ export const InvoiceRule = 'class=Invoice {   field=uniqueName {     label: "Id"
  *  @formatter:on
  *
  */
+ 

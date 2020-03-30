@@ -11,3 +11,4 @@ export const AddressRule = 'class=Address {   field=name {     trait:labelField;
  *  @formatter:on
  *
  */
+ 

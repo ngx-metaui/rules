@@ -20,16 +20,18 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MetaContextComponent} from './meta-context/meta-context.component';
+import {AWMetaLayoutModule} from '../layout/meta-layout.module';
 
 @NgModule({
   declarations: [
     MetaContextComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AWMetaLayoutModule
+    ],
   exports: [
     MetaContextComponent
   ],

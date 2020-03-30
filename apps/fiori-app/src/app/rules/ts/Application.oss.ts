@@ -11,3 +11,4 @@ export const ApplicationRule = 'module {   productSwitcher:"switcher";   pageTit
  *  @formatter:on
  *
  */
+ 

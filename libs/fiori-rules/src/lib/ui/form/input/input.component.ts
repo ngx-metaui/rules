@@ -56,7 +56,13 @@ export type InputType = 'text' | 'number' | 'email';
 export class InputComponent extends BaseInput {
 
   @Input()
-  type: InputType = 'text';
+  get type(): InputType {
+    return this._type;
+  }
+
+  set type(type: InputType) {
+    this._type = <InputType>type?.toLocaleLowerCase();
+  }
 
   @Input()
   get value(): any {
@@ -66,6 +72,8 @@ export class InputComponent extends BaseInput {
   set value(value: any) {
     super.setValue(value);
   }
+
+  private _type: InputType = 'text';
 
   constructor(protected _cd: ChangeDetectorRef,
               @Optional() @Self() public ngControl: NgControl,

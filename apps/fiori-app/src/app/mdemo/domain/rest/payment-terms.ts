@@ -45,7 +45,8 @@ export const paymentTermsDB: Array<PaymentTermsCSV> =
     {
       UniqueName: 'PT1',
       Name: 'Net 45, 2%/30, 3%/20',
-      Description: 'Net amount due in 45 days, 2% discount if paid in 30 days, 3% discount if paid in 20 days'
+      Description: 'Net amount due in 45 days, 2% discount if paid in 30 days, 3% discount if ' +
+        'paid in 20 days'
     },
     {
       UniqueName: 'PT2',
