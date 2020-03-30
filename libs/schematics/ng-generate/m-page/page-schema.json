@@ -48,8 +48,7 @@
       "description": "UI library rules implementation name",
       "enum": [
         "fiori",
-        "material",
-        "prime-ng"
+        "material"
       ],
       "default": "fiori"
     }

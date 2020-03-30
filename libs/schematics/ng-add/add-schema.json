@@ -42,7 +42,6 @@
       "enum": [
         "fiori",
         "material",
-        "prime-ng",
         "none"
       ],
       "default": "fiori"

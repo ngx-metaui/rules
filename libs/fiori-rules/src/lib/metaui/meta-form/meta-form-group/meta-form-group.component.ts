@@ -54,10 +54,8 @@ import {ControlContainer, FormGroup} from '@angular/forms';
  * description (order:5, 100%width)
  *
  *
- * This way I can have fields side by side or taking full width and they can nicely naturally
- * wrap on smaller devices. This is pretty fast and responsible compared to my first solution
- * that I have in prime NG where I have special components and complicated ViewChild queries..
- *
+ * This way I can have fields side by side or taking full width and they can  naturally
+ * wrap on smaller devices.
  *
  */
 @Component({
@@ -89,8 +87,6 @@ export class MetaFormGroup extends MetaBaseComponent {
   }
 
 
-
-
   /**
    * Todo: revisit this part as this is called after each ngDoCheck might want to move into
    * viewchecked??
@@ -102,7 +98,7 @@ export class MetaFormGroup extends MetaBaseComponent {
 
     const bin: Map<string, any> = this.context.propertyForKey('bindings');
     if (bin && bin.has('noLabelLayout')) {
-      this.useNoLabelLayout  = bin.get('noLabelLayout');
+      this.useNoLabelLayout = bin.get('noLabelLayout');
     }
   }
 
