@@ -18,7 +18,7 @@
  *
  *
  */
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, LOCALE_ID, Optional} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ListWrapper} from '../utils/collection';
 import {assert} from '../utils/lang';
@@ -50,12 +50,6 @@ export class Environment {
   inTest: boolean = false;
 
   /**
-   * Keep Current Locale. Initialized from MetaConfig along with i18n support
-   */
-  locale: string;
-
-
-  /**
    * Store current Page FormGroup State that need to be shared down across components
    */
   currentForm: FormGroup;
@@ -71,8 +65,7 @@ export class Environment {
   debugString: string;
 
 
-  constructor() {
-    this.locale = 'en';
+  constructor(@Inject(LOCALE_ID) @Optional() public locale: string) {
     this.envVariables = new Map<string, any>();
     this.stacksVariables = new Map<string, any[]>();
   }

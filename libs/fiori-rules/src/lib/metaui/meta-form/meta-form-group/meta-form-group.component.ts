@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Host} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Host, Optional} from '@angular/core';
 
 import {
   Environment,
@@ -30,6 +30,7 @@ import {
   ZoneRight,
   ZoneTop
 } from '@ngx-metaui/rules';
+import {ControlContainer, FormGroup} from '@angular/forms';
 
 /**
  * This class is responsible to layout  formFields into pre-defined 5 zone layout with
@@ -79,9 +80,15 @@ export class MetaFormGroup extends MetaBaseComponent {
   useNoLabelLayout = false;
 
   constructor(@Host() public _context: MetaContextComponent,
-              public env: Environment, private cd: ChangeDetectorRef) {
+              @Optional() private formContainer: ControlContainer,
+              public env: Environment) {
     super(env, _context);
+
+    this.formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
+      : new FormGroup({}));
   }
+
+
 
 
   /**

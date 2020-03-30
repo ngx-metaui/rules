@@ -123,10 +123,10 @@
 
 
     <ng-template #i18n let-errros>
-        <span *ngIf="errros.required">
+        <span *ngIf="errros?.required">
             Value is required
         </span>
-      <span *ngIf="errros.maxlength">
+      <span *ngIf="errros?.maxlength">
             You reached maxium allowed length. Required is {{errros.maxlength.requiredLength}}
         current is
         {{errros.maxlength.actualLength}}

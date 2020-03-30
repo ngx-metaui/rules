@@ -24,11 +24,11 @@ import {
   Component,
   forwardRef,
   Host,
-  Input,
+  Input, Optional,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import {AbstractControl, ValidatorFn} from '@angular/forms';
+import {AbstractControl, ControlContainer, FormGroup, ValidatorFn} from '@angular/forms';
 import {Environment, KeyBindings, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
 import {FormField, FormFieldComponent} from '../../../ui/form/form-field/form-field.component';
 
@@ -74,8 +74,12 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
 
   constructor(@Host() protected _metaContext: MetaContextComponent,
               private cd: ChangeDetectorRef,
+              @Optional() private formContainer: ControlContainer,
               public env: Environment) {
     super(env, _metaContext);
+
+    this.formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
+      : new FormGroup({}));
   }
 
 

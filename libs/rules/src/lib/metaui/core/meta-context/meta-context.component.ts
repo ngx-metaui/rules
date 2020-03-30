@@ -28,11 +28,12 @@ import {
   Inject,
   Input,
   OnDestroy,
+  Optional,
   Output,
   SimpleChange,
   TemplateRef
 } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {ControlContainer, FormControl, FormGroup} from '@angular/forms';
 import {assert, equals, isBlank, isPresent, StringWrapper} from '../utils/lang';
 import {Environment} from '../config/environment';
 import {ListWrapper} from '../utils/collection';
@@ -109,22 +110,26 @@ const CNTX_CHANGED = 'Cntx_Changed';
 // angular
 const IMPLICIT_PROPERTIES = [
   'module', 'layout', 'operation', 'class', 'object', 'actionCategory', 'action', 'field',
-  'locale', 'pushNewContext'
+  'locale', 'pushNewContext', 'group'
 ];
 
 
 const IMMUTABLE_PROPERTIES = [
-  'module', 'layout', 'operation', 'class', 'action', 'field', 'locale', 'pushNewContext'
+  'module', 'layout', 'operation', 'class', 'action', 'field', 'locale', 'pushNewContext', 'group'
 ];
 
 
 @Component({
   selector: 'm-context',
-  template: '<ng-content></ng-content>',
+  template: `
+    <ng-template [ngIf]="includeComponent">
+      <m-include-component></m-include-component>
+    </ng-template>
+    <ng-content></ng-content>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaContextComponent implements OnDestroy,
-  AfterViewInit, AfterViewChecked {
+export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
   /**
    * Currently there are set of properties which can be passed as expression and therefore they
    * need to be resolved by angular. Angular does not have such option to provide flexible
@@ -161,6 +166,12 @@ export class MetaContextComponent implements OnDestroy,
 
   @Input()
   pushNewContext: boolean;
+
+  @Input()
+  includeComponent: boolean = false;
+
+  @Input()
+  group: string;
 
 
   @Output()
@@ -202,8 +213,10 @@ export class MetaContextComponent implements OnDestroy,
   private prevObject: any;
 
   private _scopeBinding: string;
+  private _formGroup: FormGroup;
 
-  _myContext: Context;
+
+  private _myContext: Context;
 
   /**
    * Need to cache if we already have object or not in case we load data from REST where it
@@ -224,20 +237,19 @@ export class MetaContextComponent implements OnDestroy,
    * detection we need to eliminate event handler based CDs. where most of the time we dont care.
    *
    */
-  _isDirty: boolean = false;
+  isDirty: boolean = false;
 
-
-  /**
-   * Reference to the formGroup so we can access possible form fields
-   */
-  formGroup: FormGroup;
 
   constructor(private elementRef: ElementRef,
               public env: Environment,
-              @Inject(META_RULES) protected meta: MetaRules) {
+              @Inject(META_RULES) protected meta: MetaRules,
+              @Optional() private formContainer: ControlContainer) {
 
     this.supportsDirtyChecking = false;
-    this._isDirty = false;
+    this.isDirty = false;
+
+    this._formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
+      : new FormGroup({}));
   }
 
   ngOnInit(): void {
@@ -249,7 +261,6 @@ export class MetaContextComponent implements OnDestroy,
       this.env.setValue('parent-cnx', this);
     }
     this.hasActiveContext = isPresent(this.activeContext());
-    this.formGroup = this.env.currentForm;
 
     if (this.i18Template && !this.env.hasValue('i18n')) {
       this.env.setValue('i18n', this.i18Template);
@@ -317,7 +328,7 @@ export class MetaContextComponent implements OnDestroy,
     if (this.viewInitialized) {
       if (this.needsCheck()) {
         this.pushPop(false);
-        this._isDirty = false;
+        this.isDirty = false;
       }
     } else {
       this.viewInitialized = true;
@@ -491,6 +502,9 @@ export class MetaContextComponent implements OnDestroy,
     if (isPresent(this.locale)) {
       this.bindingsMap.set('locale', this.locale);
     }
+    if (isPresent(this.group)) {
+      this.bindingsMap.set('group', this.group);
+    }
   }
 
   /**
@@ -513,12 +527,12 @@ export class MetaContextComponent implements OnDestroy,
    * changes and updates in metaui use object references
    */
   private updateModel() {
-    if (!this.formGroup) {
+    if (!this._formGroup) {
       return;
     }
     const fields = Object.keys(this.object);
     fields.forEach((field: string) => {
-      const control: FormControl = <FormControl>this.formGroup.get(field);
+      const control: FormControl = <FormControl>this._formGroup.get(field);
       if (isPresent(control)) {
         control.patchValue(this.object[field], {onlySelf: false, emitEvent: true});
       }
@@ -537,11 +551,11 @@ export class MetaContextComponent implements OnDestroy,
   }
 
   markDirty() {
-    this._isDirty = true;
+    this.isDirty = true;
   }
 
   needsCheck(): boolean {
-    return this.supportsDirtyChecking ? this._isDirty : true;
+    return this.supportsDirtyChecking ? this.isDirty : true;
   }
 
   get bindings(): Map<string, any> {

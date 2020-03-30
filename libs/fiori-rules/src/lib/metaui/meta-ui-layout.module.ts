@@ -25,7 +25,6 @@ import {MetaForm} from './meta-form/meta-form.component';
 import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.component';
 import {MetaFormField} from './meta-form/meta-form-field/meta-form-field.component';
 import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapter.directive';
-import {MetaObjectDetailComponent} from './object-detail/object-detail.component';
 import {MetaContentPageComponent} from './content-page/content-page.component';
 import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
 import {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
@@ -39,7 +38,6 @@ import {MetaActionListModule} from './meta-action-list/meta-action-list.module';
     MetaFormGroup,
     MetaFormField,
     MetaFormFieldAdapter,
-    MetaObjectDetailComponent,
     MetaContentPageComponent,
     MetaHomePageComponent
   ],

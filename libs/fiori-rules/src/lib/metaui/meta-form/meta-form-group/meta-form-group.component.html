@@ -1,5 +1,6 @@
 <fdp-form-group #fg [multiLayout]="true" [editable]="editing" [noLabelLayout]="useNoLabelLayout"
-  [i18Strings]="_context.i18Template">
+                [formGroup]="formGroup" [i18Strings]="_context.i18Template">
+
   <ng-template ngFor let-curentField [ngForOf]="zTop()" let-rank="index" [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
       <m-form-field [field]="curentField" [editing]="editing" [rank]="rank + 5"

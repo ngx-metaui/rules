@@ -169,11 +169,15 @@ field {
 
     @trait=inlineObject {
         editable=false {
-            component:MetaObjectDetailComponent;
+            component:MetaContextComponent;
             bindings: {
+                pushNewContext:true;
+                group:"inlineObject";
+                locale: ${meta.env.locale};
                 object:$value;
                 layout:Inspect;
-                useNoLabelLayout:true;
+                operation:view;
+                includeComponent:true;
             };
         }
     }

@@ -22,6 +22,7 @@ import {Environment} from '../core/config/environment';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
 import {Context, Snapshot} from '../core/context';
 import {KeyEditing, KeyObject} from '../core/meta-rules';
+import {FormGroup} from '@angular/forms';
 
 
 /**
@@ -35,6 +36,7 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
    */
   @Input()
   editing: boolean;
+
 
   /**
    * Need to capture current snapshot for edit operation as when we enter editing mode and user
@@ -54,6 +56,11 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
    */
   protected contextSnapshot: Snapshot;
   protected object: any;
+
+  /**
+   * Not happy with this structure and the way I work with FG
+   */
+  formGroup: FormGroup;
 
   constructor(public env: Environment,
               protected _metaContext: MetaContextComponent) {

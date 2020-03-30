@@ -20,9 +20,7 @@ echo "##### Building packages to dist"
 ./scripts/ci/build.sh dev
 
 echo "##### Testing packages"
-ng test rules --source-map=false --watch=false --progress=false
-ng test primeng-rules --source-map=false --watch=false --progress=false
-
+./scripts/ci/test.sh
 
 
 

@@ -9,7 +9,6 @@ if [[ ${TRAVIS_TEST_RESULT=0} == 1 ]]; then
 fi
 
 ng lint rules
-ng lint primeng-rules
 ng lint material-rules
 ng lint fiori-rules
 

@@ -23,7 +23,7 @@ before_script:
 script:
 - ./scripts/ci/build.sh ci
 - ./scripts/ci/lint.sh ci
-# - ./scripts/ci/test.sh ci
+- ./scripts/ci/test.sh ci
 
 
 
