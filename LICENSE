@@ -152,20 +152,6 @@ License: MIT License
 <year> = 2014
 <copyright holders> = Scott Puleo
 
-Component: primeng
-Licensor: PrimeTek
-Website:https://github.com/primefaces/primeng#readme
-License: MIT License
-<year> = 2016-2017
-<copyright holders> = PrimeTek
-
-
-Component: quill
-Licensor: Jason Chen
-Website: http://quilljs.com
-License: BSD-3-Clause
-<year> = 2014
-<copyright holders> = Jason Chen
 
 Component: RxJS
 Licensor: Ben Lesh

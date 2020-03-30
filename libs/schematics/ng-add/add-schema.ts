@@ -43,6 +43,6 @@ export interface AddSchema extends Schema {
   /**
    * Works with specific module within the project
    */
-  uiLib: 'none' | 'prime-ng' | 'material' | 'fiori';
+  uiLib: 'none' | 'material' | 'fiori';
 
 }

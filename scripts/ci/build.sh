@@ -40,8 +40,6 @@ if [ ${args[0]} == "link" ]; then
    NEW_VERSION=$(node -p "require('./package.json').version")
 
    ANGULAR_VERSION=$(node -p "require('./package.json').dependencies['@angular/core']")
-   PRIMENG_ICONS_VERSION=$(node -p "require('./package.json').dependencies['primeicons']")
-   PRIMENG_VERSION=$(node -p "require('./package.json').dependencies['primeng']")
    MATERIAL_VERSION=$(node -p "require('./package.json').dependencies['@angular/material']")
    FD_CORE_VERSION=$(node -p "require('./package.json').dependencies['@fundamental-ngx/core']")
    FD_PLATFORM_VERSION=$(node -p "require('./package.json').dependencies['@fundamental-ngx/platform']")
@@ -52,8 +50,6 @@ if [ ${args[0]} == "link" ]; then
    cd ./dist/
    grep -rl 'VERSION_PLACEHOLDER' . | xargs  perl -p -i -e "s/VERSION_PLACEHOLDER/${NEW_VERSION}/g"
    grep -rl 'ANGULAR_PLACEHOLDER' . | xargs  perl -p -i -e "s/ANGULAR_PLACEHOLDER/${ANGULAR_VERSION}/g"
-   grep -rl 'PRIMENG_ICONS_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_ICONS_PLACEHOLDER/${PRIMENG_ICONS_VERSION}/g"
-   grep -rl 'PRIMENG_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_PLACEHOLDER/${PRIMENG_VERSION}/g"
    grep -rl 'MATERIAL_PLACEHOLDER' . | xargs  perl -p -i -e "s/MATERIAL_PLACEHOLDER/${MATERIAL_VERSION}/g"
 
    grep -rl 'FD_CORE_PLACEHOLDER' . | xargs  perl -p -i -e "s/FD_CORE_PLACEHOLDER/${FD_CORE_VERSION}/g"

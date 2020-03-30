@@ -1,10 +1,5 @@
 <div class="page">
   <h2>Object Detail</h2>
-  <% if (uiLib === "prime-ng") { %>
-    <aw-hyperlink (action)="operation = 'create'">Create</aw-hyperlink> &nbsp; | &nbsp;
-    <aw-hyperlink (action)="operation = 'edit'">Edit</aw-hyperlink> &nbsp; | &nbsp;
-    <aw-hyperlink (action)="operation = 'view'">View</aw-hyperlink>
-  <% } %>
   <% if (uiLib === "material") { %>
     <a mat-button (click)="operation='create'">Create</a> |
     <a mat-button (click)="operation='edit'">Edit</a> |

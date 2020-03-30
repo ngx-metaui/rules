@@ -43,8 +43,6 @@ export const AppMetaConfig = new InjectionToken<string>('meta.AppConfig');
 
 /**
  * This module contains everything needs to dynamically generated UI based on metaRules
- * Since we are using primeNG, check AribaComponent if its already imported so you dont have
- * import it again.
  *
  */
 @NgModule({

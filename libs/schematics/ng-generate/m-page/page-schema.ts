@@ -55,6 +55,6 @@ export interface MetaPageSchema {
   /**
    * Works with specific module within the project
    */
-  uiLib: 'prime-ng' | 'material' | 'fiori';
+  uiLib: 'none' | 'material' | 'fiori';
 
 }

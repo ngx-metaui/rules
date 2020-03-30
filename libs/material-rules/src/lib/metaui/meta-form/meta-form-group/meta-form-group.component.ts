@@ -55,9 +55,8 @@ import {
  * description (order:5, 100%width)
  *
  *
- * This way I can have fields side by side or taking full width and they can nicely naturally
- * wrap on smaller devices. This is pretty fast and responsible compared to my first solution
- * that I have in prime NG where I have special components and complicated ViewChild queries..
+ * This way I can have fields side by side or taking full width and they can nicely
+ * wrap on smaller devices. T
  *
  *
  */

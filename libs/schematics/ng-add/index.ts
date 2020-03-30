@@ -101,21 +101,7 @@ function addDependencies(options: AddSchema): Rule {
       {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
     ];
 
-    if (options.uiLib === 'prime-ng') {
-      uiLibs = [
-        {
-          type: NodeDependencyType.Default,
-          version: '^VERSION_PLACEHOLDER',
-          name: '@ngx-metaui/primeng-rules'
-        },
-        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
-        {type: NodeDependencyType.Default, version: 'PRIMENG_PLACEHOLDER', name: 'primeng'},
-        {type: NodeDependencyType.Default, version: '1.3.6', name: 'quill'},
-        {type: NodeDependencyType.Default, version: '4.7.0', name: 'font-awesome'},
-        {type: NodeDependencyType.Default, version: 'PRIMENG_ICONS_PLACEHOLDER', name: 'primeicons'}
-      ];
-
-    } else if (options.uiLib === 'material') {
+    if (options.uiLib === 'material') {
       uiLibs = [
         {
           type: NodeDependencyType.Default,
@@ -163,10 +149,6 @@ function addScripts(options: AddSchema): Rule {
     if (options.uiLib === 'none' || options.uiLib === 'material' || options.uiLib === 'fiori') {
       return host;
     }
-    const scriptsPaths: string[] = [
-      'node_modules/quill/dist/quill.js'
-    ];
-    return addScriptsToAngularJson(scriptsPaths, options);
   };
 }
 
@@ -177,25 +159,7 @@ function addStyles(options: AddSchema): Rule {
       return host;
     }
 
-    if (options.uiLib === 'prime-ng') {
-      const styleEntries: string[] = [
-        'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/_normalize.scss',
-        'node_modules/primeng/resources/primeng.min.css',
-        'node_modules/font-awesome/css/font-awesome.min.css',
-        'node_modules/quill/dist/quill.core.css',
-        'node_modules/quill/dist/quill.snow.css',
-        'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-ariba-icon-fonts/' +
-        'sap-ariba-icon-fonts.css',
-        'node_modules/@ngx-metaui/primeng-rules/lib/resources/fonts/sap-icon-fonts/' +
-        'sap-icon-fonts.css',
-        'node_modules/primeicons/primeicons.css',
-        'node_modules/@ngx-metaui/primeng-rules/lib/resources/themes/ariba/theme.scss',
-        'node_modules/@ngx-metaui/primeng-rules/lib/resources/styles/aribaui.scss'
-      ];
-
-      return addStylesToAngularJson(styleEntries, options);
-
-    } else if (options.uiLib === 'material') {
+    if (options.uiLib === 'material') {
       const styleEntries: string[] = [
         'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css',
         'node_modules/flexboxgrid/css/flexboxgrid.css'
@@ -230,12 +194,7 @@ function addNgModuleImports(options: AddSchema): Rule {
           ...addSymbolToNgModuleMetadata(srcPath, modulePath, 'imports',
             'MetaUIRulesModule.forRoot({})')];
 
-        if (options.uiLib === 'prime-ng') {
-          changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
-            'imports',
-            'PrimeNgRulesModule.forRoot()')];
-
-        } else if (options.uiLib === 'material') {
+        if (options.uiLib === 'material') {
           changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
             'imports',
             'MaterialRulesModule.forRoot()')];
@@ -314,12 +273,7 @@ function addFileImportsCore(options: AddSchema): Rule {
 function addFileImportsUILib(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
-    if (options.uiLib === 'prime-ng') {
-      return chain([
-        addFileHeaderImports(options, 'PrimeNgRulesModule',
-          '@ngx-metaui/primeng-rules')
-      ]);
-    } else if (options.uiLib === 'material') {
+    if (options.uiLib === 'material') {
       return chain([
         addFileHeaderImports(options, 'MaterialRulesModule',
           '@ngx-metaui/material-rules')

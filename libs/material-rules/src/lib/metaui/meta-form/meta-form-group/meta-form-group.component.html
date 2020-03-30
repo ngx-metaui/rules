@@ -9,11 +9,6 @@
     </div>
 </div>
 
-<!--
-  List Left and right fields. Material is done little bit simpler than primeNg in terms of
-  layout
-
--->
 
 <div class="row between-xs" *ngIf="canShowMainZone()">
   <div *ngFor="let field of mainZones;trackBy: trackByFieldName"
