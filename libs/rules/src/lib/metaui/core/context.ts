@@ -556,7 +556,7 @@ export class Context extends Extensible {
   }
 
   private applyDeferredAssignments(deferredAssignments: Array<DeferredAssignment>): void {
-    for (const da of  deferredAssignments) {
+    for (const da of deferredAssignments) {
       // verify that deferred value still applies
       const currentPropValue = this.staticallyResolveValue(this.allProperties().get(da.key));
 

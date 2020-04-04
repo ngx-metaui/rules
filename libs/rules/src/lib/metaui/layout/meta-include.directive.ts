@@ -68,6 +68,10 @@ import {DynamicPropertyValue} from '../core/policies/merging-policy';
 import {NgModel} from '@angular/forms';
 
 
+const IngoredEvents = [
+  'beforeContextSet', 'afterContextSet', 'onContextChanged'
+];
+
 /**
  *  MetaIncludeDirective is (along with MetaContext) the key element for binding MetaUI
  * into Angular user interfaces. You can think of it such GLUE.
@@ -543,10 +547,12 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
       const eventEmitter: EventEmitter<any> = component.instance[publicKey];
       if (value instanceof DynamicPropertyValue) {
         this.applyDynamicOutputBinding(eventEmitter, value, this.metaContext.myContext());
-      } else {
+      } else if (!IngoredEvents.includes(publicKey)) {
         // just trigger event outside
 
         eventEmitter.subscribe((val: any) => {
+          console.log('applyOutputs :', val);
+
           if (this.env.hasValue('parent-cnx')) {
             let event: any = val;
             const cnx: MetaContextComponent = this.env.getValue('parent-cnx');

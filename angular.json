@@ -22,10 +22,7 @@
             "main": "libs/rules/src/test.ts",
             "tsConfig": "libs/rules/tsconfig.spec.json",
             "karmaConfig": "libs/rules/karma.conf.js",
-            "scripts": [
-              "node_modules/prismjs/prism.js",
-              "node_modules/quill/dist/quill.js"
-            ],
+            "scripts": [],
             "assets": [
               {
                 "glob": "**/*",
