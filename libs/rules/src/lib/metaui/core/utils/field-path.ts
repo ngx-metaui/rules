@@ -51,7 +51,7 @@ export class FieldPath {
     const value = fp.getFieldValue(target);
 
     if (field === '$toString') {
-      return value();
+      return target[field] ? value() : target.toString();
     }
     return value;
   }
@@ -135,7 +135,7 @@ export class FieldPath {
       // just tweak to be able to access maps field.someMapField.mapKey
       // I want this to get the element from the map
       if (value instanceof Map && (i + 1) < this._fieldPaths.length) {
-        const mapValue = <Map<string, any>> value;
+        const mapValue = <Map<string, any>>value;
         return mapValue.get(this._fieldPaths[i + 1]);
       }
     }

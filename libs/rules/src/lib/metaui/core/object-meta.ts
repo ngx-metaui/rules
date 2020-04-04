@@ -62,6 +62,7 @@ import {
 import {Meta} from './meta';
 import {CLASS_META, MetaActiondDef, PropertyDef} from './decorators/utils';
 import {RuntimeParser} from './compiler/runtime-parser.visitor';
+import {CompositeType} from './utils/domain-model';
 
 /**
  * ObjectMeta is responsible for setting up everything related to class, field, actions
@@ -242,11 +243,12 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
     for (const name of fieldNames) {
       // todo: check=>  can we rely on this ?
       const type = types[name].name || types[name].constructor.name;
+      const typeInstance = new types[name]();
+      const isCompositeType = !!(<CompositeType>typeInstance.className);
 
       const properties = new Map<string, any>();
-
       properties.set(KeyField, name);
-      properties.set(KeyType, type);
+      properties.set(KeyType, isCompositeType ? typeInstance.className() : type);
 
       properties.set(KeyVisible, true);
 
