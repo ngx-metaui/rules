@@ -250,7 +250,7 @@ describe('MetaUI Interpreter that test parsing against existing string literal j
         });
 
 
-      it('should parse at least 10 larger rules under 30ms ',
+      it('should parse at least 10 larger rules under 50ms ',
         () => {
           /* tslint:disable: no-trailing-whitespace */
           const start = Date.now();
@@ -264,7 +264,7 @@ describe('MetaUI Interpreter that test parsing against existing string literal j
 
 
           const end = Date.now() - start;
-          expect(end).toBeLessThanOrEqual(30);
+          expect(end).toBeLessThanOrEqual(50);
         });
 
     });

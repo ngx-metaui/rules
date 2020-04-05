@@ -29,8 +29,9 @@ echo "##### Testing ..."
 if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "major" ] && [ ${args[0]} != "none" ]; then
 
     echo "Missing mandatory argument: . "
-    echo " - Usage: ./release.sh  [type]  "
+    echo " - Usage: ./release.sh  [type]  [pre]"
     echo "      type: patch | minor | major | none"
+    echo "      pre: tells to to create pre-release (beta)"
     exit 1
 fi
 
