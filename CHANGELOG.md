@@ -1,6 +1,23 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [9.0.0-beta.0](https://github.com/ngx-meta/rules/compare/v8.2.0...v9.0.0-beta.0) (2020-04-05)
+
+
+### Features
+
+* **schematics:** Add `Application.oss` when MetaUI is added to the project ([47242d4](https://github.com/ngx-meta/rules/commit/47242d4e6009a3988683fda1a86a586743bd8555))
+* **schematics:** Stop prompting to skip npm install ([56399dc](https://github.com/ngx-meta/rules/commit/56399dcfd29b561a1c96ea0b17d66515d8f78407)), closes [#47](https://github.com/ngx-meta/rules/issues/47)
+
+
+### Bug Fixes
+
+* **context:** Fix Array type that was not recognized in IVY prod mode ([cf8d437](https://github.com/ngx-meta/rules/commit/cf8d4371bc67d38e0f68beea7ad860ff6ef2760d))
+* **ng9:** Register type for IVY ([0d934e3](https://github.com/ngx-meta/rules/commit/0d934e3c287112921033492764cecf22dfb13809))
+* **object-meta:** Fix types registration for the object ([1e211e7](https://github.com/ngx-meta/rules/commit/1e211e70bd6cc3503b7aad9d8af5fc560658a306))
+* **oss-rules:** add missing ';' ([49276e1](https://github.com/ngx-meta/rules/commit/49276e1f5843fbb64abb5e75672ab4c25582f3ca))
+* **README:** display title correctly ([cc6f275](https://github.com/ngx-meta/rules/commit/cc6f27559c8966d33b9b9932b047e2ec8c288dec))
 
 # [8.2.0](https://github.com/ngx-meta/rules/compare/v8.1.1...v8.2.0) (2020-01-17)
 
