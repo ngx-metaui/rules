@@ -249,7 +249,6 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
       const properties = new Map<string, any>();
       properties.set(KeyField, name);
       properties.set(KeyType, isCompositeType ? typeInstance.className() : type);
-
       properties.set(KeyVisible, true);
 
       if (isArray(types[name])) {
