@@ -46,3 +46,4 @@ testem.log
 .DS_Store
 Thumbs.db
 .npmrc
+/libs/fiori-rules/src/__ngcc_entry_points__.json

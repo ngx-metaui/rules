@@ -243,8 +243,8 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
     for (const name of fieldNames) {
       // todo: check=>  can we rely on this ?
       const type = types[name].name || types[name].constructor.name;
-      const typeInstance = new types[name]();
-      const isCompositeType = !!(<CompositeType>typeInstance.className);
+      const typeInstance = !isArray(types[name]) ? new types[name]() : null;
+      const isCompositeType = !!(typeInstance) && (<CompositeType>typeInstance.className);
 
       const properties = new Map<string, any>();
       properties.set(KeyField, name);

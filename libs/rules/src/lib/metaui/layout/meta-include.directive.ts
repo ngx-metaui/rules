@@ -551,8 +551,6 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
         // just trigger event outside
 
         eventEmitter.subscribe((val: any) => {
-          console.log('applyOutputs :', val);
-
           if (this.env.hasValue('parent-cnx')) {
             let event: any = val;
             const cnx: MetaContextComponent = this.env.getValue('parent-cnx');

@@ -185,7 +185,7 @@ export class TextArea implements MatFormFieldControl<any>, ControlValueAccessor,
   }
 
   get empty(): boolean {
-    return !this._elementRef.nativeElement.value;
+    return !!this._elementRef.nativeElement.value;
   }
 
   get shouldLabelFloat(): boolean {
