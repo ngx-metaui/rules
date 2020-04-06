@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-beta.1](https://github.com/ngx-meta/rules/compare/v9.0.0-beta.0...v9.0.0-beta.1) (2020-04-06)
+
+
+### Bug Fixes
+
+* **schematics:** Update `MatButtonModule` for the `ng g` schematics ([5312a89](https://github.com/ngx-meta/rules/commit/5312a8906bc1f65f2ccefcad43773b3c8422cbed))
+
 ## [9.0.0-beta.0](https://github.com/ngx-meta/rules/compare/v8.2.0...v9.0.0-beta.0) (2020-04-05)
 
 
