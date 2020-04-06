@@ -16,11 +16,13 @@ rm -Rf ./dist
 echo "##### Validating packages"
 ./scripts/ci/lint.sh
 
-echo "##### Building packages to dist"
-./scripts/ci/build.sh release
 
 echo "##### Testing packages"
 ./scripts/ci/test.sh
+
+echo "##### Building packages to dist"
+./scripts/ci/build.sh release
+
 
 
 
