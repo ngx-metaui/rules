@@ -17,7 +17,7 @@ echo "##### Validating packages"
 ./scripts/ci/lint.sh
 
 echo "##### Building packages to dist"
-./scripts/ci/build.sh dev
+./scripts/ci/build.sh release
 
 echo "##### Testing packages"
 ./scripts/ci/test.sh

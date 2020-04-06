@@ -20,10 +20,14 @@ ng build material-rules
 echo "################ Building @ngx-meta/fiori-rules ################"
 ng build fiori-rules
 
+
+if [ ${args[0]} == "dev" ]; then
 echo "################ Building apps ################"
-ng build doc-app
-ng build material-app
-ng build fiori-app
+  ng build doc-app
+  ng build material-app
+  ng build fiori-app
+fi
+
 
 # Build schematics
 echo "Building schematics"
