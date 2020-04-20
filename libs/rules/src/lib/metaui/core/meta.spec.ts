@@ -435,21 +435,19 @@ describe('Expression eval of Matched properties how they can be resolved on the 
       const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
-        private _someObject: any;
-
-
         constructor() {
           super(metaUI);
         }
 
-        get values(): Map<string, any> {
-          return new Map<string, any>();
-        }
+        private _someObject: any;
 
         set someObject(value: any) {
           this._someObject = value;
         }
 
+        get values(): Map<string, any> {
+          return new Map<string, any>();
+        }
 
         get object(): any {
           return this._someObject;
@@ -483,21 +481,19 @@ describe('Expression eval of Matched properties how they can be resolved on the 
       const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
-        private _someObject: any;
-
-
-        get values(): Map<string, any> {
-          return new Map<string, any>();
-        }
-
         constructor() {
           super(metaUI);
         }
+
+        private _someObject: any;
 
         set someObject(value: any) {
           this._someObject = value;
         }
 
+        get values(): Map<string, any> {
+          return new Map<string, any>();
+        }
 
         get object(): any {
           return this._someObject;
@@ -534,21 +530,19 @@ describe('Expression eval of Matched properties how they can be resolved on the 
       const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
-        private _someObject: any;
-
-
         constructor() {
           super(metaUI);
         }
 
-        get values(): Map<string, any> {
-          return new Map<string, any>();
-        }
+        private _someObject: any;
 
         set someObject(value: any) {
           this._someObject = value;
         }
 
+        get values(): Map<string, any> {
+          return new Map<string, any>();
+        }
 
         get object(): any {
           return this._someObject;
@@ -584,12 +578,11 @@ describe('Expression eval of Matched properties how they can be resolved on the 
       const metaUI: MetaRules = TestBed.inject(META_RULES);
 
       class MyContext extends Context {
-        private _someObject: any;
-
-
         constructor() {
           super(metaUI);
         }
+
+        private _someObject: any;
 
         set someObject(value: any) {
           this._someObject = value;

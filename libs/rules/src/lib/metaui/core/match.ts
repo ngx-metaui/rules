@@ -19,10 +19,9 @@
  */
 import {
   assert,
-  crc32,
+  fnv1a,
   hashCode,
   isArray,
-  isBlank,
   isPresent,
   print,
   shiftLeft,
@@ -47,11 +46,18 @@ export class Match {
 
   static _Debug_ElementProcessCount: number = 0;
 
+  constructor(public _matches: number[], public _keysMatchedMask: number,
+              public  _matchPathCRC: number = 0) {
+  }
+
+  get keysMatchedMask(): number {
+    return this._keysMatchedMask;
+  }
 
   // Word lists are int arrays with the first element holding the length
   static addInt(intArr: number[], val: number): number[] {
-    if (isBlank(intArr)) {
-      const r: Array<number> = new Array<number>(4);
+    if (!intArr) {
+      const r: number[] = [];
       r[0] = 1;
       r[1] = val;
 
@@ -63,7 +69,7 @@ export class Match {
     }  // already here...
 
     if (newPos >= intArr.length) {
-      let a: Array<number> = new Array<number>(newPos * 2);
+      let a: Array<number>;
       a = intArr.slice(0, newPos);
       intArr = a;
     }
@@ -74,7 +80,7 @@ export class Match {
 
   // only rules that use only the activated (queried) keys
   static filterMustUse(rules: Array<Rule>, arr: number[], usesMask: number): number[] {
-    if (isBlank(arr)) {
+    if (!arr) {
       return null;
     }
     let result: number[];
@@ -88,7 +94,6 @@ export class Match {
     }
     return result;
   }
-
 
   /**
    * Intersects two rulevecs.  This is not a traditional intersection where only items in both
@@ -123,7 +128,7 @@ export class Match {
   static intersect(allRules: Array<Rule>, a: number[], b: number[], aMask: number,
                    bMask: number): number[] {
 
-    if (isBlank(a)) {
+    if (!a) {
       return b;
     }
     let result: number[];
@@ -158,10 +163,10 @@ export class Match {
   }
 
   static union(a: number[], b: number[]): number[] {
-    if (isBlank(a)) {
+    if (!a) {
       return b;
     }
-    if (isBlank(b)) {
+    if (!b) {
       return a;
     }
     const sizeA = a[0], sizeB = b[0];
@@ -211,11 +216,6 @@ export class Match {
     return true;
   }
 
-  constructor(public _matches: number[], public _keysMatchedMask: number,
-              public  _matchPathCRC: number = 0) {
-  }
-
-
   /**
    * Filter a partially matched set of rules down to the actual matches.
    * The input set of rules, matchesArr, is based on a *partial* match, and so includes rules
@@ -227,7 +227,7 @@ export class Match {
    */
   filter(allRules: Array<Rule>, maxRule: number, matchesArr: number[], queriedMask: number,
          matchArray: MatchValue[]): number[] {
-    if (isBlank(matchesArr)) {
+    if (!matchesArr) {
       return null;
     }
     // print('\n## Filtering matching: ' + matchesArr[0] + ', Queried Mask: ' + queriedMask);
@@ -282,20 +282,12 @@ export class Match {
     return result;
   }
 
-
   hashCode(): number {
     let ret = this._keysMatchedMask * 31 + this._matchPathCRC;
     if (isPresent(this._matches)) {
-      for (let i = 0, c = this._matches[0]; i < c; i++) {
-        ret = crc32(ret, this._matches[i + 1]);
-      }
+      ret = fnv1a(this._matches.join(','));
     }
     return ret;
-  }
-
-
-  get keysMatchedMask(): number {
-    return this._keysMatchedMask;
   }
 
   equalsTo(o: any): boolean {
@@ -304,19 +296,18 @@ export class Match {
       Match._arrayEq(this._matches, o._matches);
   }
 
-  toString() {
-    const buf = new StringJoiner([]);
-    buf.add('_matches');
-    buf.add((isPresent(this._matches) ? this._matches.length : 0) + '');
-    buf.add('_keysMatchedMask');
-    buf.add(this._keysMatchedMask + '');
-    buf.add('_keysMatchedMask');
-    buf.add(this._matchPathCRC + '');
-
-    buf.add('hashcode');
-    buf.add(this.hashCode() + '');
-
-    return buf.toString();
+  toString(): string {
+    const str: string[] = [];
+    if (this._matches) {
+      str.push(this._matches.join(','));
+    }
+    if (this._keysMatchedMask) {
+      str.push(this._keysMatchedMask.toString());
+    }
+    if (this._matchPathCRC) {
+      str.push(this._matchPathCRC.toString());
+    }
+    return str.join();
   }
 
 }
@@ -385,7 +376,7 @@ export class MatchResult extends MatchWithUnion {
 
   matches(): number[] {
     this._invalidateIfStale();
-    if (isBlank(this._matches)) {
+    if (!this._matches) {
       this._initMatch();
     }
     return this._matches;
@@ -421,7 +412,7 @@ export class MatchResult extends MatchWithUnion {
 
     if (isPresent(this._overUnionMatch) && isPresent(
       (overrideMatches = this._overUnionMatch.matches()))) {
-      if (isBlank(matches)) {
+      if (!matches) {
         matches = overrideMatches;
 
       } else {
@@ -459,65 +450,6 @@ export class MatchResult extends MatchWithUnion {
     }
   }
 
-  protected join(a: number[], b: number[], aMask: number, bMask: number): number[] {
-    return Match.intersect(this._meta.rules, a, b, aMask, bMask);
-  }
-
-
-  protected _initMatch(): void {
-    const keyMask: number = shiftLeft(1, this._keyData._id);
-
-    // get vec for this key/value -- if value is list, compute the union
-    let newArr: number[];
-    if (isArray(this._value)) {
-
-      for (const v of this._value) {
-        const a: number[] = this._keyData.lookup(this._meta, v);
-        newArr = Match.union(a, newArr);
-      }
-    } else {
-      newArr = this._keyData.lookup(this._meta, this._value);
-    }
-
-    const prevMatches: number[] = (isBlank(this._prevMatch)) ? null : this._prevMatch.matches();
-
-    this._keysMatchedMask = (isBlank(
-      this._prevMatch)) ? keyMask : (keyMask | this._prevMatch._keysMatchedMask);
-    if (isBlank(prevMatches)) {
-      this._matches = newArr;
-      // Todo: not clear why this is needed, but without it we end up failing to filter
-      // certain matches that should be filtered (resulting in bad matches)
-      if (!_UsePartialIndexing) {
-        this._keysMatchedMask = keyMask;
-      }
-
-    } else {
-      if (isBlank(newArr)) {
-        newArr = Match.EmptyMatchArray;
-      }
-      // Join
-      this._matches = this.join(newArr, prevMatches, keyMask,
-        this._prevMatch._keysMatchedMask);
-    }
-
-    // compute path CRC
-    this._matchPathCRC = -1;
-    for (let mr: MatchResult = this; mr != null; mr = mr._prevMatch) {
-      this._matchPathCRC = crc32(this._matchPathCRC, mr._keyData._key.length);
-
-      if (isPresent(mr._value)) {
-        const value = isArray(mr._value) ? mr._value.join(',') : mr._value;
-        this._matchPathCRC = crc32(this._matchPathCRC, hashCode(value));
-      }
-    }
-    if (this._matchPathCRC === 0) {
-      this._matchPathCRC = 1;
-    }
-    this._metaGeneration = this._meta.ruleSetGeneration;
-    this._properties = null;
-  }
-
-
   _logMatchDiff(a: number[], b: number[]): void {
     let iA = 1, iB = 1;
     const sizeA = a[0], sizeB = b[0];
@@ -540,7 +472,7 @@ export class MatchResult extends MatchWithUnion {
 
   properties(): PropertyMap {
     this._invalidateIfStale();
-    if (isBlank(this._properties)) {
+    if (!this._properties) {
       this._properties = this._meta.propertiesForMatch(this);
     }
     return this._properties;
@@ -570,7 +502,7 @@ export class MatchResult extends MatchWithUnion {
 
   _checkMatch(values: Map<string, any>): void {
     const arr: number[] = this.filterResult();
-    if (isBlank(arr)) {
+    if (!arr) {
       return;
     }
     // first entry is count
@@ -582,12 +514,70 @@ export class MatchResult extends MatchWithUnion {
 
   }
 
-
   equalsTo(o: any): boolean {
     return (o instanceof MatchResult) && super.equalsTo(
       o) && (o._metaGeneration === this._metaGeneration) &&
       o._properties.size === this._properties.size;
   }
+
+  protected join(a: number[], b: number[], aMask: number, bMask: number): number[] {
+    return Match.intersect(this._meta.rules, a, b, aMask, bMask);
+  }
+
+  protected _initMatch(): void {
+    const keyMask: number = shiftLeft(1, this._keyData._id);
+
+    // get vec for this key/value -- if value is list, compute the union
+    let newArr: number[];
+    if (isArray(this._value)) {
+
+      for (const v of this._value) {
+        const a: number[] = this._keyData.lookup(this._meta, v);
+        newArr = Match.union(a, newArr);
+      }
+    } else {
+      newArr = this._keyData.lookup(this._meta, this._value);
+    }
+
+    const prevMatches: number[] = (!this._prevMatch) ? null : this._prevMatch.matches();
+
+    this._keysMatchedMask = (!this._prevMatch) ? keyMask :
+      (keyMask | this._prevMatch._keysMatchedMask);
+
+    if (!prevMatches) {
+      this._matches = newArr;
+      // Todo: not clear why this is needed, but without it we end up failing to filter
+      // certain matches that should be filtered (resulting in bad matches)
+      if (!_UsePartialIndexing) {
+        this._keysMatchedMask = keyMask;
+      }
+
+    } else {
+      if (!newArr) {
+        newArr = Match.EmptyMatchArray;
+      }
+      // Join
+      this._matches = this.join(newArr, prevMatches, keyMask, this._prevMatch._keysMatchedMask);
+    }
+
+    // compute path CRC
+    this._matchPathCRC = -1;
+    for (let mr: MatchResult = this; mr != null; mr = mr._prevMatch) {
+      this._matchPathCRC = fnv1a(this._matchPathCRC.toString().concat(mr._keyData._key));
+
+      if (mr._value) {
+        const value = isArray(mr._value) ? mr._value.join(',') : mr._value;
+        this._matchPathCRC = fnv1a(this._matchPathCRC.toString().concat(
+          hashCode(value).toString()));
+      }
+    }
+    if (this._matchPathCRC === 0) {
+      this._matchPathCRC = 1;
+    }
+    this._metaGeneration = this._meta.ruleSetGeneration;
+    this._properties = null;
+  }
+
 }
 
 export class UnionMatchResult extends MatchResult {
@@ -711,7 +701,7 @@ export class MultiMatchValue implements MatchValue {
 
   updateByAdding(other: MatchValue): MatchValue {
     if (other instanceof MultiMatchValue) {
-      const matchValue: MultiMatchValue = <MultiMatchValue> other;
+      const matchValue: MultiMatchValue = <MultiMatchValue>other;
       ListWrapper.addAll(this.data, matchValue.data);
     } else {
       this.data.push(other);

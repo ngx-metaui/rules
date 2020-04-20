@@ -1,5 +1,5 @@
 <main class="fd-page">
-  <div *ngIf="true" class="fd-page__content fd-has-background-color-neutral-2">
+  <div *ngIf="false" class="fd-page__content fd-has-background-color-neutral-2">
 
     <fdp-form-group #fg [multiLayout]="true" [formGroup]="form" [object]="data">
 
@@ -109,10 +109,10 @@
 
 
       <ng-template #i18n let-errros>
-        <span *ngIf="errros.required">
+        <span *ngIf="errros && errros.required">
             Value is required
         </span>
-        <span *ngIf="errros.maxlength">
+        <span *ngIf="errros && errros.maxlength">
             You reached maxium allowed length. Required is {{errros.maxlength.requiredLength}}
           current is
           {{errros.maxlength.actualLength}}
@@ -120,11 +120,23 @@
       </ng-template>
     </fdp-form-group>
   </div>
+
+  <button fd-button (click)="operation='create'">Create</button>
+  <button fd-button (click)="operation='edit'">Edit</button>
+  <button fd-button (click)="operation='view'">View</button>
+
+    <m-context [object]="invoice" [operation]="operation" layout="Inspect" >
+      <m-include-component></m-include-component>
+    </m-context>
+
+  {{operation}}
+
+
+  <pre>
+  object: {{invoice | json}}
+</pre>
 </main>
 
 
-<pre>
-  {{form.value | json}}
-</pre>
 
 

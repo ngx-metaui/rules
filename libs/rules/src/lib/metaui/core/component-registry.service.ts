@@ -21,6 +21,7 @@
 import {Injectable} from '@angular/core';
 import {isStringMap} from './utils/lang';
 import {Environment} from './config/environment';
+import {ComponentReference} from '../layout/core/include.directive';
 
 
 /**
@@ -29,11 +30,26 @@ import {Environment} from './config/environment';
  */
 @Injectable()
 export class ComponentRegistry {
-  private _nameToType: Map<string, any> = new Map<string, any>();
-
   constructor(private env: Environment) {
   }
 
+  private _nameToType: Map<string, any> = new Map<string, any>();
+
+  get nameToType(): Map<string, any> {
+    return this._nameToType;
+  }
+
+  /**
+   * Not sure if we need this, but want to keep it here or maybe move it to some service so we
+   * can cache created components and maybe reuse them.
+   *
+   */
+  private _componentCache: Map<string, ComponentReference> =
+    new Map<string, ComponentReference>();
+
+  get componentCache(): Map<string, ComponentReference> {
+    return this._componentCache;
+  }
 
   initialize(references: any): Promise<any> {
     this.registerTypes(references);
@@ -44,13 +60,11 @@ export class ComponentRegistry {
 
   }
 
-
   registerType(name: string, type: any): void {
     if (!this.nameToType.has(name)) {
       this._nameToType.set(name, type);
     }
   }
-
 
   registerTypes(references: any): void {
     if (!isStringMap(references)) {
@@ -60,11 +74,6 @@ export class ComponentRegistry {
     Object.keys(references).forEach((name: string) => {
       this.registerType(name, references[name]);
     });
-  }
-
-
-  get nameToType(): Map<string, any> {
-    return this._nameToType;
   }
 }
 

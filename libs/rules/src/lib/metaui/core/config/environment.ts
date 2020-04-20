@@ -32,38 +32,29 @@ import {assert} from '../utils/lang';
 @Injectable()
 export class Environment {
   /**
-   * Used by component to save save additional properties for processing and its rendering
-   */
-  private envVariables: Map<string, any>;
-
-
-  /**
-   * Simple stack-like storage where we need to a keep history
-   */
-  private stacksVariables: Map<string, any[]>;
-
-  /**
    * Helper properties for debugging and testing purposes
    *
    */
   isPseudoLocalized: boolean = false;
   inTest: boolean = false;
-
   /**
    * Store current Page FormGroup State that need to be shared down across components
    */
   currentForm: FormGroup;
-
-
   isProduction: boolean = false;
-
-
   /**
    * This is jsut for debugging purposes to save some temp message that I can then trace.
    *
    */
   debugString: string;
-
+  /**
+   * Used by component to save save additional properties for processing and its rendering
+   */
+  private envVariables: Map<string, any>;
+  /**
+   * Simple stack-like storage where we need to a keep history
+   */
+  private stacksVariables: Map<string, any[]>;
 
   constructor(@Inject(LOCALE_ID) @Optional() public locale: string) {
     this.envVariables = new Map<string, any>();

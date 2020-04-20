@@ -18,7 +18,8 @@
       I have set this to type 'error' this is the place to extend errors to show also warning.
       Also I expect that application error messages needs to be translated on
     -->
-    <fd-form-message *ngIf="hasErrors()" [type]="'error'">
+    <fd-form-message *ngIf="this.editable && this._control && this._control.inErrorState"
+                     [type]="'error'">
       <ng-container *ngIf="i18Strings">
         <ng-container
           *ngTemplateOutlet="i18Strings;context: {$implicit:_control?.ngControl.errors}">

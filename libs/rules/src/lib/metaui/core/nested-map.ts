@@ -28,8 +28,27 @@ export class NestedMap<K, V> implements Map<K, V> {
   [Symbol.toStringTag]: 'Map';
 
   _overrideCount: number = 0;
+
+  constructor(private _parent: Map<K, V>, private _map?: Map<K, any>) {
+
+    if (isBlank(_map)) {
+      this._map = new Map<K, any>();
+    }
+  }
+
   private _size: number = 0;
 
+  get size(): number {
+    return this._parent.size + this._map.size - this._overrideCount;
+  }
+
+  get map(): Map<K, Object> {
+    return this._map;
+  }
+
+  get parent(): Map<K, V> {
+    return this._parent;
+  }
 
   static toMapEntry(iteratorResult: IteratorResult<any>): MapEntry {
     const value = iteratorResult.value;
@@ -57,17 +76,9 @@ export class NestedMap<K, V> implements Map<K, V> {
     return isPresent(value) && value['nesnullmarker'];
   }
 
-  constructor(private _parent: Map<K, V>, private _map?: Map<K, any>) {
-
-    if (isBlank(_map)) {
-      this._map = new Map<K, any>();
-    }
-  }
-
   toMap(): Map<K, V> {
     return this._parent;
   }
-
 
   reparentedMap(newParent: Map<K, V>): NestedMap<K, V> {
     const newMap = new NestedMap<K, V>(newParent, this._map);
@@ -75,17 +86,14 @@ export class NestedMap<K, V> implements Map<K, V> {
     return newMap;
   }
 
-
   get(key: K): any | V {
     const val = this._map.has(key) ? this._map.get(key) : this._parent.get(key);
     return NestedMap.isNMNullMarker(val) ? null : val;
   }
 
-
   keys(): IterableIterator<K> {
     return unimplemented();
   }
-
 
   values(): IterableIterator<V> {
     return unimplemented();
@@ -107,7 +115,6 @@ export class NestedMap<K, V> implements Map<K, V> {
 
     return this;
   }
-
 
   delete(key: K): boolean {
 
@@ -146,36 +153,19 @@ export class NestedMap<K, V> implements Map<K, V> {
     }
   }
 
-
   has(key: K): boolean {
 
     return this._map.has(key) ? (!NestedMap.isNMNullMarker(
       this._map.get(key))) : this._parent.has(key);
   }
 
-
   [Symbol.iterator](): IterableIterator<any> {
     return new NestedEntryIterator<K, V>(this);
   }
 
-
   entries(): IterableIterator<any> {
     return new NestedEntryIterator<K, V>(this);
   }
-
-
-  get size(): number {
-    return this._parent.size + this._map.size - this._overrideCount;
-  }
-
-  get map(): Map<K, Object> {
-    return this._map;
-  }
-
-  get parent(): Map<K, V> {
-    return this._parent;
-  }
-
 
   toString(): string {
     return 'NestedMap';

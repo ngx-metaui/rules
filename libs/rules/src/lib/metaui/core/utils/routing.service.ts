@@ -20,7 +20,7 @@
  */
 import {Injectable} from '@angular/core';
 import {ActivatedRoute, NavigationExtras, Route, Router} from '@angular/router';
-import { Location } from '@angular/common';
+import {Location} from '@angular/common';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {isBlank, isPresent} from '../utils/lang';
 import {delay, distinctUntilChanged, shareReplay, startWith, tap} from 'rxjs/operators';

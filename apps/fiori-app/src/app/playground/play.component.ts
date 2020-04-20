@@ -1,13 +1,17 @@
-import {Component} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {Money, SelectItem} from '@ngx-metaui/fiori-rules';
+import {DATA_PROVIDERS, DataProvider, Money, SelectItem} from '@ngx-metaui/fiori-rules';
+import {Invoice} from '../mdemo/domain/model/invoice';
+import {Address} from '../mdemo/domain/model/address';
+import {META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {PaymentTermsCSV, paymentTermsDB} from '../mdemo/domain/rest/payment-terms';
 
 
 @Component({
   selector: 'fdp-fiori-play',
   templateUrl: './play.component.html'
 })
-export class PlayComponent {
+export class PlayComponent implements OnInit {
   title = 'fiori-app';
   form: FormGroup;
   private validators: ValidatorFn[];
@@ -64,10 +68,26 @@ export class PlayComponent {
 
   data: SomeObject;
   amount: Money = new Money(325);
+  paymentTermsDS: string[];
 
-  constructor() {
+  operation = 'edit';
+  invoice: Invoice = new Invoice();
+
+  constructor(@Inject(DATA_PROVIDERS) private providers: Map<string, DataProvider<any>>,
+              @Inject(META_RULES) protected meta: MetaRules) {
 
     this.form = new FormGroup({});
+
+    const address: DataProvider<any> = providers.get('Address');
+    const supplier: DataProvider<any> = providers.get('Supplier');
+
+    this.invoice.billingAddress = (<any>(address)).values[0];
+    this.invoice.supplier = (<any>(supplier)).values[0];
+    this.invoice.purchaseOrder = 'PO1111';
+    // this.invoice.accountCategory = 'Order';
+    console.log('this.invoice.supplier : ', this.invoice.supplier);
+
+
     const o = [];
     o.push(new SupplierLocation('123', 'Palo Alto', 'asdfasfd'));
     o.push(new SupplierLocation('12443', 'Prague', 'asdfasfd'));
@@ -113,6 +133,18 @@ export class PlayComponent {
       this.cb2List.push(new Supplier('sid' + i, companies[i]['company_name']));
     }
   }
+
+  ngOnInit(): void {
+    this.meta.registerDependency('controller', this);
+    this.initDataSources();
+  }
+
+  private initDataSources() {
+    this.paymentTermsDS = paymentTermsDB.map((i: PaymentTermsCSV) => {
+      return i.Name;
+    });
+  }
+
 
   onclick(event: any) {
     alert('aaa');

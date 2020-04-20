@@ -59,8 +59,8 @@ export class StaticallyResolvable extends DynamicPropertyValue {
 
 
 export class StaticDynamicWrapper extends StaticallyResolvable implements PropertyMapAwaking {
-  private _cached: any;
   propertyAwaking: boolean = true;
+  private _cached: any;
 
   constructor(private _orig: StaticallyResolvable) {
     super();
@@ -183,8 +183,12 @@ export class Expr extends DynamicPropertyValue {
         this._expressionString = this._expressionString.replace(`this.${k}`, `${typeName}`);
       }
     });
-
-    const result = evalExpressionWithCntx(this._expressionString, '', context, context);
+    let result;
+    try {
+      result = evalExpressionWithCntx(this._expressionString, '', context, context);
+    } catch (e) {
+      console.log(e);
+    }
 
     index = 0;
     this._extendedObjects.forEach((v, k) => {

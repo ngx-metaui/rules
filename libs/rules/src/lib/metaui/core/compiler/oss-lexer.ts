@@ -144,6 +144,88 @@ export class OSSLexer {
       this.pos);
   }
 
+  peekNextToken(withComment: boolean = true): OSSToken {
+    const currPos = this.pos;
+    const currColumn = this.column;
+    const currLine = this.line;
+    const currNxC = this.nexChar;
+    const currCChar = this.currChar;
+
+    const nextToken = this.nextToken(withComment);
+
+    this.pos = currPos;
+    this.column = currColumn;
+    this.line = currLine;
+    this.nexChar = currNxC;
+    this.currChar = currCChar;
+
+    return nextToken;
+  }
+
+  // get some text context where it failed not just a token
+  errorContext(): string {
+    const from = Math.max(this.pos - 300, 0);
+    let msg = '';
+    for (let i = from; i < this.pos; i++) {
+      msg += this.input[i];
+    }
+    return msg;
+  }
+
+  toSymbol(token: OSSTokenType): string {
+    switch (token) {
+      case OSSTokenType.LineComment:
+        return '\'//\'';
+      case OSSTokenType.BlockComment:
+        return '\'/** */\'';
+      case OSSTokenType.Semi:
+        return '\';\'';
+      case OSSTokenType.Colon:
+        return '\':\'';
+      case OSSTokenType.Coma:
+        return '\',\'';
+      case OSSTokenType.OpEq:
+        return '\'=\'';
+      case OSSTokenType.At:
+        return '\'@\'';
+      case OSSTokenType.Hash:
+        return '\'#\'';
+      case OSSTokenType.Dot:
+        return '\'.\'';
+      case OSSTokenType.LParen:
+        return '\'(\'';
+      case OSSTokenType.RParen:
+        return '\')\'';
+      case OSSTokenType.LBrace:
+        return '\'{\'';
+      case OSSTokenType.RBrace:
+        return '\'}\'';
+      case OSSTokenType.LBracket:
+        return '\'[\'';
+      case OSSTokenType.RBracket:
+        return '\']\'';
+      case OSSTokenType.NextPrecedenceChain:
+        return '\'=>\'';
+      case OSSTokenType.Star:
+        return '\'*\'';
+      case OSSTokenType.NullMarker:
+        return '\'~\'';
+      case OSSTokenType.ExclMark:
+        return '\'!\'';
+      case OSSTokenType.BOOLTRue:
+        return '\'true\'';
+      case OSSTokenType.BOOLFalse:
+        return '\'false\'';
+      case OSSTokenType.Null:
+        return '\'null\'';
+      case OSSTokenType.ExprLiteral:
+        return '\'$\'';
+      case OSSTokenType.ExprLiteralStaticDyn:
+        return '\'$$\'';
+      default:
+        return '?';
+    }
+  }
 
   private readInput() {
     return this.input[this.pos];
@@ -167,35 +249,6 @@ export class OSSLexer {
     }
   }
 
-  peekNextToken(withComment: boolean = true): OSSToken {
-    const currPos = this.pos;
-    const currColumn = this.column;
-    const currLine = this.line;
-    const currNxC = this.nexChar;
-    const currCChar = this.currChar;
-
-    const nextToken = this.nextToken(withComment);
-
-    this.pos = currPos;
-    this.column = currColumn;
-    this.line = currLine;
-    this.nexChar = currNxC;
-    this.currChar = currCChar;
-
-    return nextToken;
-  }
-
-
-  // get some text context where it failed not just a token
-  errorContext(): string {
-    const from = Math.max(this.pos - 300, 0);
-    let msg = '';
-    for (let i = from; i < this.pos; i++) {
-      msg += this.input[i];
-    }
-    return msg;
-  }
-
   private peek(): number {
     const nextPos = this.pos + 1;
     if (nextPos > this.input.length - 1) {
@@ -208,7 +261,6 @@ export class OSSLexer {
     const err = new Error(`Error while parsing: ${msg}: \n ${this.errorContext()}`);
     throw err;
   }
-
 
   private toIdentifierOrKeyPathToken(): OSSToken {
 
@@ -315,7 +367,6 @@ export class OSSLexer {
     return new OSSToken(columnStart, startLine, OSSTokenType.FieldPathBinding, value,
       startPos, (startPos + value.length));
   }
-
 
   private asterixToken(): OSSToken {
     const startPos = this.pos;
@@ -507,61 +558,6 @@ export class OSSLexer {
   private consumeSpaces(): void {
     while (!LexerUtils.isEOF(this.currChar) && LexerUtils.isSpace(this.currChar)) {
       this.advance();
-    }
-  }
-
-  toSymbol(token: OSSTokenType): string {
-    switch (token) {
-      case OSSTokenType.LineComment:
-        return '\'//\'';
-      case OSSTokenType.BlockComment:
-        return '\'/** */\'';
-      case OSSTokenType.Semi:
-        return '\';\'';
-      case OSSTokenType.Colon:
-        return '\':\'';
-      case OSSTokenType.Coma:
-        return '\',\'';
-      case OSSTokenType.OpEq:
-        return '\'=\'';
-      case OSSTokenType.At:
-        return '\'@\'';
-      case OSSTokenType.Hash:
-        return '\'#\'';
-      case OSSTokenType.Dot:
-        return '\'.\'';
-      case OSSTokenType.LParen:
-        return '\'(\'';
-      case OSSTokenType.RParen:
-        return '\')\'';
-      case OSSTokenType.LBrace:
-        return '\'{\'';
-      case OSSTokenType.RBrace:
-        return '\'}\'';
-      case OSSTokenType.LBracket:
-        return '\'[\'';
-      case OSSTokenType.RBracket:
-        return '\']\'';
-      case OSSTokenType.NextPrecedenceChain:
-        return '\'=>\'';
-      case OSSTokenType.Star:
-        return '\'*\'';
-      case OSSTokenType.NullMarker:
-        return '\'~\'';
-      case OSSTokenType.ExclMark:
-        return '\'!\'';
-      case OSSTokenType.BOOLTRue:
-        return '\'true\'';
-      case OSSTokenType.BOOLFalse:
-        return '\'false\'';
-      case OSSTokenType.Null:
-        return '\'null\'';
-      case OSSTokenType.ExprLiteral:
-        return '\'$\'';
-      case OSSTokenType.ExprLiteralStaticDyn:
-        return '\'$$\'';
-      default:
-        return '?';
     }
   }
 

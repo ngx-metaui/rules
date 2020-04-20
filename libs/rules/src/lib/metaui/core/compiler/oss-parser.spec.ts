@@ -937,7 +937,7 @@ describe('MetaUI parser', () => {
 
       });
 
-    xit('can parse dynamic static ex[ressopn',
+    xit('can parse dynamic static expressopn',
       () => {
         /* tslint:disable: no-trailing-whitespace */
         lexer = new OSSLexer('class=User { visible:$${true}; }');

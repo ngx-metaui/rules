@@ -18,7 +18,7 @@
  *
  *
  */
-import {InjectionToken, isDevMode} from '@angular/core';
+import {isDevMode} from '@angular/core';
 import {BooleanWrapper, isPresent, NumberWrapper} from '../utils/lang';
 import {MapWrapper} from '../utils/collection';
 import {Environment} from './environment';
@@ -43,12 +43,8 @@ export class MetaConfig {
   static readonly Direction = 'dir';
   static readonly i18nEnabled = 'i18n.enabled';
   static readonly InTest = 'env.test';
-
-
-  private values: Map<string, any>;
-
-
   testUrl: string;
+  private values: Map<string, any>;
 
   constructor(public environment: Environment) {
     this.values = new Map<string, any>();
@@ -106,6 +102,10 @@ export class MetaConfig {
     return BooleanWrapper.boleanValue(val);
   }
 
+  isProductionMode(): boolean {
+    return !this.getBoolean(MetaConfig.IsDevMode);
+  }
+
   private initDefaults() {
 
     this.set(MetaConfig.IsDevMode, isDevMode());
@@ -121,11 +121,6 @@ export class MetaConfig {
     if (!this.values.has(MetaConfig.SupportedLangs)) {
       this.set(MetaConfig.SupportedLangs, SuportedLanguages);
     }
-  }
-
-
-  isProductionMode(): boolean {
-    return !this.getBoolean(MetaConfig.IsDevMode);
   }
 
 }

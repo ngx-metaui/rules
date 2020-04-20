@@ -133,9 +133,11 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
 
 
   /**
-   * I could not find any realiable way how to access parent view. Even forwardRef up to certain
-   * point worked but had to get away from this approach as it fails for my usecase when updating
-   * context and pushing new properties to the stack.
+   * I could not find any realiable way how to access parent view. Even using forwardRef and going
+   * up to three to certain point worked failed.
+   *
+   * This is only use-case when creating component dynamically
+   *
    */
   @Input()
   context: MetaContextComponent;
@@ -168,7 +170,8 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
 
     // create new component
     const newComponent = context.propertyForKey('component');
-    if (newComponent && ((this.name && this.name !== newComponent) || this.metaContext.isDirty)) {
+    if (newComponent && (this.name && this.name !== newComponent ||
+      this.metaContext.reRenderView())) {
       this.viewContainer.clear();
       this.resolvedComponentRef = undefined;
       this.doRenderComponent();

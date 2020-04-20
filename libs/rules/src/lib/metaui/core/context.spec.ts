@@ -16,7 +16,7 @@
  *
  *
  */
-import {Component, DebugElement, EventEmitter, Input, Output} from '@angular/core';
+import {Component, DebugElement, Input} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {ContextFieldPath, Expr} from './property-value';
@@ -39,7 +39,7 @@ import {
   ZoneLeft
 } from './meta-rules';
 import {NestedMap} from './nested-map';
-import {UIContext} from './context';
+import {Context, UIContext} from './context';
 
 
 describe('Meta Context behaivor ', () => {
@@ -1731,6 +1731,7 @@ describe('Meta Context behaivor ', () => {
 
 
       const metaPefr: MetaRules = TestBed.inject(META_RULES);
+      Context._CacheActivations = false;
 
       metaPefr.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
 

@@ -26,7 +26,6 @@ import {ListWrapper} from './utils/collection';
 import {Rule, RuleSet, Selector} from './rule';
 import {Context} from './context';
 import {MatchResult, MatchValue, UnionMatchResult} from './match';
-import * as Collections from 'typescript-collections';
 import {FieldPath} from './utils/field-path';
 import {InjectionToken, Type} from '@angular/core';
 import {ComponentRegistry} from './component-registry.service';
@@ -477,7 +476,7 @@ export interface MetaRules extends MetaRuleBase, ObjectRule, LayoutRule {
 
   declareKeyMask: number;
 
-  identityCache: Collections.Dictionary<any, any>;
+  identityCache: Map<string, any>;
   componentRegistry: ComponentRegistry;
 
 

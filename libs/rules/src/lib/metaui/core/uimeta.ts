@@ -477,203 +477,6 @@ export class UIMeta extends ObjectMeta {
     return rule;
   }
 
-
-  private _fireAction(context: Context, withBackAction: boolean): void {
-    const actionResults = context.propertyForKey('actionResults');
-    if (!actionResults) {
-      return;
-    }
-    this.navigateToPage(context, actionResults, withBackAction);
-  }
-
-  private defaultLabelGeneratorForKey(key: string): DynamicPropertyValue {
-    return new DefaultLabelGenerator(key);
-  }
-
-
-  private registerDerivedValue(propKey: string, dynamicValue: DynamicPropertyValue,
-                               contextKey: string,
-                               contextValue: string): void {
-    const m = new Map<string, any>();
-    m.set(propKey, dynamicValue);
-    this.addRule(new Rule(toList(new Selector(contextKey, contextValue)), m, SystemRulePriority));
-  }
-
-
-  private registerStaticallyResolvable(propKey: string, dynamicValue: StaticallyResolvable,
-                                       contextKey: string): void {
-    this.registerDerivedValue(propKey, new StaticDynamicWrapper(dynamicValue), contextKey, KeyAny);
-  }
-
-  private registerDefaultLabelGeneratorForKey(key: string): void {
-    this.registerDerivedValue(KeyLabel, new LocalizedLabelString(this), key, KeyAny);
-  }
-
-
-  private fieldsByZones(context: Context): Map<string, any> {
-    return this.itemsByZones(context, KeyField, ZonesTLRMB);
-  }
-
-
-  private mapItemPropsToNames(itemsByZones: Map<string, any>): Map<string, any> {
-    const namesByZones: Map<string, any> = new Map<string, any>();
-
-    MapWrapper.iterable(itemsByZones).forEach((value, key) => {
-      if (isPresent(value) && isArray(value)) {
-        const names: string[] = [];
-        for (const item of value) {
-          if (item instanceof ItemProperties) {
-            names.push(
-              (<ItemProperties>item).name);
-          }
-        }
-        namesByZones.set(key, names);
-
-      } else {
-        namesByZones.set(key,
-          this.mapItemPropsToNames(
-            value));
-      }
-    });
-    return namesByZones;
-  }
-
-  private predecessorMap(context: Context, key: string,
-                         defaultPredecessor: string): Map<string, Array<ItemProperties>> {
-    const fieldInfos: Array<ItemProperties> = this.itemProperties(context, key, false);
-
-    const predecessors: Map<string, Array<ItemProperties>> = MapWrapper.groupBy<ItemProperties>(
-      fieldInfos, (item: ItemProperties) => {
-        const pred = item.properties.get(KeyAfter);
-        return isPresent(pred) ? pred : defaultPredecessor;
-      });
-
-    return predecessors;
-  }
-
-
-  private isZoneReference(key: string): boolean {
-    // keys of the form 'z<Name>' and 'foo.bar.z<Name>' are considered zone keys
-    const lastDot = key.lastIndexOf('.');
-    const suffix = (lastDot === -1) ? key : key.substring(lastDot + 1);
-    return (suffix.length > 1) && (suffix[0] === 'z') && (
-      suffix[1].toUpperCase() === suffix[1] // is uppercase ?s
-    );
-  }
-
-
-  // recursive decent of predecessor tree...
-  private accumulatePrecessors(predecessors: Map<string, Array<ItemProperties>>, key: string,
-                               result: any): void {
-    const items: Array<ItemProperties> = predecessors.get(key);
-    if (isBlank(items)) {
-      return;
-    }
-
-    ListWrapper.sort<ItemProperties>(items, (o1, o2) => {
-      let r1 = o1.properties.get(KeyRank);
-      let r2 = o2.properties.get(KeyRank);
-
-      if (r1 === null) {
-        r1 = 100;
-      }
-      if (r2 === null) {
-        r2 = 100;
-      }
-
-      return (r1 === r2) ? 0 : (r1 === null) ? 1 : (r2 === null) ? -1 : (r1 - r2);
-    });
-
-    for (const item of items) {
-      if (!item.hidden) {
-        result.push(item);
-      }
-      this.accumulatePrecessors(predecessors, item.name, result);
-    }
-  }
-
-
-  private displayKeyForClass(className: string, usedByField: boolean = false): string {
-    // performance: should use registerDerivedValue('...', new Context.StaticDynamicWrapper
-    // to get cached resolution here...
-    const context = this.newContext();
-    context.set(KeyLayout, 'LabelField');
-    context.set(KeyClass, className);
-    const fields: Array<ItemProperties> = this.itemProperties(context, KeyField, true);
-
-    if (usedByField) {
-      return ListWrapper.isEmpty(fields) ? null : fields[0].name;
-    } else {
-      return ListWrapper.isEmpty(fields) ? '$toString' : fields[0].name;
-    }
-  }
-
-  /**
-   * Registers framework level components in order to be instantiated when needed.
-   *
-   */
-  private registerComponents(sysReferences: any): void {
-
-    assert(this.env.inTest || isPresent(this.config.get(AppConfigUserRulesParam)),
-      'Unable to initialize MetaUI as user rules are missing. please use:' +
-      ' metaui.rules.user-rules configuration param');
-
-    this.componentRegistry.registerTypes(sysReferences);
-
-    if (!this.env.inTest) {
-      const userReferences: any[] = this.config.get(AppConfigUserRulesParam);
-      for (const uRule of userReferences) {
-        this.componentRegistry.registerTypes(uRule);
-      }
-    }
-  }
-
-
-  private navigateToPage(context: Context, route: Route | string, withBackAction: boolean): void {
-    const params = this.prepareRoute(context, withBackAction);
-
-    const uiContex: UIContext = <UIContext>context;
-    if (this.isRoute(route)) {
-      this.routingService.navigateWithRoute(<Route>route, params, uiContex.object);
-    } else {
-      const id = params.id;
-      const type = params.type;
-      const routePath = [route];
-      if (params.id && params.type) {
-        routePath.push(type, id);
-      }
-      this.routingService.router.navigate(routePath);
-    }
-  }
-
-
-  private prepareRoute(context: Context, withBackAction: boolean): any {
-    const params = {};
-    const pageBindings = context.propertyForKey('pageBindings');
-    if (isPresent(pageBindings)) {
-      pageBindings.forEach((v: any, k: any) => {
-
-        (<any>params)[k] = context.resolveValue(v);
-        // clean up defaults
-        if (k === KeyObject) {
-          delete (<any>params)[k]['$toString'];
-        }
-      });
-      if (isPresent(withBackAction)) {
-        (<any>params)['b'] = withBackAction;
-      }
-
-    }
-
-    return params;
-  }
-
-
-  private isRoute(actionResult: any): boolean {
-    return isStringMap(actionResult) && isPresent(actionResult['path']);
-
-  }
-
   compPageWithName(name: string): Type<any> {
     const currType = this.componentRegistry.nameToType.get(name);
     if (isBlank(currType)) {
@@ -683,7 +486,6 @@ export class UIMeta extends ObjectMeta {
     }
     return currType;
   }
-
 
   // caller must push/pop!
   actionsByCategory(context: Context, result: Map<string, Array<ItemProperties>>,
@@ -698,52 +500,6 @@ export class UIMeta extends ObjectMeta {
     this.addActionsForCategories(context, result, catNames);
     return actionCategories;
   }
-
-  private addActionsForCategories(context: Context, result: Map<string, Array<ItemProperties>>,
-                                  catNames: string[]): void {
-    for (const cat of catNames) {
-      context.push();
-      if (cat !== DefaultActionCategory) {
-        context.set(KeyActionCategory, cat);
-      }
-
-      this.collectActionsByCategory(context, result, cat);
-      context.pop();
-    }
-
-  }
-
-
-  private collectActionsByCategory(context: Context, result: Map<string, Array<ItemProperties>>,
-                                   targetCat: string): void {
-    const actionInfos: ItemProperties[] = this.itemProperties(context, KeyAction, true);
-    for (const actionInfo of actionInfos) {
-      context.push();
-      context.set(KeyAction, actionInfo.name);
-
-      const visible = context.booleanPropertyForKey(KeyVisible, true);
-      context.pop();
-
-      if (visible) {
-        let category = actionInfo.properties.get(KeyActionCategory);
-
-        if (category == null) {
-          category = DefaultActionCategory;
-        }
-        if (targetCat !== category) {
-          continue;
-        }
-
-        let forCategory: ItemProperties[] = result.get(category);
-        if (isBlank(forCategory)) {
-          forCategory = [];
-          result.set(category, forCategory);
-        }
-        forCategory.push(actionInfo);
-      }
-    }
-  }
-
 
   computeModuleInfo(context?: Context, checkVisibility: boolean = true): ModuleInfo {
 
@@ -788,7 +544,6 @@ export class UIMeta extends ObjectMeta {
     return moduleInfo;
   }
 
-
   currentModuleLabel(moduleName: string, context?: Context): string {
     if (isBlank(context)) {
       context = this.newContext();
@@ -800,6 +555,236 @@ export class UIMeta extends ObjectMeta {
     context.pop();
 
     return label;
+  }
+
+  private _fireAction(context: Context, withBackAction: boolean): void {
+    const actionResults = context.propertyForKey('actionResults');
+    if (!actionResults) {
+      return;
+    }
+    this.navigateToPage(context, actionResults, withBackAction);
+  }
+
+  private defaultLabelGeneratorForKey(key: string): DynamicPropertyValue {
+    return new DefaultLabelGenerator(key);
+  }
+
+  private registerDerivedValue(propKey: string, dynamicValue: DynamicPropertyValue,
+                               contextKey: string,
+                               contextValue: string): void {
+    const m = new Map<string, any>();
+    m.set(propKey, dynamicValue);
+    this.addRule(new Rule(toList(new Selector(contextKey, contextValue)), m, SystemRulePriority));
+  }
+
+  private registerStaticallyResolvable(propKey: string, dynamicValue: StaticallyResolvable,
+                                       contextKey: string): void {
+    this.registerDerivedValue(propKey, new StaticDynamicWrapper(dynamicValue), contextKey, KeyAny);
+  }
+
+  private registerDefaultLabelGeneratorForKey(key: string): void {
+    this.registerDerivedValue(KeyLabel, new LocalizedLabelString(this), key, KeyAny);
+  }
+
+  private fieldsByZones(context: Context): Map<string, any> {
+    return this.itemsByZones(context, KeyField, ZonesTLRMB);
+  }
+
+  private mapItemPropsToNames(itemsByZones: Map<string, any>): Map<string, any> {
+    const namesByZones: Map<string, any> = new Map<string, any>();
+
+    MapWrapper.iterable(itemsByZones).forEach((value, key) => {
+      if (isPresent(value) && isArray(value)) {
+        const names: string[] = [];
+        for (const item of value) {
+          if (item instanceof ItemProperties) {
+            names.push(
+              (<ItemProperties>item).name);
+          }
+        }
+        namesByZones.set(key, names);
+
+      } else {
+        namesByZones.set(key,
+          this.mapItemPropsToNames(
+            value));
+      }
+    });
+    return namesByZones;
+  }
+
+  private predecessorMap(context: Context, key: string,
+                         defaultPredecessor: string): Map<string, Array<ItemProperties>> {
+    const fieldInfos: Array<ItemProperties> = this.itemProperties(context, key, false);
+
+    const predecessors: Map<string, Array<ItemProperties>> = MapWrapper.groupBy<ItemProperties>(
+      fieldInfos, (item: ItemProperties) => {
+        const pred = item.properties.get(KeyAfter);
+        return isPresent(pred) ? pred : defaultPredecessor;
+      });
+
+    return predecessors;
+  }
+
+  private isZoneReference(key: string): boolean {
+    // keys of the form 'z<Name>' and 'foo.bar.z<Name>' are considered zone keys
+    const lastDot = key.lastIndexOf('.');
+    const suffix = (lastDot === -1) ? key : key.substring(lastDot + 1);
+    return (suffix.length > 1) && (suffix[0] === 'z') && (
+      suffix[1].toUpperCase() === suffix[1] // is uppercase ?s
+    );
+  }
+
+  // recursive decent of predecessor tree...
+  private accumulatePrecessors(predecessors: Map<string, Array<ItemProperties>>, key: string,
+                               result: any): void {
+    const items: Array<ItemProperties> = predecessors.get(key);
+    if (isBlank(items)) {
+      return;
+    }
+
+    ListWrapper.sort<ItemProperties>(items, (o1, o2) => {
+      let r1 = o1.properties.get(KeyRank);
+      let r2 = o2.properties.get(KeyRank);
+
+      if (r1 === null) {
+        r1 = 100;
+      }
+      if (r2 === null) {
+        r2 = 100;
+      }
+
+      return (r1 === r2) ? 0 : (r1 === null) ? 1 : (r2 === null) ? -1 : (r1 - r2);
+    });
+
+    for (const item of items) {
+      if (!item.hidden) {
+        result.push(item);
+      }
+      this.accumulatePrecessors(predecessors, item.name, result);
+    }
+  }
+
+  private displayKeyForClass(className: string, usedByField: boolean = false): string {
+    // performance: should use registerDerivedValue('...', new Context.StaticDynamicWrapper
+    // to get cached resolution here...
+    const context = this.newContext();
+    context.set(KeyLayout, 'LabelField');
+    context.set(KeyClass, className);
+    const fields: Array<ItemProperties> = this.itemProperties(context, KeyField, true);
+
+    if (usedByField) {
+      return ListWrapper.isEmpty(fields) ? null : fields[0].name;
+    } else {
+      return ListWrapper.isEmpty(fields) ? '$toString' : fields[0].name;
+    }
+  }
+
+  /**
+   * Registers framework level components in order to be instantiated when needed.
+   *
+   */
+  private registerComponents(sysReferences: any): void {
+
+    assert(this.env.inTest || isPresent(this.config.get(AppConfigUserRulesParam)),
+      'Unable to initialize MetaUI as user rules are missing. please use:' +
+      ' metaui.rules.user-rules configuration param');
+
+    this.componentRegistry.registerTypes(sysReferences);
+
+    if (!this.env.inTest) {
+      const userReferences: any[] = this.config.get(AppConfigUserRulesParam);
+      for (const uRule of userReferences) {
+        this.componentRegistry.registerTypes(uRule);
+      }
+    }
+  }
+
+  private navigateToPage(context: Context, route: Route | string, withBackAction: boolean): void {
+    const params = this.prepareRoute(context, withBackAction);
+
+    const uiContex: UIContext = <UIContext>context;
+    if (this.isRoute(route)) {
+      this.routingService.navigateWithRoute(<Route>route, params, uiContex.object);
+    } else {
+      const id = params.id;
+      const type = params.type;
+      const routePath = [route];
+      if (params.id && params.type) {
+        routePath.push(type, id);
+      }
+      this.routingService.router.navigate(routePath);
+    }
+  }
+
+  private prepareRoute(context: Context, withBackAction: boolean): any {
+    const params = {};
+    const pageBindings = context.propertyForKey('pageBindings');
+    if (isPresent(pageBindings)) {
+      pageBindings.forEach((v: any, k: any) => {
+
+        (<any>params)[k] = context.resolveValue(v);
+        // clean up defaults
+        if (k === KeyObject) {
+          delete (<any>params)[k]['$toString'];
+        }
+      });
+      if (isPresent(withBackAction)) {
+        (<any>params)['b'] = withBackAction;
+      }
+
+    }
+
+    return params;
+  }
+
+  private isRoute(actionResult: any): boolean {
+    return isStringMap(actionResult) && isPresent(actionResult['path']);
+
+  }
+
+  private addActionsForCategories(context: Context, result: Map<string, Array<ItemProperties>>,
+                                  catNames: string[]): void {
+    for (const cat of catNames) {
+      context.push();
+      if (cat !== DefaultActionCategory) {
+        context.set(KeyActionCategory, cat);
+      }
+
+      this.collectActionsByCategory(context, result, cat);
+      context.pop();
+    }
+
+  }
+
+  private collectActionsByCategory(context: Context, result: Map<string, Array<ItemProperties>>,
+                                   targetCat: string): void {
+    const actionInfos: ItemProperties[] = this.itemProperties(context, KeyAction, true);
+    for (const actionInfo of actionInfos) {
+      context.push();
+      context.set(KeyAction, actionInfo.name);
+
+      const visible = context.booleanPropertyForKey(KeyVisible, true);
+      context.pop();
+
+      if (visible) {
+        let category = actionInfo.properties.get(KeyActionCategory);
+
+        if (category == null) {
+          category = DefaultActionCategory;
+        }
+        if (targetCat !== category) {
+          continue;
+        }
+
+        let forCategory: ItemProperties[] = result.get(category);
+        if (isBlank(forCategory)) {
+          forCategory = [];
+          result.set(category, forCategory);
+        }
+        forCategory.push(actionInfo);
+      }
+    }
   }
 
 }

@@ -25,7 +25,7 @@ export class MapWrapper {
   static clone<K, V>(m: Map<K, V>): Map<K, V> {
     try {
       if (new Map(<any>new Map())) {
-        return new Map<K, V>(<any> m);
+        return new Map<K, V>(<any>m);
       }
     } catch (e) {
     }
@@ -129,7 +129,7 @@ export class MapWrapper {
           );
         } else {
           // todo: can we really match this values with indexOf
-          ListWrapper.addElementIfAbsent<Map<string, any>>(<Map<string, any>[] >destValue,
+          ListWrapper.addElementIfAbsent<Map<string, any>>(<Map<string, any>[]>destValue,
             MapWrapper.clone<string, any>(sourceValue));
         }
       } else if (destValue instanceof Map && isString(sourceValue)) {

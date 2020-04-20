@@ -184,29 +184,17 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
    * the actual component instance and Element Reference
    */
   currentComponent: ComponentRef<any>;
-
+  /**
+   * Need to cache the resolved component reference so we dont call ComponentFactoryResolver
+   * everything we want to refresh a screen
+   */
+  resolvedComponentRef: ComponentReference;
   /**
    * I use this flag to identify that component is rendering for first time or its updated during
    * change detection
    *
    */
   protected initRenderInProgress = false;
-
-  /**
-   * Not sure if we need this, but want to keep it here or maybe move it to some service so we
-   * can cache created components and maybe reuse them.
-   *
-   */
-  protected componentReferences: Map<string, ComponentReference> =
-    new Map<string, ComponentReference>();
-
-
-  /**
-   * Need to cache the resolved component reference so we dont call ComponentFactoryResolver
-   * everything we want to refresh a screen
-   */
-  resolvedComponentRef: ComponentReference;
-
 
   constructor(public viewContainer: ViewContainerRef,
               public factoryResolver: ComponentFactoryResolver,
@@ -216,16 +204,17 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     this.bindings = new Map<string, any>();
   }
 
+  public get component(): any {
+    return this.currentComponent.instance;
+  }
+
   ngOnInit(): void {
 
     this.initRenderInProgress = true;
-    // todo: check if this the right lifecycle callback, this is called only once and you want
-    // to probably listen for changes, and change dection decide there is some change and we
-    // need to re-draw the view
+
     this.viewContainer.clear();
     this.doRenderComponent();
   }
-
 
   ngOnChanges(changes: SimpleChanges): void {
     if (isPresent(changes['name']) &&
@@ -235,7 +224,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     }
   }
 
-
   ngAfterViewChecked(): void {
     this.initRenderInProgress = false;
 
@@ -244,7 +232,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     this.createContentElementIfAny(true);
   }
 
-
   ngAfterViewInit(): void {
     // check to see if we need to render and reposition DOM element both for wrapper and
     // content
@@ -252,13 +239,19 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     this.createContentElementIfAny();
   }
 
-
   ngAfterContentInit(): void {
   }
 
+  ngOnDestroy(): void {
+    if (isPresent(this.currentComponent)) {
+      this.currentComponent.destroy();
+      this.currentComponent = undefined;
+    }
 
-  public get component(): any {
-    return this.currentComponent.instance;
+    if (isPresent(this.viewContainer)) {
+      this.viewContainer.clear();
+    }
+
   }
 
   /**
@@ -279,9 +272,9 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
    * redraw a screen
    */
   protected doRenderComponent(): void {
+
     this.placeTheComponent();
     // this.currentComponent.changeDetectorRef.detach();
-
     this.applyBindings(this.componentReference(), this.currentComponent, this.bindings);
     // this.currentComponent.changeDetectorRef.detectChanges();
 
@@ -297,7 +290,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     });
   }
 
-
   /**
    * Place actual component onto the screen using ViewContainerRef
    *
@@ -306,7 +298,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     const reference = this.componentReference();
     this.currentComponent = this.viewContainer.createComponent(reference.resolvedCompFactory);
   }
-
 
   /**
    * When inserting Component that needs to have a content like e.g. hyperlink or button
@@ -350,7 +341,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     return detectChanges;
   }
 
-
   /**
    *
    * Retrieve a NG Content from binding list and remove it so it its not prepagated down when
@@ -364,7 +354,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     }
     return content;
   }
-
 
   protected ngContentElement(): string {
     let content: any;
@@ -387,19 +376,24 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
       return this.resolvedComponentRef;
     }
     const currType = this.resolveComponentType();
-    const componentFactory: ComponentFactory<any> = this.factoryResolver
-      .resolveComponentFactory(currType);
+    if (this.compRegistry.componentCache.has(this.name)) {
+      return this.compRegistry.componentCache.get(this.name);
+    } else {
+      const componentFactory: ComponentFactory<any> = this.factoryResolver
+        .resolveComponentFactory(currType);
+      const componentMeta: Component = this.resolveDirective(componentFactory);
 
-    const componentMeta: Component = this.resolveDirective(componentFactory);
-    const compReference: ComponentReference = {
-      metadata: componentMeta,
-      resolvedCompFactory: componentFactory,
-      componentType: currType,
-      componentName: this.name
-    };
+      const compReference: ComponentReference = {
+        metadata: componentMeta,
+        resolvedCompFactory: componentFactory,
+        componentType: currType,
+        componentName: this.name
+      };
+      this.resolvedComponentRef = compReference;
+      this.compRegistry.componentCache.set(this.name, compReference);
 
-    this.resolvedComponentRef = compReference;
-    return compReference;
+      return compReference;
+    }
   }
 
   /**
@@ -423,7 +417,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     });
   }
 
-
   /**
    * Resolves a component Type based on the string literal
    *
@@ -441,7 +434,6 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     }
     return componentType;
   }
-
 
   protected resolveDirective(compFactory: ComponentFactory<any>): Component {
     const compMeta: Component = {
@@ -465,31 +457,18 @@ export class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
     return compMeta;
   }
 
+  protected destroy(): void {
+    if (isPresent(this.currentComponent)) {
+      this.currentComponent = null;
+      this.resolvedComponentRef = null;
+    }
+  }
+
   private initOnDestroy(): void {
     if (isPresent(this.currentComponent)) {
       this.currentComponent.onDestroy(() => {
         this.destroy();
       });
-    }
-  }
-
-
-  ngOnDestroy(): void {
-    if (isPresent(this.currentComponent)) {
-      this.currentComponent.destroy();
-      this.currentComponent = undefined;
-    }
-
-    if (isPresent(this.viewContainer)) {
-      this.viewContainer.clear();
-    }
-
-  }
-
-  protected destroy(): void {
-    if (isPresent(this.currentComponent)) {
-      this.currentComponent = null;
-      this.resolvedComponentRef = null;
     }
   }
 }

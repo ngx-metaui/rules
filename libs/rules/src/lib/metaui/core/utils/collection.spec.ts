@@ -18,9 +18,8 @@
  *
  *
  */
-import * as Collections from 'typescript-collections';
 import * as objectPath from 'object-path';
-import {evalExpression, isArray} from './lang';
+import {evalExpression, isArray, isString} from './lang';
 import {ListWrapper, MapWrapper} from './collection';
 import {FieldPath} from './field-path';
 
@@ -149,25 +148,6 @@ describe('a ListWrapper utilities so ', () => {
 
 });
 
-
-describe('Dictionary if it works as expect', () => {
-
-  it('retrieved object should not be equal is key is different ', () => {
-
-
-      const dict = new Collections.Dictionary();
-      dict.setValue(new User('Frank', 'Kolar'), {aa: 'ss'});
-      dict.setValue(new User('David', 'Kolar'), {aa: 'ssaaa'});
-
-
-      const value = dict.getValue(new User('Frank', 'Kolar'));
-      const value2 = dict.getValue(new User('David', 'Kolar'));
-
-
-      expect(value).not.toEqual(value2);
-    }
-  );
-});
 
 // PropFieldsByZoneResolver
 describe('object-path that we can simulate set and get values on the objects for dynamic  ' +
@@ -330,7 +310,7 @@ class User {
 
   toString() {
     // Short hand. Adds each own property
-    return Collections.util.makeString(this);
+    return makeString(this);
   }
 }
 
@@ -345,16 +325,43 @@ class Address {
 }
 
 
+function makeString(item: any, join = '') {
+  if (!join) {
+    join = ',';
+  }
+  if (item === null) {
+    return 'COLLECTION_NULL';
+  } else if (!item) {
+    return 'COLLECTION_UNDEFINED';
+  } else if (isString(item)) {
+    return item.toString();
+  } else {
+    let toret = '{';
+    let first = true;
+    for (const prop in item) {
+      if (exports.has(item, prop)) {
+        if (first) {
+          first = false;
+        } else {
+          toret = toret + join;
+        }
+        toret = toret + prop + ':' + item[prop];
+      }
+    }
+    return toret + '}';
+  }
+}
+
 class SomeData {
+
+  constructor(public name: string, public name2: string) {
+  }
 
   static aaaa(): number {
     const updatedMask = 0;
 
 
     return 0;
-  }
-
-  constructor(public name: string, public name2: string) {
   }
 
   equalsTo(o: any) {

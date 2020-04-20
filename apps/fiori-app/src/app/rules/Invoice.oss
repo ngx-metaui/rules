@@ -16,7 +16,7 @@ class=Invoice {
   field=purchaseOrder {
     trait:asSelect;
     choices: ["PO1111", "PO2222", "PO33333", "P33333", "PO3333", "PO44444", "PO55555"];
-    editable:${object.accountCategory == "Order"};
+    editable:${!object.accountCategory || object.accountCategory === "Order"};
   }
 
   field=supplier {

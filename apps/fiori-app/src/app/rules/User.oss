@@ -7,8 +7,8 @@ class=User {
     trait:labelField;
   }
 
-  zLeft => uniqueName => firstName => organization => purchasingUnit => defaultCurrency;
-  zRight => fullName => lastName => email;
+   zNone => *;
+   zLeft => uniqueName#required => firstName => lastName => email => defaultCurrency;
 
-  zBottom => description;
+
 }

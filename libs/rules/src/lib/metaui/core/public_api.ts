@@ -23,7 +23,7 @@ export {
 } from './meta-context/meta-context.component';
 export {
   CompositeType, Deserializable, Entity, Identity, isEntity, isValue, Value
-}from './utils/domain-model';
+} from './utils/domain-model';
 export {
   beautifyClassName,
   beautifyFileName,

@@ -5,7 +5,7 @@
  *
  */
 /* tslint:disable */
-export const UserRule = 'class=User {    field=uniqueName {     label:"Id";   }   field=fullName {     trait:labelField;   }    zLeft => uniqueName => firstName => organization => purchasingUnit => defaultCurrency;   zRight => fullName => lastName => email;    zBottom => description; } ';
+export const UserRule = 'class=User {    field=uniqueName {     label:"Id";   }   field=fullName {     trait:labelField;   }     zNone => *;    zLeft => uniqueName#required => firstName => lastName => email => defaultCurrency;   } ';
 /* tslint:disable */
 /**
  *  @formatter:on

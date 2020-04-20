@@ -22,7 +22,8 @@ import {
   OSSBindingValueAst,
   OSSFileAst,
   OSSLocalizedStringValueAst,
-  OSSRuleBodyPropertyAst, OSSSelectorAst
+  OSSRuleBodyPropertyAst,
+  OSSSelectorAst
 } from './metaui-ast';
 import {OSSTokenType} from './oss-lexer';
 import {InputRule, RulesVisitor} from './rules-visitor';
@@ -39,16 +40,6 @@ export class OfflineRulesVisitor extends RulesVisitor {
     super(ossFile);
     this.visit();
   }
-
-  protected addRule(rule: InputRule): void {
-    this.ossRules.push(rule);
-  }
-
-  protected addPredecessorRule(itemName: string, contextPreds: Array<Selector>,
-                               predecessor: string, traits: Array<string>,
-                               lineNumber: number): void {
-  }
-
 
   visitSelector(ast: OSSSelectorAst, context?: any): any {
     super.visitSelector(ast, context);
@@ -79,7 +70,6 @@ export class OfflineRulesVisitor extends RulesVisitor {
     };
   }
 
-
   visitExprValue(ast: OSSBindingValueAst, context?: any): any {
     if (ast.nodeType === OSSTokenType.ExprLiteral) {
       return {
@@ -96,7 +86,6 @@ export class OfflineRulesVisitor extends RulesVisitor {
     return null;
   }
 
-
   visitI18Value(ast: OSSLocalizedStringValueAst, context?: any): any {
     return {
       t: 'i18n',
@@ -105,5 +94,14 @@ export class OfflineRulesVisitor extends RulesVisitor {
         defVal: ast.value
       }
     };
+  }
+
+  protected addRule(rule: InputRule): void {
+    this.ossRules.push(rule);
+  }
+
+  protected addPredecessorRule(itemName: string, contextPreds: Array<Selector>,
+                               predecessor: string, traits: Array<string>,
+                               lineNumber: number): void {
   }
 }

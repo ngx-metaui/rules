@@ -36,8 +36,10 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
    */
   @Input()
   editing: boolean;
-
-
+  /**
+   * Not happy with this structure and the way I work with FG
+   */
+  formGroup: FormGroup;
   /**
    * Need to capture current snapshot for edit operation as when we enter editing mode and user
    * start to change values the detection loop runs for me in unpredicted order and I
@@ -57,46 +59,9 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
   protected contextSnapshot: Snapshot;
   protected object: any;
 
-  /**
-   * Not happy with this structure and the way I work with FG
-   */
-  formGroup: FormGroup;
-
   constructor(public env: Environment,
               protected _metaContext: MetaContextComponent) {
   }
-
-  ngOnInit(): void {
-    this.updateMeta();
-  }
-
-
-  ngDoCheck(): void {
-    this.updateMeta();
-
-  }
-
-  ngAfterViewChecked(): void {
-  }
-
-
-  protected updateMeta() {
-    this.editing = this.context.booleanPropertyForKey(KeyEditing, false);
-    if (this.editing) {
-      this.object = this.context.values.get(KeyObject);
-      this.contextSnapshot = this.context.snapshot();
-    }
-    this.doUpdate();
-  }
-
-
-  /**
-   * Placeholder to be implemented by subclass. this method is triggered when we detect any
-   * changes on the MetaContext
-   */
-  protected doUpdate(): void {
-  }
-
 
   /**
    * Get the last saved context from the MetaContext component
@@ -110,19 +75,28 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
     assert(false, 'Should always have metaContext available');
   }
 
+  ngOnInit(): void {
+    this.updateMeta();
+  }
+
+  ngDoCheck(): void {
+    this.updateMeta();
+
+  }
+
+  ngAfterViewChecked(): void {
+  }
 
   isNestedContext(): boolean {
     return this.context.isNested;
   }
 
-  // remove this ugly solution once I figure out custom value accessor that I can
   // provide as a expression
   properties(key: string, defValue: any = null): any {
     return isPresent(this.context) ? (isPresent(this.context.propertyForKey(key)) ?
       this.context.propertyForKey(key) : defValue) : defValue;
 
   }
-
 
   /**
    * Retrieves active context's properties
@@ -132,6 +106,23 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
     const activeContext: Context = this._metaContext.activeContext();
     return isPresent(me) ? me.propertyForKey(key) : defValue;
 
+  }
+
+  // remove this ugly solution once I figure out custom value accessor that I can
+
+  protected updateMeta() {
+    this.editing = this.context.booleanPropertyForKey(KeyEditing, false);
+    if (this.editing) {
+      this.object = this.context.values.get(KeyObject);
+    }
+    this.doUpdate();
+  }
+
+  /**
+   * Placeholder to be implemented by subclass. this method is triggered when we detect any
+   * changes on the MetaContext
+   */
+  protected doUpdate(): void {
   }
 
 

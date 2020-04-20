@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectionStrategy, Component, Host, Optional} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, Host, Optional} from '@angular/core';
 
 import {
   Environment,
@@ -63,11 +63,13 @@ import {ControlContainer, FormGroup} from '@angular/forms';
   templateUrl: 'meta-form-group.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaFormGroup extends MetaBaseComponent {
+export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
   /**
    * For multi-zone layout this contains fields broken by its assigned zones
    */
   private fieldsByZone: Map<string, any>;
+
+  startInit: any;
 
   /**
    * Is five zone layout? For MetaUi we  have always fiveZone, unless in MetaRules we say
@@ -76,6 +78,11 @@ export class MetaFormGroup extends MetaBaseComponent {
   isFiveZoneLayout: boolean;
 
   useNoLabelLayout = false;
+
+  zLeft: string[] = [];
+  zRight: string[] = [];
+  zTop: string[] = [];
+  zBottom: string[] = [];
 
   constructor(@Host() public _context: MetaContextComponent,
               @Optional() private formContainer: ControlContainer,
@@ -100,27 +107,32 @@ export class MetaFormGroup extends MetaBaseComponent {
     if (bin && bin.has('noLabelLayout')) {
       this.useNoLabelLayout = bin.get('noLabelLayout');
     }
+
+    this.zLeft = this.updateZone(this.zLeft, this.fieldsByZone.get(ZoneLeft));
+    this.zRight = this.updateZone(this.zRight, this.fieldsByZone.get(ZoneRight));
+    this.zTop = this.updateZone(this.zTop, this.fieldsByZone.get(ZoneTop));
+    this.zBottom = this.updateZone(this.zBottom, this.fieldsByZone.get(ZoneBottom));
+
+  }
+
+
+  private updateZone(sourceZone: string[], newArray: string[]) {
+    if (newArray && (newArray.length !== sourceZone.length)) {
+      return newArray;
+    }
+    return sourceZone;
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+  }
+
+  ngAfterViewInit(): void {
   }
 
 
   trackByFn(index, item) {
     return item;
-  }
-
-  zLeft(): string[] {
-    return this.fieldsByZone.get(ZoneLeft);
-  }
-
-  zRight(): string[] {
-    return this.fieldsByZone.get(ZoneRight);
-  }
-
-  zTop(): string[] {
-    return this.fieldsByZone.get(ZoneTop);
-  }
-
-  zBottom(): string[] {
-    return this.fieldsByZone.get(ZoneBottom);
   }
 
 

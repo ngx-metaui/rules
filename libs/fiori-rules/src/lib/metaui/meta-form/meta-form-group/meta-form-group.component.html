@@ -1,33 +1,33 @@
 <fdp-form-group #fg [multiLayout]="true" [editable]="editing" [noLabelLayout]="useNoLabelLayout"
                 [formGroup]="formGroup" [i18Strings]="_context.i18Template">
 
-  <ng-template ngFor let-curentField [ngForOf]="zTop()" let-rank="index" [ngForTrackBy]="trackByFn">
+  <ng-template ngFor let-curentField [ngForOf]="zTop" let-rank="index" [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank + 5"
+      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank"
                     zone="zTop"></m-form-field>
     </m-context>
   </ng-template>
 
-  <ng-template ngFor let-curentField [ngForOf]="zLeft()" let-rank="index"
+  <ng-template ngFor let-curentField [ngForOf]="zLeft" let-rank="index"
                [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" zone="zLeft" [rank]="rank + 5">
+      <m-form-field [field]="curentField" [editing]="editing" zone="zLeft" [rank]="rank ">
       </m-form-field>
     </m-context>
   </ng-template>
 
-  <ng-template ngFor let-curentField [ngForOf]="zRight()" let-rank="index"
+  <ng-template ngFor let-curentField [ngForOf]="zRight" let-rank="index"
                [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank + 5"
+      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank "
                     zone="zRight"></m-form-field>
     </m-context>
   </ng-template>
 
-  <ng-template ngFor let-curentField [ngForOf]="zBottom()" let-rank="index"
+  <ng-template ngFor let-curentField [ngForOf]="zBottom" let-rank="index"
                [ngForTrackBy]="trackByFn">
     <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank + 5"
+      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank "
                     zone="zBottom"></m-form-field>
     </m-context>
   </ng-template>

@@ -183,6 +183,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
   formControl: FormControl;
 
+  hasErrors: boolean = false;
 
   constructor(private _cd: ChangeDetectorRef) {
     this.formControl = new FormControl();
@@ -205,6 +206,7 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
 
   ngAfterContentChecked(): void {
     // this.validateFieldControlComponent();
+    this.hasErrors = this._editable && this._control && this._control.inErrorState;
   }
 
   ngAfterContentInit(): void {
@@ -248,11 +250,6 @@ export class FormFieldComponent implements FormField, AfterContentInit, AfterCon
   ngOnDestroy(): void {
     this._destroyed.next();
     this._destroyed.complete();
-  }
-
-
-  hasErrors(): boolean {
-    return this._editable && this._control && this._control.inErrorState;
   }
 
   private validateFieldControlComponent() {

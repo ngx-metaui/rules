@@ -18,7 +18,6 @@
  *
  */
 // todo: try to get rid of this library
-import * as Collections from 'typescript-collections';
 import {ListWrapper, MapWrapper} from './utils/collection';
 import {Match, MatchResult, MatchValue, UnionMatchResult} from './match';
 import {Context} from './context';
@@ -103,32 +102,20 @@ export abstract class Meta implements MetaRules, OnDestroy {
 
   declareKeyMask: number = 0;
   ruleSetGeneration: number = 0;
+  identityCache = new Map<string, any>();
 
   protected _currentRuleSet: RuleSet;
+  protected sysRulesLoaded = false;
+  protected uiLibSysRulesLoaded = false;
   private _nextKeyId: number = 0;
-
-
   private _keyData: Map<string, KeyData> = new Map<string, KeyData>();
-
-  // Todo: Remove dependency to typescript-collections
-  identityCache = new Collections.Dictionary<any, any>();
   private _keyDatasById: KeyData[] = new Array<KeyData>(MaxKeyDatas);
-  private _MatchToPropsCache: Collections.Dictionary<Match, PropertyMap> =
-    new Collections.Dictionary<Match, PropertyMap>();
-  private _PropertyMapUniquer: Collections.Dictionary<PropertyMap, PropertyMap> =
-    new Collections.Dictionary<PropertyMap, PropertyMap>();
-
-
+  private _MatchToPropsCache: Map<string, PropertyMap> = new Map<string, PropertyMap>();
   /**
    * Stores objects that can be referenced from OSS while evaluating expression
    */
   private contextInjectables: Map<string, any> = new Map<string, any>();
-
-
   private _managerForProperty: Map<string, PropertyManager> = new Map<string, PropertyManager>();
-
-  protected sysRulesLoaded = false;
-  protected uiLibSysRulesLoaded = false;
 
   constructor(public componentRegistry: ComponentRegistry) {
 
@@ -186,9 +173,10 @@ export abstract class Meta implements MetaRules, OnDestroy {
   }
 
   clearCaches(): void {
-    this._MatchToPropsCache = new Collections.Dictionary<Match, PropertyMap>();
-    this._PropertyMapUniquer = new Collections.Dictionary<PropertyMap, PropertyMap>();
-    this.identityCache = new Collections.Dictionary<any, any>();
+    this._MatchToPropsCache.clear();
+    this._MatchToPropsCache = new Map<string, PropertyMap>();
+    this.identityCache.clear();
+    this.identityCache = new Map<string, any>();
     this.contextInjectables.clear();
   }
 
@@ -230,11 +218,10 @@ export abstract class Meta implements MetaRules, OnDestroy {
   }
 
   propertiesForMatch(matchResult: MatchResult): PropertyMap {
-    let properties: PropertyMap = this._MatchToPropsCache.getValue(matchResult);
+    let properties: PropertyMap = this._MatchToPropsCache.get(matchResult.toString());
     if (isPresent(properties)) {
       return properties;
     }
-
     properties = this.newPropertiesMap();
 
     const arr: number[] = matchResult.filteredMatches();
@@ -262,7 +249,7 @@ export abstract class Meta implements MetaRules, OnDestroy {
     }
 
     properties.awakeProperties();
-    this._MatchToPropsCache.setValue(matchResult.immutableCopy(), properties);
+    this._MatchToPropsCache.set(matchResult.immutableCopy().toString(), properties);
     return properties;
   }
 
@@ -408,6 +395,31 @@ export abstract class Meta implements MetaRules, OnDestroy {
     this.contextInjectables.set(name, dependency);
   }
 
+  bestSelectorToIndex(selectors: Array<Selector>): Selector {
+    let best: Selector;
+    let bestRank = Number.MIN_VALUE;
+    let pos = 0;
+    for (const sel of selectors) {
+      const rank = this.selectivityRank(sel) + pos++;
+      if (rank > bestRank) {
+        best = sel;
+        bestRank = rank;
+      }
+    }
+    return best;
+  }
+
+  validationError(context: Context): string {
+    const error = context.propertyForKey(KeyValid);
+    if (isBlank(error)) {
+      return null;
+    }
+
+    if (isBoolean(error)) {
+      return BooleanWrapper.boleanValue(error) ? null : 'Invalid entry';
+    }
+    return error.toString();
+  }
 
   protected scopeKeyForSelector(preds: Array<Selector>): string {
     for (let i = preds.length - 1; i >= 0; i--) {
@@ -419,7 +431,6 @@ export abstract class Meta implements MetaRules, OnDestroy {
     }
     return null;
   }
-
 
   // this one expect that we already opened the ruleset
   protected loadRulesWithModule(ruleText?: any, module: string = 'system',
@@ -435,12 +446,10 @@ export abstract class Meta implements MetaRules, OnDestroy {
     }
   }
 
-
   protected loadRulesWithRuleSet(filename: string, ruleText: any, rank: number): void {
     this.beginRuleSetWithRank(rank, filename);
     this.loadRulesWithModule(ruleText);
   }
-
 
   protected beginRuleSetWithRank(rank: number, filePath: string): void {
     try {
@@ -466,13 +475,11 @@ export abstract class Meta implements MetaRules, OnDestroy {
     this.keyData(key)._transformer = transformer;
   }
 
-
   protected mirrorPropertyToContext(propertyName: string, contextKey: string): void {
     const keyData = this.keyData(contextKey);
     const manager = this.managerForProperty(propertyName);
     manager._keyDataToSet = keyData;
   }
-
 
   protected defineKeyAsPropertyScope(contextKey: string): void {
     const keyData: KeyData = this.keyData(contextKey);
@@ -599,33 +606,6 @@ export abstract class Meta implements MetaRules, OnDestroy {
     rule.keyAntiMask = antiMask;
   }
 
-  bestSelectorToIndex(selectors: Array<Selector>): Selector {
-    let best: Selector;
-    let bestRank = Number.MIN_VALUE;
-    let pos = 0;
-    for (const sel of selectors) {
-      const rank = this.selectivityRank(sel) + pos++;
-      if (rank > bestRank) {
-        best = sel;
-        bestRank = rank;
-      }
-    }
-    return best;
-  }
-
-  validationError(context: Context): string {
-    const error = context.propertyForKey(KeyValid);
-    if (isBlank(error)) {
-      return null;
-    }
-
-    if (isBoolean(error)) {
-      return BooleanWrapper.boleanValue(error) ? null : 'Invalid entry';
-    }
-    return error.toString();
-  }
-
-
   private selectivityRank(selector: Selector): number {
     // Score selectors: good if property scope, key !== '*' or bool
     // '*' is particularly bad, since these are inherited by all others
@@ -655,13 +635,13 @@ export abstract class Meta implements MetaRules, OnDestroy {
       const keyData = this._keyData.get(id);
       const valuess = keyData.ruleVecs.values();
 
-      for (const vm of valuess) {
+      keyData.ruleVecs.forEach((vm, k) => {
         const kvc = new KeyValueCount(keyData._key, (<any>vm)['_value'], isPresent(
           vm._arr) ? vm._arr[0] : 0);
 
         total += kvc.count;
         counts.push(kvc);
-      }
+      });
     }
     ListWrapper.sort<KeyValueCount>(counts, (o1, o2) => o2.count - o1.count);
 

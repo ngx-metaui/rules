@@ -66,18 +66,6 @@ export class RuntimeParser extends RulesVisitor {
     this.pop();
   }
 
-  protected addRule(rule: InputRule): void {
-    const selectors: Array<Selector> = this.toSelectors(rule);
-    this._meta.addRule(new Rule(selectors, rule._properties, 0));
-  }
-
-  protected addPredecessorRule(itemName: string, contextPreds: Array<Selector>,
-                               predecessor: string, traits: Array<string>,
-                               lineNumber: number): void {
-
-    this._meta.addPredecessorRule(itemName, contextPreds, predecessor, traits, lineNumber);
-  }
-
   visitRuleProperty(ast: OSSRuleBodyPropertyAst, context?: any): any {
     const map = this.currentProperties(context);
     const value = ast.value.visit(this, context);
@@ -94,7 +82,6 @@ export class RuntimeParser extends RulesVisitor {
     return new ContextFieldPath(ast.value);
   }
 
-
   visitExprValue(ast: OSSBindingValueAst, context?: any): any {
     if (ast.nodeType === OSSTokenType.ExprLiteral) {
       return new Expr(ast.value, this._meta);
@@ -106,8 +93,19 @@ export class RuntimeParser extends RulesVisitor {
     return null;
   }
 
-
   visitI18Value(ast: OSSLocalizedStringValueAst, context?: any): any {
     return this._meta.createLocalizedString(ast.localizedKey, ast.value);
+  }
+
+  protected addRule(rule: InputRule): void {
+    const selectors: Array<Selector> = this.toSelectors(rule);
+    this._meta.addRule(new Rule(selectors, rule._properties, 0));
+  }
+
+  protected addPredecessorRule(itemName: string, contextPreds: Array<Selector>,
+                               predecessor: string, traits: Array<string>,
+                               lineNumber: number): void {
+
+    this._meta.addPredecessorRule(itemName, contextPreds, predecessor, traits, lineNumber);
   }
 }

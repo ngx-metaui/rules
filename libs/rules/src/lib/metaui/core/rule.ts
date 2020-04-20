@@ -42,19 +42,8 @@ export class Selector {
   private _matchArrayIdx: number = 0;
   private _matchValue: MatchValue;
 
-
-  static fromMap(values: Map<string, any>): Array<Selector> {
-    const result = new Array<Selector>();
-    MapWrapper.iterable(values).forEach((value, key) => {
-      result.push(new Selector(key, value, false));
-    });
-    return result;
-  }
-
-
   constructor(private _key: string, private _value: any, public isDecl: boolean = false) {
   }
-
 
   get key(): string {
     return this._key;
@@ -62,6 +51,14 @@ export class Selector {
 
   get value(): any {
     return this._value;
+  }
+
+  static fromMap(values: Map<string, any>): Array<Selector> {
+    const result = new Array<Selector>();
+    MapWrapper.iterable(values).forEach((value, key) => {
+      result.push(new Selector(key, value, false));
+    });
+    return result;
   }
 
   bindToKeyData(keyData: KeyData): void {
@@ -111,12 +108,67 @@ export class Selector {
  */
 
 export class Rule {
-  private _id: number;
-  private _ruleSet: RuleSet;
-
   keyMatchesMask: number = 0;
   keyIndexedMask: number = 0;
   keyAntiMask: number = 0;
+
+  constructor(public _selectors: Array<Selector>, private _properties?: Map<string, any>,
+              private _rank: number = -1,
+              private _lineNumber: number = -1) {
+
+  }
+
+  private _id: number;
+
+  get id(): number {
+    return this._id;
+  }
+
+  set id(value: number) {
+    this._id = value;
+  }
+
+  private _ruleSet: RuleSet;
+
+  get ruleSet(): RuleSet {
+    return this._ruleSet;
+  }
+
+  set ruleSet(value: RuleSet) {
+    this._ruleSet = value;
+  }
+
+  get lineNumber(): number {
+    return this._lineNumber;
+  }
+
+  set lineNumber(lineNumber) {
+    this._lineNumber = lineNumber;
+  }
+
+  get selectors(): Array<Selector> {
+    return this._selectors;
+  }
+
+  set selectors(value: Array<Selector>) {
+    this._selectors = value;
+  }
+
+  get properties(): Map<string, any> {
+    return this._properties;
+  }
+
+  set properties(value: Map<string, any>) {
+    this._properties = value;
+  }
+
+  get rank(): number {
+    return this._rank;
+  }
+
+  set rank(value: number) {
+    this._rank = value;
+  }
 
   static merge(meta: MetaRules, src: Map<string, any>, dest: Map<string, any>,
                declareKey: string): number {
@@ -148,13 +200,6 @@ export class Rule {
     return updatedMask;
   }
 
-  constructor(public _selectors: Array<Selector>, private _properties?: Map<string, any>,
-              private _rank: number = -1,
-              private _lineNumber: number = -1) {
-
-  }
-
-
   matches(matchArray: Array<MatchValue>): boolean {
     for (const sel of this._selectors) {
       if (!sel.matches(matchArray)) {
@@ -182,63 +227,11 @@ export class Rule {
     return this._rank === Number.MIN_VALUE;
   }
 
-  get lineNumber(): number {
-    return this._lineNumber;
-  }
-
-  set lineNumber(lineNumber) {
-    this._lineNumber = lineNumber;
-  }
-
-
   location(): string {
     const path: string = isPresent(this._ruleSet) ? this._ruleSet.filePath : 'Unknown';
     return (this._lineNumber >= 0) ? (new StringJoiner([
       path, ':', this._lineNumber + ''
     ])).toString() : path;
-  }
-
-
-  get selectors(): Array<Selector> {
-    return this._selectors;
-  }
-
-  set selectors(value: Array<Selector>) {
-    this._selectors = value;
-  }
-
-  get properties(): Map<string, any> {
-    return this._properties;
-  }
-
-  set properties(value: Map<string, any>) {
-    this._properties = value;
-  }
-
-  get rank(): number {
-    return this._rank;
-  }
-
-
-  set rank(value: number) {
-    this._rank = value;
-  }
-
-  get ruleSet(): RuleSet {
-    return this._ruleSet;
-  }
-
-
-  set ruleSet(value: RuleSet) {
-    this._ruleSet = value;
-  }
-
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
   }
 
   isEditable(): boolean {
@@ -395,15 +388,33 @@ export class RuleWrapper {
  */
 export class RuleSet {
 
-  _filePath: string;
-  _start: number = 0;
-  _end: number = 0;
-  _editableStart: number = -1;
-
   _rank: number = 0;
 
-
   constructor(private _meta: MetaRules) {
+  }
+
+  _filePath: string;
+
+  get filePath(): string {
+    return this._filePath;
+  }
+
+  _start: number = 0;
+
+  get start(): number {
+    return this._start;
+  }
+
+  _end: number = 0;
+
+  get end(): number {
+    return this._end;
+  }
+
+  _editableStart: number = -1;
+
+  get editableStart(): number {
+    return this._editableStart;
   }
 
   disableRules(): void {
@@ -414,12 +425,6 @@ export class RuleSet {
 
   }
 
-
-  get filePath(): string {
-    return this._filePath;
-  }
-
-
   startRank(): number {
     return (this._start < this._meta.ruleCount)
       ? this._meta.rules[this._start].rank
@@ -428,18 +433,6 @@ export class RuleSet {
 
   allocateNextRuleEntry(): number {
     return (this._meta.ruleCount > this._end) ? this._meta.ruleCount++ : this._end++;
-  }
-
-  get start(): number {
-    return this._start;
-  }
-
-  get end(): number {
-    return this._end;
-  }
-
-  get editableStart(): number {
-    return this._editableStart;
   }
 }
 

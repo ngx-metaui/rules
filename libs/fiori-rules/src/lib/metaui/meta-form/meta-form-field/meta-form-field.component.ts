@@ -24,7 +24,8 @@ import {
   Component,
   forwardRef,
   Host,
-  Input, Optional,
+  Input,
+  Optional,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -69,6 +70,17 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
   @ViewChild('renderer', {static: true})
   renderer: TemplateRef<any>;
 
+  label: string;
+  placeholder: string;
+  hint: string;
+  columns: number;
+  fluid: boolean;
+
+  i18Strings: TemplateRef<any>;
+  noLabelLayout: boolean;
+  isRequired: boolean;
+
+
   private _i18Strings: TemplateRef<any>;
   private _noLabelLayout: boolean = false;
 
@@ -88,18 +100,16 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
     this.validators = this.createValidators();
   }
 
-  bindingBoolProperty(key: string): boolean {
-    const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
-
-    if (bindings && bindings.has(key)) {
-      const value = bindings.get(key);
-      return !!value;
-    }
-    return false;
-  }
 
   ngAfterContentInit(): void {
     this._metaContext.supportsDirtyChecking = true;
+    this.label = this.properties('label');
+    this.columns = this.properties('size', 6);
+    this.hint = this.properties('hint');
+    this.fluid = this.properties('fluid', false);
+    this.placeholder = this.properties('placeholder', this.label);
+    this.isRequired = this.editing && this.context.booleanPropertyForKey('required',
+      false);
   }
 
 
@@ -132,57 +142,7 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
     return [metaValidator];
   }
 
-  isRequired(): boolean {
-    return this.editing && this.context.booleanPropertyForKey('required', false);
-  }
-
-
   onFormFieldChanged(event: string) {
     this._metaContext.markDirty();
   }
-
-  /**
-   * Need to have compatible accessors names with FormFieldComponent
-   */
-  get noLabelLayout(): boolean {
-    return this._noLabelLayout;
-  }
-
-  set noLabelLayout(value: boolean) {
-    this._noLabelLayout = value;
-  }
-
-  get i18Strings(): TemplateRef<any> {
-    return this._i18Strings;
-  }
-
-
-  set i18Strings(value: TemplateRef<any>) {
-    this._i18Strings = value;
-  }
-
-  get id(): string {
-    return this.properties('field');
-  }
-
-  get placeholder(): string {
-    return this.properties('placeholder', this.label);
-  }
-
-  get columns(): number {
-    return this.properties('size', 6);
-  }
-
-  get label(): number {
-    return this.properties('label');
-  }
-
-  get hint(): number {
-    return this.properties('hint');
-  }
-
-  get fluid(): number {
-    return this.properties('fluid', false);
-  }
-
 }

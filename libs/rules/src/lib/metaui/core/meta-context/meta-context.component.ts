@@ -21,6 +21,7 @@ import {
   AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -189,59 +190,49 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
   @ContentChild('i18n', {static: true})
   i18Template: TemplateRef<any>;
-
-  /**
-   * Flag that tells us that component is fully rendered
-   *
-   */
-  private viewInitialized: boolean = false;
-
-  /**
-   *
-   * Marks MetaContext or the root MetaContext that created a new Context
-   *
-   */
-  private contextCreated: boolean = false;
-
-  private bindingsMap: Map<string, any>;
-  private bindingKeys: string[] = [];
-
-  /**
-   * Shell copy of an object used for comparision. We may get back to the original solution which
-   * I had here. THe Angular's differs
-   */
-  private prevObject: any;
-
-  private _scopeBinding: string;
-  private _formGroup: FormGroup;
-
-
-  private _myContext: Context;
-
   /**
    * Need to cache if we already have object or not in case we load data from REST where it
    * could be deferred asnd not available when component is initialized
    */
   hasObject: boolean;
-
   hasActiveContext: boolean;
-
   /**
    * Turn on and off bellow dirty checking. Default value is value so it can work without a
    * chance with other implementation
    */
   supportsDirtyChecking: boolean = false;
-
   /**
    * Since the push/pop is happening every time the view is created or  angular triggers change
    * detection we need to eliminate event handler based CDs. where most of the time we dont care.
    *
    */
   isDirty: boolean = false;
-
+  refreshView: boolean = false;
+  /**
+   * Flag that tells us that component is fully rendered
+   *
+   */
+  private viewInitialized: boolean = false;
+  /**
+   *
+   * Marks MetaContext or the root MetaContext that created a new Context
+   *
+   */
+  private contextCreated: boolean = false;
+  private bindingsMap: Map<string, any>;
+  private bindingKeys: string[] = [];
+  /**
+   * Shell copy of an object used for comparision. We may get back to the original solution which
+   * I had here. THe Angular's differs
+   */
+  private prevObject: any;
+  private _scopeBinding: string;
+  private _formGroup: FormGroup;
+  private _myContext: Context;
 
   constructor(private elementRef: ElementRef,
               public env: Environment,
+              private _cd: ChangeDetectorRef,
               @Inject(META_RULES) protected meta: MetaRules,
               @Optional() private formContainer: ControlContainer) {
 
@@ -250,6 +241,10 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
     this._formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
       : new FormGroup({}));
+  }
+
+  get bindings(): Map<string, any> {
+    return this.bindingsMap;
   }
 
   ngOnInit(): void {
@@ -269,27 +264,26 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     }
   }
 
-
   /**
    * For any other immutable object detect changes here and refresh the context stack
    *
    */
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
+    // console.log('MC-changes', this.bindings)
+    this.hasObject = changes['object'] && changes['object'].currentValue;
     for (const name of IMMUTABLE_PROPERTIES) {
-      if (isPresent(changes[name])
-        && (changes[name].currentValue !== changes[name].previousValue)) {
+      if (changes[name] && (changes[name].currentValue !== changes[name].previousValue)) {
         this.initBindings();
 
         if (!changes[name].isFirstChange()) {
-          this.markDirty();
+          this.markDirty(true);
         }
-
         break;
       }
     }
     // in case object is coming late e.g. from some reactive API like REST then we
     // do not get it into ngInit but it will be here.
-    if (this.viewInitialized && isPresent(changes['object']) && isPresent(this.object)) {
+    if (this.viewInitialized && changes['object'] && this.object) {
       this.initBindings();
     }
   }
@@ -302,8 +296,8 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   ngDoCheck(): void {
     if (this.viewInitialized) {
-      this.hasObject = this._hasObject();
       if (this.needsCheck()) {
+        // console.log('MC-ngDoCheck', this.bindings)
         this.pushPop(true);
 
         if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
@@ -312,7 +306,6 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
       }
     }
   }
-
 
   /**
    * We want to start detecting changes only after view is fully checked
@@ -323,7 +316,6 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     }
   }
 
-
   ngAfterViewChecked(): void {
     if (this.viewInitialized) {
       if (this.needsCheck()) {
@@ -333,6 +325,60 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     } else {
       this.viewInitialized = true;
     }
+  }
+
+  /**
+   * Just for troubleshooting to print current context and assignments
+   *
+   */
+  debugString(): String {
+    if (isPresent(this._myContext)) {
+      return this._myContext.debugString();
+    }
+  }
+
+
+  /**
+   *
+   * Every meta context component which pushing certain properties to stack has its own context
+   * that lives until component is destroyed
+   *
+   */
+  myContext(): Context {
+    return this._myContext;
+  }
+
+  /**
+   * We keep the most current and latest context to environment to be read by any Child
+   * MetaContext for purpose of creation new context and it needs info what was already pushed
+   * onto the stack.
+   *
+   */
+  activeContext(): Context {
+    return this.env.peak<Context>(ACTIVE_CNTX);
+  }
+
+
+  /**
+   * Let's clean up and destroy pushed context
+   */
+  ngOnDestroy() {
+    if (this.env.hasValue('parent-cnx')) {
+      this.env.deleteValue('parent-cnx');
+    }
+  }
+
+  markDirty(refreshView: boolean = false) {
+    this.isDirty = true;
+    this.refreshView = refreshView;
+  }
+
+  reRenderView(): boolean {
+    return this.isDirty && this.refreshView;
+  }
+
+  needsCheck(): boolean {
+    return this.supportsDirtyChecking ? this.isDirty : true;
   }
 
   /**
@@ -390,48 +436,6 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   }
 
   /**
-   * Just for troubleshooting to print current context and assignments
-   *
-   */
-  debugString(): String {
-    if (isPresent(this._myContext)) {
-      return this._myContext.debugString();
-    }
-  }
-
-
-  /**
-   *
-   * Every meta context component which pushing certain properties to stack has its own context
-   * that lives until component is destroyed
-   *
-   */
-  myContext(): Context {
-    return this._myContext;
-  }
-
-  /**
-   * We keep the most current and latest context to environment to be read by any Child
-   * MetaContext for purpose of creation new context and it needs info what was already pushed
-   * onto the stack.
-   *
-   */
-  activeContext(): Context {
-    return this.env.peak<Context>(ACTIVE_CNTX);
-  }
-
-
-  /**
-   * Let's clean up and destroy pushed context
-   */
-  ngOnDestroy() {
-    if (this.env.hasValue('parent-cnx')) {
-      this.env.deleteValue('parent-cnx');
-    }
-  }
-
-
-  /**
    * Ideally we do not need this method if Angular would support to pass variable number of
    * bindings without a need to have backup property for each of the bindings or expression./
    *
@@ -464,7 +468,6 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     // Sort them by their importance or rank
     ListWrapper.sortByExample(this.bindingKeys, IMPLICIT_PROPERTIES);
   }
-
 
   /**
    * The thing we want is to pass variable number of bindings and resolve them programmatically.
@@ -521,7 +524,6 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
       (isBlank(attr.value) || attr.value.length === 0);
   }
 
-
   /**
    * If object is changed we need to also update our angular model to reflect user changes. All
    * changes and updates in metaui use object references
@@ -541,7 +543,6 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     this.prevObject = Object.assign({}, this.object);
   }
 
-
   private _hasObject(): boolean {
     const context = this.activeContext();
     if (isPresent(context)) {
@@ -550,17 +551,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     return false;
   }
 
-  markDirty() {
-    this.isDirty = true;
-  }
 
-  needsCheck(): boolean {
-    return this.supportsDirtyChecking ? this.isDirty : true;
-  }
-
-  get bindings(): Map<string, any> {
-    return this.bindingsMap;
-  }
 }
 
 

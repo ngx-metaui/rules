@@ -37,45 +37,20 @@ import {PropertyMap} from '../core/policies/merging-policy';
  */
 export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   /**
-   * List all available Layouts defines for current Context
-   */
-  protected _allLayouts: ItemProperties[];
-
-  /**
-   * Layout sorted by zones. Each implementation can support different zones.
-   */
-  protected _layoutsByZones: Map<string, any>;
-
-  /**
-   * Context properties for current active rendered layout
-   *
-   */
-  protected _propertyMap: PropertyMap;
-
-  /**
-   * Current Layout being rendered
-   */
-  protected _layout: ItemProperties;
-
-  /**
-   * Layout definitions by its name
-   *
-   */
-  protected nameToLayout: Map<string, ItemProperties> = new Map<string, ItemProperties>();
-
-  /**
    * A map linking the name of the layout to the actual context. We need this when we need
    * to access current content.
    *
    */
   contextMap: Map<string, Context> = new Map<string, Context>();
-
-
   /**
    * Current context being rendered
    */
   layoutContext: Context;
-
+  /**
+   * Layout definitions by its name
+   *
+   */
+  protected nameToLayout: Map<string, ItemProperties> = new Map<string, ItemProperties>();
 
   constructor(protected _metaContext: MetaContextComponent, public env: Environment) {
     super(env, _metaContext);
@@ -83,27 +58,9 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   }
 
   /**
-   * Can be called by m-content to @Output when context properties are pushed to stack
-   *
+   * List all available Layouts defines for current Context
    */
-  afterContextSet(layoutName: any): void {
-    this.layoutContext = this.activeContext;
-    this.contextMap.set(layoutName, this.layoutContext.snapshot().hydrate(false));
-
-  }
-
-  /**
-   * Can be called by m-content to @Output before context properties are pushed to stack
-   *
-   */
-  beforeContextSet(layoutName: any): void {
-    this.layout = this.nameToLayout.get(layoutName);
-  }
-
-
-  get activeContext(): Context {
-    return this._metaContext.activeContext();
-  }
+  protected _allLayouts: ItemProperties[];
 
   /**
    * Retrieves all available and active layouts for zones defined by subclasses
@@ -123,6 +80,11 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   }
 
   /**
+   * Layout sorted by zones. Each implementation can support different zones.
+   */
+  protected _layoutsByZones: Map<string, any>;
+
+  /**
    * Retrieves all available and active layouts and aggregate them their name
    *
    */
@@ -134,15 +96,11 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
     return this._layoutsByZones;
   }
 
-
-  get layout(): ItemProperties {
-    return this._layout;
-  }
-
-  set layout(value: ItemProperties) {
-    this._layout = value;
-    this._propertyMap = null;
-  }
+  /**
+   * Context properties for current active rendered layout
+   *
+   */
+  protected _propertyMap: PropertyMap;
 
   // todo: should this be for current layout?
   get propertyMap(): PropertyMap {
@@ -154,6 +112,41 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
     return this._propertyMap;
   }
 
+  /**
+   * Current Layout being rendered
+   */
+  protected _layout: ItemProperties;
+
+  get layout(): ItemProperties {
+    return this._layout;
+  }
+
+  set layout(value: ItemProperties) {
+    this._layout = value;
+    this._propertyMap = null;
+  }
+
+  get activeContext(): Context {
+    return this._metaContext.activeContext();
+  }
+
+  /**
+   * Can be called by m-content to @Output when context properties are pushed to stack
+   *
+   */
+  afterContextSet(layoutName: any): void {
+    this.layoutContext = this.activeContext;
+    this.contextMap.set(layoutName, this.layoutContext.snapshot().hydrate(false));
+
+  }
+
+  /**
+   * Can be called by m-content to @Output before context properties are pushed to stack
+   *
+   */
+  beforeContextSet(layoutName: any): void {
+    this.layout = this.nameToLayout.get(layoutName);
+  }
 
   label(): string {
     return this.activeContext.resolveValue(this.propertyMap.get(KeyLabel));

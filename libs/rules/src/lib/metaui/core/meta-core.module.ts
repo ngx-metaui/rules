@@ -26,12 +26,12 @@ import {AWMetaLayoutModule} from '../layout/meta-layout.module';
   declarations: [
     MetaContextComponent
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AWMetaLayoutModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AWMetaLayoutModule
+  ],
   exports: [
     MetaContextComponent
   ],

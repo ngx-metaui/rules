@@ -32,6 +32,15 @@ export class FieldPath {
   _fieldPaths: string[];
   private objectPathInstance: any;
 
+  constructor(private _path: string) {
+    this._fieldPaths = isBlank(_path) ? [] : _path.split('.');
+    this.objectPathInstance = (<any>objectPath)['create']({includeInheritedProps: true});
+  }
+
+  get path(): string {
+    return this._path;
+  }
+
   /**
    *
    * Sets a value to target objects
@@ -41,7 +50,6 @@ export class FieldPath {
     const fp = new FieldPath(field);
     fp.setFieldValue(target, value);
   }
-
 
   /**
    * Reads a value from target objects
@@ -54,11 +62,6 @@ export class FieldPath {
       return target[field] ? value() : target.toString();
     }
     return value;
-  }
-
-  constructor(private _path: string) {
-    this._fieldPaths = isBlank(_path) ? [] : _path.split('.');
-    this.objectPathInstance = (<any>objectPath)['create']({includeInheritedProps: true});
   }
 
   /**
@@ -140,11 +143,6 @@ export class FieldPath {
       }
     }
     return value;
-  }
-
-
-  get path(): string {
-    return this._path;
   }
 
   toString(): string {

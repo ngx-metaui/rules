@@ -37,7 +37,6 @@ import {
   unimplemented
 } from '../utils/lang';
 import {ListWrapper, MapWrapper} from '../utils/collection';
-import * as Collections from 'typescript-collections';
 import {FieldPath} from '../utils/field-path';
 import {
   FieldPathNullMarker,
@@ -166,7 +165,7 @@ export class PropertyManager {
     }
 
     if (newValue instanceof OverrideValue) {
-      return (<OverrideValue> newValue).value();
+      return (<OverrideValue>newValue).value();
     }
 
     if (isBlank(this._merger)) {
@@ -204,43 +203,48 @@ export class PropertyManager {
  */
 
 export class KeyData {
-  private _ruleVecs: Collections.Dictionary<any, ValueMatches>;
-  private _observers: Array<ValueQueriedObserver>;
-
-  private _any: ValueMatches;
   _transformer: KeyValueTransformer;
-
-  private _isPropertyScope: boolean = false;
-
+  private _any: ValueMatches;
 
   constructor(public _key: string, public _id: number) {
-    this._ruleVecs = new Collections.Dictionary<any, ValueMatches>();
+    this._ruleVecs = new Map<string, ValueMatches>();
     this._any = this.get(KeyAny);
 
   }
 
-  maskValue(): number {
-    return shiftLeft(1, this._id);
+  private _ruleVecs: Map<string, ValueMatches>;
+
+  get ruleVecs(): Map<string, ValueMatches> {
+    return this._ruleVecs;
   }
 
-  private get(value: any): ValueMatches {
-    if (isBlank(value)) {
-      value = NullMarker;
+  private _observers: Array<ValueQueriedObserver>;
 
-    } else if (isPresent(this._transformer)) {
-      value = this._transformer.tranformForMatch(value);
-    }
-    let matches: ValueMatches = this._ruleVecs.getValue(value);
+  get observers(): Array<ValueQueriedObserver> {
+    return this._observers;
+  }
 
-    if (isBlank(matches)) {
-      matches = new ValueMatches(value);
+  private _isPropertyScope: boolean = false;
 
-      if (isPresent(value) && !BooleanWrapper.isFalse(value)) {
-        matches._parent = this._any;
-      }
-      this._ruleVecs.setValue(value, matches);
-    }
-    return matches;
+  // (e.g. field_p, class_p)
+  get isPropertyScope(): boolean {
+    return this._isPropertyScope;
+  }
+
+  set isPropertyScope(yn: boolean) {
+    this._isPropertyScope = yn;
+  }
+
+  get key(): string {
+    return this._key;
+  }
+
+  get id(): number {
+    return this._id;
+  }
+
+  maskValue(): number {
+    return shiftLeft(1, this._id);
   }
 
   matchValue(value: any): MatchValue {
@@ -261,6 +265,9 @@ export class KeyData {
   }
 
 
+  // If this key defines a scope for properties (e.g. field, class, action)
+  // this this returns the name of the selector key for those properties
+
   addEntry(value: any, id: number): void {
     const matches: ValueMatches = this.get(value);
     const before: number[] = matches._arr;
@@ -269,7 +276,6 @@ export class KeyData {
       matches._arr = after;
     }
   }
-
 
   lookup(owner: MetaRules, value: any): number[] {
     const matches: ValueMatches = this.get(value);
@@ -294,19 +300,16 @@ export class KeyData {
     return matches._arr;
   }
 
-
   setParent(value: any, parentValue: any): void {
     const parent: ValueMatches = this.get(parentValue);
     const child: ValueMatches = this.get(value);
     child._parent = parent;
   }
 
-
   parent(value: any): any {
     const child: ValueMatches = this.get(value);
     return child._parent._value;
   }
-
 
   addObserver(o: ValueQueriedObserver): void {
     if (isBlank(this._observers)) {
@@ -315,34 +318,24 @@ export class KeyData {
     this._observers.push(o);
   }
 
+  private get(value: any): ValueMatches {
+    if (isBlank(value)) {
+      value = NullMarker;
 
-  // If this key defines a scope for properties (e.g. field, class, action)
-  // this this returns the name of the selector key for those properties
-  // (e.g. field_p, class_p)
-  get isPropertyScope(): boolean {
-    return this._isPropertyScope;
-  }
+    } else if (isPresent(this._transformer)) {
+      value = this._transformer.tranformForMatch(value);
+    }
+    let matches: ValueMatches = this._ruleVecs.get(value);
 
-  set isPropertyScope(yn: boolean) {
-    this._isPropertyScope = yn;
-  }
+    if (isBlank(matches)) {
+      matches = new ValueMatches(value);
 
-
-  get ruleVecs(): Collections.Dictionary<any, ValueMatches> {
-    return this._ruleVecs;
-  }
-
-  get key(): string {
-    return this._key;
-  }
-
-  get id(): number {
-    return this._id;
-  }
-
-
-  get observers(): Array<ValueQueriedObserver> {
-    return this._observers;
+      if (isPresent(value) && !BooleanWrapper.isFalse(value)) {
+        matches._parent = this._any;
+      }
+      this._ruleVecs.set(value, matches);
+    }
+    return matches;
   }
 }
 
@@ -355,11 +348,9 @@ export class KeyData {
  */
 export class PropertyMap implements Map<string, any> {
 
-  private _contextPropertiesUpdated: Array<PropertyManager>;
-  protected _map: Map<string, any>;
-
   [Symbol.toStringTag]: 'Map';
-
+  protected _map: Map<string, any>;
+  private _contextPropertiesUpdated: Array<PropertyManager>;
 
   constructor(entries?: Map<string, any>) {
     if (isPresent(entries)) {
@@ -369,16 +360,21 @@ export class PropertyMap implements Map<string, any> {
     }
   }
 
+  get size(): number {
+    return this._map.size;
+  }
+
+  get contextKeysUpdated(): Array<PropertyManager> {
+    return this._contextPropertiesUpdated;
+  }
 
   get(key: string): any {
     return this._map.get(key);
   }
 
-
   keys(): IterableIterator<string> {
     return this._map.keys();
   }
-
 
   values(): IterableIterator<any> {
     return this._map.values();
@@ -392,7 +388,6 @@ export class PropertyMap implements Map<string, any> {
     return this._map.set(key, value);
   }
 
-
   delete(key: string): boolean {
 
     return this._map.delete(key);
@@ -403,26 +398,17 @@ export class PropertyMap implements Map<string, any> {
     this._map.forEach(callbackfn);
   }
 
-
   has(key: string): boolean {
     return this._map.has(key);
   }
-
 
   [Symbol.iterator](): IterableIterator<any> {
     return this._map[Symbol.iterator]();
   }
 
-
   entries(): IterableIterator<any> {
     return this._map.entries();
   }
-
-
-  get size(): number {
-    return this._map.size;
-  }
-
 
   awakeProperties(): void {
     MapWrapper.iterable(this).forEach((value, key) => {
@@ -440,11 +426,6 @@ export class PropertyMap implements Map<string, any> {
       this._contextPropertiesUpdated = new Array<PropertyManager>();
     }
     this._contextPropertiesUpdated.push(key);
-  }
-
-
-  get contextKeysUpdated(): Array<PropertyManager> {
-    return this._contextPropertiesUpdated;
   }
 
   toString() {
@@ -601,7 +582,7 @@ export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList
     const result: any[] = [];
     for (let trait of origL) {
       if (trait instanceof OverrideValue) {
-        trait = (<OverrideValue> trait).value();
+        trait = (<OverrideValue>trait).value();
       }
 
       let canAdd = true;

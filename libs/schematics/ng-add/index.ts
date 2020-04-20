@@ -95,7 +95,6 @@ function addDependencies(options: AddSchema): Rule {
         name: '@ngx-metaui/rules'
       },
       {type: NodeDependencyType.Default, version: '1.6.48', name: 'big-integer'},
-      {type: NodeDependencyType.Default, version: '2.0.3', name: 'object-hash'},
       {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
       {type: NodeDependencyType.Default, version: '1.3.3', name: 'typescript-collections'},
       {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
