@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0](https://github.com/ngx-meta/rules/compare/v9.0.0-beta.1...v9.0.0) (2020-04-20)
+
+
+### Bug Fixes
+
+* **perf:** 70% speed improvement & caching optimizations ([bb7523a](https://github.com/ngx-meta/rules/commit/bb7523aee8773fa9d5e066bde6b9335a522d14a8))
+
 ## [9.0.0-beta.1](https://github.com/ngx-meta/rules/compare/v9.0.0-beta.0...v9.0.0-beta.1) (2020-04-06)
 
 
