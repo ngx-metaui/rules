@@ -10,7 +10,6 @@
 ## Table of Contents
 
 * [Description](#description)
-* [Project plan](#project-plan)
 * [How to obtain support](#how-to-obtain-support)
 * [License](#license)
 
