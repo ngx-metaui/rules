@@ -107,7 +107,7 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
     this.columns = this.properties('size', 6);
     this.hint = this.properties('hint');
     this.fluid = this.properties('fluid', false);
-    this.placeholder = this.properties('placeholder', this.label);
+    this.placeholder = this.properties('placeholder', '');
     this.isRequired = this.editing && this.context.booleanPropertyForKey('required',
       false);
   }

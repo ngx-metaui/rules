@@ -84,8 +84,8 @@ export class PlayComponent implements OnInit {
     this.invoice.billingAddress = (<any>(address)).values[0];
     this.invoice.supplier = (<any>(supplier)).values[0];
     this.invoice.purchaseOrder = 'PO1111';
-    // this.invoice.accountCategory = 'Order';
-    console.log('this.invoice.supplier : ', this.invoice.supplier);
+    this.invoice.needBy = new Date();
+    this.invoice.accountCategory = 'Order';
 
 
     const o = [];

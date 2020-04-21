@@ -1,11 +1,15 @@
-<fd-date-picker #elementRef *ngIf="editable else dateReadonly"
+<!--
+Little dirty hack for this older version of fundamentals. As i need to use Viewchild I cannot use any structural
+ directive otherwise it will not bind
+-->
+<span [hidden]="!editable">
+<fd-date-picker #dp
                 [(ngModel)]="fdDate"
                 [disabled]="disabled"
                 [placeholder]="placeholder"
                 [compact]="compact"
                 [type]="type">
 </fd-date-picker>
+</span>
 
-<ng-template #dateReadonly>
-  <fdp-string value="{{value  | date: placeholder}}"></fdp-string>
-</ng-template>
+<fdp-string *ngIf="!editable" value="{{value  | date: placeholder}}"></fdp-string>

@@ -63,6 +63,7 @@ field {
           component:DatePickerComponent;
             bindings:{
               ngModel:$value;
+              placeholder:"MM/dd/yyyy";
           };
         }
 

@@ -19,8 +19,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
-  ElementRef,
+  Component, ElementRef,
   Inject,
   Input,
   Optional,
@@ -58,8 +57,13 @@ import {DOCUMENT} from '@angular/common';
       `
           :host .fd-date-picker-custom {
               width: 100%;
-
           }
+
+          :host ::ng-deep .fd-calendar {
+                width: 260px;
+          }
+
+
     `
   ],
   providers: [
@@ -80,11 +84,12 @@ export class DatePickerComponent extends BaseInput {
     super.setValue(value);
   }
 
-  @ViewChild(FdDatePicker, {static: true, read: ElementRef})
+  @ViewChild('dp', {static: true, read: FdDatePicker})
+  protected _calendarRef: FdDatePicker;
+
+  @ViewChild('dp', {static: true, read: ElementRef})
   protected _elementRef: ElementRef;
 
-  @ViewChild(FdDatePicker)
-  protected _calendarRef: FdDatePicker;
 
 
   private dateInput: any;
@@ -178,7 +183,7 @@ export class DatePickerComponent extends BaseInput {
     }
 
     // this should not be here but FD date picker is broken so need to trigger CD
-    // this._cd.detectChanges();
+    this._cd.detectChanges();
   }
 
   private date2FdDate(d: Date): FdDate {

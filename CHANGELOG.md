@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.1](https://github.com/ngx-meta/rules/compare/v9.0.0...v9.0.1) (2020-04-21)
+
+
+### Bug Fixes
+
+* **checksum:** Fixing dependency for outdated xxhash and new fnvplus checksum ([b96ff28](https://github.com/ngx-meta/rules/commit/b96ff280d084d395523b55c4f2c52db29d43ab7a))
+
 ## [9.0.0](https://github.com/ngx-meta/rules/compare/v9.0.0-beta.1...v9.0.0) (2020-04-20)
 
 
