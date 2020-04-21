@@ -86,6 +86,7 @@ export class PlayComponent implements OnInit {
     this.invoice.purchaseOrder = 'PO1111';
     this.invoice.needBy = new Date();
     this.invoice.accountCategory = 'Order';
+    this.invoice.isShared = true;
 
 
     const o = [];
