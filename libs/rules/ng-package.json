@@ -7,7 +7,8 @@
     "umdModuleIds": {
       "object-path": "objectPath",
       "typescript-collections": "Collections",
-      "big-integer": "bigIntImported"
+      "big-integer": "bigIntImported",
+      "fnv-plus": "fnvPlus"
     }
   }
 }

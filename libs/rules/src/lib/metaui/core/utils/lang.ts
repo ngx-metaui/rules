@@ -13,9 +13,8 @@
  *  reusable globals. Since its not exported API need to have a copy under core.
  */
 import * as bigIntImported from 'big-integer';
-import * as fnv from 'fnv-plus';
+import {fast1a32} from 'fnv-plus';
 import {CompositeType, isEntity, isValue} from './domain-model';
-import {h32, HashObject} from 'xxhashjs';
 
 const bigInt = bigIntImported;
 
@@ -243,22 +242,9 @@ export function crc32(crc: number, anInt: number) {
 }
 
 export function fnv1a(aString: string): number {
-  return fnv.fast1a32(aString);
+  return fast1a32(aString);
 }
 
-
-export function xxHash32Int(seed: number, buf: number) {
-  return xxHash32Str(seed, buf.toString());
-}
-
-export function xxHash32Str(seed: number, buf: string) {
-  return h32(seed).update(buf).digest().toNumber();
-}
-
-
-export function xxHash(seed: number): HashObject {
-  return h32(seed);
-}
 
 export function booleanValue(value: any): boolean {
   return BooleanWrapper.boleanValue(value);
