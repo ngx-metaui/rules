@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.2-beta.0](https://github.com/ngx-meta/rules/compare/v9.0.1...v9.0.2-beta.0) (2020-04-21)
+
+
+### Bug Fixes
+
+* **app:** Initialize property to initialize fiori-app ([0172200](https://github.com/ngx-meta/rules/commit/017220000a12843688bca056b3b5117ce721a031))
+* **fiori:** Update ViewChild inside DatePicker ([c3a03d1](https://github.com/ngx-meta/rules/commit/c3a03d144b7dd3c4e755279877a561a2259ea4e5))
+
 ### [9.0.1](https://github.com/ngx-meta/rules/compare/v9.0.0...v9.0.1) (2020-04-21)
 
 
