@@ -19,7 +19,7 @@
 
 export {MetaConfig} from './config/meta-config';
 export {
-  MetaContextComponent, MetaUIActionEvent
+  MetaContextComponent, MetaUIActionEvent, ACTIVE_CNTX, OnContextSetEvent
 } from './meta-context/meta-context.component';
 export {
   CompositeType, Deserializable, Entity, Identity, isEntity, isValue, Value

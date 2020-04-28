@@ -179,10 +179,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   beforeContextSet: EventEmitter<any> = new EventEmitter();
 
   @Output()
-  onContextChanged: EventEmitter<any> = new EventEmitter();
-
-  @Output()
-  afterContextSet: EventEmitter<any> = new EventEmitter();
+  afterContextSet: EventEmitter<OnContextSetEvent> = new EventEmitter();
 
 
   @Output()
@@ -229,6 +226,8 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   private _scopeBinding: string;
   private _formGroup: FormGroup;
   private _myContext: Context;
+
+  private contextCache: Map<string, Context> = new Map<string, Context>();
 
   constructor(private elementRef: ElementRef,
               public env: Environment,
@@ -406,12 +405,10 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
     if (isPush) {
       activeContext.push();
-
       if (isPresent(this._scopeBinding) && this.hasObject) {
 
         this.beforeContextSet.emit(this._scopeBinding);
         activeContext.setScopeKey(this._scopeBinding);
-        this.afterContextSet.emit(this._scopeBinding);
 
       } else {
         for (let index = 0; index < this.bindingKeys.length; index++) {
@@ -421,17 +418,35 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
           this.beforeContextSet.emit(value);
           activeContext.set(key, value);
-          this.afterContextSet.emit(value);
+
         }
       }
       // Save created content to local MetaContext
-      this._myContext = activeContext.snapshot().hydrate(false);
+      this._myContext = this.hydrate(activeContext);
+      const val = this._scopeBinding || this.bindingsMap.values().next().value;
+      this.afterContextSet.emit({value: val, context: this._myContext});
+
     } else {
       activeContext.pop();
 
       if (this.contextCreated) {
         this.env.pop<Context>(ACTIVE_CNTX);
       }
+    }
+  }
+
+  /**
+   * This can be expensive operation when we try to snapshot existing context and make a copy
+   * out of it.
+   */
+  private hydrate(context: Context) {
+    const id = context.id();
+    if (this.contextCache.has(id)) {
+      return this.contextCache.get(id);
+    } else {
+      const hydratedCnt = context.snapshot().hydrate(false);
+      this.contextCache.set(id, hydratedCnt);
+      return hydratedCnt;
     }
   }
 
@@ -583,6 +598,12 @@ export class MetaUIActionEvent {
               public data: any) {
 
   }
+}
+
+
+export interface OnContextSetEvent {
+  value: string;
+  context?: Context;
 }
 
 

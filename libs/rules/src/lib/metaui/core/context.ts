@@ -1064,6 +1064,16 @@ export class Context extends Extensible {
     return this.values;
   }
 
+  id(): string {
+    const idString = [];
+    this.allAssignments().forEach((a) => {
+      idString.push(a.key);
+      idString.push(a.value);
+      idString.push(a.salience);
+    });
+    return idString.join();
+  }
+
   // for..in has different behavior..
   public iterableFields(): String[] {
     return [

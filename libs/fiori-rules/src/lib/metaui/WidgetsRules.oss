@@ -235,8 +235,14 @@ layout {
         component:MetaActionListComponent;
     }
 
+    @trait=ActionButtons {
+       visible:true;
+       component:MetaActionListComponent;
+    }
+
     @trait=Form { visible:true; component:MetaForm; }
 
+    @trait=Stack { visible:true; component:MetaElementListComponent; }
 
     component=MetaForm @trait=noLabelLayout;
     layout_trait=noLabelLayout class {

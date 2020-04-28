@@ -251,6 +251,11 @@ action {
           matSnackBar.open(properties.get('message'))
       };
   }
+
+  @trait=instance {
+    enabled:${object != null};
+    isInstanceAction:true;
+  }
 }
 
 

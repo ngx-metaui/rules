@@ -6,7 +6,6 @@
           <m-context [actionCategory]="category.name">
             <ng-template ngFor [ngForOf]="actions(category)" let-action>
               <m-context [action]="action.name"
-                         (onContextChanged)="onContextChanged($event)"
                          (afterContextSet)="onAfterContextSet($event)">
 
                 <button mat-raised-button

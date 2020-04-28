@@ -102,14 +102,14 @@ export const UserStackARule =
   '    class=UserStackA {\n' +
   '           @action=update  {\n' +
   '                 actionResults:${ object.firstName = "Mr." +  object.firstName };\n' +
-  '                 visible: ${ properties.get("editing") };\n' +
+  '                 visible: ${ true };\n' +
   '           }\n' +
   '\n' +
   '\n' +
   '           @action=Save  {\n' +
   '                  label: "My Save";\n' +
-  '                 actionResults:${ object.firstName = "Ms." +  object.firstName };\n' +
-  '                   visible: ${ properties.get("editing") };\n' +
+    '                 actionResults:${ object.firstName = "Ms." +  object.firstName };\n' +
+  '                   visible: ${ true };\n' +
   '                   buttonStyle:info;\n' +
   '            }\n' +
   '\n' +

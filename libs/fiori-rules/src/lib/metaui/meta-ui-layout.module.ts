@@ -30,6 +30,7 @@ import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
 import {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
 import {MetaDashboardLayoutModule} from './meta-dashboard/meta-dashboard-layout.module';
 import {MetaActionListModule} from './meta-action-list/meta-action-list.module';
+import {MetaElementListModule} from './meta-element-list/meta-element-list.module';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import {MetaActionListModule} from './meta-action-list/meta-action-list.module';
     MetaUIRulesModule,
     MetaDashboardLayoutModule,
     MetaActionListModule,
+    MetaElementListModule,
     UILibModule
   ],
   exports: [

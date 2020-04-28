@@ -26,7 +26,7 @@ import {
   KeyLabel,
   MetaBaseComponent,
   MetaContextComponent,
-  MetaRules
+  MetaRules, OnContextSetEvent
 } from '@ngx-metaui/rules';
 
 
@@ -226,18 +226,11 @@ export class MetaActionListComponent extends MetaBaseComponent {
    * A hook used to store the most current context for each action.
    *
    */
-  onAfterContextSet(actionName: string): void {
-    const aContext = this._metaContext.activeContext().snapshot().hydrate(false);
-    this._contextMap.set(actionName, aContext);
+  onAfterContextSet(event: OnContextSetEvent): void {
+    this._contextMap.set(event.value, event.context);
   }
 
 
-  /**
-   * A hook used to store the most current context for each action.
-   *
-   */
-  onContextChanged(change: string): void {
-  }
 
   label(actionName: string): string {
     const context: Context = this._contextMap.get(actionName);

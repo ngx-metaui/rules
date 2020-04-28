@@ -22,7 +22,7 @@ import {assert, isBlank, isPresent} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {MetaBaseComponent} from './meta.base.component';
 import {ItemProperties} from '../core/item-properties';
-import {MetaContextComponent} from '../core/meta-context/meta-context.component';
+import {MetaContextComponent, OnContextSetEvent} from '../core/meta-context/meta-context.component';
 import {Context} from '../core/context';
 import {KeyLabel, KeyLayout, ZonesTLRMB} from '../core/meta-rules';
 import {PropertyMap} from '../core/policies/merging-policy';
@@ -134,9 +134,8 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
    * Can be called by m-content to @Output when context properties are pushed to stack
    *
    */
-  afterContextSet(layoutName: any): void {
-    this.layoutContext = this.activeContext;
-    this.contextMap.set(layoutName, this.layoutContext.snapshot().hydrate(false));
+  afterContextSet(event: OnContextSetEvent): void {
+    this.contextMap.set(event.value, event.context);
 
   }
 

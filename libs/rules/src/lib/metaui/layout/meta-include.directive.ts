@@ -69,7 +69,7 @@ import {NgModel} from '@angular/forms';
 
 
 const IngoredEvents = [
-  'beforeContextSet', 'afterContextSet', 'onContextChanged'
+  'beforeContextSet', 'afterContextSet'
 ];
 
 /**

@@ -1766,8 +1766,8 @@ describe('Meta Context behaivor ', () => {
       expect(processedIn).toBeLessThan(3000);
       expect(Match._Debug_ElementProcessCount).toBeGreaterThan(950000);
 
-      // console.log('Rule index entries processed:', Match._Debug_ElementProcessCount);
-      // console.log('Processed in:',  processedIn);
+      console.log('Rule index entries processed:', Match._Debug_ElementProcessCount);
+      console.log('Processed in:',  processedIn);
     });
   });
 

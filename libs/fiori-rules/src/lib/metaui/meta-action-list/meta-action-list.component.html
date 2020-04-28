@@ -1,9 +1,8 @@
 <m-context *ngIf="renderAs === 'buttons'; else renderAsLinks" [ngClass]="'as-buttons'">
-  <ng-template ngFor [ngForOf]="actionCategories()" let-category>
+  <ng-template ngFor [ngForOf]="categories" let-category>
     <m-context #x [actionCategory]="category.name">
       <ng-template ngFor [ngForOf]="actions(category)" let-action>
         <m-context [action]="action.name"
-                   (onContextChanged)="onContextChanged($event)"
                    (afterContextSet)="onAfterContextSet($event)">
 
           <button fd-button
@@ -22,7 +21,7 @@
 <ng-template #renderAsLinks>
   <m-context *ngIf="renderAs === 'links'" [ngClass]="'as-links'">
 
-    <ng-template ngFor [ngForOf]="actionCategories()" let-category>
+    <ng-template ngFor [ngForOf]="categories" let-category>
       <m-context #mCat [actionCategory]="category.name">
 
         <fd-panel *ngIf="actions(category) as actions">
@@ -39,7 +38,6 @@
             <ul fd-list class="create-actions">
               <ng-template ngFor [ngForOf]="actions" let-action>
                 <m-context [action]="action.name"
-                           (onContextChanged)="onContextChanged($event)"
                            (afterContextSet)="onAfterContextSet($event)">
 
                   <li fd-list-item
