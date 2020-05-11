@@ -17,10 +17,21 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {AfterViewInit, ChangeDetectorRef, Component, Host, Input, ViewChild} from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Host,
+  Input,
+  ViewChild
+} from '@angular/core';
 import {AbstractControl, FormControl, ValidatorFn, Validators} from '@angular/forms';
-import {Environment, KeyBindings, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
+import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
 import {MatFormField} from '@angular/material/form-field';
+import {startWith} from 'rxjs/operators';
+import {FloatLabelType} from '@angular/material/form-field/form-field';
 
 
 /**
@@ -39,10 +50,11 @@ import {MatFormField} from '@angular/material/form-field';
 @Component({
   selector: 'm-form-field',
   templateUrl: 'meta-form-field.component.html',
-  styleUrls: ['meta-form-field.component.scss']
+  styleUrls: ['meta-form-field.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
+export class MetaFormField extends MetaBaseComponent implements AfterViewInit, AfterContentInit {
 
   @Input()
   field: string;
@@ -62,6 +74,11 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
   validators: ValidatorFn[];
 
   errorMessage: string;
+  isReadOnly = false;
+  floatLabel: FloatLabelType = 'auto';
+  label: string;
+  hint: string;
+  isRequired: boolean = false;
 
 
   constructor(@Host() protected _metaContext: MetaContextComponent,
@@ -79,6 +96,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
 
   ngOnInit(): void {
     super.ngOnInit();
+    this._metaContext.supportsDirtyChecking = true;
     this.validators = this.createValidators();
 
   }
@@ -91,35 +109,27 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit {
     }
   }
 
+  ngAfterContentInit(): void {
+    this.isReadOnly = this.properties('hideUnderline', false);
+    this.floatLabel = this.properties('noLabelLayout', false) ? 'never' :
+      'always';
+    this.hint = this.properties('hint');
+    this.label = this.properties('label');
+    this.isRequired = this.editing && this.context.booleanPropertyForKey('required',
+      false);
+  }
+
   ngAfterViewInit(): void {
     if (this.control) {
       this.registerValidators(this.control);
+
+      this.mdFormField._control.stateChanges.pipe(startWith(<string>null!))
+        .subscribe(() => {
+          this._metaContext.markDirty();
+        });
     }
   }
 
-  bindingBoolProperty(key: string): boolean {
-    const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
-
-    if (bindings && bindings.has(key)) {
-      const value = bindings.get(key);
-      return !!value;
-    }
-    return false;
-  }
-
-  bindingStringProperty(key: string): string {
-    const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
-
-    if (bindings && bindings.has(key)) {
-      return bindings.get(key);
-
-    }
-    return null;
-  }
-
-  isRequired(): boolean {
-    return this.editing && this.context.booleanPropertyForKey('required', false);
-  }
 
   hasErrors(): boolean {
     if (this.editing && this.control && this.mdFormField._control.ngControl.control.invalid) {

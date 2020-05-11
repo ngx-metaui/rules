@@ -67,10 +67,13 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
 
   @Input()
   disabled: boolean = false;
+
   @Input()
   inputDisabled: boolean = false;
+
   @Input()
   id: string;
+
   @Input()
   readonly: boolean = false;
   /**
@@ -84,11 +87,14 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
    */
   @Input()
   value: Date;
+
   @Input()
   required: boolean = false;
+
   @Input()
   placeholder: string;
   /** Emits when a `change` event is fired on this `<input>`. */
+
   @Output()
   readonly dateChange: EventEmitter<MatDatepickerInputEvent<Date>> =
     new EventEmitter<MatDatepickerInputEvent<Date>>();
@@ -106,6 +112,7 @@ export class DatePicker implements ControlValueAccessor, MatFormFieldControl<any
    */
   @ViewChild(MatDatepicker, {static: true})
   protected datePicker: MatDatepicker<Date>;
+
   private suffixElem: any;
   private flexFieldElem: any;
   private viewInit = false;
