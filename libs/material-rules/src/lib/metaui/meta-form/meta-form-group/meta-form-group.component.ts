@@ -17,7 +17,13 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectorRef, Component, Host, ViewEncapsulation} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Host,
+  ViewEncapsulation
+} from '@angular/core';
 
 import {
   Environment,
@@ -64,7 +70,8 @@ import {
   selector: 'm-form-group',
   templateUrl: 'meta-form-group.component.html',
   styleUrls: ['meta-form-group.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaFormGroup extends MetaBaseComponent {
   /**

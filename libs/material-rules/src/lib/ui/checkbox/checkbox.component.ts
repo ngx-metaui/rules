@@ -40,7 +40,7 @@ import {DomUtilsService} from '@ngx-metaui/rules';
 
 /**
  *
- * This extra wrapper on top of existing component would not be necessary if existing checkbox
+ * This extra wrapper on top of existing component. It would not be necessary if existing checkbox
  * would implement MatFormFieldControl. There are allot of ticket for this. Not sure whey
  * this one was skipped.
  *
@@ -80,8 +80,10 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
    */
   @Input()
   labelPosition: 'before' | 'after' = 'after';
+
   @Input()
   disabled: boolean = false;
+
   @Input()
   id: string;
   /**
@@ -89,6 +91,7 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
    */
   @Input()
   value: string;
+
   @Input()
   required: boolean;
   /**
@@ -96,8 +99,10 @@ export class Checkbox implements ControlValueAccessor, MatFormFieldControl<any>,
    */
   @Input()
   checked: boolean = false;
+
   @Input()
   label: string;
+
   @Input()
   valueLabel: string;
   /**

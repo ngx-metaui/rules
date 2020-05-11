@@ -205,6 +205,13 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   isDirty: boolean = false;
   refreshView: boolean = false;
+
+  /**
+   * Need to make sure when we mark this as dirty the pup/pop starts in the next detection cycle
+   * pair (ngDoCheck/AfterViewChecked) and not in between.
+   */
+  dirtyCheckInProgress: boolean = false;
+
   /**
    * Flag that tells us that component is fully rendered
    *
@@ -302,6 +309,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
         if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
           this.updateModel();
         }
+        this.dirtyCheckInProgress = true;
       }
     }
   }
@@ -317,9 +325,10 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
   ngAfterViewChecked(): void {
     if (this.viewInitialized) {
-      if (this.needsCheck()) {
+      if (this.needsCheck() && this.dirtyCheckInProgress) {
         this.pushPop(false);
         this.isDirty = false;
+        this.dirtyCheckInProgress = false;
       }
     } else {
       this.viewInitialized = true;

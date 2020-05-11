@@ -102,7 +102,7 @@ field {
             bindings:{
                ngModel: $value;
                id: ${properties.get("field")};
-               placeholder:${properties.get("label")};
+               placeholder:${properties.get("placeholder")};
                required:${properties.get("required")};
                readonly: ${ properties.get("editing") && !properties.get("editable") };
             };

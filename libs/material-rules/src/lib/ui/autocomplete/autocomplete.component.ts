@@ -69,6 +69,7 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
    */
   @ContentChild('optionTemplate')
   itemTemplate: TemplateRef<any>;
+
   @Input()
   list: any;
   /**
@@ -94,10 +95,13 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
    */
   @Input()
   filterWith: ((value: any) => any[]) | null;
+
   @Input()
   id: string;
+
   @Input()
   placeholder: string;
+
   @Input()
   required: boolean;
   /**
@@ -122,6 +126,7 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
    */
   @ViewChild(MatAutocomplete, {static: true})
   protected autocompleteComponent: MatAutocomplete;
+
   @ViewChild(MatInput, {static: true})
   protected matInput: MatInput;
 
@@ -193,7 +198,7 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
   }
 
   ngAfterContentInit(): void {
-    this.matInput.stateChanges.pipe(startWith( <string> null!)
+    this.matInput.stateChanges.pipe(startWith(<string>null!)
     ).subscribe(() => {
       this.cd.detectChanges();
     });
