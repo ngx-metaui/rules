@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.2](https://github.com/ngx-meta/rules/compare/v9.0.2-beta.0...v9.0.2) (2020-05-11)
+
+
+### Features
+
+* **perf:** Improved Actions performance ([7079082](https://github.com/ngx-meta/rules/commit/70790827eea714c5138d9899f63c37bfa085c245))
+
+
+### Bug Fixes
+
+* **material-rules:** Performance improvements to speed-up rendering cycle ([b97b91b](https://github.com/ngx-meta/rules/commit/b97b91be7ce44da454b3abffcdb472b12d809d4c))
+
 ### [9.0.2-beta.1](https://github.com/ngx-meta/rules/compare/v9.0.2-beta.0...v9.0.2-beta.1) (2020-04-21)
 
 ### Bug Fixes
