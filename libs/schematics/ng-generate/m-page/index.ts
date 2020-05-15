@@ -205,8 +205,7 @@ function addRecordToUserRules(options: MetaPageSchema): Rule {
         const exports = exportList.getChildren();
 
         const lastExport = exports[exports.length - 1];
-
-        const rec = `\n\n/** Auto generated  export */\nexport {UserRule} from './ts/${tsClass}.oss';`;
+        const rec = `\n\n/** Auto generated  export */\nexport {${tsClass}Rule} from './ts/${tsClass}.oss';`;
         const change = new InsertChange(pathToUserRules, lastExport.getEnd(), rec);
 
         const declarationRecorder = host.beginUpdate(pathToUserRules);
