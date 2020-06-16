@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.3](https://github.com/ngx-meta/rules/compare/v9.0.2...v9.0.3) (2020-06-16)
+
+
+### Bug Fixes
+
+* **schematics:** Remove hardcoded value UserRules to name specified by ng g command ([ad6db12](https://github.com/ngx-meta/rules/commit/ad6db12066a0e0b6a8b99dd2b6a488b5f2772982)), closes [#63](https://github.com/ngx-meta/rules/issues/63)
+
 ### [9.0.2](https://github.com/ngx-meta/rules/compare/v9.0.2-beta.0...v9.0.2) (2020-05-11)
 
 
