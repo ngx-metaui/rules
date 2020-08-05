@@ -291,6 +291,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     // do not get it into ngInit but it will be here.
     if (this.viewInitialized && changes['object'] && this.object) {
       this.initBindings();
+      this.markDirty(true);
     }
   }
 
