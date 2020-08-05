@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.4](https://github.com/ngx-meta/rules/compare/v9.0.3...v9.0.4) (2020-08-05)
+
+
+### Bug Fixes
+
+* **rules:** Refresh view when object is changed ([7553353](https://github.com/ngx-meta/rules/commit/7553353e02a36589a06f7f95ce90867567004335))
+
 ### [9.0.3](https://github.com/ngx-meta/rules/compare/v9.0.2...v9.0.3) (2020-06-16)
 
 
