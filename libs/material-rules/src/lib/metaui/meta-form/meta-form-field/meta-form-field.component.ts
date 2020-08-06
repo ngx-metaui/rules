@@ -31,7 +31,7 @@ import {AbstractControl, FormControl, ValidatorFn, Validators} from '@angular/fo
 import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
 import {MatFormField} from '@angular/material/form-field';
 import {startWith} from 'rxjs/operators';
-import {FloatLabelType} from '@angular/material/form-field/form-field';
+import {FloatLabelType} from '@angular/material/form-field';
 
 
 /**
