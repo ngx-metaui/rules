@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.5](https://github.com/ngx-meta/rules/compare/v9.0.4...v9.0.5) (2020-08-06)
+
+
+### Bug Fixes
+
+* **material:** Support to style form field from rules ([216da5e](https://github.com/ngx-meta/rules/commit/216da5e6c5c1f811cde67d36b11fff67427257d9))
+* **rules:** Add option to render fields without labels ([38a12f7](https://github.com/ngx-meta/rules/commit/38a12f7294c487fcf3e060c1d395c07fe73f4f2d))
+
 ### [9.0.4](https://github.com/ngx-meta/rules/compare/v9.0.3...v9.0.4) (2020-08-05)
 
 
