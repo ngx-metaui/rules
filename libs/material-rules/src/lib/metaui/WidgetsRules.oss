@@ -162,6 +162,10 @@ field {
         fluid:true;
     }
 
+    @trait=noLabelLayout {
+        noLabelLayout:true;
+    }
+
     @trait=asSelect {
         editable {
             component:Select;

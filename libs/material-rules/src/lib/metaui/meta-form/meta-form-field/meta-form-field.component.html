@@ -4,7 +4,7 @@
                 [hideRequiredMarker]="!isRequired"
                 [floatLabel]="floatLabel">
 
-  <mat-label>{{label}}</mat-label>
+  <mat-label *ngIf="!noLabelLayout">{{label}}</mat-label>
   <m-include-component mdFormFieldAdapter [wrapNgContent]="false">
   </m-include-component>
 

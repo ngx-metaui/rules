@@ -80,6 +80,8 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit, A
   hint: string;
   isRequired: boolean = false;
 
+  noLabelLayout = false;
+
 
   constructor(@Host() protected _metaContext: MetaContextComponent,
               private cd: ChangeDetectorRef,
@@ -111,8 +113,8 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit, A
 
   ngAfterContentInit(): void {
     this.isReadOnly = this.properties('hideUnderline', false);
-    this.floatLabel = this.properties('noLabelLayout', false) ? 'never' :
-      'always';
+    this.noLabelLayout = this.properties('noLabelLayout', false);
+    this.floatLabel = this.properties('floatingLabel', 'always');
     this.hint = this.properties('hint');
     this.label = this.properties('label');
     this.isRequired = this.editing && this.context.booleanPropertyForKey('required',
