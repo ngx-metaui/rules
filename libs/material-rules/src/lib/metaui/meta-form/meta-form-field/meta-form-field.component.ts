@@ -81,6 +81,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit, A
   isRequired: boolean = false;
 
   noLabelLayout = false;
+  styleClass = 'form-field';
 
 
   constructor(@Host() protected _metaContext: MetaContextComponent,
@@ -117,6 +118,7 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit, A
     this.floatLabel = this.properties('floatingLabel', 'always');
     this.hint = this.properties('hint');
     this.label = this.properties('label');
+    this.styleClass = 'form-field ' + this.properties('styleClass', '');
     this.isRequired = this.editing && this.context.booleanPropertyForKey('required',
       false);
   }

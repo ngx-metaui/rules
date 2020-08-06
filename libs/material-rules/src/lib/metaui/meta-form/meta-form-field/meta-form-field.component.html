@@ -1,5 +1,5 @@
 <mat-form-field #formField *ngIf="properties('visible')"
-                class="form-field"
+                [ngClass]="styleClass"
                 [class.meta-fg-readonly]="isReadOnly"
                 [hideRequiredMarker]="!isRequired"
                 [floatLabel]="floatLabel">
