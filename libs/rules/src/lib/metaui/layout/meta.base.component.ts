@@ -16,7 +16,7 @@
  *
  *
  */
-import {AfterViewChecked, Input} from '@angular/core';
+import {AfterViewChecked, Directive, Input} from '@angular/core';
 import {assert, isPresent} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
@@ -28,6 +28,7 @@ import {FormGroup} from '@angular/forms';
 /**
  * Common component to setup the context and also create context snapshot for later user.
  */
+@Directive({})
 export abstract class MetaBaseComponent implements AfterViewChecked {
 
   /**
