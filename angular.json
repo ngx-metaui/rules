@@ -13,7 +13,8 @@
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/rules/tsconfig.lib.json",
-            "project": "libs/rules/ng-package.json"
+            "project": "libs/rules/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           }
         },
         "test": {
@@ -39,7 +40,7 @@
               "libs/rules/tsconfig.lib.json",
               "libs/rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/rules/**"]
+            "exclude": ["**/node_modules/**", "!libs/rules/**/*"]
           }
         }
       }
@@ -54,7 +55,8 @@
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/material-rules/tsconfig.lib.json",
-            "project": "libs/material-rules/ng-package.json"
+            "project": "libs/material-rules/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           }
         },
         "test": {
@@ -72,7 +74,7 @@
               "libs/material-rules/tsconfig.lib.json",
               "libs/material-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/material-rules/**"]
+            "exclude": ["**/node_modules/**", "!libs/material-rules/**/*"]
           }
         }
       }
@@ -303,7 +305,8 @@
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/fiori-rules/tsconfig.lib.json",
-            "project": "libs/fiori-rules/ng-package.json"
+            "project": "libs/fiori-rules/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           },
           "configurations": {
             "production": {
@@ -318,7 +321,7 @@
               "libs/fiori-rules/tsconfig.lib.json",
               "libs/fiori-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/fiori-rules/**"]
+            "exclude": ["**/node_modules/**", "!libs/fiori-rules/**/*"]
           }
         },
         "test": {
@@ -424,7 +427,7 @@
               "apps/fiori-app/tsconfig.app.json",
               "apps/fiori-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/fiori-app/**"]
+            "exclude": ["**/node_modules/**", "!apps/fiori-app/**/*"]
           }
         },
         "test": {

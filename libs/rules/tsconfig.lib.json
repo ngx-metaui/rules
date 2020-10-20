@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "target": "es2015",
@@ -7,10 +7,7 @@
     "inlineSources": true,
     "importHelpers": true,
     "types": [],
-    "lib": [
-      "dom",
-      "es2018"
-    ]
+    "lib": ["dom", "es2018"]
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
@@ -20,8 +17,5 @@
     "enableResourceInlining": true,
     "enableIvy": false
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts"
-  ]
+  "exclude": ["src/test.ts", "**/*.spec.ts"]
 }
