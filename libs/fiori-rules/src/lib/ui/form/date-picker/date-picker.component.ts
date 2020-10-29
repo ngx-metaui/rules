@@ -19,17 +19,18 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef,
+  Component,
+  ElementRef,
+  Host,
   Inject,
   Input,
   Optional,
   Renderer2,
   Self,
+  SkipSelf,
   ViewChild
 } from '@angular/core';
-import {FormFieldControl} from '../form-control';
 import {NgControl, NgForm} from '@angular/forms';
-import {BaseInput} from '../base.input';
 import {
   CalendarType,
   DatePickerComponent as FdDatePicker,
@@ -38,6 +39,7 @@ import {
 } from '@fundamental-ngx/core';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {DOCUMENT} from '@angular/common';
+import {FormField, BaseInput, FormFieldControl} from '@fundamental-ngx/platform';
 
 
 /**
@@ -55,15 +57,6 @@ import {DOCUMENT} from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
       `
-          :host .fd-date-picker-custom {
-              width: 100%;
-          }
-
-          :host ::ng-deep .fd-calendar {
-                width: 260px;
-          }
-
-
     `
   ],
   providers: [
@@ -91,7 +84,6 @@ export class DatePickerComponent extends BaseInput {
   protected _elementRef: ElementRef;
 
 
-
   private dateInput: any;
 
   private _fdDate: FdDate | FdRangeDate;
@@ -101,9 +93,11 @@ export class DatePickerComponent extends BaseInput {
               private _renderer: Renderer2,
               private _focusMonitor: FocusMonitor,
               @Optional() @Self() public ngControl: NgControl,
-              @Optional() @Self() public ngForm: NgForm) {
+              @Optional() @Self() public ngForm: NgForm,
+              @Optional() @SkipSelf() @Host() formField: FormField,
+              @Optional() @SkipSelf() @Host() formControl: FormFieldControl<any>) {
 
-    super(_cd, ngControl, ngForm);
+    super(_cd, ngControl, ngForm, formField, formControl);
   }
 
 
@@ -143,6 +137,8 @@ export class DatePickerComponent extends BaseInput {
     this.focused = this._document && this.input() === document.activeElement;
     super.ngAfterViewInit();
   }
+
+
 
 
   ngOnDestroy(): void {
@@ -198,10 +194,14 @@ export class DatePickerComponent extends BaseInput {
     return range;
   }
 
+  private input(): HTMLInputElement {
+    return this._elementRef.nativeElement.querySelector('.fd-input');
+  }
+
   protected updateErrorState() {
     super.updateErrorState();
     if (this._calendarRef) {
-      this._calendarRef.isInvalidDateInput = this._calendarRef && this.inErrorState;
+      this._calendarRef.isInvalidDateInput = this._calendarRef && (this.status === 'error');
     }
   }
 }

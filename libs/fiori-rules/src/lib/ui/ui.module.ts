@@ -19,19 +19,16 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FdpFormModule} from './form/fdp-form.module';
-import {FdpLinkModule} from './link/link.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FdpFormModule,
-    FdpLinkModule
   ],
   declarations: [],
   exports: [
-    FdpFormModule,
-    FdpLinkModule
+    FdpFormModule
   ]
 })
 export class UILibModule {

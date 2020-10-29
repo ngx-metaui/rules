@@ -20,18 +20,19 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Host,
   Inject,
   Input,
   LOCALE_ID,
   Optional,
   Self,
+  SkipSelf,
   ViewEncapsulation
 } from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {NgControl, NgForm} from '@angular/forms';
-import {FormFieldControl} from '../form-control';
-import {BaseInput} from '../base.input';
 import {Money} from '../../domain/data-model';
+import {FormField, BaseInput, FormFieldControl} from '@fundamental-ngx/platform';
 
 
 /**
@@ -104,10 +105,12 @@ export class MoneyComponent extends BaseInput {
   constructor(protected _cd: ChangeDetectorRef,
               @Optional() @Self() public ngControl: NgControl,
               @Optional() @Self() public ngForm: NgForm,
+              @Optional() @SkipSelf() @Host() formField: FormField,
+              @Optional() @SkipSelf() @Host() formControl: FormFieldControl<any>,
               @Optional() @Inject(LOCALE_ID) private locale: string = 'en-US') {
 
 
-    super(_cd, ngControl, ngForm);
+    super(_cd, ngControl, ngForm, formField, formControl);
     this.initCurrencies();
 
     this.currencyPipe = new CurrencyPipe(locale);
@@ -167,7 +170,7 @@ export class MoneyComponent extends BaseInput {
   }
 
   private updateMoney(amount: string | number, currency: string) {
-    const val = (amount && amount !== '') ?  amount : 0;
+    const val = (amount && amount !== '') ? amount : 0;
     this.value = this.value.clone({amount: Number(val), currency: currency});
     this.inputDisplayValue = this.formatCurrency(this.value.amount);
     this.onChange(this.value);

@@ -31,7 +31,7 @@ import {
 } from '@angular/core';
 import {AbstractControl, ControlContainer, FormGroup, ValidatorFn} from '@angular/forms';
 import {Environment, KeyBindings, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
-import {FormField, FormFieldComponent} from '../../../ui/form/form-field/form-field.component';
+import {Column, FormZone, FormField, FormFieldComponent} from '@fundamental-ngx/platform';
 
 
 /**
@@ -57,7 +57,7 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
 
 
   @Input()
-  zone: string;
+  zone: FormZone;
 
   @Input()
   rank: number;
@@ -73,7 +73,7 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
   label: string;
   placeholder: string;
   hint: string;
-  columns: number;
+  columns: Column;
   fluid: boolean;
 
   i18Strings: TemplateRef<any>;
@@ -145,4 +145,14 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
   onFormFieldChanged(event: string) {
     this._metaContext.markDirty();
   }
+
+  control: FormFieldControl<any> | null;
+  editable: boolean;
+  hintPlacement: HintPlacement;
+  id: string;
+  labelLayout: LabelLayout;
+  registerFormFieldControl: (control: FormFieldControl<any>) => void;
+  unregisterFormFieldControl: (control: FormFieldControl<any>) => void;
+
+
 }
