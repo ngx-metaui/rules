@@ -29,6 +29,7 @@ import {
   Extensible,
   isArray,
   isBlank,
+  isBoolean,
   isNumber,
   isPresent,
   isString,
@@ -51,6 +52,7 @@ import {
   KeyClass,
   KeyDeclare,
   KeyObject,
+  KeyValid,
   KeyValue,
   MetaRules,
   NullMarker,
@@ -161,6 +163,7 @@ export class Context extends Extensible {
   static EmptyMap: PropertyMap = null;
   static readonly EmptyRemoveMap: Map<any, any> = new Map<any, any>();
 
+  _isParentDirty: boolean = false;
   _entries: Array<Assignment> = [];
   _accessor: PropertyAccessor;
   isNested: boolean;
@@ -213,6 +216,18 @@ export class Context extends Extensible {
 
   get properties(): any {
     return this._accessor;
+  }
+
+  validateErrors(): string {
+    const error = this.propertyForKey(KeyValid);
+    if (isBlank(error)) {
+      return null;
+    }
+
+    if (isBoolean(error)) {
+      return BooleanWrapper.boleanValue(error) ? null : 'Invalid entry';
+    }
+    return error.toString();
   }
 
   /**

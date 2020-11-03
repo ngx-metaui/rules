@@ -40,7 +40,10 @@
               "libs/rules/tsconfig.lib.json",
               "libs/rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/rules/**/*"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/rules/**/*"
+            ]
           }
         }
       }
@@ -74,7 +77,10 @@
               "libs/material-rules/tsconfig.lib.json",
               "libs/material-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/material-rules/**/*"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/material-rules/**/*"
+            ]
           }
         }
       }
@@ -93,6 +99,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "big-integer",
+              "object-path",
+              "typescript-collections"
+
+            ],
             "aot": true,
             "outputPath": "dist/apps/material-app",
             "index": "apps/material-app/src/index.html",
@@ -165,7 +177,9 @@
             "polyfills": "apps/material-app/src/polyfills.ts",
             "tsConfig": "apps/material-app/tsconfig.spec.json",
             "karmaConfig": "apps/material-app/karma.conf.js",
-            "styles": ["apps/material-app/src/styles.scss"],
+            "styles": [
+              "apps/material-app/src/styles.scss"
+            ],
             "scripts": [],
             "assets": [
               "apps/material-app/src/favicon.ico",
@@ -180,7 +194,10 @@
               "apps/material-app/tsconfig.app.json",
               "apps/material-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/material-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/material-app/**"
+            ]
           }
         }
       }
@@ -276,7 +293,10 @@
               "apps/doc-app/tsconfig.app.json",
               "apps/doc-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/doc-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/doc-app/**"
+            ]
           }
         },
         "test": {
@@ -319,7 +339,10 @@
               "libs/fiori-rules/tsconfig.lib.json",
               "libs/fiori-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/fiori-rules/**/*"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/fiori-rules/**/*"
+            ]
           }
         },
         "test": {
@@ -425,7 +448,10 @@
               "apps/fiori-app/tsconfig.app.json",
               "apps/fiori-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/fiori-app/**/*"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/fiori-app/**/*"
+            ]
           }
         },
         "test": {

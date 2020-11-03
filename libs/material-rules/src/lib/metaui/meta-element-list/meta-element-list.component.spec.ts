@@ -100,8 +100,8 @@ class UserStack implements Entity {
 @Component({
   selector: 'md-wrapper-comp',
   template: '<m-context [object]="user" operation="edit" layout="InspectTest2">' +
-    '<m-include-component >' +
-    '</m-include-component></m-context>'
+    '<m-render>' +
+    '</m-render></m-context>'
 })
 class TestContainerEditComponent {
   user: UserStack = new UserStack('Frank', 'Kolar', 1000, 'aa.',

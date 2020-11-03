@@ -130,7 +130,7 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return this.metaInclude.currentComponent['ngModelCtx'];
     }
-    // throw new Error('Dynamic component must implement FormFieldControl interface.');
+    throw new Error('Dynamic component must implement FormFieldControl interface.');
   }
 
   set placeholder(value: string) {
@@ -185,7 +185,7 @@ export class MetaFormFieldAdapter implements FormFieldControl<any>, OnInit {
    * Based on the data type set a type for the HTML Input
    */
   private registerType() {
-    const dataType = this.metaInclude.metaContext.myContext().propertyForKey('type');
+    const dataType = this.metaInclude.metaContext.context.propertyForKey('type');
 
     switch (dataType) {
       case 'String':

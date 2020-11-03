@@ -28,7 +28,9 @@ import {ComponentReference} from '../layout/core/include.directive';
  * A class holding a references to components. The methods are self-explanatory.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ComponentRegistry {
   constructor(private env: Environment) {
   }

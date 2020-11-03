@@ -23,12 +23,13 @@ import {MetaIncludeDirective} from './meta-include.directive';
 import {NoMetaComponent} from './no-meta/no-meta.component';
 import {IncludeDirective} from './core/include.directive';
 import {GenericContainerComponent} from './core/generic-container.component';
+import {MetaIncludeComponent} from './meta-include.component';
 
 
 @NgModule({
   declarations: [
-    IncludeDirective,
     MetaIncludeDirective,
+    MetaIncludeComponent,
     NoMetaComponent,
     GenericContainerComponent
   ],
@@ -38,8 +39,7 @@ import {GenericContainerComponent} from './core/generic-container.component';
     ReactiveFormsModule
   ],
   exports: [
-    IncludeDirective,
-    MetaIncludeDirective,
+    MetaIncludeComponent,
     NoMetaComponent,
     GenericContainerComponent
   ],

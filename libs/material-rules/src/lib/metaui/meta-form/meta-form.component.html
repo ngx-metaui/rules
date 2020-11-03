@@ -1,0 +1,53 @@
+<m-context #classMetaContext scopeKey="class">
+  <div class="form-container">
+    <mat-card *ngIf="classMetaContext.hasObject" class="form-card">
+      <mat-card-content>
+        <div class="row around-xs" *ngIf="canShowZone('zTop')">
+          <div *ngFor="let field of zTop()" class="col-xs-12" [class.meta-fg-readonly]="!editing">
+            <ng-container *ngTemplateOutlet="field;context:{$implicit: field}"></ng-container>
+          </div>
+        </div>
+
+
+        <div class="row between-xs" *ngIf="canShowMainZone()">
+          <div *ngFor="let field of mainZones;trackBy: trackByFieldName"
+               class="col-xs-12"
+               [class.meta-fg-readonly]="!editing"
+               [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFullWidth }"
+               [style.order]="field.orderNum">
+            <ng-container *ngTemplateOutlet="field;context:{$implicit: field}"></ng-container>
+          </div>
+        </div>
+
+        <div class="row between-xs" *ngIf="canShowZone('zBottom')">
+          <div *ngFor="let field of zBottom()" class="col-xs-12" [class.meta-fg-readonly]="!editing">
+            <ng-container *ngTemplateOutlet="field;context:{$implicit: field}"></ng-container>
+          </div>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</m-context>
+
+
+<ng-template #fieldTemplate let-field>
+  <m-context #fieldContext [field]="field">
+    <mat-form-field #formField *ngIf="property('visible', true, fieldContext.context)"
+                    class="form-field"
+                    [class.meta-fg-readonly]="property('hideUnderline', false, fieldContext.context)"
+                    [hideRequiredMarker]="!property('required', false, fieldContext.context)"
+                    [floatLabel]="property('noLabelLayout', false, fieldContext.context) ? 'none'
+                    : 'always' ">
+
+      <mat-label>{{property('label', '', fieldContext.context)}}</mat-label>
+      <m-render mdFormFieldAdapter [wrapNgContent]="false">
+      </m-render>
+      <mat-hint *ngIf="editing" align="end">{{property('hint', '', fieldContext.context)}}</mat-hint>
+      <mat-error *ngIf="fieldHasError(formField)">{{_errorMessage}}</mat-error>
+    </mat-form-field>
+  </m-context>
+</ng-template>
+
+
+

@@ -96,7 +96,6 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit, A
 
   ngOnInit(): void {
     super.ngOnInit();
-    this._metaContext.supportsDirtyChecking = true;
     this.validators = this.createValidators();
 
   }
@@ -110,12 +109,12 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit, A
   }
 
   ngAfterContentInit(): void {
-    this.isReadOnly = this.properties('hideUnderline', false);
-    this.floatLabel = this.properties('noLabelLayout', false) ? 'never' :
+    this.isReadOnly = this.property('hideUnderline', false);
+    this.floatLabel = this.property('noLabelLayout', false) ? 'never' :
       'always';
-    this.hint = this.properties('hint');
-    this.label = this.properties('label');
-    this.isRequired = this.editing && this.context.booleanPropertyForKey('required',
+    this.hint = this.property('hint');
+    this.label = this.property('label');
+    this.isRequired = this.editing && this._metaContext.context.booleanPropertyForKey('required',
       false);
   }
 
@@ -148,14 +147,15 @@ export class MetaFormField extends MetaBaseComponent implements AfterViewInit, A
   private createValidators(): ValidatorFn[] {
     const that = this;
     const metaValidator = (control: AbstractControl): { [key: string]: any } => {
-      // Validators.required(control) ||
-      if (!control.touched) {
-        return null;
-      }
-      const errorMsg = that.context.meta.validationError(that.context);
-      return errorMsg ? {'metavalid': {'msg': errorMsg}} : null;
-    };
+      const editing = that._metaContext.context.booleanPropertyForKey('editing',
+        false);
 
+      if (editing) {
+        const errorMsg = that._metaContext.context.meta.validationError(that._metaContext.context);
+        return errorMsg ? {'metavalid': {'msg': errorMsg}} : null;
+      }
+      return null;
+    };
     return [metaValidator];
   }
 

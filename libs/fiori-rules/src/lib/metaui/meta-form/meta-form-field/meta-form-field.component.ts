@@ -102,7 +102,6 @@ export class MetaFormField extends MetaBaseComponent implements FormField, After
 
 
   ngAfterContentInit(): void {
-    this._metaContext.supportsDirtyChecking = true;
     this.label = this.properties('label');
     this.columns = this.properties('size', 6);
     this.hint = this.properties('hint');

@@ -67,7 +67,6 @@ export class MetaUIRulesModule {
     return {
       ngModule: MetaUIRulesModule,
       providers: [
-        Environment,
         {provide: AppMetaConfig, useValue: config},
         {
           provide: MetaConfig, useFactory: makeConfig,
@@ -78,9 +77,6 @@ export class MetaUIRulesModule {
           useClass: RoutingService,
           deps: [[new Optional(), Router], [new Optional(), Location]]
         },
-
-        ComponentRegistry,
-        DomUtilsService,
         {
           provide: META_RULES,
           useClass: UIMeta,

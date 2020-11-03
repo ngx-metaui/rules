@@ -1,0 +1,99 @@
+<button (click)="operation = 'edit'">edit</button> |
+<button (click)="operation = 'view'">view</button>
+
+<m-context #mc0 [object]="object" [operation]="operation" layout="Inspect">
+  <m-context #mc scopeKey="class">
+    <ng-template ngFor let-fieldName [ngForOf]="mc | properties:'fieldsByZone.zLeft'" let-i="index">
+      <ng-container *ngTemplateOutlet="field;context:{$implicit: fieldName}">
+      </ng-container>
+    </ng-template>
+  </m-context>
+</m-context>
+
+
+
+<ng-template #field let-field>
+  <m-context #mcf [field]="field">
+        <div *ngIf="!!(mcf | properties:'visible')"
+             [class.meta-fg-readonly]="!(!!(mcf | properties:'editing'))">
+
+<!--         <span style="font-weight: bold;padding: 10px">-->
+<!--            <h1>{{mcf | properties:'field'}}</h1>-->
+<!--         </span>-->
+
+          <mat-form-field #ff appearance="standard" [floatLabel]="'always'">
+            <mat-label>{{mcf | properties:'label'}}</mat-label>
+
+            <m-render mFormFieldAdapter [metaContext]="mcf"></m-render>
+
+            <mat-error *ngIf="!!(mcf | properties:'editing')&&
+            !!ff._control.ngControl && ff._control.ngControl.control.invalid">
+              {{ff?._control.ngControl.errors['metavalid'].msg}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+  </m-context>
+</ng-template>
+
+
+<ng-template #debugPrint let-mc>
+  <ul style="margin-left: 15px">
+    <li *ngFor="let record of mc.context.allProperties()._map | keyvalue ">
+      {{record.key}} :
+      <span *ngIf="record.key === 'bindings'">
+              &#123;
+              <ul style="margin-left: 25px">
+
+                <li *ngFor="let binding of mc | properties:'bindings' | keyvalue ">
+
+                  <span
+                    *ngIf="binding.value.constructor.name === 'Expr' || binding.value.constructor.name === 'ContextFieldPath'">
+                    <span style="font-style: italic">{{binding.key}} </span>:
+                    {{binding.value.evaluate(mc.context)}}  : {{binding.value}}
+                  </span>
+
+                  <span
+                    *ngIf="binding.value.constructor.name !== 'Expr' && binding.value.constructor.name !== 'ContextFieldPath'">
+                      {{binding.key}} : {{binding.value}}
+                  </span>
+                </li>
+              </ul>
+              &#125;
+            </span>
+
+      <span *ngIf="record.key !== 'bindings'">
+             {{mc.context.propertyForKey(record.key)}}
+            </span>
+    </li>
+  </ul>
+</ng-template>
+
+
+<!--
+object {
+  class: ${ meta.toClassName(object)};
+}
+
+
+
+class {
+    operation=(create,edit,view,search) {
+        trait: fiveZones;
+    }
+    operation=(list) {
+        trait: tableZones;
+    }
+}
+
+
+PUSH  <m-context [object]="object" [operation]="operation">
+PUSH    <m-context #mc scopeKey="class">
+
+PUSH          <m-context #mcf [field]="'title'">
+POP           <m-context #mcf [field]="'title'">
+
+PUSH          <m-context #mcf [field]="'uniqueName'">
+POP           <m-context #mcf [field]="'uniqueName'">
+
+
+-->

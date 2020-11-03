@@ -1,12 +1,11 @@
-<mat-form-field #formField *ngIf="properties('visible')"
+<mat-form-field #formField *ngIf="property('visible')"
                 class="form-field"
                 [class.meta-fg-readonly]="isReadOnly"
                 [hideRequiredMarker]="!isRequired"
                 [floatLabel]="floatLabel">
 
   <mat-label>{{label}}</mat-label>
-  <m-include-component mdFormFieldAdapter [wrapNgContent]="false">
-  </m-include-component>
+  <m-render mdFormFieldAdapter [wrapNgContent]="false"></m-render>
 
   <mat-hint *ngIf="editing" align="end">{{hint}}</mat-hint>
   <mat-error *ngIf="hasErrors()">{{errorMessage}}</mat-error>

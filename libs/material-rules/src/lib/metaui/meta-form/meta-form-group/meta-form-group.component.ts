@@ -120,11 +120,11 @@ export class MetaFormGroup extends MetaBaseComponent {
   protected doUpdate(): void {
     super.doUpdate();
 
-    this.fieldsByZone = this.context.propertyForKey(PropFieldsByZone);
-    this.isFiveZoneLayout = this.context.propertyForKey(PropIsFieldsByZone);
+    this.fieldsByZone = this._metaContext.context.propertyForKey(PropFieldsByZone);
+    this.isFiveZoneLayout = this._metaContext.context.propertyForKey(PropIsFieldsByZone);
 
 
-    const bindings: Map<string, any> = this.context.propertyForKey(KeyBindings);
+    const bindings: Map<string, any> = this._metaContext.context.propertyForKey(KeyBindings);
     if (bindings) {
       this.showLabelsAboveControls = bindings.get('showLabelsAboveControls');
 
@@ -155,7 +155,6 @@ export class MetaFormGroup extends MetaBaseComponent {
 
   trackByFieldName(index, zoneField: ZoneField) {
     return zoneField ? zoneField.name : undefined;
-
   }
 
   /**
@@ -201,10 +200,10 @@ export class MetaFormGroup extends MetaBaseComponent {
 
   private isFluid(fieldName: string): boolean {
 
-    this.context.push();
-    this.context.set(KeyField, fieldName);
-    const isFluid = this.context.booleanPropertyForKey('fluid', false);
-    this.context.pop();
+    this._metaContext.context.push();
+    this._metaContext.context.set(KeyField, fieldName);
+    const isFluid = this._metaContext.context.booleanPropertyForKey('fluid', false);
+    this._metaContext.context.pop();
 
     return isFluid;
   }

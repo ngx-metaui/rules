@@ -23,7 +23,7 @@
         "libs/rules/src/index.ts"
       ],
       "@ngx-metaui/material-rules": [
-        "libs/material-rules/src/index.ts"
+        "libs/material-rules/src/public_api.ts"
       ],
       "@ngx-metaui/fiori-rules": [
         "libs/fiori-rules/src/index.ts"

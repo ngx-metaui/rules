@@ -72,12 +72,6 @@ import {META_RULES, MetaRules} from '@ngx-metaui/rules';
     MatSnackBarModule
   ],
   exports: [
-    MatInputModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
     InputField,
     StringField,
     TextArea,
@@ -95,7 +89,7 @@ import {META_RULES, MetaRules} from '@ngx-metaui/rules';
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2000, verticalPosition: 'top'}}
   ]
 })
-export class UILibModule {
+export class UIModule {
 
   constructor(@Inject(META_RULES) protected meta: MetaRules, private sf: MatSnackBar) {
     this.meta.registerDependency('matSnackBar', sf);

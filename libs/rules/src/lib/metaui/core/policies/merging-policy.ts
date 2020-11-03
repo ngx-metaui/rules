@@ -349,8 +349,12 @@ export class KeyData {
 export class PropertyMap implements Map<string, any> {
 
   [Symbol.toStringTag]: 'Map';
-  protected _map: Map<string, any>;
   private _contextPropertiesUpdated: Array<PropertyManager>;
+
+  /**
+   * Internal
+   */
+  _map: Map<string, any>;
 
   constructor(entries?: Map<string, any>) {
     if (isPresent(entries)) {

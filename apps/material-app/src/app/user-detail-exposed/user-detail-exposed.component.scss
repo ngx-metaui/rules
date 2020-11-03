@@ -1,0 +1,27 @@
+.highlight-code {
+  background-color: #e8e8e8;
+}
+
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.form-card {
+  padding: 15px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+::ng-deep .meta-fg-readonly,  ::ng-deep .meta-fg-readonly.mat-form-field-appearance-legacy  {
+  .mat-form-field-underline {
+    background-color: transparent;
+    background-image: none;
+  }
+
+  .mat-input-element {
+    color: rgba(0,0,0,.68);
+  }
+}

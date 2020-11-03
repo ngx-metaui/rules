@@ -17,7 +17,7 @@
  *
  */
 import {ChangeDetectorRef, Directive} from '@angular/core';
-import {MetaIncludeDirective} from '@ngx-metaui/rules';
+import {MetaIncludeComponent} from '@ngx-metaui/rules';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Observable, Subject} from 'rxjs';
 import {NgControl} from '@angular/forms';
@@ -36,14 +36,14 @@ import {NgControl} from '@angular/forms';
  *
  */
 @Directive({
-  selector: '[mdFormFieldAdapter]',
+  selector: '[mFormFieldAdapter]',
   providers: [
-    {provide: MatFormFieldControl, useExisting: MetaFormFieldAdapter}
+    {provide: MatFormFieldControl, useExisting: MetaFFAdapter}
   ]
 })
-export class MetaFormFieldAdapter implements MatFormFieldControl<any> {
+export class MetaFFAdapter implements MatFormFieldControl<any> {
 
-  constructor(public metaInclude: MetaIncludeDirective, private cd: ChangeDetectorRef) {
+  constructor(public metaInclude: MetaIncludeComponent, private cd: ChangeDetectorRef) {
   }
 
   get autofilled(): boolean {

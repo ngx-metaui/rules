@@ -21,8 +21,8 @@
 
 import {APP_INITIALIZER, Injector, ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {UILibModule} from './ui/ui.module';
-import {MetaUILibLayoutModule} from './metaui/meta-ui-layout.module';
+import {UIModule} from './ui/ui.module';
+import {LayoutModule} from './metaui/meta-ui-layout.module';
 
 import * as entryComponents from './entry-components';
 import {WidgetsRulesRule} from './metaui/ts/WidgetsRules.oss';
@@ -32,10 +32,13 @@ import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 @NgModule({
   imports: [
     CommonModule,
-    UILibModule,
-    MetaUILibLayoutModule
+    UIModule,
+    LayoutModule
   ],
-  exports: [UILibModule]
+  exports: [
+    UIModule,
+    LayoutModule
+  ]
 })
 export class MaterialRulesModule {
 
