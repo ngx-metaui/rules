@@ -1031,7 +1031,7 @@ export class Context extends Extensible {
       buffer.add('&nbsp;&nbsp;:&nbsp;');
       buffer.add(r.srec.val);
       buffer.add((r.srec.fromChaining ? ' ^' : ''));
-      buffer.add((r.maskedByIdx !== 0 ? ' X' : ''));
+        buffer.add((r.maskedByIdx !== 0 ? ' X' : ''));
       buffer.add('<br/>');
     }
 

@@ -1,43 +1,57 @@
 <button (click)="operation = 'edit'">edit</button> |
 <button (click)="operation = 'view'">view</button>
 
-<m-context #mc0 [object]="object" [operation]="operation" layout="Inspect">
+<m-context #mc0 [object]="object" [operation]="operation">
+    <ng-container *ngTemplateOutlet="debugPrint;context:{$implicit: mc0}">
+    </ng-container>
+
   <m-context #mc scopeKey="class">
-    <ng-template ngFor let-fieldName [ngForOf]="mc | properties:'fieldsByZone.zLeft'" let-i="index">
-      <ng-container *ngTemplateOutlet="field;context:{$implicit: fieldName}">
-      </ng-container>
-    </ng-template>
+    <!--      <ng-container *ngTemplateOutlet="debugPrint;context:{$implicit: mc}">-->
+    <!--      </ng-container>-->
+
+    <!--    <ng-template ngFor let-fieldName [ngForOf]="mc | properties:'fieldsByZone.zLeft'" let-i="index">-->
+    <!--      <ng-container *ngTemplateOutlet="field;context:{$implicit: fieldName}">-->
+    <!--      </ng-container>-->
+    <!--    </ng-template>-->
   </m-context>
 </m-context>
 
 
-
 <ng-template #field let-field>
   <m-context #mcf [field]="field">
-        <div *ngIf="!!(mcf | properties:'visible')"
-             [class.meta-fg-readonly]="!(!!(mcf | properties:'editing'))">
 
-<!--         <span style="font-weight: bold;padding: 10px">-->
-<!--            <h1>{{mcf | properties:'field'}}</h1>-->
-<!--         </span>-->
+        <span style="font-weight: bold;padding: 10px">
+              <h1>{{mcf | properties:'field'}}</h1>
+          </span>
+    <ng-container *ngTemplateOutlet="debugPrint;context:{$implicit: mcf}">
+    </ng-container>
 
-          <mat-form-field #ff appearance="standard" [floatLabel]="'always'">
-            <mat-label>{{mcf | properties:'label'}}</mat-label>
+    <!--        <div *ngIf="!!(mcf | properties:'visible')"-->
+    <!--             [class.meta-fg-readonly]="!(!!(mcf | properties:'editing'))">-->
 
-            <m-render mFormFieldAdapter [metaContext]="mcf"></m-render>
 
-            <mat-error *ngIf="!!(mcf | properties:'editing')&&
-            !!ff._control.ngControl && ff._control.ngControl.control.invalid">
-              {{ff?._control.ngControl.errors['metavalid'].msg}}
-            </mat-error>
-          </mat-form-field>
-        </div>
+    <!--          <mat-form-field #ff appearance="standard" [floatLabel]="'always'">-->
+    <!--            <mat-label>{{mcf | properties:'label'}}</mat-label>-->
+
+    <!--            <m-render mFormFieldAdapter [metaContext]="mcf"></m-render>-->
+
+    <!--            <mat-error *ngIf="!!(mcf | properties:'editing')&&-->
+    <!--                !!ff._control.ngControl && ff._control.ngControl.control.invalid">-->
+    <!--              {{ff?._control.ngControl.errors['metavalid'].msg}}-->
+    <!--            </mat-error>-->
+    <!--          </mat-form-field>-->
+    <!--        </div>-->
   </m-context>
 </ng-template>
 
 
 <ng-template #debugPrint let-mc>
-  <ul style="margin-left: 15px">
+  <!--  <div style="margin-top: 10px; border-top: 1px solid black">-->
+  <!--    <span [innerHTML]="mc.debugString()">-->
+  <!--    </span>-->
+  <!--  </div>-->
+
+  <ul style="margin-left: 15px" *ngIf="true">
     <li *ngFor="let record of mc.context.allProperties()._map | keyvalue ">
       {{record.key}} :
       <span *ngIf="record.key === 'bindings'">
@@ -68,6 +82,8 @@
   </ul>
 </ng-template>
 
+
+<!-- no layout="Inspect" -->
 
 <!--
 object {
