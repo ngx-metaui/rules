@@ -16,18 +16,8 @@
  *
  *
  */
-import {Component, ContentChild, OnInit} from '@angular/core';
-import {
-  Environment,
-  KeyField,
-  MetaBaseComponent,
-  MetaContextComponent,
-  ZoneBottom,
-  ZoneLeft,
-  ZoneRight,
-  ZoneTop
-} from '@ngx-metaui/rules';
-import {MatFormField} from '@angular/material/form-field';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Environment} from '@ngx-metaui/rules';
 
 
 /**
@@ -39,147 +29,40 @@ import {MatFormField} from '@angular/material/form-field';
  */
 @Component({
   selector: 'm-md-form',
-  templateUrl: './meta-form.component.html',
-  styleUrls: ['./meta-form.component.scss']
+  template: `
+    <m-context #cnx scopeKey="class">
+      <div class="form-container">
+        <mat-card *ngIf="cnx.hasObject" class="form-card">
+          <mat-card-content>
+            <m-form-group [mc]="cnx"></m-form-group>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </m-context>
+  `,
+  styles: [
+      `
+      .form-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .form-card {
+        padding: 15px;
+        width: 100%;
+        max-width: 1000px;
+      }
+    `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaForm extends MetaBaseComponent implements OnInit {
-  /**
-   * For multi-zone layout this contains fields broken by its assigned zones
-   */
-  private fieldsByZone: Map<string, any>;
+export class MetaForm {
 
-  /**
-   * Is five zone layout? For MetaUi we  have always fiveZone, unless in MetaRules we say
-   * otherwise
-   */
-  isFiveZoneLayout: boolean;
-
-
-  /**
-   * Do we have labels on top layout?
-   */
-  showLabelsAboveControls: boolean;
-
-
-  /**
-   * Pre-calcuated zones
-   */
-  mainZones: ZoneField[];
-
-  @ContentChild('classMetaContext', {static: true})
-  private _classContext: MetaContextComponent;
-
-
-  /**
-   * @internal
-   */
-  _errorMessage: string;
 
   constructor(public env: Environment) {
-    super(env, null);
-  }
 
-  ngOnInit(): void {
-    this._metaContext = this._classContext;
-    super.ngOnInit();
-  }
-
-
-  canShowZone(zone: string): boolean {
-    return this.fieldsByZone && this.fieldsByZone.has(zone);
-  }
-
-  canShowMainZone(): boolean {
-    return this.canShowZone('zLeft') || this.canShowZone('zRight');
-  }
-
-  zLeft(): string[] {
-    return this.fieldsByZone.get(ZoneLeft);
-  }
-
-  zRight(): string[] {
-    return this.fieldsByZone.get(ZoneRight);
-  }
-
-  zTop(): string[] {
-    return this.fieldsByZone.get(ZoneTop);
-  }
-
-  zBottom(): string[] {
-    return this.fieldsByZone.get(ZoneBottom);
-  }
-
-  trackByFieldName(index, zoneField: ZoneField) {
-    return zoneField ? zoneField.name : undefined;
-  }
-
-  fieldHasError(ff: MatFormField): boolean {
-    return this.editing && ff._control && ff._control.ngControl.control.invalid;
-  }
-
-  errMessage(ff: MatFormField): string {
-    return ff._control.ngControl.errors['metavalid'] ?
-      ff._control.ngControl.errors['metavalid'].msg
-      : '';
-  }
-
-  /**
-   * To achieve LEFT and RIGHT layout we need to iterate and merge LEFT and RIGHT zones together
-   * and assign each field an order they will appear in teh UI.
-   *
-   *
-   */
-  private calculateMainZone(left: string[], right: string[]): ZoneField[] {
-
-    if (left.length > 0 && right.length > 0) {
-
-      const merged: ZoneField[] = [];
-      let indexL = 0, indexR = 0, current = 0;
-
-      while (current < (left.length + right.length)) {
-
-        if (indexL < left.length) {
-          const fluid = this.isFluid(left[indexL]);
-          merged[current++] = new ZoneField(left[indexL], current, fluid);
-          indexL++;
-
-          if (fluid) {
-            continue;
-          }
-        }
-
-        if (indexR < right.length) {
-          merged[current++] = new ZoneField(right[indexR], current, false);
-          indexR++;
-        }
-      }
-      return merged;
-
-    } else if (left.length > 0) {
-      return this.zLeft().map<ZoneField>((item: string, index: number) =>
-        new ZoneField(item, (index + 1), true));
-    }
-
-    return [];
-  }
-
-
-  private isFluid(fieldName: string): boolean {
-
-    this._metaContext.context.push();
-    this._metaContext.context.set(KeyField, fieldName);
-    const isFluid = this._metaContext.context.booleanPropertyForKey('fluid', false);
-    this._metaContext.context.pop();
-
-    return isFluid;
   }
 
 
 }
 
-export class ZoneField {
-
-  constructor(public name?: string, public orderNum?: number,
-              public isFullWidth: boolean = false) {
-  }
-}

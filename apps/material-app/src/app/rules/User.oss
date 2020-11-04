@@ -4,18 +4,21 @@
     Default definition
 */
 class=User {
-   field {
-      placeholder:"Enter value";
-   }
-
     field=title {
+      after:zTop;
       trait:bold;
+    }
+
+    field=(uniqueName , firstName , prefAirline , favAnimal , toppings) {
+      after: zLeft;
+    }
+
+    field=(lastName , favColor , birthDate , isChecked) {
+          after: zRight;
     }
 
     field=uniqueName {
       label: "SSN #";
-      placeholder:"Enter your name";
-      valid:${ value.includes('00') ? true : "There must be 2 zeros." };
     }
 
 
@@ -56,12 +59,9 @@ class=User {
     }
 
     field=description {
-
+      after:zBottom;
       hint: ${"You can type some long text here: " + value.length};
     }
-
-    zNone => *;
-    zLeft => title => uniqueName => firstName => lastName => prefAirline => favAnimal => isChecked => toppings => description;
 }
 
 

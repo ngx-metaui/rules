@@ -18,4 +18,5 @@
  *
  *
  */
+export * from './meta-form/meta-form.component';
 export * from './meta-form/form-field-adapter.directive';

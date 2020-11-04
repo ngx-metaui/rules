@@ -26,15 +26,13 @@ import {MatIconModule} from '@angular/material/icon';
 import {RouterModule, Routes} from '@angular/router';
 import {UIModule} from '../ui/ui.module';
 import {MetaForm} from './meta-form/meta-form.component';
-import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MetaFormField} from './meta-form/meta-form-field/meta-form-field.component';
-import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapter.directive';
 import {MetaContentPageComponent} from './meta-content-page/meta-content-page.component';
 import {MetaActionListComponent} from './meta-action-list/meta-action-list.component';
 import {MetaElementListComponent} from './meta-element-list/meta-element-list.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MetaFFAdapter} from './meta-form/form-field-adapter.directive';
+import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.component';
 
 
 const routes: Routes = [
@@ -45,8 +43,6 @@ const routes: Routes = [
   declarations: [
     MetaForm,
     MetaFormGroup,
-    MetaFormField,
-    MetaFormFieldAdapter,
     MetaFFAdapter,
     MetaContentPageComponent,
     MetaActionListComponent,
@@ -67,8 +63,6 @@ const routes: Routes = [
   exports: [
     MetaForm,
     MetaFormGroup,
-    MetaFormField,
-    MetaFormFieldAdapter,
     MetaFFAdapter,
     MetaContentPageComponent,
     UIModule

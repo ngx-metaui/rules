@@ -262,7 +262,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   ngOnInit(): void {
     this.initBindings();
     this.pushPop(true);
-    console.log('MC-ngOnInit', this.bindings);
+    // console.log('MC-ngOnInit', this.bindings);
 
     // todo: check if we can removed  - used by layouts
     if (!this.env.hasValue('root-meta-cnx')) {
@@ -289,7 +289,6 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
         if (!changes[name].isFirstChange()) {
           this.markDirty();
-          console.log('ngOnChanges: ', this.bindings);
         }
         break;
       }
@@ -311,7 +310,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   ngDoCheck(): void {
     if (this.viewInitialized) {
       if (this.isDirty) {
-        console.log('MC-ngDoCheck', this.bindings);
+        // console.log('MC-ngDoCheck', this.bindings);
         this.pushPop(true);
 
         if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
@@ -327,6 +326,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   ngAfterViewInit(): void {
     if (!this.viewInitialized) {
+      // console.log('MC-ngAfterViewInit', this.bindings);
       this.pushPop(false);
       this.viewInitialized = true;
     }
@@ -335,7 +335,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   ngAfterViewChecked(): void {
     if (this.viewInitialized) {
       if (this.isDirty && this.dirtyCheckInProgress) {
-        console.log('MC-ngAfterViewChecked', this.bindings);
+        // console.log('MC-ngAfterViewChecked', this.bindings);
 
         this.pushPop(false);
         this._isDirty = false;
@@ -343,6 +343,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
       }
     }
   }
+
 
   /**
    * Just for troubleshooting to print current context and assignments
@@ -400,10 +401,12 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   private pushPop(isPush: boolean): void {
     const activeContext = this.createContext(isPush);
+    // console.log(isPush ? 'PUSH' : 'POP', this._scopeBinding ? this._scopeBinding :
+    //   this.bindingsMap);
 
     if (isPush) {
       activeContext.push();
-      if (isPresent(this._scopeBinding) && this.hasObject) {
+      if (this._scopeBinding && this.hasObject) {
 
         this.beforeContextSet.emit(this._scopeBinding);
         activeContext.setScopeKey(this._scopeBinding);

@@ -100,6 +100,9 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
 
   // Replace all this setup and get properties with pure pipe
   protected updateMeta() {
+    if (!this._metaContext) {
+      return;
+    }
     this.editing = this._metaContext.context.booleanPropertyForKey(KeyEditing, false);
     if (this.editing) {
       this.object = this._metaContext.context.values.get(KeyObject);

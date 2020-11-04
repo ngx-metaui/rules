@@ -19,6 +19,7 @@
  */
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ComponentFactory,
@@ -26,7 +27,8 @@ import {
   ComponentRef,
   DoCheck,
   EventEmitter,
-  Input,
+  forwardRef,
+  Inject,
   SimpleChange,
   Type,
   ViewContainerRef
@@ -83,7 +85,8 @@ const IngoredEvents = [
  */
 @Component({
   selector: 'm-render',
-  template: '<ng-content></ng-content>'
+  template: '<ng-content></ng-content>',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaIncludeComponent extends IncludeDirective implements DoCheck, AfterViewInit {
 
@@ -124,13 +127,15 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    * This is only use-case when creating component dynamically
    *
    */
-  @Input()
-  metaContext: MetaContextComponent;
+    // @Input()
+    // metaContext: MetaContextComponent;
 
   private _currentNgModel: NgModel;
 
 
-  constructor(public viewContainer: ViewContainerRef,
+  constructor(@Inject(forwardRef(() => MetaContextComponent))
+              public metaContext: MetaContextComponent,
+              public viewContainer: ViewContainerRef,
               public factoryResolver: ComponentFactoryResolver,
               public env: Environment,
               public cd: ChangeDetectorRef,
@@ -139,12 +144,17 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
     super(viewContainer, factoryResolver, cd, compRegistry);
   }
 
+
+  ngOnInit(): void {
+    super.ngOnInit();
+
+  }
+
   /**
    * First we simply render the a component in the ngOnInit() and then every time something
    * changes.
    */
   ngDoCheck(): void {
-    // console.log('MetaInclude(ngDoCheck):', this.name);
     assert(!!this.metaContext.context && !!this.currentComponent,
       'No context/ component for ' + this.name);
 
@@ -157,7 +167,8 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
 
       this.createWrapperElementIfAny();
       this.createContentElementIfAny();
-    } else {
+    } else if (!this._currentNgModel || this._currentNgModel.control.dirty) {
+
       // we might skip component creation but we still need to update bindings
       // as properties could change
       const context = this.metaContext.context;
@@ -168,6 +179,11 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
       const metaBindings = context.propertyForKey(KeyBindings);
       const type = context.propertyForKey(KeyType);
       const inputs: string[] = this.componentReference().metadata.inputs;
+
+      // if (this._currentNgModel && this._currentNgModel.control.dirty) {
+      //   this._currentNgModel.control.markAsPristine();
+      // }
+
 
       // re-apply Inputs & maybe we should diff properties and only if they changed re-apply
       this.applyInputs(this.currentComponent, type, metaBindings, inputs, editable);
@@ -467,7 +483,8 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
 
       this._currentNgModel.model = this.mGetValue(component.instance, this.metaContext, cntxPath);
       this._currentNgModel.name = this.metaContext.context.propertyForKey(KeyField);
-      this._currentNgModel.control.setValue(this._currentNgModel.value);
+      this._currentNgModel.reset(this._currentNgModel.model);
+
       this._currentNgModel.ngOnChanges({
         'model': new SimpleChange(undefined, this._currentNgModel.model,
           true)
@@ -476,6 +493,7 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
     component.instance['ngControl'] = this._currentNgModel;
     component['ngModelCtx'] = this._currentNgModel;
     this.initNgModel(component, cntxPath);
+    this._currentNgModel.control.markAsPristine();
   }
 
   private initNgModel(component: ComponentRef<any>, cntxPath: ContextFieldPath): void {

@@ -18,10 +18,13 @@
  *
  */
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Host,
+  Input,
+  QueryList,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -32,12 +35,12 @@ import {
   MetaBaseComponent,
   MetaContextComponent,
   PropFieldsByZone,
-  PropIsFieldsByZone,
-  ZoneBottom,
   ZoneLeft,
-  ZoneRight,
-  ZoneTop
+  ZoneRight
 } from '@ngx-metaui/rules';
+import {MatFormField} from '@angular/material/form-field';
+import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
+import {MetaFFAdapter} from '../form-field-adapter.directive';
 
 /**
  * This class is responsible to layout Material formFields into pre-defined 5 zone layout with
@@ -73,88 +76,66 @@ import {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaFormGroup extends MetaBaseComponent {
-  /**
-   * For multi-zone layout this contains fields broken by its assigned zones
-   */
-  private fieldsByZone: Map<string, any>;
+export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
+  @Input()
+  mc: MetaContextComponent;
 
-  /**
-   * Is five zone layout? For MetaUi we  have always fiveZone, unless in MetaRules we say
-   * otherwise
-   */
-  isFiveZoneLayout: boolean;
-
-
+  @ViewChildren('ff')
+  formFields: QueryList<MatFormField>;
   /**
    * Do we have labels on top layout?
    */
-  showLabelsAboveControls: boolean;
-
-
+  showLabelsAboveControls: boolean = false;
   /**
    * Pre-calcuated zones
    */
   mainZones: ZoneField[];
-
-
-  constructor(@Host() protected _context: MetaContextComponent,
-              public env: Environment, private cd: ChangeDetectorRef) {
-    super(env, _context);
-  }
-
-
-  canShowZone(zone: string): boolean {
-    return this.fieldsByZone && this.fieldsByZone.has(zone);
-  }
-
-  canShowMainZone(): boolean {
-    return this.canShowZone('zLeft') || this.canShowZone('zRight');
-  }
-
-
   /**
-   * Todo: revisit this part as this is called after each ngDoCheck might want to move into
-   * viewchecked??
+   * For multi-zone layout this contains fields broken by its assigned zones
+   * only needed for calculated zones (main zones)
    */
-  protected doUpdate(): void {
-    super.doUpdate();
+  private fieldsByZone: Map<string, any>;
 
-    this.fieldsByZone = this._metaContext.context.propertyForKey(PropFieldsByZone);
-    this.isFiveZoneLayout = this._metaContext.context.propertyForKey(PropIsFieldsByZone);
+  constructor(public env: Environment, private _cd: ChangeDetectorRef) {
+    super(env, null);
+  }
 
 
-    const bindings: Map<string, any> = this._metaContext.context.propertyForKey(KeyBindings);
-    if (bindings) {
-      this.showLabelsAboveControls = bindings.get('showLabelsAboveControls');
+  ngOnInit(): void {
+    this._metaContext = this.mc;
+    super.ngOnInit();
+  }
 
-      if (!this.showLabelsAboveControls) {
-        this.showLabelsAboveControls = false;
-      }
+  ngAfterViewInit(): void {
+    if (!this.editing) {
+      this._cd.detectChanges();
+      return;
     }
-    this.mainZones = this.calculateMainZone(this.zLeft() || [], this.zRight() || []);
+    this.formFields.forEach((formField) => {
+      if (formField._control.ngControl) {
+        const control = formField._control.ngControl.control;
+        control.setValidators(Validators.compose(this.createValidators(formField)));
+        control.markAsPristine();
+      }
+    });
   }
-
-
-  zLeft(): string[] {
-    return this.fieldsByZone.get(ZoneLeft);
-  }
-
-  zRight(): string[] {
-    return this.fieldsByZone.get(ZoneRight);
-  }
-
-  zTop(): string[] {
-    return this.fieldsByZone.get(ZoneTop);
-  }
-
-  zBottom(): string[] {
-    return this.fieldsByZone.get(ZoneBottom);
-  }
-
 
   trackByFieldName(index, zoneField: ZoneField) {
     return zoneField ? zoneField.name : undefined;
+  }
+
+  protected doUpdate(): void {
+    super.doUpdate();
+    if (!this.mc) {
+      return;
+    }
+    this.fieldsByZone = this._metaContext.context.propertyForKey(PropFieldsByZone);
+    const bindings: Map<string, any> = this._metaContext.context.propertyForKey(KeyBindings);
+    if (bindings && bindings.has('showLabelsAboveControls')) {
+      this.showLabelsAboveControls = bindings.get('showLabelsAboveControls');
+    }
+    this.mainZones = this.calculateMainZone(
+      this.fieldsByZone.get(ZoneLeft) || [], this.fieldsByZone.get(ZoneRight) || []);
   }
 
   /**
@@ -164,7 +145,6 @@ export class MetaFormGroup extends MetaBaseComponent {
    *
    */
   private calculateMainZone(left: string[], right: string[]): ZoneField[] {
-
     if (left.length > 0 && right.length > 0) {
 
       const merged: ZoneField[] = [];
@@ -190,11 +170,25 @@ export class MetaFormGroup extends MetaBaseComponent {
       return merged;
 
     } else if (left.length > 0) {
-      return this.zLeft().map<ZoneField>((item: string, index: number) =>
+      return left.map<ZoneField>((item: string, index: number) =>
         new ZoneField(item, (index + 1), true));
     }
 
     return [];
+  }
+
+  private createValidators(formField: MatFormField): ValidatorFn[] {
+    const metaValidator = (control: AbstractControl): { [key: string]: any } => {
+      const metaContext = (formField._control as MetaFFAdapter).metaInclude.metaContext;
+      const editing = metaContext.context.booleanPropertyForKey('editing', false);
+
+      if (editing) {
+        const errorMsg = metaContext.context.validateErrors();
+        return errorMsg ? {'metavalid': {'msg': errorMsg}} : null;
+      }
+      return null;
+    };
+    return [metaValidator];
   }
 
 
@@ -207,6 +201,8 @@ export class MetaFormGroup extends MetaBaseComponent {
 
     return isFluid;
   }
+
+
 }
 
 export class ZoneField {

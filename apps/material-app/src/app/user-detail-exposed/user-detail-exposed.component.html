@@ -2,17 +2,17 @@
 <button (click)="operation = 'view'">view</button>
 
 <m-context #mc0 [object]="object" [operation]="operation">
-    <ng-container *ngTemplateOutlet="debugPrint;context:{$implicit: mc0}">
-    </ng-container>
+  <ng-container *ngTemplateOutlet="debugPrint;context:{$implicit: mc0}">
+  </ng-container>
 
   <m-context #mc scopeKey="class">
     <!--      <ng-container *ngTemplateOutlet="debugPrint;context:{$implicit: mc}">-->
-    <!--      </ng-container>-->
+    <!--          </ng-container>-->
 
-    <!--    <ng-template ngFor let-fieldName [ngForOf]="mc | properties:'fieldsByZone.zLeft'" let-i="index">-->
-    <!--      <ng-container *ngTemplateOutlet="field;context:{$implicit: fieldName}">-->
-    <!--      </ng-container>-->
-    <!--    </ng-template>-->
+    <!--        <ng-template ngFor let-fieldName [ngForOf]="mc | properties:'fieldsByZone.zLeft'" let-i="index">-->
+    <!--          <ng-container *ngTemplateOutlet="field;context:{$implicit: fieldName}">-->
+    <!--          </ng-container>-->
+    <!--        </ng-template>-->
   </m-context>
 </m-context>
 
@@ -46,12 +46,12 @@
 
 
 <ng-template #debugPrint let-mc>
-  <!--  <div style="margin-top: 10px; border-top: 1px solid black">-->
-  <!--    <span [innerHTML]="mc.debugString()">-->
-  <!--    </span>-->
-  <!--  </div>-->
+  <!--    <div style="margin-top: 10px; border-top: 1px solid black">-->
+  <!--      <span [innerHTML]="mc.debugString()">-->
+  <!--      </span>-->
+  <!--    </div>-->
 
-  <ul style="margin-left: 15px" *ngIf="true">
+  <ul *ngIf="true" style="margin-left: 15px">
     <li *ngFor="let record of mc.context.allProperties()._map | keyvalue ">
       {{record.key}} :
       <span *ngIf="record.key === 'bindings'">
