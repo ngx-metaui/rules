@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "target": "es2015",
-    "module": "es2020",
     "declaration": true,
     "inlineSources": true,
     "importHelpers": true,

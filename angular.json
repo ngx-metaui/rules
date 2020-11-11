@@ -325,12 +325,7 @@
             "tsConfig": "libs/fiori-rules/tsconfig.lib.json",
             "project": "libs/fiori-rules/ng-package.json",
             "buildableProjectDepsInPackageJsonType": "dependencies"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/fiori-rules/tsconfig.lib.prod.json"
-            }
-          }
+`          }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",

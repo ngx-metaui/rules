@@ -5,7 +5,12 @@
     "entryFile": "src/index.ts",
     "styleIncludePaths": [
       "../../node_modules"
-    ]
+    ],
+    "umdModuleIds": {
+      "@fundamental-ngx/core": "core$1",
+      "@fundamental-ngx/platform": "platform",
+      "@ngx-metaui/rules": "rules"
+    }
   },
   "whitelistedNonPeerDependencies": [
     "flexboxgrid",

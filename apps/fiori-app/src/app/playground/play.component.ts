@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {DATA_PROVIDERS, DataProvider, Money, SelectItem} from '@ngx-metaui/fiori-rules';
 import {Invoice} from '../mdemo/domain/model/invoice';
 import {Address} from '../mdemo/domain/model/address';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 import {PaymentTermsCSV, paymentTermsDB} from '../mdemo/domain/rest/payment-terms';
+import {DATA_PROVIDERS, DataProvider, SelectItem} from '@fundamental-ngx/platform';
+import {Money} from '@ngx-metaui/fiori-rules';
 
 
 @Component({

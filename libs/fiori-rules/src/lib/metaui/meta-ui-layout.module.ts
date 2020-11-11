@@ -20,16 +20,13 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
+import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
+import {FdpFormGroupModule} from '@fundamental-ngx/platform';
 import {UILibModule} from '../ui/ui.module';
 import {MetaForm} from './meta-form/meta-form.component';
 import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.component';
-import {MetaFormField} from './meta-form/meta-form-field/meta-form-field.component';
-import {MetaFormFieldAdapter} from './meta-form/meta-form-field/form-field-adapter.directive';
 import {MetaContentPageComponent} from './content-page/content-page.component';
-import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
 import {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
-import {MetaDashboardLayoutModule} from './meta-dashboard/meta-dashboard-layout.module';
-import {MetaActionListModule} from './meta-action-list/meta-action-list.module';
 import {MetaElementListModule} from './meta-element-list/meta-element-list.module';
 
 
@@ -37,20 +34,17 @@ import {MetaElementListModule} from './meta-element-list/meta-element-list.modul
   declarations: [
     MetaForm,
     MetaFormGroup,
-    MetaFormField,
-    MetaFormFieldAdapter,
     MetaContentPageComponent,
     MetaHomePageComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    FdpFormGroupModule,
     ReactiveFormsModule,
     ActionBarModule,
     ButtonModule,
     MetaUIRulesModule,
-    MetaDashboardLayoutModule,
-    MetaActionListModule,
     MetaElementListModule,
     UILibModule
   ],

@@ -1,9 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {
-  ButtonGroupModule, ButtonModule,
+  ButtonModule,
   IconModule,
-  IdentifierModule,
   ListModule,
   PanelModule
 } from '@fundamental-ngx/core';
@@ -23,7 +22,6 @@ import {MetaUIRulesModule} from '@ngx-metaui/rules';
     BrowserAnimationsModule,
     PanelModule,
     ButtonModule,
-    IdentifierModule,
     IconModule,
     ListModule,
     RouterModule,

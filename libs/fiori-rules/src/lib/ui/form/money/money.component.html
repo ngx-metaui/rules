@@ -6,7 +6,7 @@
          [(ngModel)]="inputDisplayValue"
          [disabled]="disabled"
          type="text"
-         [state]="inErrorState ? 'invalid' : '' "
+
          (blur)="_onFocusChanged(false, elemRef)"
          (focus)="_onFocusChanged(true, elemRef)"/>
 

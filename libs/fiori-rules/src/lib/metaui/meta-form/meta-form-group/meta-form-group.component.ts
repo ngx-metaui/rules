@@ -17,19 +17,16 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {AfterViewInit, ChangeDetectionStrategy, Component, Host, Optional} from '@angular/core';
-
 import {
-  Environment,
-  MetaBaseComponent,
-  MetaContextComponent,
-  PropFieldsByZone,
-  PropIsFieldsByZone,
-  ZoneBottom,
-  ZoneLeft,
-  ZoneRight,
-  ZoneTop
-} from '@ngx-metaui/rules';
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  Optional
+} from '@angular/core';
+
+import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
 import {ControlContainer, FormGroup} from '@angular/forms';
 
 /**
@@ -64,70 +61,29 @@ import {ControlContainer, FormGroup} from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
-  /**
-   * For multi-zone layout this contains fields broken by its assigned zones
-   */
-  private fieldsByZone: Map<string, any>;
+  @Input()
+  mc: MetaContextComponent;
 
-  startInit: any;
 
-  /**
-   * Is five zone layout? For MetaUi we  have always fiveZone, unless in MetaRules we say
-   * otherwise
-   */
-  isFiveZoneLayout: boolean;
-
-  useNoLabelLayout = false;
-
-  zLeft: string[] = [];
-  zRight: string[] = [];
-  zTop: string[] = [];
-  zBottom: string[] = [];
-
-  constructor(@Host() public _context: MetaContextComponent,
-              @Optional() private formContainer: ControlContainer,
-              public env: Environment) {
-    super(env, _context);
+  constructor(@Optional() private formContainer: ControlContainer,
+              private _cd: ChangeDetectorRef, public env: Environment) {
+    super(env, null);
 
     this.formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
       : new FormGroup({}));
   }
 
-
-  /**
-   * Todo: revisit this part as this is called after each ngDoCheck might want to move into
-   * viewchecked??
-   */
-  protected doUpdate(): void {
-    super.doUpdate();
-    this.fieldsByZone = this.context.propertyForKey(PropFieldsByZone);
-    this.isFiveZoneLayout = this.context.propertyForKey(PropIsFieldsByZone);
-
-    const bin: Map<string, any> = this.context.propertyForKey('bindings');
-    if (bin && bin.has('noLabelLayout')) {
-      this.useNoLabelLayout = bin.get('noLabelLayout');
-    }
-
-    this.zLeft = this.updateZone(this.zLeft, this.fieldsByZone.get(ZoneLeft));
-    this.zRight = this.updateZone(this.zRight, this.fieldsByZone.get(ZoneRight));
-    this.zTop = this.updateZone(this.zTop, this.fieldsByZone.get(ZoneTop));
-    this.zBottom = this.updateZone(this.zBottom, this.fieldsByZone.get(ZoneBottom));
-
-  }
-
-
-  private updateZone(sourceZone: string[], newArray: string[]) {
-    if (newArray && (newArray.length !== sourceZone.length)) {
-      return newArray;
-    }
-    return sourceZone;
-  }
-
   ngOnInit(): void {
+    this._metaContext = this.mc;
     super.ngOnInit();
   }
 
+
   ngAfterViewInit(): void {
+    if (!this.editing) {
+      this._cd.detectChanges();
+      return;
+    }
   }
 
 

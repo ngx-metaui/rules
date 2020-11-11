@@ -26,8 +26,15 @@
  *
  *  Then iterate thru the content to register each TYPE that needs to be instantiated.
  */
-export * from './ui/form/date-picker/date-picker.component';
+export {
+  InputComponent,
+  CheckboxGroupComponent,
+  ComboboxComponent,
+  RadioGroupComponent,
+  NumberStepInputComponent,
+  SwitchComponent,
+  TextAreaComponent
+} from '@fundamental-ngx/platform';
 export * from './ui/form/money/money.component';
-export * from './ui/form/select/select.component';
 export * from './ui/form/string/string.component';
 export * from './metaui/public_api';

@@ -42,22 +42,22 @@
              (afterContextSet)="afterContextSet($event)"
              (beforeContextSet)="beforeContextSet($event)">
     <div class="portlet">
-      <m-include-component></m-include-component>
+      <m-render></m-render>
     </div>
   </m-context>
 </ng-template>
 
 <ng-template #actions>
-  <div class="box">
-    <fdp-select placeholder="Quick Links" [list]="['Ad Hoc Request', 'Create Invoice']">
-    </fdp-select>
-  </div>
+<!--  <div class="box">-->
+<!--    <fdp-select placeholder="Quick Links" [list]="['Ad Hoc Request', 'Create Invoice']">-->
+<!--    </fdp-select>-->
+<!--  </div>-->
 
   <m-context #zTopm [ngClass]="'box'"
              *ngFor="let layout of zTocLayouts()" [layout]="layout.name"
              (afterContextSet)="afterContextSet($event)"
              (beforeContextSet)="beforeContextSet($event)">
-    <m-include-component></m-include-component>
+    <m-render></m-render>
   </m-context>
 
 </ng-template>
