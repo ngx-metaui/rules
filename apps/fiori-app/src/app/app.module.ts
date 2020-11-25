@@ -2,7 +2,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {LOCALE_ID, NgModule} from '@angular/core';
 import {registerLocaleData} from '@angular/common';
 import {AppComponent} from './app.component';
-import {DemoModule} from './demo/demo.module';
 import {PlaygroundModule} from './playground/play.module';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -10,8 +9,56 @@ import {FormsModule} from '@angular/forms';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
 import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
 import * as userRules from './user-rules';
-import {MetaDemoModule} from './mdemo/meta-demo.module';
 import localeStr from '@angular/common/locales/es-US';
+import {BaseDataProvider, DATA_PROVIDERS, DataProvider} from '@fundamental-ngx/platform';
+import {User} from '../../../../temp/demo/domain/model/user';
+import {UserCSV, userDB} from '../../../../temp/demo/domain/rest/user';
+import {Address} from '../../../../temp/demo/domain/model/address';
+import {AddressCSV, addressDB} from '../../../../temp/demo/domain/rest/address';
+import {Supplier} from '../../../../temp/demo/domain/model/supplier';
+import {SupplierCSV, supplierWithLocations} from '../../../../temp/demo/domain/rest/supplier';
+import {PaymentTerms} from '../../../../temp/demo/domain/model/payment-terms';
+import {PaymentTermsCSV, paymentTermsDB} from '../../../../temp/demo/domain/rest/payment-terms';
+
+
+const dataProviderServiceFactory = () => {
+  const providers = new Map<string, DataProvider<any>>();
+
+  providers.set('User', new BaseDataProvider<User>(
+    userDB.map((i: UserCSV) => {
+
+      const user = i.Name.split(' ');
+
+      return new User(
+        i.UniqueName, i.Name, user[0].trim(), user[1].trim(), i.Organization, i.EmailAddress,
+        'US004', i.LocaleID, i.DefaultCurrency, '');
+    })));
+
+
+  providers.set('Address', new BaseDataProvider<Address>(
+    addressDB.map((i: AddressCSV) => {
+
+      return new Address(
+        i.UniqueName, i.Name, i.Lines, i.City, i.State, i.PostalCode + '',
+        i.Phone, i.Fax, i.Email, i.URL, i.Country);
+    })));
+
+
+  providers.set('Supplier', new BaseDataProvider<Supplier>(
+    supplierWithLocations().map((i: SupplierCSV) => {
+      return new Supplier(i.UniqueName, i.Name, i.location.Name, i.location.Contact,
+        i.location.Lines, i.location.City, i.location.State, i.location.PostalCode,
+        i.location.Country, i.location.Phone, i.location.EmailAddress);
+    })));
+
+
+  providers.set('PaymentTerms', new BaseDataProvider<PaymentTerms>(
+    paymentTermsDB.map((i: PaymentTermsCSV) => {
+      return new PaymentTerms(i.UniqueName, i.Name, i.Description);
+    })));
+
+  return providers;
+};
 
 
 const LOCALE = 'us';
@@ -26,8 +73,9 @@ registerLocaleData(localeStr, LOCALE);
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    DemoModule,
-    MetaDemoModule,
+    // DemoModule,
+    // PlaygroundModule,
+    // MetaDemoModule,
     PlaygroundModule,
     MetaUIRulesModule.forRoot(),
     FioriRulesModule.forRoot(),
@@ -36,7 +84,8 @@ registerLocaleData(localeStr, LOCALE);
   ],
   exports: [],
   providers: [
-    {provide: LOCALE_ID, useValue: LOCALE}
+    {provide: LOCALE_ID, useValue: LOCALE},
+    {provide: DATA_PROVIDERS, useFactory: dataProviderServiceFactory}
   ],
   bootstrap: [AppComponent]
 })

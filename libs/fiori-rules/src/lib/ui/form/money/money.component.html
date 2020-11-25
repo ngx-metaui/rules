@@ -10,11 +10,12 @@
          (blur)="_onFocusChanged(false, elemRef)"
          (focus)="_onFocusChanged(true, elemRef)"/>
 
-  <div class="fdp-currency-readonly">{{currencySelection}}</div>
+  <span class="fdp-currency-readonly">{{currencySelection}}</span>
 </div>
 
 <!--
  For displaying currency readonly we will use the same component as it requires
  some more work
 -->
+
 <span *ngIf="!editable" class=" fd-input_readonly">{{inputDisplayValue}} {{ currency }}</span>

@@ -32,7 +32,7 @@ import {
 import {CurrencyPipe} from '@angular/common';
 import {NgControl, NgForm} from '@angular/forms';
 import {Money} from '../../domain/data-model';
-import {FormField, BaseInput, FormFieldControl} from '@fundamental-ngx/platform';
+import {BaseInput, FormField, FormFieldControl} from '@fundamental-ngx/platform';
 
 
 /**
@@ -124,6 +124,7 @@ export class MoneyComponent extends BaseInput {
     }
   }
 
+
   writeValue(value: any): void {
     if (!value) {
       value = new Money(0);
@@ -134,8 +135,9 @@ export class MoneyComponent extends BaseInput {
       if (m.currency) {
         this.currencySelection = m.currency;
       }
-      super.writeValue(value);
       this.inputDisplayValue = this.formatCurrency(m.amount);
+      super.writeValue(value);
+      this._cd.markForCheck();
     }
   }
 

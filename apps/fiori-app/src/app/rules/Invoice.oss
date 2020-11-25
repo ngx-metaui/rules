@@ -50,45 +50,9 @@ class=Invoice {
     trait:asRadio;
     choices: ["Asset", "Order", "Cost Center", "Project"];
   }
+
+  zNone => *;
+  zLeft => name => uniqueName;
+  zRight => totalAmount => accountCategory;
 }
-
-class=Invoice {
-   operation=create {
-      zNone => *;
-      zLeft   =>  name =>  needBy => totalAmount => billingAddress => supplier;
-   }
-
-   operation=edit {
-      zNone => *;
-      zLeft   =>  name#fluid => requestor =>  needBy => purchaseOrder => shippingAddress => billingAddress => accountCategory;
-      zRight  => totalAmount => supplier => paymentTerms => taxInvoiceNumber => isShared => shareContact;
-      zBottom => description;
-   }
-
-    operation=view {
-      zNone => *;
-      zLeft   => name  => requestor => needBy => purchaseOrder => shippingAddress => billingAddress => accountCategory;
-      zRight  => uniqueName => totalAmount => supplier => paymentTerms => taxInvoiceNumber => isShared => shareContact;
-      zBottom => description;
-    }
-}
-
-
-class=Invoice object {
-  action=(reset, save) {
-      trait:controllerAction;
-      visible:${properties.get('editing') === true};
-  }
-
-
-  action=edit {
-      trait:controllerAction;
-      visible:${properties.get('editing') === false};
-  }
-
-  action=(edit, save) {
-    buttonOptions:"emphasized";
-  }
-}
-
 

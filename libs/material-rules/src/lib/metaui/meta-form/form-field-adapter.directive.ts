@@ -46,6 +46,14 @@ export class MetaFFAdapter implements MatFormFieldControl<any> {
   constructor(public metaInclude: MetaIncludeComponent, private cd: ChangeDetectorRef) {
   }
 
+  ngOnInit(): void {
+    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
+      this.registerType();
+      (<Subject<any>>this.stateChanges).next();
+      this.cd.detectChanges();
+    }
+  }
+
   get autofilled(): boolean {
     if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
       return (<MatFormFieldControl<any>>this.metaInclude.component).autofilled;
@@ -142,15 +150,6 @@ export class MetaFFAdapter implements MatFormFieldControl<any> {
       return (<MatFormFieldControl<any>>this.metaInclude.component).value;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
-  }
-
-  ngOnInit(): void {
-
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      this.registerType();
-      (<Subject<any>>this.stateChanges).next();
-      this.cd.detectChanges();
-    }
   }
 
   onContainerClick(event: MouseEvent): void {

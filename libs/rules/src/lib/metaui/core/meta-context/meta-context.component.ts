@@ -228,6 +228,12 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     return this._context;
   }
 
+  get formGroup(): FormGroup {
+    return this._formGroup;
+  }
+
+  private _formGroup: FormGroup;
+
   /**
    *
    * Marks MetaContext or the root MetaContext that created a new Context
@@ -243,7 +249,8 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   private prevObject: any;
   private _scopeBinding: string;
-  private _formGroup: FormGroup;
+
+
   private _context: Context;
 
   private contextCache: Map<string, Context> = new Map<string, Context>();
@@ -257,6 +264,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     this._isDirty = false;
     this._formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
       : new FormGroup({}));
+
   }
 
   ngOnInit(): void {

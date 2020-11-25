@@ -1,11 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {Invoice} from '../mdemo/domain/model/invoice';
-import {Address} from '../mdemo/domain/model/address';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
-import {PaymentTermsCSV, paymentTermsDB} from '../mdemo/domain/rest/payment-terms';
+
 import {DATA_PROVIDERS, DataProvider, SelectItem} from '@fundamental-ngx/platform';
 import {Money} from '@ngx-metaui/fiori-rules';
+import {Invoice} from './domain/model/invoice';
+import {PaymentTermsCSV, paymentTermsDB} from './domain/rest/payment-terms';
 
 
 @Component({
@@ -72,7 +72,7 @@ export class PlayComponent implements OnInit {
   paymentTermsDS: string[];
 
   operation = 'edit';
-  invoice: Invoice = new Invoice();
+  invoice: Invoice = new Invoice('INV292');
 
   constructor(@Inject(DATA_PROVIDERS) private providers: Map<string, DataProvider<any>>,
               @Inject(META_RULES) protected meta: MetaRules) {
@@ -88,6 +88,7 @@ export class PlayComponent implements OnInit {
     this.invoice.needBy = new Date();
     this.invoice.accountCategory = 'Order';
     this.invoice.isShared = true;
+    this.invoice.totalAmount = new Money(2340, 'USD');
 
 
     const o = [];

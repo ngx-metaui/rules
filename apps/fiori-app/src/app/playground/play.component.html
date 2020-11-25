@@ -1,20 +1,15 @@
-<main class="fd-page">\
+<main class="fd-page">
   <button fd-button (click)="operation='create'">Create</button>
   <button fd-button (click)="operation='edit'">Edit</button>
   <button fd-button (click)="operation='view'">View</button>
 
-  <m-context [object]="invoice" [operation]="operation" layout="Inspect">
+  <m-context [object]="invoice" [operation]="operation" layout="Inspect" [formGroup]="form">
     <m-render></m-render>
   </m-context>
 
-  {{operation}}
 
 
   <pre>
   object: {{invoice | json}}
 </pre>
 </main>
-
-
-
-

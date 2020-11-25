@@ -28,7 +28,7 @@ import {
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
-  Directive,
+  Directive, Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -180,7 +180,8 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
   constructor(public viewContainer: ViewContainerRef,
               public factoryResolver: ComponentFactoryResolver,
               public cd: ChangeDetectorRef,
-              public compRegistry: ComponentRegistry) {
+              public compRegistry: ComponentRegistry,
+              public injector: Injector) {
 
     this.bindings = new Map<string, any>();
   }
@@ -272,7 +273,8 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
    */
   protected placeTheComponent(): void {
     const reference = this.componentReference();
-    this.currentComponent = this.viewContainer.createComponent(reference.resolvedCompFactory);
+    this.currentComponent = this.viewContainer
+      .createComponent(reference.resolvedCompFactory, null, this.injector);
   }
 
   /**

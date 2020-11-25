@@ -1,8 +1,11 @@
 .fdp-money-input {
+  width: 100%;
+  position: relative;
+
 
   .fdp-currency {
     min-width: 100px;
-    width: 90%;
+    padding-right: 40px;
   }
 
 }
@@ -10,6 +13,8 @@
 // todo make it ready for RTL
 .fdp-currency-readonly {
   font-size: 1rem;
-  padding: 7px 12px;
+  position: absolute;
+  right: 0px;
+  padding: 10px 12px;
   color: #969696;
 }

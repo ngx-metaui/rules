@@ -21,13 +21,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
 import {ActionBarModule, ButtonModule} from '@fundamental-ngx/core';
-import {FdpFormGroupModule} from '@fundamental-ngx/platform';
+import {FdpFormGroupModule, PlatformInputModule} from '@fundamental-ngx/platform';
 import {UILibModule} from '../ui/ui.module';
 import {MetaForm} from './meta-form/meta-form.component';
 import {MetaFormGroup} from './meta-form/meta-form-group/meta-form-group.component';
 import {MetaContentPageComponent} from './content-page/content-page.component';
 import {MetaHomePageComponent} from './meta-home-page/meta-home.page.component';
 import {MetaElementListModule} from './meta-element-list/meta-element-list.module';
+import {MetaFFAdapter} from './meta-form/form-field-adapter.directive';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {MetaElementListModule} from './meta-element-list/meta-element-list.modul
     MetaForm,
     MetaFormGroup,
     MetaContentPageComponent,
-    MetaHomePageComponent
+    MetaHomePageComponent,
+    MetaFFAdapter
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import {MetaElementListModule} from './meta-element-list/meta-element-list.modul
     ButtonModule,
     MetaUIRulesModule,
     MetaElementListModule,
-    UILibModule
+    UILibModule,
+    PlatformInputModule
   ],
   exports: [
     UILibModule

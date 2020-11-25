@@ -29,6 +29,7 @@ import {
   EventEmitter,
   forwardRef,
   Inject,
+  Injector,
   SimpleChange,
   Type,
   ViewContainerRef
@@ -67,7 +68,7 @@ import {DynamicPropertyValue} from '../core/policies/merging-policy';
 import {NgModel} from '@angular/forms';
 
 
-const IngoredEvents = [
+const IgnoredEvents = [
   'beforeContextSet', 'afterContextSet'
 ];
 
@@ -140,8 +141,9 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
               public env: Environment,
               public cd: ChangeDetectorRef,
               public compRegistry: ComponentRegistry,
-              public domUtils: DomUtilsService) {
-    super(viewContainer, factoryResolver, cd, compRegistry);
+              public domUtils: DomUtilsService,
+              public injector: Injector) {
+    super(viewContainer, factoryResolver, cd, compRegistry, injector);
   }
 
 
@@ -180,9 +182,9 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
       const type = context.propertyForKey(KeyType);
       const inputs: string[] = this.componentReference().metadata.inputs;
 
-      // if (this._currentNgModel && this._currentNgModel.control.dirty) {
-      //   this._currentNgModel.control.markAsPristine();
-      // }
+      if (this._currentNgModel && this._currentNgModel.control.dirty) {
+        this._currentNgModel.control.markAsPristine();
+      }
 
 
       // re-apply Inputs & maybe we should diff properties and only if they changed re-apply
@@ -545,7 +547,7 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
       if (value instanceof DynamicPropertyValue) {
         this.applyDynamicOutputBinding(eventEmitter, value, this.metaContext.context);
 
-      } else if (!IngoredEvents.includes(publicKey)) {
+      } else if (!IgnoredEvents.includes(publicKey)) {
         // just trigger event outside
         eventEmitter.subscribe((val: any) => {
           if (this.env.hasValue('root-meta-cnx')) {

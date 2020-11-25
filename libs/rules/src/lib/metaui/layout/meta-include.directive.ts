@@ -28,7 +28,7 @@ import {
   DoCheck,
   EventEmitter,
   forwardRef,
-  Inject,
+  Inject, Injector,
   Input,
   SimpleChange,
   Type,
@@ -150,8 +150,9 @@ export class MetaIncludeDirective extends IncludeDirective implements DoCheck,
               public env: Environment,
               public cd: ChangeDetectorRef,
               public compRegistry: ComponentRegistry,
-              public domUtils: DomUtilsService) {
-    super(viewContainer, factoryResolver, cd, compRegistry);
+              public domUtils: DomUtilsService,
+              public injector: Injector) {
+    super(viewContainer, factoryResolver, cd, compRegistry, injector);
 
 
     console.log(metaContext);

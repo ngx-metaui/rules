@@ -23,36 +23,17 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
-  Optional
+  QueryList,
+  ViewChildren
 } from '@angular/core';
 
 import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
-import {ControlContainer, FormGroup} from '@angular/forms';
+import {FormField} from '@fundamental-ngx/platform';
+import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
+import {MetaFFAdapter} from '../form-field-adapter.directive';
 
 /**
- * This class is responsible to layout  formFields into pre-defined 5 zone layout with
- * help of flex layout.
- *
- * Top and bottom zones take 12 columns where the Left and Right zone is defined differently:
- *
- * When you do:
-
- * zLeft -> FirstName -> Age ->  description#fluid
- * zRight-> LastName -> FavColor.
- *
- *
- * It uses flex layout to set the flex order in such way that:
- *
- *
- * FirstName (order:1, 50%width)  LastName (order:2, 50%width)
- *
- * Age (order:3, 50%width)  FavColor (order:4, 50%width)
- *
- * description (order:5, 100%width)
- *
- *
- * This way I can have fields side by side or taking full width and they can  naturally
- * wrap on smaller devices.
+ * Renders a dynamic form based on current MetaContext
  *
  */
 @Component({
@@ -65,12 +46,11 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
   mc: MetaContextComponent;
 
 
-  constructor(@Optional() private formContainer: ControlContainer,
-              private _cd: ChangeDetectorRef, public env: Environment) {
-    super(env, null);
+  @ViewChildren('ff')
+  formFields: QueryList<FormField>;
 
-    this.formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
-      : new FormGroup({}));
+  constructor(private _cd: ChangeDetectorRef, public env: Environment) {
+    super(env, null);
   }
 
   ngOnInit(): void {
@@ -84,8 +64,29 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
       this._cd.detectChanges();
       return;
     }
+    this.formFields.forEach((formField) => {
+      if (formField.control.ngControl) {
+        const control = formField.control.ngControl.control;
+        control.setValidators(Validators.compose(this.createValidators(formField)));
+        control.markAsPristine();
+      }
+    });
   }
 
+
+  private createValidators(formField: FormField): ValidatorFn[] {
+    const metaValidator = (control: AbstractControl): { [key: string]: any } => {
+      const metaContext = (formField.control as MetaFFAdapter).metaInclude.metaContext;
+      const editing = metaContext.context.booleanPropertyForKey('editing', false);
+
+      if (editing) {
+        const errorMsg = metaContext.context.validateErrors();
+        return errorMsg ? {'metavalid': {'msg': errorMsg}} : null;
+      }
+      return null;
+    };
+    return [metaValidator];
+  }
 
   trackByFn(index, item) {
     return item;

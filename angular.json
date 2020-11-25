@@ -325,7 +325,7 @@
             "tsConfig": "libs/fiori-rules/tsconfig.lib.json",
             "project": "libs/fiori-rules/ng-package.json",
             "buildableProjectDepsInPackageJsonType": "dependencies"
-`          }
+          }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -369,6 +369,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/apps/fiori-app",
             "index": "apps/fiori-app/src/index.html",
             "main": "apps/fiori-app/src/main.ts",
@@ -381,8 +382,6 @@
             ],
             "styles": [
               "node_modules/flexboxgrid/dist/flexboxgrid.css",
-              "node_modules/fundamental-styles/dist/fundamental-styles.css",
-              "node_modules/fundamental-styles/dist/fonts.css",
               "node_modules/fundamental-styles/dist/icon.css",
               "apps/fiori-app/src/styles.scss"
             ],
