@@ -19,16 +19,13 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {MetaIncludeDirective} from './meta-include.directive';
 import {NoMetaComponent} from './no-meta/no-meta.component';
-import {IncludeDirective} from './core/include.directive';
 import {GenericContainerComponent} from './core/generic-container.component';
 import {MetaIncludeComponent} from './meta-include.component';
 
 
 @NgModule({
   declarations: [
-    MetaIncludeDirective,
     MetaIncludeComponent,
     NoMetaComponent,
     GenericContainerComponent

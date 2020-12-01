@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 
@@ -12,7 +12,7 @@ import {PaymentTermsCSV, paymentTermsDB} from './domain/rest/payment-terms';
   selector: 'fdp-fiori-play',
   templateUrl: './play.component.html'
 })
-export class PlayComponent implements OnInit {
+export class PlayComponent implements OnInit, AfterViewInit {
   title = 'fiori-app';
   form: FormGroup;
   private validators: ValidatorFn[];
@@ -74,7 +74,8 @@ export class PlayComponent implements OnInit {
   operation = 'edit';
   invoice: Invoice = new Invoice('INV292');
 
-  constructor(@Inject(DATA_PROVIDERS) private providers: Map<string, DataProvider<any>>,
+  constructor(private _cd: ChangeDetectorRef,
+            @Inject(DATA_PROVIDERS) private providers: Map<string, DataProvider<any>>,
               @Inject(META_RULES) protected meta: MetaRules) {
 
     this.form = new FormGroup({});
@@ -147,6 +148,12 @@ export class PlayComponent implements OnInit {
       return i.Name;
     });
   }
+
+  ngAfterViewInit(): void {
+    this._cd.detectChanges();
+  }
+
+
 
 
   onclick(event: any) {

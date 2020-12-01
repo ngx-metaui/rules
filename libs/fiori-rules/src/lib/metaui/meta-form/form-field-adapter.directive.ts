@@ -51,12 +51,14 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
 
   ngOnInit(): void {
 
-    if (this.formField) {
-      this.formField.registerFormFieldControl(this);
-    }
 
     if (this.metaInclude && this.hasComponent()) {
       this.registerType();
+
+      if (this.formField) {
+        this.formField.registerFormFieldControl(this);
+      }
+
       this.cd.detectChanges();
     }
   }
@@ -126,12 +128,14 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
 
   set contentDensity(contentDensity: ContentDensity) {
     if (this.metaInclude && this.hasComponent()) {
-      (<FormFieldControl<any>>this.metaInclude.component).contentDensity = contentDensity;
+      (<FormFieldControl<any>>this.metaInclude.component)['_contentDensity'] = contentDensity;
+      (<FormFieldControl<any>>this.metaInclude.component)['isCompact']
+        = contentDensity === 'compact';
     }
   }
 
   get stateChanges(): Observable<void> {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
+    if (this.metaInclude && this.hasComponent()) {
       return (<FormFieldControl<any>>this.metaInclude.component).stateChanges;
     }
     this.formFieldControlInterfaceError();
@@ -188,7 +192,6 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
 
   private isFormControl(component: any): component is  FormFieldControl<any> {
     return component.stateChanges !== undefined &&
-      component.contentDensity !== undefined &&
       component.ngControl !== undefined;
   }
 

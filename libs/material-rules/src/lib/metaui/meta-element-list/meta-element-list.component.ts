@@ -22,7 +22,7 @@ import {Context, Environment, MetaContextComponent, MetaLayout} from '@ngx-metau
 
 /**
  * MetaElementList is implementation of Stack Layout where the content is rendered as list (stacked)
- * You do not use this layout directly as it is instantiated dynamically using MetaIncludeDirective.
+ * You do not use this layout directly as it is instantiated dynamically using MetaIncludeComponent.
  *
  * For more detail please checkout WidgetRules.oss the part bellow where create new trait
  * that can be applied to any layout.

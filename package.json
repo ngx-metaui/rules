@@ -73,6 +73,7 @@
     "@angular/cli": "10.1.7",
     "@angular/compiler-cli": "~10.2.1",
     "@angular/language-service": "~10.2.1",
+    "@angular/localize": "10.2.3",
     "@nrwl/cli": "10.3.1",
     "@nrwl/cypress": "^10.3.1",
     "@nrwl/workspace": "^10.3.1",

@@ -29,11 +29,13 @@
 export {
   InputComponent,
   CheckboxGroupComponent,
+  CheckboxComponent,
   ComboboxComponent,
   RadioGroupComponent,
   NumberStepInputComponent,
   SwitchComponent,
-  TextAreaComponent
+  TextAreaComponent,
+  PlatformDatetimePickerComponent
 } from '@fundamental-ngx/platform';
 export * from './ui/form/money/money.component';
 export * from './ui/form/string/string.component';

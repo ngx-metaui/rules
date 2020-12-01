@@ -401,7 +401,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    * This is our key method that triggers all the interaction inside MetaUI world. Here we
    * push context keys and their values to the stack and this is the thing that triggers
    * rule recalculation which give us updated  properties. Those are then used by
-   * MetaIncludeDirective to render the UI.
+   * MetaIncludeComponent to render the UI.
    *
    * myContext is current context for this MetaContext Component.
    *

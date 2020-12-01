@@ -19,7 +19,7 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {DatePickerModule} from '@fundamental-ngx/core';
+import {DatePickerModule, SelectModule} from '@fundamental-ngx/core';
 import {MoneyComponent} from './money/money.component';
 import {StringComponent} from './string/string.component';
 
@@ -32,7 +32,8 @@ import {StringComponent} from './string/string.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DatePickerModule
+    DatePickerModule,
+    SelectModule
   ],
   exports: [
     MoneyComponent,

@@ -14,9 +14,7 @@ class=Invoice {
   }
 
   field=purchaseOrder {
-    trait:asSelect;
-    choices: ["PO1111", "PO2222", "PO33333", "P33333", "PO3333", "PO44444", "PO55555"];
-    editable:${!object.accountCategory || object.accountCategory === "Order"};
+    visible:false;
   }
 
   field=supplier {
@@ -25,8 +23,7 @@ class=Invoice {
   }
 
   field=paymentTerms {
-    trait:asSelect, required;
-    choices:${controller.paymentTermsDS};
+   visible:false;
   }
 
   field=(billingAddress, shippingAddress ) {
@@ -50,9 +47,41 @@ class=Invoice {
     trait:asRadio;
     choices: ["Asset", "Order", "Cost Center", "Project"];
   }
-
-  zNone => *;
-  zLeft => name => uniqueName;
-  zRight => totalAmount => accountCategory;
 }
+
+class=Invoice {
+   operation=create {
+      zNone => *;
+      zLeft   =>  name =>  needBy => totalAmount => billingAddress => supplier;
+   }
+
+   operation=edit {
+      zNone => *;
+      zLeft   =>  name;
+   }
+
+    operation=view {
+      zNone => *;
+      zLeft   =>  name;
+    }
+}
+
+
+class=Invoice object {
+  action=(reset, save) {
+      trait:controllerAction;
+      visible:${properties.get('editing') === true};
+  }
+
+
+  action=edit {
+      trait:controllerAction;
+      visible:${properties.get('editing') === false};
+}
+
+  action=(edit, save) {
+    buttonOptions:"emphasized";
+  }
+}
+
 

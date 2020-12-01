@@ -28,7 +28,8 @@ import {
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
-  Directive, Injector,
+  Directive,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -402,9 +403,7 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
   protected resolveComponentType(): any {
     const componentType = this.compRegistry.nameToType.get(this.name);
 
-    assert(!!componentType,
-      `${this.name} component does not exists.
-      Create Dummy Component instead of throwing this error`);
+    assert(!!componentType, `${this.name} component does not exists.`);
     return componentType;
   }
 
