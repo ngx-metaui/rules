@@ -28,9 +28,8 @@ import {
 } from '@angular/core';
 
 import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
-import {FormField} from '@fundamental-ngx/platform';
+import {FormField, FormFieldControl} from '@fundamental-ngx/platform';
 import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
-import {MetaFFAdapter} from '../form-field-adapter.directive';
 
 /**
  * Renders a dynamic form based on current MetaContext
@@ -67,16 +66,16 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
     this.formFields.forEach((formField) => {
       if (formField.control.ngControl) {
         const control = formField.control.ngControl.control;
-        control.setValidators(Validators.compose(this.createValidators(formField)));
+        control.setValidators(Validators.compose(this.createValidators(formField.control)));
         control.markAsPristine();
       }
     });
   }
 
 
-  private createValidators(formField: FormField): ValidatorFn[] {
+  private createValidators(fControl: FormFieldControl<any>): ValidatorFn[] {
     const metaValidator = (control: AbstractControl): { [key: string]: any } => {
-      const metaContext = (formField.control as MetaFFAdapter).metaInclude.metaContext;
+      const metaContext = fControl['__metaContext__'];
       const editing = metaContext.context.booleanPropertyForKey('editing', false);
 
       if (editing) {

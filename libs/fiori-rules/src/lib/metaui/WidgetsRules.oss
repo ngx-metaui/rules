@@ -159,7 +159,7 @@ field {
 
     @trait=asAutoComplete {
          editable {
-             component:CheckboxGroupComponent;
+             component:ComboboxComponent;
              bindings:{
                  ngModel:$value;
                  entityClass:${values.get("type")};

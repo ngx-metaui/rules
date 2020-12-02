@@ -19,6 +19,7 @@ import {Supplier} from '../../../../temp/demo/domain/model/supplier';
 import {SupplierCSV, supplierWithLocations} from '../../../../temp/demo/domain/rest/supplier';
 import {PaymentTerms} from '../../../../temp/demo/domain/model/payment-terms';
 import {PaymentTermsCSV, paymentTermsDB} from '../../../../temp/demo/domain/rest/payment-terms';
+import {DynamicComponentService} from '@fundamental-ngx/core';
 
 
 const dataProviderServiceFactory = () => {
@@ -84,6 +85,7 @@ registerLocaleData(localeStr, LOCALE);
   ],
   exports: [],
   providers: [
+    DynamicComponentService,
     {provide: LOCALE_ID, useValue: LOCALE},
     {provide: DATA_PROVIDERS, useFactory: dataProviderServiceFactory}
   ],

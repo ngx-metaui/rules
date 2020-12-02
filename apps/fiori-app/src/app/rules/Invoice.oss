@@ -57,7 +57,7 @@ class=Invoice {
 
    operation=edit {
       zNone => *;
-      zLeft   =>  name;
+      zLeft   =>  billingAddress;
    }
 
     operation=view {

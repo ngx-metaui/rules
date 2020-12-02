@@ -18,8 +18,8 @@
  */
 import {ChangeDetectorRef, Directive, Host, OnInit, Optional, SkipSelf} from '@angular/core';
 import {MetaIncludeComponent} from '@ngx-metaui/rules';
-import {NgControl} from '@angular/forms';
 import {ContentDensity, FormField, FormFieldControl, Status} from '@fundamental-ngx/platform';
+import {NgControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 
 
@@ -41,6 +41,17 @@ import {Observable} from 'rxjs';
   ]
 })
 export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
+  contentDensity: ContentDensity;
+  readonly disabled: boolean;
+  editable: boolean;
+  readonly focused: boolean;
+  id: string;
+  readonly ngControl: NgControl | null;
+  placeholder: string;
+  readonly stateChanges: Observable<void>;
+  readonly status: Status;
+  value: any | null;
+
 
   constructor(public metaInclude: MetaIncludeComponent,
               private cd: ChangeDetectorRef,
@@ -56,7 +67,8 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
       this.registerType();
 
       if (this.formField) {
-        this.formField.registerFormFieldControl(this);
+        this.metaInclude.component['__metaContext__'] = this.metaInclude.metaContext;
+        this.formField.registerFormFieldControl(this.metaInclude.component);
       }
 
       this.cd.detectChanges();
@@ -64,126 +76,10 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
   }
 
 
-  get value(): any | null {
-    if (this.metaInclude && this.hasComponent()) {
-      return (<FormFieldControl<any>>this.metaInclude.component).value;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-  set value(value: any | null) {
-    if (this.metaInclude && this.hasComponent()) {
-      (<FormFieldControl<any>>this.metaInclude.component).value = value;
-    }
-  }
-
-  get placeholder(): string {
-    if (this.metaInclude && this.hasComponent()) {
-      return (<FormFieldControl<any>>this.metaInclude.component).placeholder;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-  set placeholder(placeholder: string) {
-    if (this.metaInclude && this.hasComponent()) {
-      (<FormFieldControl<any>>this.metaInclude.component).placeholder = placeholder;
-    }
-  }
-
-  get id(): string {
-    if (this.metaInclude && this.hasComponent()) {
-      return (<FormFieldControl<any>>this.metaInclude.component).id;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-  set id(id: string) {
-    if (this.metaInclude && this.hasComponent()) {
-      (<FormFieldControl<any>>this.metaInclude.component).id = id;
-    }
-  }
-
-
-  get editable(): boolean {
-    if (this.metaInclude && this.hasComponent()) {
-      const editable = this.metaInclude.metaContext.context
-        .booleanPropertyForKey('editable', true);
-      return editable;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-  set editable(editable: boolean) {
-    if (this.metaInclude && this.hasComponent()) {
-      (<FormFieldControl<any>>this.metaInclude.component).editable = editable;
-    }
-  }
-
-  get contentDensity(): ContentDensity {
-    if (this.metaInclude && this.hasComponent()) {
-      return (<FormFieldControl<any>>this.metaInclude.component).contentDensity;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-  set contentDensity(contentDensity: ContentDensity) {
-    if (this.metaInclude && this.hasComponent()) {
-      (<FormFieldControl<any>>this.metaInclude.component)['_contentDensity'] = contentDensity;
-      (<FormFieldControl<any>>this.metaInclude.component)['isCompact']
-        = contentDensity === 'compact';
-    }
-  }
-
-  get stateChanges(): Observable<void> {
-    if (this.metaInclude && this.hasComponent()) {
-      return (<FormFieldControl<any>>this.metaInclude.component).stateChanges;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
   focus(event?: MouseEvent): void {
   }
 
-
-  get ngControl(): NgControl | null {
-    if (this.metaInclude && this.hasComponent()) {
-      return this.metaInclude.currentComponent['ngModelCtx'] as NgControl;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-  get disabled(): boolean {
-    if (this.metaInclude && this.hasComponent()) {
-      const editable = this.metaInclude.metaContext.context
-        .booleanPropertyForKey('editable', false);
-
-      const edit = this.metaInclude.metaContext.context
-        .booleanPropertyForKey('editing', false);
-      return (<FormFieldControl<any>>this.metaInclude.component).disabled || (edit && !editable);
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-
-  get focused(): boolean {
-    if (this.metaInclude && this.hasComponent()) {
-      return (<FormFieldControl<any>>this.metaInclude.component).focused;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-  get status(): Status {
-    if (this.metaInclude && this.hasComponent()) {
-      return (<FormFieldControl<any>>this.metaInclude.component).status;
-    }
-    this.formFieldControlInterfaceError();
-  }
-
-
   onContainerClick(event: MouseEvent): void {
-    if (this.metaInclude && this.hasComponent()) {
-      (<FormFieldControl<any>>this.metaInclude.component).onContainerClick(event);
-    }
   }
 
   hasComponent(): boolean {
@@ -192,6 +88,7 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
 
   private isFormControl(component: any): component is  FormFieldControl<any> {
     return component.stateChanges !== undefined &&
+      component.contentDensity !== undefined &&
       component.ngControl !== undefined;
   }
 
@@ -214,7 +111,4 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
   }
 
 
-  private formFieldControlInterfaceError(): void {
-    throw new Error('Dynamic component must implement FormFieldControl interface.');
-  }
 }

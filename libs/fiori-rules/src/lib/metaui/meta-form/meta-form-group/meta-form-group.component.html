@@ -42,9 +42,10 @@
                     [editable]="editing"
                     [columns]="mcf | properties:'size':6"
                     [rank]="mcf | properties:'rank'"
-                    [disabled]="mcf | properties:'disabled':false"
-    >
+                    [disabled]="mcf | properties:'disabled':false">
       <m-render mFormFieldAdapter></m-render>
+
+      <!--          <fdp-input id="field1" name="field1" [formControl]="ff.formControl"></fdp-input>-->
     </fdp-form-field>
   </m-context>
 </ng-template>

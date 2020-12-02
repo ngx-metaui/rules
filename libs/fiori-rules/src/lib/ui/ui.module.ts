@@ -19,16 +19,36 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FdpFormModule} from './form/fdp-form.module';
+import {
+  PlatformCheckboxGroupModule,
+  PlatformComboboxModule,
+  PlatformDatetimePickerModule,
+  PlatformInputModule,
+  PlatformRadioGroupModule,
+  PlatformStepInputModule,
+  PlatformTextAreaModule
+} from '@fundamental-ngx/platform';
+import {DynamicComponentService} from '@fundamental-ngx/core';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FdpFormModule,
+    PlatformInputModule,
+    PlatformComboboxModule,
+    PlatformCheckboxGroupModule,
+    PlatformRadioGroupModule,
+    PlatformStepInputModule,
+    PlatformTextAreaModule,
+    PlatformDatetimePickerModule
   ],
   declarations: [],
   exports: [
     FdpFormModule
+  ],
+  providers: [
+    DynamicComponentService
   ]
 })
 export class UILibModule {
