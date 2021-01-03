@@ -9,7 +9,7 @@ cd ${scriptDir}
 cd ..
 
 
-PACKAGES=(rules primeng-rules material-rules)
+PACKAGES=(rules primeng-rules material-rules fiori-rules)
 
 rm -Rf ./dist
 
@@ -17,7 +17,7 @@ echo "##### Validating packages"
 ./scripts/ci/lint.sh
 
 echo "##### Building packages to dist"
-./scripts/ci/build.sh dev
+./scripts/ci/build.sh release
 
 echo "##### Testing packages"
 ng test rules --source-map=false --watch=false --progress=false
@@ -34,6 +34,9 @@ ANGULAR_VERSION=$(node -p "require('./package.json').dependencies['@angular/core
 PRIMENG_ICONS_VERSION=$(node -p "require('./package.json').dependencies['primeicons']")
 PRIMENG_VERSION=$(node -p "require('./package.json').dependencies['primeng']")
 MATERIAL_VERSION=$(node -p "require('./package.json').dependencies['@angular/material']")
+FD_CORE_VERSION=$(node -p "require('./package.json').dependencies['@fundamental-ngx/core']")
+FD_PLATFORM_VERSION=$(node -p "require('./package.json').dependencies['@fundamental-ngx/platform']")
+SAP_THEMNE_VERSION=$(node -p "require('./package.json').dependencies['@sap-theming/theming-base-content']")
 
 cd ./dist/
 
@@ -42,6 +45,9 @@ grep -rl 'ANGULAR_PLACEHOLDER' . | xargs  perl -p -i -e "s/ANGULAR_PLACEHOLDER/$
 grep -rl 'PRIMENG_ICONS_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_ICONS_PLACEHOLDER/${PRIMENG_ICONS_VERSION}/g"
 grep -rl 'PRIMENG_PLACEHOLDER' . | xargs  perl -p -i -e "s/PRIMENG_PLACEHOLDER/${PRIMENG_VERSION}/g"
 grep -rl 'MATERIAL_PLACEHOLDER' . | xargs  perl -p -i -e "s/MATERIAL_PLACEHOLDER/${MATERIAL_VERSION}/g"
+grep -rl 'FD_CORE_PLACEHOLDER' . | xargs  perl -p -i -e "s/FD_CORE_PLACEHOLDER/${FD_CORE_VERSION}/g"
+grep -rl 'FD_PLATFORM_PLACEHOLDER' . | xargs  perl -p -i -e "s/FD_PLATFORM_PLACEHOLDER/${FD_PLATFORM_VERSION}/g"
+grep -rl 'SAP_THEMNE_PLACEHOLDER' . | xargs  perl -p -i -e "s/SAP_THEMNE_PLACEHOLDER/${SAP_THEMNE_VERSION}/g"
 
 
 cd "libs"

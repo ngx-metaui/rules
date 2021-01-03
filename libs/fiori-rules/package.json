@@ -1,15 +1,19 @@
 {
   "name": "@ngx-metaui/fiori-rules",
-  "version": "0.0.1",
+  "version": "VERSION_PLACEHOLDER",
   "peerDependencies": {
-    "@angular/common": "^8.2.13",
-    "@angular/core": "^8.2.13"
-  },
-  "peerDependencies": {
+    "@angular/common": "ANGULAR_PLACEHOLDER",
+    "@angular/core": "ANGULAR_PLACEHOLDER",
+    "@angular/forms": "ANGULAR_PLACEHOLDER",
+    "@angular/platform-browser": "ANGULAR_PLACEHOLDER",
+    "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
+    "@angular/router": "ANGULAR_PLACEHOLDER",
     "@angular/cdk": "MATERIAL_PLACEHOLDER"
   },
   "dependencies": {
+    "@ngx-metaui/rules": "^VERSION_PLACEHOLDER",
     "flexboxgrid": "^6.3.1",
-    "@fundamental-ngx/core": "^0.13.0-rc.80"
+    "@fundamental-ngx/core": "FD_CORE_PLACEHOLDER",
+    "@fundamental-ngx/platform": "FD_PLATFORM_PLACEHOLDER"
   }
 }
