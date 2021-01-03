@@ -12,6 +12,7 @@
     "fundamental-styles",
     "@fundamental-ngx/core",
     "@fundamental-ngx/platform",
-    "@ngx-metaui/rules"
+    "@ngx-metaui/rules",
+    "@ngx-metaui/cdk"
   ]
 }

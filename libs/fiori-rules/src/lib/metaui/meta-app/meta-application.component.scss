@@ -3,6 +3,11 @@
 
   .fd-shell__footer {
     background: #FFFFFF;
+
+    .shel-logo {
+      height: 20px;
+      width: 20px;
+    }
   }
 
   .user-info {
@@ -16,15 +21,17 @@
 
 .shel-logo {
   height: 30px;
-  width: 45px;
+  width: 30px;
 }
 
 .fd-shell__app {
   height: 1%;
 }
 
-.fd-shell__title {
+.fd-shellbar__title {
   font-size: 18px;
+  line-height: 20px;
+  padding-top: 5px;
 }
 
 .fd-app__main {

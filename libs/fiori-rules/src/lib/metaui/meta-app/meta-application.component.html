@@ -30,7 +30,7 @@
   <div class="fd-shell__header">
     <fd-shellbar>
       <fd-shellbar-logo>
-        <a href="#" class="fd-shellbar__logo fd-shellbar__logo--image-replaced"
+        <a href="#" class="fd-shellbar__logo "
            aria-label="SAP">
           <img [src]="appIcon" class="shel-logo"/>
 
@@ -57,7 +57,7 @@
   </div>
 </ng-template>
 <ng-template #footer>
-  <div class="fd-shell__footer--fixed " *ngIf="hideFooter">
+  <div class="fd-shell__footer--fixed " *ngIf="showFooter">
     <img [src]="appIcon" class="shel-logo"/>
     <div class="user-info">
       Frank Folar (fkolar) last visited 3/27/2019 9:45 AM | Buyer Organization

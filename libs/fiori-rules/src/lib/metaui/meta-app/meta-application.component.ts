@@ -40,14 +40,14 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
   searchTerm: string;
 
   searchTerms = [
-    'PR22201 - David R - Compputer Assets',
-    'PR22202 - Any D - MacBook Pro',
-    'PR22202 - Any D - Angular Consultants'
+    'Meta-2201 - Mock for Phase 1',
+    'Meta-22202 - Deploy to GitHub',
+    'Meta-22203 - Implement Phase 1'
   ];
 
 
   user: ShellbarUser = {
-    initials: 'WW',
+    initials: 'FK',
     colorAccent: 11
   };
 
@@ -91,33 +91,6 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Catalog',
-      subtitle: 'Ariba',
-      icon: 'contacts',
-      disabledDragAndDrop: true,
-      callback: () => {
-      }
-    },
-    {
-      title: 'Guided Buying',
-      icon: 'credit-card',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Strategic Procurement',
-      icon: 'cart-3',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Vendor Managemen',
-      subtitle: 'Fieldglass',
-      icon: 'shipping-status',
-      callback: () => {
-      }
-    },
-    {
       title: 'Human Capital Management',
       icon: 'customer',
       callback: () => {
@@ -143,18 +116,6 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
       icon: 'marketing-campaign',
       callback: () => {
       }
-    },
-    {
-      title: 'Service Cloud',
-      icon: 'family-care',
-      callback: () => {
-      }
-    },
-    {
-      title: 'S/4HANA',
-      icon: 'batch-payments',
-      callback: () => {
-      }
     }
   ];
   /**
@@ -165,7 +126,7 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
   tabsVisible: boolean = true;
   appTitle: string = 'My Application';
   appIcon: string;
-  hideFooter: boolean = false;
+  showFooter: boolean = true;
 
   constructor(@Inject(META_RULES) protected uiMeta: MetaRules,
               private _cd: ChangeDetectorRef,
