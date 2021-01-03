@@ -31,10 +31,13 @@
     <fd-shellbar>
       <fd-shellbar-logo>
         <a href="#" class="fd-shellbar__logo fd-shellbar__logo--image-replaced"
-           aria-label="SAP"></a>
+           aria-label="SAP">
+          <img [src]="appIcon" class="shel-logo"/>
+
+        </a>
       </fd-shellbar-logo>
       <fd-shellbar-title>
-        Ariba Procurement
+        {{appTitle}}
       </fd-shellbar-title>
       <fd-shellbar-actions [user]="user"
                            [userMenu]="userMenu">
@@ -54,8 +57,8 @@
   </div>
 </ng-template>
 <ng-template #footer>
-  <div class="fd-shell__footer--fixed ">
-    <img src="./assets/logo.png" width="100px"/>
+  <div class="fd-shell__footer--fixed " *ngIf="hideFooter">
+    <img [src]="appIcon" class="shel-logo"/>
     <div class="user-info">
       Frank Folar (fkolar) last visited 3/27/2019 9:45 AM | Buyer Organization
     </div>

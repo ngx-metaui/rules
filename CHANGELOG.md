@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.2](https://github.com/ngx-meta/rules/compare/v8.1.1...v8.1.2) (2021-01-03)
+
+
+### Bug Fixes
+
+* **fiori:** Fix core rules api and update fiori app ([0cf1d48](https://github.com/ngx-meta/rules/commit/0cf1d48))
+* **select:** Add default editable value ([4c2fbb6](https://github.com/ngx-meta/rules/commit/4c2fbb6))
+
+
+### Features
+
+* **fiori:** Support for new UI library Fiori 3 implemented by fundamental-ngx ([ccb00b0](https://github.com/ngx-meta/rules/commit/ccb00b0))
+* **rules:** Actions support as decorators ([0759ef9](https://github.com/ngx-meta/rules/commit/0759ef9))
+
+
+
 ## [8.1.1](https://github.com/ngx-meta/rules/compare/v8.1.0...v8.1.1) (2019-11-20)
 
 

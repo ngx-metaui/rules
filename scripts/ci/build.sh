@@ -20,6 +20,8 @@ ng build primeng-rules
 echo "################ Building @ngx-meta/material-rules ################"
 ng build material-rules
 
+ng build fiori-rules
+
 echo "################ Building apps ################"
 ng build doc-app
 ng build material-app

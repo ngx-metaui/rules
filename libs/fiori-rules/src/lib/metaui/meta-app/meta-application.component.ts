@@ -7,7 +7,14 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import {ItemProperties, META_RULES, MetaRules, ModuleInfo} from '@ngx-metaui/rules';
+import {
+  ItemProperties,
+  KeyAny,
+  KeyModule,
+  META_RULES,
+  MetaRules,
+  ModuleInfo
+} from '@ngx-metaui/rules';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductSwitchItem, ShellbarUser, ShellbarUserMenu} from '@fundamental-ngx/core';
 
@@ -156,6 +163,9 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
    */
 
   tabsVisible: boolean = true;
+  appTitle: string = 'My Application';
+  appIcon: string;
+  hideFooter: boolean = false;
 
   constructor(@Inject(META_RULES) protected uiMeta: MetaRules,
               private _cd: ChangeDetectorRef,
@@ -170,6 +180,8 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
     this.activatedRoute.url.subscribe(() => {
       this.tabsVisible = this.showTabs();
     });
+
+    this.initHeaderInfo();
 
     this._moduleInfo = this.uiMeta.computeModuleInfo();
     if (this._moduleInfo && this._moduleInfo.modules.length > 0) {
@@ -187,6 +199,16 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
       this.tabsVisible = this.showTabs();
     }
 
+  }
+
+  private initHeaderInfo() {
+    const headerInfoCnx = this.uiMeta.newContext();
+    headerInfoCnx.push();
+    headerInfoCnx.set(KeyModule, KeyAny);
+    headerInfoCnx.setScopeKey(KeyModule);
+    this.appTitle = headerInfoCnx.propertyForKey('appTitle');
+    this.appIcon = headerInfoCnx.propertyForKey('appIcon');
+    headerInfoCnx.pop();
   }
 
   selectTab(tab: ModuleItem) {

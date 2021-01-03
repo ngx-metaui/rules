@@ -18,8 +18,8 @@ export class AddressComponent {
   toggle = true;
 
   constructor(private router: Router, private route: ActivatedRoute) {
-  }
 
+  }
 
 }
 

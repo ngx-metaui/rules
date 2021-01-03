@@ -11,6 +11,7 @@ fi
 ng lint rules
 ng lint primeng-rules
 ng lint material-rules
+ng lint fiori-rules
 
 ng lint doc-app
 ng lint material-app

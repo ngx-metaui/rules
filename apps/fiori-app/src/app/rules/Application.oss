@@ -1,6 +1,7 @@
 module {
   productSwitcher:'switcher';
-  pageTitle:${"This is fiori MetaUI demo - " + properties.get("label")};
+  appTitle:"One Procurement";
+  appIcon:"/assets/logo.png";
 
 
 
