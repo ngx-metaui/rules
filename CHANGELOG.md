@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.7](https://github.com/ngx-meta/rules/compare/v8.1.6...v8.1.7) (2021-01-04)
+
+
+
 ## [8.1.6](https://github.com/ngx-meta/rules/compare/v8.1.5...v8.1.6) (2021-01-04)
 
 

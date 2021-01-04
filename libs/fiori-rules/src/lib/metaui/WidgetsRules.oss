@@ -159,7 +159,7 @@ field {
              component:ComboBoxComponent;
              bindings:{
                  ngModel:$value;
-                 entityClass:${values.get("type")};
+                 entityClass:${properties.get("type")};
                  lookupKey:${properties.get("lookupKey")};
                  displayKey:${ meta.displayLabel(type, properties.get("labelField"), true )};
                  dataSource:${properties.get("dataSource")};
