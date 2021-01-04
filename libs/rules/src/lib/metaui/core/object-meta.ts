@@ -193,6 +193,7 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
   notify(meta: MetaRules, key: string, value: any): void {
     this._meta = meta;
     let myObject;
+    console.log('Registering types for class', value);
 
     const componentRegistry: ComponentRegistry = (<ObjectMeta>this._meta).componentRegistry;
     assert(isPresent(componentRegistry), 'Component registry is not initialized');

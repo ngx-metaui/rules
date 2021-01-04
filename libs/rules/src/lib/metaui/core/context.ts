@@ -1252,7 +1252,6 @@ export class Context extends Extensible {
         this.registerTypes(object[0]);
       }
     } else {
-
       this.meta.componentRegistry.registerType(className(object), object.constructor);
 
       for (const property in object) {

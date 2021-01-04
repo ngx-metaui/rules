@@ -47,6 +47,7 @@ export class ComponentRegistry {
 
   registerType(name: string, type: any): void {
     if (!this.nameToType.has(name)) {
+      console.log('setting name to type = ', name);
       this._nameToType.set(name, type);
     }
   }
