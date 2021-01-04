@@ -231,6 +231,10 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
   writeValue(value: any): void {
     this._value = value;
     this.onChange(value);
+    if (this.ngControl && this.ngControl.control) {
+      this.ngControl.control.markAsTouched();
+    }
+
     this.stateChanges.next('writeValue');
   }
 
@@ -269,6 +273,7 @@ export abstract class BaseInput implements FormFieldControl<any>, ControlValueAc
     const oldState = this._inErrorState;
     const parent = this.ngForm;
     const control = this.ngControl ? this.ngControl.control as FormControl : null;
+
     const newState = !!(control && control.invalid && (control.touched ||
       (parent && parent.submitted)));
 

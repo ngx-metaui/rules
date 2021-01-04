@@ -5,7 +5,8 @@ import {
   Inject,
   Input,
   OnDestroy,
-  OnInit
+  OnInit,
+  ViewEncapsulation
 } from '@angular/core';
 import {
   ItemProperties,
@@ -22,7 +23,8 @@ import {ProductSwitchItem, ShellbarUser, ShellbarUserMenu} from '@fundamental-ng
   selector: 'm-app',
   templateUrl: './meta-application.component.html',
   styleUrls: ['./meta-application.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class MetaApplicationComponent implements OnInit, OnDestroy {
   @Input()
@@ -47,7 +49,7 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
 
 
   user: ShellbarUser = {
-    initials: 'FK',
+    initials: 'JK',
     colorAccent: 11
   };
 

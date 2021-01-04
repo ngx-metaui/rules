@@ -7,7 +7,8 @@ export function objectToName(target: any): string {
     throw new Error(' Cannot convert. Uknown object');
   }
 
-  return isType(target) ? target.prototype.constructor.name : target.constructor.name;
+  return isType(target) &&  target.prototype ? target.prototype.constructor.name
+    : target.constructor.name;
 }
 
 export function isJsObject(o: any): boolean {

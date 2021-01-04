@@ -41,6 +41,9 @@
             *ngFor="let layout of layouts" [layout]="layout.name"
              (afterContextSet)="afterContextSet($event)"
              (beforeContextSet)="beforeContextSet($event)">
+
+    <span class="portlet-label">{{label()}}</span>
+
     <div class="portlet">
       <m-include-component></m-include-component>
     </div>
@@ -49,7 +52,7 @@
 
 <ng-template #actions>
   <div class="box">
-    <fdp-select placeholder="Quick Links" [list]="['Ad Hoc Request', 'Create Invoice']">
+    <fdp-select placeholder="Quick Links" [list]="['Update Project', 'Assign Task']">
     </fdp-select>
   </div>
 
@@ -61,83 +64,3 @@
   </m-context>
 
 </ng-template>
-
-
-<div *ngIf="false" class="fd-layout-grid  fd-layout-grid--col-3">
-  <div class="fd-layout-grid__span-column-3">
-    <fd-panel>
-      <fd-panel-header>
-        <fd-panel-head>
-          <h2 fd-panel-title>News</h2>
-        </fd-panel-head>
-        <fd-panel-actions>
-          <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"></span>
-        </fd-panel-actions>
-      </fd-panel-header>
-
-      <fd-panel-body>
-        <p>
-          SAP Ariba Integrates with Givewith Platform, Enabling Buyers and Suppliers to Drive
-          Social Impact Through B2B Transactions.
-        </p>
-        <p>
-          <a
-            href="https://www.sdcexec.com/sustainability/news/21103665/sap-ariba-integrates-with-givewith-platform-enabling-buyers-and-suppliers-to-drive-social-impact-through-b2b-transactions">
-            To read more
-          </a>
-        </p>
-      </fd-panel-body>
-    </fd-panel>
-  </div>
-
-
-  <fd-panel class="portlet">
-    <fd-panel-header>
-      <fd-panel-head>
-        <h2 fd-panel-title>Documents</h2>
-      </fd-panel-head>
-      <fd-panel-actions>
-              <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"
-              ></span>
-      </fd-panel-actions>
-    </fd-panel-header>
-
-    <fd-panel-body>
-      <p>
-        SAP Ariba Integrates with Givewith Platform, Enabling Buyers and Suppliers to Drive
-        Social Impact Through B2B Transactions.
-      </p>
-      <p>
-        <a
-          href="https://www.sdcexec.com/sustainability/news/21103665/sap-ariba-integrates-with-givewith-platform-enabling-buyers-and-suppliers-to-drive-social-impact-through-b2b-transactions">
-          To read more
-        </a>
-      </p>
-    </fd-panel-body>
-  </fd-panel>
-
-  <fd-panel class="portlet">
-    <fd-panel-header>
-      <fd-panel-head>
-        <h2 fd-panel-title>News</h2>
-      </fd-panel-head>
-      <fd-panel-actions>
-              <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"
-              ></span>
-      </fd-panel-actions>
-    </fd-panel-header>
-
-    <fd-panel-body>
-      <p>
-        SAP Ariba Integrates with Givewith Platform, Enabling Buyers and Suppliers to Drive
-        Social Impact Through B2B Transactions.
-      </p>
-      <p>
-        <a
-          href="https://www.sdcexec.com/sustainability/news/21103665/sap-ariba-integrates-with-givewith-platform-enabling-buyers-and-suppliers-to-drive-social-impact-through-b2b-transactions">
-          To read more
-        </a>
-      </p>
-    </fd-panel-body>
-  </fd-panel>
-</div>
