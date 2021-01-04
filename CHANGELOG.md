@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.6](https://github.com/ngx-meta/rules/compare/v8.1.5...v8.1.6) (2021-01-04)
+
+
+### Bug Fixes
+
+* **fiori:** Updated demo app implementation ([8c131cc](https://github.com/ngx-meta/rules/commit/8c131cc))
+
+
+
 ## [8.1.5](https://github.com/ngx-meta/rules/compare/v8.1.4...v8.1.5) (2021-01-03)
 
 
