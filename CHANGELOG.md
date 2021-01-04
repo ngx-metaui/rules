@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.8](https://github.com/ngx-meta/rules/compare/v8.1.7...v8.1.8) (2021-01-04)
+
+
+### Bug Fixes
+
+* **fiori:** Updated dashboard layout to be more responsive ([3a640b6](https://github.com/ngx-meta/rules/commit/3a640b6))
+
+
+
 ## [8.1.7](https://github.com/ngx-meta/rules/compare/v8.1.6...v8.1.7) (2021-01-04)
 
 
