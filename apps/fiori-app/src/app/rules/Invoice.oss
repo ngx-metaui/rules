@@ -1,17 +1,17 @@
-class=Invoice {
-  field=uniqueName {
-    label: "Id";
-  }
-  field=name {
-    label: "Title";
-    trait: required;
-    placeholder: "Unique name that identifies this Invoice";
-  }
-  field=requestor {
-    trait:asAutoComplete, withDetail;
-    placeholder: "Select a user";
-    lookupKey: "fullName";
-  }
+  class=Invoice {
+    field=uniqueName {
+      label: "Id";
+    }
+    field=name {
+      label: "Title";
+      trait: required;
+      placeholder: "Unique name that identifies this Invoice";
+    }
+    field=requestor {
+      trait:asAutoComplete, withDetail;
+      placeholder: "Select a user";
+      lookupKey: "fullName";
+    }
 
   field=purchaseOrder {
     visible:false;

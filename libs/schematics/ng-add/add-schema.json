@@ -40,11 +40,10 @@
       "x-prompt": "Which UI library would you like to use?",
       "description": "UI library rules implementation name",
       "enum": [
-        "fiori",
         "material",
         "none"
       ],
-      "default": "fiori"
+      "default": "material"
     }
   },
   "required": []

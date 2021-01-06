@@ -61,8 +61,6 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
 
 
   ngOnInit(): void {
-
-
     if (this.metaInclude && this.hasComponent()) {
       this.registerType();
 
@@ -88,7 +86,8 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
 
   private isFormControl(component: any): component is  FormFieldControl<any> {
     return component.stateChanges !== undefined &&
-      component.contentDensity !== undefined &&
+      component.focus !== undefined &&
+      component.onContainerClick !== undefined &&
       component.ngControl !== undefined;
   }
 
