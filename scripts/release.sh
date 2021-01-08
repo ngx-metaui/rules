@@ -26,7 +26,7 @@ echo "##### Building all  to dist ..."
 echo "##### Testing ..."
 ./scripts/ci/test.sh
 
-if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "major" ] && [ ${args[0]} != "none" ]; then
+if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "major" ] && [ ${args[0]} != "pre" ]; then
 
     echo "Missing mandatory argument: . "
     echo " - Usage: ./release.sh  [type]  [pre]"
@@ -35,31 +35,26 @@ if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "
     exit 1
 fi
 
-  if [ ${args[0]} != "none" ]; then
-    echo "Running standard-version to create a release package with --release-as ${args[0]}"
-
-  else if [ "$#" -eq  "2" ] && [ ${args[2]} != "pre" ]; then
+if [ "$#" -eq  "1" ] && [ ${args[0]} != "pre" ]; then
      ./node_modules/.bin/standard-version  --release-as ${args[0]}
 
-  else if [ "$#" -eq  "3" ] && [ ${args[2]} == "pre" ]; then
+else if [ "$#" -eq  "2" ] && [ ${args[1]} == "pre" ]; then
      ./node_modules/.bin/standard-version  --release-as ${args[0]} -p beta
 
-  else if [ "$#" -eq  "2" ] && [ ${args[0]} == "pre" ]; then
+else if [ "$#" -eq  "1" ] && [ ${args[0]} == "pre" ]; then
     ./node_modules/.bin/standard-version -p beta
-  fi
-
-    NEW_VERSION=$(node -p "require('./package.json').version")
-    echo "Bumping up package(s).json to version ${NEW_VERSION}"
-
-    echo "Tagging Repo with git tag v${NEW_VERSION}"
-    git tag v${NEW_VERSION}
-
-    printf "=============== Now go to CHANGELOG.md and check if everything is ok then run following commands:================\n\n"
-    printf "  git add . &&  git commit -m \"chore(release): v${NEW_VERSION}\"\n\n"
-    printf "  git push --follow-tags origin master && git push origin --tags\n\n"
-
-
+else
+    echo "Invalid params"
+fi
+fi
 fi
 
+NEW_VERSION=$(node -p "require('./package.json').version")
+echo "Bumping up package(s).json to version ${NEW_VERSION}"
 
+echo "Tagging Repo with git tag v${NEW_VERSION}"
+git tag v${NEW_VERSION}
 
+printf "=============== Now go to CHANGELOG.md and check if everything is ok then run following commands:================\n\n"
+printf "  git add . &&  git commit -m \"chore(release): v${NEW_VERSION}\"\n\n"
+printf "  git push --follow-tags origin master && git push origin --tags\n\n"
