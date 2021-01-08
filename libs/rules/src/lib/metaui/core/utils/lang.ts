@@ -12,11 +12,11 @@
  *  Credit: Derived and extended from https://github.com/angular/angular in order to have set of
  *  reusable globals. Since its not exported API need to have a copy under core.
  */
-import * as bigIntImported from 'big-integer';
+import bigInt from 'big-integer';
 import {fast1a32} from 'fnv-plus';
 import {CompositeType, isEntity, isValue} from './domain-model';
 
-const bigInt = bigIntImported;
+
 
 
 export function unimplemented(): any {

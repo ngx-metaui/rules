@@ -16,7 +16,7 @@
  *
  *
  */
-export {MetaIncludeDirective} from './meta-include.directive';
+export {MetaIncludeComponent} from './meta-include.component';
 export {ComponentReference, IncludeDirective} from './core/include.directive';
 export {MetaBaseComponent} from './meta.base.component';
 export {GenericContainerComponent} from './core/generic-container.component';

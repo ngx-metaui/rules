@@ -29,7 +29,9 @@ import {assert} from '../utils/lang';
  * the same instance accessible down the component tree.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class Environment {
   /**
    * Helper properties for debugging and testing purposes

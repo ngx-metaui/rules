@@ -1,0 +1,12 @@
+:host {
+  .fd-page__content {
+    background: #FFFFFF;
+    margin-top: 3px;
+  }
+
+
+  ::ng-deep .fd-section {
+    border: 1px solid #dddddd !important;
+  }
+}
+

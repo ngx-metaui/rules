@@ -16,44 +16,13 @@
  *
  *
  */
-import {
-  apply,
-  branchAndMerge,
-  chain,
-  mergeWith,
-  move,
-  noop,
-  Rule,
-  SchematicContext,
-  template,
-  Tree,
-  url
-} from '@angular-devkit/schematics';
+import {chain, Rule, schematic, SchematicContext, Tree} from '@angular-devkit/schematics';
 import {NodeDependency, NodeDependencyType} from '@schematics/angular/utility/dependencies';
 import {AddSchema} from './add-schema';
-import {classify, dasherize} from '@angular-devkit/core/src/utils/strings';
-import {normalize} from '@angular-devkit/core';
-import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
-import {
-  addImportToModule,
-  addSymbolToNgModuleMetadata,
-  isImported
-} from '@schematics/angular/utility/ast-utils';
-import {InsertChange} from '@schematics/angular/utility/change';
-import {
-  addDependenciesToPackageJson,
-  addFileHeaderImports,
-  getMainProjectPath,
-  getSourceFile,
-  readPackageJson,
-  registerUserRulesWithMetaConfig,
-  setupOptions
-} from '../common/schematics-utils';
-import {WorkspaceProject, WorkspaceSchema} from '@schematics/angular/utility/workspace-models';
+import {setupOptions} from '../common/schematics-utils';
+import {WorkspaceProject} from '@schematics/angular/utility/workspace-models';
 import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
-
-const stringUtils = {dasherize, classify};
-
+import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
 
 /**
  * ng-add performs set of task to setup existing or new angular application for basic structure
@@ -66,301 +35,159 @@ const stringUtils = {dasherize, classify};
  */
 export default function (options: AddSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    setupOptions(tree, options);
-
+    setupOptions(tree, options, context);
 
     return chain([
-      options.skipDependencies ? noop() : addDependencies(options),
-      options.skipScripts ? noop() : addScripts(options),
-      options.skipStyles ? noop() : addStyles(options),
-      addRulesSubsystem(options),
-      addNgModuleImports(options),
-      addFileImportsCore(options),
-      addFileImportsUILib(options),
-      registerUserRulesWithMetaConfig(options),
-      addOssCompilerScriptsToPackageJson(options)
+      (host: Tree) => {
+        addPackageToPackageJson(host, options);
 
+        if (!options.skipStyles) {
+          addStylesToAngularJson(host, context, options);
+        }
+      },
+      schematic('init-project', options),
+      async (host: Tree) => {
+      },
+      (_: Tree, context: SchematicContext) => {
+        if (options.skipInstall) {
+          return;
+        }
+        context.addTask(new NodePackageInstallTask());
+      }
     ]);
   };
 }
 
 
-function addDependencies(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    let uiLibs: NodeDependency[] = [];
-    const core: NodeDependency[] = [
+function addPackageToPackageJson(host: Tree, options: AddSchema): Tree {
+  let uiLibs: NodeDependency[] = [];
+  const core: NodeDependency[] = [
+    {
+      type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
+      name: '@ngx-metaui/rules'
+    },
+    {type: NodeDependencyType.Default, version: '1.6.48', name: 'big-integer'},
+    {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
+    {type: NodeDependencyType.Default, version: '^1.3.1', name: 'fnv-plus'},
+    {type: NodeDependencyType.Default, version: '1.3.3', name: 'typescript-collections'},
+    {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
+  ];
+
+  if (options.uiLib === 'material') {
+    uiLibs = [
       {
         type: NodeDependencyType.Default,
         version: '^VERSION_PLACEHOLDER',
-        name: '@ngx-metaui/rules'
+        name: '@ngx-metaui/material-rules'
       },
-      {type: NodeDependencyType.Default, version: '1.6.48', name: 'big-integer'},
-      {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
-      {type: NodeDependencyType.Default, version: '^1.3.1', name: 'fnv-plus'},
-      {type: NodeDependencyType.Default, version: '1.3.3', name: 'typescript-collections'},
-      {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
+      {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
+      {
+        type: NodeDependencyType.Default,
+        version: 'MATERIAL_PLACEHOLDER',
+        name: '@angular/material'
+      },
+      {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
     ];
+  } else if (options.uiLib === 'fiori') {
+    uiLibs = [
+      {
+        type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
+        name: '@ngx-metaui/fiori-rules'
+      }, {
+        type: NodeDependencyType.Default,
+        version: 'FD_CORE_PLACEHOLDER',
+        name: '@fundamental-ngx/core'
+      }, {
+        type: NodeDependencyType.Default, version: 'FD_PLATFORM_PLACEHOLDER',
+        name: '@fundamental-ngx/platform'
+      },
+      {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
+      {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
+    ];
+  }
 
-    if (options.uiLib === 'material') {
-      uiLibs = [
-        {
-          type: NodeDependencyType.Default,
-          version: '^VERSION_PLACEHOLDER',
-          name: '@ngx-metaui/material-rules'
-        },
-        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
-        {
-          type: NodeDependencyType.Default,
-          version: 'MATERIAL_PLACEHOLDER',
-          name: '@angular/material'
-        },
-        {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
-      ];
-    } else if (options.uiLib === 'fiori') {
-      uiLibs = [
-        {
-          type: NodeDependencyType.Default,
-          version: '^VERSION_PLACEHOLDER',
-          name: '@ngx-metaui/fiori-rules'
-        },
-        {
-          type: NodeDependencyType.Default,
-          version: 'FD_CORE_PLACEHOLDER',
-          name: '@fundamental-ngx/core'
-        },
-        {
-          type: NodeDependencyType.Default,
-          version: 'FD_PLATFORM_PLACEHOLDER',
-          name: '@fundamental-ngx/platform'
-        },
-        {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
-        {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
-      ];
-    }
-
-
-    return addDependenciesToPackageJson([...core, ...uiLibs], options.skipNpmInstall);
-  };
+  const dependencies = [...core, ...uiLibs];
+  dependencies.forEach(dependency => {
+    // context.logger.info(`Adding ${dependency.name}:${dependency.version}`);
+    doAddPackageToPackageJson(host, dependency.name, dependency.version);
+  });
+  return host;
 }
 
 
-function addScripts(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    if (options.uiLib === 'none' || options.uiLib === 'material' || options.uiLib === 'fiori') {
-      return host;
-    }
-  };
+function addStylesToAngularJson(host: Tree, context: SchematicContext, options: AddSchema): Tree {
+  if (options.uiLib === 'none') {
+    return host;
+  }
+
+  if (options.uiLib === 'material') {
+    const styleEntries: string[] = [
+      'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css',
+      'node_modules/flexboxgrid/css/flexboxgrid.css'
+    ];
+    return addStyles(host, context, styleEntries, options);
+  } else if (options.uiLib === 'fiori') {
+    const styleEntries: string[] = [
+      'node_modules/flexboxgrid/dist/flexboxgrid.css',
+      'node_modules/fundamental-styles/dist/fundamental-styles.css',
+      'node_modules/fundamental-styles/dist/fonts.css',
+      'node_modules/fundamental-styles/dist/icon.css'
+    ];
+    return addStyles(host, context, styleEntries, options);
+  }
+
+  return host;
 }
 
+function addStyles(host: Tree, context: SchematicContext,
+                   styleEntries: string[], options: AddSchema): Tree {
+  try {
+    const workspace = getWorkspace(host);
+    const projectName = options.project || workspace.defaultProject;
 
-function addStyles(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    if (options.uiLib === 'none') {
-      return host;
+    if (!projectName) {
+      throw Error(`Cant Find project by name ${projectName}`);
     }
+    const project: WorkspaceProject = workspace.projects[projectName];
+    const styles: any[] = (<any>project.architect)['build']['options']['styles'];
 
-    if (options.uiLib === 'material') {
-      const styleEntries: string[] = [
-        'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css',
-        'node_modules/flexboxgrid/css/flexboxgrid.css'
-      ];
-      return addStylesToAngularJson(styleEntries, options);
-    } else if (options.uiLib === 'fiori') {
-      const styleEntries: string[] = [
-        'node_modules/flexboxgrid/dist/flexboxgrid.css',
-        'node_modules/fundamental-styles/dist/fundamental-styles.css',
-        'node_modules/fundamental-styles/dist/fonts.css',
-        'node_modules/fundamental-styles/dist/icon.css'
-      ];
-      return addStylesToAngularJson(styleEntries, options);
-    }
-  };
-}
-
-
-function addNgModuleImports(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    const animImport = ['BrowserAnimationsModule', '@angular/platform-browser/animations'];
-
-    try {
-      const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
-      const srcPath = getSourceFile(host, modulePath);
-
-      if (!isImported(srcPath, 'MetaConfig, MetaUIRulesModule',
-        '@ngx-metaui/rules')) {
-
-        let changes = [
-          ...addImportToModule(srcPath, modulePath, animImport[0], animImport[1]),
-          ...addSymbolToNgModuleMetadata(srcPath, modulePath, 'imports',
-            'MetaUIRulesModule.forRoot({})')];
-
-        if (options.uiLib === 'material') {
-          changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
-            'imports',
-            'MaterialRulesModule.forRoot()')];
-
-        } else if (options.uiLib === 'fiori') {
-          changes = [...changes, ...addSymbolToNgModuleMetadata(srcPath, modulePath,
-            'imports',
-            'FioriRulesModule.forRoot()')];
-        }
-
-        const recorder = host.beginUpdate(modulePath);
-        changes.forEach((change) => {
-          if (change instanceof InsertChange) {
-            recorder.insertLeft(change.pos, change.toAdd);
-          }
-        });
-        host.commitUpdate(recorder);
-        context.logger.log('info', `✅️ MetaUIRulesModule Added to NgModule imports`);
-
-      } else {
-        context.logger.log('info', `✅️ Import MetaUIRulesModule already exists`);
+    styleEntries.reverse().forEach(path => {
+      if (styles.indexOf(path) === -1) {
+        styles.unshift(path);
       }
+    });
+    host.overwrite(getWorkspacePath(host), JSON.stringify(workspace, null, 2));
 
-    } catch (e) {
-      context.logger.log('warn',
-        `✅️ Failed to add MetaUIRulesModule into NgModule imports ${e}`);
-    }
-    return host;
-  };
+  } catch (e) {
+    context.logger.log('warn',
+      `✅️ Failed to add scripts into angular.json`);
+  }
+  return host;
 }
 
 
-function addRulesSubsystem(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
+function doAddPackageToPackageJson(host: Tree, pkg: string, version: string): Tree {
+  if (host.exists('package.json')) {
+    const sourceText = host.read('package.json')!.toString('utf-8');
+    const json = JSON.parse(sourceText);
 
-    try {
-      const movePath = normalize(options.path);
-      const templateSource = apply(url('./files'), [
-        template({
-          ...stringUtils,
-          ...options as object
-        }),
-        move(movePath)
-      ]);
-
-      context.logger.log('info', `✅️ Created rules directory layout`);
-      return chain([
-          branchAndMerge(chain([
-            mergeWith(templateSource)
-          ]))
-        ]
-      );
-
-    } catch (e) {
-      context.logger.log('warn',
-        `✅️ Failed to add scripts into angular.json`);
+    if (!json.dependencies) {
+      json.dependencies = {};
     }
-  };
+
+    if (!json.dependencies[pkg]) {
+      json.dependencies[pkg] = version;
+      json.dependencies = sortObjectByKeys(json.dependencies);
+    }
+
+    host.overwrite('package.json', JSON.stringify(json, null, 2));
+  }
+
+  return host;
 }
 
-
-function addFileImportsCore(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-
-    return chain([
-      addFileHeaderImports(options, 'MetaConfig, MetaUIRulesModule',
-        '@ngx-metaui/rules'),
-
-      addFileHeaderImports(options, '* as userRules',
-        './rules/user-rules', true)
-    ]);
-  };
-}
-
-
-function addFileImportsUILib(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-
-    if (options.uiLib === 'material') {
-      return chain([
-        addFileHeaderImports(options, 'MaterialRulesModule',
-          '@ngx-metaui/material-rules')
-      ]);
-    } else if (options.uiLib === 'fiori') {
-      return chain([
-        addFileHeaderImports(options, 'FioriRulesModule',
-          '@ngx-metaui/fiori-rules')
-      ]);
-    } else {
-      return host;
-    }
-  };
-}
-
-function addOssCompilerScriptsToPackageJson(options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-
-    const content = readPackageJson(host);
-    if (!content['scripts']) {
-      content['scripts'] = {};
-    }
-    const srcPath = normalize(`./${options.path}/rules`);
-    content['scripts']['compile:oss'] = `oss -i ${srcPath} -u -n user-rules`;
-    content['scripts']['watch:oss'] = `watch --wait=8 'npm run compile:oss' ${srcPath} `;
-
-    host.overwrite('package.json', JSON.stringify(content, null, 2));
-    context.logger.log('info', '✅️ Added script into package.json');
-    return host;
-  };
-}
-
-
-function addScriptsToAngularJson(scriptsPaths: string[], options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    try {
-      const workspace: WorkspaceSchema = getWorkspace(host);
-      const projectName = options.project || workspace.defaultProject;
-
-      if (!projectName) {
-        throw Error(`Cant Find project by name ${projectName}`);
-      }
-      const project: WorkspaceProject = workspace.projects[projectName];
-      const scripts: any[] = (<any>project.architect)['build']['options']['scripts'];
-      scriptsPaths.forEach(path => {
-        if (scripts.indexOf(path) === -1) {
-          scripts.push(path);
-        }
-      });
-      context.logger.log('info', `✅️ Added scripts into angular.json`);
-      host.overwrite(getWorkspacePath(host), JSON.stringify(workspace, null, 2));
-
-    } catch (e) {
-      context.logger.log('warn',
-        `✅️ Failed to add scripts into angular.json`);
-    }
-    return host;
-  };
-}
-
-
-function addStylesToAngularJson(styleEntries: string[], options: AddSchema): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    try {
-      const workspace = getWorkspace(host);
-      const projectName = options.project || workspace.defaultProject;
-
-      if (!projectName) {
-        throw Error(`Cant Find project by name ${projectName}`);
-      }
-      const project: WorkspaceProject = workspace.projects[projectName];
-      const styles: any[] = (<any>project.architect)['build']['options']['styles'];
-
-      styleEntries.reverse().forEach(path => {
-        if (styles.indexOf(path) === -1) {
-          styles.unshift(path);
-        }
-      });
-
-
-      context.logger.log('info', `✅️ Added styles into angular.json`);
-      host.overwrite(getWorkspacePath(host), JSON.stringify(workspace, null, 2));
-
-    } catch (e) {
-      context.logger.log('warn',
-        `✅️ Failed to add scripts into angular.json`);
-    }
-    return host;
-  };
+function sortObjectByKeys(obj: object): object {
+  return Object.keys(obj)
+    .sort()
+    .reduce((result, key) => (result[key] = obj[key]) && result, {});
 }

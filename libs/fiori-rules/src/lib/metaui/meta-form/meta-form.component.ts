@@ -16,7 +16,7 @@
  *
  *
  */
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 
 /**
@@ -30,9 +30,10 @@ import {Component} from '@angular/core';
   selector: 'm-fdp-form',
   template: `
       <m-context #cnx scopeKey="class">
-          <m-form-group *ngIf="cnx.hasObject"></m-form-group>
+          <m-form-group [mc]="cnx" *ngIf="cnx.hasObject"></m-form-group>
       </m-context>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaForm {
 

@@ -21,10 +21,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MetaContextComponent} from './meta-context/meta-context.component';
 import {AWMetaLayoutModule} from '../layout/meta-layout.module';
+import {ContextPropertyPipe} from './context-property.pipe';
 
 @NgModule({
   declarations: [
-    MetaContextComponent
+    MetaContextComponent,
+    ContextPropertyPipe
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import {AWMetaLayoutModule} from '../layout/meta-layout.module';
     AWMetaLayoutModule
   ],
   exports: [
-    MetaContextComponent
+    MetaContextComponent,
+    ContextPropertyPipe
   ],
   providers: []
 })

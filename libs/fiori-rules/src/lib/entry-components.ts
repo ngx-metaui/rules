@@ -11,7 +11,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONNS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
@@ -26,15 +26,17 @@
  *
  *  Then iterate thru the content to register each TYPE that needs to be instantiated.
  */
-export * from './ui/form/checkbox/checkbox.component';
-export * from './ui/form/checkbox-group/checkbox-group.component';
-export * from './ui/form/date-picker/date-picker.component';
-export * from './ui/form/input/input.component';
+export {
+  InputComponent,
+  CheckboxGroupComponent,
+  CheckboxComponent,
+  ComboboxComponent,
+  RadioGroupComponent,
+  NumberStepInputComponent,
+  SwitchComponent,
+  TextAreaComponent,
+  PlatformDatetimePickerComponent
+} from '@fundamental-ngx/platform';
 export * from './ui/form/money/money.component';
-export * from './ui/form/radio-group/radio-group.component';
-export * from './ui/form/select/select.component';
 export * from './ui/form/string/string.component';
-export * from './ui/form/text-area/text-area.component';
-export * from './ui/form/combo-box/combo-box.component';
-export * from './ui/link/link.component';
 export * from './metaui/public_api';

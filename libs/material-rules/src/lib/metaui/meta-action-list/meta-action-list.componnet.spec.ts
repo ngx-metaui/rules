@@ -212,8 +212,8 @@ class UserStackA implements Entity {
 @Component({
   selector: 'md-wrapper-comp',
   template: '<m-context [object]="user" operation="edit" layout="Inspect2">' +
-    '<m-include-component >' +
-    '</m-include-component></m-context>'
+    '<m-render>' +
+    '</m-render></m-context>'
 })
 class TestContainerEditComponent {
   user: UserStackA = new UserStackA('Frank', 'Kolar',
@@ -224,8 +224,8 @@ class TestContainerEditComponent {
 @Component({
   selector: 'md-wrapper-comp',
   template: '<m-context [object]="user" operation="edit" layout="Inspect3">' +
-    '<m-include-component >' +
-    '</m-include-component></m-context>'
+    '<m-render>' +
+    '</m-render></m-context>'
 })
 class TestContainerEditLinksComponent {
   user: UserStackA = new UserStackA('Frank', 'Kolar', 1000,
@@ -236,8 +236,8 @@ class TestContainerEditLinksComponent {
 @Component({
   selector: 'md-wrapper-comp',
   template: '<m-context [object]="user" operation="edit" layout="Inspect4">' +
-    '<m-include-component >' +
-    '</m-include-component></m-context>'
+    '<m-render>' +
+    '</m-render></m-context>'
 })
 class TestContainerEditPopupComponent {
   user: UserStackA = new UserStackA('Frank', 'Kolar', 1000,

@@ -2,9 +2,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialRulesModule} from '@ngx-metaui/material-rules';
 import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
@@ -14,11 +14,15 @@ import {AppRoutingModule} from './app-routing.module';
 import {HomeComponent} from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
+import {UserDetailExposedComponent} from './user-detail-exposed/user-detail-exposed.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserDetailComponent,
+    UserDetailExposedComponent,
     HomeComponent
   ],
   imports: [
@@ -31,6 +35,8 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
 
     MetaUIRulesModule.forRoot(),
     MaterialRulesModule.forRoot()

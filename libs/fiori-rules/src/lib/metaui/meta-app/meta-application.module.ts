@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 import {
   ButtonModule,
   ComboboxModule,
-  ProductSwitchModule,
   ShellbarModule,
   TabsModule
 } from '@fundamental-ngx/core';
@@ -22,7 +21,6 @@ import {MetaApplicationComponent} from './meta-application.component';
     TabsModule,
     RouterModule,
     ComboboxModule,
-    ProductSwitchModule,
     ButtonModule,
     ShellbarModule
   ],

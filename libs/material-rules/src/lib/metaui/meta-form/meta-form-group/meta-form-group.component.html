@@ -1,37 +1,54 @@
-<!--
-   List top zones fields
--->
-<div class="row around-xs" *ngIf="canShowZone('zTop')">
-   <div *ngFor="let field of zTop()" class="col-xs-12" [class.meta-fg-readonly]="!editing">
-      <m-context [field]="field">
-        <m-form-field [field]=field [editing]="editing"></m-form-field>
-      </m-context>
+<mat-card class="form-card">
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="oneColRow;context:{$implicit: 'fieldsByZone.zTop'}">
+    </ng-container>
+
+
+    <div class="row between-xs">
+      <div *ngFor="let field of mainZones;trackBy: trackByFieldName" [class.meta-fg-readonly]="!editing"
+           [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFullWidth }" [style.order]="field.orderNum"
+           class="col-xs-12">
+
+        <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field.name}">
+        </ng-container>
+      </div>
     </div>
-</div>
+
+    <ng-container *ngTemplateOutlet="oneColRow;context:{$implicit: 'fieldsByZone.zBottom'}">
+    </ng-container>
+
+  </mat-card-content>
+</mat-card>
 
 
-<div class="row between-xs" *ngIf="canShowMainZone()">
-  <div *ngFor="let field of mainZones;trackBy: trackByFieldName"
-       class="col-xs-12"
-       [class.meta-fg-readonly]="!editing"
-       [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFullWidth }"
-       [style.order]="field.orderNum">
+<ng-template #oneColRow let-zonePath>
+  <div *ngIf="(mc | properties:zonePath) as fields" [class.meta-fg-readonly]="!(!!(mc | properties:'editing'))"
+       class="row around-xs">
 
-    <m-context [field]="field.name">
-      <m-form-field [field]="field.name" [editing]="editing"></m-form-field>
-    </m-context>
+    <div *ngFor="let field of fields" class="col-xs-12">
+      <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field}"></ng-container>
+    </div>
   </div>
-</div>
+</ng-template>
 
 
-<!--
-   List bottom zones fields
--->
-<div class="row between-xs" *ngIf="canShowZone('zBottom')">
-  <div *ngFor="let field of zBottom()" class="col-xs-12" [class.meta-fg-readonly]="!editing">
-    <m-context [field]="field">
-      <m-form-field [field]=field [editing]="editing"></m-form-field>
-    </m-context>
-  </div>
-</div>
+<ng-template #fieldTemplate let-field>
+  <m-context #mcf [field]="field">
+    <mat-form-field #ff *ngIf="!!(mcf | properties:'visible')" [class.meta-fg-readonly]="!(!!(mcf | properties:'editing'))"
+                    [floatLabel]="'always'"
+                    [hideRequiredMarker]="!(!!(mcf | properties:'required':false))"
+                    class="form-field">
 
+      <mat-label>{{mcf | properties:'label'}}</mat-label>
+      <m-render [wrapNgContent]="false" mFormFieldAdapter></m-render>
+
+      <mat-hint *ngIf="!!(mcf | properties:'editing')" align="end">
+        {{mcf | properties:'hint'}}
+      </mat-hint>
+      <mat-error
+        *ngIf="!!(mcf | properties:'editing') && !!ff._control.ngControl && ff._control.ngControl.control.invalid">
+        {{ff._control.ngControl.errors['metavalid'].msg}}
+      </mat-error>
+    </mat-form-field>
+  </m-context>
+</ng-template>

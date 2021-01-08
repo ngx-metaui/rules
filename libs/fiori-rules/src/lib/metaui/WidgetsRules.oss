@@ -36,14 +36,13 @@ field {
             bindings:{
               ngModel: $value;
               isBinary:true;
-              value:"Yes/No";
+              title:"Yes/No";
             };
         }
-
         editable=false {
            bindings:{
               isBinary:true;
-              value: ${value ? "Yes" : "No"};
+              title: ${value ? "Yes" : "No"};
            };
         }
     }
@@ -60,10 +59,13 @@ field {
 
     type=Date   {
         editable {
-          component:DatePickerComponent;
+          component:PlatformDatetimePickerComponent;
             bindings:{
               ngModel:$value;
-              placeholder:"MM/dd/yyyy";
+              format:"MM/dd/yyyy";
+              displayHours:false;
+              displayMinutes:false;
+              displaySeconds:false;
           };
         }
 
@@ -157,7 +159,7 @@ field {
 
     @trait=asAutoComplete {
          editable {
-             component:ComboBoxComponent;
+             component:ComboboxComponent;
              bindings:{
                  ngModel:$value;
                  entityClass:${values.get("type")};

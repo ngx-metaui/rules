@@ -1,0 +1,38 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2015",
+    "module": "es2020",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "esModuleInterop": true,
+    "paths": {
+      "@ngx-metaui/rules": [
+        "dist/libs/rules",
+        "libs/rules/src/index.ts"
+      ],
+      "@ngx-metaui/material-rules": [
+        "libs/material-rules/src/public_api.ts"
+      ],
+      "@ngx-metaui/fiori-rules": [
+        "libs/fiori-rules/src/index.ts"
+      ]
+    },
+    "rootDir": "."
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
+}

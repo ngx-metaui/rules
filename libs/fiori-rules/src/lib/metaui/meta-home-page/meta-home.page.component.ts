@@ -60,7 +60,7 @@ import {Environment, KeyModule} from '@ngx-metaui/rules';
   template: `
     <ng-template [ngIf]="module">
       <m-context [module]="module">
-        <m-include-component></m-include-component>
+        <m-render></m-render>
       </m-context>
     </ng-template>
   `,

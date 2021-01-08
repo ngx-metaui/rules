@@ -16,8 +16,8 @@
  *
  *
  */
-import {AfterViewChecked, Input} from '@angular/core';
-import {assert, isPresent} from '../core/utils/lang';
+import {AfterViewChecked, Directive, Input} from '@angular/core';
+import {isPresent} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
 import {Context, Snapshot} from '../core/context';
@@ -28,6 +28,7 @@ import {FormGroup} from '@angular/forms';
 /**
  * Common component to setup the context and also create context snapshot for later user.
  */
+@Directive({})
 export abstract class MetaBaseComponent implements AfterViewChecked {
 
   /**
@@ -60,19 +61,7 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
   protected object: any;
 
   constructor(public env: Environment,
-              protected _metaContext: MetaContextComponent) {
-  }
-
-  /**
-   * Get the last saved context from the MetaContext component
-   *
-   */
-  protected get context(): Context {
-    if (isPresent(this._metaContext) && isPresent(this._metaContext.myContext())) {
-      return this._metaContext.myContext();
-    }
-
-    assert(false, 'Should always have metaContext available');
+              protected _metaContext?: MetaContextComponent) {
   }
 
   ngOnInit(): void {
@@ -88,32 +77,35 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
   }
 
   isNestedContext(): boolean {
-    return this.context.isNested;
+    return this._metaContext.context.isNested;
   }
 
-  // provide as a expression
-  properties(key: string, defValue: any = null): any {
-    return isPresent(this.context) ? (isPresent(this.context.propertyForKey(key)) ?
-      this.context.propertyForKey(key) : defValue) : defValue;
-
+  property(key: string, defValue: any = null, context?: Context): any {
+    if (context) {
+      return context.propertyForKey(key) || defValue;
+    } else {
+      return this._metaContext.context.propertyForKey(key) || defValue;
+    }
   }
 
   /**
    * Retrieves active context's properties
    *
    */
-  aProperties(me: Context, key: string, defValue: any = null): any {
+  activeProperty(me: Context, key: string, defValue: any = null): any {
     const activeContext: Context = this._metaContext.activeContext();
     return isPresent(me) ? me.propertyForKey(key) : defValue;
 
   }
 
-  // remove this ugly solution once I figure out custom value accessor that I can
-
+  // Replace all this setup and get properties with pure pipe
   protected updateMeta() {
-    this.editing = this.context.booleanPropertyForKey(KeyEditing, false);
+    if (!this._metaContext) {
+      return;
+    }
+    this.editing = this._metaContext.context.booleanPropertyForKey(KeyEditing, false);
     if (this.editing) {
-      this.object = this.context.values.get(KeyObject);
+      this.object = this._metaContext.context.values.get(KeyObject);
     }
     this.doUpdate();
   }

@@ -154,7 +154,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
 
   labelForContext(name: string): string {
     const context: Context = this.contextMap.get(name);
-    return super.aProperties(context, KeyLabel);
+    return super.activeProperty(context, KeyLabel);
   }
 
   zones(): string[] {

@@ -69,5 +69,7 @@ export * from './decorators/traits';
 export * from './decorators/utils';
 
 
+export * from './context-property.pipe';
+
 
 

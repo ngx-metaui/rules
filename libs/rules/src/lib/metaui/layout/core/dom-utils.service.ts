@@ -27,7 +27,9 @@ import {isPresent} from '../../core/utils/lang';
  * or traversal should be put into this service
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DomUtilsService {
 
   constructor() {

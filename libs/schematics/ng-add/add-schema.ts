@@ -21,15 +21,8 @@ import {Schema} from '../common/schema';
 
 export interface AddSchema extends Schema {
 
-  /** Dont add package.json dependencies. */
-  skipDependencies: boolean;
-
   /** Dont run npm install. */
-  skipNpmInstall: boolean;
-
-
-  /** Dont add anything to angular.json script section. */
-  skipScripts: boolean;
+  skipInstall: boolean;
 
 
   /** Dont add anything to angular.json style section. */

@@ -163,16 +163,16 @@ export class MetaActionListComponent extends MetaBaseComponent {
   actionCategories(): ItemProperties[] {
     if (!this._actionsByCategory || !this._actionsByName) {
       if (this.filterActions) {
-        this.context.set('filterActions', this.filterActions);
+        this._metaContext.context.set('filterActions', this.filterActions);
       }
-      const meta: MetaRules = this.context.meta;
-      this.context.push();
+      const meta: MetaRules = this._metaContext.context.meta;
+      this._metaContext.context.push();
 
       this._actionsByCategory = new Map<string, ItemProperties[]>();
       this._actionsByName = new Map<string, ItemProperties>();
-      this.categories = meta.actionsByCategory(this.context, this._actionsByCategory,
+      this.categories = meta.actionsByCategory(this._metaContext.context, this._actionsByCategory,
         ActionZones);
-      this.context.pop();
+      this._metaContext.context.pop();
 
       this._actionsByCategory.forEach((v: ItemProperties[], k: string) => {
         v.forEach((item: ItemProperties) => this._actionsByName.set(item.name, item));
@@ -183,12 +183,12 @@ export class MetaActionListComponent extends MetaBaseComponent {
   }
 
   private actionChanged(): boolean {
-    const meta: MetaRules = this.context.meta;
+    const meta: MetaRules = this._metaContext.context.meta;
     const actionByCat = new Map<string, ItemProperties[]>();
 
-    this.context.push();
-    const cat = meta.actionsByCategory(this.context, actionByCat, ActionZones);
-    this.context.pop();
+    this._metaContext.context.push();
+    const cat = meta.actionsByCategory(this._metaContext.context, actionByCat, ActionZones);
+    this._metaContext.context.pop();
 
 
     if (this._actionsByCategory && this.categories) {
@@ -234,12 +234,12 @@ export class MetaActionListComponent extends MetaBaseComponent {
 
   label(actionName: string): string {
     const context: Context = this._contextMap.get(actionName);
-    return super.aProperties(context, KeyLabel);
+    return super.activeProperty(context, KeyLabel);
   }
 
   actionProp(actionName: string, name: string): string {
     const context: Context = this._contextMap.get(actionName);
-    return super.aProperties(context, name);
+    return super.activeProperty(context, name);
   }
 
   isActionDisabled(actionName: string): boolean {

@@ -13,7 +13,8 @@
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/rules/tsconfig.lib.json",
-            "project": "libs/rules/ng-package.json"
+            "project": "libs/rules/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           }
         },
         "test": {
@@ -39,7 +40,10 @@
               "libs/rules/tsconfig.lib.json",
               "libs/rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/rules/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/rules/**/*"
+            ]
           }
         }
       }
@@ -54,7 +58,8 @@
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/material-rules/tsconfig.lib.json",
-            "project": "libs/material-rules/ng-package.json"
+            "project": "libs/material-rules/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           }
         },
         "test": {
@@ -72,7 +77,10 @@
               "libs/material-rules/tsconfig.lib.json",
               "libs/material-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/material-rules/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/material-rules/**/*"
+            ]
           }
         }
       }
@@ -91,6 +99,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "big-integer",
+              "object-path",
+              "typescript-collections"
+
+            ],
             "aot": true,
             "outputPath": "dist/apps/material-app",
             "index": "apps/material-app/src/index.html",
@@ -106,8 +120,7 @@
               "node_modules/flexboxgrid/css/flexboxgrid.css",
               "apps/material-app/src/styles.scss"
             ],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -164,7 +177,9 @@
             "polyfills": "apps/material-app/src/polyfills.ts",
             "tsConfig": "apps/material-app/tsconfig.spec.json",
             "karmaConfig": "apps/material-app/karma.conf.js",
-            "styles": ["apps/material-app/src/styles.scss"],
+            "styles": [
+              "apps/material-app/src/styles.scss"
+            ],
             "scripts": [],
             "assets": [
               "apps/material-app/src/favicon.ico",
@@ -179,7 +194,10 @@
               "apps/material-app/tsconfig.app.json",
               "apps/material-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/material-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/material-app/**"
+            ]
           }
         }
       }
@@ -218,8 +236,7 @@
               "node_modules/prismjs/prism.js",
               "node_modules/prismjs/components/prism-typescript.min.js",
               "node_modules/prismjs/components/prism-javascript.min.js"
-            ],
-            "es5BrowserSupport": true
+            ]
           },
           "configurations": {
             "production": {
@@ -276,7 +293,10 @@
               "apps/doc-app/tsconfig.app.json",
               "apps/doc-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/doc-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/doc-app/**"
+            ]
           }
         },
         "test": {
@@ -303,12 +323,8 @@
           "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/fiori-rules/tsconfig.lib.json",
-            "project": "libs/fiori-rules/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/fiori-rules/tsconfig.lib.prod.json"
-            }
+            "project": "libs/fiori-rules/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           }
         },
         "lint": {
@@ -318,7 +334,10 @@
               "libs/fiori-rules/tsconfig.lib.json",
               "libs/fiori-rules/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/fiori-rules/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/fiori-rules/**/*"
+            ]
           }
         },
         "test": {
@@ -350,6 +369,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/apps/fiori-app",
             "index": "apps/fiori-app/src/index.html",
             "main": "apps/fiori-app/src/main.ts",
@@ -362,8 +382,6 @@
             ],
             "styles": [
               "node_modules/flexboxgrid/dist/flexboxgrid.css",
-              "node_modules/fundamental-styles/dist/fundamental-styles.css",
-              "node_modules/fundamental-styles/dist/fonts.css",
               "node_modules/fundamental-styles/dist/icon.css",
               "apps/fiori-app/src/styles.scss"
             ],
@@ -424,7 +442,10 @@
               "apps/fiori-app/tsconfig.app.json",
               "apps/fiori-app/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/fiori-app/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/fiori-app/**/*"
+            ]
           }
         },
         "test": {

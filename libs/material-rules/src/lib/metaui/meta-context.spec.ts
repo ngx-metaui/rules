@@ -195,8 +195,8 @@ class UserTestDynClass implements Entity {
 @Component({
   selector: 'm-wrapper-comp',
   template: '<m-context [object]="user" operation="edit" layout="Inspect">' +
-    '<m-include-component >' +
-    '</m-include-component></m-context>'
+    '<m-render>' +
+    '</m-render></m-context>'
 })
 class TestContainerEditComponent {
   user: UserTestDynClass = new UserTestDynClass('Frank', 'Kolar', 1000,
@@ -206,8 +206,8 @@ class TestContainerEditComponent {
 @Component({
   selector: 'm-wrapper-comp',
   template: '<m-context [object]="user" operation="view" layout="Inspect">' +
-    '<m-include-component >' +
-    '</m-include-component></m-context>'
+    '<m-render>' +
+    '</m-render></m-context>'
 })
 class TestContainerViewComponent {
   user: UserTestDynClass = new UserTestDynClass('Frank', 'Kolar', 1000,
@@ -218,8 +218,8 @@ class TestContainerViewComponent {
 @Component({
   selector: 'm-wrapper-comp',
   template: '<m-context [object]="user" operation="view" layout="Inspect">' +
-    '<m-include-component >' +
-    '</m-include-component></m-context>'
+    '<m-render>' +
+    '</m-render></m-context>'
 })
 class TestContainerViewDefferedComponent implements OnInit {
 

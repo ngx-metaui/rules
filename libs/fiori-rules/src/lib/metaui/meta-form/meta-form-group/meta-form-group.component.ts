@@ -17,45 +17,22 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {AfterViewInit, ChangeDetectionStrategy, Component, Host, Optional} from '@angular/core';
-
 import {
-  Environment,
-  MetaBaseComponent,
-  MetaContextComponent,
-  PropFieldsByZone,
-  PropIsFieldsByZone,
-  ZoneBottom,
-  ZoneLeft,
-  ZoneRight,
-  ZoneTop
-} from '@ngx-metaui/rules';
-import {ControlContainer, FormGroup} from '@angular/forms';
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
+
+import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
+import {FormField, FormFieldControl} from '@fundamental-ngx/platform';
+import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
 
 /**
- * This class is responsible to layout  formFields into pre-defined 5 zone layout with
- * help of flex layout.
- *
- * Top and bottom zones take 12 columns where the Left and Right zone is defined differently:
- *
- * When you do:
-
- * zLeft -> FirstName -> Age ->  description#fluid
- * zRight-> LastName -> FavColor.
- *
- *
- * It uses flex layout to set the flex order in such way that:
- *
- *
- * FirstName (order:1, 50%width)  LastName (order:2, 50%width)
- *
- * Age (order:3, 50%width)  FavColor (order:4, 50%width)
- *
- * description (order:5, 100%width)
- *
- *
- * This way I can have fields side by side or taking full width and they can  naturally
- * wrap on smaller devices.
+ * Renders a dynamic form based on current MetaContext
  *
  */
 @Component({
@@ -64,72 +41,51 @@ import {ControlContainer, FormGroup} from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
-  /**
-   * For multi-zone layout this contains fields broken by its assigned zones
-   */
-  private fieldsByZone: Map<string, any>;
-
-  startInit: any;
-
-  /**
-   * Is five zone layout? For MetaUi we  have always fiveZone, unless in MetaRules we say
-   * otherwise
-   */
-  isFiveZoneLayout: boolean;
-
-  useNoLabelLayout = false;
-
-  zLeft: string[] = [];
-  zRight: string[] = [];
-  zTop: string[] = [];
-  zBottom: string[] = [];
-
-  constructor(@Host() public _context: MetaContextComponent,
-              @Optional() private formContainer: ControlContainer,
-              public env: Environment) {
-    super(env, _context);
-
-    this.formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
-      : new FormGroup({}));
-  }
+  @Input()
+  mc: MetaContextComponent;
 
 
-  /**
-   * Todo: revisit this part as this is called after each ngDoCheck might want to move into
-   * viewchecked??
-   */
-  protected doUpdate(): void {
-    super.doUpdate();
-    this.fieldsByZone = this.context.propertyForKey(PropFieldsByZone);
-    this.isFiveZoneLayout = this.context.propertyForKey(PropIsFieldsByZone);
+  @ViewChildren('ff')
+  formFields: QueryList<FormField>;
 
-    const bin: Map<string, any> = this.context.propertyForKey('bindings');
-    if (bin && bin.has('noLabelLayout')) {
-      this.useNoLabelLayout = bin.get('noLabelLayout');
-    }
-
-    this.zLeft = this.updateZone(this.zLeft, this.fieldsByZone.get(ZoneLeft));
-    this.zRight = this.updateZone(this.zRight, this.fieldsByZone.get(ZoneRight));
-    this.zTop = this.updateZone(this.zTop, this.fieldsByZone.get(ZoneTop));
-    this.zBottom = this.updateZone(this.zBottom, this.fieldsByZone.get(ZoneBottom));
-
-  }
-
-
-  private updateZone(sourceZone: string[], newArray: string[]) {
-    if (newArray && (newArray.length !== sourceZone.length)) {
-      return newArray;
-    }
-    return sourceZone;
+  constructor(private _cd: ChangeDetectorRef, public env: Environment) {
+    super(env, null);
   }
 
   ngOnInit(): void {
+    this._metaContext = this.mc;
     super.ngOnInit();
   }
 
+
   ngAfterViewInit(): void {
+    if (!this.editing) {
+      this._cd.detectChanges();
+      return;
+    }
+    this.formFields.forEach((formField) => {
+      if (formField.control.ngControl) {
+        const control = formField.control.ngControl.control;
+        control.setValidators(Validators.compose(this.createValidators(formField.control)));
+        control.markAsPristine();
+      }
+    });
   }
 
+
+  private createValidators(fControl: FormFieldControl<any>): ValidatorFn[] {
+    const metaValidator = (control: AbstractControl): { [key: string]: any } => {
+      const metaContext = fControl['__metaContext__'];
+      const editing = metaContext.context.booleanPropertyForKey('editing', false);
+
+      if (editing) {
+        const errorMsg = metaContext.context.validateErrors();
+        return errorMsg ? {'metavalid': {'msg': errorMsg}} : null;
+      }
+      return null;
+    };
+    return [metaValidator];
+  }
 
   trackByFn(index, item) {
     return item;

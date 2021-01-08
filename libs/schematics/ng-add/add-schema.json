@@ -11,12 +11,7 @@
         "$source": "projectName"
       }
     },
-    "skipDependencies": {
-      "type": "boolean",
-      "description": "Tells if we should install required package.json dependencies",
-      "default": false
-    },
-    "skipNpmInstall": {
+    "skipInstall": {
       "type": "boolean",
       "description": "Tells if we should skip npm install tasks",
       "default": false
@@ -24,11 +19,6 @@
     "skipStyles": {
       "type": "boolean",
       "description": "Don't add anything to angular.json style section.",
-      "default": false
-    },
-    "skipScripts": {
-      "type": "boolean",
-      "description": "Don't add anything to angular.json script section",
       "default": false
     },
     "path": {
@@ -40,11 +30,10 @@
       "x-prompt": "Which UI library would you like to use?",
       "description": "UI library rules implementation name",
       "enum": [
-        "fiori",
-        "material",
-        "none"
+        "none",
+        "material"
       ],
-      "default": "fiori"
+      "default": "none"
     }
   },
   "required": []

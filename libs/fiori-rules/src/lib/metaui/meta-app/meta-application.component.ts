@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import {ItemProperties, META_RULES, MetaRules, ModuleInfo} from '@ngx-metaui/rules';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProductSwitchItem, ShellbarUser, ShellbarUserMenu} from '@fundamental-ngx/core';
+import {ShellbarUser, ShellbarUserMenu} from '@fundamental-ngx/core';
 
 @Component({
   selector: 'm-app',
@@ -64,90 +64,6 @@ export class MetaApplicationComponent implements OnInit, OnDestroy {
       glyph: 'bell', callback: () => {
       }, label: 'Notifications',
       notificationCount: 1, notificationLabel: 'Unread Notifications'
-    }
-  ];
-
-  productSwitcher: ProductSwitchItem[] = [
-    {
-      title: 'Home',
-      subtitle: 'Central Home',
-      icon: 'home',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Analytics Cloud',
-      subtitle: 'Analytics Cloud',
-      icon: 'business-objects-experience',
-      selected: true,
-      callback: () => {
-      }
-    },
-    {
-      title: 'Catalog',
-      subtitle: 'Ariba',
-      icon: 'contacts',
-      disabledDragAndDrop: true,
-      callback: () => {
-      }
-    },
-    {
-      title: 'Guided Buying',
-      icon: 'credit-card',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Strategic Procurement',
-      icon: 'cart-3',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Vendor Managemen',
-      subtitle: 'Fieldglass',
-      icon: 'shipping-status',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Human Capital Management',
-      icon: 'customer',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Sales Cloud',
-      subtitle: 'Sales Cloud',
-      icon: 'sales-notification',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Commerce Cloud',
-      subtitle: 'Commerce Cloud',
-      icon: 'retail-store',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Marketing Cloud',
-      subtitle: 'Marketing Cloud',
-      icon: 'marketing-campaign',
-      callback: () => {
-      }
-    },
-    {
-      title: 'Service Cloud',
-      icon: 'family-care',
-      callback: () => {
-      }
-    },
-    {
-      title: 'S/4HANA',
-      icon: 'batch-payments',
-      callback: () => {
-      }
     }
   ];
   /**

@@ -29,6 +29,7 @@ import {
   Extensible,
   isArray,
   isBlank,
+  isBoolean,
   isNumber,
   isPresent,
   isString,
@@ -51,6 +52,7 @@ import {
   KeyClass,
   KeyDeclare,
   KeyObject,
+  KeyValid,
   KeyValue,
   MetaRules,
   NullMarker,
@@ -161,27 +163,12 @@ export class Context extends Extensible {
   static EmptyMap: PropertyMap = null;
   static readonly EmptyRemoveMap: Map<any, any> = new Map<any, any>();
 
+  _isParentDirty: boolean = false;
   _entries: Array<Assignment> = [];
   _accessor: PropertyAccessor;
   isNested: boolean;
   protected _currentProperties: PropertyMap;
   protected _rootNode: Activation;
-
-  constructor(public meta: MetaRules, public nested: boolean = false) {
-    super();
-
-    if (isBlank(Context.EmptyMap)) {
-      Context.EmptyMap = new PropertyMap();
-    }
-
-    Context._Debug_SetsCount = 0;
-
-    this._accessor = new PropertyAccessor(this);
-    this._currentActivation = Context.getActivationTree(meta);
-    this._rootNode = this._currentActivation;
-
-    this.isNested = nested;
-  }
 
   private _values: Map<string, any> = new Map<string, any>();
 
@@ -213,6 +200,22 @@ export class Context extends Extensible {
 
   get properties(): any {
     return this._accessor;
+  }
+
+  constructor(public meta: MetaRules, public nested: boolean = false) {
+    super();
+
+    if (isBlank(Context.EmptyMap)) {
+      Context.EmptyMap = new PropertyMap();
+    }
+
+    Context._Debug_SetsCount = 0;
+
+    this._accessor = new PropertyAccessor(this);
+    this._currentActivation = Context.getActivationTree(meta);
+    this._rootNode = this._currentActivation;
+
+    this.isNested = nested;
   }
 
   /**
@@ -259,6 +262,18 @@ export class Context extends Extensible {
       meta.identityCache.set('Activation.class', root);
     }
     return root;
+  }
+
+  validateErrors(): string {
+    const error = this.propertyForKey(KeyValid);
+    if (isBlank(error)) {
+      return null;
+    }
+
+    if (isBoolean(error)) {
+      return BooleanWrapper.boleanValue(error) ? null : 'Invalid entry';
+    }
+    return error.toString();
   }
 
   push(): void {
@@ -1271,7 +1286,6 @@ export class Context extends Extensible {
       }
     }
   }
-
 }
 
 

@@ -5,7 +5,7 @@ import {PlayComponent} from './playground/play.component';
 
 const appRoutes: Routes = [
   {path: 'play', component: PlayComponent},
-  {path: '', redirectTo: '/demo/home', pathMatch: 'full'}
+  {path: '', redirectTo: '/play', pathMatch: 'full'}
 ];
 
 @NgModule({

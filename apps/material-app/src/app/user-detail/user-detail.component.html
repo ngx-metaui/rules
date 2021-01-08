@@ -1,14 +1,8 @@
-<a mat-button (click)="operation='edit'">Edit</a> |
-<a mat-button (click)="operation='view'">View</a>
+<a (click)="operation='edit'" mat-button>Edit</a> |
+<a (click)="operation='view'" mat-button>View</a>
 
-<m-context [object]="object" [operation]="operation" layout="InspectWithActions">
-  <m-include-component></m-include-component>
+<m-context #main [object]="object"
+           [operation]="operation" layout="Inspect">
+  <m-render [wrapNgContent]="true"></m-render>
 </m-context>
-
-<pre class="highlight-code">
-  <code>
-{{object | json}}
-  </code>
-</pre>
-
 

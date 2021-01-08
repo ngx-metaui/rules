@@ -36,4 +36,8 @@ export * from './ui/button/button.component';
 export * from './ui/string/string.component';
 export * from './ui/autocomplete/autocomplete.component';
 
-export * from './metaui/index';
+export * from './metaui/meta-form/meta-form.component';
+export * from './metaui/meta-content-page/meta-content-page.component';
+export * from './metaui/meta-action-list/meta-action-list.component';
+export * from './metaui/meta-element-list/meta-element-list.component';
+

@@ -1,39 +1,51 @@
-<fdp-form-group #fg [multiLayout]="true" [editable]="editing" [noLabelLayout]="useNoLabelLayout"
-                [formGroup]="formGroup" [i18Strings]="_context.i18Template">
-
-  <ng-template ngFor let-curentField [ngForOf]="zTop" let-rank="index" [ngForTrackBy]="trackByFn">
-    <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank"
-                    zone="zTop"></m-form-field>
-    </m-context>
-  </ng-template>
-
-  <ng-template ngFor let-curentField [ngForOf]="zLeft" let-rank="index"
-               [ngForTrackBy]="trackByFn">
-    <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" zone="zLeft" [rank]="rank ">
-      </m-form-field>
-    </m-context>
-  </ng-template>
-
-  <ng-template ngFor let-curentField [ngForOf]="zRight" let-rank="index"
-               [ngForTrackBy]="trackByFn">
-    <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank "
-                    zone="zRight"></m-form-field>
-    </m-context>
-  </ng-template>
-
-  <ng-template ngFor let-curentField [ngForOf]="zBottom" let-rank="index"
-               [ngForTrackBy]="trackByFn">
-    <m-context [field]="curentField">
-      <m-form-field [field]="curentField" [editing]="editing" [rank]="rank "
-                    zone="zBottom"></m-form-field>
-    </m-context>
+<fdp-form-group #fg [multiLayout]="true" [editable]="editing" [i18Strings]="mc.i18Template">
+  <ng-template ngFor let-zone [ngForOf]="['zTop', 'zLeft', 'zRight', 'zBottom']" let-i="index">
+    <ng-container *ngTemplateOutlet="zoneTemplate;context:{$implicit: zone, fg:fg}">
+    </ng-container>
   </ng-template>
 
 
-  <ng-template #i18n let-errros>
-    {{errros | json}}
+  <ng-template #i18n let-errors>
+        <span *ngIf="errors?.metavalid">
+          {{errors.metavalid.msg}}
+        </span>
+    <span *ngIf="errors?.required && !errors.metavalid">
+            Required field
+    </span>
   </ng-template>
 </fdp-form-group>
+
+
+<ng-template #zoneTemplate let-zone let-fg="fg">
+  <ng-template ngFor let-field [ngForOf]="mc | properties:'fieldsByZone.'+zone" let-rank="index"
+               [ngForTrackBy]="trackByFn">
+    <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field, zone:zone, fg:fg }">
+    </ng-container>
+  </ng-template>
+</ng-template>
+
+
+<ng-template #fieldTemplate let-field let-zone="zone" let-fg="fg">
+  <m-context #mcf [field]="field">
+    <fdp-form-field #ff *ngIf="!!(mcf | properties:'visible')"
+                    [label]="mcf | properties:'label'"
+                    [id]="field"
+                    [zone]="zone"
+                    [ignoreDefaultValidators]="true"
+                    [formGroupParent]="fg"
+                    [hint]="mcf | properties:'hint'"
+                    [noLabelLayout]="mc | properties:'bindings.noLabelLayout':false"
+                    [placeholder]="mcf | properties:'placeholder'"
+                    [fluid]="mcf | properties:'fluid':false"
+                    [i18Strings]="mc.i18Template"
+                    [required]="mcf | properties:'required':false"
+                    [editable]="editing"
+                    [columns]="mcf | properties:'size':6"
+                    [rank]="mcf | properties:'rank'"
+                    [disabled]="mcf | properties:'disabled':false">
+      <m-render mFormFieldAdapter></m-render>
+
+      <!--          <fdp-input id="field1" name="field1" [formControl]="ff.formControl"></fdp-input>-->
+    </fdp-form-field>
+  </m-context>
+</ng-template>

@@ -123,8 +123,8 @@ const IMMUTABLE_PROPERTIES = [
 @Component({
   selector: 'm-context',
   template: `
-    <ng-template [ngIf]="includeComponent">
-      <m-include-component></m-include-component>
+    <ng-template [ngIf]="autoRender">
+      <m-render></m-render>
     </ng-template>
     <ng-content></ng-content>
   `,
@@ -169,7 +169,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   pushNewContext: boolean;
 
   @Input()
-  includeComponent: boolean = false;
+  autoRender: boolean = false;
 
   @Input()
   group: string;
@@ -192,19 +192,13 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    * could be deferred asnd not available when component is initialized
    */
   hasObject: boolean;
-  hasActiveContext: boolean;
+
   /**
-   * Turn on and off bellow dirty checking. Default value is value so it can work without a
-   * chance with other implementation
-   */
-  supportsDirtyChecking: boolean = false;
-  /**
-   * Since the push/pop is happening every time the view is created or  angular triggers change
-   * detection we need to eliminate event handler based CDs. where most of the time we dont care.
+   * Since the push/pop is happening every time the view is created or angular triggers change
+   * detection we need to eliminate any unnecessary push / pop action
    *
    */
-  isDirty: boolean = false;
-  refreshView: boolean = false;
+  private _isDirty: boolean = false;
 
   /**
    * Need to make sure when we mark this as dirty the pup/pop starts in the next detection cycle
@@ -216,7 +210,30 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    * Flag that tells us that component is fully rendered
    *
    */
-  private viewInitialized: boolean = false;
+  viewInitialized: boolean = false;
+
+
+  get bindings(): Map<string, any> {
+    return this.bindingsMap;
+  }
+
+
+  /**
+   *
+   * Every meta context component which pushing certain properties to stack has its own context
+   * that lives until component is destroyed
+   *
+   */
+  get context(): Context {
+    return this._context;
+  }
+
+  get formGroup(): FormGroup {
+    return this._formGroup;
+  }
+
+  private _formGroup: FormGroup;
+
   /**
    *
    * Marks MetaContext or the root MetaContext that created a new Context
@@ -225,14 +242,16 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   private contextCreated: boolean = false;
   private bindingsMap: Map<string, any>;
   private bindingKeys: string[] = [];
+
   /**
    * Shell copy of an object used for comparision. We may get back to the original solution which
    * I had here. THe Angular's differs
    */
   private prevObject: any;
   private _scopeBinding: string;
-  private _formGroup: FormGroup;
-  private _myContext: Context;
+
+
+  private _context: Context;
 
   private contextCache: Map<string, Context> = new Map<string, Context>();
 
@@ -242,29 +261,25 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
               @Inject(META_RULES) protected meta: MetaRules,
               @Optional() private formContainer: ControlContainer) {
 
-    this.supportsDirtyChecking = false;
-    this.isDirty = false;
-
+    this._isDirty = false;
     this._formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
       : new FormGroup({}));
-  }
 
-  get bindings(): Map<string, any> {
-    return this.bindingsMap;
   }
 
   ngOnInit(): void {
     this.initBindings();
-    this.hasObject = this._hasObject();
     this.pushPop(true);
+    // console.log('MC-ngOnInit', this.bindings);
 
-    if (!this.env.hasValue('parent-cnx')) {
-      this.env.setValue('parent-cnx', this);
+    // todo: check if we can removed  - used by layouts
+    if (!this.env.hasValue('root-meta-cnx')) {
+      this.env.setValue('root-meta-cnx', this);
     }
-    this.hasActiveContext = isPresent(this.activeContext());
 
     if (this.i18Template && !this.env.hasValue('i18n')) {
       this.env.setValue('i18n', this.i18Template);
+
     } else if (this.env.hasValue('i18n')) {
       this.i18Template = this.env.getValue('i18n');
     }
@@ -275,14 +290,13 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    *
    */
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    // console.log('MC-changes', this.bindings)
     this.hasObject = changes['object'] && changes['object'].currentValue;
     for (const name of IMMUTABLE_PROPERTIES) {
       if (changes[name] && (changes[name].currentValue !== changes[name].previousValue)) {
         this.initBindings();
 
         if (!changes[name].isFirstChange()) {
-          this.markDirty(true);
+          this.markDirty();
         }
         break;
       }
@@ -291,7 +305,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     // do not get it into ngInit but it will be here.
     if (this.viewInitialized && changes['object'] && this.object) {
       this.initBindings();
-      this.markDirty(true);
+      this.markDirty();
     }
   }
 
@@ -303,8 +317,8 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   ngDoCheck(): void {
     if (this.viewInitialized) {
-      if (this.needsCheck()) {
-        // console.log('MC-ngDoCheck', this.bindings)
+      if (this.isDirty) {
+        // console.log('MC-ngDoCheck', this.bindings);
         this.pushPop(true);
 
         if (isPresent(this.object) && !equals(this.prevObject, this.object)) {
@@ -320,46 +334,38 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   ngAfterViewInit(): void {
     if (!this.viewInitialized) {
+      // console.log('MC-ngAfterViewInit', this.bindings);
       this.pushPop(false);
+      this.viewInitialized = true;
     }
   }
 
   ngAfterViewChecked(): void {
     if (this.viewInitialized) {
-      if (this.needsCheck() && this.dirtyCheckInProgress) {
+      if (this.isDirty && this.dirtyCheckInProgress) {
+        // console.log('MC-ngAfterViewChecked', this.bindings);
+
         this.pushPop(false);
-        this.isDirty = false;
+        this._isDirty = false;
         this.dirtyCheckInProgress = false;
       }
-    } else {
-      this.viewInitialized = true;
     }
   }
+
 
   /**
    * Just for troubleshooting to print current context and assignments
    *
    */
   debugString(): String {
-    if (isPresent(this._myContext)) {
-      return this._myContext.debugString();
+    if (isPresent(this._context)) {
+      return this._context.debugString();
     }
-  }
-
-
-  /**
-   *
-   * Every meta context component which pushing certain properties to stack has its own context
-   * that lives until component is destroyed
-   *
-   */
-  myContext(): Context {
-    return this._myContext;
   }
 
   /**
    * We keep the most current and latest context to environment to be read by any Child
-   * MetaContext for purpose of creation new context and it needs info what was already pushed
+   * MetaContext for purpose of creation new context as it needs info what was already pushed
    * onto the stack.
    *
    */
@@ -372,22 +378,22 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    * Let's clean up and destroy pushed context
    */
   ngOnDestroy() {
-    if (this.env.hasValue('parent-cnx')) {
-      this.env.deleteValue('parent-cnx');
+    if (this.env.hasValue('root-meta-cnx')) {
+      this.env.deleteValue('root-meta-cnx');
     }
   }
 
-  markDirty(refreshView: boolean = false) {
-    this.isDirty = true;
-    this.refreshView = refreshView;
+  markDirty() {
+    if (this.bindingsMap.has('field')) {
+      throw new Error('MarkDirty called on field level!');
+    }
+    this._isDirty = true;
   }
 
-  reRenderView(): boolean {
-    return this.isDirty && this.refreshView;
-  }
 
-  needsCheck(): boolean {
-    return this.supportsDirtyChecking ? this.isDirty : true;
+  get isDirty(): boolean {
+    const activeContext = this.activeContext();
+    return this._isDirty || (activeContext && activeContext._isParentDirty);
   }
 
   /**
@@ -395,27 +401,20 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    * This is our key method that triggers all the interaction inside MetaUI world. Here we
    * push context keys and their values to the stack and this is the thing that triggers
    * rule recalculation which give us updated  properties. Those are then used by
-   * MetaIncludeDirective to render the UI.
+   * MetaIncludeComponent to render the UI.
    *
    * myContext is current context for this MetaContext Component.
    *
    *    isPush identifies if we are pushing or popping to context stack
    */
   private pushPop(isPush: boolean): void {
-    let activeContext: Context = this.activeContext();
-    assert(isPush || isPresent(activeContext), 'pop(): Missing context');
-
-    const forceCreate = isPush && (isPresent(this.pushNewContext) && this.pushNewContext);
-    if (isBlank(activeContext) || forceCreate) {
-      activeContext = this.meta.newContext(forceCreate);
-
-      this.contextCreated = true;
-      this.env.push<Context>(ACTIVE_CNTX, activeContext);
-    }
+    const activeContext = this.createContext(isPush);
+    // console.log(isPush ? 'PUSH' : 'POP', this._scopeBinding ? this._scopeBinding :
+    //   this.bindingsMap);
 
     if (isPush) {
       activeContext.push();
-      if (isPresent(this._scopeBinding) && this.hasObject) {
+      if (this._scopeBinding && this.hasObject) {
 
         this.beforeContextSet.emit(this._scopeBinding);
         activeContext.setScopeKey(this._scopeBinding);
@@ -428,13 +427,12 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
           this.beforeContextSet.emit(value);
           activeContext.set(key, value);
-
         }
       }
       // Save created content to local MetaContext
-      this._myContext = this.hydrate(activeContext);
+      this._context = this.hydrate(activeContext);
       const val = this._scopeBinding || this.bindingsMap.values().next().value;
-      this.afterContextSet.emit({value: val, context: this._myContext});
+      this.afterContextSet.emit({value: val, context: this._context});
 
     } else {
       activeContext.pop();
@@ -443,6 +441,23 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
         this.env.pop<Context>(ACTIVE_CNTX);
       }
     }
+  }
+
+  private createContext(isPush: boolean) {
+    let activeContext: Context = this.activeContext();
+    assert(isPush || isPresent(activeContext), 'pop(): Missing context');
+
+    const forceCreate = isPush && (isPresent(this.pushNewContext) && this.pushNewContext);
+    if (isBlank(activeContext) || forceCreate) {
+      activeContext = this.meta.newContext(forceCreate);
+
+      this.contextCreated = true;
+      this.env.push<Context>(ACTIVE_CNTX, activeContext);
+    }
+    if (activeContext) {
+      activeContext._isParentDirty = this._isDirty || activeContext._isParentDirty;
+    }
+    return activeContext;
   }
 
   /**
@@ -455,6 +470,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
       return this.contextCache.get(id);
     } else {
       const hydratedCnt = context.snapshot().hydrate(false);
+
       this.contextCache.set(id, hydratedCnt);
       return hydratedCnt;
     }
@@ -489,9 +505,9 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
     this.bindingsMap.forEach((value, key) => {
       this.bindingKeys.push(key);
     });
-
-    // Sort them by their importance or rank
+    // Sort them by their importance
     ListWrapper.sortByExample(this.bindingKeys, IMPLICIT_PROPERTIES);
+    this.hasObject = this._hasObject();
   }
 
   /**
@@ -551,7 +567,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
   /**
    * If object is changed we need to also update our angular model to reflect user changes. All
-   * changes and updates in metaui use object references
+   * changes and updates in MetaUI use object references
    */
   private updateModel() {
     if (!this._formGroup) {
@@ -582,7 +598,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
 /**
  *
- * Defines format for the broadcasted action event. MetaUI can also execute actions which needs to
+ * Defines format for the emitted action event. MetaUI can also execute actions which needs to
  * be handled by application or actual component using this m-context.
  *
  */

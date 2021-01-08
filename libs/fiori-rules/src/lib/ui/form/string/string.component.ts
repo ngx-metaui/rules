@@ -20,9 +20,9 @@
  */
 import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
-import {FormFieldControl} from '../form-control';
 import {NgControl} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
+import {ContentDensity, FormFieldControl, Status} from '@fundamental-ngx/platform';
 
 
 let randomId = 0;
@@ -104,6 +104,20 @@ export class StringComponent implements FormFieldControl<any> {
   get stateChanges(): Observable<void> {
     return this._stateChanges;
   }
+
+
+  get contentDensity(): ContentDensity {
+    return 'cozy';
+  }
+
+  get status(): Status {
+    return 'default';
+  }
+
+  focus(event?: MouseEvent): void {
+  }
+
+
 }
 
 

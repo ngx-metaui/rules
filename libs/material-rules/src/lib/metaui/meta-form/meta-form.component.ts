@@ -16,7 +16,7 @@
  *
  *
  */
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Environment} from '@ngx-metaui/rules';
 
 
@@ -34,7 +34,7 @@ import {Environment} from '@ngx-metaui/rules';
       <div class="form-container">
         <mat-card *ngIf="cnx.hasObject" class="form-card">
           <mat-card-content>
-            <m-form-group></m-form-group>
+            <m-form-group [mc]="cnx"></m-form-group>
           </mat-card-content>
         </mat-card>
       </div>
@@ -53,12 +53,16 @@ import {Environment} from '@ngx-metaui/rules';
         width: 100%;
         max-width: 1000px;
       }
-    `]
+    `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaForm {
 
 
   constructor(public env: Environment) {
+
   }
 
+
 }
+

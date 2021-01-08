@@ -27,7 +27,7 @@
         <fd-panel *ngIf="actions(category) as actions">
           <fd-panel-header>
             <fd-panel-head>
-              <h2 fd-panel-title>{{mCat.myContext().propertyForKey('label')}}</h2>
+              <h2 fd-panel-title>{{mCat.context.propertyForKey('label')}}</h2>
             </fd-panel-head>
             <fd-panel-actions>
               <span fd-identifier [size]="'s'" [transparent]="true" glyph="collapse"></span>

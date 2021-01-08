@@ -251,7 +251,7 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
       properties.set(KeyType, isCompositeType ? typeInstance.className() : type);
       properties.set(KeyVisible, true);
 
-      if (isArray(types[name])) {
+          if (isArray(types[name])) {
         assert(types[name].length > 0,
           ' Cannot register type[array] and its type without properly initialized ' +
           'prototype');
