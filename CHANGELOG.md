@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-beta.0](https://github.com/ngx-meta/rules/compare/v9.0.5...v10.0.0-beta.0) (2021-01-08)
+
+
+### Bug Fixes
+
+* **material:** Remove deep imports to form-field ([a10d908](https://github.com/ngx-meta/rules/commit/a10d908846247370e35f3aabab3064a7fc2dfb61))
+* **migrate:** Adding Directive to parent class ([cb6da68](https://github.com/ngx-meta/rules/commit/cb6da68ef1623bff93845829f1bc68ffe3e0f2fb))
+* **migrate:** Final updates ([a5bb216](https://github.com/ngx-meta/rules/commit/a5bb216856abc41833d43ba0e0c3eb4d1d1be903))
+* **migrate:** Fiori migration start ([4092609](https://github.com/ngx-meta/rules/commit/4092609061ced35f548876babd2143aa9575b317))
+* **migrate:** Fiori performance fixes. ([2d3f8f6](https://github.com/ngx-meta/rules/commit/2d3f8f615f1cf303be394482e2d1f88c9689330a))
+* **migrate:** Fiori working forms ([e51dcff](https://github.com/ngx-meta/rules/commit/e51dcffefae1a58184c67957cfece7b93986d223))
+* **migrate:** Fiori working forms ([17d55dc](https://github.com/ngx-meta/rules/commit/17d55dcaab6c9100973b6e96b935b2d4258331da))
+* **migrate:** partial fiori changes ([8c87c28](https://github.com/ngx-meta/rules/commit/8c87c285b4d814a25461f644ff9b6aedaa36c274))
+* **migrate:** Refactor to enable nested rules without re-calculation ([d32d9a5](https://github.com/ngx-meta/rules/commit/d32d9a5a33a2cbbf7aea9cd893af007e6d1d2ec9))
+* **migrate:** Refactored push/pop cycle and updated material implementaion ([2b07492](https://github.com/ngx-meta/rules/commit/2b0749255390698963d750c343fd5d403af3c08e))
+* **migrate:** removing framecharts ([2150d0d](https://github.com/ngx-meta/rules/commit/2150d0d5b55d466d184ca74411f62f1f7e053c2f))
+* **migrate:** Updated cdk and material ([8dd5158](https://github.com/ngx-meta/rules/commit/8dd5158b3d52442f02d25118e4402efa94d2559f))
+* **migrate:** Updated demo files ([0c7b611](https://github.com/ngx-meta/rules/commit/0c7b61199930009d3d858ce97c4bdc0be6b1f38b))
+* **migrate:** Updated fundamentals ([c744b82](https://github.com/ngx-meta/rules/commit/c744b820c53f658287a8c15f9d1069da530d7aa6))
+* **migrate:** Updated fundamentals ([ac9375e](https://github.com/ngx-meta/rules/commit/ac9375e6712c76da7790bb3945fa5b76639d1e85))
+* **migrate:** Updated nrwl ([bae7dad](https://github.com/ngx-meta/rules/commit/bae7dad24e09895edcd358b1b204ed3735be8f60))
+* **migrate:** Updated rxjs ([f72e1c8](https://github.com/ngx-meta/rules/commit/f72e1c8012cca0cc1998a5b9decfbce561c5a199))
+* **schematics:** Update schematics to be compatible with v10 API ([4253ee3](https://github.com/ngx-meta/rules/commit/4253ee34fcf77dae2742457caa9e52dbb6ef48f7))
+
 ### [9.0.5](https://github.com/ngx-meta/rules/compare/v9.0.4...v9.0.5) (2020-08-06)
 
 
