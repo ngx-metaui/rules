@@ -41,7 +41,6 @@ import * as ts from 'typescript';
 import {InsertChange} from '@schematics/angular/utility/change';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {buildRelativePath} from '@schematics/angular/utility/find-module';
-import {black, bold, green} from '@angular-devkit/core/src/terminal';
 import {
   getProjectFromWorkspace,
   getProjectMainFile,
@@ -205,7 +204,8 @@ function addRecordToUserRules(options: MetaPageSchema): Rule {
         const exports = exportList.getChildren();
 
         const lastExport = exports[exports.length - 1];
-        const rec = `\n\n/** Auto generated  export */\nexport {${tsClass}Rule} from './ts/${tsClass}.oss';`;
+        const rec = `\n\n/** Auto generated  export */\n
+        export {${tsClass}Rule} from './ts/${tsClass}.oss';`;
         const change = new InsertChange(pathToUserRules, lastExport.getEnd(), rec);
 
         const declarationRecorder = host.beginUpdate(pathToUserRules);
@@ -271,16 +271,16 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
 function printHowTo(options: MetaPageSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
-    const header = black('Your MetaUI is ready');
-    const body = black('Your MetaUI is ready');
+    const header = 'Your MetaUI is ready';
+    const body = 'Your MetaUI is ready';
 
     const hint = `
     \n############ Your MetaUI is ready '######################
 
     \nThe next step is to run following commands to see all in action:\n
-      ► ${bold(green('npm run compile:oss'))}
+      ► npm run compile:oss
       ► Attach this newly created component either to your router or defaul AppComponent page
-      ► ${bold(green('ng serve'))}
+      ► ng serve
 
     `;
     context.logger.log('info', hint);
