@@ -41,16 +41,6 @@
       "type": "string",
       "description": "Name of the folder where domain objects are stored",
       "default": "model"
-    },
-    "uiLib": {
-      "type": "string",
-      "x-prompt": "Which UI library would you like to use?",
-      "description": "UI library rules implementation name",
-      "enum": [
-        "fiori",
-        "material"
-      ],
-      "default": "fiori"
     }
   },
   "required": [

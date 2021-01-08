@@ -31,17 +31,14 @@ import {
 import {MetaPageSchema} from './page-schema';
 import {setupOptions} from '../../common/schematics-utils';
 import {normalize, strings} from '@angular-devkit/core';
-import {
-  addDeclarationToModule,
-  addImportToModule,
-  getSourceNodes,
-  isImported
-} from '@schematics/angular/utility/ast-utils';
+import {getSourceNodes} from '@schematics/angular/utility/ast-utils';
 import * as ts from 'typescript';
-import {InsertChange} from '@schematics/angular/utility/change';
+import {Change, InsertChange} from '@schematics/angular/utility/change';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {buildRelativePath} from '@schematics/angular/utility/find-module';
 import {
+  addDeclarationToModule,
+  addImportToModule,
   getProjectFromWorkspace,
   getProjectMainFile,
   parseSourceFile
@@ -61,6 +58,7 @@ import {getWorkspace} from '@schematics/angular/utility/config';
 export default function (options: MetaPageSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     setupOptions(tree, options, context);
+    readUILib(tree, options, context);
 
 
     return chain([
@@ -72,6 +70,7 @@ export default function (options: MetaPageSchema): Rule {
     ]);
   };
 }
+
 
 /***
  * Builds component with a basic setup that instantiate above domain class so it can be
@@ -124,6 +123,8 @@ function copyModel(options: MetaPageSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
     try {
+
+
       const movePath = normalize(options.path + '/' + strings.dasherize(options.modelPath));
 
       const templateSource = apply(url('./files/model'), [
@@ -233,11 +234,16 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
       const modulePath = getAppModulePath(host, getProjectMainFile(project));
       const relativePath = buildRelativePath(modulePath, componentPath);
 
-      const srcPath: any = parseSourceFile(host, modulePath);
-      const compName = strings.classify(`${options.name}Component`);
+      const moduleSourceText = host.read(modulePath)!.toString('utf-8');
 
-      if (!isImported(srcPath, compName, relativePath)) {
-        let changes = addDeclarationToModule(srcPath, modulePath, compName, relativePath);
+      const srcPath: any = parseSourceFile(host, modulePath);
+
+      const compName = strings.classify(`${options.name}Component`);
+      const hasComponent = moduleSourceText.includes(compName);
+
+      if (!hasComponent) {
+        const recorder = host.beginUpdate(modulePath);
+        let changes: Change[] = addDeclarationToModule(srcPath, modulePath, compName, relativePath);
 
         if (options.uiLib === 'material') {
           const matButton = ['MatButtonModule', '@angular/material/button'];
@@ -248,9 +254,11 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
           const fButton = ['ButtonModule', '@fundamental-ngx/core'];
           changes = [...changes, ...addImportToModule(srcPath, modulePath, fButton[0],
             fButton[1])];
-        }
+        } else {
+          context.logger.error('No MetaUI based UILibrary found! ');
+          return host;
 
-        const recorder = host.beginUpdate(modulePath);
+        }
         changes.forEach((change) => {
           if (change instanceof InsertChange) {
             recorder.insertLeft(change.pos, change.toAdd);
@@ -276,7 +284,6 @@ function printHowTo(options: MetaPageSchema): Rule {
 
     const hint = `
     \n############ Your MetaUI is ready '######################
-
     \nThe next step is to run following commands to see all in action:\n
       ► npm run compile:oss
       ► Attach this newly created component either to your router or defaul AppComponent page
@@ -285,4 +292,19 @@ function printHowTo(options: MetaPageSchema): Rule {
     context.logger.log('info', hint);
     return host;
   };
+}
+
+
+export function readUILib(host: Tree, options: MetaPageSchema, context: SchematicContext): Tree {
+  const workspace = getWorkspace(host);
+  const project = getProjectFromWorkspace(workspace);
+  const modulePath = getAppModulePath(host, getProjectMainFile(project));
+  const moduleSourceText = host.read(modulePath)!.toString('utf-8');
+
+  const isMaterialUiLib = moduleSourceText.includes('MaterialRulesModule');
+  const isFioriUiLib = moduleSourceText.includes('FioriRulesModule');
+
+  options.uiLib = isMaterialUiLib ? 'material' : (isFioriUiLib ? 'fiori' : 'none');
+
+  return host;
 }

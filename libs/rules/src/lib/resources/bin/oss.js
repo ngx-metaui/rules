@@ -6,26 +6,11 @@ const program = require('commander');
 const path = require('path');
 const fs = require('fs');
 
-const devKit = require('@angular-devkit/core');
-const devKitNode = require('@angular-devkit/core/node');
 
 
 // Running it from sources directly ?
 const devMode = process.argv.length > 0 &&
   process.argv[1].indexOf('libs/rules/src/lib/resources/bin/oss.js') > 0;
-
-
-const logger = devKitNode.createConsoleLogger(
-  false,
-  process.stdout,
-  process.stderr,
-  {
-    warn: s => devKit.terminal.bold(devKit.terminal.yellow(s)),
-    error: s => devKit.terminal.bold(devKit.terminal.red(s)),
-    fatal: s => devKit.terminal.bold(devKit.terminal.red(s)),
-    info: s => devKit.terminal.bold(devKit.terminal.green(s)),
-  },
-);
 
 
 if (!devMode) {
@@ -42,8 +27,8 @@ program.option('-i, --in <oss-dir>', 'Input OSS file to be wrapped into .ts')
   .parse(process.argv);
 
 if (program.in == undefined) {
-  logger.error(`The specified command (${formatError()}) is invalid.`);
-  logger.error('For a list of available options please see:');
+  console.error(`The specified command (${formatError()}) is invalid.`);
+  console.error('For a list of available options please see:');
   program.help();
 }
 
@@ -57,7 +42,7 @@ if (ossFile.length > 0) {
 
 
 function processOSSFile(file) {
-  logger.info(`Processing OSS file: ${file}`);
+  console.info(`Processing OSS file: ${file}`);
 
   const outFile = outputFile(file);
   try {
@@ -74,8 +59,8 @@ function processOSSFile(file) {
     updateIndexFile(outFile);
 
   } catch (e) {
-    logger.error(`Unable to write file: ${outFile}\n${e}`);
-    logger.error(`Unable to process file: ${outFile}`);
+    console.error(`Unable to write file: ${outFile}\n${e}`);
+    console.error(`Unable to process file: ${outFile}`);
     process.exit(2);
   }
 }
@@ -100,7 +85,7 @@ function outputFile(fileName) {
     outDir = path.join(getPath(program.out), 'ts');
   }
   if (!fs.existsSync(outDir)) {
-    logger.warn(`Output directory ${outDir} does not exists. Creating...`);
+    console.warn(`Output directory ${outDir} does not exists. Creating...`);
     fs.mkdirSync(outDir);
   }
   return path.join(outDir, prefix + path.basename(fileName) + suffix + '.ts');
@@ -130,7 +115,7 @@ function validateOSS(data, file) {
     const parser = new rules.OSSParser(lexer);
     parser.parse();
   } catch (e) {
-    logger.error(`ERROR: ${file}: ${e.message}`);
+    console.error(`ERROR: ${file}: ${e.message}`);
     process.exit(2);
 
   }
