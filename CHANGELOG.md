@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0](https://github.com/ngx-meta/rules/compare/v10.0.0-beta.4...v10.0.0) (2021-01-08)
+
+
+### Bug Fixes
+
+* **schematics:** Add commonjs modules to angular.json ([1e05965](https://github.com/ngx-meta/rules/commit/1e0596508a979fb95f46b9a867390192baa75a09))
+
 ## [10.0.0-beta.4](https://github.com/ngx-meta/rules/compare/v10.0.0-beta.3...v10.0.0-beta.4) (2021-01-08)
 
 
