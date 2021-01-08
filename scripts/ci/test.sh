@@ -17,4 +17,4 @@ rm -Rf ./dist/ && ng build rules &&  ng test material-rules --browsers=ChromeHea
 
 
 #echo "################ Testing @ngx-meta/fiori-rules ################ "
-rm -Rf ./dist/ && ng build rules &&  ng test fiori-rules --browsers=ChromeHeadless --karma-config=./libs/fiori-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
+# rm -Rf ./dist/ && ng build rules &&  ng test fiori-rules --browsers=ChromeHeadless --karma-config=./libs/fiori-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false

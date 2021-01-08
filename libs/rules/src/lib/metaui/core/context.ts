@@ -170,22 +170,6 @@ export class Context extends Extensible {
   protected _currentProperties: PropertyMap;
   protected _rootNode: Activation;
 
-  constructor(public meta: MetaRules, public nested: boolean = false) {
-    super();
-
-    if (isBlank(Context.EmptyMap)) {
-      Context.EmptyMap = new PropertyMap();
-    }
-
-    Context._Debug_SetsCount = 0;
-
-    this._accessor = new PropertyAccessor(this);
-    this._currentActivation = Context.getActivationTree(meta);
-    this._rootNode = this._currentActivation;
-
-    this.isNested = nested;
-  }
-
   private _values: Map<string, any> = new Map<string, any>();
 
   get values(): Map<string, any> {
@@ -218,16 +202,20 @@ export class Context extends Extensible {
     return this._accessor;
   }
 
-  validateErrors(): string {
-    const error = this.propertyForKey(KeyValid);
-    if (isBlank(error)) {
-      return null;
+  constructor(public meta: MetaRules, public nested: boolean = false) {
+    super();
+
+    if (isBlank(Context.EmptyMap)) {
+      Context.EmptyMap = new PropertyMap();
     }
 
-    if (isBoolean(error)) {
-      return BooleanWrapper.boleanValue(error) ? null : 'Invalid entry';
-    }
-    return error.toString();
+    Context._Debug_SetsCount = 0;
+
+    this._accessor = new PropertyAccessor(this);
+    this._currentActivation = Context.getActivationTree(meta);
+    this._rootNode = this._currentActivation;
+
+    this.isNested = nested;
   }
 
   /**
@@ -274,6 +262,18 @@ export class Context extends Extensible {
       meta.identityCache.set('Activation.class', root);
     }
     return root;
+  }
+
+  validateErrors(): string {
+    const error = this.propertyForKey(KeyValid);
+    if (isBlank(error)) {
+      return null;
+    }
+
+    if (isBoolean(error)) {
+      return BooleanWrapper.boleanValue(error) ? null : 'Invalid entry';
+    }
+    return error.toString();
   }
 
   push(): void {
@@ -1031,7 +1031,7 @@ export class Context extends Extensible {
       buffer.add('&nbsp;&nbsp;:&nbsp;');
       buffer.add(r.srec.val);
       buffer.add((r.srec.fromChaining ? ' ^' : ''));
-        buffer.add((r.maskedByIdx !== 0 ? ' X' : ''));
+      buffer.add((r.maskedByIdx !== 0 ? ' X' : ''));
       buffer.add('<br/>');
     }
 
@@ -1286,7 +1286,6 @@ export class Context extends Extensible {
       }
     }
   }
-
 }
 
 

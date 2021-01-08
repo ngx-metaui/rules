@@ -16,7 +16,7 @@
  *
  *
  */
-import {async} from '@angular/core/testing';
+import {waitForAsync} from '@angular/core/testing';
 import {OSSLexer, OSSToken, OSSTokenType} from './oss-lexer';
 
 
@@ -31,7 +31,7 @@ describe('MetaUI Lexer', () => {
 
 
   describe('Comments lexing', () => {
-    it('should tokenize block level comments as well as Line Comments', async(() => {
+    it('should tokenize block level comments as well as Line Comments', waitForAsync(() => {
       /* tslint:disable: no-trailing-whitespace */
       lexer = new OSSLexer(`/**
                some comment
@@ -72,7 +72,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should throw error when block comment is not terminated', async(() => {
+    it('should throw error when block comment is not terminated', waitForAsync(() => {
       lexer = new OSSLexer(`
             /**
                some comment
@@ -97,8 +97,9 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should throw error when line level comment is not terminated by new line', async(() => {
-      lexer = new OSSLexer(`
+    it('should throw error when line level comment is not terminated by new line',
+      waitForAsync(() => {
+        lexer = new OSSLexer(`
             /**
                some comment
 
@@ -106,19 +107,19 @@ describe('MetaUI Lexer', () => {
 
             // Test Line Comment`);
 
-      const token: OSSToken = lexer.nextToken();
-      expect(() => lexer.nextToken())
-        .toThrowMatching((e) =>
-          e.toString()
-            .indexOf('Error while parsing: line comment is not correctly terminated') > 0);
+        const token: OSSToken = lexer.nextToken();
+        expect(() => lexer.nextToken())
+          .toThrowMatching((e) =>
+            e.toString()
+              .indexOf('Error while parsing: line comment is not correctly terminated') > 0);
 
-    }));
+      }));
 
   });
 
   describe('Common Symbols', () => {
 
-    it('should tokenize start and end of the basic block', async(() => {
+    it('should tokenize start and end of the basic block', waitForAsync(() => {
 
       lexer = new OSSLexer(`
                 class=User#AAAA {
@@ -137,7 +138,7 @@ describe('MetaUI Lexer', () => {
       expect(token.type).toBe(OSSTokenType.RBrace);
     }));
 
-    it('should tokenize start and end of the nested block', async(() => {
+    it('should tokenize start and end of the nested block', waitForAsync(() => {
 
       lexer = new OSSLexer(`
             class=User {
@@ -167,7 +168,7 @@ describe('MetaUI Lexer', () => {
 
     }));
 
-    it('should tokenize start and end of the inline block', async(() => {
+    it('should tokenize start and end of the inline block', waitForAsync(() => {
 
       lexer = new OSSLexer(`
             class=User field=name {
@@ -185,7 +186,7 @@ describe('MetaUI Lexer', () => {
 
     }));
 
-    it('should recognize Semi 2 colons', async(() => {
+    it('should recognize Semi 2 colons', waitForAsync(() => {
 
       lexer = new OSSLexer(`
             class=User {
@@ -206,7 +207,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should tokenize key: value so it will read 2 colons', async(() => {
+    it('should tokenize key: value so it will read 2 colons', waitForAsync(() => {
       /* tslint:disable: no-trailing-whitespace */
       lexer = new OSSLexer(`
                     class=User {
@@ -228,7 +229,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should tokenize array: value so it will read 3 values', async(() => {
+    it('should tokenize array: value so it will read 3 values', waitForAsync(() => {
 
       lexer = new OSSLexer(`
                     class=User {
@@ -248,7 +249,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should tokenize commans for aa, bb, cc ', async(() => {
+    it('should tokenize commans for aa, bb, cc ', waitForAsync(() => {
       lexer = new OSSLexer(`
                     class=User {
                         field=(aa, bb, cc) {
@@ -267,7 +268,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should recognize Equal for the selectors', async(() => {
+    it('should recognize Equal for the selectors', waitForAsync(() => {
 
       lexer = new OSSLexer(`
                         module=home class=User {
@@ -285,7 +286,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should tokenize properties and precedenceChain path', async(() => {
+    it('should tokenize properties and precedenceChain path', waitForAsync(() => {
       lexer = new OSSLexer(`
                // aaas
 
@@ -302,7 +303,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should tokenize precedenceChain path', async(() => {
+    it('should tokenize precedenceChain path', waitForAsync(() => {
       lexer = new OSSLexer(`
                // aaas
                 class=User {
@@ -332,7 +333,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should be able to tokenize boolean values', async(() => {
+    it('should be able to tokenize boolean values', waitForAsync(() => {
 
       lexer = new OSSLexer(
         'class=User { ' +
@@ -358,7 +359,7 @@ describe('MetaUI Lexer', () => {
 
   describe('Expressions', () => {
 
-    it('should read expression literal with in properties section ', async(() => {
+    it('should read expression literal with in properties section ', waitForAsync(() => {
       lexer = new OSSLexer(
         'class=User {' +
         '    field=name { ' +
@@ -372,7 +373,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should read static dynamic expression ', async(() => {
+    it('should read static dynamic expression ', waitForAsync(() => {
       lexer = new OSSLexer(
         'class=User {' +
         '    field=name { ' +
@@ -386,7 +387,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should Throw Error when Expr does not start with $${  ', async(() => {
+    it('should Throw Error when Expr does not start with $${  ', waitForAsync(() => {
       lexer = new OSSLexer(
         'class=User { ' +
         'visible:$$object.aaa};  ' +
@@ -404,7 +405,7 @@ describe('MetaUI Lexer', () => {
 
   describe('KeyPaths', () => {
 
-    it('should read zone based keypath ', async(() => {
+    it('should read zone based keypath ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
 
@@ -425,7 +426,7 @@ describe('MetaUI Lexer', () => {
   });
 
   describe('I18n Lokalization keys', () => {
-    it('should read zone based keypath ', async(() => {
+    it('should read zone based keypath ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
@@ -439,7 +440,7 @@ describe('MetaUI Lexer', () => {
 
     }));
 
-    it('should fail when bracket is not terminated ', async(() => {
+    it('should fail when bracket is not terminated ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
@@ -458,7 +459,7 @@ describe('MetaUI Lexer', () => {
 
   describe('String literals', () => {
 
-    it('should read default string translation that is after the key ', async(() => {
+    it('should read default string translation that is after the key ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
@@ -473,7 +474,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should fail as string is not terminated ', async(() => {
+    it('should fail as string is not terminated ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                             field=aa {
@@ -490,7 +491,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should read single quote string  ', async(() => {
+    it('should read single quote string  ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                     field=aa {
@@ -505,7 +506,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should fail as single q. string is not terminated ', async(() => {
+    it('should fail as single q. string is not terminated ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                             field=aa {
@@ -521,7 +522,7 @@ describe('MetaUI Lexer', () => {
 
     }));
 
-    it('should fail as single q. string is is terminated with double q. ', async(() => {
+    it('should fail as single q. string is is terminated with double q. ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                             field=aa {
@@ -541,7 +542,7 @@ describe('MetaUI Lexer', () => {
 
   describe('Dynamic field path bindings', () => {
 
-    it(' Read field path binding ', async(() => {
+    it(' Read field path binding ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {
@@ -557,7 +558,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it(' Read field path binding with dotted path  ', async(() => {
+    it(' Read field path binding with dotted path  ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {
@@ -573,7 +574,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('Read field path binding with numbers path  ', async(() => {
+    it('Read field path binding with numbers path  ', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {
@@ -588,7 +589,7 @@ describe('MetaUI Lexer', () => {
     }));
 
 
-    it('should fail if it does not start with "a"-"z","A"-"Z","_"', async(() => {
+    it('should fail if it does not start with "a"-"z","A"-"Z","_"', waitForAsync(() => {
       lexer = new OSSLexer(
         `class=User {
                         field=aa {

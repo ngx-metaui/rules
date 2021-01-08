@@ -29,7 +29,7 @@ import {
   url
 } from '@angular-devkit/schematics';
 import {MetaPageSchema} from './page-schema';
-import {getMainProjectPath, getSourceFile, setupOptions} from '../../common/schematics-utils';
+import {setupOptions} from '../../common/schematics-utils';
 import {normalize, strings} from '@angular-devkit/core';
 import {
   addDeclarationToModule,
@@ -42,6 +42,12 @@ import {InsertChange} from '@schematics/angular/utility/change';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {buildRelativePath} from '@schematics/angular/utility/find-module';
 import {black, bold, green} from '@angular-devkit/core/src/terminal';
+import {
+  getProjectFromWorkspace,
+  getProjectMainFile,
+  parseSourceFile
+} from '@angular/cdk/schematics';
+import {getWorkspace} from '@schematics/angular/utility/config';
 
 
 /**
@@ -55,7 +61,7 @@ import {black, bold, green} from '@angular-devkit/core/src/terminal';
  */
 export default function (options: MetaPageSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    setupOptions(tree, options);
+    setupOptions(tree, options, context);
 
 
     return chain([
@@ -95,8 +101,6 @@ function defineComponent(options: MetaPageSchema): Rule {
       const componentPath = normalize(
         `${movePath}/${strings.dasherize(options.name)}.component`);
 
-
-      context.logger.log('info', `✅️ ${options.name} component is ready.`);
       return chain([
           branchAndMerge(chain([
             mergeWith(templateSource)
@@ -130,10 +134,6 @@ function copyModel(options: MetaPageSchema): Rule {
         }),
         move(movePath)
       ]);
-
-      context.logger.log('info',
-        `✅️ Model class ${options.modelClass} is created with default attributes`);
-
       return chain([
           branchAndMerge(chain([
             mergeWith(templateSource)
@@ -195,7 +195,7 @@ function addRecordToUserRules(options: MetaPageSchema): Rule {
 
     try {
       const pathToUserRules = normalize(options.path + '/rules/user-rules.ts');
-      const path = getSourceFile(host, pathToUserRules);
+      const path: any = parseSourceFile(host, pathToUserRules);
       const tsClass = strings.classify(options.modelClass);
 
       const exportList = getSourceNodes(path)
@@ -228,10 +228,12 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
 
     try {
 
-      const modulePath = getAppModulePath(host, getMainProjectPath(host, options));
+      const workspace = getWorkspace(host);
+      const project = getProjectFromWorkspace(workspace);
+      const modulePath = getAppModulePath(host, getProjectMainFile(project));
       const relativePath = buildRelativePath(modulePath, componentPath);
 
-      const srcPath = getSourceFile(host, modulePath);
+      const srcPath: any = parseSourceFile(host, modulePath);
       const compName = strings.classify(`${options.name}Component`);
 
       if (!isImported(srcPath, compName, relativePath)) {
@@ -255,12 +257,8 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
           }
         });
         host.commitUpdate(recorder);
-        context.logger.log('info', `✅️ Component Added to NgModule declarations`);
 
-      } else {
-        context.logger.log('info', `✅️ Import Component already exists`);
       }
-
     } catch (e) {
       context.logger.log('warn',
         `✅️ Failed to add Component into NgModule declarations ${e}`);
@@ -285,11 +283,7 @@ function printHowTo(options: MetaPageSchema): Rule {
       ► ${bold(green('ng serve'))}
 
     `;
-
-
     context.logger.log('info', hint);
-
-
     return host;
   };
 }

@@ -9,7 +9,8 @@ cd ${scriptDir}
 cd ..
 
 
-PACKAGES=(rules material-rules fiori-rules)
+#PACKAGES=(rules material-rules fiori-rules)
+PACKAGES=(rules material-rules)
 
 rm -Rf ./dist
 

@@ -102,12 +102,13 @@ export interface ComponentReference {
  *       ...
  *
  *     // we could have something called NgContainerElement
- *       vcr.containerElement(ComponentType | ComponentFactory ) => would return abstracted representation with current host
+ *       vcr.containerElement(ComponentType | ComponentFactory ) => would return abstracted
+ *       representation with current host
  *       vcr.containerElement(ComponentType, parent) => nested structure.
  *
  *    // to add Child Content
  *    vcr.containerElement().add(string | NgContainerElement | NgContent)
- *    // To create programatically e.g. a button with ngContent
+ *    // To create programmatically e.g. a button with ngContent
  *
  *    cr.containerElement().add('Click Me!')
  *
@@ -124,7 +125,8 @@ export interface ComponentReference {
  *  containerElement.add(content)
  *
  * ```
- *
+ * @deprecated Will be merged together with MetaIncludeComponent as we have no use for this one
+ * anymore
  */
 @Directive({})
 export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
