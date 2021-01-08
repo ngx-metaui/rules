@@ -84,3 +84,9 @@ function buildDefaultPath(project: any) {
   const projectDirName = project.projectType === ProjectType.Application ? 'app' : 'lib';
   return `${root}${projectDirName}`;
 }
+
+export function sortObjectByKeys(obj: object): object {
+  return Object.keys(obj)
+    .sort()
+    .reduce((result, key) => (result[key] = obj[key]) && result, {});
+}

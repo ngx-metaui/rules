@@ -19,7 +19,7 @@
 import {chain, Rule, schematic, SchematicContext, Tree} from '@angular-devkit/schematics';
 import {NodeDependency, NodeDependencyType} from '@schematics/angular/utility/dependencies';
 import {AddSchema} from './add-schema';
-import {setupOptions} from '../common/schematics-utils';
+import {setupOptions, sortObjectByKeys} from '../common/schematics-utils';
 import {WorkspaceProject} from '@schematics/angular/utility/workspace-models';
 import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
 import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
@@ -184,10 +184,4 @@ function doAddPackageToPackageJson(host: Tree, pkg: string, version: string): Tr
   }
 
   return host;
-}
-
-function sortObjectByKeys(obj: object): object {
-  return Object.keys(obj)
-    .sort()
-    .reduce((result, key) => (result[key] = obj[key]) && result, {});
 }
