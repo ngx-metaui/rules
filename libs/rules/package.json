@@ -3,6 +3,9 @@
   "description": "Rule driven UI for Angular",
   "version": "VERSION_PLACEHOLDER",
   "license": "Apache-2.0",
+  "dependencies": {
+    "@angular/cdk": "MATERIAL_PLACEHOLDER"
+  },
   "peerDependencies": {
     "@angular/animations": "ANGULAR_PLACEHOLDER",
     "@angular/common": "ANGULAR_PLACEHOLDER",

@@ -35,13 +35,17 @@ if [ ${args[0]} != "patch" ] &&  [ ${args[0]} != "minor" ] &&  [ ${args[0]} != "
     exit 1
 fi
 
-if [ ${args[0]} != "none" ]; then
+  if [ ${args[0]} != "none" ]; then
     echo "Running standard-version to create a release package with --release-as ${args[0]}"
 
-  if [ "$#" -eq  "2" ] && [ ${args[1]} == "pre" ]; then
+  else if [ "$#" -eq  "2" ] && [ ${args[2]} != "pre" ]; then
+     ./node_modules/.bin/standard-version  --release-as ${args[0]}
+
+  else if [ "$#" -eq  "3" ] && [ ${args[2]} == "pre" ]; then
      ./node_modules/.bin/standard-version  --release-as ${args[0]} -p beta
-  else
-    ./node_modules/.bin/standard-version --release-as ${args[0]}
+
+  else if [ "$#" -eq  "2" ] && [ ${args[0]} == "pre" ]; then
+    ./node_modules/.bin/standard-version -p beta
   fi
 
     NEW_VERSION=$(node -p "require('./package.json').version")
