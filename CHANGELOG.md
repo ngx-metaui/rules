@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-beta.4](https://github.com/ngx-meta/rules/compare/v10.0.0-beta.3...v10.0.0-beta.4) (2021-01-08)
+
+
+### Bug Fixes
+
+* **schematics:** Update new generate page code with new API ([bb26d42](https://github.com/ngx-meta/rules/commit/bb26d4217db625a343df2e1cb4142bd013378422))
+
 ## [10.0.0-beta.3](https://github.com/ngx-meta/rules/compare/v10.0.0-beta.2...v10.0.0-beta.3) (2021-01-08)
 
 
