@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-beta.3](https://github.com/ngx-meta/rules/compare/v10.0.0-beta.2...v10.0.0-beta.3) (2021-01-08)
+
+
+### Bug Fixes
+
+* **docs:** Update outdated reference to deprecated library ([18248e5](https://github.com/ngx-meta/rules/commit/18248e53d265a48ee96aa4c7e141edf6c91721da))
+* **schematics:** Update page generation with new dependency to cdk ([2bb9acc](https://github.com/ngx-meta/rules/commit/2bb9accdc008eb8497a0d9c77a0104609e12abe9))
+
 ## [10.0.0-beta.2](https://github.com/ngx-meta/rules/compare/v10.0.0-beta.1...v10.0.0-beta.2) (2021-01-08)
 
 
