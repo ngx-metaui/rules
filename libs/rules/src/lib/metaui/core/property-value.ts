@@ -33,13 +33,14 @@ import {
 import {FieldPath} from './utils/field-path';
 import {Context} from './context';
 
-import {KeyField, KeyLayout, MetaRules} from './meta-rules';
+import {KeyField, KeyLayout} from './constants';
 import {
   DynamicPropertyValue,
   isPropertyMapAwaking,
   PropertyMap,
   PropertyMapAwaking
 } from './policies/merging-policy';
+import {Meta} from './meta';
 
 
 export interface DynamicSettablePropertyValue {
@@ -152,7 +153,7 @@ export function isDynamicSettable(arg: any): arg is DynamicSettablePropertyValue
 export class Expr extends DynamicPropertyValue {
   private _extendedObjects: Map<string, any> = new Map<string, any>();
 
-  constructor(private _expressionString: string, private meta: MetaRules) {
+  constructor(private _expressionString: string, private meta: Meta) {
     super();
     this.addDepencyToContext('FieldPath', FieldPath);
   }

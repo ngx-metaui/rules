@@ -28,9 +28,10 @@ import {
   StringJoiner
 } from './utils/lang';
 import {ListWrapper, MapWrapper} from './utils/collection';
-import {DeclRule, KeyAny, KeyDeclare, MetaRules, NullMarker, overrideKeyForKey} from './meta-rules';
+import {DeclRule, KeyAny, KeyDeclare, NullMarker, overrideKeyForKey} from './constants';
 import {MatchValue} from './match';
 import {KeyData, PropertyManager, PropertyMap} from './policies/merging-policy';
+import {Meta} from './meta';
 
 
 /**
@@ -170,7 +171,7 @@ export class Rule {
     this._rank = value;
   }
 
-  static merge(meta: MetaRules, src: Map<string, any>, dest: Map<string, any>,
+  static merge(meta: Meta, src: Map<string, any>, dest: Map<string, any>,
                declareKey: string): number {
     let updatedMask = 0;
 
@@ -212,7 +213,7 @@ export class Rule {
   /**
    * returns context keys modified
    */
-  apply(meta: MetaRules, properties: PropertyMap, declareKey: string): number {
+  apply(meta: Meta, properties: PropertyMap, declareKey: string): number {
     if (this._rank === Number.MIN_VALUE) {
       return 0;
     }
@@ -348,7 +349,7 @@ export class Rule {
     return sj.toString();
   }
 
-  _checkRule(values: Map<string, any>, meta: MetaRules): void {
+  _checkRule(values: Map<string, any>, meta: Meta): void {
     ListWrapper.forEachWithIndex<Selector>(this.selectors, (p, i) => {
       let contextValue = values.get(p.key);
       const keyData: KeyData = meta.keyData(p.key);
@@ -390,7 +391,7 @@ export class RuleSet {
 
   _rank: number = 0;
 
-  constructor(private _meta: MetaRules) {
+  constructor(private _meta: Meta) {
   }
 
   _filePath: string;

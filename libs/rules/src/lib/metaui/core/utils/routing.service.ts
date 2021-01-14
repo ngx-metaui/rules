@@ -32,7 +32,7 @@ import {delay, distinctUntilChanged, shareReplay, startWith, tap} from 'rxjs/ope
  * Todo: Replace this as this is already absolete !!
  *
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class RoutingService {
 
   /**

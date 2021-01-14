@@ -26,7 +26,6 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnDestroy,
   Optional,
@@ -40,7 +39,7 @@ import {Environment} from '../config/environment';
 import {ListWrapper} from '../utils/collection';
 import {Context} from '../../core/context';
 import {UIContext} from '../context';
-import {META_RULES, MetaRules} from '../meta-rules';
+import {Meta} from '../meta';
 
 
 /**
@@ -258,7 +257,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   constructor(private elementRef: ElementRef,
               public env: Environment,
               private _cd: ChangeDetectorRef,
-              @Inject(META_RULES) protected meta: MetaRules,
+              protected meta: Meta,
               @Optional() private formContainer: ControlContainer) {
 
     this._isDirty = false;

@@ -37,7 +37,7 @@ import {
   OSSValueOrListValueAst,
   OSSWrappedListValueAst
 } from './metaui-ast';
-import {NullMarker} from '../meta-rules';
+import {NullMarker} from '../constants';
 import {Selector} from '../rule';
 import {assert, isArray} from '../utils/lang';
 

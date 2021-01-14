@@ -19,8 +19,9 @@
 import {TestBed} from '@angular/core/testing';
 import {Entity} from '../utils/domain-model';
 import {MetaUIRulesModule} from '../../rules.module';
-import {KeyLabel, META_RULES, MetaRules} from '../meta-rules';
+import {KeyLabel, UILibraryRulePriority} from '../constants';
 import {Property} from './property';
+import {UIMeta} from '../uimeta';
 
 
 describe('Use of decorators to extend oss ', () => {
@@ -35,12 +36,14 @@ describe('Use of decorators to extend oss ', () => {
     });
 
     TestBed.compileComponents();
-    const metaUI: MetaRules = TestBed.inject(META_RULES);
+    const metaUI: UIMeta = TestBed.inject(UIMeta);
     const ossFile: any = require(
       '!!raw-loader!../../../resources/compiler/decorator/uilib.oss');
 
-
-    metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
+    metaUI.loadRuleSource({
+      content: ossFile.default,
+      module: 'Test-Decorator', filePath: 'uilib'
+    }, true, UILibraryRulePriority);
 
     window.setTimeout(function () {
       done();
@@ -52,7 +55,7 @@ describe('Use of decorators to extend oss ', () => {
 // @formatter:off
     it('should set correct label for annotated field to equal to xName', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const myUserTestClass = new MyUserTestClass('Frank');
@@ -81,7 +84,7 @@ describe('Use of decorators to extend oss ', () => {
 
     it('should override firstName label to Name if we use label decorator', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+         const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();

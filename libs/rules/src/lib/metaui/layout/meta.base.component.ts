@@ -21,7 +21,7 @@ import {isPresent} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
 import {Context, Snapshot} from '../core/context';
-import {KeyEditing, KeyObject} from '../core/meta-rules';
+import {KeyEditing, KeyObject} from '../core/constants';
 import {FormGroup} from '@angular/forms';
 
 

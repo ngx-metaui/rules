@@ -60,7 +60,7 @@ import {
   KeyType,
   KeyWrapperBinding,
   KeyWrapperComponent
-} from '../core/meta-rules';
+} from '../core/constants';
 import {Context} from '../core/context';
 import {ContextFieldPath, ValueConverter} from '../core/property-value';
 import {MetaContextComponent, MetaUIActionEvent} from '../core/meta-context/meta-context.component';

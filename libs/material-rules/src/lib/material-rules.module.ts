@@ -19,7 +19,7 @@
  *
  */
 
-import {APP_INITIALIZER, Injector, ModuleWithProviders, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {UIModule} from './ui/ui.module';
 import {LayoutModule} from './metaui/meta-ui-layout.module';
@@ -27,7 +27,7 @@ import {LayoutModule} from './metaui/meta-ui-layout.module';
 import * as entryComponents from './entry-components';
 import {WidgetsRulesRule} from './metaui/ts/WidgetsRules.oss';
 import {PersistenceRulesRule} from './metaui/ts/PersistenceRules.oss';
-import {META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {UILibraryRulePriority, UIMeta} from '@ngx-metaui/rules';
 
 @NgModule({
   imports: [
@@ -53,7 +53,7 @@ export class MaterialRulesModule {
         {
           'provide': APP_INITIALIZER,
           'useFactory': initLibMetaUI,
-          'deps': [Injector],
+          'deps': [UIMeta],
           'multi': true
         }
       ]
@@ -62,25 +62,21 @@ export class MaterialRulesModule {
 }
 
 
-/**
- *
- * Entry factory method that initialize The MetaUI layer and here we load WidgetsRules.oss as well
- * as Persistence Rules.
- *
- * I think it should work simply injecting this into Module constructor and loading it from
- * there, but we need to maintain the order how rules are loaded
- *
- */
-export function initLibMetaUI(injector: Injector) {
-  const initFce = function init(inj: Injector) {
+export function initLibMetaUI(rules: UIMeta): Function {
+  return (): Promise<any> => new Promise(resolve => {
+    rules.loadRuleSource({
+      module: 'MaterialRules', filePath: 'WidgetsRules.oss',
+      content: WidgetsRulesRule
+    }, true, UILibraryRulePriority);
 
-    const promise: Promise<any> = new Promise((resolve: any) => {
-      const metaRules: MetaRules = injector.get(META_RULES);
-      metaRules.loadUILibSystemRuleFiles(entryComponents, WidgetsRulesRule, PersistenceRulesRule);
+    rules.loadRuleSource({
+      module: 'MaterialRules', filePath: 'PersistenceRules.oss',
+      content: PersistenceRulesRule
+    }, true, UILibraryRulePriority + 2000);
 
-      resolve(true);
-    });
-    return promise;
-  };
-  return initFce.bind(initFce, injector);
+    rules.registerComponents(entryComponents);
+    rules.loadApplicationRule();
+
+    resolve();
+  });
 }

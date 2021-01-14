@@ -33,6 +33,7 @@ import {ItemProperties} from './item-properties';
 import {LocalizedString} from './i18n/localized-string';
 import {Route} from '@angular/router';
 import {KeyData, PropertyManager, PropertyMap, PropertyMerger} from './policies/merging-policy';
+import {Meta} from './meta';
 
 
 /**
@@ -123,6 +124,13 @@ export const ModuleActionZones = ['zNav', 'zGlobal'];
 export const ActionZones = ['zGlobal', 'zMain', 'zGeneral'];
 
 
+export interface OSSSource {
+  filePath: string;
+  module?: string;
+  content: string;
+}
+
+
 /**
  * Contains variety of methods that must be implemented a rule Repository and contains elementary
  * methods to load, index and compute property maps based on a series of key/value
@@ -133,37 +141,6 @@ export interface MetaRuleBase {
   rules: Rule[];
   ruleCount: number;
   ruleSetGeneration: number;
-
-  /**
-   * Register a single rule within the rules base repo. Each rule must have a list of selectors
-   * and property map. If the property map is empty we assume we need to declare the rule.
-   *
-   */
-  addRule(rule: Rule): void;
-
-  /**
-   *
-   * Used mostly by `ValueQueriedObserver` to load and register lazily loaded rules that is
-   * in form of JS object. Once we push a class onto the `Context` this method is triggered.
-   *
-   *
-   */
-  loadAppRulesOnDemand(source: any, userClass: string): boolean;
-
-  /**
-   * This method is responsible to load Application.oss which is called internal but this
-   * method is exposed in order to run this manually e.g. from test
-   */
-  loadApplicationRule(): void;
-
-  /**
-   * Loads system rules such as WidgetsRules and Persistence Rules
-   *
-   */
-  loadSystemRuleFiles(entryComponentTypes?: any, rank?: number,
-                      widgets?: any, persistence?: any): boolean;
-
-  loadUILibSystemRuleFiles(entryComponentTypes?: any, widgets?: any, persistence?: any): boolean;
 
 
   /**
@@ -460,7 +437,7 @@ export interface LayoutRule {
 }
 
 
-export const META_RULES = new InjectionToken<MetaRules>('meta.rules.uimeta');
+export const META_RULES = new InjectionToken<MetaRulesx>('meta.rules.uimeta');
 
 /**
  * MetaRules represent main interface that is sharable among other objects that needs to
@@ -468,7 +445,7 @@ export const META_RULES = new InjectionToken<MetaRules>('meta.rules.uimeta');
  *
  *
  */
-export interface MetaRules extends MetaRuleBase, ObjectRule, LayoutRule {
+export interface MetaRulesx extends MetaRuleBase, ObjectRule, LayoutRule {
   readonly PropertyMerger_DeclareList: PropertyMerger;
   readonly PropertyMerger_Traits: PropertyMerger;
   readonly PropertyMerger_List: PropertyMerger;
@@ -527,7 +504,7 @@ export class ModuleInfo {
 
 
 export interface ValueQueriedObserver {
-  notify(meta: MetaRules, key: string, value: any): void;
+  notify(meta: Meta, key: string, value: any): void;
 
 }
 

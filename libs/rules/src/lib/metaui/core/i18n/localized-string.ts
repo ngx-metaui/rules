@@ -20,7 +20,7 @@
 
 import {Context} from '../context';
 import {defaultLabelForIdentifier, isBlank} from '../utils/lang';
-import {ScopeKey} from '../meta-rules';
+import {ScopeKey} from '../constants';
 import {UIMeta} from '../uimeta';
 import {DynamicPropertyValue, PropertyMap, PropertyMapAwaking} from '../policies/merging-policy';
 

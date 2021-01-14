@@ -40,7 +40,7 @@ export {
   PropertyAccessor, Snapshot, StaticRec, UIContext
 } from './context';
 export {
-  MetaRules, MetaRuleBase, LayoutRule, _DebugDoubleCheckMatches, _UsePartialIndexing, ActionZones,
+  MetaRuleBase, LayoutRule, _DebugDoubleCheckMatches, _UsePartialIndexing, ActionZones,
   addTrait, addTraits, AppConfigRuleFilesParam, AppConfigUserRulesParam, ClassRulePriority,
   DeclRule, DefaultActionCategory, FieldPathNullMarker, KeyAction,
   KeyActionCategory, KeyAfter, KeyAny, KeyArea, KeyBindings, KeyClass, KeyComponentName, KeyDeclare,
@@ -52,11 +52,11 @@ export {
   PropIsFieldsByZone, PropLayoutsByZone, RootPredecessorKey, ScopeKey, SystemRulePriority,
   UILibraryRulePriority, ValueQueriedObserver, ZoneBottom, ZoneDetail, ZoneLeft, ZoneMain,
   ZoneMiddle, ZoneRight, ZonesDetail, ZonesMTLRB, ZonesTLRMB, ZoneTop
-} from './meta-rules';
+} from './constants';
 export {Environment} from './config/environment';
 export {ItemProperties} from './item-properties';
 export {AWMetaCoreModule} from './meta-core.module';
-
+export {UIMeta} from './uimeta';
 export * from './compiler/oss-lexer';
 export * from './compiler/oss-parser';
 export * from './compiler/rules-visitor';

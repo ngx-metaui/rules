@@ -25,7 +25,7 @@ import {MockLocationStrategy, SpyLocation} from '@angular/common/testing';
 
 
 /**
- * This module contains everything needs to dynamically generated UI based on metaRules
+ * This module contains everything needs to dynamically generated UI based on meta
  *
  *
  */
