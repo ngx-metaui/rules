@@ -19,7 +19,7 @@
  */
 import {Injectable, Type} from '@angular/core';
 import {Route} from '@angular/router';
-import {assert, isArray, isBlank, isPresent, isString, isStringMap, toList} from './utils/lang';
+import {assert, isArray, isBlank, isPresent, isStringMap, toList} from './utils/lang';
 import {FieldPath} from './utils/field-path';
 import {Environment} from './config/environment';
 import {RoutingService} from './utils/routing.service';
@@ -27,8 +27,6 @@ import {ListWrapper, MapWrapper} from './utils/collection';
 import {ObjectMeta} from './object-meta';
 import {ComponentRegistry} from './component-registry.service';
 import {Context, UIContext} from './context';
-import {WidgetsRulesRule} from './ts/WidgetsRules.oss';
-import {PersistenceRulesRule} from './ts/PersistenceRules.oss';
 import {
   DefaultLabelGenerator,
   PropFieldPropertyListResolver,
@@ -37,7 +35,7 @@ import {
   StaticallyResolvable,
   StaticDynamicWrapper
 } from './property-value';
-import {Rule, Selector} from './rule';
+import {Rule, RuleSet, Selector} from './rule';
 import {ItemProperties} from './item-properties';
 import {ACTIVE_CNTX} from './meta-context/meta-context.component';
 import {
@@ -65,21 +63,21 @@ import {
   KeyVisible,
   KeyZonePath,
   LowRulePriority,
-  MetaRules,
   ModuleActionZones,
   ModuleInfo,
+  OSSSource,
   PropFieldPropertyList,
   PropFieldsByZone,
   PropLayoutsByZone,
   SystemRulePriority,
-  UILibraryRulePriority,
   ValueQueriedObserver,
   ZoneMain,
   ZonesTLRMB
-} from './meta-rules';
+} from './constants';
 import {DynamicPropertyValue, PropertyMerger_And} from './policies/merging-policy';
 import {MetaConfig} from './config/meta-config';
 import {LocalizedLabelString, LocalizedString} from './i18n/localized-string';
+import {RuntimeParser} from './compiler/runtime-parser.visitor';
 
 
 /**
@@ -92,7 +90,7 @@ import {LocalizedLabelString, LocalizedString} from './i18n/localized-string';
  */
 @Injectable({providedIn: 'root'})
 export class UIMeta extends ObjectMeta {
-
+  private _loadedResource: Map<string, RuleSet> = new Map<string, RuleSet>();
 
   constructor(public componentRegistry: ComponentRegistry,
               public env: Environment,
@@ -174,69 +172,25 @@ export class UIMeta extends ObjectMeta {
     return new UIContext(this, isNested);
   }
 
-  // Load system rules
-  loadSystemRuleFiles(entryComponentTypes?: any,
-                      rank: number = SystemRulePriority,
-                      widgets: any = WidgetsRulesRule,
-                      persistence: any = PersistenceRulesRule): boolean {
-
-    assert(rank === SystemRulePriority || rank === UILibraryRulePriority,
-      'Invalid System rule rank number');
-
-
-    if (this.sysRulesLoaded && rank === SystemRulePriority) {
-      throw new Error('System rules already loaded!');
-    }
-
-    if (this.uiLibSysRulesLoaded && rank === UILibraryRulePriority) {
-      throw new Error('UI Lib system rules already loaded!');
-    }
-
-    if (widgets && isString(widgets)) {
-      this.beginRuleSetWithRank(rank, 'system');
-      try {
-        this.loadRulesWithModule(widgets, 'system', false);
-      } finally {
-        this.endRuleSet();
-      }
-    }
-
-    if (persistence && isString(persistence)) {
-      this.beginRuleSetWithRank(rank + 2000, 'system-persistence');
-      try {
-        this.loadRulesWithModule(persistence, 'system-persistence', false);
-      } finally {
-        this.endRuleSet();
-      }
-    }
-    if (isPresent(entryComponentTypes)) {
-      this.registerComponents(entryComponentTypes);
-
-      // load app rules after we finish with UI library rules
-      if (!this.env.inTest && rank === UILibraryRulePriority) {
-        this.loadApplicationRule();
-      }
-    }
-    if (rank === UILibraryRulePriority) {
-      this.uiLibSysRulesLoaded = true;
-    } else {
-      this.sysRulesLoaded = true;
+  loadRuleSource(source: OSSSource, required: boolean, rank: number): boolean {
+    if (source.content) {
+      this.beginRuleSet(source.filePath, rank);
+      this._loadRuleSource(source);
+      return true;
     }
     return false;
   }
 
-  loadAppRulesOnDemand(source: any, userClass: string): boolean {
 
-    if (isPresent(source)) {
-      this.beginRuleSetWithRank(this.ruleCount, 'app:' + userClass);
+  loadAppRuleOnDemand(ruleText: string, appClass: string): void {
+    if (ruleText) {
+      this.beginRuleSet('app:' + appClass);
       try {
-        this.loadRulesWithModule(source, 'app', false);
-        this.endRuleSet();
+        this._loadRuleSource({content: ruleText, module: 'App', filePath: appClass});
       } catch (e) {
         throw e;
       }
     }
-    return false;
   }
 
 
@@ -393,9 +347,14 @@ export class UIMeta extends ObjectMeta {
 
 
   /**
-   * Loads application level rules. Application level rules are global rules
+   * This method is responsible to load Application.oss which is called internal but this
+   * method is exposed in order to run this manually e.g. from test
    */
   loadApplicationRule(): void {
+    if (!this.env.inTest) {
+      return;
+    }
+
     let aRules: string;
     let registeredAppRules: any[];
     let appRuleFiles: string[] = ['Application'];
@@ -413,38 +372,20 @@ export class UIMeta extends ObjectMeta {
     for (const ruleFile of appRuleFiles) {
       const rule = ruleFile + 'Rule';
 
-      if (this._testRules.has(rule)) {
-        // since we are in development mode and test mode is on we can check extra
-        // repository used by tests, we need to check if we are not running unittest
-        // and a class is not defined but unittest
+      for (const i in registeredAppRules) {
+        const userRule = registeredAppRules[i];
 
-        if (this._testRules.has(rule) && isPresent(this._testRules.get(rule))) {
-          aRules = this._testRules.get(rule);
+        if (userRule) {
 
-          if (aRules) {
-            this.beginRuleSetWithRank(LowRulePriority, ruleFile.toLowerCase());
-            this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
-            this.endRuleSet();
+          if (userRule[rule] && userRule[rule]) {
+            aRules = userRule[rule];
           }
         }
-      } else {
-        for (const i in registeredAppRules) {
-          const userRule = registeredAppRules[i];
-
-          if (userRule) {
-
-            if (userRule[rule] && userRule[rule]) {
-              aRules = userRule[rule];
-            }
-          }
-          if (aRules) {
-            this.beginRuleSetWithRank(LowRulePriority, ruleFile.toLowerCase());
-            this.loadRulesWithModule(aRules, ruleFile.toLowerCase(), false);
-            this.endRuleSet();
-          }
+        if (aRules) {
+          this.loadRuleSource({filePath: ruleFile, module: 'App', content: aRules},
+            false, LowRulePriority);
         }
       }
-
     }
   }
 
@@ -555,6 +496,48 @@ export class UIMeta extends ObjectMeta {
     context.pop();
 
     return label;
+  }
+
+  /**
+   * Registers framework level components in order to be instantiated when needed.
+   *
+   */
+  registerComponents(sysReferences: any): void {
+
+    assert(this.env.inTest || isPresent(this.config.get(AppConfigUserRulesParam)),
+      'Unable to initialize MetaUI as user rules are missing. please use:' +
+      ' metaui.rules.user-rules configuration param');
+
+    this.componentRegistry.registerTypes(sysReferences);
+
+    if (!this.env.inTest) {
+      const userReferences: any[] = this.config.get(AppConfigUserRulesParam);
+      for (const uRule of userReferences) {
+        this.componentRegistry.registerTypes(uRule);
+      }
+    }
+  }
+
+  addTestUserRule(testRuleName: string, source: any): void {
+    this._testRules.set(testRuleName, source);
+    //
+    // this.loadRuleSource({filePath: testRuleName, module: 'Test', content: source},
+    //   false, LowRulePriority);
+  }
+
+  protected _loadRuleSource(source: OSSSource): void {
+    this._loadRules(source.filePath, source.content, true);
+    this._loadedResource.set(`${source.module}/${source.filePath}`, this.endRuleSet());
+  }
+
+  protected _loadRules(name: string, content: string, editable: boolean): void {
+    try {
+      const parser = new RuntimeParser(content, this);
+      parser.registerRules();
+    } catch (e) {
+      this.endRuleSet().disableRules();
+      throw new Error(`Error loading rule ${name} - ${e} `);
+    }
   }
 
   private _fireAction(context: Context, withBackAction: boolean): void {
@@ -680,25 +663,6 @@ export class UIMeta extends ObjectMeta {
     }
   }
 
-  /**
-   * Registers framework level components in order to be instantiated when needed.
-   *
-   */
-  private registerComponents(sysReferences: any): void {
-
-    assert(this.env.inTest || isPresent(this.config.get(AppConfigUserRulesParam)),
-      'Unable to initialize MetaUI as user rules are missing. please use:' +
-      ' metaui.rules.user-rules configuration param');
-
-    this.componentRegistry.registerTypes(sysReferences);
-
-    if (!this.env.inTest) {
-      const userReferences: any[] = this.config.get(AppConfigUserRulesParam);
-      for (const uRule of userReferences) {
-        this.componentRegistry.registerTypes(uRule);
-      }
-    }
-  }
 
   private navigateToPage(context: Context, route: Route | string, withBackAction: boolean): void {
     const params = this.prepareRoute(context, withBackAction);
@@ -798,7 +762,7 @@ export class UIMeta extends ObjectMeta {
  */
 class AppRuleMetaDataProvider implements ValueQueriedObserver {
 
-  notify(meta: MetaRules, key: string, value: any): void {
+  notify(meta: UIMeta, key: string, value: any): void {
     let aRules: string;
     const uiMeta: UIMeta = <UIMeta>meta;
 
@@ -810,7 +774,6 @@ class AppRuleMetaDataProvider implements ValueQueriedObserver {
       if (uiMeta._testRules.has(value + 'Rule') && uiMeta._testRules.get(value + 'Rule')) {
         aRules = uiMeta._testRules.get(value + 'Rule');
       }
-      meta.loadAppRulesOnDemand(aRules, value);
 
     } else if (isPresent(uiMeta.config) &&
       uiMeta.config.get(AppConfigUserRulesParam)) {
@@ -822,8 +785,8 @@ class AppRuleMetaDataProvider implements ValueQueriedObserver {
           aRules = userReferences[i][value + 'Rule'];
         }
       }
-      meta.loadAppRulesOnDemand(aRules, value);
     }
+    meta.loadAppRuleOnDemand(aRules, value);
   }
 
 }

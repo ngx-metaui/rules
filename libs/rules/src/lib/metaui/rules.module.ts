@@ -19,30 +19,28 @@
 import {
   APP_INITIALIZER,
   InjectionToken,
-  Injector,
   ModuleWithProviders,
   NgModule,
   Optional
 } from '@angular/core';
-import {Router} from '@angular/router';
-import {CommonModule, Location} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {UIMeta} from './core/uimeta';
-import * as sysMetaComponents from './entry-components';
 import {AWMetaCoreModule} from './core/meta-core.module';
-import {Environment} from './core/config/environment';
-import {RoutingService} from './core/utils/routing.service';
-import {ComponentRegistry} from './core/component-registry.service';
-import {makeConfig, MetaConfig} from './core/config/meta-config';
-import {META_RULES, MetaRules} from './core/meta-rules';
-import {DomUtilsService} from './layout/core/dom-utils.service';
 import {AWMetaLayoutModule} from './layout/meta-layout.module';
-
+import * as entryComponents from './entry-components';
+import {WidgetsRulesRule} from './core/ts/WidgetsRules.oss';
+import {SystemRulePriority} from './core/constants';
+import {PersistenceRulesRule} from './core/ts/PersistenceRules.oss';
+import {RoutingService} from './core/utils/routing.service';
+import {makeConfig, MetaConfig} from './core/config/meta-config';
+import {Router} from '@angular/router';
+import {Environment} from './core/config/environment';
 
 export const AppMetaConfig = new InjectionToken<string>('meta.AppConfig');
 
 
 /**
- * This module contains everything needs to dynamically generated UI based on metaRules
+ * This module contains everything needs to dynamically generated UI based on meta
  *
  */
 @NgModule({
@@ -78,15 +76,10 @@ export class MetaUIRulesModule {
           deps: [[new Optional(), Router], [new Optional(), Location]]
         },
         {
-          provide: META_RULES,
-          useClass: UIMeta,
-          deps: [ComponentRegistry, Environment, MetaConfig, RoutingService]
-        },
-        {
-          'provide': APP_INITIALIZER,
-          'useFactory': initMetaUI,
-          'deps': [Injector],
-          'multi': true
+          provide: APP_INITIALIZER,
+          useFactory: initMetaUI,
+          deps: [UIMeta],
+          multi: true
         }
       ]
     };
@@ -99,17 +92,25 @@ export class MetaUIRulesModule {
  * as Persistence Rules.
  *
  */
-export function initMetaUI(injector: Injector) {
-  const initFce = function init(inj: Injector) {
+export function initMetaUI(rules: UIMeta) {
+  const initFce = function init(rEngine: UIMeta) {
 
     const promise: Promise<any> = new Promise((resolve: any) => {
-      const metaRules: MetaRules = injector.get(META_RULES);
-      metaRules.loadSystemRuleFiles(sysMetaComponents);
+      rEngine.loadRuleSource({
+        module: 'Rules', filePath: 'WidgetsRules.oss',
+        content: WidgetsRulesRule
+      }, true, SystemRulePriority);
+
+      rEngine.loadRuleSource({
+        module: 'Rules', filePath: 'PersistenceRules.oss',
+        content: PersistenceRulesRule
+      }, true, SystemRulePriority + 2000);
+      rEngine.registerComponents(entryComponents);
 
       resolve(true);
     });
     return promise;
   };
-  return initFce.bind(initFce, injector);
+  return initFce.bind(initFce, rules);
 }
 

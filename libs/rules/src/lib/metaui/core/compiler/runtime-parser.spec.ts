@@ -18,9 +18,10 @@
  */
 import {TestBed} from '@angular/core/testing';
 import {MetaUITestRulesModule} from '../../test.rules.module';
-import {META_RULES, MetaRules} from '../meta-rules';
 import {RuntimeParser} from './runtime-parser.visitor';
 import {Selector} from '../rule';
+import {UIMeta} from '../uimeta';
+import {UILibraryRulePriority} from '../constants';
 
 
 describe('Parsing rules on the fly and registering them with the rule engine',
@@ -46,8 +47,11 @@ describe('Parsing rules on the fly and registering them with the rule engine',
         const ossFile: any = require(
           '!!raw-loader!../../../resources/compiler/WidgetsRules-ui.oss');
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
-        metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
+        metaUI.loadRuleSource({
+          content: ossFile.default,
+          module: 'Test-RuntimeParser', filePath: 'WidgetsRules-ui'
+        }, true, UILibraryRulePriority);
 
 
         expect(true).toBeTruthy();
@@ -62,8 +66,11 @@ describe('Parsing rules on the fly and registering them with the rule engine',
           '!!raw-loader!../../../resources/compiler/WidgetsRules-ui-m.oss');
 
         try {
-          const metaUI: MetaRules = TestBed.inject(META_RULES);
-          metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
+          const metaUI: UIMeta = TestBed.inject(UIMeta);
+          metaUI.loadRuleSource({
+            content: ossFile.default,
+            module: 'Test-RuntimeParser', filePath: 'WidgetsRules-ui-m'
+          }, true, UILibraryRulePriority);
         } catch (e) {
           fail(e);
         }
@@ -76,8 +83,7 @@ describe('Parsing rules on the fly and registering them with the rule engine',
         /* tslint:disable: no-trailing-whitespace */
 
         try {
-          const metaUI: MetaRules = TestBed.inject(META_RULES);
-
+          const metaUI: UIMeta = TestBed.inject(UIMeta);
           metaUI.beginRuleSet('User');
           const parser = new RuntimeParser('label:Hahaha;', metaUI);
 

@@ -43,13 +43,13 @@ import {
   KeyAny,
   KeyField,
   KeyValue,
-  MetaRules,
   NullMarker,
   ValueQueriedObserver
-} from '../meta-rules';
+} from '../constants';
 import {Match, MatchValue, MultiMatchValue, ValueMatches} from '../match';
 import {KeyValueTransformer} from '../tranformers';
 import {Context} from '../context';
+import {Meta} from '../meta';
 
 
 export abstract class DynamicPropertyValue {
@@ -114,7 +114,7 @@ export class DeferredOperationChain extends DynamicPropertyValue implements Prop
 
 export abstract class PropertyMerger {
 
-  metaRules: MetaRules;
+  meta: Meta;
 
   /**
    * Called during rule application to merge an earlier (lower ranked) value with a newer one.
@@ -277,7 +277,7 @@ export class KeyData {
     }
   }
 
-  lookup(owner: MetaRules, value: any): number[] {
+  lookup(owner: Meta, value: any): number[] {
     const matches: ValueMatches = this.get(value);
     if (!matches._read && isPresent(this._observers)) {
 
@@ -590,7 +590,7 @@ export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList
       }
 
       let canAdd = true;
-      const group = this.metaRules.groupForTrait(trait);
+      const group = this.meta.groupForTrait(trait);
 
       if (isPresent(group)) {
 
@@ -600,7 +600,7 @@ export class PropertyMergerDeclareListForTrait extends PropertyMergerDeclareList
           }
 
 
-          if (group === this.metaRules.groupForTrait(overrideTrait)) {
+          if (group === this.meta.groupForTrait(overrideTrait)) {
             canAdd = false;
             break;
           }

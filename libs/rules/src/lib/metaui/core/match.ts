@@ -29,8 +29,9 @@ import {
 } from './utils/lang';
 import {Rule} from './rule';
 import {ListWrapper} from './utils/collection';
-import {_DebugDoubleCheckMatches, _UsePartialIndexing, MetaRules} from './meta-rules';
+import {_DebugDoubleCheckMatches, _UsePartialIndexing} from './constants';
 import {KeyData, PropertyMap} from './policies/merging-policy';
+import {Meta} from './meta';
 
 
 /**
@@ -362,7 +363,7 @@ export class MatchResult extends MatchWithUnion {
   private _properties: PropertyMap;
 
   // Meta meta, Meta.KeyData keyData, Object value, MatchResult prev)
-  constructor(private _meta: MetaRules, private  _keyData: KeyData,
+  constructor(private _meta: Meta, private  _keyData: KeyData,
               private _value: any,
               private _prevMatch: MatchResult) {
     super(null, null, 0, (_prevMatch != null) ? _prevMatch._overUnionMatch : null);
@@ -582,7 +583,7 @@ export class MatchResult extends MatchWithUnion {
 
 export class UnionMatchResult extends MatchResult {
 
-  constructor(meta: MetaRules, keyData: KeyData, value: any, prevMatch: MatchResult) {
+  constructor(meta: Meta, keyData: KeyData, value: any, prevMatch: MatchResult) {
     super(meta, keyData, value, prevMatch);
   }
 

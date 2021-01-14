@@ -27,10 +27,10 @@ import {
   StaticallyResolvableWrapper,
   StaticDynamicWrapper
 } from '../property-value';
-import {MetaRules} from '../meta-rules';
 import {OverrideValue} from '../policies/merging-policy';
 import {Rule, Selector} from '../rule';
 import {OSSParser} from './oss-parser';
+import {Meta} from '../meta';
 
 
 /**
@@ -39,7 +39,7 @@ import {OSSParser} from './oss-parser';
 export class RuntimeParser extends RulesVisitor {
   parser: OSSParser;
 
-  constructor(ossRule: any, private _meta: MetaRules, private module: string = 'system') {
+  constructor(ossRule: any, private _meta: Meta, private module: string = 'system') {
     super();
 
     const lexer = new OSSLexer(ossRule.default || ossRule);

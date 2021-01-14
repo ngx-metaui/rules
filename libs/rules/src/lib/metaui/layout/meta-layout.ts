@@ -24,7 +24,7 @@ import {MetaBaseComponent} from './meta.base.component';
 import {ItemProperties} from '../core/item-properties';
 import {MetaContextComponent, OnContextSetEvent} from '../core/meta-context/meta-context.component';
 import {Context} from '../core/context';
-import {KeyLabel, KeyLayout, ZonesTLRMB} from '../core/meta-rules';
+import {KeyLabel, KeyLayout, ZonesTLRMB} from '../core/constants';
 import {PropertyMap} from '../core/policies/merging-policy';
 
 

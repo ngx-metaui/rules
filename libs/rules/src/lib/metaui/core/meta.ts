@@ -50,22 +50,19 @@ import {
   KeyAny,
   KeyDeclare,
   KeyTrait,
-  KeyValid,
+  KeyValid, LowRulePriority,
   MaxKeyDatas,
-  MetaRules,
   ModuleInfo,
   overrideKeyForKey,
   ScopeKey,
-  UILibraryRulePriority,
   ValueQueriedObserver
-} from './meta-rules';
+} from './constants';
 import {ComponentRegistry} from './component-registry.service';
 import {KeyValueTransformer, KeyValueTransformer_KeyPresent} from './tranformers';
 import {ItemProperties} from './item-properties';
 import {OnDestroy, Type} from '@angular/core';
 import {Route} from '@angular/router';
 import {LocalizedString} from './i18n/localized-string';
-import {RuntimeParser} from './compiler/runtime-parser.visitor';
 
 
 /**
@@ -80,7 +77,7 @@ import {RuntimeParser} from './compiler/runtime-parser.visitor';
  *
  *
  */
-export abstract class Meta implements MetaRules, OnDestroy {
+export abstract class Meta implements OnDestroy {
 
   /**
    *
@@ -135,6 +132,11 @@ export abstract class Meta implements MetaRules, OnDestroy {
     this.ruleCount = 1;
   }
 
+  /**
+   * Register a single rule within the rules base repo. Each rule must have a list of selectors
+   * and property map. If the property map is empty we assume we need to declare the rule.
+   *
+   */
   addRule(rule: Rule): void {
 
     const selectors: Array<Selector> = rule.selectors;
@@ -152,8 +154,20 @@ export abstract class Meta implements MetaRules, OnDestroy {
     }
   }
 
-  beginRuleSet(identificator: string): void {
-    this.beginRuleSetWithRank(this.ruleCount, identificator);
+
+  beginRuleSet(filePath: string, rank?: number): void {
+    try {
+      assert(isBlank(this._currentRuleSet),
+        'Can t start new rule set while one in progress');
+
+      this._currentRuleSet = new RuleSet(this);
+      this._currentRuleSet._start = this.ruleCount;
+      this._currentRuleSet._end = this.ruleCount;
+      this._currentRuleSet._rank = rank || this.ruleCount;
+      this._currentRuleSet._filePath = filePath;
+    } catch (e) {
+      throw e;
+    }
   }
 
   endRuleSet(): RuleSet {
@@ -166,10 +180,6 @@ export abstract class Meta implements MetaRules, OnDestroy {
     this.ruleSetGeneration++;
 
     return result;
-  }
-
-  addTestUserRule(testRuleName: string, source: any): void {
-    this._testRules.set(testRuleName, source);
   }
 
   clearCaches(): void {
@@ -331,17 +341,6 @@ export abstract class Meta implements MetaRules, OnDestroy {
   }
 
 
-  abstract loadAppRulesOnDemand(source: any, userClass: string): boolean;
-
-  abstract loadSystemRuleFiles(entryComponentTypes?: any, rank?: number,
-                               widgets?: any, persistence?: any): boolean;
-
-  loadUILibSystemRuleFiles(entryComponentTypes?: any, widgets?: any, persistence?: any): boolean {
-
-    return this.loadSystemRuleFiles(entryComponentTypes, UILibraryRulePriority, widgets,
-      persistence);
-  }
-
   abstract itemNames(context: Context, key: string): Array<string>;
 
   abstract itemProperties(context: Context, key: string,
@@ -382,7 +381,6 @@ export abstract class Meta implements MetaRules, OnDestroy {
 
   abstract zones(context: Context): Array<string>;
 
-  abstract loadApplicationRule(): void;
 
   abstract addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
                               traits: Array<string>, lineNumber: number): Rule;
@@ -432,41 +430,6 @@ export abstract class Meta implements MetaRules, OnDestroy {
     return null;
   }
 
-  // this one expect that we already opened the ruleset
-  protected loadRulesWithModule(ruleText?: any, module: string = 'system',
-                                editable: boolean = true): void {
-    try {
-
-
-      const parser = new RuntimeParser(ruleText, this);
-      parser.registerRules();
-    } catch (e) {
-      this.endRuleSet().disableRules();
-      throw new Error('Error loading rule: ' + e);
-    }
-  }
-
-  protected loadRulesWithRuleSet(filename: string, ruleText: any, rank: number): void {
-    this.beginRuleSetWithRank(rank, filename);
-    this.loadRulesWithModule(ruleText);
-  }
-
-  protected beginRuleSetWithRank(rank: number, filePath: string): void {
-    try {
-      assert(isBlank(this._currentRuleSet),
-        'Can t start new rule set while one in progress');
-
-      this._currentRuleSet = new RuleSet(this);
-      this._currentRuleSet._start = this.ruleCount;
-      this._currentRuleSet._end = this.ruleCount;
-      this._currentRuleSet._rank = rank;
-      this._currentRuleSet._filePath = filePath;
-    } catch (e) {
-
-      throw e;
-    }
-  }
-
   protected registerKeyInitObserver(key: string, o: ValueQueriedObserver): void {
     this.keyData(key).addObserver(o);
   }
@@ -491,8 +454,8 @@ export abstract class Meta implements MetaRules, OnDestroy {
   }
 
   protected registerPropertyMerger(propertyName: string, merger: PropertyMerger): void {
-    if (isBlank(merger.metaRules)) {
-      merger.metaRules = this;
+    if (isBlank(merger.meta)) {
+      merger.meta = this;
     }
     const manager: PropertyManager = this.managerForProperty(propertyName);
     manager._merger = merger;

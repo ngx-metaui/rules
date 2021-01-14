@@ -18,16 +18,10 @@
  *
  *
  */
-import {isDevMode} from '@angular/core';
-import {BooleanWrapper, isPresent, NumberWrapper} from '../utils/lang';
-import {MapWrapper} from '../utils/collection';
+import {BooleanWrapper, NumberWrapper} from '../utils/lang';
 import {Environment} from './environment';
-
-
-/**
- * This is now absolute as i18n was removed
- */
-const SuportedLanguages = ['en', 'fr'];
+import {Injectable} from '@angular/core';
+import {MapWrapper} from '../utils/collection';
 
 
 /**
@@ -35,21 +29,13 @@ const SuportedLanguages = ['en', 'fr'];
  * phase.
  *
  */
+@Injectable({providedIn: 'root'})
 export class MetaConfig {
-  static readonly IsDevMode = 'devmode.enabled';
-  static readonly UserAgent = 'useragent';
-  static readonly Lang = 'lang';
-  static readonly SupportedLangs = 'supportedlang';
-  static readonly Direction = 'dir';
-  static readonly i18nEnabled = 'i18n.enabled';
-  static readonly InTest = 'env.test';
-  testUrl: string;
   private values: Map<string, any>;
 
   constructor(public environment: Environment) {
     this.values = new Map<string, any>();
   }
-
 
   /**
    *
@@ -57,12 +43,12 @@ export class MetaConfig {
    *
    */
   init(config: { [key: string]: any }) {
-    this.initDefaults();
-    if (isPresent(config)) {
+    if (config) {
       const values: Map<string, any> = MapWrapper.createFromStringMap<any>(config);
       values.forEach((v: any, k: any) => this.set(k, v));
     }
   }
+
 
   /**
    * Sets values to configuration. to make sure we will not run into case-sensitive problems we
@@ -72,11 +58,10 @@ export class MetaConfig {
   set(key: string, value: any): void {
     this.values.set(key.toLowerCase(), value);
 
-    if (key.toLowerCase() === MetaConfig.InTest) {
+    if (key.toLowerCase() === 'env.test') {
       this.environment.inTest = value;
     }
   }
-
 
   /**
    * Sets values to configuration
@@ -101,28 +86,6 @@ export class MetaConfig {
     const val = this.get(key);
     return BooleanWrapper.boleanValue(val);
   }
-
-  isProductionMode(): boolean {
-    return !this.getBoolean(MetaConfig.IsDevMode);
-  }
-
-  private initDefaults() {
-
-    this.set(MetaConfig.IsDevMode, isDevMode());
-    this.set(MetaConfig.UserAgent, window.navigator.userAgent);
-    this.set(MetaConfig.Direction, document.documentElement.dir);
-    this.set(MetaConfig.i18nEnabled, true);
-    this.set(MetaConfig.InTest, false);
-
-    if (!this.values.has(MetaConfig.Lang)) {
-      this.set(MetaConfig.Lang, window.navigator.language);
-    }
-
-    if (!this.values.has(MetaConfig.SupportedLangs)) {
-      this.set(MetaConfig.SupportedLangs, SuportedLanguages);
-    }
-  }
-
 }
 
 
@@ -136,4 +99,6 @@ export function makeConfig(config: { [key: string]: any }, env: Environment): Me
   conf.init(config);
   return conf;
 }
+
+
 

@@ -33,17 +33,20 @@ import {
   KeyValid,
   KeyValue,
   KeyVisible,
-  META_RULES,
-  MetaRules,
   PropFieldsByZone,
+  UILibraryRulePriority,
   ZoneLeft
-} from './meta-rules';
+} from './constants';
 import {NestedMap} from './nested-map';
 import {Context, UIContext} from './context';
+import {UIMeta} from '././uimeta';
 
 
-describe('Meta Context behaivor ', () => {
+// @formatter:off
+/* tslint:disable */
+// temp rules to push some default that are now separated from the rule engine
 
+describe('Meta Context behavioor ', () => {
 
   beforeEach((done) => {
     TestBed.configureTestingModule({
@@ -56,11 +59,16 @@ describe('Meta Context behaivor ', () => {
     });
 
     TestBed.compileComponents();
-    const metaUI: MetaRules = TestBed.inject(META_RULES);
+    const metaUI: UIMeta = TestBed.inject(UIMeta);
+
     const ossFile: any = require(
       '!!raw-loader!../../resources/compiler/context/WidgetsRules-ui-m.oss');
 
-    metaUI.loadUILibSystemRuleFiles({}, ossFile.default, {});
+    metaUI.loadRuleSource({
+      module: 'Test/compiler/context/',
+      filePath: 'WidgetsRules-ui-m.oss',
+      content: ossFile.default
+    }, true, UILibraryRulePriority);
 
     window.setTimeout(function () {
       done();
@@ -72,7 +80,6 @@ describe('Meta Context behaivor ', () => {
 
     it('it should instantiate and retrieve entries with out any runtime error and in the ' +
       'correct order ', () => {
-
 
         const xx = new Map<string, any>();
         xx.set('a', ' this is value a');
@@ -86,7 +93,6 @@ describe('Meta Context behaivor ', () => {
         nestedMap.forEach((v, k) => {
           const key = expectedOrder.shift();
           expect(k).toEqual(key);
-
         });
 
       }
@@ -124,7 +130,7 @@ describe('Meta Context behaivor ', () => {
   describe('Context Layout representing context assignments  ', () => {
 
     it('It should retrieve Default Empty context with preset letiables ', () => {
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -158,7 +164,7 @@ describe('Meta Context behaivor ', () => {
     it('it should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
       'record size of 1 and ' + 'after we pop zero ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -178,7 +184,7 @@ describe('Meta Context behaivor ', () => {
     it('it should keep consistent push/pop frames so when we push for N-times time we ' +
       'expect correct framestarts records size as well as internal numbers ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -229,8 +235,7 @@ describe('Meta Context behaivor ', () => {
     it('it should retrive default (programatic)  rules when no user rules are loaded  ' +
       'and no class is specified after we push layout=Inspect', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
-
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         const context = metaUI.newContext();
 
         context.push();
@@ -254,7 +259,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map when user rules are not loaded, after we push ' +
       'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -284,7 +289,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property, after we push layout=Inspect and operation=view. ' +
       'we expect editing false in properties', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -315,7 +320,7 @@ describe('Meta Context behaivor ', () => {
 
 
     it(' It should retrieve Default Empty context with preset letiables ', () => {
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -349,7 +354,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for 1st time we expect 1 ' +
       'record size of 1 and after we pop zero ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -369,7 +374,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should keep consistent push/pop frames so when we push for N-times time we ' +
       'expect correct framestarts records size as well as internal numbers ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -420,7 +425,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrive default exaclty for basic when no user rules are loaded  and no ' +
       'class is specified after we push layout=Inspect', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -445,7 +450,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map when user rules are not loaded, after we push ' +
       'layout=Inspect and operation. It must retrive editing = true mode', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         const context = metaUI.newContext();
 
@@ -475,7 +480,7 @@ describe('Meta Context behaivor ', () => {
     it(' It should retrieve  property map after we push layout=Inspect ' +
       'and operation=view. we expect editing false in properties', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         const context = metaUI.newContext();
 
         context.push();
@@ -508,7 +513,7 @@ describe('Meta Context behaivor ', () => {
     it('It should retrieve correct Form Component  a MetaForm with fiveZones trait to render ' +
       'all the fields ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();
@@ -531,7 +536,7 @@ describe('Meta Context behaivor ', () => {
 
     it(' It should switch into different layout component (MetaElementList) in case we push ' +
       'Stack trait ', () => {
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();
@@ -562,7 +567,7 @@ describe('Meta Context behaivor ', () => {
     it('It should change layout to tableZone trait in case I push operation list so that it ' +
       'will have  6 zone layout ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();
@@ -592,7 +597,7 @@ describe('Meta Context behaivor ', () => {
     it('field: It should retrieve correct component type => TextField for firstName when in ' +
       'editing mode', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -624,7 +629,7 @@ describe('Meta Context behaivor ', () => {
     it('field: It should have correct class trait, editability to false as well as change ' +
       'component to String if we change operation from Edit to list ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -657,7 +662,7 @@ describe('Meta Context behaivor ', () => {
     it('It should change component name from TextField to StringComponent when in View mode',
       () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -689,7 +694,7 @@ describe('Meta Context behaivor ', () => {
 
     it('It should retrieve a label My First Name specified in the rules', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -716,7 +721,7 @@ describe('Meta Context behaivor ', () => {
 
     it(' firstName should be required as specified in the rule', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -748,7 +753,7 @@ describe('Meta Context behaivor ', () => {
     it(' it should layout fields in their rank order so that firstName => lastName ' +
       '=> age => bio ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -791,7 +796,7 @@ describe('Meta Context behaivor ', () => {
     it('it should retrive correct component for field Age whcih is a number and it will be ' +
       'rendered as a numer', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -824,7 +829,7 @@ describe('Meta Context behaivor ', () => {
     it('it should render field age which is a number in view only mode as a StringComponent',
       () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -850,7 +855,7 @@ describe('Meta Context behaivor ', () => {
 
     it('it should render a label for field age as a My age', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context = metaUI.newContext();
@@ -875,7 +880,7 @@ describe('Meta Context behaivor ', () => {
 
     it('age field should have a validity condition ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -904,7 +909,7 @@ describe('Meta Context behaivor ', () => {
 
     it('age bio should have a visibility condition ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -934,7 +939,7 @@ describe('Meta Context behaivor ', () => {
 
     // Safari issue
     it('it should render correct value when switching operation from edit to view', () => {
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -996,7 +1001,7 @@ describe('Meta Context behaivor ', () => {
       it('it should change the label of the age field when switching from editable mode to ' +
         'ready only mode', () => {
 
-          const metaUI: MetaRules = TestBed.inject(META_RULES);
+          const metaUI: UIMeta = TestBed.inject(UIMeta);
 
           metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
           const context = metaUI.newContext();
@@ -1030,7 +1035,7 @@ describe('Meta Context behaivor ', () => {
       it('it should change the label of the firstName field when switching from editable ' +
         'mode to create  mode', () => {
 
-          const metaUI: MetaRules = TestBed.inject(META_RULES);
+          const metaUI: UIMeta = TestBed.inject(UIMeta);
 
           metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
           const context = metaUI.newContext();
@@ -1064,7 +1069,7 @@ describe('Meta Context behaivor ', () => {
         'that it matches above ' +
         'rule, but once we push it role=admin we should see all the fields', () => {
 
-          const metaUI: MetaRules = TestBed.inject(META_RULES);
+          const metaUI: UIMeta = TestBed.inject(UIMeta);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
 
           let context = metaUI.newContext();
@@ -1188,7 +1193,7 @@ describe('Meta Context behaivor ', () => {
         'role=admin no earlier ' +
         'then after settings a objects', () => {
 
-          const metaUI: MetaRules = TestBed.inject(META_RULES);
+          const metaUI: UIMeta = TestBed.inject(UIMeta);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
 
           const context = metaUI.newContext();
@@ -1219,7 +1224,7 @@ describe('Meta Context behaivor ', () => {
       it('it should match top level selectors extending a class=xxx for class=xxx ' +
         'role=admin ' + 'no earlier then after settings a objects', () => {
 
-          const metaUI: MetaRules = TestBed.inject(META_RULES);
+          const metaUI: UIMeta = TestBed.inject(UIMeta);
           metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
 
           const context = metaUI.newContext();
@@ -1261,7 +1266,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve dynamic validity condition ${ value > 19}  so that it can give ' +
       'info back if the field is valid', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1295,7 +1300,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve visiblity condition that depends on the value of other fields so ' +
       'that it check the field AGE ${object.age > 18}', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
         const context: UIContext = <UIContext>metaUI.newContext();
@@ -1328,7 +1333,7 @@ describe('Meta Context behaivor ', () => {
     it(' it should be able to translate a className to the page title so it resolve our ' +
       'page title ', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
 
@@ -1353,7 +1358,7 @@ describe('Meta Context behaivor ', () => {
       'concatenates result form 2 other fields. value:' +
       ' ${object.bio.substring(0, 10) + ... };', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
@@ -1383,7 +1388,7 @@ describe('Meta Context behaivor ', () => {
     it(' a bioView should be visible only if bio field len is more then 15 and only in ' +
       'view mode', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context: UIContext = <UIContext>metaUI.newContext();
@@ -1417,7 +1422,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the field that belongs to current class MyUserTestClass for ' +
       'operation EDIT', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
@@ -1447,7 +1452,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the field that belongs to current class MyUserTestClass VIEW ' +
       'so that we will get 5 fields as 1 is derived', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
@@ -1478,7 +1483,7 @@ describe('Meta Context behaivor ', () => {
     it('It should resolve all the VISIBILE fields that belongs to current class for view ' +
       'operations VIEW', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
@@ -1531,7 +1536,7 @@ describe('Meta Context behaivor ', () => {
       'zLeft=lastName,age, bio, zBottom=bioView ignoring their visibility properties', () => {
 
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClasForZonesRule);
         const context = metaUI.newContext();
 
@@ -1576,7 +1581,7 @@ describe('Meta Context behaivor ', () => {
       'fields', () => {
 
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
 
 
@@ -1605,7 +1610,7 @@ describe('Meta Context behaivor ', () => {
       'userId we expect 123',
       () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
 
 
@@ -1639,7 +1644,7 @@ describe('Meta Context behaivor ', () => {
     it('it should automatically resolve a field label if not specified. All this by ' +
       'decamelizing its Field', () => {
 
-        const metaUI: MetaRules = TestBed.inject(META_RULES);
+        const metaUI: UIMeta = TestBed.inject(UIMeta);
         metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
@@ -1730,7 +1735,7 @@ describe('Meta Context behaivor ', () => {
     it('should process more then 800 000 rule index entries in less than 2 sec', () => {
 
 
-      const metaPefr: MetaRules = TestBed.inject(META_RULES);
+      const metaPefr: UIMeta = TestBed.inject(UIMeta);
       Context._CacheActivations = false;
 
       metaPefr.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
@@ -1767,7 +1772,7 @@ describe('Meta Context behaivor ', () => {
       expect(Match._Debug_ElementProcessCount).toBeGreaterThan(950000);
 
       console.log('Rule index entries processed:', Match._Debug_ElementProcessCount);
-      console.log('Processed in:',  processedIn);
+      console.log('Processed in:', processedIn);
     });
   });
 
@@ -1785,40 +1790,6 @@ describe('Meta Context behaivor ', () => {
    *        }
    */
 
-  describe('how class can get object details ', () => {
-
-
-    xit('should retrieve correct component to render when trait asHover is used and' +
-      ' overriden by user rules', () => {
-
-      const metaUI: MetaRules = TestBed.inject(META_RULES);
-
-      metaUI.addTestUserRule('UserWithDetailRule', UserWithDetailRule);
-      const context = metaUI.newContext();
-
-      context.push();
-      context.set('layout', 'Inspect');
-      context.set('operation', 'view');
-      context.set('object', new UserWithDetail('Frank Kolar'));
-      context.setScopeKey('class');
-
-      context.push();
-      context.set('field', 'name');
-
-      expect(context.propertyForKey('component')).toBe('HoverCardComponent');
-      const bindings = context.propertyForKey('bindings');
-
-      context.push();
-      context.set('layout', bindings.get('ngcontentLayout'));
-      expect(context.propertyForKey('component')).toBe('NewStringComponent');
-
-      context.pop();
-
-
-      context.pop();
-      context.pop();
-    });
-  });
 });
 
 
@@ -1975,10 +1946,6 @@ export const UserWithDetailRule = `
      field=name {
          trait:asSelect;
          label:"Frank Kolar";
-
-         layout=Content {
-            component: 'NewStringComponent';
-         }
      }
  }
 `;

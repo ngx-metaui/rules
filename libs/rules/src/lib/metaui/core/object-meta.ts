@@ -50,9 +50,8 @@ import {
   KeyType,
   KeyValid,
   KeyVisible,
-  MetaRules,
   ValueQueriedObserver
-} from './meta-rules';
+} from './constants';
 import {
   ObjectMetaPropertyMap,
   OMPropertyMerger_Valid,
@@ -188,10 +187,10 @@ export abstract class ObjectMeta extends Meta {
  * where Rules will be loaded using Rest API along with the object instance its impossible.
  */
 export class IntrospectionMetaProvider implements ValueQueriedObserver {
-  private _meta: MetaRules;
+  private _meta: Meta;
 
 
-  notify(meta: MetaRules, key: string, value: any): void {
+  notify(meta: Meta, key: string, value: any): void {
     this._meta = meta;
     let myObject;
 

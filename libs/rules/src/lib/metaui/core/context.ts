@@ -54,10 +54,9 @@ import {
   KeyObject,
   KeyValid,
   KeyValue,
-  MetaRules,
   NullMarker,
   ScopeKey
-} from './meta-rules';
+} from './constants';
 
 import {
   DynamicPropertyValue,
@@ -66,6 +65,7 @@ import {
   PropertyManager,
   PropertyMap
 } from './policies/merging-policy';
+import {Meta} from './meta';
 
 /**
  *
@@ -202,7 +202,7 @@ export class Context extends Extensible {
     return this._accessor;
   }
 
-  constructor(public meta: MetaRules, public nested: boolean = false) {
+  constructor(public meta: Meta, public nested: boolean = false) {
     super();
 
     if (isBlank(Context.EmptyMap)) {
@@ -254,7 +254,7 @@ export class Context extends Extensible {
    *  activation.
    */
 
-  static getActivationTree(meta: MetaRules): Activation {
+  static getActivationTree(meta: Meta): Activation {
     // todo: check the syntax Actiovation contructor name.
     let root: Activation = meta.identityCache.get('Activation.class');
     if (!root) {
@@ -1572,7 +1572,7 @@ export class PropertyAccessor {
  */
 export class Snapshot {
 
-  _meta: MetaRules;
+  _meta: Meta;
   _origClass: string;
   _assignments: Array<AssignmentSnapshot>;
   _allAssignments: Array<AssignmentSnapshot>;
@@ -1610,7 +1610,7 @@ export class Snapshot {
 export class ObjectMetaContext extends Context {
   static readonly DefaultLocale = 'en';
 
-  constructor(public meta: MetaRules, public nested: boolean = false) {
+  constructor(public meta: Meta, public nested: boolean = false) {
     super(meta, nested);
 
   }
@@ -1675,7 +1675,7 @@ export class ObjectMetaContext extends Context {
 export class UIContext extends ObjectMetaContext {
 
 
-  constructor(public meta: MetaRules, public nested: boolean = false) {
+  constructor(public meta: Meta, public nested: boolean = false) {
     super(meta, nested);
   }
 
