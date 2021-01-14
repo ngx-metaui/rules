@@ -20,7 +20,7 @@ import {Component, OnInit} from '@angular/core';
 import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {Routes} from '@angular/router';
-import {Entity, META_RULES, MetaRules, MetaUITestRulesModule} from '@ngx-metaui/rules';
+import {Entity, MetaUIRulesModule, UIMeta} from '@ngx-metaui/rules';
 import {MaterialRulesModule} from '../material-rules.module';
 
 /**
@@ -49,7 +49,7 @@ describe('Meta Context Component', () => {
         TestContainerViewDefferedComponent
       ],
       imports: [
-        MetaUITestRulesModule.forRoot({'env.test': true}),
+        MetaUIRulesModule.forRoot({'env.test': true}),
         MaterialRulesModule.forRoot()
       ],
       providers: [{provide: APP_BASE_HREF, useValue: '/'}]
@@ -66,7 +66,7 @@ describe('Meta Context Component', () => {
   it('It should render 1 input fields with pre-loaded values: Frank',
     fakeAsync(() => {
 
-      const metaUI: MetaRules = TestBed.inject(META_RULES);
+      const metaUI: UIMeta = TestBed.inject(UIMeta);
       metaUI.addTestUserRule('UserTestDynClassRule',
         MyUserTestClassDynBindingOneFieldRule);
 
@@ -88,7 +88,7 @@ describe('Meta Context Component', () => {
   it('It should render 4 input fields with pre-loaded values: Frank, Kolar, 1000,' +
     ' Some note' + ' about me.', fakeAsync(() => {
 
-    const metaUI: MetaRules = TestBed.inject(META_RULES);
+    const metaUI: UIMeta = TestBed.inject(UIMeta);
     metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
@@ -111,7 +111,7 @@ describe('Meta Context Component', () => {
   it('It should render 4 String components - read only mode pre-loaded values: ' +
     'Frank, Kolar,' + ' 1000, Some note about me.',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.inject(META_RULES);
+      const metaUI: UIMeta = TestBed.inject(UIMeta);
       metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerViewComponent);
@@ -131,7 +131,7 @@ describe('Meta Context Component', () => {
 
   it('It should render 4 String components when object loaded is deffered using timer',
     fakeAsync(() => {
-      const metaUI: MetaRules = TestBed.inject(META_RULES);
+      const metaUI: UIMeta = TestBed.inject(UIMeta);
       metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerViewDefferedComponent);

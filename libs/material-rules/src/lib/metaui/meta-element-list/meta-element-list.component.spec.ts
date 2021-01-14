@@ -19,7 +19,7 @@
 import {Component} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
-import {Entity, META_RULES, MetaRules, MetaUITestRulesModule} from '@ngx-metaui/rules';
+import {Entity, MetaUITestRulesModule, UIMeta} from '@ngx-metaui/rules';
 import {MaterialRulesModule} from '@ngx-metaui/material-rules';
 
 
@@ -48,7 +48,7 @@ describe('How  Stack layout can render two different content stacked',
 
     it('should render two FormTables', () => {
 
-      const metaUI: MetaRules = TestBed.inject(META_RULES);
+      const metaUI: UIMeta = TestBed.inject(UIMeta);
       metaUI.addTestUserRule('UserStackRule', UserStackRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);

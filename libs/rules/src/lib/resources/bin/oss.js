@@ -7,7 +7,6 @@ const path = require('path');
 const fs = require('fs');
 
 
-
 // Running it from sources directly ?
 const devMode = process.argv.length > 0 &&
   process.argv[1].indexOf('libs/rules/src/lib/resources/bin/oss.js') > 0;

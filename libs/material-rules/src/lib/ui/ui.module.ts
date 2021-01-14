@@ -42,7 +42,7 @@ import {DatePicker} from './date-picker/date-picker.component';
 import {Button} from './button/button.component';
 import {StringField} from './string/string.component';
 import {AutoComplete} from './autocomplete/autocomplete.component';
-import {META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {UIMeta} from '@ngx-metaui/rules';
 
 @NgModule({
   declarations: [
@@ -91,7 +91,7 @@ import {META_RULES, MetaRules} from '@ngx-metaui/rules';
 })
 export class UIModule {
 
-  constructor(@Inject(META_RULES) protected meta: MetaRules, private sf: MatSnackBar) {
+  constructor(protected meta: UIMeta, private sf: MatSnackBar) {
     this.meta.registerDependency('matSnackBar', sf);
   }
 }
