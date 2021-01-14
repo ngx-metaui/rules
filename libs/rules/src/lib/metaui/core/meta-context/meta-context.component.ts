@@ -39,7 +39,8 @@ import {Environment} from '../config/environment';
 import {ListWrapper} from '../utils/collection';
 import {Context} from '../../core/context';
 import {UIContext} from '../context';
-import {Meta} from '../meta';
+import {UIMeta} from '../uimeta';
+import {ACTIVE_CNTX} from '../constants';
 
 
 /**
@@ -98,13 +99,6 @@ import {Meta} from '../meta';
  */
 
 
-/**
- * Constant represent current active and mainly latest Context
- *
- */
-export const ACTIVE_CNTX = 'CurrentMC';
-const CNTX_CHANGED = 'Cntx_Changed';
-
 
 // define set of properties which will be skipped as they are defined as inputs or  added by
 // angular
@@ -122,10 +116,10 @@ const IMMUTABLE_PROPERTIES = [
 @Component({
   selector: 'm-context',
   template: `
-    <ng-template [ngIf]="autoRender">
-      <m-render></m-render>
-    </ng-template>
-    <ng-content></ng-content>
+      <ng-template [ngIf]="autoRender">
+          <m-render></m-render>
+      </ng-template>
+      <ng-content></ng-content>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -257,7 +251,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   constructor(private elementRef: ElementRef,
               public env: Environment,
               private _cd: ChangeDetectorRef,
-              protected meta: Meta,
+              protected meta: UIMeta,
               @Optional() private formContainer: ControlContainer) {
 
     this._isDirty = false;

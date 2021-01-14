@@ -37,6 +37,14 @@ import {Meta} from './meta';
 
 
 /**
+ * Constant represent current active and mainly latest Context
+ *
+ */
+export const ACTIVE_CNTX = 'CurrentMC';
+export const CNTX_CHANGED = 'Cntx_Changed';
+
+
+/**
  * Rule base constants
  */
 export const KeyAny = '*';

@@ -61,22 +61,24 @@ export class MaterialRulesModule {
   }
 }
 
+export function initLibMetaUI(rules: UIMeta) {
+  const initFce = function init(rEngine: UIMeta) {
 
-export function initLibMetaUI(rules: UIMeta): Function {
-  return (): Promise<any> => new Promise(resolve => {
-    rules.loadRuleSource({
-      module: 'MaterialRules', filePath: 'WidgetsRules.oss',
-      content: WidgetsRulesRule
-    }, true, UILibraryRulePriority);
+    const promise: Promise<any> = new Promise((resolve: any) => {
+      rEngine.loadRuleSource({
+        module: 'MaterialRules', filePath: 'WidgetsRules.oss',
+        content: WidgetsRulesRule
+      }, true, UILibraryRulePriority);
 
-    rules.loadRuleSource({
-      module: 'MaterialRules', filePath: 'PersistenceRules.oss',
-      content: PersistenceRulesRule
-    }, true, UILibraryRulePriority + 2000);
-
-    rules.registerComponents(entryComponents);
-    rules.loadApplicationRule();
-
-    resolve();
-  });
+      rEngine.loadRuleSource({
+        module: 'MaterialRules', filePath: 'PersistenceRules.oss',
+        content: PersistenceRulesRule
+      }, true, UILibraryRulePriority + 2000);
+      rEngine.registerComponents(entryComponents);
+      rEngine.loadApplicationRule();
+      resolve(true);
+    });
+    return promise;
+  };
+  return initFce.bind(initFce, rules);
 }

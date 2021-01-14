@@ -19,9 +19,8 @@
 import {Component} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {APP_BASE_HREF} from '@angular/common';
-import {By} from '@angular/platform-browser';
 import {MaterialRulesModule} from '../../material-rules.module';
-import {Entity, META_RULES, MetaRules, MetaUITestRulesModule} from '@ngx-metaui/rules';
+import {Entity, MetaUITestRulesModule, UIMeta} from '@ngx-metaui/rules';
 
 
 export const PopupUserStackARule =
@@ -149,7 +148,7 @@ describe('3 different layouts formed into Stack', () => {
 
   it('should render two FormTables', () => {
 
-    const metaUI: MetaRules = TestBed.inject(META_RULES);
+    const metaUI: UIMeta = TestBed.inject(UIMeta);
     metaUI.addTestUserRule('UserStackARule', UserStackARule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
@@ -163,7 +162,7 @@ describe('3 different layouts formed into Stack', () => {
   });
 
   it('should have two buttons in the top container when trait ActionButtons ', () => {
-    const metaUI: MetaRules = TestBed.inject(META_RULES);
+    const metaUI: UIMeta = TestBed.inject(UIMeta);
     metaUI.addTestUserRule('UserStackARule', UserStackARule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);

@@ -26,7 +26,8 @@ import {
   KeyLabel,
   MetaBaseComponent,
   MetaContextComponent,
-  MetaRules, OnContextSetEvent
+  OnContextSetEvent,
+  UIMeta
 } from '@ngx-metaui/rules';
 
 
@@ -165,7 +166,7 @@ export class MetaActionListComponent extends MetaBaseComponent {
       if (this.filterActions) {
         this._metaContext.context.set('filterActions', this.filterActions);
       }
-      const meta: MetaRules = this._metaContext.context.meta;
+      const meta: UIMeta = this._metaContext.context.meta as UIMeta;
       this._metaContext.context.push();
 
       this._actionsByCategory = new Map<string, ItemProperties[]>();
@@ -183,7 +184,7 @@ export class MetaActionListComponent extends MetaBaseComponent {
   }
 
   private actionChanged(): boolean {
-    const meta: MetaRules = this._metaContext.context.meta;
+    const meta: UIMeta = this._metaContext.context.meta as UIMeta;
     const actionByCat = new Map<string, ItemProperties[]>();
 
     this._metaContext.context.push();

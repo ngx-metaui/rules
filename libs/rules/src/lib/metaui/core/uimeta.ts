@@ -37,10 +37,9 @@ import {
 } from './property-value';
 import {Rule, RuleSet, Selector} from './rule';
 import {ItemProperties} from './item-properties';
-import {ACTIVE_CNTX} from './meta-context/meta-context.component';
 import {
   ActionZones,
-  AppConfigRuleFilesParam,
+  ACTIVE_CNTX,
   AppConfigUserRulesParam,
   DefaultActionCategory,
   KeyAction,
@@ -345,7 +344,6 @@ export class UIMeta extends ObjectMeta {
     return this.mapItemPropsToNames(itemsByZones);
   }
 
-
   /**
    * This method is responsible to load Application.oss which is called internal but this
    * method is exposed in order to run this manually e.g. from test
@@ -354,37 +352,14 @@ export class UIMeta extends ObjectMeta {
     if (!this.env.inTest) {
       return;
     }
+    const registeredAppRules = this.config.get(AppConfigUserRulesParam) || [];
+    for (const i in registeredAppRules) {
+      const userRule = registeredAppRules[i];
 
-    let aRules: string;
-    let registeredAppRules: any[];
-    let appRuleFiles: string[] = ['Application'];
-
-    if (isPresent(this.config)) {
-      appRuleFiles = this.config.get(AppConfigRuleFilesParam) || ['Application'];
-      registeredAppRules = this.config.get(AppConfigUserRulesParam);
-
-      // make sure we have always Application and make it more additive.
-      if (!ListWrapper.contains<string>(appRuleFiles, 'Application')) {
-        appRuleFiles.unshift('Application');
-      }
-    }
-
-    for (const ruleFile of appRuleFiles) {
-      const rule = ruleFile + 'Rule';
-
-      for (const i in registeredAppRules) {
-        const userRule = registeredAppRules[i];
-
-        if (userRule) {
-
-          if (userRule[rule] && userRule[rule]) {
-            aRules = userRule[rule];
-          }
-        }
-        if (aRules) {
-          this.loadRuleSource({filePath: ruleFile, module: 'App', content: aRules},
-            false, LowRulePriority);
-        }
+      const appRule = userRule['ApplicationRule'];
+      if (appRule) {
+        this.loadRuleSource({filePath: 'Application.oss', module: 'App', content: appRule},
+          false, LowRulePriority);
       }
     }
   }

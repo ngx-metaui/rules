@@ -17,8 +17,6 @@ import {fast1a32} from 'fnv-plus';
 import {CompositeType, isEntity, isValue} from './domain-model';
 
 
-
-
 export function unimplemented(): any {
   throw new Error('unimplemented');
 }

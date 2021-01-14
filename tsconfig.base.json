@@ -19,8 +19,7 @@
     "esModuleInterop": true,
     "paths": {
       "@ngx-metaui/rules": [
-        "dist/libs/rules",
-        "libs/rules/src/index.ts"
+        "libs/rules/src/public_api.ts"
       ],
       "@ngx-metaui/material-rules": [
         "libs/material-rules/src/public_api.ts"
