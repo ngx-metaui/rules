@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.1](https://github.com/ngx-meta/rules/compare/v10.0.0...v10.0.1) (2021-01-15)
+
+
+### Features
+
+* **core:** Allow dynamic rule loading from the app ([d034c19](https://github.com/ngx-meta/rules/commit/d034c19cfcdd25853a8c631bdb21b045c4ab8c34))
+* **core:** Expose reload OSS Method ([a37b46a](https://github.com/ngx-meta/rules/commit/a37b46abcce2365809658741d6b12706bc236a2b))
+
+
+### Bug Fixes
+
+* **core:** Missing import for Location service ([b52bf87](https://github.com/ngx-meta/rules/commit/b52bf8793af6e417c21c2431adbafdd39b0046a4))
+* **material:** Material app now works with latest changes of dynamic rules ([c1c28c2](https://github.com/ngx-meta/rules/commit/c1c28c2e33b7da2d4980891f53201fdccd50334e))
+* **material:** Update material library with dynamic rule functionality ([f44d535](https://github.com/ngx-meta/rules/commit/f44d53579166c542f93a30b84eec2cd909a13c03))
+
 ## [10.0.0](https://github.com/ngx-meta/rules/compare/v10.0.0-beta.4...v10.0.0) (2021-01-08)
 
 
