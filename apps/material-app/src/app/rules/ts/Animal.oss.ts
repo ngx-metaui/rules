@@ -5,7 +5,7 @@
  *
  */
 /* tslint:disable */
-export const AnimalRule = '/*     Default definition */ class=Animal {      field=name {       trait:labelField;     }  }     ';
+export const AnimalRule = '/*ɵ    Default definitionɵ*/ɵclass=Animal {ɵɵ    field=name {ɵ      trait:labelField;ɵ    }ɵɵ}ɵɵɵɵɵ';
 /* tslint:disable */
 /**
  *  @formatter:on

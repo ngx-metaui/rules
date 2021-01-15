@@ -49,7 +49,7 @@ function processOSSFile(file) {
     const data = fs.readFileSync(file, "utf8");
     validateOSS(data, file);
 
-    const content = data.replace(/\r?\n/g, ' ').replace(/\'/g, '"');
+    const content = data.replace(/\r?\n/g, 'ɵ').replace(/\'/g, '"');
     console.log(`\tWriting TS with OSS content to: ${outFile}`);
 
     const name = path.basename(file).replace('.oss', '');

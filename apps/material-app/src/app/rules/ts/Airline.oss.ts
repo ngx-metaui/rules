@@ -5,7 +5,7 @@
  *
  */
 /* tslint:disable */
-export const AirlineRule = '/*     Default definition */ class=Airline {      field=name {       trait:labelField;     }  }     ';
+export const AirlineRule = '/*ɵ    Default definitionɵ*/ɵclass=Airline {ɵɵ    field=name {ɵ      trait:labelField;ɵ    }ɵɵ}ɵɵɵɵɵ';
 /* tslint:disable */
 /**
  *  @formatter:on
