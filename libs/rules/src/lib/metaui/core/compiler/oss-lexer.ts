@@ -637,6 +637,12 @@ export class LexerUtils {
   static readonly EOF = 0;
   static readonly TAB = 9;
   static readonly SPACE = 32;
+
+  /**
+   * Special character that we use in runtime editor to replace it with NEW LINE.
+   *
+   */
+  static readonly EDITOR_NEW_LIKE = 629; // ɵ;
   static readonly EXCLMARK = 33; // !
   static readonly DQ = 34; // "
   static readonly HASH = 35; // #
@@ -686,7 +692,7 @@ export class LexerUtils {
 
   static isSpace(code: number): boolean {
     return code === LexerUtils.SPACE || code === LexerUtils.TAB ||
-      LexerUtils.isLineEnds(code);
+      code === LexerUtils.EDITOR_NEW_LIKE || LexerUtils.isLineEnds(code);
   }
 
 

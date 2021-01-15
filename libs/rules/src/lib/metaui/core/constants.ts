@@ -132,12 +132,16 @@ export const ModuleActionZones = ['zNav', 'zGlobal'];
 export const ActionZones = ['zGlobal', 'zMain', 'zGeneral'];
 
 
-export interface OSSSource {
+export interface OSSResource {
   filePath: string;
   module?: string;
   content: string;
 }
 
+
+export function resourceToPath(resource: OSSResource) {
+  return `${resource.module}/${resource.filePath}`;
+}
 
 /**
  * Contains variety of methods that must be implemented a rule Repository and contains elementary

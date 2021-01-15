@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {Injectable, Type} from '@angular/core';
+import {Injectable, isDevMode, Type} from '@angular/core';
 import {Route} from '@angular/router';
 import {assert, isArray, isBlank, isPresent, isStringMap, toList} from './utils/lang';
 import {FieldPath} from './utils/field-path';
@@ -64,10 +64,11 @@ import {
   LowRulePriority,
   ModuleActionZones,
   ModuleInfo,
-  OSSSource,
+  OSSResource,
   PropFieldPropertyList,
   PropFieldsByZone,
   PropLayoutsByZone,
+  resourceToPath,
   SystemRulePriority,
   ValueQueriedObserver,
   ZoneMain,
@@ -143,11 +144,17 @@ export class UIMeta extends ObjectMeta {
 
 
     } finally {
+      if (isDevMode()) {
+        window['$oss'] = this;
+      }
       this.endRuleSet();
     }
 
   }
 
+  loadedRuleSets(): Map<string, RuleSet> {
+    return this._loadedResource;
+  }
 
   zones(context: Context): Array<string> {
     const zones: Array<string> = context.propertyForKey('zones');
@@ -171,9 +178,9 @@ export class UIMeta extends ObjectMeta {
     return new UIContext(this, isNested);
   }
 
-  loadRuleSource(source: OSSSource, required: boolean, rank: number): boolean {
+  loadRuleSource(source: OSSResource, required: boolean, rank: number): boolean {
     if (source.content) {
-      this.beginRuleSet(source.filePath, rank);
+      this.beginRuleSet(resourceToPath(source), rank);
       this._loadRuleSource(source);
       return true;
     }
@@ -183,9 +190,10 @@ export class UIMeta extends ObjectMeta {
 
   loadAppRuleOnDemand(ruleText: string, appClass: string): void {
     if (ruleText) {
-      this.beginRuleSet('app:' + appClass);
+      const resource = {content: ruleText, module: 'App', filePath: appClass};
+      this.beginRuleSet(resourceToPath(resource));
       try {
-        this._loadRuleSource({content: ruleText, module: 'App', filePath: appClass});
+        this._loadRuleSource(resource);
       } catch (e) {
         throw e;
       }
@@ -500,9 +508,9 @@ export class UIMeta extends ObjectMeta {
     //   false, LowRulePriority);
   }
 
-  protected _loadRuleSource(source: OSSSource): void {
-    this._loadRules(source.filePath, source.content, true);
-    this._loadedResource.set(`${source.module}/${source.filePath}`, this.endRuleSet());
+  protected _loadRuleSource(source: OSSResource): void {
+    this._loadRules(resourceToPath(source), source.content, true);
+    this._loadedResource.set(resourceToPath(source), this.endRuleSet());
   }
 
   protected _loadRules(name: string, content: string, editable: boolean): void {
@@ -513,6 +521,17 @@ export class UIMeta extends ObjectMeta {
       this.endRuleSet().disableRules();
       throw new Error(`Error loading rule ${name} - ${e} `);
     }
+  }
+
+  reloadRuleFile(resource: OSSResource): void {
+    const ruleSet: RuleSet = this._loadedResource.get(resourceToPath(resource));
+    if (!ruleSet) {
+      throw new Error('Attempt to reload not previously loaded resource');
+    }
+    this.beginReplacementRuleSet(ruleSet);
+    this._loadRuleSource(resource);
+    ruleSet.disableRules();
+    this.invalidateRules();
   }
 
   private _fireAction(context: Context, withBackAction: boolean): void {

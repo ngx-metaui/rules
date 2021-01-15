@@ -171,6 +171,13 @@ export abstract class Meta implements OnDestroy {
     }
   }
 
+  beginReplacementRuleSet(orig: RuleSet): void {
+    const origRank = orig.startRank();
+    this.beginRuleSet(orig.filePath);
+    this._currentRuleSet._rank = origRank;
+  }
+
+
   endRuleSet(): RuleSet {
     assert(isPresent(this._currentRuleSet), 'No rule set progress');
     const result: RuleSet = this._currentRuleSet;
