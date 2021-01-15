@@ -9,7 +9,7 @@ import {
   QueryList,
   ViewChildren
 } from '@angular/core';
-import {Action, META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {Action, UIMeta} from '@ngx-metaui/rules';
 import {User} from '../model/user';
 import {Airline} from '../model/airline';
 import {Animal} from '../model/animal';
@@ -39,7 +39,7 @@ export class UserDetailExposedComponent implements OnInit, DoCheck, AfterViewIni
   formFields: QueryList<MatFormField>;
 
 
-  constructor(@Inject(META_RULES) protected meta: MetaRules,
+  constructor(protected meta: UIMeta,
               private cd: ChangeDetectorRef) {
   }
 

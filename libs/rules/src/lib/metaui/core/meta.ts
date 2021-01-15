@@ -60,7 +60,7 @@ import {
 import {ComponentRegistry} from './component-registry.service';
 import {KeyValueTransformer, KeyValueTransformer_KeyPresent} from './tranformers';
 import {ItemProperties} from './item-properties';
-import {OnDestroy, Type} from '@angular/core';
+import {Injectable, OnDestroy, Type} from '@angular/core';
 import {Route} from '@angular/router';
 import {LocalizedString} from './i18n/localized-string';
 
@@ -77,6 +77,7 @@ import {LocalizedString} from './i18n/localized-string';
  *
  *
  */
+@Injectable()
 export abstract class Meta implements OnDestroy {
 
   /**
