@@ -23,7 +23,7 @@ import {
   NgModule,
   Optional
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {UIMeta} from './core/uimeta';
 import {AWMetaCoreModule} from './core/meta-core.module';
 import {AWMetaLayoutModule} from './layout/meta-layout.module';
