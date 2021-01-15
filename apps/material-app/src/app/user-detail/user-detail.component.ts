@@ -1,5 +1,5 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
-import {Action, META_RULES, MetaRules} from '@ngx-metaui/rules';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Action, UIMeta} from '@ngx-metaui/rules';
 import {User} from '../model/user';
 import {Airline} from '../model/airline';
 import {Animal} from '../model/animal';
@@ -20,7 +20,7 @@ export class UserDetailComponent implements OnInit {
   animal: Animal;
 
 
-  constructor(@Inject(META_RULES) protected meta: MetaRules, private cd: ChangeDetectorRef) {
+  constructor(protected meta: UIMeta, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {

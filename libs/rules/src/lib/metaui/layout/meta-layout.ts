@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {OnDestroy} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {assert, isBlank, isPresent} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {MetaBaseComponent} from './meta.base.component';
@@ -35,6 +35,7 @@ import {PropertyMap} from '../core/policies/merging-policy';
  *
  *
  */
+@Injectable()
 export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   /**
    * A map linking the name of the layout to the actual context. We need this when we need
