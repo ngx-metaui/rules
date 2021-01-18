@@ -190,7 +190,7 @@ export class UIMeta extends ObjectMeta {
 
   loadAppRuleOnDemand(ruleText: string, appClass: string): void {
     if (ruleText) {
-      const resource = {content: ruleText, module: 'App', filePath: appClass};
+      const resource = {content: ruleText, module: 'App', filePath: `${appClass}.oss`};
       this.beginRuleSet(resourceToPath(resource));
       try {
         this._loadRuleSource(resource);
@@ -760,22 +760,10 @@ class AppRuleMetaDataProvider implements ValueQueriedObserver {
     let aRules: string;
     const uiMeta: UIMeta = <UIMeta>meta;
 
-    if (uiMeta._testRules.has(value + 'Rule')) {
-      // since we are in development mode and test mode is on we can check extra repository
-      // used by tests, we need to check if we are not running unittest and a class is not
-      // application defined but unittest defined rule
-
-      if (uiMeta._testRules.has(value + 'Rule') && uiMeta._testRules.get(value + 'Rule')) {
-        aRules = uiMeta._testRules.get(value + 'Rule');
-      }
-
-    } else if (isPresent(uiMeta.config) &&
-      uiMeta.config.get(AppConfigUserRulesParam)) {
-
+    if (uiMeta.config) {
       const userReferences: any[] = uiMeta.config.get(AppConfigUserRulesParam);
-
       for (const i in userReferences) {
-        if (isPresent(userReferences[i][value + 'Rule']) && userReferences[i][value + 'Rule']) {
+        if (userReferences[i][value + 'Rule']) {
           aRules = userReferences[i][value + 'Rule'];
         }
       }
