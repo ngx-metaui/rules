@@ -56,7 +56,7 @@ describe('Use of decorators to extend oss ', () => {
     it('should set correct label for annotated field to equal to xName', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const myUserTestClass = new MyUserTestClass('Frank');
 
@@ -85,7 +85,7 @@ describe('Use of decorators to extend oss ', () => {
     it('should override firstName label to Name if we use label decorator', () => {
 
          const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push(); // 1

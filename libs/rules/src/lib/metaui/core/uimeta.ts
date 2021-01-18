@@ -371,7 +371,10 @@ export class UIMeta extends ObjectMeta {
       }
     }
   }
-
+  /**
+   *
+   * Called by RuntimeParser to handle decls like "zLeft => lastName#required"
+   */
   addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
                      traits: Array<string>, lineNumber: number): Rule {
 
@@ -499,13 +502,6 @@ export class UIMeta extends ObjectMeta {
         this.componentRegistry.registerTypes(uRule);
       }
     }
-  }
-
-  addTestUserRule(testRuleName: string, source: any): void {
-    this._testRules.set(testRuleName, source);
-    //
-    // this.loadRuleSource({filePath: testRuleName, module: 'Test', content: source},
-    //   false, LowRulePriority);
   }
 
   protected _loadRuleSource(source: OSSResource): void {

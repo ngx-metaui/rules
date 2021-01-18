@@ -41,14 +41,14 @@ export {
   PropertyAccessor, Snapshot, StaticRec, UIContext
 } from './context';
 export {
-  MetaRuleBase, LayoutRule, _DebugDoubleCheckMatches, _UsePartialIndexing, ActionZones,
+  _DebugDoubleCheckMatches, _UsePartialIndexing, ActionZones,
   addTrait, addTraits, AppConfigRuleFilesParam, AppConfigUserRulesParam, ClassRulePriority,
   DeclRule, DefaultActionCategory, FieldPathNullMarker, KeyAction,
   KeyActionCategory, KeyAfter, KeyAny, KeyArea, KeyBindings, KeyClass, KeyComponentName, KeyDeclare,
   KeyEditable, KeyEditing, KeyElementType, KeyField, KeyHidden, KeyHomePage, KeyLabel, KeyLayout,
   KeyModule, KeyObject, KeyOperation, KeyRank, KeyTrait, KeyTraitGroup, KeyType, KeyValid, KeyValue,
   KeyVisible, KeyWrapperBinding, KeyWrapperComponent, KeyZonePath, LowRulePriority, MaxKeyDatas,
-  META_RULES, ModuleActionZones, ModuleInfo, NullMarker, ObjectRule, overrideKeyForKey,
+  ModuleActionZones, ModuleInfo, NullMarker, ObjectRule, overrideKeyForKey,
   PropActionCategories, PropActionsByCategory, PropFieldPropertyList, PropFieldsByZone,
   PropIsFieldsByZone, PropLayoutsByZone, RootPredecessorKey, ScopeKey, SystemRulePriority,
   UILibraryRulePriority, ValueQueriedObserver, ZoneBottom, ZoneDetail, ZoneLeft, ZoneMain,

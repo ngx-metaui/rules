@@ -149,7 +149,7 @@ describe('3 different layouts formed into Stack', () => {
   it('should render two FormTables', () => {
 
     const metaUI: UIMeta = TestBed.inject(UIMeta);
-    metaUI.addTestUserRule('UserStackARule', UserStackARule);
+    metaUI.config.registerRule('UserStackA', UserStackARule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
     fixtureWrapper.detectChanges();
@@ -163,7 +163,7 @@ describe('3 different layouts formed into Stack', () => {
 
   it('should have two buttons in the top container when trait ActionButtons ', () => {
     const metaUI: UIMeta = TestBed.inject(UIMeta);
-    metaUI.addTestUserRule('UserStackARule', UserStackARule);
+    metaUI.config.registerRule('UserStackA', UserStackARule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
     fixtureWrapper.detectChanges();
