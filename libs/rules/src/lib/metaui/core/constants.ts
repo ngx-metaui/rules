@@ -23,16 +23,11 @@
  */
 import {isBlank, toList} from './utils/lang';
 import {ListWrapper} from './utils/collection';
-import {Rule, RuleSet, Selector} from './rule';
 import {Context} from './context';
-import {MatchResult, MatchValue, UnionMatchResult} from './match';
 import {FieldPath} from './utils/field-path';
-import {InjectionToken, Type} from '@angular/core';
-import {ComponentRegistry} from './component-registry.service';
 import {ItemProperties} from './item-properties';
 import {LocalizedString} from './i18n/localized-string';
 import {Route} from '@angular/router';
-import {KeyData, PropertyManager, PropertyMap, PropertyMerger} from './policies/merging-policy';
 import {Meta} from './meta';
 
 
@@ -141,114 +136,6 @@ export interface OSSResource {
 
 export function resourceToPath(resource: OSSResource) {
   return `${resource.module}/${resource.filePath}`;
-}
-
-/**
- * Contains variety of methods that must be implemented a rule Repository and contains elementary
- * methods to load, index and compute property maps based on a series of key/value
- * constraints
- */
-export interface MetaRuleBase {
-
-  rules: Rule[];
-  ruleCount: number;
-  ruleSetGeneration: number;
-
-
-  /**
-   *  Before we load rules this method needs to be called in order to create a `RuleSet` containing
-   *  common information about the source and some other key properties of the loaded rule.
-   *
-   *  We need to be able to track every load origin therefore each RuleSet into the loaded Rule.
-   *
-   */
-  beginRuleSet(identificator: string): void;
-
-  /**
-   * Updates current rule counts from the loaded RuleSet
-   *
-   */
-  endRuleSet(): RuleSet;
-
-  /**
-   *
-   * Called by RuntimeParser to handle decls like "zLeft => lastName#required"
-   */
-  addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
-                     traits: Array<string>, lineNumber: number): Rule;
-
-
-  /**
-   *
-   * Just an helper method to be able to register some test rules. Used by `ValueQueriedObserver`s
-   */
-  addTestUserRule(testRuleName: string, source: any): void;
-
-
-  /**
-   *  Allocate new matchArray to be used in matching against rule Selectors
-   */
-  newMatchArray(): MatchValue[];
-
-  /**
-   * Executes rule matching based on the given key. Returns `MatchResult` that represents the
-   * result of computing the set of matching rules based on the key/value
-   *
-   */
-  match(key: string, value: any, intermediateResult: MatchResult): MatchResult;
-
-  /**
-   * Combines several MatchResult during re-matching
-   *
-   */
-  unionOverrideMatch(key: string, value: any,
-                     intermediateResult: UnionMatchResult): UnionMatchResult;
-
-  /**
-   *
-   * Computes and returns final property maps
-   *
-   */
-  propertiesForMatch(matchResult: MatchResult): PropertyMap;
-
-  /**
-   *
-   * Fill in matchArray with MatchValues to use in Selector matching
-   *
-   */
-  matchArrayAssign(array: MatchValue[], keyData: KeyData, matchValue: MatchValue): void;
-
-  /**
-   *  Retrieve Current information for particular property that are stored in the
-   *  `PropertyManager` that maintains information about a Merger and KeyData
-   *
-   */
-  managerForProperty(name: string): PropertyManager;
-
-  /**
-   * Returns indexable value.
-   * For instance, 'object' may be indexed as true/false (present or not)
-   *
-   */
-  transformValue(key: string, value: any): any;
-
-  /**
-   * Returns KeyData for given key. Read me on `keyData`
-   *
-   */
-  keyData(key: string): KeyData;
-
-  bestSelectorToIndex(selectors: Array<Selector>): Selector;
-
-
-  newPropertiesMap(): PropertyMap;
-
-  clearCaches(): void;
-
-  invalidateRules(): void;
-
-  isNullMarker(value: any): boolean;
-
 }
 
 
@@ -446,63 +333,6 @@ export interface LayoutRule {
    */
   currentModuleLabel(moduleName: string, context?: Context): string;
 
-}
-
-
-export const META_RULES = new InjectionToken<MetaRulesx>('meta.rules.uimeta');
-
-/**
- * MetaRules represent main interface that is sharable among other objects that needs to
- * access and work with the rule base as well as inherits other methods from Rule base interface
- *
- *
- */
-export interface MetaRulesx extends MetaRuleBase, ObjectRule, LayoutRule {
-  readonly PropertyMerger_DeclareList: PropertyMerger;
-  readonly PropertyMerger_Traits: PropertyMerger;
-  readonly PropertyMerger_List: PropertyMerger;
-  readonly Transformer_KeyPresent: PropertyMerger;
-
-  declareKeyMask: number;
-
-  identityCache: Map<string, any>;
-  componentRegistry: ComponentRegistry;
-
-
-  newContext(isNested?: boolean): Context;
-
-  /**
-   *
-   * Traits can be group in order to improve the merging process and this return current
-   * group if any the trait is associated with
-   *
-   */
-  groupForTrait(trait: string): string;
-
-  toString();
-
-
-  /**
-   *  List all dependencies that can be accessed from the OSS expression
-   */
-  contextDependencies(): Map<string, any>;
-
-  /**
-   *  Registers any type instance that are later on injected to the Context so you can
-   *  reference it from the OSS
-   */
-  registerDependency(name: string, dependency: any): void;
-
-
-  /**
-   * Nessesary utility methods exposed to OSS
-   *
-   */
-  compPageWithName(name: string): Type<any>;
-
-  beautifyClassName(name: string): string;
-
-  toClassName(object: any): string;
 }
 
 

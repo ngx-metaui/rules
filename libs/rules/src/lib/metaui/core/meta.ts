@@ -155,7 +155,13 @@ export abstract class Meta implements OnDestroy {
     }
   }
 
-
+  /**
+   *  Before we load rules this method needs to be called in order to create a `RuleSet` containing
+   *  common information about the source and some other key properties of the loaded rule.
+   *
+   *  We need to be able to track every load origin therefore each RuleSet into the loaded Rule.
+   *
+   */
   beginRuleSet(filePath: string, rank?: number): void {
     try {
       assert(isBlank(this._currentRuleSet),
@@ -177,7 +183,10 @@ export abstract class Meta implements OnDestroy {
     this._currentRuleSet._rank = origRank;
   }
 
-
+  /**
+   * Updates current rule counts from the loaded RuleSet
+   *
+   */
   endRuleSet(): RuleSet {
     assert(isPresent(this._currentRuleSet), 'No rule set progress');
     const result: RuleSet = this._currentRuleSet;
@@ -389,9 +398,6 @@ export abstract class Meta implements OnDestroy {
 
   abstract zones(context: Context): Array<string>;
 
-
-  abstract addPredecessorRule(itemName: string, contextPreds: Array<Selector>, predecessor: string,
-                              traits: Array<string>, lineNumber: number): Rule;
 
   contextDependencies(): Map<string, any> {
     return this.contextInjectables;

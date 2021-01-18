@@ -49,7 +49,7 @@ describe('How  Stack layout can render two different content stacked',
     it('should render two FormTables', () => {
 
       const metaUI: UIMeta = TestBed.inject(UIMeta);
-      metaUI.addTestUserRule('UserStackRule', UserStackRule);
+      metaUI.config.registerRule('UserStack', UserStackRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
 

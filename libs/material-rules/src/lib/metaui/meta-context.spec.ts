@@ -67,7 +67,7 @@ describe('Meta Context Component', () => {
     fakeAsync(() => {
 
       const metaUI: UIMeta = TestBed.inject(UIMeta);
-      metaUI.addTestUserRule('UserTestDynClassRule',
+      metaUI.config.registerRule('UserTestDynClass',
         MyUserTestClassDynBindingOneFieldRule);
 
 
@@ -89,7 +89,7 @@ describe('Meta Context Component', () => {
     ' Some note' + ' about me.', fakeAsync(() => {
 
     const metaUI: UIMeta = TestBed.inject(UIMeta);
-    metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
+    metaUI.config.registerRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
     fixtureWrapper.detectChanges();
@@ -112,7 +112,7 @@ describe('Meta Context Component', () => {
     'Frank, Kolar,' + ' 1000, Some note about me.',
     fakeAsync(() => {
       const metaUI: UIMeta = TestBed.inject(UIMeta);
-      metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
+      metaUI.config.registerRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerViewComponent);
       fixtureWrapper.detectChanges();
@@ -132,7 +132,7 @@ describe('Meta Context Component', () => {
   it('It should render 4 String components when object loaded is deffered using timer',
     fakeAsync(() => {
       const metaUI: UIMeta = TestBed.inject(UIMeta);
-      metaUI.addTestUserRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
+      metaUI.config.registerRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
 
       const fixtureWrapper = TestBed.createComponent(TestContainerViewDefferedComponent);
       fixtureWrapper.detectChanges();

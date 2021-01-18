@@ -514,7 +514,7 @@ describe('Meta Context behavioor ', () => {
       'all the fields ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -537,7 +537,7 @@ describe('Meta Context behavioor ', () => {
     it(' It should switch into different layout component (MetaElementList) in case we push ' +
       'Stack trait ', () => {
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -568,7 +568,7 @@ describe('Meta Context behavioor ', () => {
       'will have  6 zone layout ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -599,7 +599,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -631,7 +631,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -664,7 +664,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -696,7 +696,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -723,7 +723,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -755,7 +755,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -798,7 +798,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -831,7 +831,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -856,7 +856,7 @@ describe('Meta Context behavioor ', () => {
     it('it should render a label for field age as a My age', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -882,7 +882,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -911,7 +911,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context = metaUI.newContext();
         context.push();
@@ -941,7 +941,7 @@ describe('Meta Context behavioor ', () => {
     it('it should render correct value when switching operation from edit to view', () => {
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const ob = new MyUserTestClass('Frank', 'Kolar', 16, 'From Czech Republic');
         const context = metaUI.newContext();
@@ -1003,7 +1003,7 @@ describe('Meta Context behavioor ', () => {
 
           const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-          metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+          metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
           const context = metaUI.newContext();
 
 
@@ -1037,7 +1037,7 @@ describe('Meta Context behavioor ', () => {
 
           const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-          metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+          metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
           const context = metaUI.newContext();
 
 
@@ -1070,7 +1070,7 @@ describe('Meta Context behavioor ', () => {
         'rule, but once we push it role=admin we should see all the fields', () => {
 
           const metaUI: UIMeta = TestBed.inject(UIMeta);
-          metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
+          metaUI.config.registerRule('UserProfileTe', UserProfileTeRule);
 
           let context = metaUI.newContext();
 
@@ -1194,7 +1194,7 @@ describe('Meta Context behavioor ', () => {
         'then after settings a objects', () => {
 
           const metaUI: UIMeta = TestBed.inject(UIMeta);
-          metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
+          metaUI.config.registerRule('UserProfileTe', UserProfileTeRule);
 
           const context = metaUI.newContext();
           context.push();
@@ -1225,7 +1225,7 @@ describe('Meta Context behavioor ', () => {
         'role=admin ' + 'no earlier then after settings a objects', () => {
 
           const metaUI: UIMeta = TestBed.inject(UIMeta);
-          metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
+          metaUI.config.registerRule('UserProfileTe', UserProfileTeRule);
 
           const context = metaUI.newContext();
           context.push();
@@ -1268,7 +1268,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context: UIContext = <UIContext>metaUI.newContext();
 
@@ -1301,7 +1301,7 @@ describe('Meta Context behavioor ', () => {
       'that it check the field AGE ${object.age > 18}', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context: UIContext = <UIContext>metaUI.newContext();
 
@@ -1335,7 +1335,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClassRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClassRule);
 
         const context: UIContext = <UIContext>metaUI.newContext();
 
@@ -1360,7 +1360,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
 
@@ -1390,7 +1390,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
         const context: UIContext = <UIContext>metaUI.newContext();
 
 
@@ -1424,7 +1424,7 @@ describe('Meta Context behavioor ', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
 
@@ -1453,7 +1453,7 @@ describe('Meta Context behavioor ', () => {
       'so that we will get 5 fields as 1 is derived', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
 
@@ -1484,7 +1484,7 @@ describe('Meta Context behavioor ', () => {
       'operations VIEW', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
 
@@ -1537,7 +1537,7 @@ describe('Meta Context behavioor ', () => {
 
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClasForZonesRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClasForZonesRule);
         const context = metaUI.newContext();
 
 
@@ -1582,7 +1582,7 @@ describe('Meta Context behavioor ', () => {
 
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
+        metaUI.config.registerRule('UserProfileTe', UserProfileTeRule);
 
 
         const context = metaUI.newContext();
@@ -1611,7 +1611,7 @@ describe('Meta Context behavioor ', () => {
       () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('UserProfileTeRule', UserProfileTeRule);
+        metaUI.config.registerRule('UserProfileTe', UserProfileTeRule);
 
 
         const context = metaUI.newContext();
@@ -1645,7 +1645,7 @@ describe('Meta Context behavioor ', () => {
       'decamelizing its Field', () => {
 
         const metaUI: UIMeta = TestBed.inject(UIMeta);
-        metaUI.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+        metaUI.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
         const context = metaUI.newContext();
 
 
@@ -1740,7 +1740,7 @@ describe('Meta Context behavioor ', () => {
 
       metaPefr.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
 
-      metaPefr.addTestUserRule('MyUserTestClassRule', MyUserTestClas2sRule);
+      metaPefr.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
 
       const start = Date.now();
 
@@ -1776,7 +1776,7 @@ describe('Meta Context behavioor ', () => {
     });
   });
 
-  fdescribe('Rule Reloading functionality ', () => {
+  describe('Rule Reloading functionality ', () => {
 
 
     it('should maintain list of loaded resources that is 4 ', () => {

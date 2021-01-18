@@ -31,6 +31,7 @@ import {OverrideValue} from '../policies/merging-policy';
 import {Rule, Selector} from '../rule';
 import {OSSParser} from './oss-parser';
 import {Meta} from '../meta';
+import {UIMeta} from '../uimeta';
 
 
 /**
@@ -106,6 +107,6 @@ export class RuntimeParser extends RulesVisitor {
                                predecessor: string, traits: Array<string>,
                                lineNumber: number): void {
 
-    this._meta.addPredecessorRule(itemName, contextPreds, predecessor, traits, lineNumber);
+    (this._meta as UIMeta).addPredecessorRule(itemName, contextPreds, predecessor, traits, lineNumber);
   }
 }
