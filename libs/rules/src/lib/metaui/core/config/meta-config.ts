@@ -22,6 +22,7 @@ import {BooleanWrapper, NumberWrapper} from '../utils/lang';
 import {Environment} from './environment';
 import {Injectable} from '@angular/core';
 import {MapWrapper} from '../utils/collection';
+import {AppConfigUserRulesParam} from '../constants';
 
 
 /**
@@ -47,8 +48,33 @@ export class MetaConfig {
       const values: Map<string, any> = MapWrapper.createFromStringMap<any>(config);
       values.forEach((v: any, k: any) => this.set(k, v));
     }
+    this.set(AppConfigUserRulesParam, []);
   }
 
+  /**
+   * This method is mostly used on the app layer to register whoel imports
+   *
+   * import * as rules ./rules/user-rules.ts
+   *
+   *
+   * todo: translate this to key value pair
+   */
+  registerRules(rules: Array<any>): void {
+    const existingRules: Array<any> = this.get(AppConfigUserRulesParam) || [];
+    existingRules.push(rules);
+  }
+
+  /**
+   * have to support above format from impots
+   *
+   */
+  registerRule(forType: string, content: string): void {
+    const existingRules: Array<any> = this.get(AppConfigUserRulesParam) || [];
+    const rule: any = {
+      [`${forType}Rule`]: content
+    };
+    existingRules.push(rule);
+  }
 
   /**
    * Sets values to configuration. to make sure we will not run into case-sensitive problems we

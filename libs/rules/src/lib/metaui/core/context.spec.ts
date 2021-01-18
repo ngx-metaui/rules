@@ -1776,6 +1776,67 @@ describe('Meta Context behavioor ', () => {
     });
   });
 
+  fdescribe('Rule Reloading functionality ', () => {
+
+
+    it('should maintain list of loaded resources that is 4 ', () => {
+      const rules: UIMeta = TestBed.inject(UIMeta);
+      rules.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
+      rules.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
+
+      const context = rules.newContext();
+      context.push();
+      {
+        context.set('layout', 'Inspect');
+        context.set('operation', 'edit');
+        context.set('class', 'MyUserTestClass');
+        expect(rules.loadedRuleSets().size).toBe(4);
+      }
+      context.pop();
+    });
+
+
+    it('should maintain list of loaded resources ', () => {
+      const rules: UIMeta = TestBed.inject(UIMeta);
+      rules.componentRegistry.registerType('MyUserTestClass', MyUserTestClass);
+      rules.config.registerRule('MyUserTestClass', MyUserTestClas2sRule);
+
+      const context = rules.newContext();
+      context.push();
+      {
+        context.set('layout', 'Inspect');
+        context.set('operation', 'edit');
+        context.set('class', 'MyUserTestClass');
+
+        context.push();
+        context.set('field', 'age');
+        expect(context.propertyForKey(KeyLabel)).toEqual('My Age');
+        context.pop();
+      }
+      context.pop();
+
+      rules.reloadRuleFile({
+        filePath: 'MyUserTestClass.oss', module: 'App',
+        content: MyUserTestClas2sRuleReplaced
+      });
+      const context2 = rules.newContext();
+      context2.push();
+      {
+        context2.set('layout', 'Inspect');
+        context2.set('operation', 'edit');
+        context2.set('class', 'MyUserTestClass');
+        expect(rules.loadedRuleSets().size).toBe(4);
+
+        context2.push();
+        context2.set('field', 'age');
+        expect(context2.propertyForKey(KeyLabel)).toEqual('My Age Replaced');
+        context2.pop();
+      }
+      context2.pop();
+
+    });
+  });
+
 
   /**
    *
@@ -1872,6 +1933,47 @@ export const MyUserTestClas2sRule =
   '   }\n' +
   '   field=age#required {\n' +
   '     label:"My Age";\n' +
+  '     valid: ${value > 19};\n' +
+  '     operation=view {\n' +
+  '       label:"Age Label For View";\n' +
+  '     }\n' +
+  '   }\n' +
+  '   field=bio {\n' +
+  '     label:"This is my biography";\n' +
+  '     visible:${object.age > 18};\n' +
+  '     operation=view {\n' +
+  '       after:zNone;\n' +
+  '     }\n' +
+  '   }\n' +
+  '   zNone => *;\n' +
+  '   zLeft => firstName => lastName => age => bio;\n' +
+  '' +
+  '   operation=view {\n' +
+  '         @field=bioView {\n' +
+  '           trait: derived;' +
+  '           type:String;\n' +
+  '           visible: ${ object.bio.length > 15 };\n' +
+  '           value: ${object.bio.substring(0, 10) + "..."};\n' +
+  '           after:age;\n' +
+  '         }\n' +
+  '   }\n' +
+  '}';
+
+
+export const MyUserTestClas2sRuleReplaced =
+  'class=MyUserTestClass {\n' +
+  '   field=firstName#required {\n' +
+  '     label:"My First Name";\n' +
+  '' +
+  '     operation=create {\n' +
+  '       label:"Enter your first Name";\n' +
+  '     }\n' +
+  '   }\n' +
+  '   field=lastName#required {\n' +
+  '     label:"My Last Name";\n' +
+  '   }\n' +
+  '   field=age#required {\n' +
+  '     label:"My Age Replaced";\n' +
   '     valid: ${value > 19};\n' +
   '     operation=view {\n' +
   '       label:"Age Label For View";\n' +
