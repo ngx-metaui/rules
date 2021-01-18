@@ -107,6 +107,7 @@ export class RuntimeParser extends RulesVisitor {
                                predecessor: string, traits: Array<string>,
                                lineNumber: number): void {
 
-    (this._meta as UIMeta).addPredecessorRule(itemName, contextPreds, predecessor, traits, lineNumber);
+    (this._meta as UIMeta).addPredecessorRule(itemName, contextPreds, predecessor,
+      traits, lineNumber);
   }
 }
