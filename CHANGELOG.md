@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [10.0.2](https://github.com/ngx-meta/rules/compare/v10.0.1...v10.0.2) (2021-01-18)
 
+### Bug Fixes
+
+* **core:** Add reload rule logic unittest ([29f768dz8](https://github.com/ngx-metaui/rules/commit/c44f0911e923266b4f561e64291e39a222f75658))
+* **core:** Introduce new method to register test rules ([d9b35493](https://github.com/ngx-metaui/rules/commit/6813c3622957162925b5932a40f4cad9b35493f3))
+
 ### [10.0.1](https://github.com/ngx-meta/rules/compare/v10.0.0...v10.0.1) (2021-01-15)
 
 
