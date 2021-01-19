@@ -116,10 +116,10 @@ const IMMUTABLE_PROPERTIES = [
 @Component({
   selector: 'm-context',
   template: `
-      <ng-template [ngIf]="autoRender">
-          <m-render></m-render>
-      </ng-template>
-      <ng-content></ng-content>
+    <ng-template [ngIf]="autoRender">
+      <m-render></m-render>
+    </ng-template>
+    <ng-content></ng-content>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -243,6 +243,8 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
   private prevObject: any;
   private _scopeBinding: string;
 
+  private _ruleSGeneration: number;
+
 
   private _context: Context;
 
@@ -330,6 +332,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
       // console.log('MC-ngAfterViewInit', this.bindings);
       this.pushPop(false);
       this.viewInitialized = true;
+      this._ruleSGeneration = this.meta.ruleSetGeneration;
     }
   }
 
@@ -407,7 +410,7 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
 
     if (isPush) {
       activeContext.push();
-      if (this._scopeBinding && this.hasObject) {
+      if (this._scopeBinding && (this.hasObject || this._hasObject())) {
 
         this.beforeContextSet.emit(this._scopeBinding);
         activeContext.setScopeKey(this._scopeBinding);
@@ -459,12 +462,13 @@ export class MetaContextComponent implements OnDestroy, AfterViewInit, AfterView
    */
   private hydrate(context: Context) {
     const id = context.id();
-    if (this.contextCache.has(id)) {
+    if (this.contextCache.has(id) && this._ruleSGeneration === this.meta.ruleSetGeneration) {
       return this.contextCache.get(id);
     } else {
       const hydratedCnt = context.snapshot().hydrate(false);
 
       this.contextCache.set(id, hydratedCnt);
+      this._ruleSGeneration = this.meta.ruleSetGeneration;
       return hydratedCnt;
     }
   }

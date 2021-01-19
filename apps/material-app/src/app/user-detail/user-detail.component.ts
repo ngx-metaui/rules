@@ -6,7 +6,7 @@ import {Animal} from '../model/animal';
 
 
 @Component({
-  selector: 'ngx-metaui-root',
+  selector: 'ngx-metaui-user',
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
 })

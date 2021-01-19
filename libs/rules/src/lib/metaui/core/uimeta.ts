@@ -505,7 +505,10 @@ export class UIMeta extends ObjectMeta {
   }
 
   protected _loadRuleSource(source: OSSResource): void {
-    this._loadRules(resourceToPath(source), source.content, true);
+    const readonly = source.filePath.includes('WidgetsRules') ||
+      source.filePath.includes('PersistenceRules');
+
+    this._loadRules(resourceToPath(source), source.content, !readonly);
     this._loadedResource.set(resourceToPath(source), this.endRuleSet());
   }
 

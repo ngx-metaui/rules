@@ -19,7 +19,7 @@ import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
 
 
 @Component({
-  selector: 'ngx-metaui-root',
+  selector: 'ngx-metaui-useri',
   templateUrl: './user-detail-exposed.component.html',
   styleUrls: ['./user-detail-exposed.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

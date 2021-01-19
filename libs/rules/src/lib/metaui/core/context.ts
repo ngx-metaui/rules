@@ -1673,8 +1673,6 @@ export class ObjectMetaContext extends Context {
 }
 
 export class UIContext extends ObjectMetaContext {
-
-
   constructor(public meta: Meta, public nested: boolean = false) {
     super(meta, nested);
   }
