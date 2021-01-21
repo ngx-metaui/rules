@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.4](https://github.com/ngx-meta/rules/compare/v10.0.3...v10.0.4) (2021-01-21)
+
+
+### Bug Fixes
+
+* **core:** Add typings for MetaConfig ([a431560](https://github.com/ngx-meta/rules/commit/a4315603735b755f6c2cf1408318a607235c7cea))
+
 ### [10.0.3](https://github.com/ngx-meta/rules/compare/v10.0.2...v10.0.3) (2021-01-19)
 
 
