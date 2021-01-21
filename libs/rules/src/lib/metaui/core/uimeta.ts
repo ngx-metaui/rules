@@ -357,9 +357,6 @@ export class UIMeta extends ObjectMeta {
    * method is exposed in order to run this manually e.g. from test
    */
   loadApplicationRule(): void {
-    if (!this.env.inTest) {
-      return;
-    }
     const registeredAppRules = this.config.get(AppConfigUserRulesParam) || [];
     for (const i in registeredAppRules) {
       const userRule = registeredAppRules[i];
@@ -371,6 +368,7 @@ export class UIMeta extends ObjectMeta {
       }
     }
   }
+
   /**
    *
    * Called by RuntimeParser to handle decls like "zLeft => lastName#required"

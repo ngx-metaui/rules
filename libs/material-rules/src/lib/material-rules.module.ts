@@ -75,7 +75,12 @@ export function initLibMetaUI(rules: UIMeta) {
         content: PersistenceRulesRule
       }, true, UILibraryRulePriority + 2000);
       rEngine.registerComponents(entryComponents);
-      rEngine.loadApplicationRule();
+
+      // App rule was not previously loaded
+      if (!rEngine.config.preloadApplicationRule()) {
+        rEngine.loadApplicationRule();
+      }
+
       resolve(true);
     });
     return promise;

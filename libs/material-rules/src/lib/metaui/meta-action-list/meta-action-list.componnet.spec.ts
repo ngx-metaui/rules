@@ -130,7 +130,7 @@ describe('3 different layouts formed into Stack', () => {
         TestContainerEditPopupComponent
       ],
       imports: [
-        MetaUITestRulesModule.forRoot({'env.test': true}),
+        MetaUITestRulesModule.forRoot(),
         MaterialRulesModule.forRoot()
 
       ],

@@ -33,7 +33,7 @@ describe('Loading rules functionality', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUITestRulesModule.forRoot({'env.test': true})
+        MetaUITestRulesModule.forRoot()
       ]
     });
   });
@@ -61,7 +61,7 @@ describe('Rule matching functionality on preloaded ruleset', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUITestRulesModule.forRoot({'env.test': true})
+        MetaUITestRulesModule.forRoot()
       ]
     });
 
@@ -419,7 +419,7 @@ describe('Expression eval of Matched properties how they can be resolved on the 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MetaUITestRulesModule.forRoot({'env.test': true})
+        MetaUITestRulesModule.forRoot()
       ]
     });
   });

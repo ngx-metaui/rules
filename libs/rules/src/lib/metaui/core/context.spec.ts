@@ -54,7 +54,7 @@ describe('Meta Context behavioor ', () => {
         TestContainerComponent, SFComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true})
+        MetaUIRulesModule.forRoot({inTest: true})
       ]
     });
 

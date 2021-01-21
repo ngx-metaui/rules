@@ -49,7 +49,7 @@ describe('Meta Context Component', () => {
         TestContainerViewDefferedComponent
       ],
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true}),
+        MetaUIRulesModule.forRoot(),
         MaterialRulesModule.forRoot()
       ],
       providers: [{provide: APP_BASE_HREF, useValue: '/'}]

@@ -31,7 +31,7 @@ describe('Use of decorators to extend oss ', () => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [
-        MetaUIRulesModule.forRoot({'env.test': true})
+        MetaUIRulesModule.forRoot({inTest: true})
       ]
     });
 

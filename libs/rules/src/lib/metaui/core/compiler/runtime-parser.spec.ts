@@ -31,7 +31,7 @@ describe('Parsing rules on the fly and registering them with the rule engine',
 
       TestBed.configureTestingModule({
         imports: [
-          MetaUITestRulesModule.forRoot({'env.test': true})
+          MetaUITestRulesModule.forRoot()
         ]
       });
       window.setTimeout(function () {

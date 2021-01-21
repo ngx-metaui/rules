@@ -17,7 +17,7 @@
  *
  */
 
-export {MetaConfig} from './config/meta-config';
+export {MetaConfig, MetaConfigVars} from './config/meta-config';
 export {
   MetaContextComponent, MetaUIActionEvent, OnContextSetEvent
 } from './meta-context/meta-context.component';

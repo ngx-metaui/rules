@@ -32,7 +32,7 @@ import {WidgetsRulesRule} from './core/ts/WidgetsRules.oss';
 import {SystemRulePriority} from './core/constants';
 import {PersistenceRulesRule} from './core/ts/PersistenceRules.oss';
 import {RoutingService} from './core/utils/routing.service';
-import {makeConfig, MetaConfig} from './core/config/meta-config';
+import {makeConfig, MetaConfig, MetaConfigVars} from './core/config/meta-config';
 import {Router} from '@angular/router';
 import {Environment} from './core/config/environment';
 
@@ -61,7 +61,7 @@ export class MetaUIRulesModule {
    * This is a wrapper initializer both for core and components until we separate META and UI
    *
    */
-  static forRoot(config: { [key: string]: any } = {}): ModuleWithProviders<MetaUIRulesModule> {
+  static forRoot(config: Partial<MetaConfigVars> = {}): ModuleWithProviders<MetaUIRulesModule> {
     return {
       ngModule: MetaUIRulesModule,
       providers: [
@@ -107,6 +107,9 @@ export function initMetaUI(rules: UIMeta) {
       }, true, SystemRulePriority + 2000);
       rEngine.registerComponents(entryComponents);
 
+      if (rEngine.config.preloadApplicationRule()) {
+        rEngine.loadApplicationRule();
+      }
       resolve(true);
     });
     return promise;

@@ -32,7 +32,7 @@ describe('How  Stack layout can render two different content stacked',
           TestContainerEditComponent
         ],
         imports: [
-          MetaUITestRulesModule.forRoot({'env.test': true}),
+          MetaUITestRulesModule.forRoot(),
           MaterialRulesModule.forRoot()
         ],
         providers: [{provide: APP_BASE_HREF, useValue: '/'}]

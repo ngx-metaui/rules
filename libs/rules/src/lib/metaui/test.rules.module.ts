@@ -42,11 +42,11 @@ import {MockLocationStrategy, SpyLocation} from '@angular/common/testing';
 })
 export class MetaUITestRulesModule {
 
-  static forRoot(config: { [key: string]: any } = {}): MetaUITestRulesModule {
+  static forRoot(): MetaUITestRulesModule {
     return {
       ngModule: MetaUITestRulesModule,
       providers: [
-        ...MetaUIRulesModule.forRoot(config).providers,
+        ...MetaUIRulesModule.forRoot({inTest: true}).providers,
         {provide: Location, useClass: SpyLocation},
         {provide: LocationStrategy, useClass: MockLocationStrategy}
       ]

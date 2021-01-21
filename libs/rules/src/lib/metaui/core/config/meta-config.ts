@@ -21,9 +21,12 @@
 import {BooleanWrapper, NumberWrapper} from '../utils/lang';
 import {Environment} from './environment';
 import {Injectable} from '@angular/core';
-import {MapWrapper} from '../utils/collection';
 import {AppConfigUserRulesParam} from '../constants';
 
+export interface MetaConfigVars {
+  loadApplicationRule: boolean;
+  inTest: boolean;
+}
 
 /**
  * Simple Configuration implementation  which let us configure MetaUI during a bootstrap
@@ -33,6 +36,7 @@ import {AppConfigUserRulesParam} from '../constants';
 @Injectable({providedIn: 'root'})
 export class MetaConfig {
   private values: Map<string, any>;
+  private config: MetaConfigVars;
 
   constructor(public environment: Environment) {
     this.values = new Map<string, any>();
@@ -43,11 +47,12 @@ export class MetaConfig {
    * Called by factory method to initialize this config class
    *
    */
-  init(config: { [key: string]: any }) {
-    if (config) {
-      const values: Map<string, any> = MapWrapper.createFromStringMap<any>(config);
-      values.forEach((v: any, k: any) => this.set(k, v));
+  init(config: MetaConfigVars) {
+    this.config = config;
+    if (this.config.loadApplicationRule === undefined) {
+      this.config.loadApplicationRule = false;
     }
+    this.environment.inTest = this.config.inTest;
     this.set(AppConfigUserRulesParam, []);
   }
 
@@ -59,7 +64,7 @@ export class MetaConfig {
    *
    * todo: translate this to key value pair
    */
-  registerRules(rules: Array<any>): void {
+  registerRules(rules: any): void {
     const existingRules: Array<any> = this.get(AppConfigUserRulesParam) || [];
     existingRules.push(rules);
   }
@@ -76,6 +81,10 @@ export class MetaConfig {
     existingRules.push(rule);
   }
 
+  preloadApplicationRule(): boolean {
+    return this.config.loadApplicationRule;
+  }
+
   /**
    * Sets values to configuration. to make sure we will not run into case-sensitive problems we
    * are converting all keys into lowercase
@@ -83,10 +92,6 @@ export class MetaConfig {
    */
   set(key: string, value: any): void {
     this.values.set(key.toLowerCase(), value);
-
-    if (key.toLowerCase() === 'env.test') {
-      this.environment.inTest = value;
-    }
   }
 
   /**
@@ -119,9 +124,8 @@ export class MetaConfig {
  * Factory instantiate MetaConfig provider
  *
  */
-export function makeConfig(config: { [key: string]: any }, env: Environment): MetaConfig {
+export function makeConfig(config: MetaConfigVars, env: Environment): MetaConfig {
   const conf: MetaConfig = new MetaConfig(env);
-
   conf.init(config);
   return conf;
 }
