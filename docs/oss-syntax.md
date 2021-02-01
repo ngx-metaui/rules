@@ -264,7 +264,7 @@ vs using predecessor operator
 zLeft => firstName#required => lastName#required => password#required,secret
 ```
 
-# Exrepssions
+# Expressions
 
 Expressions are wrapped in `${…}` and use the AWExpr language which perfectly can execute also javascript code
 The `“this”` is the `Context object` – key paths reference assignments in context
