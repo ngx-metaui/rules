@@ -20,7 +20,7 @@ Rule format is inspired by CSS, but extended to support nesting and chaining and
 ```
 
 * **CSS**: if an `a` tag appears in a `div` named toc, set the property `text-decoration` to `underline`
-* **OSS**: if a field named `email` appears in a class named `User`, set the property `toolTip` to `Your email address`
+* **OSS**: if a field named `email` appears in a class named `User`, set the property `toolTip` to `Your email`
 
 
 ### Basic syntax
