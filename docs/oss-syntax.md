@@ -266,7 +266,7 @@ zLeft => firstName#required => lastName#required => password#required,secret
 
 # Expressions
 
-Expressions are wrapped in `${…}` and use the AWExpr language which perfectly can execute also javascript code
+Expressions are wrapped in `${…}` and use JS syntax to execute also javascript code
 The `“this”` is the `Context object` – key paths reference assignments in context
 
   * This is one of the reason why we actively thinking about new way how to be less dependant on OSS any legacy expression libraries
