@@ -70,11 +70,7 @@ describe('Meta Context Component', () => {
       metaUI.config.registerRule('UserTestDynClass',
         MyUserTestClassDynBindingOneFieldRule);
 
-
       const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
-      fixtureWrapper.detectChanges();
-      tick();
-
       fixtureWrapper.detectChanges();
       tick();
 
@@ -95,12 +91,7 @@ describe('Meta Context Component', () => {
     fixtureWrapper.detectChanges();
     tick();
 
-    fixtureWrapper.detectChanges();
-    tick();
-
-    //
     formInputs = fixtureWrapper.nativeElement.querySelectorAll('.form-field input');
-
     expect(formInputs[0].value).toEqual('Frank');
     expect(formInputs[1].value).toEqual('Kolar');
     expect(formInputs[2].value).toEqual('1000');

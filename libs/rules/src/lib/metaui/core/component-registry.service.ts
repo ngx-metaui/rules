@@ -21,7 +21,7 @@
 import {Injectable} from '@angular/core';
 import {isStringMap} from './utils/lang';
 import {Environment} from './config/environment';
-import {ComponentReference} from '../layout/core/include.directive';
+import {ComponentReference} from '../layout/core/base-renderer.directive';
 
 
 /**

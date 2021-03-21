@@ -27,7 +27,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MetaIncludeComponent} from '@ngx-metaui/rules';
+import {MetaRendererComponent} from '@ngx-metaui/rules';
 
 
 /**
@@ -53,8 +53,8 @@ export class MetaContentPageComponent implements OnInit, OnDestroy, AfterViewIni
   label: string;
 
 
-  @ViewChild(MetaIncludeComponent)
-  metaInclude: MetaIncludeComponent;
+  @ViewChild(MetaRendererComponent)
+  metaInclude: MetaRendererComponent;
 
   constructor(private route: ActivatedRoute, private _cd: ChangeDetectorRef) {
   }

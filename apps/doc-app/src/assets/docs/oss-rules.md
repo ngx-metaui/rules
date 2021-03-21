@@ -1084,7 +1084,7 @@ with html code like this:
 
 ```html
   <m-context [object]="myRequest" operation="view" layout="InvoicePage"
-                   (onAction)="onActionHandler($event)">
+                   (action)="onActionHandler($event)">
         <m-include-component></m-include-component>
    </m-context>
 ```

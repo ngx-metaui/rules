@@ -31,10 +31,8 @@ import {
   Directive,
   Injector,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   Type,
   ViewContainerRef
 } from '@angular/core';
@@ -80,57 +78,16 @@ export interface ComponentReference {
 }
 
 /**
- *  This abstract component can be used as standalone component but at the moment we removed
- *  this functionality
- *
- * This is the main building block to dynamically generated UI.
- *
- *
  * Todo: Currently the way Angular API works
  *
- * is too complex and there is no abstraction for element manipulation as we need to do  3
+ * Is too complex and there is no abstraction for element manipulation as we need to do  3
  * different calls to place a component to the container. What we want is to create some kind
  * of representation of ContainerElement with method add and remove content.
  *
- * e.g.: We want to replace applyContentElementIfAny for better solution. Now there are several
- * calls to create and add component to the view.
- *
- * We could have something like:
- *
- * ```ts
- *       constructor(vcr: ViewContainerRef, crf: ComponentResolverFactory){}
- *       ...
- *
- *     // we could have something called NgContainerElement
- *       vcr.containerElement(ComponentType | ComponentFactory ) => would return abstracted
- *       representation with current host
- *       vcr.containerElement(ComponentType, parent) => nested structure.
- *
- *    // to add Child Content
- *    vcr.containerElement().add(string | NgContainerElement | NgContent)
- *    // To create programmatically e.g. a button with ngContent
- *
- *    cr.containerElement().add('Click Me!')
- *
- *    // e.g. to create button with content
- *    vcr.containerElement(ButtonComponent, bindingsMap).add('Click Me')
- *
- *
- *
- * add more component hierarchy:
- *
- * ```ts
- *  let content = new NgContent(HoverCardComponnets, bindingsMap)
- *  content.add(createLayout();
- *  containerElement.add(content)
- *
- * ```
- * @deprecated Will be merged together with MetaIncludeComponent as we have no use for this one
- * anymore
  */
 @Directive({})
-export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewChecked,
-  OnChanges, AfterViewInit, AfterContentInit {
+export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewChecked,
+  AfterViewInit, AfterContentInit {
 
   static readonly NgContent = 'ngcontent';
   static readonly NgContentElement = 'ngcontentElement';
@@ -148,7 +105,7 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
    *
    */
   @Input()
-  name: string;
+  name: string = '';
 
   /**
    * Provides bindings which will be passed into the component when instantiated
@@ -195,17 +152,7 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
 
   ngOnInit(): void {
     this.initRenderInProgress = true;
-
     this.viewContainer.clear();
-    this.doRenderComponent();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (isPresent(changes['name']) &&
-      (changes['name'].currentValue !== changes['name'].previousValue)) {
-      this.viewContainer.clear();
-      this.doRenderComponent();
-    }
   }
 
   ngAfterViewChecked(): void {
@@ -226,20 +173,20 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
   }
 
   ngOnDestroy(): void {
-    if (isPresent(this.currentComponent)) {
+    if (this.currentComponent) {
       this.currentComponent.destroy();
       this.currentComponent = undefined;
     }
 
-    if (isPresent(this.viewContainer)) {
+    if (this.viewContainer) {
       this.viewContainer.clear();
     }
-
   }
+
 
   /**
    * Handles a case where we need to resolve additional component and wrap the current one.
-   * Just like reateContentElementIfAny() this method needs to be executed after all
+   * Just like createContentElementIfAny() this method needs to be executed after all
    * is created and initialized (inside the ngAfterViewInit() )
    *
    */
@@ -248,15 +195,16 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
 
   /**
    * Renders a component into actual View Container. The process goes as this.
-   *  1. We retrieve component Type based on the component name and createa componentRef
-   *  2. Place the component onto the screen
+   *  1. We retrieve component Type based on the component name and create componentRef
+   *  2. Add the component to view
    *  3. Read component metadata, mainly @Input() and apply bindings for each of them
    *  4. Manually spin change detection to update the screen. Mainly for case where I need to
    * redraw a screen
    */
   protected doRenderComponent(): void {
-    this.placeTheComponent();
-    this.applyBindings(this.componentReference(), this.currentComponent, this.bindings);
+    // console.log('Renderer, doRenderComponent');
+    this.addComponentToView();
+    this.applyBindings(this.createComponentReference(), this.currentComponent, this.bindings);
 
     // Still not sure about this what all we should release here.
     this.currentComponent.onDestroy(() => {
@@ -274,8 +222,8 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
    * Place actual component onto the screen using ViewContainerRef
    *
    */
-  protected placeTheComponent(): void {
-    const reference = this.componentReference();
+  protected addComponentToView(): void {
+    const reference = this.createComponentReference();
     this.currentComponent = this.viewContainer
       .createComponent(reference.resolvedCompFactory, null, this.injector);
   }
@@ -327,16 +275,16 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
    */
   protected ngContent(): string {
     let content: any;
-    if (isPresent(content = this.bindings.get(IncludeDirective.NgContent))) {
-      this.bindings.delete(IncludeDirective.NgContent);
+    if (isPresent(content = this.bindings.get(BaseRenderer.NgContent))) {
+      this.bindings.delete(BaseRenderer.NgContent);
     }
     return content;
   }
 
   protected ngContentElement(): string {
     let content: any;
-    if (isPresent(content = this.bindings.get(IncludeDirective.NgContentElement))) {
-      this.bindings.delete(IncludeDirective.NgContentElement);
+    if (isPresent(content = this.bindings.get(BaseRenderer.NgContentElement))) {
+      this.bindings.delete(BaseRenderer.NgContentElement);
     }
     return content;
   }
@@ -349,7 +297,7 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
    *
    * returns {ComponentReference} a reference representing a compoent currently being rendered
    */
-  protected componentReference(): ComponentReference {
+  protected createComponentReference(): ComponentReference {
     if (!!this.resolvedComponentRef) {
       return this.resolvedComponentRef;
     }
@@ -433,6 +381,12 @@ export abstract class IncludeDirective implements OnDestroy, OnInit, AfterViewCh
     if (isPresent(this.currentComponent)) {
       this.currentComponent = null;
       this.resolvedComponentRef = null;
+    }
+  }
+
+  protected setIfChanged(comp: any, field: string, newVal: any): void {
+    if (comp[field] !== newVal) {
+      comp[field] = newVal;
     }
   }
 

@@ -25,23 +25,19 @@ import {
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
-  DoCheck,
   EventEmitter,
-  forwardRef,
-  Inject,
   Injector,
   SimpleChange,
   Type,
   ViewContainerRef
 } from '@angular/core';
 import {ComponentRegistry} from '../core/component-registry.service';
-import {ComponentReference, IncludeDirective} from './core/include.directive';
+import {BaseRenderer, ComponentReference} from './core/base-renderer.directive';
 import {DomUtilsService} from './core/dom-utils.service';
 
 import {
   assert,
   equals,
-  isBlank,
   isPresent,
   isString,
   nonPrivatePrefix,
@@ -66,11 +62,9 @@ import {ContextFieldPath, ValueConverter} from '../core/property-value';
 import {MetaContextComponent, MetaUIActionEvent} from '../core/meta-context/meta-context.component';
 import {DynamicPropertyValue} from '../core/policies/merging-policy';
 import {NgModel} from '@angular/forms';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
-
-const IgnoredEvents = [
-  'beforeContextSet', 'afterContextSet'
-];
 
 /**
  *  MetaIncludeComponent is (along with MetaContext) the key element for binding MetaUI
@@ -89,8 +83,7 @@ const IgnoredEvents = [
   template: '<ng-content></ng-content>',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaIncludeComponent extends IncludeDirective implements DoCheck, AfterViewInit {
-
+export class MetaRendererComponent extends BaseRenderer implements AfterViewInit {
   /**
    *
    * In metaU we can also insert into the element not only ngcontent but new instantiated
@@ -121,21 +114,12 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
   static readonly NgContentLayout = 'ngcontentLayout';
 
 
-  /**
-   * I could not find any reliable way how to access parent view. Even using forwardRef and going
-   * up to three to certain point worked failed.
-   *
-   * This is only use-case when creating component dynamically
-   *
-   */
-    // @Input()
-    // metaContext: MetaContextComponent;
-
   private _currentNgModel: NgModel;
+  private _destroy: Subject<void> = new Subject<void>();
+  private _currentContext: Context;
 
 
-  constructor(@Inject(forwardRef(() => MetaContextComponent))
-              public metaContext: MetaContextComponent,
+  constructor(public mc: MetaContextComponent,
               public viewContainer: ViewContainerRef,
               public factoryResolver: ComponentFactoryResolver,
               public env: Environment,
@@ -148,60 +132,22 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
 
 
   ngOnInit(): void {
+    this._currentContext = this.mc.contextChanged$.getValue();
+    // console.log('Renderer, INIT', this.mc._debugKeys());
+
     super.ngOnInit();
-
+    this.mc.contextChanged$
+      .pipe(takeUntil(this._destroy))
+      .subscribe(context => this._handleContextChanged(context));
   }
 
-  /**
-   * First we simply render the a component in the ngOnInit() and then every time something
-   * changes.
-   */
-  ngDoCheck(): void {
-    assert(!!this.metaContext.context && !!this.currentComponent,
-      'No context/ component for ' + this.name);
-
-    // create new component
-    if (this.isComponentChanged() || this.metaContext.isDirty) {
-      this.viewContainer.clear();
-      this.resolvedComponentRef = undefined;
-      this.doRenderComponent();
-      // console.log('MetaInclude(ngDoCheck- rerender ):', this.name);
-
-      this.createWrapperElementIfAny();
-      this.createContentElementIfAny();
-    } else if (!this._currentNgModel || this._currentNgModel.control.dirty) {
-
-      // we might skip component creation but we still need to update bindings
-      // as properties could change
-      const context = this.metaContext.context;
-      let editable = context.propertyForKey(KeyEditable);
-      if (isBlank(editable)) {
-        editable = context.propertyForKey(KeyEditing);
-      }
-      const metaBindings = context.propertyForKey(KeyBindings);
-      const type = context.propertyForKey(KeyType);
-      const inputs: string[] = this.componentReference().metadata.inputs;
-
-      if (this._currentNgModel && this._currentNgModel.control.dirty) {
-        this._currentNgModel.control.markAsPristine();
-      }
-
-
-      // re-apply Inputs & maybe we should diff properties and only if they changed re-apply
-      this.applyInputs(this.currentComponent, type, metaBindings, inputs, editable);
-    }
-  }
 
   /*
    * Retrieves component Name from the Context.
    */
   protected resolveComponentType(): Type<any> {
-    this.name = this.metaContext.context.propertyForKey(KeyComponentName);
-
-    if (isBlank(this.name)) {
-      return NoMetaComponent;
-    }
-    return super.resolveComponentType();
+    this.name = this._currentContext.propertyForKey(KeyComponentName);
+    return (!this.name) ? NoMetaComponent : super.resolveComponentType();
   }
 
   /*
@@ -225,28 +171,12 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    *
    */
   protected ngContent(): string {
-    let cntValue: any;
-    const bindings = this.metaContext.context.propertyForKey(KeyBindings);
-
-    if (isPresent(bindings) &&
-      isPresent(cntValue = bindings.get(IncludeDirective.NgContent))) {
-      cntValue = isString(cntValue) ? cntValue :
-        this.metaContext.context.resolveValue(cntValue);
-    }
-    return cntValue;
+    return this._readNgContentType(BaseRenderer.NgContent);
   }
 
 
   protected ngContentElement(): string {
-    let cntValue: any;
-    const bindings = this.metaContext.context.propertyForKey(KeyBindings);
-
-    if (isPresent(bindings) &&
-      isPresent(cntValue = bindings.get(IncludeDirective.NgContentElement))) {
-      cntValue = isString(cntValue) ? cntValue :
-        this.metaContext.context.resolveValue(cntValue);
-    }
-    return cntValue;
+    return this._readNgContentType(BaseRenderer.NgContentElement);
   }
 
 
@@ -256,28 +186,22 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    *
    */
   protected createContentElementIfAny(inAfterViewCheck: boolean = false): boolean {
-    let detectChanges = false;
-    const bindings = this.metaContext.context.propertyForKey(KeyBindings);
+    let detectChanges: boolean;
+    const bindings = this._currentContext.propertyForKey(KeyBindings);
 
+    if (!inAfterViewCheck && bindings && bindings.has(MetaRendererComponent.NgContentLayout)) {
+      const layoutName = bindings.get(MetaRendererComponent.NgContentLayout);
 
-    if (!inAfterViewCheck && isPresent(bindings)
-      && bindings.has(MetaIncludeComponent.NgContentLayout)) {
+      this._currentContext.push();
+      this._currentContext.set(KeyLayout, layoutName);
 
-      const layoutName = bindings.get(MetaIncludeComponent.NgContentLayout);
-      const context = this.metaContext.context;
-
-      context.push();
-      context.set(KeyLayout, layoutName);
-
-      const componentName = context.propertyForKey('component');
+      const componentName = this._currentContext.propertyForKey('component');
       const compType = this.compRegistry.nameToType.get(componentName);
 
       const componentFactory: ComponentFactory<any> = this.factoryResolver
         .resolveComponentFactory(compType);
 
       const componentMeta: Component = this.resolveDirective(componentFactory);
-      const ngComponent = this.viewContainer.createComponent(componentFactory, 0);
-
       const cReference: ComponentReference = {
         metadata: componentMeta,
         resolvedCompFactory: componentFactory,
@@ -285,13 +209,15 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
         componentName: componentName
       };
 
-      this.applyBindings(cReference, ngComponent, context.propertyForKey(KeyBindings),
+      const ngComponent = this.viewContainer.createComponent(componentFactory, 0);
+
+
+      this.applyBindings(cReference, ngComponent, this._currentContext.propertyForKey(KeyBindings),
         false);
 
       this.domUtils.insertIntoParentNgContent(this.currentComponent.location.nativeElement,
         ngComponent.location.nativeElement);
-
-      context.pop();
+      this._currentContext.pop();
 
       detectChanges = true;
     } else {
@@ -306,16 +232,15 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
 
 
   /**
-   * Meta placeTheComponent needs to account for wrapper component. If wrapper component
+   * Meta addComponentToView needs to account for wrapper component. If wrapper component
    * is present. It needs to inject the wrapper component on the page and add this component
    * inside the wrapper component.
    */
   protected createWrapperElementIfAny(): void {
-    const wrapperName = this.metaContext.context.propertyForKey(KeyWrapperComponent);
-    if (isBlank(wrapperName)) {
+    const wrapperName = this._currentContext.propertyForKey(KeyWrapperComponent);
+    if (!wrapperName) {
       return;
     }
-
     // Now we have wrapperComponent. We do the following:
     // 1.  Create wrapper component.
     const wrapperType = this.compRegistry.nameToType.get(wrapperName);
@@ -327,7 +252,7 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
     const wrapperComponent = this.viewContainer.createComponent(componentFactory);
 
     // 2. Add wrapper bindings to wrapper component.
-    const wrapperBindings = this.metaContext.context.propertyForKey(KeyWrapperBinding);
+    const wrapperBindings = this._currentContext.propertyForKey(KeyWrapperBinding);
     (<any>wrapperComponent.instance)['bindings'] = wrapperBindings;
 
     // 3. Apply the bindings. Get the wrapper metadata, look through it's input - output
@@ -349,87 +274,90 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    * ApplyBindings reads the @Inputs from ComponentMetadata and check if there exists a binding
    * coming from MetaRules. If there is we assign it to the input.
    */
-  protected applyBindings(cRef: ComponentReference,
-                          component: ComponentRef<any>,
-                          bindings: Map<string, any>,
-                          bUseMetaBindings: boolean = true): void {
+  protected applyBindings(cRef: ComponentReference, component: ComponentRef<any>,
+                          bindings: Map<string, any>, bUseMetaBindings: boolean = true): void {
     super.applyBindings(cRef, component, bindings);
+
     const inputs: string[] = cRef.metadata.inputs;
     const outputs: string[] = cRef.metadata.outputs;
-
-    let metaBindings = this.metaContext.context.propertyForKey(KeyBindings);
-    const editable = this.metaContext.context.propertyForKey(KeyEditable);
-    const type = this.metaContext.context.propertyForKey(KeyType);
+    let metaBindings = this._currentContext.propertyForKey(KeyBindings);
 
     // There are cases where we want to use the bindings passed into this function.
     // For example, the wrapperBindings.
     if (!bUseMetaBindings) {
       metaBindings = bindings;
     }
-
-    if (isBlank(metaBindings) || isBlank(inputs)) {
+    if (!metaBindings || !inputs) {
       return;
     }
 
     const currenBindings = MapWrapper.clone(metaBindings);
-    this.applyInputs(component, type, currenBindings, inputs, editable);
-    this.applyOutputs(component, currenBindings, outputs);
+    this._applyInputs(component);
+    this._applyOutputs(component, currenBindings, outputs);
 
   }
 
-  private applyInputs(component: ComponentRef<any>, type: any, bindings: any,
-                      inputs: string[], editable: any, initialApplyInputs: boolean = true) {
+  private _handleContextChanged(context: Context): void {
+    // console.log('Renderer, _handleContextChanged', this.mc._debugKeys());
+
+    this._currentContext = context;
+    if (this._isComponentChanged()) {
+      this._refreshView();
+    } else {
+      if (this._currentNgModel && this._currentNgModel.control.dirty) {
+        this._currentNgModel.control.markAsPristine();
+      }
+      this._applyInputs(this.currentComponent);
+    }
+    this.cd.detectChanges();
+  }
+
+  private _applyInputs(component: ComponentRef<any>) {
+
+    const editable = this._currentContext.propertyForKey(KeyEditing) ||
+      this._currentContext.propertyForKey(KeyEditable) || false;
+    const bindings = this._currentContext.propertyForKey(KeyBindings);
+    const type = this._currentContext.propertyForKey(KeyType);
+    const inputs: string[] = this.createComponentReference().metadata.inputs;
 
     if (!bindings || !inputs) {
       return;
     }
     // propagate a field type to bindings.
-    const setType = this.metaContext.context.booleanPropertyForKey('canSetType',
-      false);
-
-    if (isPresent(type) && ((isPresent(component.instance.canSetType) &&
-      component.instance.canSetType()) || setType)) {
+    if (this._currentContext.booleanPropertyForKey('canSetType') && type) {
       bindings.set(KeyType, type);
     }
-
-    if (editable !== undefined && inputs.indexOf('editable') !== -1) {
+    if (inputs.indexOf('editable') > -1) {
       this.setIfChanged(component.instance, 'editable', editable);
     }
 
     let updateComponent = false;
     for (const key of inputs) {
-      const publicKey = nonPrivatePrefix(key);
-      let value = bindings.get(publicKey);
-
-      if (key === 'name' && isBlank(value)) {
-        value = this.metaContext.context.propertyForKey(KeyField);
+      let value = bindings.get(key);
+      if (key === 'name' && !value) {
+        value = this._currentContext.propertyForKey(KeyField);
       }
-
-      if (this.skipInput(key, value)) {
+      if (this._skipInput(key, value)) {
         continue;
       }
+      if (value instanceof ContextFieldPath) {
+        this._applyDynamicInputBindings(component.instance, key, value);
 
-      // initialApplyInputs = only first time
-      if (initialApplyInputs && value instanceof ContextFieldPath) {
-        this.applyDynamicInputBindings(component.instance, bindings, inputs, key, value,
-          editable);
+      } else if (value instanceof DynamicPropertyValue) {
+        const newValue = (value as DynamicPropertyValue).evaluate(this._currentContext);
+        this.setIfChanged(component.instance, key, newValue);
 
-      } else if (initialApplyInputs && value instanceof DynamicPropertyValue) {
-        const dynval: DynamicPropertyValue = value;
-        const newValue = dynval.evaluate(this.metaContext.context);
-        this.setIfChanged(component.instance, publicKey, newValue);
       } else {
         /**
          * when re-applying primitives
          */
-        if (!equals(component.instance[publicKey], value)) {
-          this.setIfChanged(component.instance, publicKey, value);
+        if (!equals(component.instance[key], value)) {
+          this.setIfChanged(component.instance, key, value);
           updateComponent = true;
-
-          /*** If created NgModel update setDisabled as this is controled by FormControl
+          /*** If created NgModel update setDisabled as this is controlled by FormControl
            * property
            */
-          if (component['ngModelCtx'] && publicKey === 'disabled') {
+          if (component['ngModelCtx'] && key === 'disabled') {
             if (value) {
               component['ngModelCtx'].control.disable();
             } else {
@@ -440,31 +368,26 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
       }
     }
 
-    if (bindings.has('ngModel') && !component['ngModelCtx']) {
+    if (bindings.has('ngModel') && !this.currentComponent['ngModelCtx']) {
       const ngModelValue = bindings.get('ngModel');
       assert(ngModelValue instanceof ContextFieldPath,
         'You cant assign non expression value to [ngModel]');
-      this.applyNgModel(component, ngModelValue);
+      this._applyNgModel(this.currentComponent, ngModelValue);
 
       bindings.delete('value');
     }
 
     if (updateComponent) {
-      const cd = component.instance.cd || component.changeDetectorRef;
+      const cd = this.currentComponent.instance.cd || this.currentComponent.changeDetectorRef;
       if (cd) {
         cd.markForCheck();
       }
-      if (component.instance.ngOnChanges) {
-        component.instance.ngOnChanges({});
+      if (this.currentComponent.instance.ngOnChanges) {
+        this.currentComponent.instance.ngOnChanges({});
       }
     }
   }
 
-  private setIfChanged(comp: any, field: string, newVal: any): void {
-    if (comp[field] !== newVal) {
-      comp[field] = newVal;
-    }
-  }
 
   /**
    * I am not sure how to do this properly since angular does not let me instantiate a directive.
@@ -474,7 +397,7 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    *
    *
    */
-  private applyNgModel(component: ComponentRef<any>, cntxPath: ContextFieldPath): void {
+  private _applyNgModel(component: ComponentRef<any>, cntxPath: ContextFieldPath): void {
     // let's reuse existing ngModel
     if (this._currentNgModel) {
       this._currentNgModel.valueAccessor = component.instance;
@@ -483,8 +406,8 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
       this._currentNgModel = new NgModel(null, null, null,
         [component.instance]);
 
-      this._currentNgModel.model = this.mGetValue(component.instance, this.metaContext, cntxPath);
-      this._currentNgModel.name = this.metaContext.context.propertyForKey(KeyField);
+      this._currentNgModel.model = this._mGetValue(cntxPath);
+      this._currentNgModel.name = this._currentContext.propertyForKey(KeyField);
       this._currentNgModel.reset(this._currentNgModel.model);
 
       this._currentNgModel.ngOnChanges({
@@ -494,11 +417,11 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
     }
     component.instance['ngControl'] = this._currentNgModel;
     component['ngModelCtx'] = this._currentNgModel;
-    this.initNgModel(component, cntxPath);
+    this._initNgModel(component, cntxPath);
     this._currentNgModel.control.markAsPristine();
   }
 
-  private initNgModel(component: ComponentRef<any>, cntxPath: ContextFieldPath): void {
+  private _initNgModel(component: ComponentRef<any>, cntxPath: ContextFieldPath): void {
 
     if (!!component.instance['disabled']) {
       this._currentNgModel.control.disable();
@@ -506,7 +429,7 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
       this._currentNgModel.control.enable();
     }
     const subscription = this._currentNgModel.update.subscribe((value: any) =>
-      this.mSetValue(component.instance, null, value, this.metaContext, cntxPath)
+      this._mSetValue(component.instance, null, value, cntxPath)
     );
     const destroy = component.instance.onDestroy;
     component.onDestroy(() => {
@@ -518,9 +441,9 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
   }
 
 
-  private skipInput(key: string, value: any): boolean {
-    return isBlank(value) || key === IncludeDirective.NgContent ||
-      key === MetaIncludeComponent.NgContentLayout;
+  private _skipInput(key: string, value: any): boolean {
+    return !value || key === BaseRenderer.NgContent ||
+      key === MetaRendererComponent.NgContentLayout;
   }
 
   /**
@@ -535,19 +458,19 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    *  implementing your handler that consumes all kinds of events.  It needs to be more typed.
    *
    */
-  private applyOutputs(component: ComponentRef<any>, bindings: any, outputs: string[]) {
+  private _applyOutputs(component: ComponentRef<any>, bindings: any, outputs: string[]) {
     for (const key of outputs) {
       const publicKey = nonPrivatePrefix(key);
       const value = bindings.get(publicKey);
 
-      if (key === IncludeDirective.NgContent) {
+      if (key === BaseRenderer.NgContent) {
         continue;
       }
       const eventEmitter: EventEmitter<any> = component.instance[publicKey];
       if (value instanceof DynamicPropertyValue) {
-        this.applyDynamicOutputBinding(eventEmitter, value, this.metaContext.context);
+        this._applyDynamicOutputBinding(eventEmitter, value, this._currentContext);
 
-      } else if (!IgnoredEvents.includes(publicKey)) {
+      } else {
         // just trigger event outside
         eventEmitter.subscribe((val: any) => {
           if (this.env.hasValue('root-meta-cnx')) {
@@ -557,15 +480,15 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
             if (!(val instanceof MetaUIActionEvent)) {
               event = new MetaUIActionEvent(component.instance, publicKey, publicKey, val);
             }
-            cnx.onAction.emit(event);
+            cnx.action.emit(event);
           }
         });
       }
     }
   }
 
-  private applyDynamicOutputBinding(emitter: EventEmitter<any>, value: any,
-                                    context: Context): void {
+  private _applyDynamicOutputBinding(emitter: EventEmitter<any>, value: any,
+                                     context: Context): void {
 
     emitter.asObservable().subscribe((val: any) => {
       const dynval: DynamicPropertyValue = value;
@@ -578,25 +501,21 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    * therefore we need to proxy all the calls to our context.
    *
    */
-  private applyDynamicInputBindings(me: any, bindings: any, inputs: string[], key: string,
-                                    value: any, editable: boolean) {
-
-    const publicKey = nonPrivatePrefix(key);
-    const cnxtPath: ContextFieldPath = value;
+  private _applyDynamicInputBindings(comp: any, key: string, value: ContextFieldPath) {
 
     // need to call original accessors if any to keep component logic in sync
-    const origDescriptor = Object.getOwnPropertyDescriptor(me.constructor.prototype, key);
+    const origDescriptor = Object.getOwnPropertyDescriptor(comp.constructor.prototype, key);
     const origRefSetter = origDescriptor ? origDescriptor.set : null;
 
-    Object.defineProperty(me, publicKey, {
+    Object.defineProperty(comp, key, {
       get: () => {
-        return this.mGetValue(me, this.metaContext, cnxtPath);
+        return this._mGetValue(value);
       },
 
       set: (val) => {
-        this.mSetValue(me, key, val, this.metaContext, cnxtPath);
+        this._mSetValue(comp, key, val, val);
         if (origRefSetter) {
-          origRefSetter.call(me, val);
+          origRefSetter.call(comp, val);
         }
       },
       enumerable: true,
@@ -604,27 +523,23 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
     });
   }
 
-  private mGetValue(instance: any, metaContext: MetaContextComponent,
-                    cnxtPath: ContextFieldPath): any {
-    const context = metaContext.context;
-    return cnxtPath.evaluate(context);
+  private _mGetValue(cnxtPath: ContextFieldPath): any {
+    return cnxtPath.evaluate(this._currentContext);
   }
 
 
-  private mSetValue(instance: any, key: string, val: any, metaContext: MetaContextComponent,
-                    cnxtPath: ContextFieldPath): any {
+  private _mSetValue(instance: any, key: string, val: any, cnxtPath: ContextFieldPath): any {
 
-    const context = metaContext.context;
-
-    if (isPresent(key)) {
-      const editing = context.propertyForKey(KeyEditable) || context.propertyForKey(KeyEditing);
+    if (key) {
+      const editing = this._currentContext.propertyForKey(KeyEditable) ||
+        this._currentContext.propertyForKey(KeyEditing);
       if (editing && !StringWrapper.equals(val, instance[nonPrivatePrefix(key)])) {
-        const type = context.propertyForKey(KeyType);
-        cnxtPath.evaluateSet(context, ValueConverter.value(type, val));
+        const type = this._currentContext.propertyForKey(KeyType);
+        cnxtPath.evaluateSet(this._currentContext, ValueConverter.value(type, val));
       }
     } else {
-      const type = context.propertyForKey(KeyType);
-      cnxtPath.evaluateSet(context, ValueConverter.value(type, val));
+      const type = this._currentContext.propertyForKey(KeyType);
+      cnxtPath.evaluateSet(this._currentContext, ValueConverter.value(type, val));
     }
   }
 
@@ -633,9 +548,35 @@ export class MetaIncludeComponent extends IncludeDirective implements DoCheck, A
    * Compares component names from newly calculated property set with current component that is
    * used within MetaIncludeComponent
    */
-  private isComponentChanged(): boolean {
-    const newComponent = this.metaContext.context.propertyForKey('component');
-    return newComponent && (this.name && this.name !== newComponent);
+  private _isComponentChanged(): boolean {
+    const newComponent = this._currentContext.propertyForKey('component');
+    return isPresent(newComponent) && (isPresent(this.name) && this.name !== newComponent);
+  }
+
+
+  private _refreshView(): void {
+    this.viewContainer.clear();
+    this.resolvedComponentRef = undefined;
+    // console.log('Renderer, _refreshView', this.mc._debugKeys());
+
+    this.doRenderComponent();
+
+
+    this.createWrapperElementIfAny();
+    this.createContentElementIfAny();
+
+    this.cd.markForCheck();
+  }
+
+  private _readNgContentType(type: string): string {
+    let cntValue: any;
+    const bindings = this._currentContext.propertyForKey(KeyBindings);
+
+    if (bindings && (cntValue = bindings.get(type))) {
+      cntValue = isString(cntValue) ? cntValue :
+        this._currentContext.resolveValue(cntValue);
+    }
+    return cntValue;
   }
 
 }

@@ -17,7 +17,6 @@
  *
  */
 import {AfterViewChecked, Directive, Input} from '@angular/core';
-import {isPresent} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
 import {Context, Snapshot} from '../core/context';
@@ -60,8 +59,7 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
   protected contextSnapshot: Snapshot;
   protected object: any;
 
-  constructor(public env: Environment,
-              protected _metaContext?: MetaContextComponent) {
+  constructor(protected _mc?: MetaContextComponent) {
   }
 
   ngOnInit(): void {
@@ -77,35 +75,25 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
   }
 
   isNestedContext(): boolean {
-    return this._metaContext.context.isNested;
+    return this._mc.context.isNested;
   }
 
   property(key: string, defValue: any = null, context?: Context): any {
     if (context) {
       return context.propertyForKey(key) || defValue;
     } else {
-      return this._metaContext.context.propertyForKey(key) || defValue;
+      return this._mc.context.propertyForKey(key) || defValue;
     }
-  }
-
-  /**
-   * Retrieves active context's properties
-   *
-   */
-  activeProperty(me: Context, key: string, defValue: any = null): any {
-    const activeContext: Context = this._metaContext.activeContext();
-    return isPresent(me) ? me.propertyForKey(key) : defValue;
-
   }
 
   // Replace all this setup and get properties with pure pipe
   protected updateMeta() {
-    if (!this._metaContext) {
+    if (!this._mc) {
       return;
     }
-    this.editing = this._metaContext.context.booleanPropertyForKey(KeyEditing, false);
+    this.editing = this._mc.context.booleanPropertyForKey(KeyEditing, false);
     if (this.editing) {
-      this.object = this._metaContext.context.values.get(KeyObject);
+      this.object = this._mc.context.values.get(KeyObject);
     }
     this.doUpdate();
   }

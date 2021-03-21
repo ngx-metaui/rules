@@ -53,7 +53,7 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
   }
 
   ngOnInit(): void {
-    this._metaContext = this.mc;
+    this._mc = this.mc;
     super.ngOnInit();
   }
 

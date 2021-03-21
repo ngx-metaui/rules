@@ -16,8 +16,8 @@
  *
  *
  */
-export {MetaIncludeComponent} from './meta-include.component';
-export {ComponentReference, IncludeDirective} from './core/include.directive';
+export {MetaRendererComponent} from './meta-renderer.component';
+export {ComponentReference, BaseRenderer} from './core/base-renderer.directive';
 export {MetaBaseComponent} from './meta.base.component';
 export {GenericContainerComponent} from './core/generic-container.component';
 export {MetaLayout} from './meta-layout';

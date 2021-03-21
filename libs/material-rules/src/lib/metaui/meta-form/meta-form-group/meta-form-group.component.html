@@ -9,7 +9,7 @@
            [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFullWidth }" [style.order]="field.orderNum"
            class="col-xs-12">
 
-        <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field.name}">
+        <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field.name, mc:mc}">
         </ng-container>
       </div>
     </div>
@@ -26,15 +26,16 @@
        class="row around-xs">
 
     <div *ngFor="let field of fields" class="col-xs-12">
-      <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field}"></ng-container>
+      <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field, mc:mc}"></ng-container>
     </div>
   </div>
 </ng-template>
 
 
-<ng-template #fieldTemplate let-field>
-  <m-context #mcf [field]="field">
-    <mat-form-field #ff *ngIf="!!(mcf | properties:'visible')" [class.meta-fg-readonly]="!(!!(mcf | properties:'editing'))"
+<ng-template #fieldTemplate let-field let-mc="mc">
+  <m-context #mcf [field]="field" [parentMC]="mc">
+    <mat-form-field #ff *ngIf="!!(mcf | properties:'visible')"
+                    [class.meta-fg-readonly]="!(!!(mcf | properties:'editing'))"
                     [floatLabel]="'always'"
                     [hideRequiredMarker]="!(!!(mcf | properties:'required':false))"
                     class="form-field">

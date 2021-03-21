@@ -17,7 +17,7 @@
  *
  */
 import {ChangeDetectorRef, Directive} from '@angular/core';
-import {MetaIncludeComponent} from '@ngx-metaui/rules';
+import {MetaRendererComponent} from '@ngx-metaui/rules';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Observable, Subject} from 'rxjs';
 import {NgControl} from '@angular/forms';
@@ -43,11 +43,11 @@ import {NgControl} from '@angular/forms';
 })
 export class MetaFFAdapter implements MatFormFieldControl<any> {
 
-  constructor(public metaInclude: MetaIncludeComponent, private cd: ChangeDetectorRef) {
+  constructor(public renderer: MetaRendererComponent, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
       this.registerType();
       (<Subject<any>>this.stateChanges).next();
       this.cd.detectChanges();
@@ -55,117 +55,117 @@ export class MetaFFAdapter implements MatFormFieldControl<any> {
   }
 
   get autofilled(): boolean {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).autofilled;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).autofilled;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get controlType(): string {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).controlType;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).controlType;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get disabled(): boolean {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      const editable = this.metaInclude.metaContext.context
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      const editable = this.renderer.mc.context
         .booleanPropertyForKey('editable', false);
 
-      const edit = this.metaInclude.metaContext.context
+      const edit = this.renderer.mc.context
         .booleanPropertyForKey('editing', false);
 
-      return (<MatFormFieldControl<any>>this.metaInclude.component).disabled ||
+      return (<MatFormFieldControl<any>>this.renderer.component).disabled ||
         (edit && !editable);
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get empty(): boolean {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).empty;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).empty;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get errorState(): boolean {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).errorState;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).errorState;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get focused(): boolean {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).focused;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).focused;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get id(): string {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).id;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).id;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get ngControl(): NgControl | null {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return this.metaInclude.currentComponent['ngModelCtx'];
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return this.renderer.currentComponent['ngModelCtx'];
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get placeholder(): string {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).placeholder;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).placeholder;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get required(): boolean {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).required;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).required;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get shouldLabelFloat(): boolean {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).shouldLabelFloat;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).shouldLabelFloat;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get stateChanges(): Observable<void> {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).stateChanges;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).stateChanges;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   get value(): any | null {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      return (<MatFormFieldControl<any>>this.metaInclude.component).value;
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      return (<MatFormFieldControl<any>>this.renderer.component).value;
     }
     throw new Error('Dynamic component must MatFormFieldControl interface.');
   }
 
   onContainerClick(event: MouseEvent): void {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      (<MatFormFieldControl<any>>this.metaInclude.component).onContainerClick(event);
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      (<MatFormFieldControl<any>>this.renderer.component).onContainerClick(event);
     }
   }
 
   setDescribedByIds(ids: string[]): void {
-    if (this.metaInclude && this.isFormControl(this.metaInclude.component)) {
-      (<MatFormFieldControl<any>>this.metaInclude.component).setDescribedByIds(ids);
+    if (this.renderer && this.isFormControl(this.renderer.component)) {
+      (<MatFormFieldControl<any>>this.renderer.component).setDescribedByIds(ids);
     }
   }
 
   hasComponent(): boolean {
-    return this.isFormControl(this.metaInclude.component);
+    return this.isFormControl(this.renderer.component);
   }
 
   private isFormControl(component: any): component is  MatFormFieldControl<any> {
@@ -178,15 +178,15 @@ export class MetaFFAdapter implements MatFormFieldControl<any> {
    * Based on the data type set a type for the HTML Input
    */
   private registerType() {
-    const dataType = this.metaInclude.metaContext.context.propertyForKey('type');
+    const dataType = this.renderer.mc.context.propertyForKey('type');
 
     switch (dataType) {
       case 'String':
       case 'string':
-        this.metaInclude.component.type = 'text';
+        this.renderer.component.type = 'text';
         break;
       case 'Number':
-        this.metaInclude.component.type = 'number';
+        this.renderer.component.type = 'number';
         break;
     }
 

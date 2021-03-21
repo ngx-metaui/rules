@@ -21,12 +21,9 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input} from '@ang
 import {
   ActionZones,
   Context,
-  Environment,
   ItemProperties,
-  KeyLabel,
   MetaBaseComponent,
   MetaContextComponent,
-  OnContextSetEvent,
   UIMeta
 } from '@ngx-metaui/rules';
 
@@ -133,17 +130,8 @@ export class MetaActionListComponent extends MetaBaseComponent {
    */
   categories: ItemProperties[];
 
-  /**
-   * Map linking the name of the layout to the actual context. We need this when we need
-   * to access current content.
-   *
-   */
-  _contextMap: Map<string, Context> = new Map<string, Context>();
-
-
-  constructor(protected _metaContext: MetaContextComponent,
-              public env: Environment, private cd: ChangeDetectorRef) {
-    super(env, _metaContext);
+  constructor(protected _mc: MetaContextComponent, private cd: ChangeDetectorRef) {
+    super(_mc);
 
   }
 
@@ -164,16 +152,16 @@ export class MetaActionListComponent extends MetaBaseComponent {
   actionCategories(): ItemProperties[] {
     if (!this._actionsByCategory || !this._actionsByName) {
       if (this.filterActions) {
-        this._metaContext.context.set('filterActions', this.filterActions);
+        this._mc.context.set('filterActions', this.filterActions);
       }
-      const meta: UIMeta = this._metaContext.context.meta as UIMeta;
-      this._metaContext.context.push();
+      const meta: UIMeta = this._mc.context.meta as UIMeta;
+      this._mc.context.push();
 
       this._actionsByCategory = new Map<string, ItemProperties[]>();
       this._actionsByName = new Map<string, ItemProperties>();
-      this.categories = meta.actionsByCategory(this._metaContext.context, this._actionsByCategory,
+      this.categories = meta.actionsByCategory(this._mc.context, this._actionsByCategory,
         ActionZones);
-      this._metaContext.context.pop();
+      this._mc.context.pop();
 
       this._actionsByCategory.forEach((v: ItemProperties[], k: string) => {
         v.forEach((item: ItemProperties) => this._actionsByName.set(item.name, item));
@@ -184,12 +172,12 @@ export class MetaActionListComponent extends MetaBaseComponent {
   }
 
   private actionChanged(): boolean {
-    const meta: UIMeta = this._metaContext.context.meta as UIMeta;
+    const meta: UIMeta = this._mc.context.meta as UIMeta;
     const actionByCat = new Map<string, ItemProperties[]>();
 
-    this._metaContext.context.push();
-    const cat = meta.actionsByCategory(this._metaContext.context, actionByCat, ActionZones);
-    this._metaContext.context.pop();
+    this._mc.context.push();
+    const cat = meta.actionsByCategory(this._mc.context, actionByCat, ActionZones);
+    this._mc.context.pop();
 
 
     if (this._actionsByCategory && this.categories) {
@@ -217,34 +205,9 @@ export class MetaActionListComponent extends MetaBaseComponent {
    * When action clicked this method delegates it into meta layer to be executed.
    *
    */
-  actionClicked(action: any): void {
-    const context = this._contextMap.get(action);
+  actionClicked(context: Context, action: any): void {
     context.meta.fireAction(context, this._actionsByName.get(action));
   }
 
 
-  /**
-   * A hook used to store the most current context for each action.
-   *
-   */
-  onAfterContextSet(event: OnContextSetEvent): void {
-    this._contextMap.set(event.value, event.context);
-  }
-
-
-
-  label(actionName: string): string {
-    const context: Context = this._contextMap.get(actionName);
-    return super.activeProperty(context, KeyLabel);
-  }
-
-  actionProp(actionName: string, name: string): string {
-    const context: Context = this._contextMap.get(actionName);
-    return super.activeProperty(context, name);
-  }
-
-  isActionDisabled(actionName: string): boolean {
-    const context: Context = this._contextMap.get(actionName);
-    return (context) ? !context.booleanPropertyForKey('enabled', false) : true;
-  }
 }

@@ -17,7 +17,7 @@
  *
  */
 import {ChangeDetectorRef, Directive, Host, OnInit, Optional, SkipSelf} from '@angular/core';
-import {MetaIncludeComponent} from '@ngx-metaui/rules';
+import {MetaRendererComponent} from '@ngx-metaui/rules';
 import {ContentDensity, FormField, FormFieldControl, Status} from '@fundamental-ngx/platform';
 import {NgControl} from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -53,7 +53,7 @@ export class MetaFFAdapter implements FormFieldControl<any>, OnInit {
   value: any | null;
 
 
-  constructor(public metaInclude: MetaIncludeComponent,
+  constructor(public metaInclude: MetaRendererComponent,
               private cd: ChangeDetectorRef,
               @Optional() @SkipSelf() @Host() private formField: FormField,
   ) {

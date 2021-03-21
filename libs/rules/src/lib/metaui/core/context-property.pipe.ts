@@ -9,6 +9,7 @@ import {MetaContextComponent} from './meta-context/meta-context.component';
 export class ContextPropertyPipe implements PipeTransform {
 
   transform(metaContext: MetaContextComponent, key: string, defaultValue?: any): any {
+    console.log('ContextPropertyPipe :', key)
     if (key.includes('.')) {
       const fieldPath = key.split('.');
 

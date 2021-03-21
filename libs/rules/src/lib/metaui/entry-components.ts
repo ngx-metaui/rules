@@ -16,7 +16,7 @@
  *
  *
  */
-export * from './layout/core/include.directive';
+export * from './layout/core/base-renderer.directive';
 export * from './layout/core/generic-container.component';
 export * from './layout/no-meta/no-meta.component';
 export * from './core/meta-context/meta-context.component';

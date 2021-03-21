@@ -18,7 +18,7 @@
  *
  */
 import {Component} from '@angular/core';
-import {Context, Environment, MetaContextComponent, MetaLayout} from '@ngx-metaui/rules';
+import {MetaContextComponent, MetaLayout} from '@ngx-metaui/rules';
 
 /**
  * MetaElementList is implementation of Stack Layout where the content is rendered as list (stacked)
@@ -66,14 +66,9 @@ import {Context, Environment, MetaContextComponent, MetaLayout} from '@ngx-metau
 export class MetaElementListComponent extends MetaLayout {
 
 
-  constructor(protected _metaContext: MetaContextComponent, public env: Environment) {
-    super(_metaContext, env);
+  constructor(protected _mc: MetaContextComponent) {
+    super(_mc);
 
   }
 
-
-  classString(name: string): any {
-    const lContext: Context = this.contextMap.get(name);
-    return (lContext) ? lContext.propertyForKey('elementClass') : null;
-  }
 }

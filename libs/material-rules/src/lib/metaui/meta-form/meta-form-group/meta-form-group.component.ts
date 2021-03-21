@@ -97,12 +97,12 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
   private fieldsByZone: Map<string, any>;
 
   constructor(public env: Environment, private _cd: ChangeDetectorRef) {
-    super(env, null);
+    super(null);
   }
 
 
   ngOnInit(): void {
-    this._metaContext = this.mc;
+    this._mc = this.mc;
     super.ngOnInit();
   }
 
@@ -129,8 +129,8 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
     if (!this.mc) {
       return;
     }
-    this.fieldsByZone = this._metaContext.context.propertyForKey(PropFieldsByZone);
-    const bindings: Map<string, any> = this._metaContext.context.propertyForKey(KeyBindings);
+    this.fieldsByZone = this._mc.context.propertyForKey(PropFieldsByZone);
+    const bindings: Map<string, any> = this._mc.context.propertyForKey(KeyBindings);
     if (bindings && bindings.has('showLabelsAboveControls')) {
       this.showLabelsAboveControls = bindings.get('showLabelsAboveControls');
     }
@@ -179,7 +179,7 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
 
   private createValidators(formField: MatFormField): ValidatorFn[] {
     const metaValidator = (control: AbstractControl): { [key: string]: any } => {
-      const metaContext = (formField._control as MetaFFAdapter).metaInclude.metaContext;
+      const metaContext = (formField._control as MetaFFAdapter).renderer.mc;
       const editing = metaContext.context.booleanPropertyForKey('editing', false);
 
       if (editing) {
@@ -194,10 +194,10 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
 
   private isFluid(fieldName: string): boolean {
 
-    this._metaContext.context.push();
-    this._metaContext.context.set(KeyField, fieldName);
-    const isFluid = this._metaContext.context.booleanPropertyForKey('fluid', false);
-    this._metaContext.context.pop();
+    this._mc.context.push();
+    this._mc.context.set(KeyField, fieldName);
+    const isFluid = this._mc.context.booleanPropertyForKey('fluid', false);
+    this._mc.context.pop();
 
     return isFluid;
   }
