@@ -21,12 +21,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {NoMetaComponent} from './no-meta/no-meta.component';
 import {GenericContainerComponent} from './core/generic-container.component';
-import {MetaIncludeComponent} from './meta-include.component';
+import {MetaRendererComponent} from './meta-renderer.component';
 
 
 @NgModule({
   declarations: [
-    MetaIncludeComponent,
+    MetaRendererComponent,
     NoMetaComponent,
     GenericContainerComponent
   ],
@@ -36,7 +36,7 @@ import {MetaIncludeComponent} from './meta-include.component';
     ReactiveFormsModule
   ],
   exports: [
-    MetaIncludeComponent,
+    MetaRendererComponent,
     NoMetaComponent,
     GenericContainerComponent
   ],

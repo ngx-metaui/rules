@@ -365,7 +365,7 @@ export class Context extends Extensible {
     return (isBlank(val)) ? [] : (isArray(val)) ? val : [val];
   }
 
-  booleanPropertyForKey(key: string, defaultVal: boolean): boolean {
+  booleanPropertyForKey(key: string, defaultVal: boolean = false): boolean {
     const val = this.propertyForKey(key);
     return (isBlank(val)) ? defaultVal : BooleanWrapper.boleanValue(val);
   }

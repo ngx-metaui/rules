@@ -1,18 +1,14 @@
 <ng-template ngFor [ngForOf]="allLayouts" let-cLayout>
 
-  <m-context [layout]="cLayout.name" (afterContextSet)="afterContextSet($event)"
-             (beforeContextSet)="beforeContextSet($event)">
-
+  <m-context #lMC [layout]="cLayout.name">
     <!--<b>MetaElementList: layout {{cLayout.name}} </b>-->
     <!--<pre [innerHTML]="debugString(cLayout.name)"></pre>-->
 
     <div class="row center-xs">
-      <div class="box col-xs-12" [ngClass]="classString(cLayout.name)">
-
+      <div class="box col-xs-12" [ngClass]="lMC | properties: 'elementClass'">
         <m-render></m-render>
       </div>
     </div>
   </m-context>
-
 </ng-template>
 

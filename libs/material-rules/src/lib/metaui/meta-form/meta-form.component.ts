@@ -32,7 +32,7 @@ import {Environment} from '@ngx-metaui/rules';
   template: `
     <m-context #cnx scopeKey="class">
       <div class="form-container">
-        <mat-card *ngIf="cnx.hasObject" class="form-card">
+        <mat-card *ngIf="cnx.hasObject()" class="form-card">
           <mat-card-content>
             <m-form-group [mc]="cnx"></m-form-group>
           </mat-card-content>

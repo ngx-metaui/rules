@@ -66,8 +66,8 @@ import {Context, Environment, MetaContextComponent, MetaLayout} from '@ngx-metau
 export class MetaElementListComponent extends MetaLayout {
 
 
-  constructor(protected _metaContext: MetaContextComponent, public env: Environment) {
-    super(_metaContext, env);
+  constructor(protected _mc: MetaContextComponent, public env: Environment) {
+    super(_mc, env);
   }
 
 
