@@ -121,7 +121,7 @@ export const UserStackARule =
 // @formatter:on
 /* tslint:enable */
 
-fdescribe('3 different layouts formed into Stack', () => {
+describe('3 different layouts formed into Stack', () => {
   beforeEach((done) => {
     TestBed.configureTestingModule({
       declarations: [
@@ -146,12 +146,11 @@ fdescribe('3 different layouts formed into Stack', () => {
   });
 
 
-  fit('should render two FormTables', () => {
+  it('should render two FormTables', () => {
 
     const metaUI: UIMeta = TestBed.inject(UIMeta);
     metaUI.config.registerRule('UserStackA', UserStackARule);
 
-    debugger;
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
     fixtureWrapper.detectChanges();
 

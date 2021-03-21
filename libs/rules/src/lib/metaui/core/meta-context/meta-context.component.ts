@@ -78,7 +78,8 @@ import {Environment} from '../config/environment';
 
 @Component({
   selector: 'm-context',
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content> `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaContextComponent implements OnDestroy, OnInit {
@@ -190,8 +191,8 @@ export class MetaContextComponent implements OnDestroy, OnInit {
     }
     this.initInputs();
 
-    console.log('MC, INIT', this._debugKeys());
-    console.log('MC, INIT', isPresent(this.parentMC));
+    // console.log('MC, INIT', this._debugKeys());
+    // console.log('MC, INIT', isPresent(this.parentMC));
     this.pushContextValues();
     this._doUpdateViews();
   }
@@ -262,7 +263,7 @@ export class MetaContextComponent implements OnDestroy, OnInit {
     this._context.push();
     this.bindings.forEach((v, k) => {
       if (k[k.length - 1] === '@') {
-        k = k.replace('@', '');
+        k = k.replace(/\@/g, '');
       }
       this._context.set(k, v);
     });
