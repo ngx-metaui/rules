@@ -5,8 +5,7 @@
         <ng-template ngFor [ngForOf]="actionCategories()" let-category>
           <m-context #catMC [actionCategory]="category.name">
             <ng-template ngFor [ngForOf]="actions( category)" let-action>
-              <m-context #actionMC [action]="action">
-
+              <m-context #actionMC [action]="action.name">
                 <button mat-raised-button
                         *ngIf="actionMC | properties: 'visible'"
                         [color]="actionMC | properties: 'buttonStyle'"
