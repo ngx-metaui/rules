@@ -318,7 +318,7 @@ export class Context extends Extensible {
     try {
       this._set(key, value, false, false);
     } catch (e) {
-      console.log('e = ', e);
+      // console.log('e = ', e);
     }
 
     // implement default toString for our object so we can retrieve objectTitle

@@ -25,7 +25,6 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   DoCheck,
-  EventEmitter,
   Injector,
   Renderer2,
   ViewContainerRef
@@ -44,7 +43,6 @@ import {
 } from '../core/constants';
 import {Context} from '../core/context';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
-import {DynamicPropertyValue} from '../core/policies/merging-policy';
 import {NgModel} from '@angular/forms';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -126,7 +124,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
 
   ngOnInit(): void {
     this._currentContext = this.mc.contextChanged$.getValue();
-    console.log('Renderer, INIT', this.mc._debugKeys());
+    // console.log('Renderer, INIT', this.mc._debugKeys());
 
     super.ngOnInit();
     this.mc.contextChanged$
@@ -274,8 +272,8 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
    * todo: change applyInputs in here and better listen on changes.
    */
   private _handleContextChanged(context: Context): void {
-    console.log('Renderer, _handleContextChanged', this.mc._debugKeys());
-    console.log('Renderer, _handleContextChanged', this._isComponentChanged());
+    // console.log('Renderer, _handleContextChanged', this.mc._debugKeys());
+    // console.log('Renderer, _handleContextChanged', this._isComponentChanged());
 
     this._currentContext = context;
 
@@ -293,16 +291,6 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
   }
 
 
-  private _applyDynamicOutputBinding(emitter: EventEmitter<any>, value: any,
-                                     context: Context): void {
-
-    emitter.asObservable().subscribe((val: any) => {
-      const dynval: DynamicPropertyValue = value;
-      context.resolveValue(dynval);
-    });
-  }
-
-
   /**
    * Compares component names from newly calculated property set with current component that is
    * used within MetaIncludeComponent
@@ -317,7 +305,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
   private _refreshView(): void {
     this.viewContainer.clear();
     this.componentReference = undefined;
-    console.log('Renderer, _refreshView', this.mc._debugKeys());
+    // console.log('Renderer, _refreshView', this.mc._debugKeys());
 
     this.doRender();
   }

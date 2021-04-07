@@ -288,7 +288,7 @@ export class NgModelBinding implements MetaBindable<ContextFieldPath> {
   }
 
   init(bindingName: string, value: ContextFieldPath, isInput: boolean): void {
-    console.log('NgModelBinding => ', bindingName);
+    // console.log('NgModelBinding => ', bindingName);
     if (!this.component[CurrentNgModel]) {
       assert(value instanceof ContextFieldPath,
         'You cant assign non expression value to [ngModel]');

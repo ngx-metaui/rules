@@ -187,7 +187,7 @@ export class Expr extends DynamicPropertyValue {
     try {
       result = evalExpressionWithCntx(this._expressionString, '', context, context);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
 
     index = 0;

@@ -311,7 +311,7 @@ export class UIMeta extends ObjectMeta {
     this.env.deleteValue(ACTIVE_CNTX);
     const context = this.newContext();
 
-    console.log('got To Module: ', module);
+    // console.log('got To Module: ', module);
     context.push();
     context.set(KeyModule, module.name);
     const pageName = context.propertyForKey(KeyHomePage);
