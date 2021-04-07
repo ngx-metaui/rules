@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.5](https://github.com/ngx-meta/rules/compare/v10.0.4...v10.0.5) (2021-04-07)
+
+
+### Bug Fixes
+
+* **docs:** Updated errors in oss-syntax.md ([a89c8de](https://github.com/ngx-meta/rules/commit/a89c8de406c46480529dc5eb905616d8d6774038))
+* **material:** Updating Material Rules to support reactive MC ([88ff9e1](https://github.com/ngx-meta/rules/commit/88ff9e1f246064f0147638cba4241e6bca6d5a1e))
+* **material-app:** Updated User.oss rules ([af4f1ef](https://github.com/ngx-meta/rules/commit/af4f1ef41734fdf64a76957e5e982595ca1ab112))
+* **rules:** Fixed this keyword when evalulating expression ([44c57a0](https://github.com/ngx-meta/rules/commit/44c57a070ef0629976e428ed1401c31c94233bd7))
+* **rules:** Removed logs from code ([d270964](https://github.com/ngx-meta/rules/commit/d270964d70081e83b56e24c326c40c17138e59ec))
+* **rules:** updating this context in the expression ([6e39c32](https://github.com/ngx-meta/rules/commit/6e39c32b3616f8565f1e0f7353cde02a403dbb0d))
+
 ### [10.0.4](https://github.com/ngx-meta/rules/compare/v10.0.3...v10.0.4) (2021-01-21)
 
 
