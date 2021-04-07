@@ -17,7 +17,7 @@
  * Based on original work: MetaUI: Craig Federighi (2008)
  *
  */
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {
   ActionZones,
   Context,
@@ -73,8 +73,7 @@ import {
  */
 @Component({
   templateUrl: 'meta-action-list.component.html',
-  styleUrls: ['meta-action-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['meta-action-list.component.scss']
 })
 export class MetaActionListComponent extends MetaBaseComponent {
 
@@ -130,8 +129,12 @@ export class MetaActionListComponent extends MetaBaseComponent {
    */
   categories: ItemProperties[];
 
+  get metaContext(): MetaContextComponent {
+    return this._mc;
+  }
+
   constructor(protected _mc: MetaContextComponent, private cd: ChangeDetectorRef) {
-    super(_mc);
+    super();
 
   }
 

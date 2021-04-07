@@ -21,7 +21,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {assert, isBlank, isPresent} from '../core/utils/lang';
 import {MetaBaseComponent} from './meta.base.component';
 import {ItemProperties} from '../core/item-properties';
-import {MetaContextComponent, OnContextSetEvent} from '../core/meta-context/meta-context.component';
+import {OnContextSetEvent} from '../core/meta-context/meta-context.component';
 import {Context} from '../core/context';
 import {KeyLabel, KeyLayout, ZonesTLRMB} from '../core/constants';
 import {PropertyMap} from '../core/policies/merging-policy';
@@ -35,26 +35,27 @@ import {PropertyMap} from '../core/policies/merging-policy';
  *
  */
 @Injectable()
-export class MetaLayout extends MetaBaseComponent implements OnDestroy {
+export abstract class MetaLayout extends MetaBaseComponent implements OnDestroy {
   /**
    * A map linking the name of the layout to the actual context. We need this when we need
    * to access current content.
    *
    */
   contextMap: Map<string, Context> = new Map<string, Context>();
+
   /**
    * Current context being rendered
    */
   layoutContext: Context;
+
   /**
    * Layout definitions by its name
    *
    */
   protected nameToLayout: Map<string, ItemProperties> = new Map<string, ItemProperties>();
 
-  constructor(protected _mc: MetaContextComponent) {
-    super(_mc);
-
+  constructor() {
+    super();
   }
 
   /**
@@ -68,7 +69,8 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
    */
   get allLayouts(): ItemProperties[] {
     if (isBlank(this._allLayouts)) {
-      this._allLayouts = this._mc.context.meta.itemList(this._mc.context, KeyLayout, this.zones());
+      this._allLayouts = this.metaContext.context.meta.itemList(this.metaContext.context,
+        KeyLayout, this.zones());
       this.nameToLayout.clear();
 
       this._allLayouts.forEach((item: ItemProperties) =>
@@ -89,8 +91,8 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
    */
   get layoutsByZones(): Map<string, any> {
     if (isBlank(this._layoutsByZones)) {
-      this._layoutsByZones = this._mc.context.meta.itemsByZones(this._mc.context, KeyLayout,
-        this.zones());
+      this._layoutsByZones = this.metaContext.context.meta.itemsByZones(
+        this.metaContext.context, KeyLayout, this.zones());
     }
     return this._layoutsByZones;
   }
@@ -104,9 +106,9 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   // todo: should this be for current layout?
   get propertyMap(): PropertyMap {
     if (!this._propertyMap) {
-      this._mc.context.push();
-      this._propertyMap = this._mc.context.allProperties();
-      this._mc.context.pop();
+      this.metaContext.context.push();
+      this._propertyMap = this.metaContext.context.allProperties();
+      this.metaContext.context.pop();
     }
     return this._propertyMap;
   }
@@ -143,7 +145,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
   }
 
   label(): string {
-    return this._mc.context.resolveValue(this.propertyMap.get(KeyLabel));
+    return this.metaContext.context.resolveValue(this.propertyMap.get(KeyLabel));
   }
 
   zones(): string[] {
@@ -153,7 +155,7 @@ export class MetaLayout extends MetaBaseComponent implements OnDestroy {
 
   // remove this ugly solution once I figure out custom value accessor
   properties(key: string, defValue: any = null): any {
-    const value = this._mc.context.propertyForKey(key);
+    const value = this.metaContext.context.propertyForKey(key);
     return value || defValue;
 
   }

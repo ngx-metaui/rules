@@ -7,6 +7,7 @@ class=User {
     field=title {
       after:zTop;
       trait:bold;
+      visible: ${object.firstName !== "boom"};
     }
 
     field=(uniqueName , firstName , prefAirline , favAnimal , toppings) {
@@ -62,8 +63,17 @@ class=User {
       after:zBottom;
       hint: ${"You can type some long text here: " + value.length};
     }
+
+    zNone=> *;
+    zLeft => prefAirline;
 }
 
+
+role=admin class=User{
+  field=uniqueName {
+    label:"uniqueName";
+  }
+}
 
 
 /**

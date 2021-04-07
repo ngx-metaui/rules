@@ -140,7 +140,6 @@ export class ContextFieldPath extends DynamicPropertyValue implements DynamicSet
   }
 
   evaluateSet(context: Context, value: any): void {
-
     this.fieldPath.setFieldValue(context, value);
   }
 }

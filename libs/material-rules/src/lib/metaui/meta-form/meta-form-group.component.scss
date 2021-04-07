@@ -13,3 +13,15 @@
 .form-field {
   width: 100%;
 }
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.form-card {
+  padding: 15px;
+  width: 100%;
+  max-width: 1000px;
+}

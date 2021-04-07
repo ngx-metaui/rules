@@ -19,17 +19,15 @@
  */
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
   QueryList,
+  ViewChild,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 
 import {
-  Environment,
   KeyBindings,
   KeyField,
   MetaBaseComponent,
@@ -40,7 +38,7 @@ import {
 } from '@ngx-metaui/rules';
 import {MatFormField} from '@angular/material/form-field';
 import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
-import {MetaFFAdapter} from '../form-field-adapter.directive';
+import {MetaFFAdapter} from './form-field-adapter.directive';
 
 /**
  * This class is responsible to layout Material formFields into pre-defined 5 zone layout with
@@ -65,7 +63,12 @@ import {MetaFFAdapter} from '../form-field-adapter.directive';
  *
  *
  * This way I can have fields side by side or taking full width and they can nicely
- * wrap on smaller devices. T
+ * wrap on smaller devices.
+ *
+ *
+ * changeDetection: OnPush
+ * We dont need to have OnPush as its controlled on the parent level
+ * when we instantiate this component.
  *
  *
  */
@@ -73,12 +76,12 @@ import {MetaFFAdapter} from '../form-field-adapter.directive';
   selector: 'm-form-group',
   templateUrl: 'meta-form-group.component.html',
   styleUrls: ['meta-form-group.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
 })
 export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
-  @Input()
-  mc: MetaContextComponent;
+
+  @ViewChild('classMC', {static: true})
+  private _mc: MetaContextComponent;
 
   @ViewChildren('ff')
   formFields: QueryList<MatFormField>;
@@ -96,17 +99,24 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
    */
   private fieldsByZone: Map<string, any>;
 
-  constructor(public env: Environment, private _cd: ChangeDetectorRef) {
-    super(null);
+
+  get metaContext(): MetaContextComponent {
+    return this._mc;
+  }
+
+  constructor(private _cd: ChangeDetectorRef, public _parentMC: MetaContextComponent) {
+    super();
   }
 
 
   ngOnInit(): void {
-    this._mc = this.mc;
-    super.ngOnInit();
+    console.log('asdf', this._mc);
   }
 
+
   ngAfterViewInit(): void {
+    this.updateMeta();
+
     if (!this.editing) {
       this._cd.detectChanges();
       return;
@@ -125,8 +135,9 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
   }
 
   protected doUpdate(): void {
+    console.log('Meta Form group: ', this.mainZones);
     super.doUpdate();
-    if (!this.mc) {
+    if (!this._mc) {
       return;
     }
     this.fieldsByZone = this._mc.context.propertyForKey(PropFieldsByZone);
@@ -136,6 +147,7 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
     }
     this.mainZones = this.calculateMainZone(
       this.fieldsByZone.get(ZoneLeft) || [], this.fieldsByZone.get(ZoneRight) || []);
+    this._cd.detectChanges();
   }
 
   /**
@@ -179,7 +191,7 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
 
   private createValidators(formField: MatFormField): ValidatorFn[] {
     const metaValidator = (control: AbstractControl): { [key: string]: any } => {
-      const metaContext = (formField._control as MetaFFAdapter).renderer.mc;
+      const metaContext = (formField._control as MetaFFAdapter).renderer;
       const editing = metaContext.context.booleanPropertyForKey('editing', false);
 
       if (editing) {

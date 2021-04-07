@@ -18,7 +18,7 @@
  *
  *
  */
-import {Component, DoCheck, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
 import {isBlank, isPresent} from '../../core/utils/lang';
 import {MapWrapper} from '../../core/utils/collection';
 
@@ -33,9 +33,9 @@ import {MapWrapper} from '../../core/utils/collection';
  *  ### Example.  Directly in html
  *
  *   app.html
- *      <aw-generic-container tagName="tagName" bindings="bindings">
+ *      <m-generic-container tagName="tagName" bindings="bindings">
  *          <my-component ..bindings..></my-component>
- *      </aw-generic-container>
+ *      </m-generic-container>
  *
  *   app.component.ts
  *
@@ -44,11 +44,11 @@ import {MapWrapper} from '../../core/utils/collection';
  *
  */
 @Component({
-  selector: 'aw-generic-container',
+  selector: 'm-generic-container',
   template: '<ng-content></ng-content>',
   styles: []
 })
-export class GenericContainerComponent implements OnInit, DoCheck {
+export class GenericContainerComponent implements OnInit, AfterViewInit {
 
   /**
    * Default tagName if none is specified inside bindings.
@@ -60,7 +60,7 @@ export class GenericContainerComponent implements OnInit, DoCheck {
    * Bindings to be added as attributes to the tagName element.
    */
   @Input()
-  bindings: Map<string, any>;
+  styles: Map<string, any>;
 
   /**
    * Element to be created that wraps it's content.
@@ -69,7 +69,7 @@ export class GenericContainerComponent implements OnInit, DoCheck {
   tagName: string;
 
   /**
-   * Native root element. Points to <aw-generic-container>
+   * Native root element. Points to <m-generic-container>
    */
   private nativeElement: Node;
 
@@ -88,14 +88,14 @@ export class GenericContainerComponent implements OnInit, DoCheck {
    */
   ngOnInit() {
     // If there's no input, this component wouldn't know what to do and throw exception.
-    if (isBlank(this.bindings) && isBlank(this.tagName)) {
+    if (isBlank(this.styles) && isBlank(this.tagName)) {
       throw new Error('GenericContainerComponent input bindings or tagName ' +
         'have not been set.');
     }
 
     // If the tagName is blank, the get it from bindings.
     if (isBlank(this.tagName)) {
-      this.tagName = this.bindings.get('tagName');
+      this.tagName = this.styles.get('tagName');
       if (isBlank(this.tagName)) {
         this.tagName = GenericContainerComponent.DefaultTagName;
       }
@@ -106,10 +106,9 @@ export class GenericContainerComponent implements OnInit, DoCheck {
     this.doRender();
   }
 
-  ngDoCheck(): void {
 
+  ngAfterViewInit(): void {
     if (isPresent(this.childElement) && this.childElement !== this.nativeElement.firstChild) {
-
       this.nativeElement.firstChild.appendChild(this.childElement);
     }
   }
@@ -126,10 +125,12 @@ export class GenericContainerComponent implements OnInit, DoCheck {
       this.renderer.appendChild(this.nativeElement, el);
     }
 
-    // Loop through all the bindings and add them to the element.
-    MapWrapper.iterable(this.bindings).forEach((v, k) => {
-      this.renderer.setStyle(el, k, v);
-    });
+    if (this.styles) {
+      // Loop through all the bindings and add them to the element.
+      MapWrapper.iterable(this.styles).forEach((v, k) => {
+        this.renderer.setStyle(el, k, v);
+      });
+    }
 
     // Attach the component to this divElement.
     el.appendChild(this.childElement);
