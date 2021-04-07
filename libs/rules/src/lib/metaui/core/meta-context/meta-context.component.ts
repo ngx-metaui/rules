@@ -180,7 +180,7 @@ export class MetaContextComponent implements OnDestroy, OnInit {
               @Optional() private formContainer: ControlContainer,
               @Optional() @SkipSelf() private _parentMC?: MetaContextComponent) {
 
-    console.log('@@@@$$ this.formContainer = ', this.formContainer);
+    // console.log('@@@@$$ this.formContainer = ', this.formContainer);
 
     this._formGroup = <FormGroup>((this.formContainer) ? this.formContainer.control
       : new FormGroup({}));
@@ -193,8 +193,8 @@ export class MetaContextComponent implements OnDestroy, OnInit {
     }
     this.initInputs();
 
-    console.log('MC, INIT', this._debugKeys());
-    console.log('MC, INIT', isPresent(this.parentMC));
+    // console.log('MC, INIT', this._debugKeys());
+    // console.log('MC, INIT', isPresent(this.parentMC));
     this.pushContextValues();
     this._doUpdateViews();
   }
@@ -207,7 +207,7 @@ export class MetaContextComponent implements OnDestroy, OnInit {
     if (!this._isFirstChange(changes)) {
       this.initInputs();
 
-      console.log('MC, ngOnChanges', this._debugKeys());
+      // console.log('MC, ngOnChanges', this._debugKeys());
       this.pushContextValues();
       this._doUpdateViews();
     }
@@ -290,7 +290,7 @@ export class MetaContextComponent implements OnDestroy, OnInit {
       combineLatest([this._formGroup.valueChanges, this._formGroup.statusChanges])
         .pipe(takeUntil(this._destroy))
         .subscribe((item) => {
-          console.log('MC, form Change', this._debugKeys());
+          // console.log('MC, form Change', this._debugKeys());
           this._doUpdateViews();
         });
     }
@@ -335,7 +335,7 @@ export class MetaContextComponent implements OnDestroy, OnInit {
   }
 
   private _doUpdateViews(): void {
-    console.log('MC, _doUpdateViews', this._debugKeys());
+    // console.log('MC, _doUpdateViews', this._debugKeys());
     this.contextChanged$.next(this.context);
   }
 }
