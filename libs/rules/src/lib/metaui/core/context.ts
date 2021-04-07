@@ -51,6 +51,8 @@ import {
   KeyAny,
   KeyClass,
   KeyDeclare,
+  KeyEditable,
+  KeyEditing,
   KeyObject,
   KeyValid,
   KeyValue,
@@ -358,6 +360,10 @@ export class Context extends Extensible {
     const val = this.allProperties().get(key);
 
     return this.resolveValue(val);
+  }
+
+  isEditing(): boolean {
+    return this.propertyForKey(KeyEditing) || this.propertyForKey(KeyEditable) || false;
   }
 
   listPropertyForKey(key: string): Array<any> {

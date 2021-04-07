@@ -66,8 +66,11 @@ import {MetaContextComponent, MetaLayout} from '@ngx-metaui/rules';
 export class MetaElementListComponent extends MetaLayout {
 
 
+  get metaContext(): MetaContextComponent {
+    return this._mc;
+  }
   constructor(protected _mc: MetaContextComponent) {
-    super(_mc);
+    super();
 
   }
 

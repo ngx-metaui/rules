@@ -17,11 +17,10 @@
  *
  */
 import {AfterViewChecked, Directive, Input} from '@angular/core';
-import {Environment} from '../core/config/environment';
-import {MetaContextComponent} from '../core/meta-context/meta-context.component';
-import {Context, Snapshot} from '../core/context';
+import {Context} from '../core/context';
 import {KeyEditing, KeyObject} from '../core/constants';
 import {FormGroup} from '@angular/forms';
+import {MetaContextComponent} from '../core/meta-context/meta-context.component';
 
 
 /**
@@ -56,44 +55,42 @@ export abstract class MetaBaseComponent implements AfterViewChecked {
    * This only works when view is first time rendered, but not when making changes
    *
    */
-  protected contextSnapshot: Snapshot;
+  abstract metaContext: MetaContextComponent;
+
   protected object: any;
 
-  constructor(protected _mc?: MetaContextComponent) {
+  protected constructor() {
   }
 
   ngOnInit(): void {
     this.updateMeta();
   }
 
-  ngDoCheck(): void {
-    this.updateMeta();
-
-  }
 
   ngAfterViewChecked(): void {
   }
 
+
   isNestedContext(): boolean {
-    return this._mc.context.isNested;
+    return this.metaContext.context.isNested;
   }
 
   property(key: string, defValue: any = null, context?: Context): any {
     if (context) {
       return context.propertyForKey(key) || defValue;
     } else {
-      return this._mc.context.propertyForKey(key) || defValue;
+      return this.metaContext.context.propertyForKey(key) || defValue;
     }
   }
 
   // Replace all this setup and get properties with pure pipe
   protected updateMeta() {
-    if (!this._mc) {
+    if (!this.metaContext || !this.metaContext.context) {
       return;
     }
-    this.editing = this._mc.context.booleanPropertyForKey(KeyEditing, false);
+    this.editing = this.metaContext.context.booleanPropertyForKey(KeyEditing, false);
     if (this.editing) {
-      this.object = this._mc.context.values.get(KeyObject);
+      this.object = this.metaContext.context.values.get(KeyObject);
     }
     this.doUpdate();
   }

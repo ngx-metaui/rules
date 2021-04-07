@@ -42,7 +42,7 @@ field {
 
         editable=false {
            bindings:{
-              value: ${value ? "Yesx" : "Nox"};
+              value: ${value ? "Yes" : "No"};
            };
         }
     }
@@ -269,7 +269,7 @@ layout {
         component:MetaActionListComponent;
     }
 
-    @trait=Form { visible:true; component:MetaForm; }
+    @trait=Form { visible:true; component:MetaFormGroup; }
 
     @trait=Stack { visible:true; component:MetaElementListComponent; }
 

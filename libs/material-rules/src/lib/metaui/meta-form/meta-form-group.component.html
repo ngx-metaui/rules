@@ -1,27 +1,38 @@
-<mat-card class="form-card">
-  <mat-card-content>
-    <ng-container *ngTemplateOutlet="oneColRow;context:{$implicit: 'fieldsByZone.zTop'}">
-    </ng-container>
-
-
-    <div class="row between-xs">
-      <div *ngFor="let field of mainZones;trackBy: trackByFieldName" [class.meta-fg-readonly]="!editing"
-           [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFullWidth }" [style.order]="field.orderNum"
-           class="col-xs-12">
-
-        <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field.name, mc:mc}">
+<m-context #classMC scopeKey="class" [parentMC]="_parentMC">
+  <div class="form-container">
+    <mat-card *ngIf="classMC.hasObject()" class="form-card">
+      <mat-card-content>
+        <ng-container *ngTemplateOutlet="formGroup;context:{$implicit: classMC}">
         </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</m-context>
+
+
+<ng-template #formGroup let-mc>
+  <mat-card class="form-card">
+    <mat-card-content>
+      <ng-container *ngTemplateOutlet="oneColRow;context:{$implicit: 'fieldsByZone.zTop', mc: mc}">
+      </ng-container>
+
+      <div class="row between-xs">
+        <div *ngFor="let field of mainZones;trackBy: trackByFieldName" [class.meta-fg-readonly]="!editing"
+             [ngClass]="{ 'col-sm-6 col-md-6 col-lg-6': !field.isFullWidth }" [style.order]="field.orderNum"
+             class="col-xs-12">
+
+          <ng-container *ngTemplateOutlet="fieldTemplate;context:{$implicit: field.name, mc:mc}">
+          </ng-container>
+        </div>
       </div>
-    </div>
 
-    <ng-container *ngTemplateOutlet="oneColRow;context:{$implicit: 'fieldsByZone.zBottom'}">
-    </ng-container>
+      <ng-container *ngTemplateOutlet="oneColRow;context:{$implicit: 'fieldsByZone.zBottoms', mc: mc}">
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
 
-  </mat-card-content>
-</mat-card>
-
-
-<ng-template #oneColRow let-zonePath>
+<ng-template #oneColRow let-zonePath let-mc="mc">
   <div *ngIf="(mc | properties:zonePath) as fields" [class.meta-fg-readonly]="!(!!(mc | properties:'editing'))"
        class="row around-xs">
 
@@ -41,7 +52,7 @@
                     class="form-field">
 
       <mat-label>{{mcf | properties:'label'}}</mat-label>
-      <m-render [wrapNgContent]="false" mFormFieldAdapter></m-render>
+      <m-render mFormFieldAdapter></m-render>
 
       <mat-hint *ngIf="!!(mcf | properties:'editing')" align="end">
         {{mcf | properties:'hint'}}

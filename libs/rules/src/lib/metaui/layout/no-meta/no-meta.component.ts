@@ -22,7 +22,7 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-no-meta',
   template: `
-        <h2>MetaIncludeComponentDirective Error:</h2>
+        <h2>MetaRenderer  Error:</h2>
                 No componentName property resolved in Context<br/>
     `
   ,

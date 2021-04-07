@@ -90,7 +90,7 @@ export class UserDetailExposedComponent implements OnInit, DoCheck, AfterViewIni
 
   private createValidators(formField: MatFormField): ValidatorFn[] {
     const metaValidator = (control: AbstractControl): { [key: string]: any } => {
-      const metaContext = (formField._control as MetaFFAdapter).renderer.metaContext;
+      const metaContext = (formField._control as MetaFFAdapter).renderer.mc;
       const editing = metaContext.context.booleanPropertyForKey('editing', false);
 
       if (editing) {

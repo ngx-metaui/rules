@@ -20,8 +20,6 @@
  */
 
 import {
-  AfterContentInit,
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -30,26 +28,26 @@ import {
   ComponentRef,
   Directive,
   Injector,
-  Input,
   OnDestroy,
   OnInit,
+  Renderer2,
   Type,
   ViewContainerRef
 } from '@angular/core';
 import {assert, isBlank, isPresent} from '../../core/utils/lang';
-import {MapWrapper} from '../../core/utils/collection';
 import {ComponentRegistry} from '../../core/component-registry.service';
 
+export const NgContent = 'ngcontent';
+export const NgContentElement = 'ngcontentElement';
 
 /**
- * Used by RenderComponent to represent a components and all required details needed to
- * dynamically instantiate and insert component into the view.
+ * Used by MetaUI to dynamically dynamically instantiate and insert component into the view.
  */
 export interface ComponentReference {
   /**
    * Metadata about the instantiated component.
    *
-   * Note: before this one was called ComponentMetadate, but in Angular 2.0 final it was renamed
+   * Note: before this one was called ComponentMetadata, but in Angular 2.0 final it was renamed
    * to Component
    */
   metadata: Component;
@@ -86,39 +84,7 @@ export interface ComponentReference {
  *
  */
 @Directive({})
-export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewChecked,
-  AfterViewInit, AfterContentInit {
-
-  static readonly NgContent = 'ngcontent';
-  static readonly NgContentElement = 'ngcontentElement';
-
-  /**
-   * Full component name e.g.: DropdownComponent which is going to be inserted. We need to take
-   * this name and translate it into actual TYPE. In order to do this we use a trick where we
-   * access an IMPORTED components.
-   *
-   * ```
-   * import * as components from '../components';
-   * ```
-   *
-   * Then you can retrieve a type by just components[<String Literal >] => Component TYPE
-   *
-   */
-  @Input()
-  name: string = '';
-
-  /**
-   * Provides bindings which will be passed into the component when instantiated
-   */
-  @Input()
-  bindings: Map<string, any>;
-
-  /**
-   *  Used by ngContent if we need to wrap readonly content
-   */
-  @Input()
-  wrapNgContent: boolean = true;
-
+export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
 
   /**
    * Current created component reference using ComponentFactoryResolver. We use this to access
@@ -129,21 +95,15 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewChecke
    * Need to cache the resolved component reference so we dont call ComponentFactoryResolver
    * everything we want to refresh a screen
    */
-  resolvedComponentRef: ComponentReference;
-  /**
-   * I use this flag to identify that component is rendering for first time or its updated during
-   * change detection
-   *
-   */
-  protected initRenderInProgress = false;
+  componentReference: ComponentReference;
 
   constructor(public viewContainer: ViewContainerRef,
-              public factoryResolver: ComponentFactoryResolver,
+              public componentFactoryResolver: ComponentFactoryResolver,
               public cd: ChangeDetectorRef,
               public compRegistry: ComponentRegistry,
+              public renderer: Renderer2,
               public injector: Injector) {
 
-    this.bindings = new Map<string, any>();
   }
 
   public get component(): any {
@@ -151,26 +111,13 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewChecke
   }
 
   ngOnInit(): void {
-    this.initRenderInProgress = true;
     this.viewContainer.clear();
   }
 
-  ngAfterViewChecked(): void {
-    this.initRenderInProgress = false;
-
-    // Need to run this as last thing since we want to manipulate with a DOM elements
-    // and some 3th-party components assemble things in ngAfterViewInit
-    this.createContentElementIfAny(true);
-  }
 
   ngAfterViewInit(): void {
-    // check to see if we need to render and reposition DOM element. Both for wrapper and content
-    this.createWrapperElementIfAny();
-    this.createContentElementIfAny();
   }
 
-  ngAfterContentInit(): void {
-  }
 
   ngOnDestroy(): void {
     if (this.currentComponent) {
@@ -183,181 +130,137 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewChecke
     }
   }
 
+  doRender(): void {
+    const reference = this._currentComponentReference();
+    const bindings: Map<string, any> = this._bindingsForNewReference(reference);
 
-  /**
-   * Handles a case where we need to resolve additional component and wrap the current one.
-   * Just like createContentElementIfAny() this method needs to be executed after all
-   * is created and initialized (inside the ngAfterViewInit() )
-   *
-   */
-  protected createWrapperElementIfAny(): void {
+    const contentElement = this._createContentElement(bindings);
+    this.currentComponent = this._createElement(reference, bindings, contentElement);
   }
 
-  /**
-   * Renders a component into actual View Container. The process goes as this.
-   *  1. We retrieve component Type based on the component name and create componentRef
-   *  2. Add the component to view
-   *  3. Read component metadata, mainly @Input() and apply bindings for each of them
-   *  4. Manually spin change detection to update the screen. Mainly for case where I need to
-   * redraw a screen
-   */
-  protected doRenderComponent(): void {
-    // console.log('Renderer, doRenderComponent');
-    this.addComponentToView();
-    this.applyBindings(this.createComponentReference(), this.currentComponent, this.bindings);
-
-    // Still not sure about this what all we should release here.
-    this.currentComponent.onDestroy(() => {
-      // this.bindings.clear();
-      // this.bindings = undefined;
-      //
-      // this.componentReferences.clear();
-      // this.componentReferences = undefined;
-
-      this.destroy();
-    });
-  }
-
-  /**
-   * Place actual component onto the screen using ViewContainerRef
-   *
-   */
-  protected addComponentToView(): void {
-    const reference = this.createComponentReference();
-    this.currentComponent = this.viewContainer
-      .createComponent(reference.resolvedCompFactory, null, this.injector);
-  }
-
-  /**
-   * When inserting Component that needs to have a content like e.g. hyperlink or button
-   *
-   * ```
-   *   <button> MY NG CONTENT </button>
-   *
-   * ```
-   *  this method applies and insert a child content into the main component. This method insert
-   * a simple string. We are not wrapping existing component with another component here.
-   *
-   * @return need to run detect changes ? default is false
-   */
-  protected createContentElementIfAny(inAfterViewCheck: boolean = false): boolean {
-    if (!this.currentComponent) {
-      return false;
+  _currentComponentReference(): ComponentReference {
+    if (isPresent(this.componentReference)) {
+      return this.componentReference;
     }
-    let detectChanges = false;
-    const ngContent = this.ngContent();
-
-    const ngContentPlaceHolder = this.currentComponent.location.nativeElement
-      .querySelector('.u-ngcontent');
-
-
-    if (isPresent(ngContent)) {
-      const content = (this.wrapNgContent ? `<span class="m-string-field"> ${ngContent}</span>`
-        : `${ngContent}`);
-
-      this.viewContainer.element.nativeElement.innerHTML = '';
-      if (ngContentPlaceHolder) {
-        ngContentPlaceHolder.innerHTML = content;
-      } else {
-        this.viewContainer.element.nativeElement.append(content);
-      }
-
-      detectChanges = true;
-    }
-    return detectChanges;
+    return this._initComponentReference();
   }
 
-  /**
-   *
-   * Retrieve a NG Content from binding list and remove it so it its not prepagated down when
-   * applying other bindings.
-   *
-   */
-  protected ngContent(): string {
-    let content: any;
-    if (isPresent(content = this.bindings.get(BaseRenderer.NgContent))) {
-      this.bindings.delete(BaseRenderer.NgContent);
+  _initComponentReference(): ComponentReference {
+    let reference = this._lookupComponentReference();
+    if (isBlank(reference)) {
+      const componentName = this._componentName();
+      this.assertEmptyComponentName(componentName);
+      reference = this._createComponentReference(componentName);
+      this._storeComponentReference(componentName, reference);
     }
-    return content;
+    return reference;
   }
 
-  protected ngContentElement(): string {
-    let content: any;
-    if (isPresent(content = this.bindings.get(BaseRenderer.NgContentElement))) {
-      this.bindings.delete(BaseRenderer.NgContentElement);
+  _lookupComponentReference(): ComponentReference {
+    const componentName = this._componentName();
+    this.assertEmptyComponentName(componentName);
+
+    if (isPresent(componentName) && this.compRegistry.componentCache.has(componentName)) {
+      return this.compRegistry.componentCache.get(componentName);
     }
-    return content;
   }
 
   /**
    * We need to convert a component name to actual a type and then use ComponentFactoryResolver
-   * to instantiate a a component and save its information into our component references. The
-   * reason why we have this component reference is we need to store Angular's component metadata
-   * so we can iterate thru all the inputs and bind them to the context.
-   *
-   * returns {ComponentReference} a reference representing a compoent currently being rendered
+   * to instantiate a a component and save its information into our component references.
    */
-  protected createComponentReference(): ComponentReference {
-    if (!!this.resolvedComponentRef) {
-      return this.resolvedComponentRef;
-    }
-    const currType = this.resolveComponentType();
-    if (this.compRegistry.componentCache.has(this.name)) {
-      return this.compRegistry.componentCache.get(this.name);
-    } else {
-      const componentFactory: ComponentFactory<any> = this.factoryResolver
-        .resolveComponentFactory(currType);
-      const componentMeta: Component = this.resolveDirective(componentFactory);
+  protected _createComponentReference(componentName: string): ComponentReference {
+    const componentType = this.compRegistry.nameToType.get(componentName);
+    const componentFactory: ComponentFactory<any> = this.componentFactoryResolver
+      .resolveComponentFactory(componentType);
+    const componentMeta: Component = this.resolveDirective(componentFactory);
 
-      const compReference: ComponentReference = {
-        metadata: componentMeta,
-        resolvedCompFactory: componentFactory,
-        componentType: currType,
-        componentName: this.name
-      };
-      this.resolvedComponentRef = compReference;
-      this.compRegistry.componentCache.set(this.name, compReference);
-
-      return compReference;
-    }
+    return {
+      metadata: componentMeta,
+      resolvedCompFactory: componentFactory,
+      componentType: componentType,
+      componentName: componentName
+    };
   }
 
-  /**
-   * Iterates thru ComponentMetadata @Inputs() and check if we have available binding inside the
-   * 'this.bindings'
-   */
-  protected applyBindings(cRef: ComponentReference,
-                          component: ComponentRef<any>,
-                          bindings: Map<string, any>): void {
-    const inputs: string[] = cRef.metadata.inputs;
+  protected _storeComponentReference(name: string, reference: ComponentReference): void {
+    this.compRegistry.componentCache.set(name, reference);
+  }
+
+
+  protected assertEmptyComponentName(name: string): void {
+    assert(isPresent(name), `${name} component does not exists.`);
+  }
+
+  protected _bindingsForNewReference(reference: ComponentReference,
+                                     isWrapper: boolean = false): Map<string, any> {
+    const inputs: string[] = reference.metadata.inputs;
+    const bindings = new Map<string, any>();
 
     if (isBlank(inputs) || inputs.length === 0) {
       return;
     }
-    // should we do any type conversion?
-    MapWrapper.iterable(bindings).forEach((v, k) => {
-
-      if (isPresent(component.instance[k])) {
-        component.instance[k] = v;
+    for (const input of inputs) {
+      if (this.hasBindingValue(input, isWrapper)) {
+        bindings.set(input, this._bindingValue(input, isWrapper));
       }
+    }
+    return bindings;
+  }
+
+  protected _createContentElement(bindings: Map<string, any>): any {
+    const ngContent = bindings.get(NgContent);
+    if (isPresent(ngContent)) {
+      bindings.delete(NgContent);
+      return this.renderer.createText(ngContent);
+    }
+    return null;
+  }
+
+  protected _createElement(reference: ComponentReference,
+                           bindings: Map<string, any>,
+                           contentElement?: any, index: number = 0): ComponentRef<any> {
+
+    const content = contentElement ? [[contentElement]] : undefined;
+    const componentRef = this.viewContainer.createComponent(reference.resolvedCompFactory,
+      null, this.injector, content);
+    this.applyBindings(reference, componentRef, bindings, reference.metadata.outputs);
+
+    componentRef.onDestroy(() => {
+      this.destroy();
+    });
+    return componentRef;
+  }
+
+  protected applyBindings(reference: ComponentReference, component: ComponentRef<any>,
+                          inputBindings: Map<string, any>,
+                          outputBindings: Array<string>,
+                          isWrapper: boolean = false): void {
+    inputBindings.forEach((v, k) => {
+      component.instance[k] = v;
     });
   }
 
-  /**
-   * Resolves a component Type based on the string literal
-   *
-   * @returns component type used by `ComponentFactoryResolver`
-   *
-   * todo: rename the method so its clear that it returns component type based on string.
-   */
-  protected resolveComponentType(): any {
-    const componentType = this.compRegistry.nameToType.get(this.name);
+  protected abstract _componentName(name?: string): string;
 
-    assert(!!componentType, `${this.name} component does not exists.`);
-    return componentType;
+  protected abstract _bindingValue(name: string, isWrapper?: boolean): any;
+
+  protected abstract hasBindingValue(name: string, isWrapper: boolean): boolean;
+
+  protected destroy(): void {
+    if (isPresent(this.currentComponent)) {
+      this.currentComponent = null;
+      this.componentReference = null;
+    }
   }
 
-  protected resolveDirective(compFactory: ComponentFactory<any>): Component {
+  protected setIfChanged(comp: any, field: string, newVal: any): void {
+    if (comp[field] !== newVal) {
+      comp[field] = newVal;
+    }
+  }
+
+  private resolveDirective(compFactory: ComponentFactory<any>): Component {
     const compMeta: Component = {
       inputs: [],
       outputs: []
@@ -375,19 +278,6 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewChecke
       });
     }
     return compMeta;
-  }
-
-  protected destroy(): void {
-    if (isPresent(this.currentComponent)) {
-      this.currentComponent = null;
-      this.resolvedComponentRef = null;
-    }
-  }
-
-  protected setIfChanged(comp: any, field: string, newVal: any): void {
-    if (comp[field] !== newVal) {
-      comp[field] = newVal;
-    }
   }
 
 }

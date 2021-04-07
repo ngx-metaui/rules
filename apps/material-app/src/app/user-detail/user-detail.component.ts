@@ -13,7 +13,7 @@ import {Animal} from '../model/animal';
 export class UserDetailComponent implements OnInit {
   object: User;
 
-  operation = 'edit';
+  operation = 'view';
   airlines: Airline[];
   airline: Airline;
   animals: Animal[];
