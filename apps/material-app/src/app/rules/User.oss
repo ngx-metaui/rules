@@ -63,9 +63,6 @@ class=User {
       after:zBottom;
       hint: ${"You can type some long text here: " + value.length};
     }
-
-    zNone=> *;
-    zLeft => prefAirline;
 }
 
 
