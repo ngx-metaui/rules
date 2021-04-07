@@ -349,7 +349,7 @@ export function evalExpressionWithCntx(expr: string, declarations: string,
 
   // fnArgNames.push('this');
   // fnArgValues.push(lets);
-  const fn = new Function(...fnArgNames.concat(fnBody));
+  const fn = new Function(...fnArgNames.concat(fnBody.replace(/ɵ/g, '')));
   assert(isPresent(fn), 'Cannot evaluate expression. FN is not defined');
   const fnBound = fn.bind(thisContext);
 
