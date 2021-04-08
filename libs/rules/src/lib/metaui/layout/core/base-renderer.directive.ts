@@ -179,7 +179,8 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
       return this.compRegistry.componentCache.get(componentName);
     }
 
-    if (isPresent(componentModuleName) && this.compRegistry.componentCache.has(componentModuleName)) {
+    if (isPresent(componentModuleName) &&
+      this.compRegistry.componentCache.has(componentModuleName)) {
       return this.compRegistry.componentCache.get(componentModuleName);
     }
   }
