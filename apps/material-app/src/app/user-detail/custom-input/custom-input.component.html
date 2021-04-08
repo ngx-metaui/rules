@@ -1,0 +1,18 @@
+<h1>From Module</h1>
+<input
+  #inputField
+  matInput
+  class="mat-input-element mat-form-field-autofill-control"
+  [id]="id"
+  [type]="type"
+  [placeholder]="placeholder"
+  [disabled]="disabled"
+  [readonly]="readonly"
+  [required]="required"
+  [(ngModel)]="value"
+  (blur)="_focusChanged(false)"
+  (focus)="_focusChanged(true)"
+  (input)="onInput(inputField.value)"
+  (compositionstart)="_compositionStart()"
+  (compositionend)="_compositionEnd($event.target.value)"
+/>

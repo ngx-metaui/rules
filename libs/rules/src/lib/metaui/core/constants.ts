@@ -94,6 +94,7 @@ export const KeyAfter = 'after';
 export const KeyHidden = 'hidden';
 export const KeyLabel = 'label';
 export const KeyComponentName = 'component';
+export const KeyComponentModuleName = 'componentModule';
 export const KeyBindings = 'bindings';
 export const KeyHomePage = 'homePage';
 export const KeyZonePath = 'zonePath';
@@ -104,6 +105,7 @@ export const PropActionCategories = 'actionCategories';
 export const PropFieldPropertyList = 'fieldPropertyList';
 export const PropLayoutsByZone = 'layoutsByZone';
 export const KeyWrapperComponent = 'wrapperComponent';
+export const KeyWrapperModuleComponent = 'wrapperModuleComponent';
 export const KeyWrapperBinding = 'wrapperBindings';
 
 

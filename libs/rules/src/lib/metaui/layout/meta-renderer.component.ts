@@ -21,6 +21,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Compiler,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -36,10 +37,12 @@ import {isStringMap} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {
   KeyBindings,
+  KeyComponentModuleName,
   KeyComponentName,
   KeyLayout,
   KeyWrapperBinding,
-  KeyWrapperComponent
+  KeyWrapperComponent,
+  KeyWrapperModuleComponent
 } from '../core/constants';
 import {Context} from '../core/context';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
@@ -117,8 +120,10 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
               public compRegistry: ComponentRegistry,
               public renderer: Renderer2,
               public bindingValueFactory: BindingValueFactory,
+              protected _compiler: Compiler,
               public injector: Injector) {
-    super(viewContainer, componentFactoryResolver, cd, compRegistry, renderer, injector);
+    super(viewContainer, componentFactoryResolver, cd, compRegistry, renderer, _compiler,
+      injector);
   }
 
 
@@ -173,10 +178,19 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
   protected _componentName(name: string = KeyComponentName): string {
     const componentName = this._currentContext.propertyForKey(name);
     if (!componentName && name === KeyComponentName) {
-      return 'NoMetaComponent';
+      return undefined;
     }
     return componentName;
   }
+
+  protected _componentModuleName(name: string = KeyComponentModuleName): string {
+    const componentName = this._currentContext.propertyForKey(name);
+    if (!componentName && name === KeyComponentModuleName) {
+      return undefined;
+    }
+    return componentName;
+  }
+
 
   _lookupComponentReference(): ComponentReference {
     const properties = this._currentContext.allProperties();
@@ -211,8 +225,11 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     const component = super._createElement(reference, bindings, contentElement);
 
     const wrapperComponentName = this._componentName(KeyWrapperComponent);
-    if (wrapperComponentName) {
-      const wrapperCR = super._createComponentReference(wrapperComponentName);
+    const wrapperModuleComponentName = this._componentModuleName(KeyWrapperModuleComponent);
+
+    if (wrapperComponentName || wrapperModuleComponentName) {
+      const wrapperCR = super._createComponentReference(wrapperComponentName,
+        wrapperModuleComponentName);
       const wrapperBindings = this._bindingsForNewReference(wrapperCR, true);
       const wrapperComponent = super._createElement(wrapperCR, wrapperBindings, null,
         1);
