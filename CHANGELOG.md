@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.1.0](https://github.com/ngx-meta/rules/compare/v10.0.5...v10.1.0) (2021-04-08)
+
+
+### Features
+
+* **rules:** Dynamic component from Angular Modules ([f4c01c5](https://github.com/ngx-meta/rules/commit/f4c01c54fcc194889a438099bd37350ca379eceb))
+
+
+### Bug Fixes
+
+* **material-rules:** Updated app and test with component from module ([9e9af75](https://github.com/ngx-meta/rules/commit/9e9af7562113261a51cc3a5b268f56f2a6d16ea6))
+
 ### [10.0.5](https://github.com/ngx-meta/rules/compare/v10.0.4...v10.0.5) (2021-04-07)
 
 
