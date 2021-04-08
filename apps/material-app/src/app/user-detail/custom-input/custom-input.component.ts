@@ -30,7 +30,7 @@ import {Directionality} from '@angular/cdk/bidi';
 
 
 @Component({
-  selector: 'custom-input-field',
+  selector: '"ngx-metaui-custom-input-field',
   templateUrl: './custom-input.component.html',
   providers: [
     {
@@ -41,7 +41,8 @@ import {Directionality} from '@angular/cdk/bidi';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomInputComponent implements MatFormFieldControl<any>, ControlValueAccessor, DoCheck {
+export class CustomInputComponent implements MatFormFieldControl<any>, ControlValueAccessor,
+  DoCheck {
 
   @Input()
   id: string;
@@ -110,10 +111,9 @@ export class CustomInputComponent implements MatFormFieldControl<any>, ControlVa
   autofilled = false;
 
   onChange = (_: any) => {
-  };
-
+  }
   onTouched = () => {
-  };
+  }
 
 
   constructor(

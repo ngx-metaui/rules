@@ -180,7 +180,7 @@ describe('Meta Context Component', () => {
     }));
 
 
-  fit('It should render 1 input from module definition',
+  it('It should render 1 input from module definition',
     fakeAsync(() => {
 
       const metaUI: UIMeta = TestBed.inject(UIMeta);
