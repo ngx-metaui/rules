@@ -39,7 +39,7 @@ export const CurrentNgModel = 'ngModelCtx';
   providedIn: 'root'
 })
 export class BindingValueFactory {
-  constructor(public env: Environment) {
+  constructor(public _env: Environment) {
   }
 
   getInputValue(context: Context, component: ComponentRef<any>, key: string, value: any,
@@ -56,7 +56,7 @@ export class BindingValueFactory {
       return this._makeDynamicPropertyBindingInput(context, component, key, value, isWrapper);
     }
 
-    const aValue = new ValueBinding(context, component, isWrapper);
+    const aValue = new ValueBinding(context, component, isWrapper, this._env);
     aValue.init(key, value, true);
     return aValue;
   }
@@ -69,7 +69,7 @@ export class BindingValueFactory {
       this._makeDynamicPropertyBindingOutput(context, component, key, event);
     } else {
 
-      const aValue = new ValueBinding(context, component, false);
+      const aValue = new ValueBinding(context, component, false, this._env);
       aValue.init(key, event, false);
       return aValue;
     }

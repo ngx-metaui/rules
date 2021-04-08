@@ -110,7 +110,6 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
 
 
   ngOnInit(): void {
-    console.log('asdf', this._mc);
   }
 
 
@@ -135,7 +134,6 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
   }
 
   protected doUpdate(): void {
-    console.log('Meta Form group: ', this.mainZones);
     super.doUpdate();
     if (!this._mc) {
       return;
