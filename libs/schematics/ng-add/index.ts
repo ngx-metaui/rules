@@ -67,7 +67,7 @@ function addPackageToPackageJson(host: Tree, options: AddSchema): Tree {
       name: '@ngx-metaui/rules'
     },
     {type: NodeDependencyType.Default, version: '1.6.48', name: 'big-integer'},
-    {type: NodeDependencyType.Default, version: '^0.11.4', name: 'object-path'},
+    {type: NodeDependencyType.Default, version: '^0.11.5', name: 'object-path'},
     {type: NodeDependencyType.Default, version: '^1.3.1', name: 'fnv-plus'},
     {type: NodeDependencyType.Default, version: '1.3.3', name: 'typescript-collections'},
     {type: NodeDependencyType.Dev, version: '^1.0.2', name: 'watch'}
