@@ -31,7 +31,10 @@
                 "output": "/assets"
               }
             ]
-          }
+          },
+          "outputs": [
+            "coverage/libs/rules"
+          ]
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -68,7 +71,10 @@
             "main": "libs/material-rules/src/test.ts",
             "tsConfig": "libs/material-rules/tsconfig.spec.json",
             "karmaConfig": "libs/material-rules/karma.conf.js"
-          }
+          },
+          "outputs": [
+            "coverage/libs/material-rules"
+          ]
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -103,7 +109,6 @@
               "big-integer",
               "object-path",
               "typescript-collections"
-
             ],
             "aot": true,
             "outputPath": "dist/apps/material-app",
@@ -150,7 +155,10 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -184,7 +192,10 @@
               "apps/material-app/src/favicon.ico",
               "apps/material-app/src/assets"
             ]
-          }
+          },
+          "outputs": [
+            "coverage/apps/material-app/"
+          ]
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -265,7 +276,10 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -307,7 +321,10 @@
             "styles": [],
             "scripts": [],
             "assets": []
-          }
+          },
+          "outputs": [
+            "coverage/apps/doc-app/"
+          ]
         }
       }
     },
@@ -344,7 +361,10 @@
             "main": "libs/fiori-rules/src/test.ts",
             "tsConfig": "libs/fiori-rules/tsconfig.spec.json",
             "karmaConfig": "libs/fiori-rules/karma.conf.js"
-          }
+          },
+          "outputs": [
+            "coverage/libs/fiori-rules"
+          ]
         }
       },
       "schematics": {
@@ -413,7 +433,10 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -455,7 +478,10 @@
             "styles": [],
             "scripts": [],
             "assets": []
-          }
+          },
+          "outputs": [
+            "coverage/apps/fiori-app"
+          ]
         }
       }
     }
