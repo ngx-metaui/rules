@@ -27,15 +27,4 @@ export interface AddSchema extends Schema {
 
   /** Dont add anything to angular.json style section. */
   skipStyles: boolean;
-
-  /**
-   * Works with specific module within the project
-   */
-  moduleName: string;
-
-  /**
-   * Works with specific module within the project
-   */
-  uiLib: 'none' | 'material' | 'fiori';
-
 }

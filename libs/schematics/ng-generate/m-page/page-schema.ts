@@ -1,3 +1,5 @@
+import {Schema} from '../../common/schema';
+
 /**
  * @license
  * Copyright Frank Kolar and others
@@ -17,13 +19,7 @@
  *
  */
 
-export interface MetaPageSchema {
-
-  /** Name of the project to target. */
-  project: string;
-
-  /** Root path to the selected project  - a place where template files will be copied */
-  path: string;
+export interface MetaPageSchema extends Schema {
 
   /**
    * Name of the domain class that will be generated along with rule file with the same name
@@ -51,10 +47,4 @@ export interface MetaPageSchema {
    * Flag to indicate if a directory is created.
    */
   flat: boolean;
-
-  /**
-   * Works with specific module within the project
-   */
-  uiLib: 'none' | 'material' | 'fiori';
-
 }

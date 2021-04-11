@@ -16,6 +16,7 @@
  *
  *
  */
+import {Path} from '@angular-devkit/core';
 
 export interface Schema {
 
@@ -24,5 +25,20 @@ export interface Schema {
 
   /** Root path to the selected project  - a place where template files will be copied */
   path: string;
+
+  /**
+   * Works with specific module within the project
+   */
+  module: Path | undefined;
+
+  /**
+   * Works with specific module within the project
+   */
+  uiLib: 'none' | 'material';
+  name: string;
+  flat?: boolean;
+  skipImport?: boolean;
+  moduleExt?: string;
+  routingModuleExt?: string;
 
 }
