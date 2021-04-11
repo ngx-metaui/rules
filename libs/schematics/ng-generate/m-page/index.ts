@@ -229,31 +229,31 @@ function addNgModuleImportAndDefinition(options: MetaPageSchema, componentPath: 
 
     try {
 
-      const workspace = getWorkspace(host);
-      const project = getProjectFromWorkspace(workspace);
-      const modulePath = getAppModulePath(host, getProjectMainFile(project));
+      const modulePath = options.module as string;
+      const moduleSource: any = parseSourceFile(host, modulePath);
       const relativePath = buildRelativePath(modulePath, componentPath);
-
       const moduleSourceText = host.read(modulePath)!.toString('utf-8');
 
-      const srcPath: any = parseSourceFile(host, modulePath);
 
       const compName = strings.classify(`${options.name}Component`);
       const hasComponent = moduleSourceText.includes(compName);
 
       if (!hasComponent) {
         const recorder = host.beginUpdate(modulePath);
-        let changes: Change[] = addDeclarationToModule(srcPath, modulePath, compName, relativePath);
+        let changes: Change[] = addDeclarationToModule(moduleSource, modulePath, compName,
+          relativePath);
 
         if (options.uiLib === 'material') {
           const matButton = ['MatButtonModule', '@angular/material/button'];
-          changes = [...changes, ...addImportToModule(srcPath, modulePath, matButton[0],
+          changes = [...changes, ...addImportToModule(moduleSource, modulePath, matButton[0],
             matButton[1])];
 
-        } else if (options.uiLib === 'fiori') {
-          const fButton = ['ButtonModule', '@fundamental-ngx/core'];
-          changes = [...changes, ...addImportToModule(srcPath, modulePath, fButton[0],
-            fButton[1])];
+          // }
+          // else if (options.uiLib === 'fiori') {
+          //   const fButton = ['ButtonModule', '@fundamental-ngx/core'];
+          //   changes = [...changes, ...addImportToModule(srcPath, modulePath, fButton[0],
+          //     fButton[1])];
+
         } else {
           context.logger.error('No MetaUI based UILibrary found! ');
           return host;
@@ -296,15 +296,14 @@ function printHowTo(options: MetaPageSchema): Rule {
 
 
 export function readUILib(host: Tree, options: MetaPageSchema, context: SchematicContext): Tree {
-  const workspace = getWorkspace(host);
-  const project = getProjectFromWorkspace(workspace);
-  const modulePath = getAppModulePath(host, getProjectMainFile(project));
+  const modulePath = options.module as string;
   const moduleSourceText = host.read(modulePath)!.toString('utf-8');
 
   const isMaterialUiLib = moduleSourceText.includes('MaterialRulesModule');
-  const isFioriUiLib = moduleSourceText.includes('FioriRulesModule');
+  // const isFioriUiLib = moduleSourceText.includes('FioriRulesModule');
 
-  options.uiLib = isMaterialUiLib ? 'material' : (isFioriUiLib ? 'fiori' : 'none');
+  // options.uiLib = isMaterialUiLib ? 'material' : (isFioriUiLib ? 'fiori' : 'none');
+  options.uiLib = isMaterialUiLib ? 'material' : 'none';
 
   return host;
 }

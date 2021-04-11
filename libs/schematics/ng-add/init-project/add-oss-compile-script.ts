@@ -1,4 +1,4 @@
-import {AddSchema} from '../add-schema';
+import {AddSchema} from '../../common/add-schema';
 import {Rule, SchematicContext, SchematicsException, Tree} from '@angular-devkit/schematics';
 import {normalize} from '@angular-devkit/core';
 

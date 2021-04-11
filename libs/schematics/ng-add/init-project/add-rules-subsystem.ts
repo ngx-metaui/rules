@@ -1,4 +1,4 @@
-import {AddSchema} from '../add-schema';
+import {AddSchema} from '../../common/add-schema';
 import {
   apply, branchAndMerge,
   chain, mergeWith,

@@ -8,6 +8,7 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +19,7 @@
  */
 import {chain, Rule, schematic, SchematicContext, Tree} from '@angular-devkit/schematics';
 import {NodeDependency, NodeDependencyType} from '@schematics/angular/utility/dependencies';
-import {AddSchema} from './add-schema';
+import {AddSchema} from '../common/add-schema';
 import {setupOptions, sortObjectByKeys} from '../common/schematics-utils';
 import {WorkspaceProject} from '@schematics/angular/utility/workspace-models';
 import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
@@ -34,7 +35,7 @@ import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
  *
  */
 export default function (options: AddSchema): Rule {
-  return (tree: Tree, context: SchematicContext) => {
+  return async (tree: Tree, context: SchematicContext) => {
     setupOptions(tree, options, context);
 
     return chain([
@@ -48,11 +49,11 @@ export default function (options: AddSchema): Rule {
       schematic('init-project', options),
       async (host: Tree) => {
       },
-      (_: Tree, context: SchematicContext) => {
+      (_: Tree, aContext: SchematicContext) => {
         if (options.skipInstall) {
           return;
         }
-        context.addTask(new NodePackageInstallTask());
+        aContext.addTask(new NodePackageInstallTask());
       }
     ]);
   };
@@ -88,23 +89,24 @@ function addPackageToPackageJson(host: Tree, options: AddSchema): Tree {
       },
       {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
     ];
-  } else if (options.uiLib === 'fiori') {
-    uiLibs = [
-      {
-        type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
-        name: '@ngx-metaui/fiori-rules'
-      }, {
-        type: NodeDependencyType.Default,
-        version: 'FD_CORE_PLACEHOLDER',
-        name: '@fundamental-ngx/core'
-      }, {
-        type: NodeDependencyType.Default, version: 'FD_PLATFORM_PLACEHOLDER',
-        name: '@fundamental-ngx/platform'
-      },
-      {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
-      {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
-    ];
   }
+  // else if (options.uiLib === 'fiori') {
+  //   uiLibs = [
+  //     {
+  //       type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
+  //       name: '@ngx-metaui/fiori-rules'
+  //     }, {
+  //       type: NodeDependencyType.Default,
+  //       version: 'FD_CORE_PLACEHOLDER',
+  //       name: '@fundamental-ngx/core'
+  //     }, {
+  //       type: NodeDependencyType.Default, version: 'FD_PLATFORM_PLACEHOLDER',
+  //       name: '@fundamental-ngx/platform'
+  //     },
+  //     {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
+  //     {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
+  //   ];
+  // }
 
   const dependencies = [...core, ...uiLibs];
   dependencies.forEach(dependency => {

@@ -2,7 +2,7 @@ import {chain, Rule} from '@angular-devkit/schematics';
 import {addRulesSubsystem} from './add-rules-subsystem';
 import {addRulesRequiredModulesAndImports} from './add-core-imports';
 import {addOSScriptsToPackageJson} from './add-oss-compile-script';
-import {AddSchema} from '../add-schema';
+import {AddSchema} from '../../common/add-schema';
 import {addUILibraryRequiredModulesAndImports} from './add-ui-lib-imports';
 import {registerUserRulesWithMetaConfig} from './register-app-rules';
 import {registerCommonJSDependecies} from './register-commonjs-deps';

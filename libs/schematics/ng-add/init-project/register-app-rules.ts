@@ -1,15 +1,9 @@
 import * as ts from 'typescript';
 import {Rule, SchematicContext, SchematicsException, Tree} from '@angular-devkit/schematics';
-import {
-  getAppModulePath,
-  getProjectFromWorkspace,
-  getProjectMainFile,
-  parseSourceFile
-} from '@angular/cdk/schematics';
+import {parseSourceFile} from '@angular/cdk/schematics';
 import {Change, InsertChange, NoopChange} from '@schematics/angular/utility/change';
 import {Schema} from '../../common/schema';
 import {getSourceNodes} from '@schematics/angular/utility/ast-utils';
-import {getWorkspace} from '@schematics/angular/utility/config';
 
 
 const RegisterBody =
@@ -23,9 +17,8 @@ const RegisterBody =
 
 export function registerUserRulesWithMetaConfig(options: Schema): Rule {
   return (host: Tree, context: SchematicContext) => {
-    const workspace = getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace);
-    const modulePath = getAppModulePath(host, getProjectMainFile(project));
+
+    const modulePath = options.module as string;
 
     const changes = addConstructorInjectionForAppConfig(host, options);
     const declarationRecorder = host.beginUpdate(modulePath);
@@ -41,9 +34,7 @@ export function registerUserRulesWithMetaConfig(options: Schema): Rule {
 
 
 function addConstructorInjectionForAppConfig(host: Tree, options: Schema): Change[] {
-  const workspace = getWorkspace(host);
-  const project = getProjectFromWorkspace(workspace);
-  const modulePath = getAppModulePath(host, getProjectMainFile(project));
+  const modulePath = options.module as string;
 
   const srcPath: any = parseSourceFile(host, modulePath);
   const nodes: any = getSourceNodes(srcPath);

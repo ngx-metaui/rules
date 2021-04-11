@@ -1,15 +1,6 @@
-import {AddSchema} from '../add-schema';
-import {chain, Rule, SchematicContext, Tree} from '@angular-devkit/schematics';
-import {getWorkspace} from '@schematics/angular/utility/config';
-import {
-  addModuleImportToModule,
-  addModuleImportToRootModule,
-  getAppModulePath,
-  getProjectFromWorkspace,
-  getProjectMainFile,
-  insertImport,
-  parseSourceFile
-} from '@angular/cdk/schematics';
+import {AddSchema} from '../../common/add-schema';
+import {chain, Rule, SchematicContext, SchematicsException, Tree} from '@angular-devkit/schematics';
+import {addModuleImportToModule, insertImport, parseSourceFile} from '@angular/cdk/schematics';
 import {InsertChange} from '@schematics/angular/utility/change';
 
 
@@ -22,19 +13,23 @@ export function addRulesRequiredModulesAndImports(options: AddSchema): Rule {
 
 function addNgModuleImports(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
-    const animImport = ['BrowserAnimationsModule', '@angular/platform-browser/animations'];
+    const imports = [
+      'BrowserAnimationsModule', '@angular/platform-browser/animations',
+      'MetaUIRulesModule.forRoot({})', '@ngx-metaui/rules'
+    ];
 
     try {
-      const workspace = getWorkspace(host);
-      const project = getProjectFromWorkspace(workspace);
-      const modulePath = getAppModulePath(host, getProjectMainFile(project));
-      const sourceText = host.read(modulePath)!.toString('utf-8');
+      const modulePath = options.module as string;
+      const text = host.read(modulePath);
+      if (text === null) {
+        throw new SchematicsException(`File ${modulePath} does not exist.`);
+      }
+      const sourceText = text.toString('utf-8');
       const hasNxModule = sourceText.includes('MetaUIRulesModule.forRoot({})');
 
       if (!hasNxModule) {
-        addModuleImportToModule(host, modulePath, animImport[0], animImport[1]);
-        addModuleImportToRootModule(host, 'MetaUIRulesModule.forRoot({})',
-          '@ngx-metaui/rules', project);
+        addModuleImportToModule(host, modulePath, imports[0], imports[1]);
+        addModuleImportToModule(host, modulePath, imports[2], imports[3]);
       }
 
     } catch (e) {
@@ -48,9 +43,7 @@ function addNgModuleImports(options: AddSchema): Rule {
 function addFileHeaderImports(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
 
-    const workspace = getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace);
-    const modulePath = getAppModulePath(host, getProjectMainFile(project));
+    const modulePath = options.module as string;
     const moduleSource: any = parseSourceFile(host, modulePath);
 
     const recorder = host.beginUpdate(modulePath);
