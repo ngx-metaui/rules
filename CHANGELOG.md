@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [11.0.0](https://github.com/ngx-meta/rules/compare/v11.0.0-beta.0...v11.0.0) (2021-04-12)
 
+### Features
+
+* **rules:** Update Angular to v11 ([93972 ](https://github.com/ngx-metaui/rules/commit/93972967ef00d6dea7d7c727cb4aba11992dd613))
+
+
 ### Bug Fixes
 
 * **schematics:** Schematics refactoring and fixes ([90da975](https://github.com/ngx-metaui/rules/commit/90da9750d656b601b03234b3c40aadd07f68a0dc))
+* **schematics:** Updated from CDK api to angular's schematics API ([8aab99](https://github.com/ngx-metaui/rules/commit/8aab999d2b168d75fde010f475f3b1a8ed013c3a))
 
 
 ## [10.1.0](https://github.com/ngx-meta/rules/compare/v10.0.5...v10.1.0) (2021-04-08)
