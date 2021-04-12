@@ -77,17 +77,16 @@ function addPackageToPackageJson(host: Tree, options: AddSchema): Tree {
   if (options.uiLib === 'material') {
     uiLibs = [
       {
-        type: NodeDependencyType.Default,
-        version: '^VERSION_PLACEHOLDER',
+        type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
         name: '@ngx-metaui/material-rules'
       },
       {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
       {
-        type: NodeDependencyType.Default,
-        version: 'MATERIAL_PLACEHOLDER',
+        type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER',
         name: '@angular/material'
       },
-      {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
+      {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'},
+      {type: NodeDependencyType.Default, version: '6.6.7', name: 'rxjs'}
     ];
   }
   // else if (options.uiLib === 'fiori') {
@@ -173,13 +172,13 @@ function doAddPackageToPackageJson(host: Tree, pkg: string, version: string): Tr
     const sourceText = host.read('package.json')!.toString('utf-8');
     const json = JSON.parse(sourceText);
 
-    if (!json.dependencies) {
-      json.dependencies = {};
+    if (!json.peerDependencies) {
+      json.peerDependencies = {};
     }
 
-    if (!json.dependencies[pkg]) {
-      json.dependencies[pkg] = version;
-      json.dependencies = sortObjectByKeys(json.dependencies);
+    if (!json.peerDependencies[pkg]) {
+      json.peerDependencies[pkg] = version;
+      json.peerDependencies = sortObjectByKeys(json.dependencies);
     }
 
     host.overwrite('package.json', JSON.stringify(json, null, 2));

@@ -86,7 +86,7 @@ export class AutoComplete implements ControlValueAccessor, MatFormFieldControl<a
   @Input()
   disabled: boolean = false;
   /**
-   *  @see MatAutocomplete
+   *  see MatAutocomplete
    */
   @Input()
   displayWith: ((value: any) => string) | null;

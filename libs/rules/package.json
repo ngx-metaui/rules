@@ -3,16 +3,14 @@
   "description": "Rule driven UI for Angular",
   "version": "VERSION_PLACEHOLDER",
   "license": "Apache-2.0",
-  "dependencies": {
-    "@angular/cdk": "MATERIAL_PLACEHOLDER"
-  },
   "peerDependencies": {
     "@angular/animations": "ANGULAR_PLACEHOLDER",
     "@angular/common": "ANGULAR_PLACEHOLDER",
     "@angular/core": "ANGULAR_PLACEHOLDER",
     "@angular/platform-browser": "ANGULAR_PLACEHOLDER",
     "@angular/platform-browser-dynamic": "ANGULAR_PLACEHOLDER",
-    "@angular/router": "ANGULAR_PLACEHOLDER"
+    "@angular/router": "ANGULAR_PLACEHOLDER",
+    "@angular/cdk": "MATERIAL_PLACEHOLDER"
   },
   "bin": {
     "oss": "./lib/bin/oss.js"
