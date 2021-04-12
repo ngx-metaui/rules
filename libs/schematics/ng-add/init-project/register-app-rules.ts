@@ -7,12 +7,10 @@ import {getSourceNodes} from '@schematics/angular/utility/ast-utils';
 
 
 const RegisterBody =
-  `// mandatory - you need to register app defined rules and types since there is no
-    // real introspection in JS
+  `// mandatory - you need to register app defined rules and types
 
-    const rules: any[] = config.get('metaui.rules.user-rules') || [];
-    rules.push(userRules);
-    config.set('metaui.rules.user-rules', rules);`;
+    config.registerRules(userRules);
+`;
 
 
 export function registerUserRulesWithMetaConfig(options: Schema): Rule {
