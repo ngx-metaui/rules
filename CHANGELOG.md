@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.0.1](https://github.com/ngx-meta/rules/compare/v11.0.0...v11.0.1) (2021-04-12)
+
+
+### Bug Fixes
+
+* **schematics:** Added rxjs dependency required by material components ([2b9605a](https://github.com/ngx-meta/rules/commit/2b9605adad16e5b68056b44cd0aaabd7e8a40b5a))
+
 ## [11.0.0](https://github.com/ngx-meta/rules/compare/v11.0.0-beta.0...v11.0.0) (2021-04-12)
 
 ### Features
