@@ -17,13 +17,13 @@
  *
  *
  */
-import {chain, Rule, schematic, SchematicContext, Tree} from '@angular-devkit/schematics';
+import {chain, Rule, SchematicContext, Tree} from '@angular-devkit/schematics';
 import {NodeDependency, NodeDependencyType} from '@schematics/angular/utility/dependencies';
 import {AddSchema} from '../common/add-schema';
 import {setupOptions, sortObjectByKeys} from '../common/schematics-utils';
 import {WorkspaceProject} from '@schematics/angular/utility/workspace-models';
 import {getWorkspace, getWorkspacePath} from '@schematics/angular/utility/config';
-import {NodePackageInstallTask} from '@angular-devkit/schematics/tasks';
+import {NodePackageInstallTask, RunSchematicTask} from '@angular-devkit/schematics/tasks';
 
 /**
  * ng-add performs set of task to setup existing or new angular application for basic structure
@@ -42,11 +42,17 @@ export default function (options: AddSchema): Rule {
       (host: Tree) => {
         addPackageToPackageJson(host, options);
 
+        // Pre-install @Angular CDK as we use some of the schematics API
+        const npmInstallID = context.addTask(new NodePackageInstallTask());
+
+        context.addTask(new RunSchematicTask('init-project', options), [
+          npmInstallID
+        ]);
+
         if (!options.skipStyles) {
           addStylesToAngularJson(host, context, options);
         }
       },
-      schematic('init-project', options),
       async (host: Tree) => {
       },
       (_: Tree, aContext: SchematicContext) => {
@@ -77,7 +83,8 @@ function addPackageToPackageJson(host: Tree, options: AddSchema): Tree {
   if (options.uiLib === 'material') {
     uiLibs = [
       {
-        type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
+        type: NodeDependencyType.Default,
+        version: '^VERSION_PLACEHOLDER',
         name: '@ngx-metaui/material-rules'
       },
       {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
@@ -172,14 +179,11 @@ function doAddPackageToPackageJson(host: Tree, pkg: string, version: string): Tr
     const sourceText = host.read('package.json')!.toString('utf-8');
     const json = JSON.parse(sourceText);
 
-    if (!json.peerDependencies) {
-      json.peerDependencies = {};
+    if (!json.dependencies) {
+      json.dependencies = {};
     }
-
-    if (!json.peerDependencies[pkg]) {
-      json.peerDependencies[pkg] = version;
-      json.peerDependencies = sortObjectByKeys(json.dependencies);
-    }
+    json.dependencies[pkg] = version;
+    json.dependencies = sortObjectByKeys(json.dependencies);
 
     host.overwrite('package.json', JSON.stringify(json, null, 2));
   }
