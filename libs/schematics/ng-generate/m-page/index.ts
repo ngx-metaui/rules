@@ -34,16 +34,8 @@ import {normalize, strings} from '@angular-devkit/core';
 import {getSourceNodes} from '@schematics/angular/utility/ast-utils';
 import * as ts from 'typescript';
 import {Change, InsertChange} from '@schematics/angular/utility/change';
-import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {buildRelativePath} from '@schematics/angular/utility/find-module';
-import {
-  addDeclarationToModule,
-  addImportToModule,
-  getProjectFromWorkspace,
-  getProjectMainFile,
-  parseSourceFile
-} from '@angular/cdk/schematics';
-import {getWorkspace} from '@schematics/angular/utility/config';
+import {addDeclarationToModule, addImportToModule, parseSourceFile} from '@angular/cdk/schematics';
 
 
 /**
@@ -59,7 +51,6 @@ export default function (options: MetaPageSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     setupOptions(tree, options, context);
     readUILib(tree, options, context);
-
 
     return chain([
       copyModel(options),

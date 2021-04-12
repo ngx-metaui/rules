@@ -1,6 +1,6 @@
 import {AddSchema} from '../../common/add-schema';
 import {chain, Rule, SchematicContext, Tree} from '@angular-devkit/schematics';
-import {insertImport, parseSourceFile} from '@angular/cdk/schematics';
+import {addModuleImportToModule, insertImport, parseSourceFile} from '@angular/cdk/schematics';
 import {Change, InsertChange} from '@schematics/angular/utility/change';
 
 
@@ -14,25 +14,18 @@ export function addUILibraryRequiredModulesAndImports(options: AddSchema): Rule 
 function addNgModuleImports(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     try {
+      const imports = [
+        'MaterialRulesModule.forRoot()', '@ngx-metaui/material-rules'
+      ];
+
+
       const modulePath = options.module as string;
       const sourceText = host.read(modulePath)!.toString('utf-8');
-      const moduleSource: any = parseSourceFile(host, modulePath);
-
 
       if (options.uiLib === 'material') {
         const hasModule = sourceText.includes('MaterialRulesModule.forRoot');
         if (!hasModule) {
-          const recorder = host.beginUpdate(modulePath);
-          const changes = [
-            insertImport(moduleSource, modulePath, 'MaterialRulesModule.forRoot()',
-              '@ngx-metaui/material-rules')
-          ];
-          changes.forEach((change) => {
-            if (change instanceof InsertChange) {
-              recorder.insertLeft(change.pos, change.toAdd);
-            }
-          });
-          host.commitUpdate(recorder);
+          addModuleImportToModule(host, modulePath, imports[0], imports[1]);
         }
       }
 

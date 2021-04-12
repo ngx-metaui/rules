@@ -51,9 +51,6 @@ export class AppModule {
   constructor(private config: MetaConfig) {
     // mandatory - you need to register user's defined rules and types since there is no
     // introspection in js
-
-    const rules: any[] = config.get('metaui.rules.user-rules') || [];
-    rules.push(userRules);
-    config.set('metaui.rules.user-rules', rules);
+    config.registerRules(userRules);
   }
 }

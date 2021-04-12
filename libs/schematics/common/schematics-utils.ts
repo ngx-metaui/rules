@@ -70,7 +70,6 @@ export async function setupOptions(host: Tree, options: Schema, context: Schemat
   } catch (e) {
     throw new SchematicsException(`Cant parse file under  ${CONFIG_FILE_NAME}!`);
   }
-
   if (!options.project) {
     if (!config.defaultProject) {
       throw new SchematicsException('Could not find a default project, please specify ' +
