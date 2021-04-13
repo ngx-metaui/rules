@@ -52,7 +52,9 @@ export {
   PropActionCategories, PropActionsByCategory, PropFieldPropertyList, PropFieldsByZone,
   PropIsFieldsByZone, PropLayoutsByZone, RootPredecessorKey, ScopeKey, SystemRulePriority,
   UILibraryRulePriority, ValueQueriedObserver, ZoneBottom, ZoneDetail, ZoneLeft, ZoneMain,
-  ZoneMiddle, ZoneRight, ZonesDetail, ZonesMTLRB, ZonesTLRMB, ZoneTop
+  ZoneMiddle, ZoneRight, ZonesDetail, ZonesMTLRB, ZonesTLRMB, ZoneTop, ZoneOne, ZoneTwo,
+  ZoneThree, ZoneFour,
+  Zones1234
 } from './constants';
 export {Environment} from './config/environment';
 export {ItemProperties} from './item-properties';

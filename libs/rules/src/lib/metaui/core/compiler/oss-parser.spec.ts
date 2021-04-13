@@ -912,8 +912,25 @@ describe('MetaUI parser', () => {
 
         const prChain = <OSSPrecedenceChainAst>ossFileAst.rules[0].ruleBody.statements[0];
         expect(prChain.nodes[2].token.type).toBe(OSSTokenType.KeyPath);
+      });
 
+    it('can parse customer colum based predecessor chain nodes',
+      () => {
+        /* tslint:disable: no-trailing-whitespace */
+        lexer = new OSSLexer(
+          `class=Issue {
+                    zOne => name => address.zip;
+                }`
+        );
 
+        const parser = new OSSParser(lexer);
+
+        const ossFileAst = parser.parse();
+        expect(ossFileAst.rules.length).toBe(1);
+
+        const prChain = <OSSPrecedenceChainAst>ossFileAst.rules[0].ruleBody.statements[0];
+        expect(prChain.nodes[0].token.value).toBe('zOne');
+        expect(prChain.nodes[2].token.type).toBe(OSSTokenType.KeyPath);
       });
 
 

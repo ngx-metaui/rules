@@ -46,7 +46,7 @@ import {UIMeta} from '././uimeta';
 /* tslint:disable */
 // temp rules to push some default that are now separated from the rule engine
 
-fdescribe('Meta Context behavior ', () => {
+describe('Meta Context behavior ', () => {
 
   beforeEach((done) => {
     TestBed.configureTestingModule({
