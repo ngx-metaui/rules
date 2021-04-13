@@ -90,6 +90,7 @@ import {RuntimeParser} from './compiler/runtime-parser.visitor';
  */
 @Injectable({providedIn: 'root'})
 export class UIMeta extends ObjectMeta {
+  layoutZones: string[] = ZonesTLRMB;
   private _loadedResource: Map<string, RuleSet> = new Map<string, RuleSet>();
 
   constructor(public componentRegistry: ComponentRegistry,
@@ -99,9 +100,7 @@ export class UIMeta extends ObjectMeta {
     super(componentRegistry);
 
     try {
-
       this.beginRuleSet('UIMeta');
-
       this.registerKeyInitObserver(KeyClass, new AppRuleMetaDataProvider());
 
       // These keys define scopes for their properties
@@ -344,7 +343,7 @@ export class UIMeta extends ObjectMeta {
 
 
   fieldList(context: Context): Array<ItemProperties> {
-    return this.itemList(context, KeyField, ZonesTLRMB);
+    return this.itemList(context, KeyField, this.layoutZones);
   }
 
   itemNamesByZones(context: Context, key: string, zones: string[]): Map<string, any> {
@@ -561,7 +560,7 @@ export class UIMeta extends ObjectMeta {
   }
 
   private fieldsByZones(context: Context): Map<string, any> {
-    return this.itemsByZones(context, KeyField, ZonesTLRMB);
+    return this.itemsByZones(context, KeyField, this.layoutZones);
   }
 
   private mapItemPropsToNames(itemsByZones: Map<string, any>): Map<string, any> {

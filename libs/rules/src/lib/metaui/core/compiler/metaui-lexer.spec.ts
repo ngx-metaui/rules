@@ -18,6 +18,7 @@
  */
 import {waitForAsync} from '@angular/core/testing';
 import {OSSLexer, OSSToken, OSSTokenType} from './oss-lexer';
+import {debug} from 'ng-packagr/lib/utils/log';
 
 
 describe('MetaUI Lexer', () => {
@@ -330,6 +331,40 @@ describe('MetaUI Lexer', () => {
 
       token = rewindTo(lexer, 4); // Notes.zDetail
       expect(token.type).toBe(OSSTokenType.KeyPath);
+    }));
+
+    it('should tokenize precedenceChain path with custom zoness', waitForAsync(() => {
+      lexer = new OSSLexer(`
+               // aaas
+                class=User {
+                    visible:true;
+
+                    zNone => *;
+                    zOne => firstName => lastName#traitOne;
+                    zTwo => description#traitTwo => label;
+                    Notes.zThree => ddddd;
+
+                }
+            `);
+      let token = rewindTo(lexer, 12); // star
+
+      token = rewindTo(lexer, 2); // zOne
+      expect(token.type).toBe(OSSTokenType.Identifier);
+      expect(token.value).toBe('zOne');
+
+      token = rewindTo(lexer, 6); // traitOne
+      expect(token.value).toBe('traitOne');
+
+      token = rewindTo(lexer, 2); // zTwo
+      expect(token.value).toBe('zTwo');
+
+      token = rewindTo(lexer, 4); // traitTwo
+      expect(token.value).toBe('traitTwo');
+
+
+      token = rewindTo(lexer, 4); // Notes.zThree
+      expect(token.type).toBe(OSSTokenType.KeyPath);
+      expect(token.value).toBe('Notes.zThree');
     }));
 
 

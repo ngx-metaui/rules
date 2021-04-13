@@ -27,7 +27,7 @@ import {LayoutModule} from './metaui/meta-ui-layout.module';
 import * as entryComponents from './entry-components';
 import {WidgetsRulesRule} from './metaui/ts/WidgetsRules.oss';
 import {PersistenceRulesRule} from './metaui/ts/PersistenceRules.oss';
-import {UILibraryRulePriority, UIMeta} from '@ngx-metaui/rules';
+import {UILibraryRulePriority, UIMeta, ZonesTLRMB} from '@ngx-metaui/rules';
 
 @NgModule({
   imports: [
@@ -62,8 +62,9 @@ export class MaterialRulesModule {
 }
 
 export function initLibMetaUI(rules: UIMeta) {
+  rules.layoutZones = ZonesTLRMB;
+  
   const initFce = function init(rEngine: UIMeta) {
-
     const promise: Promise<any> = new Promise((resolve: any) => {
       rEngine.loadRuleSource({
         module: 'MaterialRules', filePath: 'WidgetsRules.oss',

@@ -23,8 +23,9 @@ import {MetaBaseComponent} from './meta.base.component';
 import {ItemProperties} from '../core/item-properties';
 import {OnContextSetEvent} from '../core/meta-context/meta-context.component';
 import {Context} from '../core/context';
-import {KeyLabel, KeyLayout, ZonesTLRMB} from '../core/constants';
+import {KeyLabel, KeyLayout} from '../core/constants';
 import {PropertyMap} from '../core/policies/merging-policy';
+import {UIMeta} from '../core/uimeta';
 
 
 /**
@@ -149,7 +150,7 @@ export abstract class MetaLayout extends MetaBaseComponent implements OnDestroy 
   }
 
   zones(): string[] {
-    return ZonesTLRMB;
+    return (this.metaContext.context.meta as UIMeta).layoutZones;
   }
 
 

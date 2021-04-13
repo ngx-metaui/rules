@@ -581,14 +581,13 @@ export enum OSSTokenType {
   KWOperationIdentifier, KWFieldIdentifier, KWBindingsIdentifier, KWComponentIdentifier,
   KWObjectIdentifier, KWValueRedirectorIdentifier, KWActionIdentifier, KWActionResultsIdentifier,
   KWVisibleIdentifier, KWPageNameIdentifier, KWPageBindingsIdentifier, KWAfterIdentifier,
-  KWZtopIdentifier, KWZbottomIdentifier, KWZleftIdentifier, KWZrightIdentifier,
+  KWZtopIdentifier, KWZbottomIdentifier, c, KWZrightIdentifier,
   KWZmiddleIdentifier, KWZnoneIdentifier, KWLayoutIdentifier, KWHomepageIdentifier,
   KWModuleTraitIdentifier, KWModuleIdentifier, KWWrapperCompIdentifier,
   KWWrapperBindingsIdentifier, KWPortletWrapperIdentifier, KWDisplayGroupIdentifier,
   KWBeforeIdentifier, KWTextsearchSupportedIdentifier, KWUseTextIndexIdentifier,
   KWLabelIdentifier, KWEditableIdentifier, KWValidIdentifier, Identifier,
-
-
+  KWZone, KWZTwo, KWZthree, KWZfour,
   /**
    * App specific literals and expressions
    */

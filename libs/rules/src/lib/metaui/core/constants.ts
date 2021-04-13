@@ -29,6 +29,7 @@ import {ItemProperties} from './item-properties';
 import {LocalizedString} from './i18n/localized-string';
 import {Route} from '@angular/router';
 import {Meta} from './meta';
+import {InjectionToken} from '@angular/core';
 
 
 /**
@@ -118,10 +119,19 @@ export const ZoneRight = 'zRight';
 export const ZoneBottom = 'zBottom';
 export const ZoneDetail = 'zDetail';
 
+
+// 4 columns based zones
+export const ZoneOne = 'zOne';
+export const ZoneTwo = 'zTwo';
+export const ZoneThree = 'zThree';
+export const ZoneFour = 'zFour';
+
+
 export const AppConfigRuleFilesParam = 'metaui.rules.file-names';
 export const AppConfigUserRulesParam = 'metaui.rules.user-rules';
 
 export const ZonesTLRMB = [ZoneTop, ZoneLeft, ZoneMiddle, ZoneRight, ZoneBottom];
+export const Zones1234 = [ZoneOne, ZoneTwo, ZoneThree, ZoneFour];
 export const ZonesMTLRB = [ZoneMain, ZoneTop, ZoneLeft, ZoneRight, ZoneBottom];
 export const ZonesDetail = [ZoneDetail];
 
