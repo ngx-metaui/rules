@@ -26,23 +26,19 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   DoCheck,
-  Injector,
+  Input,
   Renderer2,
   ViewContainerRef
 } from '@angular/core';
 import {ComponentRegistry} from '../core/component-registry.service';
 import {BaseRenderer, ComponentReference, NgContent} from './core/base-renderer.directive';
-
-import {isStringMap} from '../core/utils/lang';
 import {Environment} from '../core/config/environment';
 import {
   KeyBindings,
-  KeyComponentModuleName,
   KeyComponentName,
   KeyLayout,
   KeyWrapperBinding,
-  KeyWrapperComponent,
-  KeyWrapperModuleComponent
+  KeyWrapperComponent
 } from '../core/constants';
 import {Context} from '../core/context';
 import {MetaContextComponent} from '../core/meta-context/meta-context.component';
@@ -50,6 +46,7 @@ import {NgModel} from '@angular/forms';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {BindingValueFactory, MetaBindable} from '../core/binding-factory.service';
+import {isPresent} from '../core/utils/lang';
 
 export const NgContentLayout = 'ngcontentLayout';
 
@@ -68,7 +65,9 @@ export const NgContentLayout = 'ngcontentLayout';
  */
 @Component({
   selector: 'm-render',
-  template: '<ng-content></ng-content>',
+  template: `
+    <ng-content></ng-content>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaRendererComponent extends BaseRenderer implements AfterViewInit, DoCheck {
@@ -100,6 +99,13 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
    *
    */
 
+  /**
+   * There could some other dependencies that are not injected during instantiation. Such example
+   * is @Host(), where instantiated component is trying Inject its parent host component
+   */
+  @Input()
+  hostBindings: Record<string, any>;
+
 
   private _currentNgModel: NgModel;
   private _destroy: Subject<void> = new Subject<void>();
@@ -120,10 +126,8 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
               public compRegistry: ComponentRegistry,
               public renderer: Renderer2,
               public bindingValueFactory: BindingValueFactory,
-              protected _compiler: Compiler,
-              public injector: Injector) {
-    super(viewContainer, componentFactoryResolver, cd, compRegistry, renderer, _compiler,
-      injector);
+              protected _compiler: Compiler) {
+    super(viewContainer, componentFactoryResolver, cd, compRegistry, renderer, _compiler);
   }
 
 
@@ -135,6 +139,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     this.mc.contextChanged$
       .pipe(takeUntil(this._destroy))
       .subscribe(context => this._handleContextChanged(context));
+
   }
 
   ngDoCheck(): void {
@@ -162,7 +167,8 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
   protected _bindingValue(name: string, isWrapper: boolean = false): any {
     const key = isWrapper ? KeyWrapperBinding : KeyBindings;
     const propertyForKey: Map<string, any> = this._currentContext.propertyForKey(key);
-    return propertyForKey ? propertyForKey.get(name) : this._currentContext.propertyForKey(name);
+    return propertyForKey && propertyForKey.has(name) ? propertyForKey.get(name)
+      : this._currentContext.propertyForKey(name);
   }
 
 
@@ -183,22 +189,12 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     return componentName;
   }
 
-  protected _componentModuleName(name: string = KeyComponentModuleName): string {
-    const componentName = this._currentContext.propertyForKey(name);
-    if (!componentName && name === KeyComponentModuleName) {
-      return undefined;
-    }
-    return componentName;
-  }
-
 
   _lookupComponentReference(): ComponentReference {
     const properties = this._currentContext.allProperties();
     let key = '';
     properties.forEach((v, k) => {
-      if (!isStringMap(v)) {
-        key += `${k}:${v}`;
-      }
+      key += `${k}:${this.context.propertyForKey(k)}`;
     });
     return this.componentReferenceMap().get(key);
   }
@@ -208,9 +204,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     const properties = this._currentContext.allProperties();
     let key = '';
     properties.forEach((v, k) => {
-      if (!isStringMap(v)) {
-        key += `${k}:${v}`;
-      }
+      key += `${k}:${this.context.propertyForKey(k)}`;
     });
     this.componentReferenceMap().set(key, reference);
   }
@@ -225,11 +219,9 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     const component = super._createElement(reference, bindings, contentElement);
 
     const wrapperComponentName = this._componentName(KeyWrapperComponent);
-    const wrapperModuleComponentName = this._componentModuleName(KeyWrapperModuleComponent);
 
-    if (wrapperComponentName || wrapperModuleComponentName) {
-      const wrapperCR = super._createComponentReference(wrapperComponentName,
-        wrapperModuleComponentName);
+    if (wrapperComponentName) {
+      const wrapperCR = super._createComponentReference(wrapperComponentName);
       const wrapperBindings = this._bindingsForNewReference(wrapperCR, true);
       const wrapperComponent = super._createElement(wrapperCR, wrapperBindings, null,
         1);
@@ -256,7 +248,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     }
 
     if (bindings.has(NgContent)) {
-      const inputValue = this.bindingValueFactory.getInputValue(this._currentContext,
+      const inputValue = this.bindingValueFactory.getInputValue(this.mc,
         this.currentComponent, NgContent, bindings.get(NgContent));
       bindings.set(NgContent, (inputValue as MetaBindable<any>).getValue());
     }
@@ -270,7 +262,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
 
     bindings.forEach((value, field) => {
       const inputValue: MetaBindable<any> = this.bindingValueFactory.getInputValue(
-        this._currentContext, component, field, value);
+        this.mc, component, field, value);
       if (inputValue.isSettableInComponent()) {
         const newValue = inputValue.getValue();
         if (!component.instance[field] || newValue) {
@@ -280,8 +272,16 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     });
 
     outputBindings.forEach((output) => {
-      this.bindingValueFactory.initOutputValue(this._currentContext, component, output);
+      this.bindingValueFactory.initOutputValue(this.mc, component, output);
     });
+
+    if (this.hostBindings) {
+      for (const field in this.hostBindings) {
+        component.instance[field] = this.hostBindings[field];
+      }
+    }
+    // save current MC to component
+    component.instance['_MC_'] = this.mc;
   }
 
 
@@ -290,17 +290,16 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
    */
   private _handleContextChanged(context: Context): void {
     // console.log('Renderer, _handleContextChanged', this.mc._debugKeys());
-    // console.log('Renderer, _handleContextChanged', this._isComponentChanged());
+    const needsFullRerender = context.isEditing() !== this.context.isEditing();
 
     this._currentContext = context;
-
-    if (this._isComponentChanged()) {
+    if (this._isComponentChanged() || needsFullRerender) {
       this._refreshView();
     } else {
       if (this._currentNgModel && this._currentNgModel.control.dirty) {
         this._currentNgModel.control.markAsPristine();
       }
-      const reference = this._currentComponentReference();
+      // const reference = this._currentComponentReference();
       // this._applyInputs(this.currentComponent, this._bindingsForNewReference(reference));
     }
     this._markRefresh = true;
@@ -313,18 +312,29 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
    * used within MetaIncludeComponent
    */
   private _isComponentChanged(): boolean {
-    // const newComponent = this._currentContext.propertyForKey('component');
-    // return isPresent(newComponent) && (isPresent(this.name) && this.name !== newComponent);
-    return true;
+    if (!this.componentReference) {
+      return true;
+    }
+    const name = this.componentReference.component;
+    const newComponent = this._currentContext.propertyForKey('component');
+    return isPresent(newComponent) && (isPresent(name) && name !== newComponent);
   }
 
 
   private _refreshView(): void {
     this.viewContainer.clear();
+    this._destroy.unsubscribe();
     this.componentReference = undefined;
     // console.log('Renderer, _refreshView', this.mc._debugKeys());
 
     this.doRender();
+  }
+
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+
+    this.bindingValueFactory.release();
   }
 }
 

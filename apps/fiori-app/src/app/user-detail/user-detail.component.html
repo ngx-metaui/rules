@@ -1,0 +1,26 @@
+<button fd-button  (click)="updateOp('edit')" label="Edit">Edit</button> |
+<button fd-button  (click)="updateOp('view')" label="View">View</button>
+
+
+operation: {{operation}}
+
+<div [formGroup]="formGroup">
+  <m-context #main [object]="object" [operation]="operation" layout="Inspect" >
+    <m-render></m-render>
+
+    <ng-template #i18n let-errors>
+        <span *ngIf="errors?.metavalid">
+            {{errors.metavalid.msg    }}
+        </span>
+      <span *ngIf="errors?.required && !errors.metavalid">
+            Required field
+        </span>
+
+    </ng-template>
+  </m-context>
+
+</div>
+
+
+
+<!--{{formGroup.getRawValue() | json}}-->

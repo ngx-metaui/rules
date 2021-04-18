@@ -8,7 +8,7 @@ class=User {
       after:zTop;
       trait:bold;
       componentModule:'CustomInputModule';
-      visible: ${object.firstName !== "boom"};
+      editable: ${object.firstName !== "boom"};
     }
 
     field=(uniqueName , firstName , prefAirline , favAnimal , toppings) {

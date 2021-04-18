@@ -20,13 +20,14 @@
  */
 import {ComponentRef, EventEmitter, Injectable, SimpleChange} from '@angular/core';
 import {ContextFieldPath, ValueConverter} from './property-value';
-import {Context} from './context';
 import {KeyField, KeyType} from './constants';
 import {DynamicPropertyValue} from './policies/merging-policy';
 import {assert} from './utils/lang';
 import {NgModel} from '@angular/forms';
 import {Environment} from '../core/config/environment';
 import {MetaContextComponent, MetaUIActionEvent} from './meta-context/meta-context.component';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 export const CurrentNgModel = 'ngModelCtx';
 
@@ -39,88 +40,101 @@ export const CurrentNgModel = 'ngModelCtx';
   providedIn: 'root'
 })
 export class BindingValueFactory {
+  private _destroy: Subject<void> = new Subject<void>();
+
+
   constructor(public _env: Environment) {
   }
 
-  getInputValue(context: Context, component: ComponentRef<any>, key: string, value: any,
+  getInputValue(mc: MetaContextComponent, component: ComponentRef<any>, key: string, value: any,
                 isWrapper: boolean = false): any {
     if (key === 'name') {
-      return this._makeNameBinding(context, component, key, value, isWrapper);
+      return this._makeNameBinding(mc, component, key, value, isWrapper);
     } else if (key === 'ngModel') {
-      return this._makeNgModelBinding(context, component, key, value, isWrapper);
+      return this._makeNgModelBinding(mc, component, key, value, isWrapper);
     } else if (key === 'disabled') {
-      this._makeDisabledBinding(context, component, key, value, isWrapper);
+      this._makeDisabledBinding(mc, component, key, value, isWrapper);
     } else if (value instanceof ContextFieldPath) {
-      return this._makeContextPathBinding(context, component, key, value, isWrapper);
+      return this._makeContextPathBinding(mc, component, key, value, isWrapper);
     } else if (value instanceof DynamicPropertyValue) {
-      return this._makeDynamicPropertyBindingInput(context, component, key, value, isWrapper);
+      return this._makeDynamicPropertyBindingInput(mc, component, key, value, isWrapper);
     }
 
-    const aValue = new ValueBinding(context, component, isWrapper, this._env);
+    const aValue = new ValueBinding(mc, component, isWrapper, this._env);
+    aValue.destroy = this._destroy;
     aValue.init(key, value, true);
     return aValue;
   }
 
-  initOutputValue(context: Context, component: ComponentRef<any>, key: string): any {
-    const bindings: Map<string, any> = context.propertyForKey('bindings');
+  initOutputValue(mc: MetaContextComponent, component: ComponentRef<any>, key: string): any {
+    const bindings: Map<string, any> = mc.context.propertyForKey('bindings');
     const event = bindings.get(key);
 
     if (event instanceof DynamicPropertyValue) {
-      this._makeDynamicPropertyBindingOutput(context, component, key, event);
+      this._makeDynamicPropertyBindingOutput(mc, component, key, event);
     } else {
 
-      const aValue = new ValueBinding(context, component, false, this._env);
+      const aValue = new ValueBinding(mc, component, false, this._env);
+      aValue.destroy = this._destroy;
       aValue.init(key, event, false);
       return aValue;
     }
   }
 
-  private _makeContextPathBinding(context: Context, component: ComponentRef<any>,
+  private _makeContextPathBinding(mc: MetaContextComponent, component: ComponentRef<any>,
                                   key: string, value: any,
                                   isWrapper: boolean): ContextFieldPathBinding {
-    const contextValue = new ContextFieldPathBinding(context, component.instance, isWrapper);
+    const contextValue = new ContextFieldPathBinding(mc, component.instance, isWrapper);
     contextValue.init(key, value, true);
     return contextValue;
   }
 
-  private _makeDynamicPropertyBindingInput(context: Context, component: ComponentRef<any>,
+  private _makeDynamicPropertyBindingInput(mc: MetaContextComponent, component: ComponentRef<any>,
                                            key: string, value: any,
                                            isWrapper: boolean): DynamicPropertyValueBinding {
     const comp = component ? component.instance : null;
-    const contextValue = new DynamicPropertyValueBinding(context, comp, isWrapper);
+    const contextValue = new DynamicPropertyValueBinding(mc, comp, isWrapper);
+    contextValue.destroy = this._destroy;
     contextValue.init(key, value, true);
     return contextValue;
   }
 
-  private _makeDynamicPropertyBindingOutput(context: Context, component: ComponentRef<any>,
+  private _makeDynamicPropertyBindingOutput(mc: MetaContextComponent, component: ComponentRef<any>,
                                             key: string, value: any): DynamicPropertyValueBinding {
     const comp = component ? component.instance : null;
-    const contextValue = new DynamicPropertyValueBinding(context, comp, false);
+    const contextValue = new DynamicPropertyValueBinding(mc, comp, false);
+    contextValue.destroy = this._destroy;
     contextValue.init(key, value, false);
     return contextValue;
   }
 
 
-  private _makeNameBinding(context: Context, component: ComponentRef<any>,
+  private _makeNameBinding(mc: MetaContextComponent, component: ComponentRef<any>,
                            key: string, value: any, isWrapper: boolean): NameValueBinding {
-    const contextValue = new NameValueBinding(context, component.instance, isWrapper);
+    const contextValue = new NameValueBinding(mc, component.instance, isWrapper);
     contextValue.init(key, value, true);
     return contextValue;
   }
 
-  private _makeNgModelBinding(context: Context, component: ComponentRef<any>,
+  private _makeNgModelBinding(mc: MetaContextComponent, component: ComponentRef<any>,
                               key: string, value: any, isWrapper: boolean): NgModelBinding {
-    const contextValue = new NgModelBinding(context, component, isWrapper);
+    const contextValue = new NgModelBinding(mc, component, isWrapper);
     contextValue.init(key, value, true);
     return contextValue;
   }
 
 
-  private _makeDisabledBinding(context: Context, component: ComponentRef<any>,
+  private _makeDisabledBinding(mc: MetaContextComponent, component: ComponentRef<any>,
                                key: string, value: any, isWrapper: boolean): void {
-    const contextValue = new DisabledValueBinding(context, component, isWrapper);
+    const contextValue = new DisabledValueBinding(mc, component, isWrapper);
     contextValue.init(key, value, true);
   }
+
+
+  release(): void {
+    this._destroy.unsubscribe();
+  }
+
 }
 
 
@@ -140,7 +154,8 @@ export class ContextFieldPathBinding implements MetaBindable<ContextFieldPath> {
   contextPath: ContextFieldPath;
 
 
-  constructor(private context: Context, private component: any, private isWrapper: boolean) {
+  constructor(private mc: MetaContextComponent, private component: any,
+              private isWrapper: boolean) {
   }
 
   init(bindingName: string, cnxFieldPath: ContextFieldPath, isInput: boolean = true): void {
@@ -158,6 +173,7 @@ export class ContextFieldPathBinding implements MetaBindable<ContextFieldPath> {
         if (this.descriptor && this.descriptor.set) {
           this.descriptor.set.call(this.component, val);
         }
+        this.mc.cd.detectChanges();
       },
       enumerable: true,
       configurable: true
@@ -165,13 +181,13 @@ export class ContextFieldPathBinding implements MetaBindable<ContextFieldPath> {
   }
 
   getValue(): any {
-    return this.contextPath.evaluate(this.context);
+    return this.contextPath.evaluate(this.mc.context);
   }
 
   setValue(value: any): void {
-    if (this.context.isEditing()) {
-      const type = this.context.propertyForKey(KeyType);
-      this.contextPath.evaluateSet(this.context, ValueConverter.value(type, value));
+    if (this.mc.context.isEditing()) {
+      const type = this.mc.context.propertyForKey(KeyType);
+      this.contextPath.evaluateSet(this.mc.context, ValueConverter.value(type, value));
     }
   }
 
@@ -183,25 +199,35 @@ export class ContextFieldPathBinding implements MetaBindable<ContextFieldPath> {
 export class DynamicPropertyValueBinding implements MetaBindable<DynamicPropertyValue> {
   propertyValue: DynamicPropertyValue;
   isSettable = true;
+  private _destroy: Subject<void>;
 
-  constructor(private context: Context, private component: any,
+  constructor(private mc: MetaContextComponent, private component: any,
               private isWrapper: boolean) {
   }
 
   getValue(): any {
-    return this.propertyValue.evaluate(this.context);
+    return this.propertyValue.evaluate(this.mc.context);
   }
 
-  // todo: unsubscribes
+
+  set destroy(value: Subject<void>) {
+    this._destroy = value;
+  }
+
+// todo: unsubscribes
   init(bindingName: string, value: DynamicPropertyValue, isInput: boolean): void {
     if (isInput) {
       this.propertyValue = value;
     } else {
       const eventEmitter: EventEmitter<any> = this.component[bindingName];
-      eventEmitter.asObservable().subscribe((val: any) => {
-        const dynval: DynamicPropertyValue = value;
-        this.context.resolveValue(dynval);
-      });
+      eventEmitter.asObservable()
+        .pipe(
+          takeUntil(this._destroy),
+        )
+        .subscribe((val: any) => {
+          const dynval: DynamicPropertyValue = value;
+          this.mc.context.resolveValue(dynval);
+        });
       this.isSettable = false;
     }
   }
@@ -220,12 +246,12 @@ export class DynamicPropertyValueBinding implements MetaBindable<DynamicProperty
 export class NameValueBinding implements MetaBindable<string> {
   propertyValue: string;
 
-  constructor(private context: Context, private component: ComponentRef<any>,
+  constructor(private mc: MetaContextComponent, private component: ComponentRef<any>,
               private isWrapper: boolean) {
   }
 
   getValue(): any {
-    return this.context.propertyForKey(KeyField);
+    return this.mc.context.propertyForKey(KeyField);
   }
 
   init(bindingName: string, value: string, isInput: boolean): void {
@@ -246,7 +272,7 @@ export class NameValueBinding implements MetaBindable<string> {
 export class DisabledValueBinding implements MetaBindable<string> {
 
 
-  constructor(private context: Context, private component: ComponentRef<any>,
+  constructor(private mc: MetaContextComponent, private component: ComponentRef<any>,
               private isWrapper: boolean) {
   }
 
@@ -278,7 +304,7 @@ export class DisabledValueBinding implements MetaBindable<string> {
 export class NgModelBinding implements MetaBindable<ContextFieldPath> {
 
 
-  constructor(private context: Context, private component: ComponentRef<any>,
+  constructor(private mc: MetaContextComponent, private component: ComponentRef<any>,
               private isWrapper: boolean) {
   }
 
@@ -295,8 +321,8 @@ export class NgModelBinding implements MetaBindable<ContextFieldPath> {
 
       const ngModel = new NgModel(null, null, null,
         [this.component.instance]);
-      ngModel.model = value.evaluate(this.context);
-      ngModel.name = this.context.propertyForKey(KeyField);
+      ngModel.model = value.evaluate(this.mc.context);
+      ngModel.name = this.mc.context.propertyForKey(KeyField);
       ngModel.valueAccessor = this.component.instance;
       ngModel.reset(ngModel.model);
 
@@ -319,16 +345,16 @@ export class NgModelBinding implements MetaBindable<ContextFieldPath> {
     } else {
       ngModel.control.enable();
     }
-    const subscription = ngModel.update.subscribe((updatedValue: any) => {
-      const type = this.context.propertyForKey(KeyType);
-      path.evaluateSet(this.context, ValueConverter.value(type, updatedValue));
-    });
+
+    // ngModel.control.valueChanges.subscribe((item) => {
+    //   console.log('updated value', item);
+    // });
+
     const destroy = component.instance.onDestroy;
     component.onDestroy(() => {
       if (destroy) {
         component.destroy.apply(component);
       }
-      subscription.unsubscribe();
     });
   }
 
@@ -345,8 +371,9 @@ export class NgModelBinding implements MetaBindable<ContextFieldPath> {
 
 export class ValueBinding implements MetaBindable<any> {
   currentValue: any;
+  private _destroy: Subject<void>;
 
-  constructor(private context: Context, private component: ComponentRef<any>, isWrapper: boolean,
+  constructor(private mc: MetaContextComponent, private component: ComponentRef<any>, isWrapper: boolean,
               private env?: Environment) {
   }
 
@@ -354,9 +381,13 @@ export class ValueBinding implements MetaBindable<any> {
     return this.currentValue;
   }
 
+  set destroy(value: Subject<void>) {
+    this._destroy = value;
+  }
+
   init(bindingName: string, value: any, isInput: boolean): void {
     if (isInput) {
-      this.currentValue = value;
+      this.currentValue = value || this.mc.context.propertyForKey(bindingName);
     } else {
       const eventEmitter: EventEmitter<any> = this.component.instance[bindingName];
       eventEmitter.subscribe((val: any) => {

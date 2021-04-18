@@ -1,0 +1,52 @@
+<m-context #classMC scopeKey="class" [parentMC]="_parentMC">
+  <ng-template [ngIf]="classMC.hasObject()">
+    <ng-container *ngTemplateOutlet="formGroup;context:{$implicit: classMC}">
+    </ng-container>
+  </ng-template>
+</m-context>
+
+
+<ng-template #formGroup let-mc>
+  <fdp-form-group #fg [mainTitle]="mc | properties: 'mainTitle'"
+                  [columnLayout]="mc | properties: 'layoutPattern': 'XL4-L3-M2-S1'"
+                  [i18Strings]="mc.i18n">
+
+    <ng-template ngFor let-zone [ngForOf]="['zOne', 'zTwo', 'zThree', 'zFour']" let-i="index">
+      <!-- zones are represented by layout columns. In total we have maximum 4 zones (columns)  -->
+      <ng-container *ngTemplateOutlet="zoneTemplate;context:{$implicit: zone, colNum: i+1, mc:mc, formGroup:fg}">
+      </ng-container>
+    </ng-template>
+  </fdp-form-group>
+</ng-template>
+
+
+<!--
+ zonePath => zOne, zTwo, zThree, zFour
+ todo: add trackBy
+-->
+<ng-template #zoneTemplate let-zonePath let-mc="mc" let-colNum="colNum" let-formGroup="formGroup">
+  <ng-template ngFor let-field [ngForOf]="mc | properties:'fieldsByZone.'+ zonePath">
+    <ng-container
+      *ngTemplateOutlet="fieldTemplate;context:{$implicit: field, mc:mc, colNum:colNum, formGroup:formGroup}">
+    </ng-container>
+  </ng-template>
+</ng-template>
+
+
+<ng-template #fieldTemplate let-field let-mc="mc" let-colNum="colNum" let-formGroup="formGroup">
+  <m-context #mcf [field]="field" [parentMC]="mc">
+    <fdp-form-field #ff *ngIf="!!(mcf | properties:'visible')"
+                    [formGroupContainer]="formGroup"
+                    [i18Strings]="_parentMC.i18n"
+                    [label]="mcf | properties:'label'"
+                    [id]="mcf | properties:'field'"
+                    [hint]="mcf | properties:'hint'"
+                    [required]="mcf | properties:'required'"
+                    [column]="colNum"
+                    [rank]="mcf | properties:'rank'"
+                    [placeholder]="mcf | properties:'placeholder'">
+      <m-render [hostBindings]="{'formField': ff}"></m-render>
+    </fdp-form-field>
+
+  </m-context>
+</ng-template>

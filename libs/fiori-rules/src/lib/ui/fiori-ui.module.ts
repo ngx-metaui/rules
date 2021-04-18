@@ -17,30 +17,22 @@
  *
  */
 import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {DatePickerModule, SelectModule} from '@fundamental-ngx/core';
-import {MoneyComponent} from './money/money.component';
-import {StringComponent} from './string/string.component';
+import {StringComponent} from './form/string/string.component';
+
 
 @NgModule({
   declarations: [
-    MoneyComponent,
     StringComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DatePickerModule,
-    SelectModule
+    CommonModule
   ],
   exports: [
-    MoneyComponent,
     StringComponent
   ]
 })
-export class FdpFormModule {
+export class FioriUiModule {
 }
 
 

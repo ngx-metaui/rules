@@ -1,6 +1,6 @@
 /**
- * @license
- * F. Kolar
+ * @licensess
+ * Copyright F. Kolara
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,41 +17,29 @@
  *
  */
 import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {FdpFormModule} from './form/fdp-form.module';
-import {
-  PlatformCheckboxGroupModule,
-  PlatformComboboxModule,
-  PlatformDatetimePickerModule,
-  PlatformInputModule,
-  PlatformRadioGroupModule,
-  PlatformStepInputModule,
-  PlatformTextAreaModule
-} from '@fundamental-ngx/platform';
-import {DynamicComponentService} from '@fundamental-ngx/core';
+import {FdpFormGroupModule} from '@fundamental-ngx/platform';
+import {MetaFormGroup} from './meta-form/meta-form-group.component';
+import {MetaUIRulesModule} from '@ngx-metaui/rules';
 
 
 @NgModule({
+  declarations: [
+    MetaFormGroup
+  ],
   imports: [
     CommonModule,
-    FdpFormModule,
-    PlatformInputModule,
-    PlatformComboboxModule,
-    PlatformCheckboxGroupModule,
-    PlatformRadioGroupModule,
-    PlatformStepInputModule,
-    PlatformTextAreaModule,
-    PlatformDatetimePickerModule
+    FormsModule,
+    ReactiveFormsModule,
+    FdpFormGroupModule,
+    MetaUIRulesModule
   ],
-  declarations: [],
   exports: [
-    FdpFormModule
-  ],
-  providers: [
-    DynamicComponentService
+    MetaFormGroup
   ]
 })
-export class UILibModule {
+export class FioriUiLayoutModule {
 }
 
 

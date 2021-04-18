@@ -103,7 +103,9 @@ describe('Meta Context Component', () => {
 
       const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
       fixtureWrapper.detectChanges();
-      tick();
+      tick(300);
+
+
 
       formInputs = fixtureWrapper.nativeElement.querySelectorAll('.form-field input');
 
@@ -120,7 +122,7 @@ describe('Meta Context Component', () => {
 
     const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
     fixtureWrapper.detectChanges();
-    tick();
+    tick(300);
 
     formInputs = fixtureWrapper.nativeElement.querySelectorAll('.form-field input');
     expect(formInputs[0].value).toEqual('Frank');
@@ -130,25 +132,6 @@ describe('Meta Context Component', () => {
   }));
 
 
-  it('It should render 4 String components - read only mode pre-loaded values: ' +
-    'Frank, Kolar,' + ' 1000, Some note about me.',
-    fakeAsync(() => {
-      const metaUI: UIMeta = TestBed.inject(UIMeta);
-      metaUI.config.registerRule('UserTestDynClassRule', MyUserTestClassDynBindingRule);
-
-      const fixtureWrapper = TestBed.createComponent(TestContainerViewComponent);
-      fixtureWrapper.detectChanges();
-
-      fixtureWrapper.detectChanges();
-      tick();
-
-      formInputs = fixtureWrapper.nativeElement.querySelectorAll('.form-field input');
-
-      expect(formInputs[0].value).toEqual('Frank');
-      expect(formInputs[1].value).toEqual('Kolar');
-      expect(formInputs[2].value).toEqual('1000');
-      expect(formInputs[3].value).toEqual('Some note about me.');
-    }));
 
 
   it('It should render 4 String components when object loaded is deffered using timer',
@@ -158,18 +141,10 @@ describe('Meta Context Component', () => {
 
       const fixtureWrapper = TestBed.createComponent(TestContainerViewDefferedComponent);
       fixtureWrapper.detectChanges();
+      tick(300);
 
-      tick(50);
       fixtureWrapper.detectChanges();
-
-      tick();
-      fixtureWrapper.detectChanges();
-
-      tick();
-      fixtureWrapper.detectChanges();
-
-      tick(50);
-      fixtureWrapper.detectChanges();
+      tick(300);
 
       formInputs = fixtureWrapper.nativeElement.querySelectorAll('.form-field input');
 
@@ -189,7 +164,7 @@ describe('Meta Context Component', () => {
 
       const fixtureWrapper = TestBed.createComponent(TestContainerEditComponent);
       fixtureWrapper.detectChanges();
-      tick();
+      tick(300);
 
       formInputs = fixtureWrapper.nativeElement.querySelectorAll('.custom-input');
 
@@ -322,7 +297,7 @@ export const MyUserTestClassDynBindingOneFieldRule =
 export const MyUserTestClassWithModule =
   'class=UserTestDynClass {' +
   '             field=firstName {' +
-  '                 componentModule:\'CustomInputModule\';' +
+  '                 component:\'CustomInputModule\';' +
   '                 label:\'My First Name\';' +
   '             }' +
   ' ' +

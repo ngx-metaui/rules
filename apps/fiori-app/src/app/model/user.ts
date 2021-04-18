@@ -4,16 +4,10 @@ export class User implements Entity {
 
 
   constructor(
+    public title?: string,
     public uniqueName?: string,
-    public fullName?: string,
     public firstName?: string,
     public lastName?: string,
-    public organization?: string,
-    public email?: string,
-    // public supervisor?: User,
-    public purchasingUnit?: string,
-    public locale?: string,
-    public defaultCurrency?: string,
     public description?: string) {
   }
 
@@ -24,17 +18,10 @@ export class User implements Entity {
 
   getTypes(): any {
     return {
+      title: String,
       uniqueName: String,
       firstName: String,
       lastName: String,
-      fullName: String,
-      email: String,
-      defaultCurrency: String,
-      organization: String,
-      locale: String,
-
-      // supervisor: String,
-      purchasingUnit: String,
       description: String
     };
   }
@@ -48,6 +35,6 @@ export class User implements Entity {
   }
 
   toString(): string {
-    return `${this.lastName} ${this.firstName} (${this.purchasingUnit})`;
+    return this.lastName;
   }
 }

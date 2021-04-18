@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright 2017 SAP Ariba
@@ -241,6 +240,22 @@ field {
     }
 
     floatingLabel:auto;
+}
+
+class {
+   operation=(create,edit,view,search) {
+       trait: fiveZones;
+   }
+
+  @trait=fiveZones {
+       zones: [zLeft, zMiddle, zRight, zTop, zBottom, zDetail];
+       fiveZoneLayout:true;
+   }
+
+   @trait=oneZone {
+       zones: [zLeft, zDetail];
+   }
+
 }
 
 action {

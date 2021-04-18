@@ -95,7 +95,6 @@ export const KeyAfter = 'after';
 export const KeyHidden = 'hidden';
 export const KeyLabel = 'label';
 export const KeyComponentName = 'component';
-export const KeyComponentModuleName = 'componentModule';
 export const KeyBindings = 'bindings';
 export const KeyHomePage = 'homePage';
 export const KeyZonePath = 'zonePath';

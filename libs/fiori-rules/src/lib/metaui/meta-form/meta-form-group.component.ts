@@ -22,13 +22,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
   QueryList,
+  ViewChild,
   ViewChildren
 } from '@angular/core';
 
-import {Environment, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
-import {FormField, FormFieldControl} from '@fundamental-ngx/platform';
+import {MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
+import {FormField} from '@fundamental-ngx/platform';
 import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
 
 /**
@@ -41,45 +41,52 @@ import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
-  @Input()
-  mc: MetaContextComponent;
 
+  @ViewChild('classMC', {static: true})
+  private _mc: MetaContextComponent;
 
   @ViewChildren('ff')
   formFields: QueryList<FormField>;
 
-  constructor(private _cd: ChangeDetectorRef, public env: Environment) {
-    super(env, null);
+
+
+  get metaContext(): MetaContextComponent {
+    return this._mc;
+  }
+
+  constructor(public _cd: ChangeDetectorRef, public _parentMC: MetaContextComponent) {
+    super();
   }
 
   ngOnInit(): void {
-    this._mc = this.mc;
     super.ngOnInit();
   }
 
 
   ngAfterViewInit(): void {
+    this.updateMeta();
     if (!this.editing) {
-      this._cd.detectChanges();
       return;
     }
+
     this.formFields.forEach((formField) => {
-      if (formField.control.ngControl) {
+      if (formField.control && formField.control.ngControl) {
         const control = formField.control.ngControl.control;
-        control.setValidators(Validators.compose(this.createValidators(formField.control)));
+        control.setValidators(Validators.compose(this._createValidators(formField)));
         control.markAsPristine();
       }
     });
+    this._cd.detectChanges();
   }
 
 
-  private createValidators(fControl: FormFieldControl<any>): ValidatorFn[] {
+  private _createValidators(formField: FormField): ValidatorFn[] {
     const metaValidator = (control: AbstractControl): { [key: string]: any } => {
-      const metaContext = fControl['__metaContext__'];
-      const editing = metaContext.context.booleanPropertyForKey('editing', false);
+      const cnx = formField.control['_MC_'].context;
+      const editing = cnx.booleanPropertyForKey('editing', false);
 
       if (editing) {
-        const errorMsg = metaContext.context.validateErrors();
+        const errorMsg = cnx.validateErrors();
         return errorMsg ? {'metavalid': {'msg': errorMsg}} : null;
       }
       return null;
@@ -87,10 +94,12 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
     return [metaValidator];
   }
 
-  trackByFn(index, item) {
-    return item;
+  protected doUpdate(): void {
+    super.doUpdate();
+    if (!this.metaContext) {
+      return;
+    }
+    this._cd.detectChanges();
   }
-
-
 }
 
