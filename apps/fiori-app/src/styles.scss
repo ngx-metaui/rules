@@ -1,7 +1,3 @@
-@import "~@angular/cdk/overlay-prebuilt.css";
-@import "~fundamental-styles/dist/info-label.css";
-
-$gutter-size: 15px;
 
 @font-face {
   font-family: "72";
@@ -33,29 +29,4 @@ $gutter-size: 15px;
   format("woff");
   font-weight: normal;
   font-style: normal;
-}
-
-
-html,
-body {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  margin: 15px;
-}
-
-*, ::after, ::before {
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
-}
-
-body {
-  margin: 0;
-  background-color: white;
-  font-family: '72', sans-serif;
-}
-
-
-*:focus {
-  outline: 0;
 }

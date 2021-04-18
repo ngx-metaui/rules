@@ -19,24 +19,20 @@
  *
  */
 /**
- * Used by IncludeComponent directive in order to convert string to type. Ideally you dont want this
- * here where right now we need this to import this file:
+ * Used by Meta Renderer component in order to convert string to type.
  *
  *  `import * as entryComponents from './entry-components';`
  *
  *  Then iterate thru the content to register each TYPE that needs to be instantiated.
  */
-export {
-  InputComponent,
-  CheckboxGroupComponent,
-  CheckboxComponent,
-  ComboboxComponent,
-  RadioGroupComponent,
-  NumberStepInputComponent,
-  SwitchComponent,
-  TextAreaComponent,
-  PlatformDatetimePickerComponent
-} from '@fundamental-ngx/platform';
-export * from './ui/form/money/money.component';
+
+/**
+ * UI Input Components
+ */
 export * from './ui/form/string/string.component';
-export * from './metaui/public_api';
+export {PlatformInputModule} from '@fundamental-ngx/platform';
+
+/**
+ * Containers
+ */
+export * from './metaui/meta-form/meta-form-group.component';

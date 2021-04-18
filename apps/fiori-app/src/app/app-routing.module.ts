@@ -1,16 +1,16 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {PlayComponent} from './playground/play.component';
+import {UserDetailComponent} from './user-detail/user-detail.component';
 
 
 const appRoutes: Routes = [
-  {path: 'play', component: PlayComponent},
-  {path: '', redirectTo: '/play', pathMatch: 'full'}
+  {path: 'user', component: UserDetailComponent},
+  {path: '', redirectTo: '/user', pathMatch: 'full'}
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' })
+    RouterModule.forRoot(appRoutes)
   ],
   exports: [
     RouterModule

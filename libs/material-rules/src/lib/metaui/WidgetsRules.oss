@@ -149,15 +149,6 @@ field {
         }
     }
 
-    @trait=required {
-        operation=(edit, create) {
-            required:true;
-            object {
-                valid: ${( value == null || value.length  == 0) ? "Required field": true};
-            }
-        }
-    }
-
     @trait=fluid {
         fluid:true;
     }
@@ -245,6 +236,27 @@ field {
     }
 
     floatingLabel:auto;
+}
+
+class {
+   operation=(create,edit,view,search) {
+       trait: fiveZones;
+   }
+
+  @trait=fiveZones {
+       zones: [zLeft, zMiddle, zRight, zTop, zBottom, zDetail];
+       fiveZoneLayout:true;
+   }
+
+   @trait=oneZone {
+       zones: [zLeft, zDetail];
+   }
+
+}
+
+@traitGroup=FormZones {
+    @trait=fiveZones;
+    @trait=oneZone;
 }
 
 action {

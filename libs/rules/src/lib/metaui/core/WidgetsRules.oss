@@ -45,30 +45,30 @@ field {
     visible:$${!properties.get("hidden")};
     editing=true  { editable:true; }
     editing=false { editable:false; }
+
+    @trait=required {
+        operation=(edit, create) {
+            required:true;
+            object {
+                valid: ${( value == null || value.length  == 0) ? "Required field": true};
+            }
+        }
+    }
+
+    @trait=derived {
+        editable:false;
+        editing { after:zNone; }
+    }
 }
 
 class {
-    @trait=fiveZones {
-        zones: zLeft, zMiddle, zRight, zTop, zBottom, zDetail;
-        fiveZoneLayout:true;
-    }
-    @trait=oneZone {
-        zones: [zLeft, zDetail];
-    }
     @trait=tableZones {
         zones: [zMain, zLeft, zRight, zTop, zBottom, zDetail];
     }
 
-    operation=(create,edit,view,search) {
-        trait: fiveZones;
-    }
     operation=(list) {
         trait: tableZones;
     }
-}
-@traitGroup=FormZones {
-    @trait=fiveZones;
-    @trait=oneZone;
 }
 
 

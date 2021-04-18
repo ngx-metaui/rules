@@ -28,7 +28,6 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   Directive,
-  Injector,
   NgModuleRef,
   OnDestroy,
   OnInit,
@@ -69,12 +68,12 @@ export interface ComponentReference {
   /**
    * Resolved Component TYPE
    */
-  componentOrModuleType?: Type<any>;
+  componentType?: Type<any>;
 
   /**
    * String representation of componnent being rendered
    */
-  componentOrModuleName?: string;
+  component?: string;
 
   /**
    * Refers a module definition in case we are instantiating component from module
@@ -109,14 +108,13 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
    */
   componentReference: ComponentReference;
 
+
   constructor(public viewContainer: ViewContainerRef,
               public componentFactoryResolver: ComponentFactoryResolver,
               public cd: ChangeDetectorRef,
               public compRegistry: ComponentRegistry,
               public renderer: Renderer2,
-              protected _compiler: Compiler,
-              public injector: Injector) {
-
+              protected _compiler: Compiler) {
   }
 
   public get component(): any {
@@ -145,6 +143,7 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
 
   doRender(): void {
     const reference = this._currentComponentReference();
+    this.componentReference = reference;
     const bindings: Map<string, any> = this._bindingsForNewReference(reference);
 
     const contentElement = this._createContentElement(bindings);
@@ -162,26 +161,19 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
     let reference = this._lookupComponentReference();
     if (isBlank(reference)) {
       const componentName = this._componentName();
-      const componentModuleName = this._componentModuleName();
-      this.assertEmptyComponentName(componentName, componentModuleName);
-      reference = this._createComponentReference(componentName, componentModuleName);
-      this._storeComponentReference(componentName || componentModuleName, reference);
+      this.assertEmptyComponentName(componentName);
+      reference = this._createComponentReference(componentName);
+      this._storeComponentReference(componentName, reference);
     }
     return reference;
   }
 
   _lookupComponentReference(): ComponentReference {
     const componentName = this._componentName();
-    const componentModuleName = this._componentModuleName();
-    this.assertEmptyComponentName(componentName, componentModuleName);
+    this.assertEmptyComponentName(componentName);
 
     if (isPresent(componentName) && this.compRegistry.componentCache.has(componentName)) {
       return this.compRegistry.componentCache.get(componentName);
-    }
-
-    if (isPresent(componentModuleName) &&
-      this.compRegistry.componentCache.has(componentModuleName)) {
-      return this.compRegistry.componentCache.get(componentModuleName);
     }
   }
 
@@ -189,21 +181,19 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
    * We need to convert a component name to actual a type and then use ComponentFactoryResolver
    * to instantiate a a component and save its information into our component references.
    */
-  protected _createComponentReference(componentName: string,
-                                      componentModuleName?: string): ComponentReference {
-    const ref: ComponentReference = {};
+  protected _createComponentReference(componentName: string): ComponentReference {
+    const ref: ComponentReference = {component: componentName};
 
-    if (componentModuleName) {
-      ref.componentOrModuleName = componentModuleName;
-      ref.componentOrModuleType = this.compRegistry.nameToType.get(componentModuleName);
-      const moduleReference = this.resolveModule(ref.componentOrModuleType);
+    if (componentName.toLowerCase().includes('module')) {
+      ref.componentType = this.compRegistry.nameToType.get(componentName);
+      const moduleReference = this.resolveModule(ref.componentType);
       ref.resolvedCompFactory = moduleReference.componentFactory;
       ref.moduleRef = moduleReference;
 
     } else {
-      ref.componentOrModuleType = this.compRegistry.nameToType.get(componentName);
+      ref.componentType = this.compRegistry.nameToType.get(componentName);
       ref.resolvedCompFactory = this.componentFactoryResolver
-        .resolveComponentFactory(ref.componentOrModuleType);
+        .resolveComponentFactory(ref.componentType);
     }
     ref.metadata = this.resolveDirective(ref.resolvedCompFactory);
 
@@ -216,8 +206,8 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
   }
 
 
-  protected assertEmptyComponentName(name: string, module: string): void {
-    assert(isPresent(name) || isPresent(module), `${name} component does not exists.`);
+  protected assertEmptyComponentName(name: string): void {
+    assert(isPresent(name), `${name} component does not exists.`);
   }
 
   protected _bindingsForNewReference(reference: ComponentReference,
@@ -251,7 +241,7 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
 
     const content = contentElement ? [[contentElement]] : undefined;
     const componentRef = this.viewContainer.createComponent(reference.resolvedCompFactory,
-      null, this.injector, content, reference.moduleRef?.module);
+      null, this.viewContainer.injector, content, reference.moduleRef?.module);
     this.applyBindings(reference, componentRef, bindings, reference.metadata.outputs);
 
     componentRef.onDestroy(() => {
@@ -270,8 +260,6 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
   }
 
   protected abstract _componentName(name?: string): string;
-
-  protected abstract _componentModuleName(name?: string): string;
 
   protected abstract _bindingValue(name: string, isWrapper?: boolean): any;
 
@@ -292,7 +280,7 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
 
   private resolveModule(moduleType: Type<any>): ModuleReference {
     const module = this._compiler.compileModuleAndAllComponentsSync(moduleType);
-    const moduleNgModuleRef = module.ngModuleFactory.create(this.injector);
+    const moduleNgModuleRef = module.ngModuleFactory.create(this.viewContainer.injector);
     const componentFactory = module.componentFactories[0];
 
     return {

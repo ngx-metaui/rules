@@ -63,7 +63,7 @@ export class MaterialRulesModule {
 
 export function initLibMetaUI(rules: UIMeta) {
   rules.layoutZones = ZonesTLRMB;
-  
+
   const initFce = function init(rEngine: UIMeta) {
     const promise: Promise<any> = new Promise((resolve: any) => {
       rEngine.loadRuleSource({

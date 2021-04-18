@@ -18,6 +18,7 @@
  *
  */
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -36,12 +37,12 @@ import {
   TemplateRef
 } from '@angular/core';
 import {ControlContainer, FormGroup} from '@angular/forms';
-import {isPresent} from '../utils/lang';
+import {equals, isPresent} from '../utils/lang';
 import {Context, UIContext} from '../../core/context';
 import {UIMeta} from '../uimeta';
-import {BehaviorSubject, combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {Environment} from '../config/environment';
+import {distinctUntilChanged, filter, takeUntil} from 'rxjs/operators';
 
 
 /**
@@ -82,7 +83,7 @@ import {Environment} from '../config/environment';
     <ng-content></ng-content> `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaContextComponent implements OnDestroy, OnInit {
+export class MetaContextComponent implements OnDestroy, OnInit, AfterViewInit {
   @Input()
   module: string;
 
@@ -143,7 +144,6 @@ export class MetaContextComponent implements OnDestroy, OnInit {
   @ContentChild('i18n', {static: true})
   i18Template: TemplateRef<any>;
 
-
   get bindings(): Map<string, any> {
     return this._bindingsMap;
   }
@@ -162,6 +162,12 @@ export class MetaContextComponent implements OnDestroy, OnInit {
     return this._formGroup;
   }
 
+
+  get i18n(): TemplateRef<any> {
+    return this.env.getValue('i18n');
+  }
+
+
   contextChanged$: BehaviorSubject<Context> = new BehaviorSubject<Context>(null);
 
   private _formGroup: FormGroup;
@@ -170,10 +176,13 @@ export class MetaContextComponent implements OnDestroy, OnInit {
   private _inputs: { propName: string, templateName: string }[];
   private _destroy: Subject<void> = new Subject<void>();
 
+  private _initialized: boolean = false;
+
+
   // private contextCache: Map<string, Context> = new Map<string, Context>();
 
   constructor(private elementRef: ElementRef,
-              private _cd: ChangeDetectorRef,
+              public cd: ChangeDetectorRef,
               private _cfr: ComponentFactoryResolver,
               protected meta: UIMeta,
               protected env: Environment,
@@ -191,8 +200,11 @@ export class MetaContextComponent implements OnDestroy, OnInit {
     if (!this.parentMC) {
       this.parentMC = this._parentMC;
     }
-    this.initInputs();
 
+    this.initInputs();
+    if (this.i18Template && !this.env.hasValue('i18n')) {
+      this.env.setValue('i18n', this.i18Template);
+    }
     // console.log('MC, INIT', this._debugKeys());
     // console.log('MC, INIT', isPresent(this.parentMC));
     this.pushContextValues();
@@ -201,6 +213,8 @@ export class MetaContextComponent implements OnDestroy, OnInit {
 
   /**
    * For any other immutable object detect changes here and refresh the context stack
+   * Please see also the initInputs() where we subscribe to Form Value changes, and these are
+   * two places which triggers refresh
    *
    */
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
@@ -211,6 +225,10 @@ export class MetaContextComponent implements OnDestroy, OnInit {
       this.pushContextValues();
       this._doUpdateViews();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this._initialized = true;
   }
 
 
@@ -286,14 +304,21 @@ export class MetaContextComponent implements OnDestroy, OnInit {
         this._bindingsMap.set(attr.name, attr.value);
       }
     }
-    if (this._formGroup) {
-      combineLatest([this._formGroup.valueChanges, this._formGroup.statusChanges])
-        .pipe(takeUntil(this._destroy))
+
+    if (this.field && this.formGroup) {
+      this.formGroup.valueChanges
+        .pipe(
+          takeUntil(this._destroy),
+          filter(ev => this._initialized),
+          distinctUntilChanged((from, to) => equals(from, to))
+        )
         .subscribe((item) => {
-          // console.log('MC, form Change', this._debugKeys());
           this._doUpdateViews();
+          this.cd.markForCheck();
         });
     }
+
+
     if (this.actionTriggered.observers.length > 0) {
       this.env.setValue('root-meta-cnx', this);
     }
@@ -336,6 +361,7 @@ export class MetaContextComponent implements OnDestroy, OnInit {
 
   private _doUpdateViews(): void {
     // console.log('MC, _doUpdateViews', this._debugKeys());
+    this._context = this.context.snapshot().hydrate();
     this.contextChanged$.next(this.context);
   }
 }

@@ -1,14 +1,48 @@
+/*
+    User rules.oss -- Meta-data rules. Generated file
+
+    Default definition
+*/
+/*
+    Set specifics to FormGroup Layout container
+
+    you can make it more generic e.g. with
+      layout class=User {..}
+      layout=Inspect class {..}
+    depending what you want to achive
+*/
+ layout=Inspect class=User {
+   layoutPattern:"XL4-L3-M2-S1";
+   mainTitle:"User form";
+}
+
 class=User {
 
-  field=uniqueName {
-    label:"Id";
-  }
-  field=fullName {
-    trait:labelField;
-  }
+    field=description {
+      after:zBottom;
+      hint: ${"You can type some long text here: " + value.length};
+    }
 
-   zNone => *;
-   zLeft => uniqueName#required => firstName => lastName => email => defaultCurrency;
+    field=title#required {
+      label:"Main title";
+      editable:${object.firstName === 'Fred'};
+    }
+
+    field=uniqueName {
+      trait:required;
+      label: "SSN #";
+    }
 
 
+   field=firstName {
+    rank:10;
+   }
+
+
+    zNone => *;
+    zOne => uniqueName => title;
+    zTwo => firstName;
+    zThree => firstName;
+    zFour => description;
 }
+

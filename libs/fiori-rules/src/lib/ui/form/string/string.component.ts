@@ -21,8 +21,8 @@
 import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {NgControl} from '@angular/forms';
-import {Observable, Subject} from 'rxjs';
-import {ContentDensity, FormFieldControl, Status} from '@fundamental-ngx/platform';
+import {Subject} from 'rxjs';
+import {ContentDensity, FormField, FormFieldControl, Status} from '@fundamental-ngx/platform';
 
 
 let randomId = 0;
@@ -34,8 +34,13 @@ let randomId = 0;
  */
 @Component({
   selector: 'fdp-string',
-  templateUrl: './string.component.html',
-  styleUrls: ['string.component.scss'],
+  template: `
+    <span [id]="id" class="fd-input fd-form-item fd-row__form-item"
+          style="margin-bottom: 0; padding: 0 10px"
+        >
+      {{value}}
+    </span>
+  `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -43,6 +48,9 @@ export class StringComponent implements FormFieldControl<any> {
   protected defaultId: string = `fdp-string-${randomId++}`;
 
   private _value: string = '';
+
+  @Input()
+  id: string = this.defaultId;
 
   @Input()
   set value(value: any) {
@@ -58,65 +66,24 @@ export class StringComponent implements FormFieldControl<any> {
   constructor(private sanitizer: DomSanitizer) {
   }
 
-  private readonly _disabled: boolean;
-  private _editable: boolean;
-  private readonly _focused: boolean;
-  private readonly _inErrorState: boolean;
-  private readonly _ngControl: NgControl | null;
+  contentDensity: ContentDensity;
+  readonly disabled: boolean;
+  editable: boolean;
+  readonly focused: boolean;
+
+  readonly ngControl: NgControl | null;
   placeholder: string;
+  required: boolean;
+  readonly status: Status;
+  readonly stateChanges: Subject<any> = new Subject<any>();
+  readonly formField: FormField | null = null;
 
-  onContainerClick(event: MouseEvent): void {
-  }
-
-
-  get id(): string {
-    return this.defaultId;
-  }
-
-  set id(value: string) {
-    // console.log('readonly component does not have id: ', value);
-  }
-
-  get disabled(): boolean {
-    return false;
-  }
-
-  get editable(): boolean {
-    return false;
-  }
-
-  set editable(value: boolean) {
-    this._editable = value;
-  }
-
-  get focused(): boolean {
-    return this._focused;
-  }
-
-  get inErrorState(): boolean {
-    return false;
-  }
-
-  get ngControl(): NgControl | null {
-    return null;
-  }
-
-  get stateChanges(): Observable<void> {
-    return this._stateChanges;
-  }
-
-
-  get contentDensity(): ContentDensity {
-    return 'cozy';
-  }
-
-  get status(): Status {
-    return 'default';
-  }
 
   focus(event?: MouseEvent): void {
   }
 
+  onContainerClick(event: MouseEvent): void {
+  }
 
 }
 
