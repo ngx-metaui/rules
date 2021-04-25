@@ -18,18 +18,15 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {StringComponent} from './form/string/string.component';
 
 
 @NgModule({
   declarations: [
-    StringComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    StringComponent
   ]
 })
 export class FioriUiModule {

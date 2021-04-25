@@ -1,0 +1,6 @@
+<ng-template ngFor [ngForOf]="allLayouts" let-cLayout>
+  <m-context [layout]="cLayout.name" [parentMC]="metaContext">
+    <m-render></m-render>
+  </m-context>
+</ng-template>
+

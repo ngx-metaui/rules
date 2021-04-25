@@ -100,11 +100,19 @@ action {
         actionResults:${ meta.routingService.routeForPage( properties.get("pageName") ) };
     }
 
-    @trait=modalComponentPage {
-        actionResults:${    meta.compPageWithName("MetaModalPage") };
-        pageBindings:{
-            componentName:${properties.get("componentName")};
-            title:${properties.get("title")};
+    @trait=routeAction {
+    actionResults:${ properties.get("routeName")  };
+        actionResults:${ meta.routingService.routeForPage( properties.get("routeName") ) };
+    }
+
+   /**
+      Controller actions are used in combination with Action decorator where we decorate a specific
+      method
+   **/
+    @trait=controllerAction {
+        actionResults:${
+            m = properties.get('mRef');
+           (m) ? m.call(this.controller, object) : undefined;
         };
     }
 

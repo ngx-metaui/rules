@@ -33,44 +33,27 @@ let randomId = 0;
  *
  */
 @Component({
-  selector: 'fdp-string',
+  selector: 'm-object-marker',
   template: `
 
-    <ng-template [ngIf]="!useDefaultStyling" [ngIfElse]="WithStyles">
-      {{value}}
-    </ng-template>
-
-    <ng-template #WithStyles>
-      <span *ngIf="useDefaultStyling" [id]="id"
-            class="fd-input fd-form-item fd-row__form-item"
-            style="margin-bottom: 0; padding: 0 10px">
-      {{value}}
-    </span></ng-template>
-
-
-
+    <span role="" fd-object-marker [glyph]="glyph"
+          [label]="value">
+    </span>
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StringComponent implements FormFieldControl<any> {
+export class ObjectMarkerComponent implements FormFieldControl<any> {
   protected defaultId: string = `fdp-string-${randomId++}`;
-  private _value: string = '';
+
+  @Input()
+  value: string = '';
 
   @Input()
   id: string = this.defaultId;
 
   @Input()
-  useDefaultStyling: boolean = true;
-
-  @Input()
-  set value(value: any) {
-    this._value = value;
-  }
-
-  get value(): any {
-    return this.sanitizer.bypassSecurityTrustHtml(this._value);
-  }
+  glyph: string = 'request';
 
   readonly _stateChanges: Subject<any> = new Subject<any>();
 

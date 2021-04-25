@@ -135,7 +135,7 @@ export const ZonesMTLRB = [ZoneMain, ZoneTop, ZoneLeft, ZoneRight, ZoneBottom];
 export const ZonesDetail = [ZoneDetail];
 
 export const ModuleActionZones = ['zNav', 'zGlobal'];
-export const ActionZones = ['zGlobal', 'zMain', 'zGeneral'];
+export const ActionZones = ['zGlobal', 'zMain', 'zGeneral', 'zPageGlobal', 'zPageLayout'];
 
 
 export interface OSSResource {
