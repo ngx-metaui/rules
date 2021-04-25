@@ -313,7 +313,6 @@ export class IntrospectionMetaProvider implements ValueQueriedObserver {
 
   private processActionDecorators(action: MetaActiondDef, actionName: string,
                                   selectorList: Array<Selector>): void {
-
     const props = this._meta.newPropertiesMap();
     const selectors: Array<Selector> = selectorList.slice(0, selectorList.length - 1)
       .map((s) => new Selector(s.key, s.value));

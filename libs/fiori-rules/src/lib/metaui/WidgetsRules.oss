@@ -22,11 +22,10 @@
 
 field {
     type  {
-       component:StringComponent;
+       component:StringModule;
         bindings:{
           value:$value;
           id: ${properties.get("field")};
-          placeholder:${properties.get("label")};
         };
     }
 
@@ -44,7 +43,7 @@ field {
 
     }
 
-    component=(StringComponent,LinkComponent, PlatformInputModule) {
+    component=(StringModule,LinkComponent, PlatformInputModule) {
         @trait=bold {
             wrapperComponent:GenericContainerComponent;
             wrapperBindings: { tagName:b; };
@@ -83,6 +82,7 @@ class {
     }
 
 }
+
 @traitGroup=FormZones {
     @trait=fourZones;
     @trait=oneZone;
@@ -92,7 +92,7 @@ class {
 layout {
     @trait=Form {
       visible:true;
-      component:MetaFormGroup;
+      component:MetaFormModule;
       bindings:{
         columnLayout:${properties.get("layoutPattern")};
         mainTitle:${properties.get("mainTitle")};
@@ -103,13 +103,140 @@ layout {
       @trait=noLabelLayout;
     }
 
+    @trait=DynamicPage {
+      visible:true;
+      component:MetaDynamicPageModule ;
+      bindings:{
+        size:${properties.get("size") || "large" };
+        background:${properties.get("background") || "solid"};
+      };
+    }
+
+    @trait=Stack {
+      visible:true;
+      component:MetaElementListModule;
+    }
+
+     @trait=Bredcrumb {
+        visible:true;
+        component:MetaBreadcrumbModule;
+     }
+
+     @trait=ToolbarActions {
+        visible:true;
+        component:MetaToolbarActionsModule;
+        bindings: {
+          showSeparator:${properties.get("showSeparator")};
+        };
+     }
+
     layout_trait=noLabelLayout class {
       bindings:{
         noLabelLayout:true;
       };
     }
-
 }
 
-~class layout=(Inspect, SearchForm) {component:StringComponent; bindings:{value:null; }; }
+@traitGroup=LayoutGrouping {
+    @trait=Form;
+    @trait=DynamicPage;
+    @trait=Stack;
+    @trait=Bredcrumb;
+    @trait=ToolbarActions;
+}
+
+~class layout=(Inspect, SearchForm) {component:StringModule; bindings:{value:null; }; }
+
+layout=(PageGlobalActions, PageLayoutActions) {
+  trait:ToolbarActions;
+}
+
+layout=(PageFooterActions) {
+  trait:BarActions;
+}
+
+layout=DynamicPageWithActions {
+  trait:DynamicPage;
+
+  @layout=PageTitle {
+      visible:true;
+      title:${ FieldPath.getFieldValue(object, meta.displayLabel(values.get("class"))) };
+      subTitle:${propertie.get('subTitle')};
+      after:zTitle;
+
+      @layout=Navigation#Bredcrumb {
+        navItems: ["Men", "Shoes", "Running Shoes", "Jogging"];
+      }
+
+      @layout=KeyInfo {
+        component:MetaObjectMarkerModule;
+        bindings:{
+          value:'LAST DAY OF SALE';
+         };
+      }
+      layout=PageGlobalActions {}
+
+      layout=PageGlobalActions {}
+  }
+
+  @layout=PageHeader#Form { after:zHeader; zonePath:Header; }
+
+  @layout=PageContent#Form { after:zContent; zonePath:Content; }
+}
+
+layout=PageGlobalActions {
+    showSeparator: true;
+
+    @actionCategory=GlobalPageActions {
+        after:zMain;
+
+        @action=accept {
+            trait:controllerAction;
+            visible:true;
+            type:'positive';
+        }
+
+        @action=reject {
+            trait:controllerAction;
+            visible:true;
+            type:'negative';
+        }
+    }
+}
+
+layout=PageLayoutActions {
+      showSeparator: false;
+
+      @actionCategory=LayoutPageActions {
+          after:zMain;
+
+          @action=resize {
+              visible:true;
+              trait:controllerAction;
+              type:"transparent";
+              label:"";
+              title:"Resize";
+              sapIcon:"sap-icon--resize";
+          }
+
+          @action=exit {
+              visible:true;
+              trait:controllerAction;
+              label:"";
+              title:"Exit";
+              type:"transparent";
+              sapIcon:"sap-icon--exitfullscreen";
+          }
+
+          @action=close {
+              visible:true;
+              trait:controllerAction;
+              label:"";
+              title:"Close";
+              type:"transparent";
+              sapIcon:"sap-icon--decline";
+          }
+      }
+}
+
 

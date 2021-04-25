@@ -23,7 +23,7 @@
 import * as Collections from 'typescript-collections';
 import {
   assert,
-  beautifyClassName,
+  beautifyClassName, booleanValue,
   BooleanWrapper,
   className,
   Extensible,
@@ -1564,6 +1564,10 @@ export class PropertyAccessor {
 
   get(key: string): any {
     return this.context.propertyForKey(key);
+  }
+
+  bool(key: string, defValue?: boolean): any {
+    return this.context.booleanPropertyForKey(key, defValue);
   }
 
   toString(): string {

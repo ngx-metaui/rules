@@ -17,28 +17,26 @@
  *
  */
 import {NgModule} from '@angular/core';
-import {MetaFormModule} from './meta-form/meta-form.module';
-import {MetaDynamicPageModule} from './meta-dynamic-page/dynamic-page.module';
 import {CommonModule} from '@angular/common';
-import {MetaElementListModule} from './meta-element-list/element-list.module';
+import {FdpFormGroupModule} from '@fundamental-ngx/platform';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
-import {MetaToolbarActionsModule} from './meta-toolbar-actions/meta-toolbar-actions.module';
+import {MetaFormGroup} from './meta-form-group.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
+  declarations: [
+    MetaFormGroup
+  ],
   imports: [
     CommonModule,
-    MetaUIRulesModule,
-    MetaFormModule,
-    MetaDynamicPageModule,
-    MetaElementListModule,
-    MetaToolbarActionsModule
+    FormsModule,
+    ReactiveFormsModule,
+    FdpFormGroupModule,
+    MetaUIRulesModule
   ],
-  exports: [
-    MetaFormModule,
-    MetaDynamicPageModule
-  ]
+  exports: []
 })
-export class FioriUiLayoutModule {
+export class MetaFormModule {
 }
 
 

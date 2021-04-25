@@ -1,0 +1,8 @@
+<fd-breadcrumb *ngIf="(metaContext | properties: 'navItems' ); let navItems">
+  <ng-template ngFor [ngForOf]="navItems" let-link let-last="last">
+    <fd-breadcrumb-item *ngIf="!last">
+      <a fd-breadcrumb-link [routerLink]="'#'">{{link}}</a>
+    </fd-breadcrumb-item>
+    <fd-breadcrumb-item *ngIf="last">{{link}}</fd-breadcrumb-item>
+  </ng-template>
+</fd-breadcrumb>

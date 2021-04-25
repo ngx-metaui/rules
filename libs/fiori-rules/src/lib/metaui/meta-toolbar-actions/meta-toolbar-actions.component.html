@@ -1,0 +1,21 @@
+<fd-toolbar fdType="transparent" [clearBorder]="true">
+  <ng-template ngFor [ngForOf]="actionCategories()" let-category>
+
+    <m-context #catMC [actionCategory]="category.name">
+      <ng-template ngFor [ngForOf]="actions( category)" let-action>
+        <m-context #actionMC [action]="action.name">
+          <button fd-toolbar-item fd-button compact="true"
+                  [disabled]="actionMC | properties: 'disabled': false"
+                  [fdType]="actionMC | properties: 'type'"
+                  [label]="actionMC | properties: 'label'"
+                  [title]="actionMC | properties: 'title'"
+                  (click)="actionClicked($event, actionMC.context, action.name)">
+            <i [ngClass]="actionMC | properties: 'sapIcon'"></i>
+          </button>
+        </m-context>
+      </ng-template>
+    </m-context>
+  </ng-template>
+  <fd-toolbar-separator *ngIf="showSeparator"></fd-toolbar-separator>
+</fd-toolbar>
+

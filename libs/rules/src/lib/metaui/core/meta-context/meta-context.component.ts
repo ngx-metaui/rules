@@ -280,12 +280,16 @@ export class MetaContextComponent implements OnDestroy, OnInit, AfterViewInit {
     this._context = null;
     this._context = this.meta.newContext();
 
-    this._context.push();
     this.bindings.forEach((v, k) => {
-      if (k[k.length - 1] === '@') {
-        k = k.replace(/\@/g, '');
+
+      if (k.includes('push')) {
+        this._context.push();
+      } else {
+        if (k[k.length - 1] === '@') {
+          k = k.replace(/\@/g, '');
+        }
+        this._context.set(k, v);
       }
-      this._context.set(k, v);
     });
     if (this.scopeKey) {
       this._context.setScopeKey(this.scopeKey);
@@ -296,11 +300,12 @@ export class MetaContextComponent implements OnDestroy, OnInit, AfterViewInit {
   private initInputs() {
     this._bindingsMap = this.parentMC && !this.pushNewContext ?
       new Map<string, any>(this.parentMC._bindingsMap) : new Map<string, any>();
+    this.bindings.set(`push${this.bindings.size}`, this.bindings.size);
 
     this.initImplicitBindings();
     for (let i = 0; i < this.elementRef.nativeElement.attributes.length; i++) {
       const attr: Attr = this.elementRef.nativeElement.attributes.item(i);
-      if (!this.ignoreBinding(attr)) {
+      if (!this.ignoreBinding(attr) && !this.bindings.has(attr.name)) {
         this._bindingsMap.set(attr.name, attr.value);
       }
     }
@@ -339,7 +344,11 @@ export class MetaContextComponent implements OnDestroy, OnInit, AfterViewInit {
       if (input.propName !== 'parentMC' && this[input.propName]) {
         if (this._bindingsMap.has(input.propName)) {
           // in case we have duplicate property
-          this._bindingsMap.set(input.propName + '@', this[input.propName]);
+          let newInput = input.propName + '@';
+          while (this._bindingsMap.has(newInput)) {
+            newInput += '@';
+          }
+          this._bindingsMap.set(newInput, this[input.propName]);
         } else {
           this._bindingsMap.set(input.propName, this[input.propName]);
         }
@@ -361,7 +370,7 @@ export class MetaContextComponent implements OnDestroy, OnInit, AfterViewInit {
 
   private _doUpdateViews(): void {
     // console.log('MC, _doUpdateViews', this._debugKeys());
-    this._context = this.context.snapshot().hydrate();
+    this._context = this.context.snapshot().hydrate(false);
     this.contextChanged$.next(this.context);
   }
 }

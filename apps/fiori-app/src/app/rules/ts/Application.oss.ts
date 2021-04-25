@@ -5,7 +5,7 @@
  *
  */
 /* tslint:disable */
-export const ApplicationRule = 'module {ɵɵ}ɵ';
+export const ApplicationRule = 'module {ɵɵ}ɵɵɵɵ';
 /* tslint:disable */
 /**
  *  @formatter:on

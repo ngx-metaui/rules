@@ -29,10 +29,19 @@
 /**
  * UI Input Components
  */
-export * from './ui/form/string/string.component';
+
+export {StringModule} from './ui/form/string/string.module';
+export {MetaObjectMarkerModule} from './ui/object-marker/object-marker.module';
 export {PlatformInputModule} from '@fundamental-ngx/platform';
+
 
 /**
  * Containers
  */
-export * from './metaui/meta-form/meta-form-group.component';
+
+export * from './metaui/meta-form/meta-form.module';
+export * from './metaui/meta-dynamic-page/dynamic-page.module';
+export * from './metaui/meta-element-list/element-list.module';
+export * from './metaui/meta-breadcrumb/breadcrumb.module';
+export * from './metaui/meta-toolbar-actions/meta-toolbar-actions.module';
+

@@ -215,9 +215,6 @@ export abstract class BaseRenderer implements OnDestroy, OnInit, AfterViewInit {
     const inputs: string[] = reference.metadata.inputs;
     const bindings = new Map<string, any>();
 
-    if (isBlank(inputs) || inputs.length === 0) {
-      return;
-    }
     for (const input of inputs) {
       if (this.hasBindingValue(input, isWrapper)) {
         bindings.set(input, this._bindingValue(input, isWrapper));

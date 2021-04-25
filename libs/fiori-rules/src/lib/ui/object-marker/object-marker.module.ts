@@ -1,6 +1,6 @@
 /**
- * @licensess
- * Copyright F. Kolara
+ * @license
+ * F. Kolar
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,24 @@
  *
  */
 import {NgModule} from '@angular/core';
-import {MetaFormModule} from './meta-form/meta-form.module';
-import {MetaDynamicPageModule} from './meta-dynamic-page/dynamic-page.module';
 import {CommonModule} from '@angular/common';
-import {MetaElementListModule} from './meta-element-list/element-list.module';
-import {MetaUIRulesModule} from '@ngx-metaui/rules';
-import {MetaToolbarActionsModule} from './meta-toolbar-actions/meta-toolbar-actions.module';
+import {ObjectMarkerModule} from '@fundamental-ngx/core';
+import {ObjectMarkerComponent} from './object-marker.component';
+
 
 @NgModule({
+  declarations: [
+    ObjectMarkerComponent
+  ],
   imports: [
     CommonModule,
-    MetaUIRulesModule,
-    MetaFormModule,
-    MetaDynamicPageModule,
-    MetaElementListModule,
-    MetaToolbarActionsModule
+    ObjectMarkerModule
   ],
   exports: [
-    MetaFormModule,
-    MetaDynamicPageModule
+    ObjectMarkerComponent
   ]
 })
-export class FioriUiLayoutModule {
+export class MetaObjectMarkerModule {
 }
 
 

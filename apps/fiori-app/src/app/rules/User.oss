@@ -12,13 +12,17 @@
     depending what you want to achive
 */
  layout=Inspect class=User {
-   layoutPattern:"XL4-L3-M2-S1";
    mainTitle:"User form";
+   layoutPattern:"XL4-L4-M2-S1";
 }
 
-class=User {
 
-    field=description {
+class=User {
+   layout=PageTitle {
+     title:"Checkout Page";
+   }
+
+   field=description {
       after:zBottom;
       hint: ${"You can type some long text here: " + value.length};
     }
@@ -40,9 +44,14 @@ class=User {
 
 
     zNone => *;
-    zOne => uniqueName => title;
-    zTwo => firstName;
-    zThree => firstName;
-    zFour => description;
+    Header.zOne => uniqueName;
+    Header.zTwo => firstName;
+    Content.zOne => title;
+    Content.zTwo => description;
 }
 
+class=User {
+   layout=PageGlobalActions action=accept {
+     disabled: ${object.firstName === "Fredd"};
+   }
+}

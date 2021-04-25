@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {UIMeta} from '@ngx-metaui/rules';
+import {Action, UIMeta} from '@ngx-metaui/rules';
 import {User} from '../model/user';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 
 
 @Component({
@@ -19,7 +19,6 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.formGroup.addControl('xxxyy', new FormControl('xxxx'));
     this.meta.registerDependency('controller', this);
 
     this.object = new User('R0001', 'FK0001',
@@ -35,6 +34,17 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
     this.operation = op;
     this._cd.markForCheck();
   }
+
+  @Action({applyTo: User, category: 'GlobalPageActions'})
+  accept(object: any): void {
+    console.log('Accepting : ' + object);
+  }
+
+  @Action({applyTo: User, category: 'GlobalPageActions'})
+  reject(object: any): void {
+    console.log('rejecting : ' + object);
+  }
+
 
 }
 

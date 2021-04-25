@@ -1,0 +1,129 @@
+<m-context #layoutMC scopeKey="layout" [parentMC]="_parentMC">
+  <fdp-dynamic-page [size]="size" [background]="background" [offset]="offset">
+
+    <ng-container ngProjectAs="fdp-dynamic-page-title">
+      <ng-container *ngTemplateOutlet="titleTemplate;context:{$implicit: layoutMC}"></ng-container>
+    </ng-container>
+
+    <ng-container ngProjectAs="fdp-dynamic-page-header">
+      <ng-container *ngTemplateOutlet="headerTemplate;context:{$implicit: layoutMC}"></ng-container>
+    </ng-container>
+
+    <ng-container ngProjectAs="fdp-dynamic-page-content">
+      <ng-container *ngTemplateOutlet="contentTempplate;context:{$implicit: layoutMC}"></ng-container>
+    </ng-container>
+
+    <ng-container ngProjectAs="fdp-dynamic-page-footer">
+      <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
+    </ng-container>
+
+
+    <!--
+      Templates needs to be inside main element tag due to DynamicPageService which is provided by fdp-dynamic-page
+    -->
+    <ng-template #titleTemplate let-mc>
+      <m-context #titleMC [layout]="(mc | properties: 'layoutsByZone.zTitle')[0]" [parentMC]="mc">
+        <fdp-dynamic-page-title [title]="titleMC | properties: 'title'" [subtitle]="mc | properties: 'subTitle'">
+
+          <!-- unable to use #Stack to iterate thru all the available layouts due to ngProjectAs need-->
+          <ng-container ngProjectAs="fd-breadcrumb">
+            <m-context #navMC layout="Navigation">
+              <m-render></m-render>
+            </m-context>
+          </ng-container>
+
+
+          <fdp-dynamic-page-key-info>
+            <m-context layout="KeyInfo">
+              <m-render></m-render>
+            </m-context>
+          </fdp-dynamic-page-key-info>
+
+
+          <fdp-dynamic-page-global-actions>
+            <m-context layout="PageGlobalActions">
+              <m-render></m-render>
+            </m-context>
+          </fdp-dynamic-page-global-actions>
+
+          <fdp-dynamic-page-layout-actions>
+            <m-context layout="PageLayoutActions">
+              <m-render></m-render>
+            </m-context>
+          </fdp-dynamic-page-layout-actions>
+        </fdp-dynamic-page-title>
+      </m-context>
+    </ng-template>
+
+    <ng-template #headerTemplate let-mc>
+      <fdp-dynamic-page-header [collapsible]="true" [pinnable]="true" [collapsed]="false">
+        <m-context #headerMC [layout]="(mc | properties: 'layoutsByZone.zHeader')[0]" [parentMC]="mc">
+          <m-render></m-render>
+        </m-context>
+      </fdp-dynamic-page-header>
+    </ng-template>
+
+    <ng-template #contentTempplate let-mc>
+
+      <fdp-dynamic-page-content id="basic">
+        <m-context #CntMC [layout]="(mc | properties: 'layoutsByZone.zContent')[0]" [parentMC]="mc">
+          <m-render></m-render>
+        </m-context>
+      </fdp-dynamic-page-content>
+    </ng-template>
+
+    <ng-template #footerTemplate>
+      <fdp-dynamic-page-footer>
+        <!-- page footer content goes here -->
+        <div fd-bar barDesign="floating-footer">
+          <div fd-bar-right>
+            <fd-button-bar label="Save" fdType="emphasized"></fd-button-bar>
+            <fd-button-bar label="Cancel"></fd-button-bar>
+          </div>
+        </div>
+      </fdp-dynamic-page-footer>
+    </ng-template>
+  </fdp-dynamic-page>
+</m-context>
+
+<ng-template #pageTemplate let-mc>
+
+</ng-template>
+
+
+<ng-template #debugPrint let-mc>
+  <!--    <div style="margin-top: 10px; border-top: 1px solid black">-->
+  <!--      <span [innerHTML]="mc.debugString()">-->
+  <!--      </span>-->
+  <!--    </div>-->
+
+  <ul *ngIf="true" style="margin-left: 15px">
+    <li *ngFor="let record of mc.context.allProperties()._map | keyvalue ">
+      {{record.key}} :
+      <span *ngIf="record.key === 'bindings'">
+              &#123;
+              <ul style="margin-left: 25px">
+
+                <li *ngFor="let binding of mc | properties:'bindings' | keyvalue ">
+
+                  <span
+                    *ngIf="binding.value.constructor.name === 'Expr' || binding.value.constructor.name === 'ContextFieldPath'">
+                    <span style="font-style: italic">{{binding.key}} </span>:
+                    {{binding.value.evaluate(mc.context)}}  : {{binding.value}}
+                  </span>
+
+                  <span
+                    *ngIf="binding.value.constructor.name !== 'Expr' && binding.value.constructor.name !== 'ContextFieldPath'">
+                      {{binding.key}} : {{binding.value}}
+                  </span>
+                </li>
+              </ul>
+              &#125;
+            </span>
+
+      <span *ngIf="record.key !== 'bindings'">
+             {{mc.context.propertyForKey(record.key)}}
+            </span>
+    </li>
+  </ul>
+</ng-template>

@@ -79,7 +79,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
    *```
    * field trait=ObjectDetail {
    * 	editable=false {
-   * 		component: HoverCardComponnet;
+   * 		component: HoverCardComponent;
    * 		bindings: {
    * 			ngcontentLayout: Content;
    * 			linkTitle:${properties.get("label")};
@@ -156,7 +156,7 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
     const rulesBindings: Map<string, any> = this._currentContext.propertyForKey(KeyBindings);
     if (rulesBindings) {
       rulesBindings.forEach((val, key) => {
-        if (!typeBindings.has(key) && (key === 'ngModel' || key === NgContent)) {
+        if (typeBindings && !typeBindings.has(key) && (key === 'ngModel' || key === NgContent)) {
           typeBindings.set(key, this._bindingValue(key, isWrapper));
         }
       });
