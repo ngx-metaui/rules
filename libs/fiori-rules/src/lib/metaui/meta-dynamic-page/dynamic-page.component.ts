@@ -27,9 +27,11 @@ import {
 } from '@angular/core';
 import {MetaContextComponent, MetaLayout} from '@ngx-metaui/rules';
 import {DynamicPageBackgroundType, DynamicPageResponsiveSize} from '@fundamental-ngx/platform';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 
-export const ZonesDP = ['Title', 'Header', 'Content', 'Footer'];
+export const ZonesDP = ['zTitle', 'zHeader', 'zContent', 'zFooter'];
 
 /**
  * Renders a dynamic form based on current MetaContext
@@ -55,10 +57,11 @@ export class MetaDynamicPageComponent extends MetaLayout
   @Input()
   offset = 0;
 
-
   get metaContext(): MetaContextComponent {
     return this._mc;
   }
+
+  private _destroy: Subject<void> = new Subject<void>();
 
   constructor(public _cd: ChangeDetectorRef, public _parentMC: MetaContextComponent) {
     super();
@@ -71,15 +74,17 @@ export class MetaDynamicPageComponent extends MetaLayout
 
   ngOnInit(): void {
     super.ngOnInit();
-
+    this.metaContext.contextChanged$
+      .pipe(takeUntil(this._destroy))
+      .subscribe(context => {
+        this._cd.markForCheck();
+      });
 
   }
+
 
   ngAfterViewInit(): void {
-    let layoutsByZones = this.layoutsByZones;
   }
-
-
 
 
   log(layoutMC: MetaContextComponent): string {

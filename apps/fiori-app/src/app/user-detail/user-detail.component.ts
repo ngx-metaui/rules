@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core
 import {Action, UIMeta} from '@ngx-metaui/rules';
 import {User} from '../model/user';
 import {FormGroup} from '@angular/forms';
+import {AlertConfig, AlertService} from '@fundamental-ngx/core';
 
 
 @Component({
@@ -15,7 +16,8 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
 
   formGroup: FormGroup = new FormGroup({});
 
-  constructor(protected meta: UIMeta, private _cd: ChangeDetectorRef) {
+  constructor(protected meta: UIMeta, private _cd: ChangeDetectorRef,
+              public alertService: AlertService) {
   }
 
   ngOnInit(): void {
@@ -38,6 +40,12 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   @Action({applyTo: User, category: 'GlobalPageActions'})
   accept(object: any): void {
     console.log('Accepting : ' + object);
+    this.alertService.open('Successfully Accepted!', {
+      type: 'success',
+      width: '100vw',
+      dismissible: true,
+      duration: 2000
+    } as AlertConfig);
   }
 
   @Action({applyTo: User, category: 'GlobalPageActions'})

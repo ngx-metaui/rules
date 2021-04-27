@@ -18,25 +18,24 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DynamicPageService, PlatformDynamicPageModule} from '@fundamental-ngx/platform';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
-import {MetaDynamicPageComponent} from './dynamic-page.component';
+import {BarModule, ButtonModule} from '@fundamental-ngx/core';
+import {MetaBarActionsComponent} from './meta-bar-actions.component';
 
 @NgModule({
   declarations: [
-    MetaDynamicPageComponent
+    MetaBarActionsComponent
   ],
   imports: [
     CommonModule,
-    PlatformDynamicPageModule,
+    BarModule,
+    ButtonModule,
     MetaUIRulesModule
-  ],
-  exports: [],
-  providers: [
-    DynamicPageService
   ]
 })
-export class MetaDynamicPageModule {
+export class MetaBarActionsModule {
+
+
 }
 
 

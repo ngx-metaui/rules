@@ -44,4 +44,5 @@ export * from './metaui/meta-dynamic-page/dynamic-page.module';
 export * from './metaui/meta-element-list/element-list.module';
 export * from './metaui/meta-breadcrumb/breadcrumb.module';
 export * from './metaui/meta-toolbar-actions/meta-toolbar-actions.module';
+export * from './metaui/meta-bar-actions/meta-bar-actions.module';
 

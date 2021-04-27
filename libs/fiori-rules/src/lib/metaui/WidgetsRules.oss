@@ -130,6 +130,11 @@ layout {
         };
      }
 
+     @trait=BarActions {
+        visible:true;
+        component:MetaBarActionsModule;
+     }
+
     layout_trait=noLabelLayout class {
       bindings:{
         noLabelLayout:true;
@@ -143,6 +148,7 @@ layout {
     @trait=Stack;
     @trait=Bredcrumb;
     @trait=ToolbarActions;
+    @trait=BarActions;
 }
 
 ~class layout=(Inspect, SearchForm) {component:StringModule; bindings:{value:null; }; }
@@ -182,6 +188,8 @@ layout=DynamicPageWithActions {
   @layout=PageHeader#Form { after:zHeader; zonePath:Header; }
 
   @layout=PageContent#Form { after:zContent; zonePath:Content; }
+
+  @layout=PageFooterActions  { visible:true; disabled:true; after:zFooter; }
 }
 
 layout=PageGlobalActions {
@@ -235,6 +243,24 @@ layout=PageLayoutActions {
               title:"Close";
               type:"transparent";
               sapIcon:"sap-icon--decline";
+          }
+      }
+}
+
+layout=PageFooterActions {
+      @actionCategory=FooterPageActions {
+          after:zMain;
+
+          @action=save {
+              visible:true;
+              trait:controllerAction;
+              type:"emphasized";
+          }
+
+          @action=exit {
+              visible:true;
+              type:"transparent";
+              trait:controllerAction;
           }
       }
 }

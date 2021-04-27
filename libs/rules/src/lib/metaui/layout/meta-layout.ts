@@ -91,7 +91,7 @@ export abstract class MetaLayout extends MetaBaseComponent implements OnDestroy 
    *
    */
   get layoutsByZones(): Map<string, any> {
-    if (isBlank(this._layoutsByZones)) {
+    if (isBlank(this._layoutsByZones && this.metaContext.context)) {
       this._layoutsByZones = this.metaContext.context.meta.itemsByZones(
         this.metaContext.context, KeyLayout, this.zones());
     }
