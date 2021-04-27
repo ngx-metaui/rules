@@ -78,22 +78,16 @@ import {
  * ```
  */
 @Component({
-  selector: 'm-toolbar-actions',
-  templateUrl: 'meta-toolbar-actions.component.html',
-  styles: [
-      `
-      ::ng-deep .fd-toolbar * ~ :not(.fd-toolbar__spacer) {
-        margin-left: .5rem;
-      }
-    `
-  ],
+  selector: 'm-bar-actions',
+  templateUrl: 'meta-bar-actions.component.html',
+  styles: [`
+    m-context {
+      display: contents;
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MetaToolbarActions implements OnInit, DoCheck {
-
-  @Input()
-  showSeparator: boolean;
-
+export class MetaBarActionsComponent implements OnInit, DoCheck {
   /**
    * This is special identifier and when used we push extra stack property in order to get some
    * additional properties that are primarily related to type of actions that can be visible or

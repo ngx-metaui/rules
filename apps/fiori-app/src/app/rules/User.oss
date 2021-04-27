@@ -54,4 +54,12 @@ class=User {
    layout=PageGlobalActions action=accept {
      disabled: ${object.firstName === "Fredd"};
    }
+
+   layout=PageFooterActions  {
+        disabled: false;
+   }
+
+
+
 }
+

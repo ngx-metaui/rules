@@ -14,7 +14,7 @@
     </ng-container>
 
     <ng-container ngProjectAs="fdp-dynamic-page-footer">
-      <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
+      <ng-container *ngTemplateOutlet="footerTemplate;context:{$implicit: layoutMC}"></ng-container>
     </ng-container>
 
 
@@ -72,15 +72,11 @@
       </fdp-dynamic-page-content>
     </ng-template>
 
-    <ng-template #footerTemplate>
+    <ng-template #footerTemplate let-mc>
       <fdp-dynamic-page-footer>
-        <!-- page footer content goes here -->
-        <div fd-bar barDesign="floating-footer">
-          <div fd-bar-right>
-            <fd-button-bar label="Save" fdType="emphasized"></fd-button-bar>
-            <fd-button-bar label="Cancel"></fd-button-bar>
-          </div>
-        </div>
+        <m-context #footerMC [layout]="(mc | properties: 'layoutsByZone.zFooter')[0]" [parentMC]="mc">
+            <m-render></m-render>
+          </m-context>
       </fdp-dynamic-page-footer>
     </ng-template>
   </fdp-dynamic-page>

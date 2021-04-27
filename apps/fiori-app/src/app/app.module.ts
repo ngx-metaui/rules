@@ -8,6 +8,7 @@ import {MetaConfig, MetaUIRulesModule} from '@ngx-metaui/rules';
 import {FioriRulesModule} from '@ngx-metaui/fiori-rules';
 import * as userRules from './user-rules';
 import {UserDetailComponent} from './user-detail/user-detail.component';
+import {AlertService, DynamicComponentService} from '@fundamental-ngx/core';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {UserDetailComponent} from './user-detail/user-detail.component';
     AppRoutingModule
 
   ],
+  providers: [AlertService, DynamicComponentService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
