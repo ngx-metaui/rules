@@ -44,7 +44,7 @@ describe('Loading rules functionality', () => {
         const metaUI: UIMeta = TestBed.inject(UIMeta);
 
         expect(metaUI).toBeDefined();
-        expect(metaUI.rules.length).toEqual(217); // commented out toOneRelationShip
+        expect(metaUI.rules.length).toEqual(221); // commented out toOneRelationShip
 
       } catch (e) {
         fail(e);
