@@ -373,8 +373,8 @@ export class ValueBinding implements MetaBindable<any> {
   currentValue: any;
   private _destroy: Subject<void>;
 
-  constructor(private mc: MetaContextComponent, private component: ComponentRef<any>, isWrapper: boolean,
-              private env?: Environment) {
+  constructor(private mc: MetaContextComponent, private component: ComponentRef<any>,
+              isWrapper: boolean, private env?: Environment) {
   }
 
   getValue(): any {
