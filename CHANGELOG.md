@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.1.0-beta.0](https://github.com/ngx-meta/rules/compare/v11.0.1...v11.1.0-beta.0) (2021-04-30)
+
+
+### Features
+
+* **fiori-rules:** Added DynamicPage with Actions ([d260340](https://github.com/ngx-meta/rules/commit/d260340e908dfc5d9c712a64f6893e55b885fc2f))
+* **fiori-rules:** Integrated forms for header and content area ([e48abc6](https://github.com/ngx-meta/rules/commit/e48abc6b470f66edc2fccfe90592ecdb703fa5e4))
+
+
+### Bug Fixes
+
+* **fiori-rules:** Add support for Fiori rules - FormGroup ([c18c48e](https://github.com/ngx-meta/rules/commit/c18c48e19018991bedc8b02b3f7db95a23102a7e))
+* **rules:** Refactored layout zones definition ([236f4d4](https://github.com/ngx-meta/rules/commit/236f4d425fb983681a31b335e4df3d2e8cd0fb56))
+* **schematics:** Updated schematics to support Fiori. ([a1a85e5](https://github.com/ngx-meta/rules/commit/a1a85e51b0ce8baf5db6cbc1305b4055118b91a0))
+
 ### [11.0.1](https://github.com/ngx-meta/rules/compare/v11.0.0...v11.0.1) (2021-04-12)
 
 
