@@ -95,24 +95,17 @@ function addPackageToPackageJson(host: Tree, options: AddSchema): Tree {
       {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'},
       {type: NodeDependencyType.Default, version: '6.6.7', name: 'rxjs'}
     ];
+  } else if (options.uiLib === 'fiori') {
+    uiLibs = [
+      {
+        type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
+        name: '@ngx-metaui/fiori-rules'
+      }, {
+        type: NodeDependencyType.Default, version: 'FD_PLATFORM_PLACEHOLDER',
+        name: '@fundamental-ngx/platform'
+      }
+    ];
   }
-  // else if (options.uiLib === 'fiori') {
-  //   uiLibs = [
-  //     {
-  //       type: NodeDependencyType.Default, version: '^VERSION_PLACEHOLDER',
-  //       name: '@ngx-metaui/fiori-rules'
-  //     }, {
-  //       type: NodeDependencyType.Default,
-  //       version: 'FD_CORE_PLACEHOLDER',
-  //       name: '@fundamental-ngx/core'
-  //     }, {
-  //       type: NodeDependencyType.Default, version: 'FD_PLATFORM_PLACEHOLDER',
-  //       name: '@fundamental-ngx/platform'
-  //     },
-  //     {type: NodeDependencyType.Default, version: 'MATERIAL_PLACEHOLDER', name: '@angular/cdk'},
-  //     {type: NodeDependencyType.Default, version: '^6.3.1', name: 'flexboxgrid'}
-  //   ];
-  // }
 
   const dependencies = [...core, ...uiLibs];
   dependencies.forEach(dependency => {
@@ -132,14 +125,6 @@ function addStylesToAngularJson(host: Tree, context: SchematicContext, options: 
     const styleEntries: string[] = [
       'node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css',
       'node_modules/flexboxgrid/css/flexboxgrid.css'
-    ];
-    return addStyles(host, context, styleEntries, options);
-  } else if (options.uiLib === 'fiori') {
-    const styleEntries: string[] = [
-      'node_modules/flexboxgrid/dist/flexboxgrid.css',
-      'node_modules/fundamental-styles/dist/fundamental-styles.css',
-      'node_modules/fundamental-styles/dist/fonts.css',
-      'node_modules/fundamental-styles/dist/icon.css'
     ];
     return addStyles(host, context, styleEntries, options);
   }

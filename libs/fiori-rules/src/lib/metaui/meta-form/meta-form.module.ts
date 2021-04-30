@@ -18,7 +18,7 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FdpFormGroupModule} from '@fundamental-ngx/platform';
+import {FdpFormGroupModule, PlatformInputModule} from '@fundamental-ngx/platform';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
 import {MetaFormGroup} from './meta-form-group.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -32,7 +32,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     FdpFormGroupModule,
-    MetaUIRulesModule
+    MetaUIRulesModule,
+    PlatformInputModule
   ],
   exports: []
 })

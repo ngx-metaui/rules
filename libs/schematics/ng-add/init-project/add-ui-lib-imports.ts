@@ -15,7 +15,8 @@ function addNgModuleImports(options: AddSchema): Rule {
   return (host: Tree, context: SchematicContext) => {
     try {
       const imports = [
-        'MaterialRulesModule.forRoot()', '@ngx-metaui/material-rules'
+        'MaterialRulesModule.forRoot()', '@ngx-metaui/material-rules',
+        'FioriRulesModule.forRoot()', '@ngx-metaui/fiori-rules',
       ];
 
 
@@ -28,14 +29,12 @@ function addNgModuleImports(options: AddSchema): Rule {
           addModuleImportToModule(host, modulePath, imports[0], imports[1]);
         }
       }
-
-      // else if (options.uiLib === 'fiori') {
-      //   const hasModule = sourceText.includes('MaterialRulesModule');
-      //   if (!hasModule) {
-      //     addModuleImportToRootModule(host, 'FioriRulesModule.forRoot()',
-      //       '@ngx-metaui/fiori-rules', project);
-      //   }
-      // }
+      if (options.uiLib === 'fiori') {
+        const hasModule = sourceText.includes('MaterialRulesModule');
+        if (!hasModule) {
+          addModuleImportToModule(host, modulePath, imports[2], imports[3]);
+        }
+      }
     } catch (e) {
       context.logger.log('warn',
         `✅️ Failed to add MetaUIRulesModule into NgModule imports ${e}`);

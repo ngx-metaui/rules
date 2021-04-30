@@ -19,10 +19,6 @@
  *
  */
 import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
-import {NgControl} from '@angular/forms';
-import {Subject} from 'rxjs';
-import {ContentDensity, FormField, FormFieldControl, Status} from '@fundamental-ngx/platform';
 
 
 let randomId = 0;
@@ -43,7 +39,7 @@ let randomId = 0;
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObjectMarkerComponent implements FormFieldControl<any> {
+export class ObjectMarkerComponent  {
   protected defaultId: string = `fdp-string-${randomId++}`;
 
   @Input()
@@ -55,29 +51,6 @@ export class ObjectMarkerComponent implements FormFieldControl<any> {
   @Input()
   glyph: string = 'request';
 
-  readonly _stateChanges: Subject<any> = new Subject<any>();
-
-  constructor(private sanitizer: DomSanitizer) {
-  }
-
-  contentDensity: ContentDensity;
-  readonly disabled: boolean;
-  editable: boolean;
-  readonly focused: boolean;
-
-  readonly ngControl: NgControl | null;
-  placeholder: string;
-  required: boolean;
-  readonly status: Status;
-  readonly stateChanges: Subject<any> = new Subject<any>();
-  readonly formField: FormField | null = null;
-
-
-  focus(event?: MouseEvent): void {
-  }
-
-  onContainerClick(event: MouseEvent): void {
-  }
 
 }
 

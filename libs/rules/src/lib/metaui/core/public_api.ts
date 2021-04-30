@@ -74,5 +74,9 @@ export * from './decorators/utils';
 
 export * from './context-property.pipe';
 
+export * from './utils/collection';
+export * from './utils/lang';
+
+
 
 
