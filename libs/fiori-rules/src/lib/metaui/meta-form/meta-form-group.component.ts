@@ -103,13 +103,7 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
       return;
     }
     this._cd.detectChanges();
-  }
 
-  private readFormFieldGroups(): void {
-    const context = this.metaContext.context;
-    let m = context.propertyForKey('fieldsByZone');
-
-    console.log(m);
   }
 }
 
