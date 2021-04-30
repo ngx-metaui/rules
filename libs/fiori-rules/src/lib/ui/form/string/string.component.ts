@@ -41,7 +41,7 @@ let randomId = 0;
     <ng-template #WithStyles>
       <span *ngIf="useDefaultStyling" [id]="id"
             class="fd-input fd-form-item fd-row__form-item"
-            style="margin-bottom: 0; padding: 0 10px">
+            style="background-color: transparent; margin-bottom: 0; padding: 0 10px">
       {{value}}
     </span></ng-template>
 
