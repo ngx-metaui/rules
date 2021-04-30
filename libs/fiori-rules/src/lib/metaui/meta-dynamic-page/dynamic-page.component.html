@@ -66,18 +66,18 @@
     <ng-template #contentTempplate let-mc>
 
       <fdp-dynamic-page-content id="basic">
-        <m-context #CntMC [layout]="(mc | properties: 'layoutsByZone.zContent')[0]" [parentMC]="mc">
-          <m-render></m-render>
-        </m-context>
-      </fdp-dynamic-page-content>
+          <m-context #CntMC [layout]="(mc | properties: 'layoutsByZone.zContent')[0]" [parentMC]="mc">
+            <m-render></m-render>
+          </m-context>
+        </fdp-dynamic-page-content>
     </ng-template>
 
     <ng-template #footerTemplate let-mc>
       <fdp-dynamic-page-footer>
-        <m-context #footerMC [layout]="(mc | properties: 'layoutsByZone.zFooter')[0]" [parentMC]="mc">
+           <m-context #footerMC [layout]="(mc | properties: 'layoutsByZone.zFooter')[0]" [parentMC]="mc">
             <m-render></m-render>
           </m-context>
-      </fdp-dynamic-page-footer>
+        </fdp-dynamic-page-footer>
     </ng-template>
   </fdp-dynamic-page>
 </m-context>

@@ -21,7 +21,7 @@ export class ContextPropertyPipe implements PipeTransform {
       return (metaContext.context as UIContext).object;
     } else {
       const val = metaContext.context.propertyForKey(key);
-      return val || defaultValue;
+      return ((typeof val === 'boolean' && val === false) ? false : (!val ? defaultValue : val));
     }
   }
 

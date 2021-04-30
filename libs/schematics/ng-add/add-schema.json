@@ -31,7 +31,8 @@
       "description": "UI library rules implementation name",
       "enum": [
         "none",
-        "material"
+        "material",
+        "fiori"
       ],
       "default": "none"
     }

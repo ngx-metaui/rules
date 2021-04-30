@@ -27,7 +27,7 @@ import {
   ViewChildren
 } from '@angular/core';
 
-import {MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
+import {ItemProperties, MetaBaseComponent, MetaContextComponent} from '@ngx-metaui/rules';
 import {FormField} from '@fundamental-ngx/platform';
 import {AbstractControl, ValidatorFn, Validators} from '@angular/forms';
 
@@ -49,10 +49,11 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
   formFields: QueryList<FormField>;
 
 
-
   get metaContext(): MetaContextComponent {
     return this._mc;
   }
+
+  fields: Map<string, Array<ItemProperties>>;
 
   constructor(public _cd: ChangeDetectorRef, public _parentMC: MetaContextComponent) {
     super();
@@ -64,7 +65,9 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
 
 
   ngAfterViewInit(): void {
+    // this.readFormFieldGroups();
     this.updateMeta();
+
     if (!this.editing) {
       return;
     }
@@ -100,6 +103,13 @@ export class MetaFormGroup extends MetaBaseComponent implements AfterViewInit {
       return;
     }
     this._cd.detectChanges();
+  }
+
+  private readFormFieldGroups(): void {
+    const context = this.metaContext.context;
+    let m = context.propertyForKey('fieldsByZone');
+
+    console.log(m);
   }
 }
 

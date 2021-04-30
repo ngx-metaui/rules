@@ -182,7 +182,7 @@ export class MapWrapper {
     return map;
   }
 
-  static groupBy<K>(items: any, groupByKey: (item: K) => string): Map<string, any> {
+  static  groupBy<K>(items: any, groupByKey: (item: K) => string): Map<string, any> {
     const result = items.reduce((groupResult: any, currentValue: any) => {
 
       const gKey = groupByKey(currentValue);

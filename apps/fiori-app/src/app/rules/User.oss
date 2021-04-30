@@ -11,9 +11,9 @@
       layout=Inspect class {..}
     depending what you want to achive
 */
- layout=Inspect class=User {
-   mainTitle:"User form";
-   layoutPattern:"XL4-L4-M2-S1";
+layout class=User {
+
+   layoutPattern:"XL2-L2-M1-S1";
 }
 
 
@@ -55,8 +55,8 @@ class=User {
      disabled: ${object.firstName === "Fredd"};
    }
 
-   layout=PageFooterActions  {
-        disabled: false;
+  actionCategory=FooterPageActions {
+        visible: true;
    }
 
 

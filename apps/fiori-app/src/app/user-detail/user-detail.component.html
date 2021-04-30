@@ -5,9 +5,8 @@
 operation: {{operation}}
 
 <div [formGroup]="formGroup">
-  <m-context layout="DynamicPageWithActions">
 
-    <m-context #main [object]="object" [operation]="operation">
+  <m-context #main [object]="object" [operation]="operation" layout="DynamicPageWithActions">
     <m-render></m-render>
 
     <ng-template #i18n let-errors>
@@ -19,9 +18,6 @@ operation: {{operation}}
         </span>
 
     </ng-template>
-  </m-context>
-
-
   </m-context>
 
 </div>

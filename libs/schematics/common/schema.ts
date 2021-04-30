@@ -34,7 +34,7 @@ export interface Schema {
   /**
    * Works with specific module within the project
    */
-  uiLib: 'none' | 'material';
+  uiLib: 'none' | 'material' | 'fiori';
   name: string;
   flat?: boolean;
   skipImport?: boolean;

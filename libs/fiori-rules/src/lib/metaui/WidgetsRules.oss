@@ -69,7 +69,7 @@ field {
 
 class {
     @trait=fourZones {
-        zones: [zOne, zTwo, zThree, zFour, zDetail];
+        zones: [zOne, zTwo, zThree, zFour, zDetail, zFieldGroup];
         fourZoneLayout:true;
     }
 
@@ -183,13 +183,14 @@ layout=DynamicPageWithActions {
       layout=PageGlobalActions {}
 
       layout=PageGlobalActions {}
+
   }
 
   @layout=PageHeader#Form { after:zHeader; zonePath:Header; }
 
   @layout=PageContent#Form { after:zContent; zonePath:Content; }
 
-  @layout=PageFooterActions  { visible:true; disabled:true; after:zFooter; }
+  @layout=PageFooterActions  {visible:true; disabled:true; after:zFooter; }
 }
 
 layout=PageGlobalActions {
@@ -246,9 +247,8 @@ layout=PageLayoutActions {
           }
       }
 }
-
-layout=PageFooterActions {
-      @actionCategory=FooterPageActions {
+@actionCategory=FooterPageActions {
+      layout=PageFooterActions {
           after:zMain;
 
           @action=save {

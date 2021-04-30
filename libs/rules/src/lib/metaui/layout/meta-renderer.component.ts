@@ -65,9 +65,7 @@ export const NgContentLayout = 'ngcontentLayout';
  */
 @Component({
   selector: 'm-render',
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetaRendererComponent extends BaseRenderer implements AfterViewInit, DoCheck {

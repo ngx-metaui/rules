@@ -8,7 +8,7 @@
 
 <ng-template #formGroup let-mc>
   <fdp-form-group #fg [mainTitle]="mc | properties: 'mainTitle'"
-                  [columnLayout]="mc | properties: 'layoutPattern': 'XL4-L3-M2-S1'"
+                  [columnLayout]="mc | properties: 'layoutPattern': 'XL1-L1-M1-S1'"
                   [i18Strings]="mc.i18n">
 
     <ng-template ngFor let-zone [ngForOf]="['zOne', 'zTwo', 'zThree', 'zFour']" let-i="index">

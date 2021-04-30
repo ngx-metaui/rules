@@ -1,8 +1,7 @@
-<div fd-bar barDesign="floating-footer">
+
+
+<div fd-bar barDesign="floating-footer" >
   <div fd-bar-right>
-    xxx: {{metaContext | properties: 'disabled':'www' | json}}
-
-
     <ng-template ngFor [ngForOf]="actionCategories()" let-category>
 
       <m-context #catMC [actionCategory]="category.name">
