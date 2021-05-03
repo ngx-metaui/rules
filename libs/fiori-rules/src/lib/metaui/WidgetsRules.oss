@@ -43,7 +43,7 @@ field {
 
     }
 
-    component=(StringModule,LinkComponent, PlatformInputModule) {
+    component=(StringModule, PlatformLinkModule) {
         @trait=bold {
             wrapperComponent:GenericContainerComponent;
             wrapperBindings: { tagName:b; };
@@ -54,15 +54,18 @@ field {
         }
         @trait=heading1 {
             wrapperComponent:GenericContainerComponent;
-            wrapperBindings: { tagName:h1; };
+            wrapperBindings: {
+              tagName: h1;
+              styleClass: "fd-title fd-title--h1";
+            };
         }
         @trait=heading2 {
             wrapperComponent:GenericContainerComponent;
-            wrapperBindings: { tagName:h2; };
+            wrapperBindings: { tagName:h2; styleClass: "fd-title fd-title--h2";};
         }
         @trait=heading3 {
             wrapperComponent:GenericContainerComponent;
-            wrapperBindings: { tagName:h3; };
+            wrapperBindings: { tagName:h3; styleClass: "fd-title fd-title--h3"; };
         }
     }
 }
@@ -97,6 +100,11 @@ layout {
         columnLayout:${properties.get("layoutPattern")};
         mainTitle:${properties.get("mainTitle")};
       };
+    }
+
+    @trait=FacetGroup {
+      visible:true;
+      component:MetaFacetGroupModule;
     }
 
     component=MetaFormGroup {
@@ -144,6 +152,7 @@ layout {
 
 @traitGroup=LayoutGrouping {
     @trait=Form;
+    @trait=FacetGroup;
     @trait=DynamicPage;
     @trait=Stack;
     @trait=Bredcrumb;
@@ -186,7 +195,7 @@ layout=DynamicPageWithActions {
 
   }
 
-  @layout=PageHeader#Form { after:zHeader; zonePath:Header; }
+  @layout=PageHeader#FacetGroup { after:zHeader; zonePath:Header; }
 
   @layout=PageContent#Form { after:zContent; zonePath:Content; }
 

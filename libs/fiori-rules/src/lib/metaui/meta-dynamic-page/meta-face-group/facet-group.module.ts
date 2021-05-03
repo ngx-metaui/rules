@@ -1,6 +1,6 @@
 /**
- * @license
- * Copyright F. Kolar
+ * @licensess
+ * Copyright F. Kolara
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,25 +18,21 @@
  */
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DynamicPageService, PlatformDynamicPageModule} from '@fundamental-ngx/platform';
 import {MetaUIRulesModule} from '@ngx-metaui/rules';
-import {MetaDynamicPageComponent} from './dynamic-page.component';
+import {FacetModule} from '@fundamental-ngx/core';
+import {MetaFacetGroupComponent} from './facet-group.component';
 
 @NgModule({
   declarations: [
-    MetaDynamicPageComponent
+    MetaFacetGroupComponent
   ],
   imports: [
     CommonModule,
-    PlatformDynamicPageModule,
+    FacetModule,
     MetaUIRulesModule
-  ],
-  exports: [],
-  providers: [
-    DynamicPageService
   ]
 })
-export class MetaDynamicPageModule {
+export class MetaFacetGroupModule {
 }
 
 

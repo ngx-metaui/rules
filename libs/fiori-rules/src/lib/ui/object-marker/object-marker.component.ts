@@ -39,7 +39,7 @@ let randomId = 0;
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObjectMarkerComponent  {
+export class ObjectMarkerComponent {
   protected defaultId: string = `fdp-string-${randomId++}`;
 
   @Input()

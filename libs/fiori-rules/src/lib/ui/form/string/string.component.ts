@@ -35,14 +35,18 @@ let randomId = 0;
   template: `
 
     <ng-template [ngIf]="!useDefaultStyling" [ngIfElse]="WithStyles">
-      {{value}}
+      <span [innerHTML]="value">
+      </span>
     </ng-template>
 
     <ng-template #WithStyles>
       <span *ngIf="useDefaultStyling" [id]="id"
             class="fd-input fd-form-item fd-row__form-item"
-            style="background-color: transparent; margin-bottom: 0; padding: 0 10px">
-      {{value}}
+            style="background-color: transparent; margin-bottom: 0; padding: 0 10px"
+
+            [innerHTML]="value"
+
+      >
     </span></ng-template>
 
 
@@ -59,7 +63,7 @@ export class StringComponent {
   id: string = this.defaultId;
 
   @Input()
-  useDefaultStyling: boolean = true;
+  useDefaultStyling: boolean = false;
 
   @Input()
   set value(value: any) {

@@ -1,0 +1,22 @@
+<m-context #classMC scopeKey="class" [parentMC]="_parentMC">
+  <fd-facet-group ariaLabel="Facet Group">
+
+
+    <ng-container ngProjectAs="fd-facet" *ngFor="let field of (classMC | properties:'fieldsByZone.zDetail')">
+      <ng-container *ngTemplateOutlet="facetTemplate;context:{$implicit: field, mc:classMC}">
+      </ng-container>
+    </ng-container>
+
+
+    <ng-template #facetTemplate let-field let-mc="mc">
+      <m-context #fieldMC [field]="field" [parentMC]="mc" >
+        <fd-facet type="key-value" [facetTitle]="fieldMC | properties:'label'"
+                  [alignEnd]="fieldMC | properties:'alignEnd': false"
+                  [id]="fieldMC | properties: 'field'">
+          <m-render></m-render>
+        </fd-facet>
+      </m-context>
+    </ng-template>
+  </fd-facet-group>
+</m-context>
+
