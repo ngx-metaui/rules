@@ -131,7 +131,7 @@ export const AppConfigRuleFilesParam = 'metaui.rules.file-names';
 export const AppConfigUserRulesParam = 'metaui.rules.user-rules';
 
 export const ZonesTLRMB = [ZoneTop, ZoneLeft, ZoneMiddle, ZoneRight, ZoneBottom];
-export const Zones1234 = [ZoneOne, ZoneTwo, ZoneThree, ZoneFour, ZoneFieldGroup];
+export const Zones1234 = [ZoneOne, ZoneTwo, ZoneThree, ZoneFour, ZoneFieldGroup, ZoneDetail];
 export const ZonesMTLRB = [ZoneMain, ZoneTop, ZoneLeft, ZoneRight, ZoneBottom];
 export const ZonesDetail = [ZoneDetail];
 

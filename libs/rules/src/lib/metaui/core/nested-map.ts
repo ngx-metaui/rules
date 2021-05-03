@@ -73,7 +73,7 @@ export class NestedMap<K, V> implements Map<K, V> {
   }
 
   static isNMNullMarker(value: any): boolean {
-    return isPresent(value) && value['nesnullmarker'];
+    return isPresent(value) && value['nesnullmarker'] === true;
   }
 
   toMap(): Map<K, V> {

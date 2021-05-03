@@ -22,9 +22,7 @@ export {
   MetaContextComponent, MetaUIActionEvent, OnContextSetEvent
 } from './meta-context/meta-context.component';
 export * from './constants';
-export {
-  CompositeType, Deserializable, Entity, Identity, isEntity, isValue, Value
-} from './utils/domain-model';
+export * from './utils/domain-model';
 export {
   beautifyClassName,
   beautifyFileName,

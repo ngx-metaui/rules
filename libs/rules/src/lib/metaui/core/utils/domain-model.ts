@@ -60,8 +60,14 @@ export interface Value extends Deserializable,
   clone(): Value;
 }
 
+/**
+ * Todo: standartize on proper way to identify if we are dealing with Entity or Value.
+ * Make those checkers injectable by application or let the app completely describe the way
+ * we work with entities
+ *
+ */
 export function isEntity(entity: any): entity is Entity {
-  return (entity) && entity.identity;
+  return (!!entity.constructor.isEntity) || (entity) && entity.identity;
 }
 
 export function isValue(val: any): val is Value {
