@@ -68,6 +68,9 @@ export class GenericContainerComponent implements OnInit, AfterViewInit {
   @Input()
   tagName: string;
 
+  @Input()
+  styleClass: string;
+
   /**
    * Native root element. Points to <m-generic-container>
    */
@@ -123,6 +126,12 @@ export class GenericContainerComponent implements OnInit, AfterViewInit {
     const el = this.renderer.createElement(this.tagName);
     if (isPresent(this.nativeElement)) {
       this.renderer.appendChild(this.nativeElement, el);
+    }
+
+    if (this.styleClass) {
+      this.styleClass.split(' ').forEach((clazz) => {
+        this.renderer.addClass(el, clazz);
+      });
     }
 
     if (this.styles) {
