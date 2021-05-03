@@ -9,8 +9,7 @@ cd ${scriptDir}
 cd ..
 
 
-#PACKAGES=(rules material-rules fiori-rules)
-PACKAGES=(rules material-rules)
+PACKAGES=(rules material-rules fiori-rules)
 
 rm -Rf ./dist
 
@@ -45,7 +44,7 @@ grep -rl 'MATERIAL_PLACEHOLDER' . | xargs  perl -p -i -e "s/MATERIAL_PLACEHOLDER
 
 grep -rl 'FD_CORE_PLACEHOLDER' . | xargs  perl -p -i -e "s/FD_CORE_PLACEHOLDER/${FD_CORE_VERSION}/g"
 grep -rl 'FD_PLATFORM_PLACEHOLDER' . | xargs  perl -p -i -e "s/FD_PLATFORM_PLACEHOLDER/${FD_PLATFORM_VERSION}/g"
-grep -rl 'SAP_THEMNE_PLACEHOLDER' . | xargs  perl -p -i -e "s/SAP_THEMNE_PLACEHOLDER/${SAP_THEMNE_VERSION}/g"
+grep -rl 'SAP_THEME_PLACEHOLDER' . | xargs  perl -p -i -e "s/SAP_THEME_PLACEHOLDER/${SAP_THEMNE_VERSION}/g"
 
 
 cd "libs"

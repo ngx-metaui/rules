@@ -12,9 +12,9 @@ echo "################ Testing @ngx-meta/rules ################ "
 rm -Rf ./dist/ && ng build rules && ng test rules --browsers=ChromeHeadless --karma-config=./libs/rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
 
 
-#echo "################ Testing @ngx-meta/material-rules ################ "
+echo "################ Testing @ngx-meta/material-rules ################ "
 rm -Rf ./dist/ && ng build rules &&  ng test material-rules --browsers=ChromeHeadless --karma-config=./libs/material-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
 
 
-#echo "################ Testing @ngx-meta/fiori-rules ################ "
-# rm -Rf ./dist/ && ng build rules &&  ng test fiori-rules --browsers=ChromeHeadless --karma-config=./libs/fiori-rules/karma.conf.ci.js --source-map=false --watch=false --progress=false
+# echo "################ Testing @ngx-meta/fiori-rules ################ "
+# rm -Rf ./dist/ && ng build rules &&  ng test fiori-rules    --browsers=ChromeHeadless --karma-config=./libs/fiori-rules/karma.conf.ci.js    --source-map=false --watch=false --progress=false

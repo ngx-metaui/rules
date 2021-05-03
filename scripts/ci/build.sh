@@ -17,15 +17,15 @@ ng build rules
 echo "################ Building @ngx-meta/material-rules ################"
 ng build material-rules
 
-#echo "################ Building @ngx-meta/fiori-rules ################"
-# ng build fiori-rules
+echo "################ Building @ngx-meta/fiori-rules ################"
+ng build fiori-rules
 
 
 if [ ${args[0]} == "dev" ]; then
 echo "################ Building apps ################"
   ng build doc-app
   ng build material-app
-#  ng build fiori-app
+  ng build fiori-app
 fi
 
 
@@ -80,8 +80,8 @@ cp -R libs/material-rules/src/lib/metaui/*.oss ./dist/libs/material-rules/lib/me
 
 
 # Copy resources for material rules
-#echo "Building resources for fiori"
-#cp -R libs/fiori-rules/src/lib/metaui/*.oss ./dist/libs/fiori-rules/lib/metaui
+echo "Building resources for fiori"
+cp -R libs/fiori-rules/src/lib/metaui/*.oss ./dist/libs/fiori-rules/lib/metaui
 
 
 
