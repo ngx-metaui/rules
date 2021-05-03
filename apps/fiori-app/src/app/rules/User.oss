@@ -33,19 +33,22 @@ class=User {
     }
 
     field=uniqueName {
-      trait:required;
+      trait:required, heading2;
+      editable:false;
       label: "SSN #";
     }
 
 
    field=firstName {
+    trait: heading2;
+    editable:false;
+    alignEnd:true;
     rank:10;
    }
 
 
     zNone => *;
-    Header.zOne => uniqueName;
-    Header.zTwo => firstName;
+    Header.zDetail => uniqueName => firstName;
     Content.zOne => title;
     Content.zTwo => description;
 }
