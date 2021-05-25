@@ -18,7 +18,15 @@
  *
  *
  */
-import {AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DoCheck,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2
+} from '@angular/core';
 import {isBlank, isPresent} from '../../core/utils/lang';
 import {MapWrapper} from '../../core/utils/collection';
 
@@ -48,7 +56,7 @@ import {MapWrapper} from '../../core/utils/collection';
   template: '<ng-content></ng-content>',
   styles: []
 })
-export class GenericContainerComponent implements OnInit, AfterViewInit {
+export class GenericContainerComponent implements OnInit, DoCheck, AfterViewInit {
 
   /**
    * Default tagName if none is specified inside bindings.
@@ -107,6 +115,10 @@ export class GenericContainerComponent implements OnInit, AfterViewInit {
     // Save first added
     this.childElement = this.nativeElement.firstChild;
     this.doRender();
+  }
+
+  ngDoCheck(): void {
+    console.log(this.nativeElement.firstChild);
   }
 
 

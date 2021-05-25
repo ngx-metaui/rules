@@ -157,13 +157,16 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
       const wrapperBindings = this._bindingsForNewReference(wrapperCR, true);
       const wrapperComponent = super._createElement(wrapperCR, wrapperBindings, null,
         1);
-      wrapperComponent.location.nativeElement
-        .appendChild(this.currentComponent.location.nativeElement);
+
+      wrapperComponent.location.nativeElement.appendChild(this.currentComponent.location.nativeElement);
       this.applyBindings(wrapperCR, wrapperComponent, wrapperBindings,
         this.componentReference.metadata.outputs, true);
-    }
 
-    console.log(this.componentReference);
+      if (wrapperComponent.instance.ngOnInit) {
+        wrapperComponent.instance.ngOnInit();
+      }
+    }
+    this.cd.detectChanges();
   }
 
   protected _bindingsForNewReference(reference: ComponentReference,
@@ -228,6 +231,26 @@ export class MetaRendererComponent extends BaseRenderer implements AfterViewInit
   protected componentReferenceMap(): Map<string, any> {
     return this._currentContext.meta.identityCache;
   }
+
+
+  // protected _createElement(reference: ComponentReference, bindings: Map<string, any>,
+  //                          contentElement: any, index: number): ComponentRef<any> {
+  //   const component = super._createElement(reference, bindings, contentElement);
+  //
+  //   const wrapperComponentName = this._componentName(KeyWrapperComponent);
+  //
+  //   if (wrapperComponentName) {
+  //     const wrapperCR = super._createComponentReference(wrapperComponentName);
+  //     const wrapperBindings = this._bindingsForNewReference(wrapperCR, true);
+  //     const wrapperComponent = super._createElement(wrapperCR, wrapperBindings, null,
+  //       1);
+  //     wrapperComponent.location.nativeElement.appendChild(component.location.nativeElement);
+  //     this.applyBindings(wrapperCR, wrapperComponent, wrapperBindings,
+  //       reference.metadata.outputs, true);
+  //     this.cd.markForCheck();
+  //   }
+  //   return component;
+  // }
 
 
   protected _createContentElement(bindings: Map<string, any>): any {

@@ -54,15 +54,26 @@ class=User {
 }
 
 class=User {
-   layout=PageGlobalActions action=accept {
-     disabled: ${object.firstName === "Fredd"};
+   layout=PageLayoutActions action {
+     visible: false;
    }
 
-  actionCategory=FooterPageActions {
-        visible: true;
+   layout=PageFooterActions actionCategory {
+     visible: false;
    }
 
-
-
+   layout=PageGlobalActions {
+     actionCategory=GlobalPageActions {
+       @action=submit {
+           trait:controllerAction;
+           visible:true;
+           type:"emphasized";
+       }
+       @action=edit {
+           trait:controllerAction;
+           visible:true;
+       }
+     }
+   }
 }
 

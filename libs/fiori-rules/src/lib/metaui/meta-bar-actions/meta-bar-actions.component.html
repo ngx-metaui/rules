@@ -1,9 +1,6 @@
-
-
-<div fd-bar barDesign="floating-footer" >
+<div fd-bar barDesign="floating-footer"  *ngIf="actionCategories() as actionCategories">
   <div fd-bar-right>
-    <ng-template ngFor [ngForOf]="actionCategories()" let-category>
-
+    <ng-template ngFor [ngForOf]="actionCategories" let-category>
       <m-context #catMC [actionCategory]="category.name">
         <ng-template ngFor [ngForOf]="actions( category)" let-action>
           <m-context #actionMC [action]="action.name">

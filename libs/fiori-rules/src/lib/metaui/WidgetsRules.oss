@@ -202,62 +202,62 @@ layout=DynamicPageWithActions {
   @layout=PageFooterActions  {visible:true; disabled:true; after:zFooter; }
 }
 
+
 layout=PageGlobalActions {
-    showSeparator: true;
-
-    @actionCategory=GlobalPageActions {
+  @actionCategory=GlobalPageActions {
+      after:zMain;
+       /*
+        showSeparator: true;
         after:zMain;
-
         @action=accept {
             trait:controllerAction;
             visible:true;
             type:'positive';
         }
-
         @action=reject {
             trait:controllerAction;
             visible:true;
             type:'negative';
-        }
+        } */
     }
 }
 
 layout=PageLayoutActions {
-      showSeparator: false;
+  showSeparator: false;
+  @actionCategory=LayoutPageActions {
+      after:zMain;
 
-      @actionCategory=LayoutPageActions {
-          after:zMain;
-
-          @action=resize {
-              visible:true;
-              trait:controllerAction;
-              type:"transparent";
-              label:"";
-              title:"Resize";
-              sapIcon:"sap-icon--resize";
-          }
-
-          @action=exit {
-              visible:true;
-              trait:controllerAction;
-              label:"";
-              title:"Exit";
-              type:"transparent";
-              sapIcon:"sap-icon--exitfullscreen";
-          }
-
-          @action=close {
-              visible:true;
-              trait:controllerAction;
-              label:"";
-              title:"Close";
-              type:"transparent";
-              sapIcon:"sap-icon--decline";
-          }
+      @action=resize {
+          visible:true;
+          trait:controllerAction;
+          type:"transparent";
+          label:"";
+          title:"Resize";
+          sapIcon:"sap-icon--resize";
       }
+
+      @action=exit {
+          visible:true;
+          trait:controllerAction;
+          label:"";
+          title:"Exit";
+          type:"transparent";
+          sapIcon:"sap-icon--exitfullscreen";
+      }
+
+      @action=close {
+          visible:true;
+          trait:controllerAction;
+          label:"";
+          title:"Close";
+          type:"transparent";
+          sapIcon:"sap-icon--decline";
+      }
+    }
 }
-@actionCategory=FooterPageActions {
-      layout=PageFooterActions {
+
+layout=PageFooterActions {
+  @actionCategory=FooterPageActions {
           after:zMain;
 
           @action=save {

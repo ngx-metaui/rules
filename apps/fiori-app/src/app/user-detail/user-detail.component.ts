@@ -38,9 +38,9 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   }
 
   @Action({applyTo: User, category: 'GlobalPageActions'})
-  accept(object: any): void {
-    console.log('Accepting : ' + object);
-    this.alertService.open('Successfully Accepted!', {
+  submit(object: any): void {
+    console.log('submit : ' + object);
+    this.alertService.open('Successfully submitted!', {
       type: 'success',
       width: '100vw',
       dismissible: true,
@@ -49,7 +49,7 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   }
 
   @Action({applyTo: User, category: 'GlobalPageActions'})
-  reject(object: any): void {
+  edit(object: any): void {
     console.log('rejecting : ' + object);
   }
 

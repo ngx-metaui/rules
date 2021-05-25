@@ -183,8 +183,10 @@ export class MetaBarActionsComponent implements OnInit, DoCheck {
         v.forEach((item: ItemProperties) => this._actionsByName.set(item.name, item));
       });
     }
-
-    return this.categories;
+    const hasOnlyDefaultAction = this.categories.length === 1
+      && this.categories[0].name === 'General';
+    // console.log('hasOnlyDefaultAction', hasOnlyDefaultAction)
+    return hasOnlyDefaultAction ? null : this.categories;
   }
 
   private actionChanged(): boolean {

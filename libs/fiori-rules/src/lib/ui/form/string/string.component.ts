@@ -41,11 +41,9 @@ let randomId = 0;
 
     <ng-template #WithStyles>
       <span *ngIf="useDefaultStyling" [id]="id"
-            class="fd-input fd-form-item fd-row__form-item"
-            style="background-color: transparent; margin-bottom: 0; padding: 0 10px"
-
+            class="fdp-string"
+            style="border-color: transparent; background-color: transparent; margin-bottom: 0; padding: 0 10px"
             [innerHTML]="value"
-
       >
     </span></ng-template>
 
@@ -53,7 +51,21 @@ let randomId = 0;
 
   `,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+      `.fdp-string {
+      line-height: 1.4;
+      line-height: var(--sapContent_LineHeight, 1.4);
+      color: #32363a;
+      color: var(--sapTextColor, #32363a);
+      font-weight: 400;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }`
+  ]
 })
 export class StringComponent {
   protected defaultId: string = `fdp-string-${randomId++}`;
@@ -63,7 +75,7 @@ export class StringComponent {
   id: string = this.defaultId;
 
   @Input()
-  useDefaultStyling: boolean = false;
+  useDefaultStyling: boolean = true;
 
   @Input()
   set value(value: any) {
